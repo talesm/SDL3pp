@@ -24,6 +24,8 @@ target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 
 # Create your game executable target as usual
 add_executable(test_window WIN32 test/window.cpp)
-
-# Link to the actual SDL3 library.
 target_link_libraries(test_window PRIVATE SDL3pp)
+
+# Unit test
+add_executable(test_stringWrapper test/stringWrapper.cpp)
+target_link_libraries(test_stringWrapper PRIVATE SDL3pp)
