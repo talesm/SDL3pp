@@ -12,8 +12,8 @@ C++ classes and objects, trying to as straightforward as possible.
 - Intefaces should accept both C structs and the C++ wraps, so you
 can adapt a codebase gradually or just choose to use only what 
 you deem necessary.
-- Flexible, while we want to implement RAII and such idioms, you have
-can choose to not use any of it and manage memory yourself.
+- Flexible, while we use RAII and such idioms, you have
+the choice to not use them and, for example, manage memory yourself.
 
 ## Examples
 
@@ -21,6 +21,7 @@ TODO
 
 ## Documentation
 
+- See [Transformations](./transformation.md) to understand the design approach.
 - Todo file (TODO)
 - Doxygen (TODO)
 
