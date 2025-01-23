@@ -17,8 +17,13 @@ else()
     find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
 endif()
 
+# The SDL3pp library
+add_library(SDL3pp INTERFACE)
+target_include_directories(SDL3pp INTERFACE include/)
+target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
+
 # Create your game executable target as usual
 add_executable(test_window WIN32 test/window.cpp)
 
 # Link to the actual SDL3 library.
-target_link_libraries(test_window PRIVATE SDL3::SDL3)
+target_link_libraries(test_window PRIVATE SDL3pp)
