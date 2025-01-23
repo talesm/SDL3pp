@@ -31,21 +31,31 @@ struct ObjectBase<T, Dummy>
 {
   Dummy& operator*() { return *Get<T>(this); }
   Dummy* operator->() { return Get<T>(this); }
+
+protected:
+  static Dummy* Create(int value = 0) { return new Dummy{value}; }
+  static void Destroy(Dummy* dummy) { delete dummy; }
 };
 };
 
 template<class T>
 using DummyBase = SDL::ObjectBase<T, Dummy>;
 
-TEST_CASE("ObjectBase")
+using DummyUnique = SDL::ObjectUnique<Dummy>;
+
+TEST_CASE("ObjectUnique")
 {
-  struct DummyWrapper : DummyBase<DummyWrapper>
-  {
-    Dummy dummy;
-    Dummy* Get() const { return const_cast<Dummy*>(&dummy); }
-  };
-  CHECK(SDL::ObjectBox<DummyWrapper, Dummy>);
-  DummyWrapper wrapper;
-  wrapper.dummy.content = 42;
+  CHECK(SDL::ObjectBox<DummyUnique, Dummy>);
+  DummyUnique wrapper{42};
   CHECK(wrapper->content == 42);
-};
+}
+
+using DummyWrapper = SDL::ObjectWrapper<Dummy>;
+
+TEST_CASE("ObjectWrapper")
+{
+  CHECK(SDL::ObjectBox<DummyWrapper, Dummy>);
+  DummyUnique owner{42};
+  DummyWrapper wrapper{owner};
+  CHECK(wrapper->content == 42);
+}
