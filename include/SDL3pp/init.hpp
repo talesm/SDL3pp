@@ -2,6 +2,7 @@
 #define SDL3PP_INIT_HPP_
 
 #include <SDL3/SDL_init.h>
+#include "stringWrapper.hpp"
 
 /// @namespace SDL
 /// @brief the main namespace where all SDL3pp public functions and types live
@@ -72,23 +73,24 @@ private:
 };
 
 inline bool
-SetAppMetadata(const char* appName,
-               const char* appVersion,
-               const char* appIdentifier)
+SetAppMetadata(StringWrapper appName,
+               StringWrapper appVersion,
+               StringWrapper appIdentifier)
 {
-  return SDL_SetAppMetadata(appName, appVersion, appIdentifier);
+  return SDL_SetAppMetadata(
+    appName.Get(), appVersion.Get(), appIdentifier.Get());
 }
 
 inline bool
-SetAppMetadataProperty(const char* name, const char* value)
+SetAppMetadataProperty(StringWrapper name, StringWrapper value)
 {
-  return SetAppMetadataProperty(name, value);
+  return SetAppMetadataProperty(name.Get(), value.Get());
 }
 
-inline const char*
-GetAppMetadataProperty(const char* name)
+inline StringWrapper
+GetAppMetadataProperty(StringWrapper name)
 {
-  return SDL_GetAppMetadataProperty(name);
+  return SDL_GetAppMetadataProperty(name.Get());
 }
 
 inline Init::Init(InitFlags flags, bool autoQuit)
