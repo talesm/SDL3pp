@@ -56,12 +56,14 @@ but have method-like functions are defined as follows:
   should be defined;
 - Typedef that create and destroyed by SDL functions (such `SDL_Create*()` and
 `SDL_Destroy*()`) are represented as follows:
-  - A class or struct called "*Type*Base", defined as a [CRTP](https://en.cppreference.com/w/cpp/language/crtp)
+  - A struct called "*Type*Base", defined as a [CRTP](https://en.cppreference.com/w/cpp/language/crtp)
   is defined, expecting the template parameter to have Get() function;
-    - If the typedef is opaque (eg SDL_Renderer), we use a class, otherwise 
-    we use a struct (eg SDL_Surface);
-    - This class or struct will have all wrappers for method-like functions 
+    - This struct will have all wrappers for method-like functions 
     defined in its body;
+    - If the underlining type is not opaque, we should also define `operator*()`
+    and `operator->()` to access its fields;
+      - We might define methods to manipulate the most common access patterns
+      directly, when convenient to do so;
     - protected static functions implement its `SDL_Create*()` and `SDL_Destroy*()` functions;
   - The class *Type*Unique extends *Type*Base and defines it as a std::unique_ptr to 
   the underling type;

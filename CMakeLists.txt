@@ -26,6 +26,8 @@ target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 add_executable(test_window WIN32 test/window.cpp)
 target_link_libraries(test_window PRIVATE SDL3pp)
 
-# Unit test
+# Unit tests
 add_executable(test_stringWrapper test/stringWrapper.cpp)
 target_link_libraries(test_stringWrapper PRIVATE SDL3pp)
+add_executable(test_objectWrapper test/objectWrapper.cpp)
+target_link_libraries(test_objectWrapper PRIVATE SDL3pp)
