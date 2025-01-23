@@ -6,11 +6,11 @@
 int
 main(int argc, char** argv)
 {
-  if (!SDL_Init(SDL_INIT_VIDEO)) {
+  SDL::Init init(SDL_INIT_VIDEO);
+  if (!init) {
     SDL_Log("%s", SDL_GetError());
     return 1;
   }
-  atexit(SDL_Quit);
   SDL_Window* window = nullptr;
   SDL_Renderer* renderer = nullptr;
   if (!SDL_CreateWindowAndRenderer("Test", 400, 400, 0, &window, &renderer)) {
