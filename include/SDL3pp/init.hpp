@@ -73,6 +73,12 @@ private:
 };
 
 inline bool
+IsMainThread()
+{
+  return SDL_IsMainThread();
+}
+
+inline bool
 SetAppMetadata(StringWrapper appName,
                StringWrapper appVersion,
                StringWrapper appIdentifier)
