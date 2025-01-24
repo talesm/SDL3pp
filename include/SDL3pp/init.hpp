@@ -2,6 +2,7 @@
 #define SDL3PP_INIT_HPP_
 
 #include <SDL3/SDL_init.h>
+#include "callbackWrapper.hpp"
 #include "stringWrapper.hpp"
 
 /**
@@ -102,6 +103,16 @@ inline bool RunOnMainThread(SDL_MainThreadCallback callback,
                             bool waitComplete = false)
 {
   return SDL_RunOnMainThread(callback, userData, waitComplete);
+}
+
+using MainThreadCallback = void();
+
+inline bool RunOnMainThread(std::function<MainThreadCallback> callback,
+                            bool waitComplete = false)
+{
+  using Wrapper = CallbackWrapper<MainThreadCallback>;
+  return RunOnMainThread(
+    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), waitComplete);
 }
 
 inline bool SetAppMetadata(StringWrapper appName,
