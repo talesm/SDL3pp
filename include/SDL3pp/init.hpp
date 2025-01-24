@@ -87,7 +87,7 @@ SetAppMetadataProperty(StringWrapper name, StringWrapper value)
   return SetAppMetadataProperty(name.Get(), value.Get());
 }
 
-inline StringWrapper
+inline const char*
 GetAppMetadataProperty(StringWrapper name)
 {
   return SDL_GetAppMetadataProperty(name.Get());
