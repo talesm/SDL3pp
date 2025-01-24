@@ -3,8 +3,7 @@
 #include <SDL3/SDL_main.h>
 #include "SDL3pp/init.hpp"
 
-int
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
   SDL::Init init(SDL_INIT_VIDEO);
   if (!init) {

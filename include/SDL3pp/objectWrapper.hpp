@@ -16,8 +16,7 @@ struct ObjectBase;
 
 // Helper to access the wrapped value from ObjectBase
 template<class T, class BASE>
-auto
-Get(const BASE* base)
+auto Get(const BASE* base)
 {
   return static_cast<const T*>(base)->Get();
 }
@@ -95,8 +94,7 @@ private:
 } // namespace SDL
 
 template<class T>
-void
-std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
+void std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
 {
   left.swap(right);
 }

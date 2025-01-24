@@ -95,29 +95,22 @@ private:
   int refCount(int delta, bool autoQuit = true, bool* autoQuitOut = nullptr);
 };
 
-inline bool
-IsMainThread()
-{
-  return SDL_IsMainThread();
-}
+inline bool IsMainThread() { return SDL_IsMainThread(); }
 
-inline bool
-SetAppMetadata(StringWrapper appName,
-               StringWrapper appVersion,
-               StringWrapper appIdentifier)
+inline bool SetAppMetadata(StringWrapper appName,
+                           StringWrapper appVersion,
+                           StringWrapper appIdentifier)
 {
   return SDL_SetAppMetadata(
     appName.Get(), appVersion.Get(), appIdentifier.Get());
 }
 
-inline bool
-SetAppMetadataProperty(StringWrapper name, StringWrapper value)
+inline bool SetAppMetadataProperty(StringWrapper name, StringWrapper value)
 {
   return SetAppMetadataProperty(name.Get(), value.Get());
 }
 
-inline const char*
-GetAppMetadataProperty(StringWrapper name)
+inline const char* GetAppMetadataProperty(StringWrapper name)
 {
   return SDL_GetAppMetadataProperty(name.Get());
 }
@@ -149,37 +142,29 @@ inline Init::~Init()
   if (active) refCount(-1);
 }
 
-inline Init&
-Init::operator=(Init rhs)
+inline Init& Init::operator=(Init rhs)
 {
   std::swap(active, rhs.active);
   std::swap(flags, rhs.flags);
   return *this;
 }
 
-inline bool
-Init::Release()
+inline bool Init::Release()
 {
   flags = 0;
   return refCount(-1, false) == 0;
 }
 
-inline bool
-Init::Reset()
-{
-  return refCount(-1) == 0;
-}
+inline bool Init::Reset() { return refCount(-1) == 0; }
 
-inline bool
-Init::IsQuitAtZero()
+inline bool Init::IsQuitAtZero()
 {
   bool result;
   refCount(0, false, &result);
   return result;
 }
 
-inline int
-Init::refCount(int delta, bool autoQuit, bool* autoQuitOut)
+inline int Init::refCount(int delta, bool autoQuit, bool* autoQuitOut)
 {
   // TODO Locking these?
   static int refCount = 0;
