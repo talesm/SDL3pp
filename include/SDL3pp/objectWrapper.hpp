@@ -21,8 +21,10 @@ auto Get(const BASE* base)
   return static_cast<const T*>(base)->Get();
 }
 
-/// @brief A non owning wrapper for a managed object
-/// @tparam T the managed object
+/**
+ * @brief A non owning wrapper for a managed object
+ * @tparam T the managed object
+ */
 template<class T>
 class ObjectWrapper : public ObjectBase<ObjectWrapper<T>, T>
 {
@@ -53,8 +55,10 @@ private:
   T* value = nullptr;
 };
 
-/// @brief An uniquely owning RAII wrapper for a managed object
-/// @tparam T the managed object
+/**
+ * @brief An uniquely owning RAII wrapper for a managed object
+ * @tparam T the managed object
+ */
 template<class T>
 class ObjectUnique : public ObjectBase<ObjectUnique<T>, T>
 {
