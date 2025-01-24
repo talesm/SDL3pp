@@ -1,4 +1,3 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "SDL3pp/objectWrapper.hpp"
 #include "doctest.h"
 

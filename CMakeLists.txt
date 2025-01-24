@@ -27,7 +27,10 @@ add_executable(test_window WIN32 test/window.cpp)
 target_link_libraries(test_window PRIVATE SDL3pp)
 
 # Unit tests
+add_library(test_main OBJECT test/doctest.cpp)
+
 add_executable(test_stringWrapper test/stringWrapper.cpp)
-target_link_libraries(test_stringWrapper PRIVATE SDL3pp)
+target_link_libraries(test_stringWrapper PRIVATE SDL3pp test_main)
+
 add_executable(test_objectWrapper test/objectWrapper.cpp)
-target_link_libraries(test_objectWrapper PRIVATE SDL3pp)
+target_link_libraries(test_objectWrapper PRIVATE SDL3pp test_main)
