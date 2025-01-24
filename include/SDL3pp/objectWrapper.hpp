@@ -1,5 +1,5 @@
-#ifndef SDL3PP_OBJECT_REFERENCE_HPP
-#define SDL3PP_OBJECT_REFERENCE_HPP
+#ifndef SDL3PP_OBJECT_WRAPPER_HPP
+#define SDL3PP_OBJECT_WRAPPER_HPP
 
 #include <concepts>
 #include <memory>
@@ -43,13 +43,13 @@ public:
   T* Get() const { return value; }
   operator bool() const { return value != nullptr; }
 
-  T* release()
+  T* Release()
   {
     T* result = value;
     value = nullptr;
     return result;
   }
-  void reset(T* other = nullptr) { return value = other; }
+  void Reset(T* other = nullptr) { return value = other; }
 
 private:
   T* value = nullptr;
@@ -79,9 +79,9 @@ public:
   T* Get() const { return value.get(); }
   operator bool() const { return value; }
 
-  T* release() { return value.release(); }
-  void reset(T* other = nullptr) { return value.reset(other); }
-  void swap(ObjectUnique& other) { return std::swap(value, other.value); }
+  T* Release() { return value.release(); }
+  void Reset(T* other = nullptr) { return value.reset(other); }
+  void Swap(ObjectUnique& other) { return std::swap(value, other.value); }
 
 private:
   using super = ObjectBase<ObjectUnique<T>, T>;
@@ -100,7 +100,7 @@ private:
 template<class T>
 void std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
 {
-  left.swap(right);
+  left.Swap(right);
 }
 
-#endif /* SDL3PP_OBJECT_REFERENCE_HPP */
+#endif /* SDL3PP_OBJECT_WRAPPER_HPP */
