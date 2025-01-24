@@ -57,7 +57,7 @@ public:
   bool Reset();
 
   /// @brief returns true if active and has no errors
-  operator bool() const { return active && successful; }
+  operator bool() const { return active; }
 
   bool IsQuitAtZero();
 
@@ -66,7 +66,6 @@ public:
 private:
   InitFlags flags = 0;
   bool active = true;
-  bool successful = true;
 
   // Update refCount and quit if necessary
   int refCount(int delta, bool autoQuit = true, bool* autoQuitOut = nullptr);
@@ -109,7 +108,6 @@ inline Init::Init(InitFlags flags, bool autoQuit)
 inline Init::Init(const Init& rhs)
   : flags(rhs.flags)
   , active(rhs.active)
-  , successful(rhs.successful)
 {
   if (active) refCount(+1);
 }
@@ -118,7 +116,6 @@ inline Init::Init(const Init& rhs)
 inline Init::Init(Init&& rhs)
   : flags(rhs.flags)
   , active(rhs.active)
-  , successful(rhs.successful)
 {
   rhs.active = false;
 }
@@ -133,7 +130,6 @@ Init::operator=(Init rhs)
 {
   std::swap(active, rhs.active);
   std::swap(flags, rhs.flags);
-  std::swap(successful, rhs.successful);
   return *this;
 }
 
@@ -167,7 +163,7 @@ Init::refCount(int delta, bool autoQuit, bool* autoQuitOut)
   if (delta && active) {
     if (delta > 0) {
       if (refCount++ == 0) quitAtZero = autoQuit;
-      if (flags) successful = SDL_InitSubSystem(flags);
+      if (flags) active = SDL_InitSubSystem(flags);
     } else {
       SDL_assert_always(refCount > 0);
       active = false;
