@@ -189,4 +189,4 @@ inline int Init::refCount(int delta, bool autoQuit, bool* autoQuitOut)
 
 } // namespace SDL
 
-#endif // SDL3PP_INIT_HPP_
+#endif /* SDL3PP_INIT_HPP_ */

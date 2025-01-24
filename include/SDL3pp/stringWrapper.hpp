@@ -1,5 +1,5 @@
-#ifndef SDL3PP_STRING_WRAPPER_HPP
-#define SDL3PP_STRING_WRAPPER_HPP
+#ifndef SDL3PP_STRINGWRAPPER_HPP_
+#define SDL3PP_STRINGWRAPPER_HPP_
 
 #include <string>
 #include <string_view>
@@ -74,4 +74,4 @@ private:
 
 } // namespace SDL
 
-#endif /* SDL3PP_STRING_WRAPPER_HPP */
+#endif /* SDL3PP_STRINGWRAPPER_HPP_ */
