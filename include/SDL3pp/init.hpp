@@ -97,6 +97,13 @@ private:
 
 inline bool IsMainThread() { return SDL_IsMainThread(); }
 
+inline bool RunOnMainThread(SDL_MainThreadCallback callback,
+                            void* userData,
+                            bool waitComplete = false)
+{
+  return SDL_RunOnMainThread(callback, userData, waitComplete);
+}
+
 inline bool SetAppMetadata(StringWrapper appName,
                            StringWrapper appVersion,
                            StringWrapper appIdentifier)
