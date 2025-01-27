@@ -555,6 +555,54 @@ inline Display Display::GetForWindow(WindowWrapper window)
   return {SDL_GetDisplayForWindow(window.Get())};
 }
 
+/**
+ * @brief  Check whether the screensaver is currently enabled.
+ *
+ * The screensaver is disabled by default.
+ *
+ * The default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`.
+ *
+ * @returns true if the screensaver is enabled, false if it is disabled.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @sa DisableScreenSaver()
+ * @sa EnableScreenSaver()
+ */
+inline bool ScreenSaverEnabled() { return SDL_ScreenSaverEnabled(); }
+
+/**
+ * @brief Allow the screen to be blanked by a screen saver.
+ *
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @sa DisableScreenSaver()
+ * @sa ScreenSaverEnabled()
+ */
+inline bool EnableScreenSaver() { return SDL_EnableScreenSaver(); }
+
+/**
+ * @brief Prevent the screen from being blanked by a screen saver.
+ *
+ * If you disable the screensaver, it is automatically re-enabled when SDL
+ * quits.
+ *
+ * The screensaver is disabled by default, but this may by changed by
+ * SDL_HINT_VIDEO_ALLOW_SCREENSAVER.
+ *
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @sa EnableScreenSaver()
+ * @sa ScreenSaverEnabled()
+ */
+inline bool DisableScreenSaver() { return SDL_DisableScreenSaver(); }
+
 } // namespace SDL
 
 #endif /* SDL3PP_VIDEO_HPP_ */
