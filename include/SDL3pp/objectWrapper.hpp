@@ -77,7 +77,7 @@ public:
   }
 
   T* Get() const { return value.get(); }
-  operator bool() const { return value; }
+  operator bool() const { return bool(value); }
 
   T* Release() { return value.release(); }
   void Reset(T* other = nullptr) { return value.reset(other); }

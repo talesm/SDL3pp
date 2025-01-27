@@ -6,6 +6,7 @@
 #include <vector>
 #include <SDL3/SDL_video.h>
 #include "objectWrapper.hpp"
+#include "stringWrapper.hpp"
 
 namespace SDL {
 
@@ -311,7 +312,192 @@ struct Display
  */
 template<class T>
 struct ObjectBase<T, SDL_Window>
-{};
+{
+  /**
+   * @brief Get the display associated with a window.
+   *
+   * @returns the instance ID of the display containing the center of the window
+   *          on success or 0 on failure; call SDL_GetError() for more
+   *          information.
+   */
+  Display GetDisplay() const { return Display::GetForWindow(Get<T>(this)); }
+
+  /**
+   * @brief Get the pixel density of a window.
+   *
+   * This is a ratio of pixel size to window size. For example, if the window is
+   * 1920x1080 and it has a high density back buffer of 3840x2160 pixels, it
+   * would have a pixel density of 2.0.
+   *
+   * @returns the pixel density or 0.0f on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @sa GetDisplayScale()
+   */
+  float GetPixelDensity() const
+  {
+    return SDL_GetWindowPixelDensity(Get<T>(this));
+  }
+
+  /**
+   * @brief Get the content display scale relative to a window's pixel size.
+   *
+   * This is a combination of the window pixel density and the display content
+   * scale, and is the expected scale for displaying content in this window. For
+   * example, if a 3840x2160 window had a display scale of 2.0, the user expects
+   * the content to take twice as many pixels and be the same physical size as
+   * if it were being displayed in a 1920x1080 window with a display scale of
+   * 1.0.
+   *
+   * Conceptually this value corresponds to the scale display setting, and is
+   * updated when that setting is changed, or the window moves to a display with
+   * a different scale setting.
+   *
+   * @returns the display scale, or 0.0f on failure; call SDL_GetError() for
+   *          more information.
+   */
+  float GetDisplayScale() const
+  {
+    return SDL_GetWindowDisplayScale(Get<T>(this));
+  }
+
+  // TODO SDL_SetWindowFullscreenMode()
+
+  /**
+   * @brief Create a window with the specified dimensions and flags.
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param w the width of the window.
+   * @param h the height of the window.
+   * @param flags 0, or one or more WindowFlags OR'd together.
+   * @returns the window that was created or NULL on failure; call
+   *          SDL_GetError() for more information.
+   */
+  static SDL_Window* Create(StringWrapper title,
+                            int w,
+                            int h,
+                            SDL_WindowFlags flags = 0)
+  {
+    return SDL_CreateWindow(title.Get(), w, h, flags);
+  }
+
+  /**
+   * @brief Get a window from a stored ID.
+   *
+   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+   * these events to specific SDL_Window objects.
+   *
+   * @returns the ID of the window on success or 0 on failure; call
+   *          SDL_GetError() for more information.
+   */
+  WindowID GetID() const { return SDL_GetWindowID(Get<T>()); }
+
+  /**
+   * @brief Get a window from a stored ID.
+   *
+   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+   * these events to specific SDL_Window objects.
+   *
+   * @param id the ID of the window.
+   * @returns the window associated with `id` or NULL if it doesn't exist; call
+   *          SDL_GetError() for more information.
+   */
+  static WindowWrapper GetFromWindowID(WindowID id)
+  {
+    return SDL_GetWindowFromID(id);
+  }
+
+  // TODO SDL_GetWindowParent()
+
+  /**
+   * @brief Return whether the window has a surface associated with it.
+   * @returns true if there is a surface associated with the window, or false
+   *          otherwise.
+   *
+   * @sa GetSurface()
+   */
+  bool HasSurface() const { return SDL_WindowHasSurface(Get<T>()); }
+
+  /**
+   * @brief Get the SDL surface associated with the window.
+   *
+   * A new surface will be created with the optimal format for the window, if
+   * necessary. This surface will be freed when the window is destroyed. Do not
+   * free this surface.
+   *
+   * This surface will be invalidated if the window is resized. After resizing a
+   * window this function must be called again to return a valid surface.
+   *
+   * You may not combine this with 3D or the rendering API on this window.
+   *
+   * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
+   * @return the surface associated with the window, or NULL on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @sa DestroySurface()
+   * @sa HasSurface()
+   * @sa UpdateSurface()
+   * @sa UpdateSurfaceRects()
+   */
+  SDL_Surface* GetSurface()
+  {
+    // Not const, as this might change window state
+    // TODO Wrap into SDL::Surface
+    return SDL_GetWindowSurface(Get<T>(this));
+  }
+
+  // TODO SDL_SetWindowSurfaceVSync
+
+  /**
+   * @brief Copy the window surface to the screen.
+   *
+   * This is the function you use to reflect any changes to the surface on the
+   * screen.
+   *
+   * This function is equivalent to the SDL 1.2 API SDL_Flip().
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @sa GetSurface()
+   * @sa UpdateSurfaceRects()
+   */
+  bool UpdateSurface() { return SDL_UpdateWindowSurface(Get<T>(this)); }
+
+  /**
+   * @brief  Copy areas of the window surface to the screen.
+   *
+   * This is the function you use to reflect changes to portions of the surface
+   * on the screen.
+   *
+   * This function is equivalent to the SDL 1.2 API SDL_UpdateRects().
+   *
+   * Note that this function will update _at least_ the rectangles specified,
+   * but this is only intended as an optimization; in practice, this might
+   * update more of the screen (or all of the screen!), depending on what method
+   * SDL uses to send pixels to the system.
+   *
+   * @param rects an array of SDL_Rect structures representing areas of the
+   *              surface to copy, in pixels.
+   * @param numRects the number of rectangles.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   */
+  bool UpdateSurfaceRects(const SDL_Rect* rects, int numRects)
+  {
+    return SDL_UpdateWindowSurfaceRects(Get<T>(this), rects, numRects);
+  }
+
+  /**
+   * @brief Destroy the surface associated with the window
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   */
+  bool DestroySurface() { return SDL_DestroyWindowSurface(Get<T>(this)); }
+
+  // TODO SDL_SetWindowKeyboardGrab
+protected:
+  static void Destroy(SDL_Window* window) { SDL_DestroyWindow(window); }
+};
 
 inline Display Display::GetForWindow(WindowWrapper window)
 {

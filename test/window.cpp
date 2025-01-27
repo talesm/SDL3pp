@@ -14,12 +14,12 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL_GetError());
     return 1;
   }
-  SDL_Window* window = SDL_CreateWindow("Test", 400, 400, 0);
+  SDL::Window window{"Test", 400, 400};
   if (!window) {
     SDL_Log("%s", SDL_GetError());
     return 1;
   }
-  SDL_Surface* screen = SDL_GetWindowSurface(window);
+  SDL_Surface* screen = window.GetSurface();
 
   bool running = true;
   while (running) {
@@ -28,10 +28,9 @@ int main(int argc, char** argv)
       if (ev.type == SDL_EVENT_QUIT) { running = false; }
     }
     SDL_FillSurfaceRect(screen, nullptr, 0);
-    SDL_UpdateWindowSurface(window);
+    window.UpdateSurface();
     SDL_Delay(1);
   }
-  SDL_DestroyWindow(window);
 
   return 0;
 }
