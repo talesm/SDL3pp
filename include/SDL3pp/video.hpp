@@ -39,8 +39,8 @@ using SystemTheme = SDL_SystemTheme;
  * @sa Display.GetFullscreenModes()
  * @sa Display.GetDesktopMode()
  * @sa Display.GetCurrentMode()
- * @sa Window.SetFullscreenMode()
- * @sa Window.GetFullscreenMode()
+ * @sa WindowBase.SetFullscreenMode()
+ * @sa WindowBase.GetFullscreenMode()
  */
 using DisplayMode = SDL_DisplayMode;
 
@@ -52,12 +52,8 @@ using DisplayOrientation = SDL_DisplayOrientation;
 /**
  * @brief Handle to an owned window
  */
-using WindowUnique = ObjectUnique<SDL_Window>;
-
-/**
- * @brief Handle to an owned window
- */
 using Window = ObjectUnique<SDL_Window>;
+using WindowUnique = Window;
 
 /**
  * @brief Handle to a non owned window
@@ -80,7 +76,7 @@ using WindowConstWrapper = ObjectWrapper<const SDL_Window>;
  * changed on existing windows by the app, and some of it might be altered by
  * the user or system outside of the app's control.
  *
- * @sa Window.GetFlags()
+ * @sa WindowBase.GetFlags()
  */
 using WindowFlags = SDL_WindowFlags;
 
@@ -275,7 +271,7 @@ struct Display
    * @threadsafety This function should only be called on the main thread.
    *
    * @sa Display.GetAll()
-   * @sa Window.GetDisplayScale()
+   * @sa WindowBase.GetDisplayScale()
    * @sa GetDisplays()
    */
   float GetContentScale() const
@@ -456,11 +452,29 @@ struct Display
   static Display GetForWindow(WindowWrapper window);
 };
 
+// Forward decl
+template<class T>
+struct WindowConstBase;
+
+// Forward decl
+template<class T>
+struct WindowBase;
+
+// Forward decl
+template<class T>
+struct ObjectBase<T, const SDL_Window> : WindowConstBase<T>
+{};
+
+// Forward decl
+template<class T>
+struct ObjectBase<T, SDL_Window> : WindowBase<T>
+{};
+
 /**
  * @brief Represents a handle to a const window
  */
 template<class T>
-struct ObjectBase<T, const SDL_Window>
+struct WindowConstBase
 {
   /**
    * @brief Get the display associated with a window.
@@ -582,7 +596,7 @@ struct ObjectBase<T, const SDL_Window>
  * @brief Represents a handle to a window
  */
 template<class T>
-struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
+struct WindowBase : WindowConstBase<T>
 {
   // TODO SDL_SetWindowFullscreenMode()
 
