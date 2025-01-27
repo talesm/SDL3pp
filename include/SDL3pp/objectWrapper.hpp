@@ -18,7 +18,9 @@ struct ObjectBase;
 template<class T, class BASE>
 auto Get(const BASE* base)
 {
-  return static_cast<const T*>(base)->Get();
+  auto maybeConstValue = static_cast<const T*>(base)->Get();
+  return const_cast<std::remove_const_t<decltype(maybeConstValue)>>(
+    maybeConstValue);
 }
 
 /**

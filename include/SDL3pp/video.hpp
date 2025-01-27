@@ -20,14 +20,13 @@ using DisplayMode = SDL_DisplayMode;
 
 using DisplayOrientation = SDL_DisplayOrientation;
 
-template<class T>
-using WindowBase = ObjectBase<T, SDL_Window>;
-
 using WindowUnique = ObjectUnique<SDL_Window>;
 
 using Window = ObjectUnique<SDL_Window>;
 
 using WindowWrapper = ObjectWrapper<SDL_Window>;
+
+using WindowConstWrapper = ObjectWrapper<const SDL_Window>;
 
 using WindowFlags = SDL_WindowFlags;
 
@@ -308,10 +307,10 @@ struct Display
 };
 
 /**
- * @brief Represents a handle to a window
+ * @brief Represents a handle to a const window
  */
 template<class T>
-struct ObjectBase<T, SDL_Window>
+struct ObjectBase<T, const SDL_Window>
 {
   /**
    * @brief Get the display associated with a window.
@@ -364,6 +363,58 @@ struct ObjectBase<T, SDL_Window>
   // TODO SDL_SetWindowFullscreenMode()
 
   /**
+   * @brief Get a window from a stored ID.
+   *
+   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+   * these events to specific SDL_Window objects.
+   *
+   * @returns the ID of the window on success or 0 on failure; call
+   *          SDL_GetError() for more information.
+   */
+  WindowID GetID() const { return SDL_GetWindowID(Get<T>()); }
+
+  /**
+   * @brief Get a window from a stored ID.
+   *
+   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
+   * these events to specific SDL_Window objects.
+   *
+   * @param id the ID of the window.
+   * @returns the window associated with `id` or NULL if it doesn't exist; call
+   *          SDL_GetError() for more information.
+   */
+  static WindowConstWrapper GetFromWindowID(WindowID id)
+  {
+    return SDL_GetWindowFromID(id);
+  }
+
+  // TODO SDL_GetWindowParent()
+
+  /**
+   * @brief Return whether the window has a surface associated with it.
+   * @returns true if there is a surface associated with the window, or false
+   *          otherwise.
+   *
+   * @sa GetSurface()
+   */
+  bool HasSurface() const { return SDL_WindowHasSurface(Get<T>()); }
+
+  // TODO GetSurfaceIfExists()
+
+  // TODO SDL_SetWindowSurfaceVSync
+
+  // TODO SDL_SetWindowKeyboardGrab
+};
+
+/**
+ * @brief Represents a handle to a window
+ */
+template<class T>
+struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
+{
+  // TODO SDL_SetWindowFullscreenMode()
+
+  /**
    * @brief Create a window with the specified dimensions and flags.
    * @param title the title of the window, in UTF-8 encoding.
    * @param w the width of the window.
@@ -386,17 +437,6 @@ struct ObjectBase<T, SDL_Window>
    * The numeric ID is what SDL_WindowEvent references, and is necessary to map
    * these events to specific SDL_Window objects.
    *
-   * @returns the ID of the window on success or 0 on failure; call
-   *          SDL_GetError() for more information.
-   */
-  WindowID GetID() const { return SDL_GetWindowID(Get<T>()); }
-
-  /**
-   * @brief Get a window from a stored ID.
-   *
-   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
-   * these events to specific SDL_Window objects.
-   *
    * @param id the ID of the window.
    * @returns the window associated with `id` or NULL if it doesn't exist; call
    *          SDL_GetError() for more information.
@@ -407,15 +447,6 @@ struct ObjectBase<T, SDL_Window>
   }
 
   // TODO SDL_GetWindowParent()
-
-  /**
-   * @brief Return whether the window has a surface associated with it.
-   * @returns true if there is a surface associated with the window, or false
-   *          otherwise.
-   *
-   * @sa GetSurface()
-   */
-  bool HasSurface() const { return SDL_WindowHasSurface(Get<T>()); }
 
   /**
    * @brief Get the SDL surface associated with the window.
