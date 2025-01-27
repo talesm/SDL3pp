@@ -5,6 +5,7 @@
 #include <optional>
 #include <vector>
 #include <SDL3/SDL_video.h>
+#include "error.hpp"
 #include "freeWrapper.hpp"
 #include "objectWrapper.hpp"
 #include "stringWrapper.hpp"
@@ -143,7 +144,7 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  * @param count a pointer filled in with the number of displays returned, may
  *              be NULL.
  * @returns a 0 terminated array of display instance IDs or NULL on failure;
- *          call SDL_GetError() for more information.
+ *          call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -168,7 +169,7 @@ struct Display
    * @brief Return the primary display.
    *
    * @returns the instance ID of the primary display on success or 0 on failure;
-   *          call SDL_GetError() for more information.
+   *          call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -182,7 +183,7 @@ struct Display
   /**
    * @brief Get the name of a display in UTF-8 encoding.
    *
-   * @returns the name of a display or NULL on failure; call SDL_GetError() for
+   * @returns the name of a display or NULL on failure; call GetError() for
    *          more information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -196,7 +197,7 @@ struct Display
    * different location depending on monitor layout.
    *
    * @returns he SDL_Rect structure filled in with the display bounds on success
-   * or std::nullopt on failure; call SDL_GetError() for more information.
+   * or std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
@@ -219,7 +220,7 @@ struct Display
    * non-fullscreen window.
    *
    * @returns he SDL_Rect structure filled in with the display bounds on success
-   * or std::nullopt on failure; call SDL_GetError() for more information.
+   * or std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
@@ -266,7 +267,7 @@ struct Display
    * @brief Get the content scale of a display.
    *
    * @returns the content scale of the display, or 0.0f on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -294,7 +295,7 @@ struct Display
    * @param count a pointer filled in with the number of display modes returned,
    *              may be NULL.
    * @returns a NULL terminated array of display mode pointers or NULL on
-   *          failure; call SDL_GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -325,7 +326,7 @@ struct Display
    * @param includeHighDensityModes boolean to include high density modes in
    *                                   the search.
    * @returns The display mode on success, nullopt on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -356,7 +357,7 @@ struct Display
    * display mode.
    *
    * @returns a pointer to the desktop display mode or NULL on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -378,7 +379,7 @@ struct Display
    * display mode.
    *
    * @returns a pointer to the desktop display mode or NULL on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -399,7 +400,7 @@ struct Display
   /**
    * @brief Get a list of currently connected displays.
    * @returns a 0 terminated array of display instance IDs or NULL on failure;
-   *          call SDL_GetError() for more information.
+   *          call GetError() for more information.
    *
    * This automatically calls SDL_free after result is out of scope.
    *
@@ -417,7 +418,7 @@ struct Display
    * @brief Get the display containing a point.
    * @param point the point to query.
    * @returns the instance ID of the display containing the point or 0 on
-   *          failure; call SDL_GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
@@ -431,7 +432,7 @@ struct Display
    * @param rect the rect to query.
    * @returns the instance ID of the display entirely containing the rect or
    *          closest to the center of the rect on success or 0 on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
@@ -444,7 +445,7 @@ struct Display
    * @brief Get the display associated with a window.
    * @param window the window to query.
    * @returns the instance ID of the display containing the center of the window
-   *          on success or 0 on failure; call SDL_GetError() for more
+   *          on success or 0 on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -480,7 +481,7 @@ struct WindowConstBase
    * @brief Get the display associated with a window.
    *
    * @returns the instance ID of the display containing the center of the window
-   *          on success or 0 on failure; call SDL_GetError() for more
+   *          on success or 0 on failure; call GetError() for more
    *          information.
    */
   Display GetDisplay() const { return Display::GetForWindow(Get<T>(this)); }
@@ -492,7 +493,7 @@ struct WindowConstBase
    * 1920x1080 and it has a high density back buffer of 3840x2160 pixels, it
    * would have a pixel density of 2.0.
    *
-   * @returns the pixel density or 0.0f on failure; call SDL_GetError() for more
+   * @returns the pixel density or 0.0f on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -518,7 +519,7 @@ struct WindowConstBase
    * updated when that setting is changed, or the window moves to a display with
    * a different scale setting.
    *
-   * @returns the display scale, or 0.0f on failure; call SDL_GetError() for
+   * @returns the display scale, or 0.0f on failure; call GetError() for
    *          more information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -537,7 +538,7 @@ struct WindowConstBase
    * these events to specific SDL_Window objects.
    *
    * @returns the ID of the window on success or 0 on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
@@ -551,7 +552,7 @@ struct WindowConstBase
    *
    * @param id the ID of the window.
    * @returns the window associated with `id` or NULL if it doesn't exist; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
@@ -607,7 +608,7 @@ struct WindowBase : WindowConstBase<T>
    * @param h the height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
    * @returns the window that was created or NULL on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -628,7 +629,7 @@ struct WindowBase : WindowConstBase<T>
    *
    * @param id the ID of the window.
    * @returns the window associated with `id` or NULL if it doesn't exist; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -654,7 +655,7 @@ struct WindowBase : WindowConstBase<T>
    *
    * This function is affected by `SDL_HINT_FRAMEBUFFER_ACCELERATION`.
    * @return the surface associated with the window, or NULL on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -680,7 +681,7 @@ struct WindowBase : WindowConstBase<T>
    *
    * This function is equivalent to the SDL 1.2 API SDL_Flip().
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -707,7 +708,7 @@ struct WindowBase : WindowConstBase<T>
    *              surface to copy, in pixels.
    * @param numRects the number of rectangles.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -720,7 +721,7 @@ struct WindowBase : WindowConstBase<T>
   /**
    * @brief Destroy the surface associated with the window
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -757,7 +758,7 @@ inline bool ScreenSaverEnabled() { return SDL_ScreenSaverEnabled(); }
 /**
  * @brief Allow the screen to be blanked by a screen saver.
  *
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -776,7 +777,7 @@ inline bool EnableScreenSaver() { return SDL_EnableScreenSaver(); }
  * The screensaver is disabled by default, but this may by changed by
  * SDL_HINT_VIDEO_ALLOW_SCREENSAVER.
  *
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
