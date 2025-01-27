@@ -1,7 +1,11 @@
 #include <iostream>
-#include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include "SDL3/SDL_error.h"
+#include "SDL3/SDL_log.h"
+#include "SDL3/SDL_surface.h"
+#include "SDL3/SDL_timer.h"
 #include "SDL3pp/init.hpp"
+#include "SDL3pp/video.hpp"
 
 int main(int argc, char** argv)
 {
