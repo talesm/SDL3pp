@@ -10,12 +10,12 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL_GetError());
     return 1;
   }
-  SDL_Window* window = nullptr;
-  SDL_Renderer* renderer = nullptr;
-  if (!SDL_CreateWindowAndRenderer("Test", 400, 400, 0, &window, &renderer)) {
+  SDL_Window* window = SDL_CreateWindow("Test", 400, 400, 0);
+  if (!window) {
     SDL_Log("%s", SDL_GetError());
     return 1;
   }
+  SDL_Surface* screen = SDL_GetWindowSurface(window);
 
   bool running = true;
   while (running) {
@@ -23,12 +23,11 @@ int main(int argc, char** argv)
     while (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_EVENT_QUIT) { running = false; }
     }
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
+    SDL_FillSurfaceRect(screen, nullptr, 0);
+    SDL_UpdateWindowSurface(window);
     SDL_Delay(1);
   }
   SDL_DestroyWindow(window);
-  SDL_DestroyRenderer(renderer);
 
   return 0;
 }
