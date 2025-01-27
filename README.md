@@ -5,6 +5,9 @@ A "port" of SDL3 in C++.
 
 This basically wrap SDL3 naturally OO looking concepts into proper 
 C++ classes and objects, trying to as straightforward as possible.
+It was inspired on [SDL2pp](https://github.com/libSDL2pp/libSDL2pp), 
+with the addition of flexible memory management and wrappers for 
+string and callbacks.
 
 ## Goals
 

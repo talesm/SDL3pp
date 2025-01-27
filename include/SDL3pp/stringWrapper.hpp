@@ -11,8 +11,9 @@ namespace SDL {
  * @brief A safe and mostly efficient wrapper to std::string and
  * std::string_view
  *
- * This should only be declared in function parameters, using it
- * otherwise is to ask for undefined behavior
+ * This should only be declared in [function
+ * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
+ * using it otherwise is to ask for undefined behavior
  */
 class StringWrapper
 {
