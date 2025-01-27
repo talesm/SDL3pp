@@ -32,6 +32,9 @@ add_library(test_main OBJECT test/doctest.cpp)
 add_executable(test_callbackWrapper test/callbackWrapper.cpp)
 target_link_libraries(test_callbackWrapper PRIVATE SDL3pp test_main)
 
+add_executable(test_freeWrapper test/freeWrapper.cpp)
+target_link_libraries(test_freeWrapper PRIVATE SDL3pp test_main)
+
 add_executable(test_objectWrapper test/objectWrapper.cpp)
 target_link_libraries(test_objectWrapper PRIVATE SDL3pp test_main)
 

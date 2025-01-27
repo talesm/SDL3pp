@@ -5,6 +5,7 @@
 #include <optional>
 #include <vector>
 #include <SDL3/SDL_video.h>
+#include "freeWrapper.hpp"
 #include "objectWrapper.hpp"
 #include "stringWrapper.hpp"
 
@@ -80,14 +81,16 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  * @param count a pointer filled in with the number of displays returned, may
  *              be NULL.
  * @returns a 0 terminated array of display instance IDs or NULL on failure;
- *          call SDL_GetError() for more information. This should be freed
- *          with SDL_free() when it is no longer needed.
+ *          call SDL_GetError() for more information.
+ *
+ * This automatically calls SDL_free after result is out of scope.
  *
  * @sa Display
+ * @sa Display.GetAll()
  */
-inline DisplayID* GetDisplays(int* count = nullptr)
+inline FreeWrapper<DisplayID[]> GetDisplays(int* count = nullptr)
 {
-  return SDL_GetDisplays(count);
+  return wrapArray(SDL_GetDisplays(count));
 }
 
 /**
@@ -201,9 +204,9 @@ struct Display
    *          single allocation that should be freed with SDL_free() when it is
    *          no longer needed.
    */
-  DisplayMode** GetFullscreenModes(int* count = nullptr) const
+  FreeWrapper<DisplayMode*[]> GetFullscreenModes(int* count = nullptr) const
   {
-    return SDL_GetFullscreenDisplayModes(displayID, count);
+    return wrapArray(SDL_GetFullscreenDisplayModes(displayID, count));
   }
 
   /**
@@ -272,6 +275,23 @@ struct Display
   }
 
   constexpr operator bool() const { return displayID != 0; }
+
+  /**
+   * @brief Get a list of currently connected displays.
+   * @returns a 0 terminated array of display instance IDs or NULL on failure;
+   *          call SDL_GetError() for more information.
+   *
+   * This automatically calls SDL_free after result is out of scope.
+   *
+   * This might be violating C++ aliasing rules, so I would have to remove it in
+   * the future
+   *
+   * @sa GetDisplays()
+   */
+  static FreeWrapper<Display[]> GetAll(int* count = nullptr)
+  {
+    return wrapArray(reinterpret_cast<Display*>(SDL_GetDisplays(count)));
+  }
 
   /**
    * @brief Get the display containing a point.
