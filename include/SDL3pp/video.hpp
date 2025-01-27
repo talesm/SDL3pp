@@ -11,26 +11,82 @@
 
 namespace SDL {
 
+/**
+ * @brief This is a unique ID for a display for the time it is connected to the
+ * system, and is never reused for the lifetime of the application.
+ *
+ * If the display is disconnected and reconnected, it will get a new ID.
+ *
+ * The value 0 is an invalid ID.
+ */
 using DisplayID = SDL_DisplayID;
 
+/**
+ * @brief This is a unique ID for a window.
+ *
+ * The value 0 is an invalid ID.
+ */
 using WindowID = SDL_WindowID;
 
+/**
+ * @brief System theme.
+ */
 using SystemTheme = SDL_SystemTheme;
 
+/**
+ * @brief The structure that defines a display mode.
+ *
+ * @sa Display.GetFullscreenModes()
+ * @sa Display.GetDesktopMode()
+ * @sa Display.GetCurrentMode()
+ * @sa Window.SetFullscreenMode()
+ * @sa Window.GetFullscreenMode()
+ */
 using DisplayMode = SDL_DisplayMode;
 
+/**
+ * @brief Display orientation values; the way a display is rotated.
+ */
 using DisplayOrientation = SDL_DisplayOrientation;
 
+/**
+ * @brief Handle to an owned window
+ */
 using WindowUnique = ObjectUnique<SDL_Window>;
 
+/**
+ * @brief Handle to an owned window
+ */
 using Window = ObjectUnique<SDL_Window>;
 
+/**
+ * @brief Handle to a non owned window
+ */
 using WindowWrapper = ObjectWrapper<SDL_Window>;
 
+/**
+ * @brief Handle to a non owned const window
+ *
+ * The constness implies only methods that don't change its internal state are
+ * allowed.
+ */
 using WindowConstWrapper = ObjectWrapper<const SDL_Window>;
 
+/**
+ * @brief The flags on a window.
+ *
+ * These cover a lot of true/false, or on/off, window state. Some of it is
+ * immutable after being set through SDL_CreateWindow(), some of it can be
+ * changed on existing windows by the app, and some of it might be altered by
+ * the user or system outside of the app's control.
+ *
+ * @sa Window.GetFlags()
+ */
 using WindowFlags = SDL_WindowFlags;
 
+/**
+ * @brief Window flash operation.
+ */
 using FlashOperation = SDL_FlashOperation;
 
 /**
@@ -38,7 +94,9 @@ using FlashOperation = SDL_FlashOperation;
  *
  * @returns the number of built in video drivers.
  *
- * @sa GetVideoDriver
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @sa GetVideoDriver()
  */
 inline int GetNumVideoDrivers() { return SDL_GetNumVideoDrivers(); }
 
@@ -48,6 +106,10 @@ inline int GetNumVideoDrivers() { return SDL_GetNumVideoDrivers(); }
  * @param index the index of a video driver.
  *
  * @returns the name of the video driver with the given **index**.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @sa GetNumVideoDrivers()
  */
 inline const char* GetVideoDriver(int index)
 {
@@ -60,8 +122,10 @@ inline const char* GetVideoDriver(int index)
  * @returns the name of the current video driver or NULL if no driver has been
  *          initialized.
  *
- * @sa GetNumVideoDrivers
- * @sa GetVideoDriver
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @sa GetNumVideoDrivers()
+ * @sa GetVideoDriver()
  */
 inline const char* GetCurrentVideoDriver()
 {
@@ -72,6 +136,8 @@ inline const char* GetCurrentVideoDriver()
  * @brief Get the current system theme.
  *
  * @return the current system theme, light, dark, or unknown.
+ *
+ * @threadsafety This function should only be called on the main thread.
  */
 inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 
@@ -82,6 +148,8 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  *              be NULL.
  * @returns a 0 terminated array of display instance IDs or NULL on failure;
  *          call SDL_GetError() for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
  *
  * This automatically calls SDL_free after result is out of scope.
  *
@@ -94,19 +162,24 @@ inline FreeWrapper<DisplayID[]> GetDisplays(int* count = nullptr)
 }
 
 /**
- * @brief Return the primary display.
- *
- * @returns the instance ID of the primary display on success or 0 on failure;
- *          call SDL_GetError() for more information.
- */
-inline DisplayID GetPrimaryDisplay() { return SDL_GetPrimaryDisplay(); }
-
-/**
  * @brief Represents a handle for a display
  */
 struct Display
 {
   DisplayID displayID;
+
+  /**
+   * @brief Return the primary display.
+   *
+   * @returns the instance ID of the primary display on success or 0 on failure;
+   *          call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa GetDisplays()
+   * @sa Display.GetAll()
+   */
+  static DisplayID GetPrimary() { return SDL_GetPrimaryDisplay(); }
 
   // TODO: GetDisplayProperties()
 
@@ -115,6 +188,8 @@ struct Display
    *
    * @returns the name of a display or NULL on failure; call SDL_GetError() for
    *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   const char* GetName() const { return SDL_GetDisplayName(displayID); }
 
@@ -126,6 +201,8 @@ struct Display
    *
    * @returns he SDL_Rect structure filled in with the display bounds on success
    * or std::nullopt on failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   std::optional<SDL_Rect> GetBounds() const
   {
@@ -147,6 +224,8 @@ struct Display
    *
    * @returns he SDL_Rect structure filled in with the display bounds on success
    * or std::nullopt on failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   std::optional<SDL_Rect> GetUsableBounds() const
   {
@@ -157,8 +236,14 @@ struct Display
 
   /**
    * @brief Get the orientation of a display when it is unrotated.
+   *
    * @returns the SDL_DisplayOrientation enum value of the display, or
    *          `SDL_ORIENTATION_UNKNOWN` if it isn't available.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa GetDisplays()
+   * @sa Display.GetAll()
    */
   DisplayOrientation GetNaturalOrientation() const
   {
@@ -167,8 +252,14 @@ struct Display
 
   /**
    * @brief  Get the orientation of a display.
+   *
    * @returns the SDL_DisplayOrientation enum value of the display, or
    *          `SDL_ORIENTATION_UNKNOWN` if it isn't available.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa Display.GetAll()
+   * @sa GetDisplays()
    */
   DisplayOrientation GetCurrentOrientation() const
   {
@@ -177,8 +268,15 @@ struct Display
 
   /**
    * @brief Get the content scale of a display.
+   *
    * @returns the content scale of the display, or 0.0f on failure; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa Display.GetAll()
+   * @sa Window.GetDisplayScale()
+   * @sa GetDisplays()
    */
   float GetContentScale() const
   {
@@ -200,9 +298,14 @@ struct Display
    * @param count a pointer filled in with the number of display modes returned,
    *              may be NULL.
    * @returns a NULL terminated array of display mode pointers or NULL on
-   *          failure; call SDL_GetError() for more information. This is a
-   *          single allocation that should be freed with SDL_free() when it is
-   *          no longer needed.
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * This automatically calls SDL_free after result is out of scope.
+   *
+   * @sa Display.GetAll()
+   * @sa GetDisplays()
    */
   FreeWrapper<DisplayMode*[]> GetFullscreenModes(int* count = nullptr) const
   {
@@ -227,6 +330,12 @@ struct Display
    *                                   the search.
    * @returns The display mode on success, nullopt on failure; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa Display.GetAll()
+   * @sa Display.GetFullscreenModes()
+   * @sa GetDisplays()
    */
   std::optional<DisplayMode> GetClosestFullscreenMode(
     int w,
@@ -252,6 +361,12 @@ struct Display
    *
    * @returns a pointer to the desktop display mode or NULL on failure; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa Display.GetCurrentMode()
+   * @sa Display.GetAll()
+   * @sa GetDisplays()
    */
   const DisplayMode* GetDesktopMode() const
   {
@@ -268,12 +383,21 @@ struct Display
    *
    * @returns a pointer to the desktop display mode or NULL on failure; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa Display.GetDesktopMode()
+   * @sa Display.GetAll()
+   * @sa GetDisplays()
    */
   const DisplayMode* GetCurrentMode() const
   {
     return SDL_GetCurrentDisplayMode(displayID);
   }
 
+  /**
+   * @brief True if a valid display id
+   */
   constexpr operator bool() const { return displayID != 0; }
 
   /**
@@ -298,6 +422,8 @@ struct Display
    * @param point the point to query.
    * @returns the instance ID of the display containing the point or 0 on
    *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   static Display GetForPoint(const SDL_Point& point)
   {
@@ -310,6 +436,8 @@ struct Display
    * @returns the instance ID of the display entirely containing the rect or
    *          closest to the center of the rect on success or 0 on failure; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   static Display GetForRect(const SDL_Rect& rect)
   {
@@ -322,6 +450,8 @@ struct Display
    * @returns the instance ID of the display containing the center of the window
    *          on success or 0 on failure; call SDL_GetError() for more
    *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   static Display GetForWindow(WindowWrapper window);
 };
@@ -351,7 +481,9 @@ struct ObjectBase<T, const SDL_Window>
    * @returns the pixel density or 0.0f on failure; call SDL_GetError() for more
    *          information.
    *
-   * @sa GetDisplayScale()
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa WindowBase.GetDisplayScale()
    */
   float GetPixelDensity() const
   {
@@ -374,6 +506,8 @@ struct ObjectBase<T, const SDL_Window>
    *
    * @returns the display scale, or 0.0f on failure; call SDL_GetError() for
    *          more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   float GetDisplayScale() const
   {
@@ -390,6 +524,8 @@ struct ObjectBase<T, const SDL_Window>
    *
    * @returns the ID of the window on success or 0 on failure; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   WindowID GetID() const { return SDL_GetWindowID(Get<T>()); }
 
@@ -402,6 +538,8 @@ struct ObjectBase<T, const SDL_Window>
    * @param id the ID of the window.
    * @returns the window associated with `id` or NULL if it doesn't exist; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   static WindowConstWrapper GetFromWindowID(WindowID id)
   {
@@ -415,11 +553,25 @@ struct ObjectBase<T, const SDL_Window>
    * @returns true if there is a surface associated with the window, or false
    *          otherwise.
    *
-   * @sa GetSurface()
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa WindowBase.GetSurface()
    */
   bool HasSurface() const { return SDL_WindowHasSurface(Get<T>()); }
 
-  // TODO GetSurfaceIfExists()
+  /**
+   * @brief Get the SDL surface associated with the window, if it already exists
+   *
+   * @returns the surface associated with the window, or NULL of none exists
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   */
+  SDL_Surface* GetSurfaceIfExists() const
+  {
+    if (!HasSurface()) return nullptr;
+    return SDL_GetWindowSurface(Get<T>());
+  }
 
   // TODO SDL_SetWindowSurfaceVSync
 
@@ -442,6 +594,9 @@ struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
    * @param flags 0, or one or more WindowFlags OR'd together.
    * @returns the window that was created or NULL on failure; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
    */
   static SDL_Window* Create(StringWrapper title,
                             int w,
@@ -460,6 +615,9 @@ struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
    * @param id the ID of the window.
    * @returns the window associated with `id` or NULL if it doesn't exist; call
    *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
    */
   static WindowWrapper GetFromWindowID(WindowID id)
   {
@@ -484,10 +642,12 @@ struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
    * @return the surface associated with the window, or NULL on failure; call
    *          SDL_GetError() for more information.
    *
-   * @sa DestroySurface()
-   * @sa HasSurface()
-   * @sa UpdateSurface()
-   * @sa UpdateSurfaceRects()
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa WindowBase.DestroySurface()
+   * @sa WindowBase.HasSurface()
+   * @sa WindowBase.UpdateSurface()
+   * @sa WindowBase.UpdateSurfaceRects()
    */
   SDL_Surface* GetSurface()
   {
@@ -508,6 +668,8 @@ struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
    *
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    *
    * @sa GetSurface()
    * @sa UpdateSurfaceRects()
@@ -530,8 +692,11 @@ struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
    * @param rects an array of SDL_Rect structures representing areas of the
    *              surface to copy, in pixels.
    * @param numRects the number of rectangles.
+   *
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
    */
   bool UpdateSurfaceRects(const SDL_Rect* rects, int numRects)
   {
@@ -540,8 +705,12 @@ struct ObjectBase<T, SDL_Window> : ObjectBase<T, const SDL_Window>
 
   /**
    * @brief Destroy the surface associated with the window
+   *
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
    */
   bool DestroySurface() { return SDL_DestroyWindowSurface(Get<T>(this)); }
 
