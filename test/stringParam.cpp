@@ -4,7 +4,7 @@
 TEST_CASE("StringParam")
 {
   std::string result;
-  auto test = [&](SDL::StringParam str) { result = str.Get(); };
+  auto test = [&](SDL::StringParam str) { result = str; };
   REQUIRE_NOTHROW(test("c array"));
   CHECK(result == "c array");
   REQUIRE_NOTHROW(test(std::string_view("string view")));

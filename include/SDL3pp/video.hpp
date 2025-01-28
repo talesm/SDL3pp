@@ -618,7 +618,7 @@ struct WindowBase : WindowConstBase<T>
                             int h,
                             SDL_WindowFlags flags = 0)
   {
-    return SDL_CreateWindow(title.Get(), w, h, flags);
+    return SDL_CreateWindow(title, w, h, flags);
   }
 
   /**

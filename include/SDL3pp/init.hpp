@@ -119,18 +119,17 @@ inline bool SetAppMetadata(StringParam appName,
                            StringParam appVersion,
                            StringParam appIdentifier)
 {
-  return SDL_SetAppMetadata(
-    appName.Get(), appVersion.Get(), appIdentifier.Get());
+  return SDL_SetAppMetadata(appName, appVersion, appIdentifier);
 }
 
 inline bool SetAppMetadataProperty(StringParam name, StringParam value)
 {
-  return SetAppMetadataProperty(name.Get(), value.Get());
+  return SDL_SetAppMetadataProperty(name, value);
 }
 
 inline const char* GetAppMetadataProperty(StringParam name)
 {
-  return SDL_GetAppMetadataProperty(name.Get());
+  return SDL_GetAppMetadataProperty(name);
 }
 
 inline Init::Init(InitFlags flags, bool autoQuit)
