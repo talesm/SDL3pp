@@ -8,6 +8,7 @@
 #include "error.hpp"
 #include "freeWrapper.hpp"
 #include "objectWrapper.hpp"
+#include "rect.hpp"
 #include "stringParam.hpp"
 
 namespace SDL {
@@ -196,16 +197,16 @@ struct Display
    * The primary display is often located at (0,0), but may be placed at a
    * different location depending on monitor layout.
    *
-   * @returns he SDL_Rect structure filled in with the display bounds on success
+   * @returns the Rect structure filled in with the display bounds on success
    * or std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  std::optional<SDL_Rect> GetBounds() const
+  std::optional<Rect> GetBounds() const
   {
-    SDL_Rect bounds;
+    Rect bounds;
     if (SDL_GetDisplayBounds(displayID, &bounds)) return bounds;
-    return {};
+    return std::nullopt;
   }
   /**
    * @brief Get the usable desktop area represented by a display, in screen
@@ -219,14 +220,14 @@ struct Display
    * so these are good guidelines for the maximum space available to a
    * non-fullscreen window.
    *
-   * @returns he SDL_Rect structure filled in with the display bounds on success
+   * @returns he Rect structure filled in with the display bounds on success
    * or std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  std::optional<SDL_Rect> GetUsableBounds() const
+  std::optional<Rect> GetUsableBounds() const
   {
-    SDL_Rect bounds;
+    Rect bounds;
     if (SDL_GetDisplayUsableBounds(displayID, &bounds)) return bounds;
     return {};
   }
