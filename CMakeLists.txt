@@ -30,18 +30,11 @@ target_link_libraries(test_window PRIVATE SDL3pp)
 add_library(test_main OBJECT test/doctest.cpp)
 enable_testing()
 
-add_executable(test_callbackWrapper test/callbackWrapper.cpp)
-target_link_libraries(test_callbackWrapper PRIVATE SDL3pp test_main)
-add_test(NAME test_callbackWrapper COMMAND test_callbackWrapper)
-
-add_executable(test_freeWrapper test/freeWrapper.cpp)
-target_link_libraries(test_freeWrapper PRIVATE SDL3pp test_main)
-add_test(NAME test_freeWrapper COMMAND test_freeWrapper)
-
-add_executable(test_objectWrapper test/objectWrapper.cpp)
-target_link_libraries(test_objectWrapper PRIVATE SDL3pp test_main)
-add_test(NAME test_objectWrapper COMMAND test_objectWrapper)
-
-add_executable(test_stringParam test/stringParam.cpp)
-target_link_libraries(test_stringParam PRIVATE SDL3pp test_main)
-add_test(NAME test_stringParam COMMAND test_stringParam)
+add_executable(SDL3pp_unitTests 
+    test/callbackWrapper.cpp
+    test/freeWrapper.cpp
+    test/objectWrapper.cpp
+    test/stringParam.cpp
+)
+target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)
+add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
