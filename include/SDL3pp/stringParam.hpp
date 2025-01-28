@@ -9,25 +9,25 @@ namespace SDL {
 
 /**
  * @brief A safe and mostly efficient wrapper to std::string and
- * std::string_view
+ * std::string_view parameters
  *
  * This should only be declared in [function
  * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
  * using it otherwise is to ask for undefined behavior
  */
-class StringWrapper
+class StringParam
 {
 public:
-  constexpr StringWrapper(std::nullptr_t = nullptr) {}
-  constexpr StringWrapper(const char* str)
+  constexpr StringParam(std::nullptr_t = nullptr) {}
+  constexpr StringParam(const char* str)
     : str(str)
   {
   }
-  StringWrapper(const std::string& str)
-    : StringWrapper(str.c_str())
+  StringParam(const std::string& str)
+    : StringParam(str.c_str())
   {
   }
-  StringWrapper(std::string_view str)
+  StringParam(std::string_view str)
   {
     auto sz = str.size();
     char* data;
@@ -43,8 +43,8 @@ public:
     data[sz] = 0;
   }
 
-  StringWrapper(const StringWrapper&) = delete;
-  StringWrapper(StringWrapper&& lhs)
+  StringParam(const StringParam&) = delete;
+  StringParam(StringParam&& lhs)
     : mode(lhs.mode)
   {
     if (mode == 2) {
@@ -54,12 +54,12 @@ public:
     }
     lhs.mode = 0;
   }
-  ~StringWrapper()
+  ~StringParam()
   {
     if (mode == 1) delete[] str;
   }
-  StringWrapper& operator=(const StringWrapper&) = delete;
-  StringWrapper& operator=(StringWrapper&& lhs) = delete;
+  StringParam& operator=(const StringParam&) = delete;
+  StringParam& operator=(StringParam&& lhs) = delete;
 
   const char* Get() const { return mode == 2 ? smallStr : str; }
 

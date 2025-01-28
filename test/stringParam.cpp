@@ -1,10 +1,10 @@
-#include "SDL3pp/stringWrapper.hpp"
+#include "SDL3pp/stringParam.hpp"
 #include "doctest.h"
 
-TEST_CASE("StringWrapper")
+TEST_CASE("StringParam")
 {
   std::string result;
-  auto test = [&](SDL::StringWrapper str) { result = str.Get(); };
+  auto test = [&](SDL::StringParam str) { result = str.Get(); };
   REQUIRE_NOTHROW(test("c array"));
   CHECK(result == "c array");
   REQUIRE_NOTHROW(test(std::string_view("string view")));

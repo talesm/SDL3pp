@@ -8,7 +8,7 @@
 #include "error.hpp"
 #include "freeWrapper.hpp"
 #include "objectWrapper.hpp"
-#include "stringWrapper.hpp"
+#include "stringParam.hpp"
 
 namespace SDL {
 
@@ -613,7 +613,7 @@ struct WindowBase : WindowConstBase<T>
    * @threadsafety This function should only be called on the main thread.
    *
    */
-  static SDL_Window* Create(StringWrapper title,
+  static SDL_Window* Create(StringParam title,
                             int w,
                             int h,
                             SDL_WindowFlags flags = 0)

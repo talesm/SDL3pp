@@ -3,7 +3,7 @@
 
 #include <SDL3/SDL_init.h>
 #include "callbackWrapper.hpp"
-#include "stringWrapper.hpp"
+#include "stringParam.hpp"
 
 /**
  * @namespace SDL
@@ -115,20 +115,20 @@ inline bool RunOnMainThread(std::function<MainThreadCallback> callback,
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), waitComplete);
 }
 
-inline bool SetAppMetadata(StringWrapper appName,
-                           StringWrapper appVersion,
-                           StringWrapper appIdentifier)
+inline bool SetAppMetadata(StringParam appName,
+                           StringParam appVersion,
+                           StringParam appIdentifier)
 {
   return SDL_SetAppMetadata(
     appName.Get(), appVersion.Get(), appIdentifier.Get());
 }
 
-inline bool SetAppMetadataProperty(StringWrapper name, StringWrapper value)
+inline bool SetAppMetadataProperty(StringParam name, StringParam value)
 {
   return SetAppMetadataProperty(name.Get(), value.Get());
 }
 
-inline const char* GetAppMetadataProperty(StringWrapper name)
+inline const char* GetAppMetadataProperty(StringParam name)
 {
   return SDL_GetAppMetadataProperty(name.Get());
 }
