@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_surface.h>
 #include "objectWrapper.hpp"
+#include "pixels.hpp"
 #include "rect.hpp"
 #include "stringParam.hpp"
 
@@ -86,12 +87,23 @@ struct SurfaceConstBase
    * @returns the colorspace used by the surface, or SDL_COLORSPACE_UNKNOWN if
    *          the surface is NULL.
    */
-  SDL_Colorspace GetColorspace() const
+  Colorspace GetColorspace() const
   {
     return SDL_GetSurfaceColorspace(Get<T>(this));
   }
 
-  // TODO SDL_CreateSurfacePalette
+  /**
+   * @brief Get the palette used by a surface.
+   *
+   * @returns a pointer to the palette used by the surface, or NULL if there is
+   *          no palette used.
+   */
+  PaletteWrapper GetSurfacePalette() const
+  {
+    return SDL_GetSurfacePalette(Get<T>(this));
+  }
+
+  // SDL_AddSurfaceAlternateImage
 
   /**
    * @brief Returns whether the surface is RLE enabled.
@@ -154,13 +166,13 @@ struct SurfaceConstBase
    * @brief Get the additional color and alpha value multiplied into blit
    * operations.
    *
-   * @returns a SDL_Color containing RGBA value on success or std::nullopt on
-   * failure; call SDL_GetError() for more information.
+   * @returns a Color containing RGBA value on success or std::nullopt on
+   * failure; call GetError() for more information.
    */
-  std::optional<SDL_Color> GetColorAndAlphaMod() const
+  std::optional<Color> GetColorAndAlphaMod() const
   {
-    if (SDL_Color c; GetColorMod(&c.r, &c.g, &c.b) &&
-                     SDL_GetSurfaceAlphaMod(Get<T>(this), &c.a)) {
+    if (Color c; GetColorMod(&c.r, &c.g, &c.b) &&
+                 SDL_GetSurfaceAlphaMod(Get<T>(this), &c.a)) {
       return c;
     }
     return std::nullopt;
@@ -244,7 +256,7 @@ struct SurfaceConstBase
    * @returns the new Surface  that is created or NULL on failure; call
    *          SDL_GetError() for more information.
    */
-  Surface ConvertSurface(SDL_PixelFormat format);
+  Surface ConvertSurface(PixelFormat format);
 
   // TODO SDL_ConvertSurfaceAndColorspace
 
@@ -372,9 +384,9 @@ struct SurfaceConstBase
     return ReadPixel(x, y, &c->r, &c->g, &c->b, &c->a);
   }
 
-  std::optional<SDL_Color> ReadPixel(int x, int y) const
+  std::optional<Color> ReadPixel(int x, int y) const
   {
-    if (SDL_Color c; ReadPixel(x, y, &c)) return c;
+    if (Color c; ReadPixel(x, y, &c)) return c;
     return std::nullopt;
   }
 
@@ -428,7 +440,7 @@ struct SurfaceConstBase
 
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
-  SDL_PixelFormat GetFormat() const { return Get<T>(this)->format; }
+  PixelFormat GetFormat() const { return Get<T>(this)->format; }
 };
 
 template<class T>
@@ -452,11 +464,11 @@ public:
    *
    * @param width the width of the surface.
    * @param height the height of the surface.
-   * @param format the SDL_PixelFormat for the new surface's pixel format.
+   * @param format the PixelFormat for the new surface's pixel format.
    * @returns the new SDL_Surface structure that is created or NULL on failure;
    *          call SDL_GetError() for more information.
    */
-  static SDL_Surface* Create(int width, int height, SDL_PixelFormat format)
+  static SDL_Surface* Create(int width, int height, PixelFormat format)
   {
     return SDL_CreateSurface(width, height, format);
   }
@@ -476,7 +488,7 @@ public:
    *
    * @param width the width of the surface.
    * @param height the height of the surface.
-   * @param format the SDL_PixelFormat for the new surface's pixel format.
+   * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
    * @returns the new SDL_Surface structure that is created or NULL on failure;
@@ -484,7 +496,7 @@ public:
    */
   static SDL_Surface* Create(int width,
                              int height,
-                             SDL_PixelFormat format,
+                             PixelFormat format,
                              void* pixels,
                              int pitch)
   {
@@ -499,17 +511,47 @@ public:
    * Setting the colorspace doesn't change the pixels, only how they are
    * interpreted in color operations.
    *
-   * @param colorspace an SDL_Colorspace value describing the surface
-   *                   colorspace.
+   * @param colorspace a Colorspace value describing the surface colorspace.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    */
-  bool SetSurfaceColorspace(SDL_Colorspace colorspace)
+  bool SetSurfaceColorspace(Colorspace colorspace)
   {
     return SDL_SetSurfaceColorspace(Get<T>(this), colorspace);
   }
 
-  // TODO SDL_CreateSurfacePalette
+  /**
+   * @brief Create a palette and associate it with a surface.
+   *
+   * This function creates a palette compatible with the provided surface. The
+   * palette is then returned for you to modify, and the surface will
+   * automatically use the new palette in future operations. You do not need to
+   * destroy the returned palette, it will be freed when the reference count
+   * reaches 0, usually when the surface is destroyed.
+   *
+   * Bitmap surfaces (with format SDL_PIXELFORMAT_INDEX1LSB or
+   * SDL_PIXELFORMAT_INDEX1MSB) will have the palette initialized with 0 as
+   * white and 1 as black. Other surfaces will get a palette initialized with
+   * white in every entry.
+   *
+   * If this function is called for a surface that already has a palette, a new
+   * palette will be created to replace it.
+   *
+   * @returns a new SDL_Palette structure on success or NULL on failure (e.g. if
+   *          the surface didn't have an index format); call SDL_GetError() for
+   *          more information.
+   */
+  PaletteWrapper CreatePalette()
+  {
+    return SDL_CreateSurfacePalette(Get<T>(this));
+  }
+
+  bool SetPalette(PaletteConstWrapper palette)
+  {
+    return SDL_SetSurfacePalette(Get<T>(this), palette.Get());
+  }
+
+  // SDL_AddSurfaceAlternateImage
 
   /**
    * @brief Set the RLE acceleration hint for a surface.
@@ -1067,7 +1109,7 @@ inline bool BlitSurfaceUnchecked(SurfaceConstWrapper src,
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
- * \threadsafety The same destination surface should not be used from two
+ * @threadsafety The same destination surface should not be used from two
  *               threads at once. It is safe to use the same source surface
  *               from multiple threads.
  */
@@ -1278,7 +1320,7 @@ inline Surface SurfaceConstBase<T>::ScaleSurface(int width,
   return {SDL_ScaleSurface(Get<T>(this), width, height, scaleMode)};
 }
 template<class T>
-inline Surface SurfaceConstBase<T>::ConvertSurface(SDL_PixelFormat format)
+inline Surface SurfaceConstBase<T>::ConvertSurface(PixelFormat format)
 {
   return {SDL_ConvertSurface(Get<T>(this), format)};
 }
