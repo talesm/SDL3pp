@@ -10,6 +10,7 @@
 #include "objectWrapper.hpp"
 #include "rect.hpp"
 #include "stringParam.hpp"
+#include "surface.hpp"
 
 namespace SDL {
 
@@ -583,7 +584,7 @@ struct WindowConstBase
    * @threadsafety This function should only be called on the main thread.
    *
    */
-  SDL_Surface* GetSurfaceIfExists() const
+  SurfaceWrapper GetSurfaceIfExists() const
   {
     if (!HasSurface()) return nullptr;
     return SDL_GetWindowSurface(Get<T>());
@@ -665,7 +666,7 @@ struct WindowBase : WindowConstBase<T>
    * @sa WindowBase.UpdateSurface()
    * @sa WindowBase.UpdateSurfaceRects()
    */
-  SDL_Surface* GetSurface()
+  SurfaceWrapper GetSurface()
   {
     // Not const, as this might change window state
     // TODO Wrap into SDL::Surface

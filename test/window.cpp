@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL_GetError());
     return 1;
   }
-  SDL_Surface* screen = window.GetSurface();
+  SDL::SurfaceWrapper screen = window.GetSurface();
 
   bool running = true;
   while (running) {
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     while (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_EVENT_QUIT) { running = false; }
     }
-    SDL_FillSurfaceRect(screen, nullptr, 0);
+    screen.Fill(0);
     window.UpdateSurface();
     SDL_Delay(1);
   }
