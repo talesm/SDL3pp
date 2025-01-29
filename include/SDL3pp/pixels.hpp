@@ -252,15 +252,18 @@ using MatrixCoefficients = SDL_MatrixCoefficients;
 using Colorspace = SDL_Colorspace;
 // TODO Wrap Colorspace like PixelFormat
 
-/**
- * @brief Handle to an owned surface
- */
-using Palette = ObjectUnique<SDL_Palette>;
-using PaletteUnique = Palette;
+// Forward decl
+template<class T>
+struct PaletteConstBase;
+
+// Forward decl
+template<class T>
+struct PaletteBase;
+
 /**
  * @brief Handle to a non owned surface
  */
-using PaletteWrapper = ObjectWrapper<SDL_Palette>;
+using PaletteWrapper = PaletteBase<ObjectWrapper<SDL_Palette>>;
 
 /**
  * @brief Handle to a non owned const surface
@@ -268,7 +271,7 @@ using PaletteWrapper = ObjectWrapper<SDL_Palette>;
  * The constness implies only methods that don't change its internal state are
  * allowed.
  */
-using PaletteConstWrapper = ObjectWrapper<const SDL_Palette>;
+using PaletteConstWrapper = PaletteBase<ObjectWrapper<const SDL_Palette>>;
 
 /**
  * @brief A structure that represents a color as RGBA components.
@@ -504,40 +507,31 @@ struct FColor : SDL_FColor
   }
 };
 
-// Forward decl
-template<class T>
-struct PaletteConstBase;
+template<>
+struct ObjectDeleter<SDL_Palette>
+{
+  void operator()(SDL_Palette* palette) { SDL_DestroyPalette(palette); }
+};
 
-// Forward decl
-template<class T>
-struct PaletteBase;
-
-// Forward decl
-template<class T>
-struct ObjectBase<T, const SDL_Palette> : PaletteConstBase<T>
-{};
-
-// Forward decl
-template<class T>
-struct ObjectBase<T, SDL_Palette> : PaletteBase<T>
-{};
+/**
+ * @brief Handle to an owned surface
+ */
+using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
+using PaletteUnique = Palette;
 
 /**
  * @brief Represents a handle to a const palette
  */
 template<class T>
-struct PaletteConstBase
+struct PaletteConstBase : T
 {
-
-  /**
-   * @brief Access to underlining attributes
-   */
-  const SDL_Palette* operator->() const { return Get<T>(this); }
+  // Make default ctors available
+  using T::T;
 
   int GetSize() const { return this->ncolors; }
 
   // TODO Bounds check
-  Color Get(int index) const { return this->colors[index]; }
+  Color Map(int index) const { return this->colors[index]; }
   Color operator[](int index) const { return this->colors[index]; }
 
   // TODO SDL_MapRGB()
@@ -547,12 +541,10 @@ struct PaletteConstBase
  * @brief Represents a handle to a palette
  */
 template<class T>
-struct PaletteBase
+struct PaletteBase : PaletteConstBase<T>
 {
-  /**
-   * @brief Access to underlining attributes
-   */
-  SDL_Palette* operator->() { return Get<T>(this); }
+  // Make default ctors available
+  using PaletteConstBase<T>::PaletteConstBase;
 
   /**
    * @brief Create a palette structure with the specified number of color
@@ -561,13 +553,13 @@ struct PaletteBase
    * The palette entries are initialized to white.
    *
    * @param nColors represents the number of color entries in the color palette.
-   * @returns a new SDL_Palette structure on success or NULL on failure (e.g. if
-   *          there wasn't enough memory); call SDL_GetError() for more
-   *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
    */
-  static SDL_Palette* Create(int nColors) { return SDL_CreatePalette(nColors); }
+  PaletteBase(int nColors)
+    : PaletteConstBase<T>(SDL_CreatePalette(nColors))
+  {
+  }
 
   /**
    * @brief Set a range of colors in a palette.
@@ -603,17 +595,6 @@ struct PaletteBase
   }
 
   // TODO GetColor/ MapColor()
-
-protected:
-  /**
-   * @brief Free a palette created with SDL_CreatePalette().
-   *
-   * @param palette the SDL_Palette structure to be freed.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   */
-  static void Destroy(SDL_Palette* palette) { SDL_DestroyPalette(palette); }
 };
 
 // TODO SDL_PixelFormatDetails

@@ -52,16 +52,18 @@ using DisplayMode = SDL_DisplayMode;
  */
 using DisplayOrientation = SDL_DisplayOrientation;
 
-/**
- * @brief Handle to an owned window
- */
-using Window = ObjectUnique<SDL_Window>;
-using WindowUnique = Window;
+// Forward decl
+template<class T>
+struct WindowConstBase;
+
+// Forward decl
+template<class T>
+struct WindowBase;
 
 /**
  * @brief Handle to a non owned window
  */
-using WindowWrapper = ObjectWrapper<SDL_Window>;
+using WindowWrapper = WindowBase<ObjectWrapper<SDL_Window>>;
 
 /**
  * @brief Handle to a non owned const window
@@ -69,7 +71,7 @@ using WindowWrapper = ObjectWrapper<SDL_Window>;
  * The constness implies only methods that don't change its internal state are
  * allowed.
  */
-using WindowConstWrapper = ObjectWrapper<const SDL_Window>;
+using WindowConstWrapper = WindowConstBase<ObjectWrapper<const SDL_Window>>;
 
 /**
  * @brief The flags on a window.
@@ -455,30 +457,25 @@ struct Display
   static Display GetForWindow(WindowWrapper window);
 };
 
-// Forward decl
-template<class T>
-struct WindowConstBase;
+template<>
+struct ObjectDeleter<SDL_Window>
+{
+  void operator()(SDL_Window* window) { SDL_DestroyWindow(window); }
+};
 
-// Forward decl
-template<class T>
-struct WindowBase;
-
-// Forward decl
-template<class T>
-struct ObjectBase<T, const SDL_Window> : WindowConstBase<T>
-{};
-
-// Forward decl
-template<class T>
-struct ObjectBase<T, SDL_Window> : WindowBase<T>
-{};
+/**
+ * @brief Handle to an owned window
+ */
+using Window = WindowBase<ObjectUnique<SDL_Window>>;
+using WindowUnique = Window;
 
 /**
  * @brief Represents a handle to a const window
  */
 template<class T>
-struct WindowConstBase
+struct WindowConstBase : T
 {
+  using T::T;
   /**
    * @brief Get the display associated with a window.
    *
@@ -601,6 +598,11 @@ struct WindowConstBase
 template<class T>
 struct WindowBase : WindowConstBase<T>
 {
+private:
+  using super = WindowConstBase<T>;
+
+public:
+  using super::super;
   // TODO SDL_SetWindowFullscreenMode()
 
   /**
@@ -609,18 +611,15 @@ struct WindowBase : WindowConstBase<T>
    * @param w the width of the window.
    * @param h the height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
-   * @returns the window that was created or NULL on failure; call
-   *          GetError() for more information.
+   *
+   * If fails window converts false; call SDL_GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    */
-  static SDL_Window* Create(StringParam title,
-                            int w,
-                            int h,
-                            SDL_WindowFlags flags = 0)
+  WindowBase(StringParam title, int w, int h, SDL_WindowFlags flags = 0)
+    : super(SDL_CreateWindow(title, w, h, flags))
   {
-    return SDL_CreateWindow(title, w, h, flags);
   }
 
   /**
@@ -732,8 +731,6 @@ struct WindowBase : WindowConstBase<T>
   bool DestroySurface() { return SDL_DestroyWindowSurface(Get<T>(this)); }
 
   // TODO SDL_SetWindowKeyboardGrab
-protected:
-  static void Destroy(SDL_Window* window) { SDL_DestroyWindow(window); }
 };
 
 inline Display Display::GetForWindow(WindowWrapper window)

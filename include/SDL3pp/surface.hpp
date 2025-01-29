@@ -29,15 +29,30 @@ using ScaleMode = SDL_ScaleMode;
  */
 using FlipMode = SDL_FlipMode;
 
+template<>
+struct ObjectDeleter<SDL_Surface>
+{
+  void operator()(SDL_Surface* surface) { SDL_DestroySurface(surface); }
+};
+
+// Forward decl
+template<class T>
+struct SurfaceBase;
+
 /**
  * @brief Handle to an owned surface
  */
-using Surface = ObjectUnique<SDL_Surface>;
+using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
 using SurfaceUnique = Surface;
+
 /**
  * @brief Handle to a non owned surface
  */
-using SurfaceWrapper = ObjectWrapper<SDL_Surface>;
+using SurfaceWrapper = SurfaceBase<ObjectWrapper<SDL_Surface>>;
+
+// Forward decl
+template<class T>
+struct SurfaceConstBase;
 
 /**
  * @brief Handle to a non owned const surface
@@ -45,37 +60,16 @@ using SurfaceWrapper = ObjectWrapper<SDL_Surface>;
  * The constness implies only methods that don't change its internal state are
  * allowed.
  */
-using SurfaceConstWrapper = ObjectWrapper<const SDL_Surface>;
-
-// Forward decl
-template<class T>
-struct SurfaceConstBase;
-
-// Forward decl
-template<class T>
-struct SurfaceBase;
-
-// Forward decl
-template<class T>
-struct ObjectBase<T, const SDL_Surface> : SurfaceConstBase<T>
-{};
-
-// Forward decl
-template<class T>
-struct ObjectBase<T, SDL_Surface> : SurfaceBase<T>
-{};
+using SurfaceConstWrapper = SurfaceConstBase<ObjectWrapper<const SDL_Surface>>;
 
 /**
  * @brief Represents a handle to a const surface
  */
 template<class T>
-struct SurfaceConstBase
+struct SurfaceConstBase : T
 {
-  /**
-   * @brief Access to underlining attributes
-   * @return
-   */
-  const SDL_Surface* operator->() const { return Get<T>(this); }
+  // Make default ctors available
+  using T::T;
 
   /**
    * @brief Get the colorspace used by a surface.
@@ -450,27 +444,22 @@ private:
   using super = SurfaceConstBase<T>;
 
 public:
-  /**
-   * @brief Access to underlining attributes
-   * @return
-   */
-  SDL_Surface* operator->() { return Get<T>(this); }
+  using super::super;
 
   /**
    * @brief Allocate a new surface with a specific pixel format.
    *
    * The pixels of the new surface are initialized to zero.
    *
-   *
    * @param width the width of the surface.
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @returns the new SDL_Surface structure that is created or NULL on failure;
-   *          call SDL_GetError() for more information.
+   *
+   * If fails window converts false; call SDL_GetError() for more information.
    */
-  static SDL_Surface* Create(int width, int height, PixelFormat format)
+  SurfaceBase(int width, int height, PixelFormat format)
+    : super(SDL_CreateSurface(width, height, format))
   {
-    return SDL_CreateSurface(width, height, format);
   }
 
   /**
@@ -494,13 +483,13 @@ public:
    * @returns the new SDL_Surface structure that is created or NULL on failure;
    *          call SDL_GetError() for more information.
    */
-  static SDL_Surface* Create(int width,
-                             int height,
-                             PixelFormat format,
-                             void* pixels,
-                             int pitch)
+  SurfaceBase(int width,
+              int height,
+              PixelFormat format,
+              void* pixels,
+              int pitch)
+    : super(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
   {
-    return SDL_CreateSurfaceFrom(width, height, format, pixels, pitch);
   }
 
   // TODO SDL_GetSurfaceProperties
@@ -891,18 +880,6 @@ public:
   {
     return WritePixel(x, y, c.r, c.g, c.b, c.a);
   }
-
-protected:
-  /**
-   * Free a surface.
-   *
-   * It is safe to pass NULL to this function.
-   *
-   * @param surface the SDL_Surface to free.
-   *
-   * @sa SDL_CreateSurface
-   */
-  static void Destroy(SDL_Surface* surface) { SDL_DestroySurface(surface); }
 };
 
 /**

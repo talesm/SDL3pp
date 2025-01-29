@@ -11,9 +11,6 @@ concept ObjectBox = requires(const T a) {
   { a.Get() } -> std::convertible_to<OBJ*>;
 };
 
-template<class T, class OBJ>
-struct ObjectBase;
-
 // Helper to access the wrapped value from ObjectBase
 template<class T, class BASE>
 auto Get(const BASE* base)
@@ -23,15 +20,13 @@ auto Get(const BASE* base)
     maybeConstValue);
 }
 
-/**
- * @brief A non owning wrapper for a managed object
- * @tparam T the managed object
- */
 template<class T>
-class ObjectWrapper : public ObjectBase<ObjectWrapper<T>, T>
+class ObjectWrapper
 {
+  T* value;
+
 public:
-  constexpr ObjectWrapper(T* value = nullptr)
+  ObjectWrapper(T* value)
     : value(value)
   {
   }
@@ -43,58 +38,42 @@ public:
   }
 
   T* Get() const { return value; }
-  operator bool() const { return value != nullptr; }
 
-  T* Release()
-  {
-    T* result = value;
-    value = nullptr;
-    return result;
-  }
-  void Reset(T* other = nullptr) { return value = other; }
+  operator bool() const { return Get() != nullptr; }
 
-private:
-  T* value = nullptr;
+  const T* operator->() const { return Get(); }
+  T* operator->() { return Get(); }
+  const T& operator*() const { return *Get(); }
+  T& operator*() { return *Get(); }
 };
 
-/**
- * @brief An uniquely owning RAII wrapper for a managed object
- * @tparam T the managed object
- */
 template<class T>
-class ObjectUnique : public ObjectBase<ObjectUnique<T>, T>
+struct ObjectDeleter;
+
+template<class T>
+class ObjectUnique
 {
+  std::unique_ptr<T, ObjectDeleter<T>> value;
+
 public:
-  ObjectUnique() = default;
+  constexpr ObjectUnique() = default;
 
   explicit ObjectUnique(T* value)
     : value(value)
   {
   }
 
-  template<class... ARGS>
-  ObjectUnique(ARGS&&... args)
-    : value(super::Create(std::forward<ARGS>(args)...))
-  {
-  }
-
   T* Get() const { return value.get(); }
-  operator bool() const { return bool(value); }
+  operator bool() const { return value != nullptr; }
+
+  const T* operator->() const { return Get(); }
+  T* operator->() { return Get(); }
+  const T& operator*() const { return *value; }
+  T& operator*() { return *value; }
 
   T* Release() { return value.release(); }
   void Reset(T* other = nullptr) { return value.reset(other); }
   void Swap(ObjectUnique& other) { return std::swap(value, other.value); }
-
-private:
-  using super = ObjectBase<ObjectUnique<T>, T>;
-
-  struct Deleter
-  {
-    void operator()(T* value) { super::Destroy(value); }
-  };
-
-  using PointerType = std::unique_ptr<T, Deleter>;
-  PointerType value;
 };
 
 } // namespace SDL

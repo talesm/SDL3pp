@@ -8,53 +8,109 @@ struct Dummy
 
 TEST_CASE("ObjectBox")
 {
-  struct DummyWrapper
+  struct DummyBox
   {
-    Dummy dummy;
-    Dummy* Get() const { return const_cast<Dummy*>(&dummy); }
+    Dummy* dummy;
+    Dummy* Get() const;
   };
-  CHECK(SDL::ObjectBox<DummyWrapper, Dummy>);
-  CHECK(SDL::ObjectBox<DummyWrapper, const Dummy>);
-  struct ConstDummyWrapper
+  CHECK(SDL::ObjectBox<DummyBox, Dummy>);
+  CHECK(SDL::ObjectBox<DummyBox, const Dummy>);
+  struct ConstDummyBox
   {
-    Dummy dummy;
-    const Dummy* Get() const { return &dummy; }
+    const Dummy* dummy;
+    const Dummy* Get() const;
   };
-  CHECK(SDL::ObjectBox<ConstDummyWrapper, const Dummy>);
-  CHECK_FALSE(SDL::ObjectBox<ConstDummyWrapper, Dummy>);
+  CHECK(SDL::ObjectBox<ConstDummyBox, const Dummy>);
+  CHECK_FALSE(SDL::ObjectBox<ConstDummyBox, Dummy>);
 }
 
-namespace SDL {
 template<class T>
-struct ObjectBase<T, Dummy>
+struct DummyConstBase : T
 {
-  Dummy& operator*() { return *Get<T>(this); }
-  Dummy* operator->() { return Get<T>(this); }
+  using T::T;
 
-protected:
-  static Dummy* Create(int value = 0) { return new Dummy{value}; }
-  static void Destroy(Dummy* dummy) { delete dummy; }
-};
+  int GetContent() const { return T::Get()->content; }
 };
 
 template<class T>
-using DummyBase = SDL::ObjectBase<T, Dummy>;
+struct DummyBase : DummyConstBase<T>
+{
+  using DummyConstBase<T>::DummyConstBase;
 
-using DummyUnique = SDL::ObjectUnique<Dummy>;
+  DummyBase(int content)
+    : DummyConstBase<T>(new Dummy(content))
+  {
+  }
+
+  void SetContent(int content) const { SDL::Get<T>(this)->content = content; }
+};
+
+namespace SDL {
+template<>
+struct ObjectDeleter<Dummy>
+{
+  void operator()(Dummy* dummy) { delete dummy; }
+};
+};
+
+using DummyUnique = DummyBase<SDL::ObjectUnique<Dummy>>;
 
 TEST_CASE("ObjectUnique")
 {
   CHECK(SDL::ObjectBox<DummyUnique, Dummy>);
   DummyUnique wrapper{42};
-  CHECK(wrapper->content == 42);
+  auto result = wrapper->content;
+  CHECK(result == 42);
 }
 
-using DummyWrapper = SDL::ObjectWrapper<Dummy>;
+using DummyWrapper = DummyBase<SDL::ObjectWrapper<Dummy>>;
+using DummyConstWrapper = DummyConstBase<SDL::ObjectWrapper<const Dummy>>;
 
 TEST_CASE("ObjectWrapper")
 {
   CHECK(SDL::ObjectBox<DummyWrapper, Dummy>);
-  DummyUnique owner{42};
-  DummyWrapper wrapper{owner};
-  CHECK(wrapper->content == 42);
+
+  SUBCASE("Non-const")
+  {
+    SUBCASE("From stack")
+    {
+      Dummy dummy{42};
+      DummyWrapper wrapper = &dummy;
+      CHECK(wrapper.Get() == &dummy);
+      CHECK(wrapper.GetContent() == 42);
+      CHECK(wrapper->content == 42);
+      dummy.content = 13;
+      CHECK(wrapper.GetContent() == 13);
+      CHECK(wrapper->content == 13);
+      wrapper.SetContent(42);
+      CHECK(wrapper.GetContent() == 42);
+      CHECK(wrapper->content == 42);
+    }
+    SUBCASE("From unique")
+    {
+      DummyUnique owner{new Dummy{42}};
+      DummyWrapper wrapper{owner};
+      CHECK(wrapper->content == 42);
+    }
+  }
+  SUBCASE("Const")
+  {
+    SUBCASE("From stack")
+    {
+      Dummy dummy{42};
+      DummyConstWrapper wrapper = &dummy;
+      CHECK(wrapper.Get() == &dummy);
+      CHECK(wrapper.GetContent() == 42);
+      CHECK(wrapper->content == 42);
+      dummy.content = 13;
+      CHECK(wrapper.GetContent() == 13);
+      CHECK(wrapper->content == 13);
+    }
+    SUBCASE("From unique")
+    {
+      DummyUnique owner{new Dummy{42}};
+      DummyConstWrapper wrapper{owner};
+      CHECK(wrapper->content == 42);
+    }
+  }
 }
