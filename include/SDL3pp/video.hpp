@@ -8,6 +8,7 @@
 #include "error.hpp"
 #include "freeWrapper.hpp"
 #include "objectWrapper.hpp"
+#include "properties.hpp"
 #include "rect.hpp"
 #include "stringParam.hpp"
 #include "surface.hpp"
@@ -482,6 +483,129 @@ struct WindowBase : T
   {
   }
 
+  // TODO SDL_CreatePopupWindow()
+
+  /**
+   * @brief Create a window with the specified properties.
+   *
+   * If fails window converts false; call SDL_GetError() for more information.
+   *
+   * These are the supported properties:
+   *
+   * - `SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN`: true if the window should
+   *   be always on top
+   * - `SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN`: true if the window has no
+   *   window decoration
+   * - `SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN`: true if the
+   *   window will be used with an externally managed graphics context.
+   * - `SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN`: true if the window should
+   *   accept keyboard input (defaults true)
+   * - `SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN`: true if the window should
+   *   start in fullscreen mode at desktop resolution
+   * - `SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER`: the height of the window
+   * - `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN`: true if the window should start
+   *   hidden
+   * - `SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN`: true if the window
+   *   uses a high pixel density buffer if possible
+   * - `SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN`: true if the window should
+   *   start maximized
+   * - `SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN`: true if the window is a popup menu
+   * - `SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN`: true if the window will be used
+   *   with Metal rendering
+   * - `SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN`: true if the window should
+   *   start minimized
+   * - `SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN`: true if the window is modal to
+   *   its parent
+   * - `SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN`: true if the window starts
+   *   with grabbed mouse focus
+   * - `SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`: true if the window will be used
+   *   with OpenGL rendering
+   * - `SDL_PROP_WINDOW_CREATE_PARENT_POINTER`: an SDL_Window that will be the
+   *   parent of this window, required for windows with the "tooltip", "menu",
+   *   and "modal" properties
+   * - `SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN`: true if the window should be
+   *   resizable
+   * - `SDL_PROP_WINDOW_CREATE_TITLE_STRING`: the title of the window, in UTF-8
+   *   encoding
+   * - `SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN`: true if the window show
+   *   transparent in the areas with alpha of 0
+   * - `SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN`: true if the window is a tooltip
+   * - `SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN`: true if the window is a utility
+   *   window, not showing in the task bar and window list
+   * - `SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN`: true if the window will be used
+   *   with Vulkan rendering
+   * - `SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER`: the width of the window
+   * - `SDL_PROP_WINDOW_CREATE_X_NUMBER`: the x position of the window, or
+   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+   *   relative to the parent for windows with the "tooltip" or "menu" property
+   *   set.
+   * - `SDL_PROP_WINDOW_CREATE_Y_NUMBER`: the y position of the window, or
+   *   `SDL_WINDOWPOS_CENTERED`, defaults to `SDL_WINDOWPOS_UNDEFINED`. This is
+   *   relative to the parent for windows with the "tooltip" or "menu" property
+   *   set.
+   *
+   * These are additional supported properties on macOS:
+   *
+   * - `SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER`: the
+   *   `(__unsafe_unretained)` NSWindow associated with the window, if you want
+   *   to wrap an existing window.
+   * - `SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER`: the `(__unsafe_unretained)`
+   *   NSView associated with the window, defaults to `[window contentView]`
+   *
+   * These are additional supported properties on Wayland:
+   *
+   * - `SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN` - true if
+   *   the application wants to use the Wayland surface for a custom role and
+   *   does not want it attached to an XDG toplevel window. See
+   *   [README/wayland](README/wayland) for more information on using custom
+   *   surfaces.
+   * - `SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN` - true if the
+   *   application wants an associated `wl_egl_window` object to be created and
+   *   attached to the window, even if the window does not have the OpenGL
+   *   property or `SDL_WINDOW_OPENGL` flag set.
+   * - `SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER` - the wl_surface
+   *   associated with the window, if you want to wrap an existing window. See
+   *   [README/wayland](README/wayland) for more information.
+   *
+   * These are additional supported properties on Windows:
+   *
+   * - `SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER`: the HWND associated with the
+   *   window, if you want to wrap an existing window.
+   * - `SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER`: optional,
+   *   another window to share pixel format with, useful for OpenGL windows
+   *
+   * These are additional supported properties with X11:
+   *
+   * - `SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER`: the X11 Window associated
+   *   with the window, if you want to wrap an existing window.
+   *
+   * The window is implicitly shown if the "hidden" property is not set.
+   *
+   * Windows with the "tooltip" and "menu" properties are popup windows and have
+   * the behaviors and guidelines outlined in SDL_CreatePopupWindow().
+   *
+   * If this window is being created to be used with an SDL_Renderer, you should
+   * not add a graphics API specific property
+   * (`SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN`, etc), as SDL will handle that
+   * internally when it chooses a renderer. However, SDL might need to recreate
+   * your window at that point, which may cause the window to appear briefly,
+   * and then flicker as it is recreated. The correct approach to this is to
+   * create the window with the `SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN` property
+   * set to true, then create the renderer, then show the window with
+   * SDL_ShowWindow().
+   *
+   * @param props the properties to use.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa PropertiesRef
+   * @sa Properties
+   */
+  WindowBase(PropertiesRef props)
+    : T(SDL_CreateWindowWithProperties(props.Get()))
+  {
+  }
+
   /**
    * @brief Get the display associated with a window.
    *
@@ -566,6 +690,125 @@ struct WindowBase : T
   {
     return SDL_GetWindowFromID(id);
   }
+
+  /**
+   * @brief Get the properties associated with a window.
+   *
+   * The following read-only properties are provided by SDL:
+   *
+   * - `SDL_PROP_WINDOW_SHAPE_POINTER`: the surface associated with a shaped
+   *   window
+   * - `SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN`: true if the window has HDR
+   *   headroom above the SDR white point. This property can change dynamically
+   *   when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+   * - `SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT`: the value of SDR white in the
+   *   SDL_COLORSPACE_SRGB_LINEAR colorspace. On Windows this corresponds to the
+   *   SDR white level in scRGB colorspace, and on Apple platforms this is
+   *   always 1.0 for EDR content. This property can change dynamically when
+   *   SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+   * - `SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT`: the additional high dynamic range
+   *   that can be displayed, in terms of the SDR white point. When HDR is not
+   *   enabled, this will be 1.0. This property can change dynamically when
+   *   SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.
+   *
+   * On Android:
+   *
+   * - `SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER`: the ANativeWindow associated
+   *   with the window
+   * - `SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER`: the EGLSurface associated with
+   *   the window
+   *
+   * On iOS:
+   *
+   * - `SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   *   UIWindow associated with the window
+   * - `SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER`: the NSInteger tag
+   *   associated with metal views on the window
+   * - `SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER`: the OpenGL view's
+   *   framebuffer object. It must be bound when rendering to the screen using
+   *   OpenGL.
+   * - `SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER`: the OpenGL view's
+   *   renderbuffer object. It must be bound when SDL_GL_SwapWindow is called.
+   * - `SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER`: the OpenGL
+   *   view's resolve framebuffer, when MSAA is used.
+   *
+   * On KMS/DRM:
+   *
+   * - `SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER`: the device index associated
+   *   with the window (e.g. the X in /dev/dri/cardX)
+   * - `SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER`: the DRM FD associated with the
+   *   window
+   * - `SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER`: the GBM device associated
+   *   with the window
+   *
+   * On macOS:
+   *
+   * - `SDL_PROP_WINDOW_COCOA_WINDOW_POINTER`: the `(__unsafe_unretained)`
+   *   NSWindow associated with the window
+   * - `SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER`: the NSInteger tag
+   *   assocated with metal views on the window
+   *
+   * On OpenVR:
+   *
+   * - `SDL_PROP_WINDOW_OPENVR_OVERLAY_ID`: the OpenVR Overlay Handle ID for the
+   *   associated overlay window.
+   *
+   * On Vivante:
+   *
+   * - `SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER`: the EGLNativeDisplayType
+   *   associated with the window
+   * - `SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER`: the EGLNativeWindowType
+   *   associated with the window
+   * - `SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER`: the EGLSurface associated with
+   *   the window
+   *
+   * On Windows:
+   *
+   * - `SDL_PROP_WINDOW_WIN32_HWND_POINTER`: the HWND associated with the window
+   * - `SDL_PROP_WINDOW_WIN32_HDC_POINTER`: the HDC associated with the window
+   * - `SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER`: the HINSTANCE associated with
+   *   the window
+   *
+   * On Wayland:
+   *
+   * Note: The `xdg_*` window objects do not internally persist across window
+   * show/hide calls. They will be null if the window is hidden and must be
+   * queried each time it is shown.
+   *
+   * - `SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER`: the wl_display associated with
+   *   the window
+   * - `SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER`: the wl_surface associated with
+   *   the window
+   * - `SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER`: the wp_viewport associated
+   *   with the window
+   * - `SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER`: the wl_egl_window
+   *   associated with the window
+   * - `SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER`: the xdg_surface associated
+   *   with the window
+   * - `SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER`: the xdg_toplevel role
+   *   associated with the window
+   * - 'SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING': the export
+   *   handle associated with the window
+   * - `SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER`: the xdg_popup role
+   *   associated with the window
+   * - `SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER`: the xdg_positioner
+   *   associated with the window, in popup mode
+   *
+   * On X11:
+   *
+   * - `SDL_PROP_WINDOW_X11_DISPLAY_POINTER`: the X11 Display associated with
+   *   the window
+   * - `SDL_PROP_WINDOW_X11_SCREEN_NUMBER`: the screen number associated with
+   *   the window
+   * - `SDL_PROP_WINDOW_X11_WINDOW_NUMBER`: the X11 Window associated with the
+   *   window
+   *
+   * @returns a valid property ID on success or falsy one on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   */
+  PropertiesRef GetProperties() const { return SDL_GetWindowID(Get<T>()); }
 
   // TODO SDL_GetWindowParent()
 

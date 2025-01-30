@@ -40,6 +40,7 @@ public:
   T* Get() const { return value; }
 
   operator bool() const { return Get() != nullptr; }
+  bool Valid() const { return bool(*this); }
 
   const T* operator->() const { return Get(); }
   T* operator->() { return Get(); }
@@ -65,6 +66,7 @@ public:
 
   T* Get() const { return value.get(); }
   operator bool() const { return value != nullptr; }
+  bool Valid() const { return bool(*this); }
 
   const T* operator->() const { return Get(); }
   T* operator->() { return Get(); }
