@@ -54,24 +54,12 @@ using DisplayOrientation = SDL_DisplayOrientation;
 
 // Forward decl
 template<class T>
-struct WindowConstBase;
-
-// Forward decl
-template<class T>
 struct WindowBase;
 
 /**
  * @brief Handle to a non owned window
  */
 using WindowWrapper = WindowBase<ObjectWrapper<SDL_Window>>;
-
-/**
- * @brief Handle to a non owned const window
- *
- * The constness implies only methods that don't change its internal state are
- * allowed.
- */
-using WindowConstWrapper = WindowConstBase<ObjectWrapper<const SDL_Window>>;
 
 /**
  * @brief The flags on a window.
@@ -470,12 +458,30 @@ using Window = WindowBase<ObjectUnique<SDL_Window>>;
 using WindowUnique = Window;
 
 /**
- * @brief Represents a handle to a const window
+ * @brief Represents a handle to a window
  */
 template<class T>
-struct WindowConstBase : T
+struct WindowBase : T
 {
   using T::T;
+
+  /**
+   * @brief Create a window with the specified dimensions and flags.
+   * @param title the title of the window, in UTF-8 encoding.
+   * @param w the width of the window.
+   * @param h the height of the window.
+   * @param flags 0, or one or more WindowFlags OR'd together.
+   *
+   * If fails window converts false; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   */
+  WindowBase(StringParam title, int w, int h, SDL_WindowFlags flags = 0)
+    : T(SDL_CreateWindow(title, w, h, flags))
+  {
+  }
+
   /**
    * @brief Get the display associated with a window.
    *
@@ -554,8 +560,9 @@ struct WindowConstBase : T
    *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
+   *
    */
-  static WindowConstWrapper GetFromWindowID(WindowID id)
+  static WindowWrapper GetFromWindowID(WindowID id)
   {
     return SDL_GetWindowFromID(id);
   }
@@ -572,75 +579,6 @@ struct WindowConstBase : T
    * @sa WindowBase.GetSurface()
    */
   bool HasSurface() const { return SDL_WindowHasSurface(Get<T>()); }
-
-  /**
-   * @brief Get the SDL surface associated with the window, if it already exists
-   *
-   * @returns the surface associated with the window, or NULL of none exists
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   */
-  SurfaceWrapper GetSurfaceIfExists() const
-  {
-    if (!HasSurface()) return nullptr;
-    return SDL_GetWindowSurface(Get<T>());
-  }
-
-  // TODO SDL_SetWindowSurfaceVSync
-
-  // TODO SDL_SetWindowKeyboardGrab
-};
-
-/**
- * @brief Represents a handle to a window
- */
-template<class T>
-struct WindowBase : WindowConstBase<T>
-{
-private:
-  using super = WindowConstBase<T>;
-
-public:
-  using super::super;
-  // TODO SDL_SetWindowFullscreenMode()
-
-  /**
-   * @brief Create a window with the specified dimensions and flags.
-   * @param title the title of the window, in UTF-8 encoding.
-   * @param w the width of the window.
-   * @param h the height of the window.
-   * @param flags 0, or one or more WindowFlags OR'd together.
-   *
-   * If fails window converts false; call SDL_GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   */
-  WindowBase(StringParam title, int w, int h, SDL_WindowFlags flags = 0)
-    : super(SDL_CreateWindow(title, w, h, flags))
-  {
-  }
-
-  /**
-   * @brief Get a window from a stored ID.
-   *
-   * The numeric ID is what SDL_WindowEvent references, and is necessary to map
-   * these events to specific SDL_Window objects.
-   *
-   * @param id the ID of the window.
-   * @returns the window associated with `id` or NULL if it doesn't exist; call
-   *          GetError() for more information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   */
-  static WindowWrapper GetFromWindowID(WindowID id)
-  {
-    return SDL_GetWindowFromID(id);
-  }
-
-  // TODO SDL_GetWindowParent()
 
   /**
    * @brief Get the SDL surface associated with the window.
