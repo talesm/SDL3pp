@@ -86,7 +86,7 @@ struct SurfaceBase : T
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    *
-   * If fails window converts false; call SDL_GetError() for more information.
+   * If fails window converts false; call GetError() for more information.
    */
   SurfaceBase(int width, int height, PixelFormat format)
     : T(SDL_CreateSurface(width, height, format))
@@ -112,7 +112,7 @@ struct SurfaceBase : T
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
    * @returns the new SDL_Surface structure that is created or NULL on failure;
-   *          call SDL_GetError() for more information.
+   *          call GetError() for more information.
    */
   SurfaceBase(int width,
               int height,
@@ -144,7 +144,7 @@ struct SurfaceBase : T
    *   "none", which disables tone mapping. This defaults to "chrome".
    *
    * @returns a valid property ID on success or 0 on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    */
   PropertiesRef GetProperties()
   {
@@ -158,7 +158,7 @@ struct SurfaceBase : T
    * interpreted in color operations.
    *
    * @param colorspace a Colorspace value describing the surface colorspace.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetSurfaceColorspace(Colorspace colorspace)
@@ -199,7 +199,7 @@ struct SurfaceBase : T
    * palette will be created to replace it.
    *
    * @returns a new SDL_Palette structure on success or NULL on failure (e.g. if
-   *          the surface didn't have an index format); call SDL_GetError() for
+   *          the surface didn't have an index format); call GetError() for
    *          more information.
    */
   PaletteRef CreatePalette() { return SDL_CreateSurfacePalette(Get<T>(this)); }
@@ -218,7 +218,7 @@ struct SurfaceBase : T
    * A single palette can be shared with many surfaces.
    *
    * @param palette the Palette to use.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetPalette(PaletteRef palette)
@@ -235,7 +235,7 @@ struct SurfaceBase : T
    * the surface must be locked before directly accessing the pixels.
    *
    * @param enabled true to enable RLE acceleration, false to disable it.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetRLE(bool enabled) { return SDL_SetSurfaceRLE(Get<T>(this), enabled); }
@@ -259,7 +259,7 @@ struct SurfaceBase : T
    *
    * @param enabled true to enable color key, false to disable color key.
    * @param key the transparent pixel.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetColorKey(bool enabled, Uint32 key)
@@ -278,7 +278,7 @@ struct SurfaceBase : T
    * SDL_MapRGB().
    *
    * @param key the transparent pixel or std::nullopt to disable it.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetColorKey(std::optional<Uint32> key)
@@ -322,7 +322,7 @@ struct SurfaceBase : T
    * @param r the red color value multiplied into blit operations.
    * @param g the green color value multiplied into blit operations.
    * @param b the blue color value multiplied into blit operations.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetColorMod(Uint8 r, Uint8 g, Uint8 b)
@@ -336,7 +336,7 @@ struct SurfaceBase : T
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
    * @param b a pointer filled in with the current blue color value.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
@@ -353,7 +353,7 @@ struct SurfaceBase : T
    * `srcA = srcA * (alpha / 255)`
    *
    * @param the alpha value multiplied into blit operations.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetAlphaMod(Uint8 alpha)
@@ -364,7 +364,7 @@ struct SurfaceBase : T
   /**
    * @brief Get the additional alpha value used in blit operations.
    *
-   * @returns alpha on success or std::nullopt on failure; call SDL_GetError()
+   * @returns alpha on success or std::nullopt on failure; call GetError()
    * for more information.
    */
   std::optional<Uint8> GetAlphaMod() const
@@ -385,7 +385,7 @@ struct SurfaceBase : T
    * `srcA = srcA * (alpha / 255)`
    *
    * @param color the color to be multiplied in blit operations
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetColorAndAlphaMod(SDL_Color color)
@@ -417,7 +417,7 @@ struct SurfaceBase : T
    * `SDL_BLENDMODE_NONE`.
    *
    * @param blendMode the SDL_BlendMode to use for blit blending.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool SetBlendMode(SDL_BlendMode blendMode)
@@ -429,7 +429,7 @@ struct SurfaceBase : T
    * @brief Get the blend mode used for blit operations.
    *
    * @return the blendMode on success or std::nullopt on failure; call
-   * SDL_GetError() for more information.
+   * GetError() for more information.
    */
   std::optional<SDL_BlendMode> GetBlendMode() const
   {
@@ -470,7 +470,7 @@ struct SurfaceBase : T
    * rectangle is drawn into.
    *
    * @returns the Rect structure filled in with the clipping rectangle for the
-   * surface on success, or std::nullopt on failure; call SDL_GetError() for
+   * surface on success, or std::nullopt on failure; call GetError() for
    * more information.
    */
   std::optional<Rect> GetClipRect() const
@@ -483,7 +483,7 @@ struct SurfaceBase : T
    * @brief Flip a surface vertically or horizontally.
    *
    * @param flipMode the direction to flip.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool FlipSurface(FlipMode flipMode)
@@ -500,7 +500,7 @@ struct SurfaceBase : T
    * The returned surface  automatically calls SDL_free after result is out of
    * scope.
    *
-   * @returns a copy of the surface or NULL on failure; call SDL_GetError() for
+   * @returns a copy of the surface or NULL on failure; call GetError() for
    *          more information.
    */
   Surface DuplicateSurface() const
@@ -518,7 +518,7 @@ struct SurfaceBase : T
    * @param width the width of the new surface.
    * @param height the height of the new surface.
    * @param scaleMode the ScaleMode to be used.
-   * @returns a copy of the surface or NULL on failure; call SDL_GetError() for
+   * @returns a copy of the surface or NULL on failure; call GetError() for
    *          more information.
    */
   Surface ScaleSurface(int width, int height, ScaleMode scaleMode) const
@@ -542,7 +542,7 @@ struct SurfaceBase : T
    *
    * @param format the new pixel format.
    * @returns the new Surface  that is created or NULL on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    */
   Surface ConvertSurface(PixelFormat format)
   {
@@ -561,7 +561,7 @@ struct SurfaceBase : T
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
    * @param c the color of the pixel, normally in the range 0-1.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool ClearSurface(SDL_FColor c)
@@ -582,7 +582,7 @@ struct SurfaceBase : T
    * the clip rectangle.
    *
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool Fill(Uint32 color)
@@ -606,7 +606,7 @@ struct SurfaceBase : T
    *
    * @param rect the SDL_Rect structure representing the rectangle to fill.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool FillRect(const SDL_Rect& rect, Uint32 color)
@@ -634,7 +634,7 @@ struct SurfaceBase : T
    * @param rects an array of SDL_Rects representing the rectangles to fill.
    * @param count the number of rectangles in the array.
    * @param color the color to fill with.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool FillRects(const SDL_Rect* rects, int count, Uint32 color)
@@ -751,7 +751,7 @@ struct SurfaceBase : T
    *          ignore this channel.
    * @param a a pointer filled in with the alpha channel, 0-255, or NULL to
    *          ignore this channel.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool ReadPixel(int x, int y, Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
@@ -770,7 +770,7 @@ struct SurfaceBase : T
    * @param y the vertical coordinate, 0 <= y < height.
    * @param c a color pointer to be filled with the color information. Must not
    *          be NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool ReadPixel(int x, int y, SDL_Color* c) const
@@ -801,7 +801,7 @@ struct SurfaceBase : T
    *          0-1, or NULL to ignore this channel.
    * @param a a pointer filled in with the alpha channel, normally in the range
    *          0-1, or NULL to ignore this channel.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool ReadPixel(int x, int y, float* r, float* g, float* b, float* a) const
@@ -820,7 +820,7 @@ struct SurfaceBase : T
    * @param y the vertical coordinate, 0 <= y < height.
    * @param c a color pointer to be filled with the color information. Must not
    *          be NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool ReadPixel(int x, int y, SDL_FColor* c) const
@@ -841,7 +841,7 @@ struct SurfaceBase : T
    * @param g the green channel value, 0-255.
    * @param b the blue channel value, 0-255.
    * @param a the alpha channel value, 0-255.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool WritePixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
@@ -859,7 +859,7 @@ struct SurfaceBase : T
    * @param x the horizontal coordinate, 0 <= x < width.
    * @param y the vertical coordinate, 0 <= y < height.
    * @param c the color values, 0-255.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool WritePixel(int x, int y, SDL_Color c)
@@ -879,7 +879,7 @@ struct SurfaceBase : T
    * @param g the green channel value, normally in the range 0-1.
    * @param b the blue channel value, normally in the range 0-1.
    * @param a the alpha channel value, normally in the range 0-1.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
   bool WritePixel(int x, int y, float r, float g, float b, float a)
@@ -896,7 +896,7 @@ struct SurfaceBase : T
    * @param x the horizontal coordinate, 0 <= x < width.
    * @param y the vertical coordinate, 0 <= y < height.
    * @param c the color values, normally in the range 0-1.
-   * @returns true on success or false on failure; call SDL_GetError() for
+   * @returns true on success or false on failure; call GetError() for
    * more information.
    */
   bool WritePixel(int x, int y, SDL_FColor c)
@@ -925,7 +925,7 @@ struct SurfaceBase : T
  * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
  *                in the case of an error.
  * @returns a handler to a new SDL_Surface structure or falsy on failure; call
- *          SDL_GetError() for more information.
+ *          GetError() for more information.
  */
 inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
 {
@@ -941,7 +941,7 @@ inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
  *
  * @param file the BMP file to load.
  * @returns a handler to a new SDL_Surface structure or falsy on failure; call
- *          SDL_GetError() for more information.
+ *          GetError() for more information.
  */
 inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
 
@@ -958,7 +958,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  * @param dst a data stream to save to.
  * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
  *                in the case of an error.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  */
 inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
@@ -977,7 +977,7 @@ inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
  *
  * @param surface the SDL_Surface structure containing the image to be saved.
  * @param file a file to save to.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  */
 inline bool SaveBMP(SurfaceRef surface, StringParam file)
@@ -1048,7 +1048,7 @@ inline bool SaveBMP(SurfaceRef surface, StringParam file)
  * @param dst the SDL_Surface structure that is the blit target.
  * @param dstRect the SDL_Rect structure representing the target rectangle in
  *                the destination surface, may not be NULL.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety The same destination surface should not be used from two
@@ -1082,7 +1082,7 @@ inline bool BlitSurface(SurfaceRef src,
  * @param dst the Surface structure that is the blit target.
  * @param dstrect the Rect structure representing the target rectangle in
  *                the destination surface.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety The same destination surface should not be used from two
@@ -1110,7 +1110,7 @@ inline bool BlitSurfaceUnchecked(SurfaceRef src,
  *                the destination surface, or std::nullopt to fill the entire
  *                destination surface.
  * @param scaleMode the SDL_ScaleMode to be used.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety The same destination surface should not be used from two
@@ -1143,7 +1143,7 @@ inline bool BlitSurfaceScaled(SurfaceRef src,
  * @param dstrect the Rect structure representing the target rectangle in
  *                the destination surface.
  * @param scaleMode the ScaleMode to be used.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety The same destination surface should not be used from two
@@ -1174,7 +1174,7 @@ inline bool BlitSurfaceUncheckedScaled(SurfaceRef src,
  * @param dstrect the Rect structure representing the target rectangle in
  *                the destination surface, or std::nullopt to fill the entire
  *                surface.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety The same destination surface should not be used from two
@@ -1210,7 +1210,7 @@ inline bool BlitSurfaceTiled(SurfaceRef src,
  * @param dstrect the Rect structure representing the target rectangle in
  *                the destination surface, or std::nullopt to fill the entire
  *                surface.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety The same destination surface should not be used from two
@@ -1257,7 +1257,7 @@ inline bool BlitSurfaceTiledWithScale(SurfaceRef src,
  * @param dstrect the Rect structure representing the target rectangle in the
  *                destination surface, or std::nullopt to fill the entire
  *                surface.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety The same destination surface should not be used from two

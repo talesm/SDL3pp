@@ -473,7 +473,7 @@ struct WindowBase : T
    * @param h the height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
    *
-   * If fails window converts false; call SDL_GetError() for more information.
+   * If fails window converts false; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -488,7 +488,7 @@ struct WindowBase : T
   /**
    * @brief Create a window with the specified properties.
    *
-   * If fails window converts false; call SDL_GetError() for more information.
+   * If fails window converts false; call GetError() for more information.
    *
    * These are the supported properties:
    *
@@ -804,7 +804,7 @@ struct WindowBase : T
    *   window
    *
    * @returns a valid property ID on success or falsy one on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    */

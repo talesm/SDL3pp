@@ -81,7 +81,7 @@ public:
    * property that already exists on `dst` will be overwritten.
    *
    * @param dst the destination properties.
-   * @return true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -110,7 +110,7 @@ public:
    * @param cleanup the function to call when this property is deleted, or NULL
    *                if no cleanup is necessary.
    * @param userData a pointer that is passed to the cleanup function.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -158,7 +158,7 @@ public:
    * @param name the name of the property to modify.
    * @param value the new value of the property, or NULL to delete the property.
    * @param cleanup the function to call when this property is deleted.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -180,7 +180,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or NULL to delete the property.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -198,7 +198,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or NULL to delete the property.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -213,7 +213,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -228,7 +228,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -243,7 +243,7 @@ public:
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -396,7 +396,7 @@ public:
    * @brief Clear a property from a group of properties.
    *
    * @param name the name of the property to clear.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -411,7 +411,7 @@ public:
    *
    * @param callback the function to call for each property.
    * @param userdata a pointer that is passed to `callback`.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -447,7 +447,7 @@ public:
    * properties. The properties are locked during enumeration.
    *
    * @param callback the function to call for each property.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -471,7 +471,7 @@ public:
    * @brief Enumerate the properties contained in a group of properties.
    *
    * @param outputIter an output iterator to be assigned to each property name
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -488,7 +488,7 @@ public:
  * @brief Get the global SDL properties.
  *
  * @returns a valid property ID on success or 0 on failure; call
- *          SDL_GetError() for more information.
+ *          GetError() for more information.
  */
 inline PropertiesRef SDL_GetGlobalProperties()
 {
@@ -512,7 +512,7 @@ struct Properties : PropertiesRef
    * If Release() is called, then the user might manage it with the C API.
    *
    * If an error occurs the new object Valid() == false and the error
-   * can be retrieved with SDL_GetError().
+   * can be retrieved with GetError().
    */
   Properties()
     : Properties(SDL_CreateProperties())

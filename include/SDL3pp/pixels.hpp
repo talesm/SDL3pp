@@ -138,7 +138,7 @@ struct PixelFormat
    * @param Gmask[out] a pointer filled in with the green mask for the format.
    * @param Bmask[out] a pointer filled in with the blue mask for the format.
    * @param Amask[out] a pointer filled in with the alpha mask for the format.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -186,7 +186,7 @@ struct PixelFormat
    * errors such as `Blit combination not supported` may occur.
    *
    * @returns a pointer to a SDL_PixelFormatDetails structure or NULL on
-   *          failure; call SDL_GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    */
@@ -617,7 +617,7 @@ struct PaletteBase : T
    * @param colors an array of SDL_Color structures to copy into the palette.
    * @param firstColor the index of the first palette entry to modify.
    * @param nColors the number of entries to modify.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
@@ -633,7 +633,7 @@ struct PaletteBase : T
    *
    * @param colors a span of SDL_Color structures to copy into the palette.
    * @param firstColor the index of the first palette entry to modify.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread, as long as

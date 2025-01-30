@@ -11,12 +11,12 @@ int main(int argc, char** argv)
 {
   SDL::Init init(SDL_INIT_VIDEO);
   if (!init) {
-    SDL_Log("%s", SDL_GetError());
+    SDL_Log("%s", SDL::GetError());
     return 1;
   }
   SDL::Window window{"Test", 400, 400};
   if (!window) {
-    SDL_Log("%s", SDL_GetError());
+    SDL_Log("%s", SDL::GetError());
     return 1;
   }
   SDL::SurfaceRef screen = window.GetSurface();
