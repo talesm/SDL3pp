@@ -266,14 +266,6 @@ struct PaletteBase;
 using PaletteWrapper = PaletteBase<ObjectWrapper<SDL_Palette>>;
 
 /**
- * @brief Handle to a non owned const surface
- *
- * The constness implies only methods that don't change its internal state are
- * allowed.
- */
-using PaletteConstWrapper = PaletteConstBase<ObjectWrapper<const SDL_Palette>>;
-
-/**
  * @brief A structure that represents a color as RGBA components.
  *
  * The bits of this structure can be directly reinterpreted as an
@@ -450,13 +442,12 @@ struct Color : SDL_Color
     return Map(format.GetDetails());
   }
 
-  Uint32 Map(const PixelFormatDetails* format,
-             PaletteConstWrapper palette) const;
+  Uint32 Map(const PixelFormatDetails* format, PaletteWrapper palette) const;
   // {
   //   return SDL_MapRGBA(format, nullptr, r, g, b, a);
   // }
 
-  Uint32 Map(const PixelFormat& format, PaletteConstWrapper palette) const;
+  Uint32 Map(const PixelFormat& format, PaletteWrapper palette) const;
   // {
   //   return Map(format.GetDetails(), palette);
   // }
@@ -591,43 +582,13 @@ using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
 using PaletteUnique = Palette;
 
 /**
- * @brief Represents a handle to a const palette
+ * @brief A set of indexed colors representing a palette.
  */
 template<class T>
-struct PaletteConstBase : T
+struct PaletteBase : T
 {
   // Make default ctors available
   using T::T;
-
-  int GetSize() const { return this->ncolors; }
-
-  // TODO Bounds check
-  Color Map(int index) const { return this->colors[index]; }
-  Color operator[](int index) const { return this->colors[index]; }
-
-  // TODO SDL_MapRGB()
-};
-
-inline Uint32 Color::Map(const PixelFormatDetails* format,
-                         PaletteConstWrapper palette) const
-{
-  return SDL_MapRGBA(format, nullptr, r, g, b, a);
-}
-
-inline Uint32 Color::Map(const PixelFormat& format,
-                         PaletteConstWrapper palette) const
-{
-  return Map(format.GetDetails(), palette);
-}
-
-/**
- * @brief Represents a handle to a palette
- */
-template<class T>
-struct PaletteBase : PaletteConstBase<T>
-{
-  // Make default ctors available
-  using PaletteConstBase<T>::PaletteConstBase;
 
   /**
    * @brief Create a palette structure with the specified number of color
@@ -640,9 +601,15 @@ struct PaletteBase : PaletteConstBase<T>
    * @threadsafety It is safe to call this function from any thread.
    */
   PaletteBase(int nColors)
-    : PaletteConstBase<T>(SDL_CreatePalette(nColors))
+    : T(SDL_CreatePalette(nColors))
   {
   }
+
+  int GetSize() const { return this->ncolors; }
+
+  // TODO Bounds check
+  Color At(int index) const { return this->colors[index]; }
+  Color operator[](int index) const { return this->colors[index]; }
 
   /**
    * @brief Set a range of colors in a palette.
@@ -679,6 +646,18 @@ struct PaletteBase : PaletteConstBase<T>
 
   // TODO GetColor/ MapColor()
 };
+
+inline Uint32 Color::Map(const PixelFormatDetails* format,
+                         PaletteWrapper palette) const
+{
+  return SDL_MapRGBA(format, nullptr, r, g, b, a);
+}
+
+inline Uint32 Color::Map(const PixelFormat& format,
+                         PaletteWrapper palette) const
+{
+  return Map(format.GetDetails(), palette);
+}
 
 // TODO SDL_PixelFormatDetails
 

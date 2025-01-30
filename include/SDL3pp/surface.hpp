@@ -535,7 +535,7 @@ public:
     return SDL_CreateSurfacePalette(Get<T>(this));
   }
 
-  bool SetPalette(PaletteConstWrapper palette)
+  bool SetPalette(PaletteWrapper palette)
   {
     return SDL_SetSurfacePalette(Get<T>(this), palette.Get());
   }
