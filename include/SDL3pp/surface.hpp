@@ -48,7 +48,7 @@ using SurfaceUnique = Surface;
 /**
  * @brief Handle to a non owned surface
  */
-using SurfaceWrapper = SurfaceBase<ObjectWrapper<SDL_Surface>>;
+using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
 
 /**
  * @brief A collection of pixels used in software blitting.
@@ -175,7 +175,7 @@ struct SurfaceBase : T
    *          the surface didn't have an index format); call SDL_GetError() for
    *          more information.
    */
-  PaletteWrapper CreatePalette()
+  PaletteRef CreatePalette()
   {
     return SDL_CreateSurfacePalette(Get<T>(this));
   }
@@ -186,7 +186,7 @@ struct SurfaceBase : T
    * @returns a pointer to the palette used by the surface, or NULL if there is
    *          no palette used.
    */
-  PaletteWrapper GetPalette() const
+  PaletteRef GetPalette() const
   {
     return SDL_GetSurfacePalette(Get<T>(this));
   }
@@ -200,7 +200,7 @@ struct SurfaceBase : T
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    */
-  bool SetPalette(PaletteWrapper palette)
+  bool SetPalette(PaletteRef palette)
   {
     return SDL_SetSurfacePalette(Get<T>(this), palette.Get());
   }
@@ -898,7 +898,7 @@ struct SurfaceBase : T
  *
  * The new surface is automatically freed when out of scope
  * if you want to manually manage its lifetime call Surface.Release()
- * to get its raw pointer (and optionally assign it to SurfaceWrapper).
+ * to get its raw pointer (and optionally assign it to SurfaceRef).
  *
  * @param src the data stream for the surface.
  * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
@@ -916,7 +916,7 @@ inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
  *
  * The new surface is automatically freed when out of scope
  * if you want to manually manage its lifetime call Surface.Release()
- * to get its raw pointer (and optionally assign it to SurfaceWrapper).
+ * to get its raw pointer (and optionally assign it to SurfaceRef).
  *
  * @param file the BMP file to load.
  * @returns a handler to a new SDL_Surface structure or falsy on failure; call
@@ -940,7 +940,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  */
-inline bool SaveBMP(SurfaceWrapper surface, SDL_IOStream* dst, bool closeio)
+inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
 {
   return SDL_SaveBMP_IO(const_cast<SDL_Surface*>(surface.Get()), dst, closeio);
 }
@@ -959,7 +959,7 @@ inline bool SaveBMP(SurfaceWrapper surface, SDL_IOStream* dst, bool closeio)
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  */
-inline bool SaveBMP(SurfaceWrapper surface, StringParam file)
+inline bool SaveBMP(SurfaceRef surface, StringParam file)
 {
   return SDL_SaveBMP(const_cast<SDL_Surface*>(surface.Get()), file);
 }
@@ -1034,16 +1034,16 @@ inline bool SaveBMP(SurfaceWrapper surface, StringParam file)
  *               threads at once. It is safe to use the same source surface
  *               from multiple threads.
  */
-inline bool BlitSurface(SurfaceWrapper src,
+inline bool BlitSurface(SurfaceRef src,
                         std::optional<Rect> srcRect,
-                        SurfaceWrapper dst,
+                        SurfaceRef dst,
                         const SDL_Rect& dstRect = {0, 0})
 {
   return SDL_BlitSurface(
     src.Get(), srcRect ? &*srcRect : nullptr, dst.Get(), &dstRect);
 }
-inline bool BlitSurface(SurfaceWrapper src,
-                        SurfaceWrapper dst,
+inline bool BlitSurface(SurfaceRef src,
+                        SurfaceRef dst,
                         const SDL_Rect& dstRect = {0, 0})
 {
   return BlitSurface(src, std::nullopt, dst, dstRect);
@@ -1069,9 +1069,9 @@ inline bool BlitSurface(SurfaceWrapper src,
  *               from multiple threads.
  *
  */
-inline bool BlitSurfaceUnchecked(SurfaceWrapper src,
+inline bool BlitSurfaceUnchecked(SurfaceRef src,
                                  const SDL_Rect& srcRect,
-                                 SurfaceWrapper dst,
+                                 SurfaceRef dst,
                                  const SDL_Rect& dstRect = {0, 0})
 {
   return SDL_BlitSurfaceUnchecked(src.Get(), &srcRect, dst.Get(), &dstRect);
@@ -1096,9 +1096,9 @@ inline bool BlitSurfaceUnchecked(SurfaceWrapper src,
  *               threads at once. It is safe to use the same source surface
  *               from multiple threads.
  */
-inline bool BlitSurfaceScaled(SurfaceWrapper src,
+inline bool BlitSurfaceScaled(SurfaceRef src,
                               std::optional<Rect> srcRect,
-                              SurfaceWrapper dst,
+                              SurfaceRef dst,
                               std::optional<Rect> dstRect,
                               ScaleMode scaleMode)
 {
@@ -1129,9 +1129,9 @@ inline bool BlitSurfaceScaled(SurfaceWrapper src,
  *               threads at once. It is safe to use the same source surface
  *               from multiple threads.
  */
-inline bool BlitSurfaceUncheckedScaled(SurfaceWrapper src,
+inline bool BlitSurfaceUncheckedScaled(SurfaceRef src,
                                        const SDL_Rect& srcRect,
-                                       SurfaceWrapper dst,
+                                       SurfaceRef dst,
                                        const SDL_Rect& dstRect,
                                        ScaleMode scaleMode)
 {
@@ -1160,9 +1160,9 @@ inline bool BlitSurfaceUncheckedScaled(SurfaceWrapper src,
  *               threads at once. It is safe to use the same source surface
  *               from multiple threads.
  */
-inline bool BlitSurfaceTiled(SurfaceWrapper src,
+inline bool BlitSurfaceTiled(SurfaceRef src,
                              std::optional<Rect> srcRect,
-                             SurfaceWrapper dst,
+                             SurfaceRef dst,
                              std::optional<Rect> dstRect)
 {
   return SDL_BlitSurfaceTiled(src.Get(),
@@ -1196,11 +1196,11 @@ inline bool BlitSurfaceTiled(SurfaceWrapper src,
  *               threads at once. It is safe to use the same source surface
  *               from multiple threads.
  */
-inline bool BlitSurfaceTiledWithScale(SurfaceWrapper src,
+inline bool BlitSurfaceTiledWithScale(SurfaceRef src,
                                       std::optional<Rect> srcRect,
                                       float scale,
                                       ScaleMode scaleMode,
-                                      SurfaceWrapper dst,
+                                      SurfaceRef dst,
                                       std::optional<Rect> dstRect)
 {
   return SDL_BlitSurfaceTiledWithScale(src.Get(),
@@ -1243,7 +1243,7 @@ inline bool BlitSurfaceTiledWithScale(SurfaceWrapper src,
  *               threads at once. It is safe to use the same source surface
  *               from multiple threads.
  */
-inline bool BlitSurface9Grid(SurfaceWrapper src,
+inline bool BlitSurface9Grid(SurfaceRef src,
                              std::optional<Rect> srcRect,
                              int leftWidth,
                              int rightWidth,
@@ -1251,7 +1251,7 @@ inline bool BlitSurface9Grid(SurfaceWrapper src,
                              int bottomHeight,
                              float scale,
                              SDL_ScaleMode scaleMode,
-                             SurfaceWrapper dst,
+                             SurfaceRef dst,
                              std::optional<Rect> dstRect)
 {
   return SDL_BlitSurface9Grid(src.Get(),
@@ -1265,13 +1265,13 @@ inline bool BlitSurface9Grid(SurfaceWrapper src,
                               dst.Get(),
                               dstRect ? &*dstRect : nullptr);
 }
-inline bool BlitSurface9Grid(SurfaceWrapper src,
+inline bool BlitSurface9Grid(SurfaceRef src,
                              std::optional<Rect> srcRect,
                              int leftWidth,
                              int rightWidth,
                              int topHeight,
                              int bottomHeight,
-                             SurfaceWrapper dst,
+                             SurfaceRef dst,
                              std::optional<Rect> dstRect)
 {
   return BlitSurface9Grid(src,

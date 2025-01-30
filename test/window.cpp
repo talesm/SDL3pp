@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL_GetError());
     return 1;
   }
-  SDL::SurfaceWrapper screen = window.GetSurface();
+  SDL::SurfaceRef screen = window.GetSurface();
 
   bool running = true;
   while (running) {

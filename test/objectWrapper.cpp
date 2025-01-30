@@ -63,10 +63,10 @@ TEST_CASE("ObjectUnique")
   CHECK(result == 42);
 }
 
-using DummyWrapper = DummyBase<SDL::ObjectWrapper<Dummy>>;
-using DummyConstWrapper = DummyConstBase<SDL::ObjectWrapper<const Dummy>>;
+using DummyWrapper = DummyBase<SDL::ObjectRef<Dummy>>;
+using DummyConstWrapper = DummyConstBase<SDL::ObjectRef<const Dummy>>;
 
-TEST_CASE("ObjectWrapper")
+TEST_CASE("ObjectRef")
 {
   CHECK(SDL::ObjectBox<DummyWrapper, Dummy>);
 

@@ -59,7 +59,7 @@ struct WindowBase;
 /**
  * @brief Handle to a non owned window
  */
-using WindowWrapper = WindowBase<ObjectWrapper<SDL_Window>>;
+using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 
 /**
  * @brief The flags on a window.
@@ -442,7 +442,7 @@ struct Display
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  static Display GetForWindow(WindowWrapper window);
+  static Display GetForWindow(WindowRef window);
 };
 
 template<>
@@ -562,7 +562,7 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    */
-  static WindowWrapper GetFromWindowID(WindowID id)
+  static WindowRef GetFromWindowID(WindowID id)
   {
     return SDL_GetWindowFromID(id);
   }
@@ -603,7 +603,7 @@ struct WindowBase : T
    * @sa WindowBase.UpdateSurface()
    * @sa WindowBase.UpdateSurfaceRects()
    */
-  SurfaceWrapper GetSurface()
+  SurfaceRef GetSurface()
   {
     // Not const, as this might change window state
     // TODO Wrap into SDL::Surface
@@ -671,7 +671,7 @@ struct WindowBase : T
   // TODO SDL_SetWindowKeyboardGrab
 };
 
-inline Display Display::GetForWindow(WindowWrapper window)
+inline Display Display::GetForWindow(WindowRef window)
 {
   return {SDL_GetDisplayForWindow(window.Get())};
 }

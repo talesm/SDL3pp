@@ -1,5 +1,5 @@
-#ifndef SDL3PP_OBJECTWRAPPER_HPP_
-#define SDL3PP_OBJECTWRAPPER_HPP_
+#ifndef SDL3PP_OBJECT_WRAPPER_HPP_
+#define SDL3PP_OBJECT_WRAPPER_HPP_
 
 #include <concepts>
 #include <memory>
@@ -21,18 +21,18 @@ auto Get(const BASE* base)
 }
 
 template<class T>
-class ObjectWrapper
+class ObjectRef
 {
   T* value;
 
 public:
-  ObjectWrapper(T* value)
+  ObjectRef(T* value)
     : value(value)
   {
   }
 
   template<ObjectBox<T> BOX>
-  ObjectWrapper(const BOX& box)
+  ObjectRef(const BOX& box)
     : value(box.Get())
   {
   }
@@ -84,4 +84,4 @@ void std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
   left.Swap(right);
 }
 
-#endif /* SDL3PP_OBJECTWRAPPER_HPP_ */
+#endif /* SDL3PP_OBJECT_WRAPPER_HPP_ */

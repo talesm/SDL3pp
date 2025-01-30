@@ -263,7 +263,7 @@ struct PaletteBase;
 /**
  * @brief Handle to a non owned surface
  */
-using PaletteWrapper = PaletteBase<ObjectWrapper<SDL_Palette>>;
+using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 
 /**
  * @brief A structure that represents a color as RGBA components.
@@ -442,12 +442,12 @@ struct Color : SDL_Color
     return Map(format.GetDetails());
   }
 
-  Uint32 Map(const PixelFormatDetails* format, PaletteWrapper palette) const;
+  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
   // {
   //   return SDL_MapRGBA(format, nullptr, r, g, b, a);
   // }
 
-  Uint32 Map(const PixelFormat& format, PaletteWrapper palette) const;
+  Uint32 Map(const PixelFormat& format, PaletteRef palette) const;
   // {
   //   return Map(format.GetDetails(), palette);
   // }
@@ -648,13 +648,12 @@ struct PaletteBase : T
 };
 
 inline Uint32 Color::Map(const PixelFormatDetails* format,
-                         PaletteWrapper palette) const
+                         PaletteRef palette) const
 {
   return SDL_MapRGBA(format, nullptr, r, g, b, a);
 }
 
-inline Uint32 Color::Map(const PixelFormat& format,
-                         PaletteWrapper palette) const
+inline Uint32 Color::Map(const PixelFormat& format, PaletteRef palette) const
 {
   return Map(format.GetDetails(), palette);
 }
