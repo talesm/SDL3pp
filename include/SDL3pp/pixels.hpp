@@ -271,7 +271,7 @@ using PaletteWrapper = PaletteBase<ObjectWrapper<SDL_Palette>>;
  * The constness implies only methods that don't change its internal state are
  * allowed.
  */
-using PaletteConstWrapper = PaletteBase<ObjectWrapper<const SDL_Palette>>;
+using PaletteConstWrapper = PaletteConstBase<ObjectWrapper<const SDL_Palette>>;
 
 /**
  * @brief A structure that represents a color as RGBA components.
@@ -390,7 +390,78 @@ struct Color : SDL_Color
     return *this;
   }
 
-  // TODO Get() Map()
+  /**
+   * @brief Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param format a pointer to PixelFormatDetails describing the pixel
+   *               format.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   */
+  Uint32 Map(const PixelFormatDetails* format) const
+  {
+    return SDL_MapRGBA(format, nullptr, r, g, b, a);
+  }
+
+  /**
+   * @brief Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param format a pointer to PixelFormatDetails describing the pixel
+   *               format.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   */
+  Uint32 Map(const PixelFormat& format) const
+  {
+    return Map(format.GetDetails());
+  }
+
+  Uint32 Map(const PixelFormatDetails* format,
+             PaletteConstWrapper palette) const;
+  // {
+  //   return SDL_MapRGBA(format, nullptr, r, g, b, a);
+  // }
+
+  Uint32 Map(const PixelFormat& format, PaletteConstWrapper palette) const;
+  // {
+  //   return Map(format.GetDetails(), palette);
+  // }
+
+  // TODO Get()
 };
 
 /**
@@ -536,6 +607,18 @@ struct PaletteConstBase : T
 
   // TODO SDL_MapRGB()
 };
+
+inline Uint32 Color::Map(const PixelFormatDetails* format,
+                         PaletteConstWrapper palette) const
+{
+  return SDL_MapRGBA(format, nullptr, r, g, b, a);
+}
+
+inline Uint32 Color::Map(const PixelFormat& format,
+                         PaletteConstWrapper palette) const
+{
+  return Map(format.GetDetails(), palette);
+}
 
 /**
  * @brief Represents a handle to a palette
