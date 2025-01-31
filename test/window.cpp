@@ -5,7 +5,10 @@
 #include "SDL3/SDL_surface.h"
 #include "SDL3/SDL_timer.h"
 #include "SDL3pp/init.hpp"
+#include "SDL3pp/timer.hpp"
 #include "SDL3pp/video.hpp"
+
+using namespace std::chrono_literals;
 
 int main(int argc, char** argv)
 {
@@ -29,7 +32,7 @@ int main(int argc, char** argv)
     }
     screen.Fill(0);
     window.UpdateSurface();
-    SDL_Delay(1);
+    SDL::Delay(1ns);
   }
 
   return 0;
