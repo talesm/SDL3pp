@@ -22,9 +22,11 @@ add_library(SDL3pp INTERFACE)
 target_include_directories(SDL3pp INTERFACE include/)
 target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 
-# Create your game executable target as usual
+# Manual tests
 add_executable(test_window WIN32 test/window.cpp)
 target_link_libraries(test_window PRIVATE SDL3pp)
+add_executable(test_renderer WIN32 test/renderer.cpp)
+target_link_libraries(test_renderer PRIVATE SDL3pp)
 
 # Unit tests
 add_library(test_main OBJECT test/doctest.cpp)
