@@ -161,6 +161,7 @@ function parseParams(params) {
       name = name.slice(1);
       type += '*';
     }
+    type = type.replaceAll(/(\w)\*/g, '$1 *').replaceAll(/\s+/g, ' ');
     return { name, type };
   })
 
