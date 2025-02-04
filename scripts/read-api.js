@@ -1,4 +1,5 @@
-import { readFileSync, writeFileSync } from "node:fs";
+
+const { readFileSync, writeFileSync } = require("node:fs");
 
 const baseDir = '/usr/local/include/SDL3/'
 const filename = 'SDL_stdinc.h'
