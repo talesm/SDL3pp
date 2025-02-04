@@ -1,0 +1,35 @@
+{
+  "includeDefs": [
+    "SDL_FOURCC"
+  ],
+  "transform": {
+    "FOURCC": {
+      "name": "FourCC",
+      "type": "Uint32",
+      "kind": "function",
+      "constexpr": true,
+      "parameters": [
+        {
+          "name": "a",
+          "type": "Uint8"
+        },
+        {
+          "name": "b",
+          "type": "Uint8"
+        },
+        {
+          "name": "c",
+          "type": "Uint8"
+        },
+        {
+          "name": "d",
+          "type": "Uint8"
+        }
+      ]
+    }
+  },
+  "ignoreEntries": [
+    "SDL_alignment_test",
+    "SDL_DUMMY_ENUM"
+  ]
+}
