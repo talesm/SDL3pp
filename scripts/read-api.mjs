@@ -79,7 +79,7 @@ function parseContent(name) {
         currEntry.push(entry);
       } else if (currEntry.kind != 'function') {
         if (entry.doc || !currEntry.doc) entries[name] = entry;
-      } else {
+      } else if (entry.kind == 'function') {
         entries[name] = [currEntry, entry];
       }
     } else {
@@ -139,7 +139,7 @@ function parseToken(token) {
       break;
     default:
       console.error(`Unimplemented kind ${token.kind} (${token.value}) at ${token.begin}`);
-      return token;
+      break;
   }
   return entry;
 }
@@ -243,26 +243,26 @@ function tokenize(lines) {
       }
       token.parameters = parameters;
     } else if (m = line.match(/^(\s*)(extern|inline|SDL_FORCE_INLINE) (SDL_DECLSPEC )?(SDL_MALLOC )?(SDL_ALLOC_SIZE\d?\([\d, ]*\) )?/)) {
-      const signature = line.slice(m[0].length)
+      const signature = line.slice(m[0].length).replaceAll(/SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP\(\w+\)/g, "")
       const spaces = m[1]?.length ?? 0;
       if (signature == '"C" {') continue;
-      m = signature.match(/(SDLCALL )?(\w+)\(([^)]*)(\)(;)?)?/)
+      m = signature.match(/(SDLCALL )?(\w+)\(([^)]*)(\))?/);
       token.value = m[2];
       token.kind = "function";
       token.type = signature.slice(0, m.index).trim();
       let parameters = m[3] ?? ''
-      let inline
+      let inline = !signature.endsWith(';');
       if (!m[4]) {
         for (++i; i < lines.length; ++i) {
           const line = lines[i];
           if (line.endsWith(');') || line.endsWith(')')) {
+            inline = !line.endsWith(';')
             parameters += '\n' + line.slice(line.length - 2);
             break;
           }
           parameters += '\n' + line;
         }
-        inline = !line.endsWith(';')
-      } else inline = !m[5];
+      }
       token.parameters = parameters.split(',').map(p => p.trim()) ?? []
       if (inline && lines[i].indexOf('}') === -1) {
         for (i++; i < lines.length; i++) {
@@ -290,6 +290,9 @@ function tokenize(lines) {
       continue;
     }
     token.end = i + 2;
+    if (token.end - token.begin > 15 && token.kind != "doc") {
+      console.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`)
+    }
     result.push(token);
   }
   return result
