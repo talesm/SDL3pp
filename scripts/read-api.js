@@ -98,7 +98,7 @@ function parseContent(name) {
  * @property {string[]} parameters
  * @property {string} doc
  * @property {number} begin
- * @property {number} declPos
+ * @property {number} decl
  * @property {number} end
  */
 
@@ -111,7 +111,7 @@ function parseToken(token) {
   const entry = {
     doc: '',
     begin: token.begin,
-    declPos: token.begin,
+    decl: token.begin,
     end: token.end,
     name: token.value,
     kind: token.kind,
