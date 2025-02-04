@@ -101,7 +101,7 @@ function transformEntries(sourceEntries) {
  * @param {ApiContext} context 
  */
 function transformEntry(sourceEntry, context) {
-  const targetEntry = { ...sourceEntry };
+  const targetEntry = { ...sourceEntry, begin: undefined, decl: undefined, end: undefined };
   switch (sourceEntry.kind) {
     case 'function':
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
