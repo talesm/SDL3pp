@@ -1,11 +1,12 @@
-const { readFileSync, writeFileSync } = require("node:fs");
+const { writeFileSync } = require("node:fs");
 const source = require('./source.json');
 const config = require('./transform.json');
 
-const baseDir = 'include/SDL3pp/'
 const filename = 'SDL_stdinc.h'
 
-writeFileSync('scripts/target.json', JSON.stringify(transformApi([filename]), null, 2))
+if (require.main == module) {
+  writeFileSync('scripts/target.json', JSON.stringify(transformApi([filename]), null, 2))
+}
 
 /**
  * 
@@ -19,6 +20,8 @@ function transformApi(names) {
   for (const sourceName of keys) {
     const sourceFile = source.files[sourceName];
     const targetName = transformIncludeName(sourceName);
+    console.log(`Transforming api ${sourceName} => ${targetName}`)
+
     files[targetName] = {
       name: targetName,
       doc: sourceFile.doc,

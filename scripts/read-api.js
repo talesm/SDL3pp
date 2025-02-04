@@ -14,8 +14,9 @@ const ignorePrefixes = [
   '}',
 ];
 
-writeFileSync('scripts/source.json', JSON.stringify(parseApi([filename]), null, 2))
-
+if (require.main == module) {
+  writeFileSync('scripts/source.json', JSON.stringify(parseApi([filename]), null, 2))
+}
 
 /**
  * 
@@ -33,6 +34,7 @@ function parseApi(names) {
   return { files };
 }
 
+exports.parseApi = parseApi;
 
 /**
  * @typedef {object} ApiFile
