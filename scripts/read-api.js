@@ -97,7 +97,6 @@ function parseContent(name) {
  * @property {string=} type
  * @property {string[]} parameters
  * @property {string} doc
- * @property {string} decl
  * @property {number} begin
  * @property {number} declPos
  * @property {number} end
@@ -156,10 +155,13 @@ function parseParams(params) {
   return params.map(param => {
     const nameIndex = param.lastIndexOf(' ');
     if (nameIndex == -1) return param;
-    return {
-      name: param.slice(nameIndex + 1).trim(),
-      type: param.slice(0, nameIndex).trim(),
+    let name = param.slice(nameIndex + 1).trim();
+    let type = param.slice(0, nameIndex).trim();
+    while (name.startsWith('*')) {
+      name = name.slice(1);
+      type += '*';
     }
+    return { name, type };
   })
 
 }

@@ -671,8 +671,8 @@
               "type": "Uint8"
             },
             {
-              "name": "*b",
-              "type": "void"
+              "name": "b",
+              "type": "void*"
             }
           ]
         },
@@ -765,8 +765,8 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*mem",
-              "type": "void"
+              "name": "mem",
+              "type": "void*"
             },
             {
               "name": "size",
@@ -784,8 +784,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*mem",
-              "type": "void"
+              "name": "mem",
+              "type": "void*"
             }
           ]
         },
@@ -833,8 +833,8 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*mem",
-              "type": "void"
+              "name": "mem",
+              "type": "void*"
             },
             {
               "name": "size",
@@ -852,8 +852,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*mem",
-              "type": "void"
+              "name": "mem",
+              "type": "void*"
             }
           ]
         },
@@ -867,16 +867,16 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*malloc_func",
-              "type": "SDL_malloc_func"
+              "name": "malloc_func",
+              "type": "SDL_malloc_func*"
             },
             {
-              "name": "*calloc_func",
-              "type": "SDL_calloc_func"
+              "name": "calloc_func",
+              "type": "SDL_calloc_func*"
             },
             {
-              "name": "*realloc_func",
-              "type": "SDL_realloc_func"
+              "name": "realloc_func",
+              "type": "SDL_realloc_func*"
             },
             ");"
           ]
@@ -891,16 +891,16 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*malloc_func",
-              "type": "SDL_malloc_func"
+              "name": "malloc_func",
+              "type": "SDL_malloc_func*"
             },
             {
-              "name": "*calloc_func",
-              "type": "SDL_calloc_func"
+              "name": "calloc_func",
+              "type": "SDL_calloc_func*"
             },
             {
-              "name": "*realloc_func",
-              "type": "SDL_realloc_func"
+              "name": "realloc_func",
+              "type": "SDL_realloc_func*"
             },
             ");"
           ]
@@ -958,8 +958,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*mem",
-              "type": "void"
+              "name": "mem",
+              "type": "void*"
             }
           ]
         },
@@ -1017,12 +1017,12 @@
           "type": "const char *",
           "parameters": [
             {
-              "name": "*env",
-              "type": "SDL_Environment"
+              "name": "env",
+              "type": "SDL_Environment*"
             },
             {
-              "name": "*name",
-              "type": "const char"
+              "name": "name",
+              "type": "const char*"
             }
           ]
         },
@@ -1036,8 +1036,8 @@
           "type": "char **",
           "parameters": [
             {
-              "name": "*env",
-              "type": "SDL_Environment"
+              "name": "env",
+              "type": "SDL_Environment*"
             }
           ]
         },
@@ -1051,16 +1051,16 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "*env",
-              "type": "SDL_Environment"
+              "name": "env",
+              "type": "SDL_Environment*"
             },
             {
-              "name": "*name",
-              "type": "const char"
+              "name": "name",
+              "type": "const char*"
             },
             {
-              "name": "*value",
-              "type": "const char"
+              "name": "value",
+              "type": "const char*"
             },
             {
               "name": "overwrite",
@@ -1078,12 +1078,12 @@
           "type": "bool",
           "parameters": [
             {
-              "name": "*env",
-              "type": "SDL_Environment"
+              "name": "env",
+              "type": "SDL_Environment*"
             },
             {
-              "name": "*name",
-              "type": "const char"
+              "name": "name",
+              "type": "const char*"
             }
           ]
         },
@@ -1097,8 +1097,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*env",
-              "type": "SDL_Environment"
+              "name": "env",
+              "type": "SDL_Environment*"
             }
           ]
         },
@@ -1112,8 +1112,8 @@
           "type": "const char *",
           "parameters": [
             {
-              "name": "*name",
-              "type": "const char"
+              "name": "name",
+              "type": "const char*"
             }
           ]
         },
@@ -1127,8 +1127,8 @@
           "type": "const char *",
           "parameters": [
             {
-              "name": "*name",
-              "type": "const char"
+              "name": "name",
+              "type": "const char*"
             }
           ]
         },
@@ -1142,12 +1142,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*name",
-              "type": "const char"
+              "name": "name",
+              "type": "const char*"
             },
             {
-              "name": "*value",
-              "type": "const char"
+              "name": "value",
+              "type": "const char*"
             },
             {
               "name": "overwrite",
@@ -1165,8 +1165,8 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*name",
-              "type": "const char"
+              "name": "name",
+              "type": "const char*"
             }
           ]
         },
@@ -1180,12 +1180,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*a",
-              "type": "const void"
+              "name": "a",
+              "type": "const void*"
             },
             {
-              "name": "*b",
-              "type": "const void"
+              "name": "b",
+              "type": "const void*"
             }
           ]
         },
@@ -1199,8 +1199,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*base",
-              "type": "void"
+              "name": "base",
+              "type": "void*"
             },
             {
               "name": "nmemb",
@@ -1226,12 +1226,12 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*key",
-              "type": "const void"
+              "name": "key",
+              "type": "const void*"
             },
             {
-              "name": "*base",
-              "type": "const void"
+              "name": "base",
+              "type": "const void*"
             },
             {
               "name": "nmemb",
@@ -1257,16 +1257,16 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*userdata",
-              "type": "void"
+              "name": "userdata",
+              "type": "void*"
             },
             {
-              "name": "*a",
-              "type": "const void"
+              "name": "a",
+              "type": "const void*"
             },
             {
-              "name": "*b",
-              "type": "const void"
+              "name": "b",
+              "type": "const void*"
             }
           ]
         },
@@ -1280,8 +1280,8 @@
           "type": "void",
           "parameters": [
             {
-              "name": "*base",
-              "type": "void"
+              "name": "base",
+              "type": "void*"
             },
             {
               "name": "nmemb",
@@ -1296,8 +1296,8 @@
               "type": "SDL_CompareCallback_r"
             },
             {
-              "name": "*userdata",
-              "type": "void"
+              "name": "userdata",
+              "type": "void*"
             }
           ]
         },
@@ -1311,12 +1311,12 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*key",
-              "type": "const void"
+              "name": "key",
+              "type": "const void*"
             },
             {
-              "name": "*base",
-              "type": "const void"
+              "name": "base",
+              "type": "const void*"
             },
             {
               "name": "nmemb",
@@ -1331,8 +1331,8 @@
               "type": "SDL_CompareCallback_r"
             },
             {
-              "name": "*userdata",
-              "type": "void"
+              "name": "userdata",
+              "type": "void*"
             }
           ]
         },
@@ -1612,8 +1612,8 @@
               "type": "Uint16"
             },
             {
-              "name": "*data",
-              "type": "const void"
+              "name": "data",
+              "type": "const void*"
             },
             {
               "name": "len",
@@ -1635,8 +1635,8 @@
               "type": "Uint32"
             },
             {
-              "name": "*data",
-              "type": "const void"
+              "name": "data",
+              "type": "const void*"
             },
             {
               "name": "len",
@@ -1654,8 +1654,8 @@
           "type": "Uint32",
           "parameters": [
             {
-              "name": "*data",
-              "type": "const void"
+              "name": "data",
+              "type": "const void*"
             },
             {
               "name": "len",
@@ -1677,12 +1677,12 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "void"
+              "name": "dst",
+              "type": "void*"
             },
             {
-              "name": "*src",
-              "type": "const void"
+              "name": "src",
+              "type": "const void*"
             },
             {
               "name": "len",
@@ -1712,12 +1712,12 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "void"
+              "name": "dst",
+              "type": "void*"
             },
             {
-              "name": "*src",
-              "type": "const void"
+              "name": "src",
+              "type": "const void*"
             },
             {
               "name": "len",
@@ -1735,8 +1735,8 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "void"
+              "name": "dst",
+              "type": "void*"
             },
             {
               "name": "c",
@@ -1758,8 +1758,8 @@
           "type": "void *",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "void"
+              "name": "dst",
+              "type": "void*"
             },
             {
               "name": "val",
@@ -1814,12 +1814,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*s1",
-              "type": "const void"
+              "name": "s1",
+              "type": "const void*"
             },
             {
-              "name": "*s2",
-              "type": "const void"
+              "name": "s2",
+              "type": "const void*"
             },
             {
               "name": "len",
@@ -1837,8 +1837,8 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*wstr",
-              "type": "const wchar_t"
+              "name": "wstr",
+              "type": "const wchar_t*"
             }
           ]
         },
@@ -1852,8 +1852,8 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*wstr",
-              "type": "const wchar_t"
+              "name": "wstr",
+              "type": "const wchar_t*"
             },
             {
               "name": "maxlen",
@@ -1871,12 +1871,12 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "wchar_t"
+              "name": "dst",
+              "type": "wchar_t*"
             },
             {
-              "name": "*src",
-              "type": "const wchar_t"
+              "name": "src",
+              "type": "const wchar_t*"
             },
             {
               "name": "maxlen",
@@ -1894,12 +1894,12 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "wchar_t"
+              "name": "dst",
+              "type": "wchar_t*"
             },
             {
-              "name": "*src",
-              "type": "const wchar_t"
+              "name": "src",
+              "type": "const wchar_t*"
             },
             {
               "name": "maxlen",
@@ -1917,8 +1917,8 @@
           "type": "wchar_t *",
           "parameters": [
             {
-              "name": "*wstr",
-              "type": "const wchar_t"
+              "name": "wstr",
+              "type": "const wchar_t*"
             }
           ]
         },
@@ -1932,12 +1932,12 @@
           "type": "wchar_t *",
           "parameters": [
             {
-              "name": "*haystack",
-              "type": "const wchar_t"
+              "name": "haystack",
+              "type": "const wchar_t*"
             },
             {
-              "name": "*needle",
-              "type": "const wchar_t"
+              "name": "needle",
+              "type": "const wchar_t*"
             }
           ]
         },
@@ -1951,12 +1951,12 @@
           "type": "wchar_t *",
           "parameters": [
             {
-              "name": "*haystack",
-              "type": "const wchar_t"
+              "name": "haystack",
+              "type": "const wchar_t*"
             },
             {
-              "name": "*needle",
-              "type": "const wchar_t"
+              "name": "needle",
+              "type": "const wchar_t*"
             },
             {
               "name": "maxlen",
@@ -1974,12 +1974,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const wchar_t"
+              "name": "str1",
+              "type": "const wchar_t*"
             },
             {
-              "name": "*str2",
-              "type": "const wchar_t"
+              "name": "str2",
+              "type": "const wchar_t*"
             }
           ]
         },
@@ -1993,12 +1993,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const wchar_t"
+              "name": "str1",
+              "type": "const wchar_t*"
             },
             {
-              "name": "*str2",
-              "type": "const wchar_t"
+              "name": "str2",
+              "type": "const wchar_t*"
             },
             {
               "name": "maxlen",
@@ -2016,12 +2016,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const wchar_t"
+              "name": "str1",
+              "type": "const wchar_t*"
             },
             {
-              "name": "*str2",
-              "type": "const wchar_t"
+              "name": "str2",
+              "type": "const wchar_t*"
             }
           ]
         },
@@ -2035,12 +2035,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const wchar_t"
+              "name": "str1",
+              "type": "const wchar_t*"
             },
             {
-              "name": "*str2",
-              "type": "const wchar_t"
+              "name": "str2",
+              "type": "const wchar_t*"
             },
             {
               "name": "maxlen",
@@ -2058,12 +2058,12 @@
           "type": "long",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const wchar_t"
+              "name": "str",
+              "type": "const wchar_t*"
             },
             {
-              "name": "**endp",
-              "type": "wchar_t"
+              "name": "endp",
+              "type": "wchar_t**"
             },
             {
               "name": "base",
@@ -2081,8 +2081,8 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             }
           ]
         },
@@ -2096,8 +2096,8 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
               "name": "maxlen",
@@ -2115,12 +2115,12 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "char"
+              "name": "dst",
+              "type": "char*"
             },
             {
-              "name": "*src",
-              "type": "const char"
+              "name": "src",
+              "type": "const char*"
             },
             {
               "name": "maxlen",
@@ -2138,12 +2138,12 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "char"
+              "name": "dst",
+              "type": "char*"
             },
             {
-              "name": "*src",
-              "type": "const char"
+              "name": "src",
+              "type": "const char*"
             },
             {
               "name": "dst_bytes",
@@ -2161,12 +2161,12 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*dst",
-              "type": "char"
+              "name": "dst",
+              "type": "char*"
             },
             {
-              "name": "*src",
-              "type": "const char"
+              "name": "src",
+              "type": "const char*"
             },
             {
               "name": "maxlen",
@@ -2184,8 +2184,8 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             }
           ]
         },
@@ -2199,8 +2199,8 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
               "name": "maxlen",
@@ -2218,8 +2218,8 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             }
           ]
         },
@@ -2233,8 +2233,8 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             }
           ]
         },
@@ -2248,8 +2248,8 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             }
           ]
         },
@@ -2263,8 +2263,8 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
               "name": "c",
@@ -2282,8 +2282,8 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
               "name": "c",
@@ -2301,12 +2301,12 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*haystack",
-              "type": "const char"
+              "name": "haystack",
+              "type": "const char*"
             },
             {
-              "name": "*needle",
-              "type": "const char"
+              "name": "needle",
+              "type": "const char*"
             }
           ]
         },
@@ -2320,12 +2320,12 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*haystack",
-              "type": "const char"
+              "name": "haystack",
+              "type": "const char*"
             },
             {
-              "name": "*needle",
-              "type": "const char"
+              "name": "needle",
+              "type": "const char*"
             },
             {
               "name": "maxlen",
@@ -2343,12 +2343,12 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*haystack",
-              "type": "const char"
+              "name": "haystack",
+              "type": "const char*"
             },
             {
-              "name": "*needle",
-              "type": "const char"
+              "name": "needle",
+              "type": "const char*"
             }
           ]
         },
@@ -2362,16 +2362,16 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             },
             {
-              "name": "*delim",
-              "type": "const char"
+              "name": "delim",
+              "type": "const char*"
             },
             {
-              "name": "**saveptr",
-              "type": "char"
+              "name": "saveptr",
+              "type": "char**"
             }
           ]
         },
@@ -2385,8 +2385,8 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             }
           ]
         },
@@ -2400,8 +2400,8 @@
           "type": "size_t",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
               "name": "bytes",
@@ -2423,8 +2423,8 @@
               "type": "int"
             },
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             },
             {
               "name": "radix",
@@ -2446,8 +2446,8 @@
               "type": "unsigned int"
             },
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             },
             {
               "name": "radix",
@@ -2469,8 +2469,8 @@
               "type": "long"
             },
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             },
             {
               "name": "radix",
@@ -2492,8 +2492,8 @@
               "type": "unsigned long"
             },
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             },
             {
               "name": "radix",
@@ -2515,8 +2515,8 @@
               "type": "long long"
             },
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             },
             {
               "name": "radix",
@@ -2538,8 +2538,8 @@
               "type": "unsigned long long"
             },
             {
-              "name": "*str",
-              "type": "char"
+              "name": "str",
+              "type": "char*"
             },
             {
               "name": "radix",
@@ -2557,8 +2557,8 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             }
           ]
         },
@@ -2572,8 +2572,8 @@
           "type": "double",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             }
           ]
         },
@@ -2587,12 +2587,12 @@
           "type": "long",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
-              "name": "**endp",
-              "type": "char"
+              "name": "endp",
+              "type": "char**"
             },
             {
               "name": "base",
@@ -2610,12 +2610,12 @@
           "type": "unsigned long",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
-              "name": "**endp",
-              "type": "char"
+              "name": "endp",
+              "type": "char**"
             },
             {
               "name": "base",
@@ -2633,12 +2633,12 @@
           "type": "long long",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
-              "name": "**endp",
-              "type": "char"
+              "name": "endp",
+              "type": "char**"
             },
             {
               "name": "base",
@@ -2656,12 +2656,12 @@
           "type": "unsigned long long",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
-              "name": "**endp",
-              "type": "char"
+              "name": "endp",
+              "type": "char**"
             },
             {
               "name": "base",
@@ -2679,12 +2679,12 @@
           "type": "double",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
-              "name": "**endp",
-              "type": "char"
+              "name": "endp",
+              "type": "char**"
             }
           ]
         },
@@ -2698,12 +2698,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const char"
+              "name": "str1",
+              "type": "const char*"
             },
             {
-              "name": "*str2",
-              "type": "const char"
+              "name": "str2",
+              "type": "const char*"
             }
           ]
         },
@@ -2717,12 +2717,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const char"
+              "name": "str1",
+              "type": "const char*"
             },
             {
-              "name": "*str2",
-              "type": "const char"
+              "name": "str2",
+              "type": "const char*"
             },
             {
               "name": "maxlen",
@@ -2740,12 +2740,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const char"
+              "name": "str1",
+              "type": "const char*"
             },
             {
-              "name": "*str2",
-              "type": "const char"
+              "name": "str2",
+              "type": "const char*"
             }
           ]
         },
@@ -2759,12 +2759,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*str1",
-              "type": "const char"
+              "name": "str1",
+              "type": "const char*"
             },
             {
-              "name": "*str2",
-              "type": "const char"
+              "name": "str2",
+              "type": "const char*"
             },
             {
               "name": "maxlen",
@@ -2782,12 +2782,12 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*str",
-              "type": "const char"
+              "name": "str",
+              "type": "const char*"
             },
             {
-              "name": "*breakset",
-              "type": "const char"
+              "name": "breakset",
+              "type": "const char*"
             }
           ]
         },
@@ -2809,12 +2809,12 @@
           "type": "Uint32",
           "parameters": [
             {
-              "name": "**pstr",
-              "type": "const char"
+              "name": "pstr",
+              "type": "const char**"
             },
             {
-              "name": "*pslen",
-              "type": "size_t"
+              "name": "pslen",
+              "type": "size_t*"
             }
           ]
         },
@@ -2828,12 +2828,12 @@
           "type": "Uint32",
           "parameters": [
             {
-              "name": "*start",
-              "type": "const char"
+              "name": "start",
+              "type": "const char*"
             },
             {
-              "name": "**pstr",
-              "type": "const char"
+              "name": "pstr",
+              "type": "const char**"
             }
           ]
         },
@@ -2851,8 +2851,8 @@
               "type": "Uint32"
             },
             {
-              "name": "*dst",
-              "type": "char"
+              "name": "dst",
+              "type": "char*"
             }
           ]
         },
@@ -2866,12 +2866,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*text",
-              "type": "const char"
+              "name": "text",
+              "type": "const char*"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_SCANF_FORMAT_STRING const char"
+              "name": "fmt",
+              "type": "SDL_SCANF_FORMAT_STRING const char*"
             },
             "..."
           ]
@@ -2886,12 +2886,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*text",
-              "type": "const char"
+              "name": "text",
+              "type": "const char*"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_SCANF_FORMAT_STRING const char"
+              "name": "fmt",
+              "type": "SDL_SCANF_FORMAT_STRING const char*"
             },
             {
               "name": "ap",
@@ -2909,16 +2909,16 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*text",
-              "type": "char"
+              "name": "text",
+              "type": "char*"
             },
             {
               "name": "maxlen",
               "type": "size_t"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_PRINTF_FORMAT_STRING const char"
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char*"
             },
             "..."
           ]
@@ -2933,16 +2933,16 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*text",
-              "type": "wchar_t"
+              "name": "text",
+              "type": "wchar_t*"
             },
             {
               "name": "maxlen",
               "type": "size_t"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_PRINTF_FORMAT_STRING const wchar_t"
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const wchar_t*"
             },
             "..."
           ]
@@ -2957,16 +2957,16 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*text",
-              "type": "char"
+              "name": "text",
+              "type": "char*"
             },
             {
               "name": "maxlen",
               "type": "size_t"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_PRINTF_FORMAT_STRING const char"
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char*"
             },
             {
               "name": "ap",
@@ -2984,16 +2984,16 @@
           "type": "int",
           "parameters": [
             {
-              "name": "*text",
-              "type": "wchar_t"
+              "name": "text",
+              "type": "wchar_t*"
             },
             {
               "name": "maxlen",
               "type": "size_t"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_PRINTF_FORMAT_STRING const wchar_t"
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const wchar_t*"
             },
             {
               "name": "ap",
@@ -3011,12 +3011,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "**strp",
-              "type": "char"
+              "name": "strp",
+              "type": "char**"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_PRINTF_FORMAT_STRING const char"
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char*"
             },
             "..."
           ]
@@ -3031,12 +3031,12 @@
           "type": "int",
           "parameters": [
             {
-              "name": "**strp",
-              "type": "char"
+              "name": "strp",
+              "type": "char**"
             },
             {
-              "name": "*fmt",
-              "type": "SDL_PRINTF_FORMAT_STRING const char"
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char*"
             },
             {
               "name": "ap",
@@ -3104,8 +3104,8 @@
           "type": "Sint32",
           "parameters": [
             {
-              "name": "*state",
-              "type": "Uint64"
+              "name": "state",
+              "type": "Uint64*"
             },
             {
               "name": "n",
@@ -3123,8 +3123,8 @@
           "type": "float",
           "parameters": [
             {
-              "name": "*state",
-              "type": "Uint64"
+              "name": "state",
+              "type": "Uint64*"
             }
           ]
         },
@@ -3138,8 +3138,8 @@
           "type": "Uint32",
           "parameters": [
             {
-              "name": "*state",
-              "type": "Uint64"
+              "name": "state",
+              "type": "Uint64*"
             }
           ]
         },
@@ -3677,8 +3677,8 @@
               "type": "double"
             },
             {
-              "name": "*y",
-              "type": "double"
+              "name": "y",
+              "type": "double*"
             }
           ]
         },
@@ -3696,8 +3696,8 @@
               "type": "float"
             },
             {
-              "name": "*y",
-              "type": "float"
+              "name": "y",
+              "type": "float*"
             }
           ]
         },
@@ -3946,8 +3946,8 @@
           "type": "SDL_iconv_t",
           "parameters": [
             {
-              "name": "*tocode",
-              "type": "const char"
+              "name": "tocode",
+              "type": "const char*"
             },
             ");"
           ]
@@ -3981,16 +3981,16 @@
               "type": "SDL_iconv_t"
             },
             {
-              "name": "**inbuf",
-              "type": "const char"
+              "name": "inbuf",
+              "type": "const char**"
             },
             {
-              "name": "*inbytesleft",
-              "type": "size_t"
+              "name": "inbytesleft",
+              "type": "size_t*"
             },
             {
-              "name": "**outbuf",
-              "type": "char"
+              "name": "outbuf",
+              "type": "char**"
             },
             ");"
           ]
@@ -4037,16 +4037,16 @@
           "type": "char *",
           "parameters": [
             {
-              "name": "*tocode",
-              "type": "const char"
+              "name": "tocode",
+              "type": "const char*"
             },
             {
-              "name": "*fromcode",
-              "type": "const char"
+              "name": "fromcode",
+              "type": "const char*"
             },
             {
-              "name": "*inbuf",
-              "type": "const char"
+              "name": "inbuf",
+              "type": "const char*"
             },
             ");"
           ]
@@ -4113,8 +4113,8 @@
               "type": "size_t"
             },
             {
-              "name": "*ret",
-              "type": "size_t"
+              "name": "ret",
+              "type": "size_t*"
             }
           ]
         },
@@ -4136,8 +4136,8 @@
               "type": "size_t"
             },
             {
-              "name": "*ret",
-              "type": "size_t"
+              "name": "ret",
+              "type": "size_t*"
             }
           ]
         },
@@ -4159,8 +4159,8 @@
               "type": "size_t"
             },
             {
-              "name": "*ret",
-              "type": "size_t"
+              "name": "ret",
+              "type": "size_t*"
             }
           ]
         },
@@ -4182,8 +4182,8 @@
               "type": "size_t"
             },
             {
-              "name": "*ret",
-              "type": "size_t"
+              "name": "ret",
+              "type": "size_t*"
             }
           ]
         },
