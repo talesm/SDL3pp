@@ -1,7 +1,6 @@
 const { readFileSync, writeFileSync } = require("node:fs");
 const { parseApi } = require("./read-api.js")
-const targetConfig = require('./target.json');
-const { generateKey } = require("node:crypto");
+const target = require('./target.json');
 
 const baseDir = 'include/SDL3pp/'
 const filename = 'stdinc.hpp'
@@ -16,7 +15,7 @@ if (require.main == module) {
  * @param {string[]} names 
  */
 function updateHeaders(names) {
-  names = Object.keys(targetConfig.files)
+  names = Object.keys(target.files)
     .filter(names?.length ? (name => names.includes(name)) : (() => true));
   for (const name of names) {
     console.log(`Updating ${name}`);
@@ -25,7 +24,7 @@ function updateHeaders(names) {
     const [docBegin, docEnd] = getDocRange(content);
     const [entriesBegin, entriesEnd] = getEntriesRange(content, docEnd);
 
-    const file = targetConfig.files[name];
+    const file = target.files[name];
     const changes = [{
       begin: docBegin,
       end: docEnd,
