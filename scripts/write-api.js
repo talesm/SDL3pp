@@ -24,7 +24,7 @@ function transformApi(names) {
 
     files[targetName] = {
       name: targetName,
-      doc: sourceFile.doc,
+      doc: transformFileDoc(sourceFile.doc, targetName),
       entries: transformEntries(sourceFile.entries)
     };
   }
@@ -105,6 +105,9 @@ function transformEntries(sourceEntries) {
  */
 function transformEntry(sourceEntry, context) {
   const targetEntry = { ...sourceEntry, begin: undefined, decl: undefined, end: undefined };
+  if (sourceEntry.doc) {
+    targetEntry.doc = transformDoc(targetEntry.doc);
+  }
   switch (sourceEntry.kind) {
     case 'function':
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
@@ -160,6 +163,20 @@ function transformType(type, typeMap) {
  * @property {number} decl
  * @property {number} end
  */
+
+/**
+ * 
+ * @param {string} docStr 
+ * @param {string} name 
+ */
+function transformFileDoc(docStr, name) {
+  return transformDoc(`@file ${name}\n\n${docStr.replace(/^# Category\w*\n\n/, '')}`);
+}
+
+/** @param {string} docStr  */
+function transformDoc(docStr) {
+  return docStr.replaceAll(/\\(\w+)/g, '@$1');
+}
 
 /**
  * 

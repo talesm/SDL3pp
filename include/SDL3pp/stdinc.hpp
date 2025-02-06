@@ -1,5 +1,5 @@
 /**
- * # CategoryStdinc
+ * @file stdinc.hpp
  * 
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
