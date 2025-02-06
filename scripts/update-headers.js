@@ -1,6 +1,7 @@
 const { readFileSync, writeFileSync } = require("node:fs");
 const { parseApi } = require("./read-api.js")
 const targetConfig = require('./target.json');
+const { generateKey } = require("node:crypto");
 
 const baseDir = 'include/SDL3pp/'
 const filename = 'stdinc.hpp'
@@ -32,7 +33,7 @@ function updateHeaders(names) {
     }, {
       begin: entriesBegin,
       end: entriesEnd,
-      replacement: "// Content here",
+      replacement: generateEntries(file.entries),
     }];
     changes.reverse();
     for (const change of changes) {
@@ -56,15 +57,93 @@ function updateRange(content, begin, end, ...replacement) {
 }
 
 /**
+ * @typedef {object} ApiEntry
+ * @property {string} name
+ * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'} kind
+ * @property {string=} type
+ * @property {string[]} parameters
+ * @property {string} doc
+ * @property {number} begin
+ * @property {number} decl
+ * @property {number} end
+ */
+
+/**
+ * 
+ * @param {{[name: string]: ApiEntry|ApiEntry[]}} entries 
+ * @param {string=} prefix 
+ */
+function generateEntries(entries, prefix) {
+  const result = [];
+  for (const name of Object.keys(entries)) {
+    const entry = entries[name];
+    if (Array.isArray(entry)) {
+
+      result.push(entry.map(e => generateEntry(e, prefix)));
+    } else {
+      result.push(generateEntry(entry, prefix));
+    }
+  }
+  return '\n' + result.join('\n\n') + '\n';
+}
+
+/**
+ * 
+ * @param {ApiEntry} entry 
+ * @param {string=} prefix 
+ */
+function generateEntry(entry, prefix) {
+  prefix = prefix ?? ''
+  const doc = entry.doc ? wrapDocString(entry.doc, prefix) + '\n' : '';
+  const placeholder = 'static_assert(false, "Not implemented");';
+  switch (entry.kind) {
+    case "alias":
+      return `${doc}${prefix}using ${entry.name} = ${entry.type};`
+    case "function":
+      const specifier = entry.constexpr ? "constexpr" : "inline";
+      const parameters = generateParameters(entry.parameters);
+      const body = !entry.sourceName ? placeholder
+        : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
+      return `${doc}${prefix}${specifier} ${entry.type} ${entry.name}(${parameters})\n${prefix}{\n${prefix}  ${body}\n${prefix}}`
+    default:
+      console.warn(`Unknown kind: ${entry.kind} for ${entry.name}`)
+      return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
+  }
+}
+
+/**
+ * 
+ * @param {string} name 
+ * @param {string|{type: string, name: string}} parameters 
+ */
+function generateCall(name, ...parameters) {
+  const paramStr = parameters
+    .map(p => typeof p == "string" ? p : p.name)
+    .join(", ")
+  return `${name}(${paramStr});`
+}
+
+/**
+ * 
+ * @param {(string|{type: string, name: string})[]} parameters 
+ */
+function generateParameters(parameters) {
+  return parameters
+    .map(p => typeof p == "string" ? p : `${p.type} ${p.name}`)
+    .join(', ');
+}
+
+/**
  * 
  * @param {string} docStr 
- * @param {number=} spaces 
+ * @param {string=} prefix 
  */
-function wrapDocString(docStr, spaces) {
+function wrapDocString(docStr, prefix) {
   if (!docStr) return '';
-  const spacesStr = spaces ? ' '.repeat(spaces) : '';
-  const replacement = `\n${spacesStr} * `;
-  return `${spacesStr}/**\n * ${docStr?.replaceAll('\n', replacement)}\n${spacesStr} **/`
+  prefix = prefix ?? '';
+  const replacement = `\n${prefix} *$1`;
+  docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n')
+  return `${prefix}/**\n${docStr}\n${prefix} **/`
 }
 
 /**
