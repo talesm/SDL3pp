@@ -58,7 +58,7 @@ function parseContent(name) {
     entries: {},
   }
   if (tokens?.length) {
-    apiFile.doc = tokens.unshift().value;
+    apiFile.doc = tokens.shift().value;
   }
   const entries = apiFile.entries
   /** @type {FileToken} */
