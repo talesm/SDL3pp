@@ -261,9 +261,14 @@ function tokenize(lines) {
       if (!m[4]) {
         for (++i; i < lines.length; ++i) {
           const line = lines[i];
-          if (line.endsWith(');') || line.endsWith(')')) {
-            inline = !line.endsWith(';')
-            parameters += '\n' + line.slice(line.length - 2);
+          if (line.endsWith(');')) {
+            inline = false;
+            parameters += '\n' + line.slice(0, line.length - 2);
+            break;
+          }
+          if (line.endsWith(')')) {
+            inline = true;
+            parameters += '\n' + line.slice(0, line.length - 1);
             break;
           }
           parameters += '\n' + line;

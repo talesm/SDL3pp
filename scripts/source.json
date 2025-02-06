@@ -879,7 +879,10 @@
               "name": "realloc_func",
               "type": "SDL_realloc_func *"
             },
-            ");"
+            {
+              "name": "free_func",
+              "type": "SDL_free_func *"
+            }
           ]
         },
         "SDL_GetMemoryFunctions": {
@@ -903,7 +906,10 @@
               "name": "realloc_func",
               "type": "SDL_realloc_func *"
             },
-            ");"
+            {
+              "name": "free_func",
+              "type": "SDL_free_func *"
+            }
           ]
         },
         "SDL_SetMemoryFunctions": {
@@ -927,7 +933,10 @@
               "name": "realloc_func",
               "type": "SDL_realloc_func"
             },
-            ");"
+            {
+              "name": "free_func",
+              "type": "SDL_free_func"
+            }
           ]
         },
         "SDL_aligned_alloc": {
@@ -3950,7 +3959,10 @@
               "name": "tocode",
               "type": "const char *"
             },
-            ");"
+            {
+              "name": "fromcode",
+              "type": "const char *"
+            }
           ]
         },
         "SDL_iconv_close": {
@@ -3993,7 +4005,10 @@
               "name": "outbuf",
               "type": "char **"
             },
-            ");"
+            {
+              "name": "outbytesleft",
+              "type": "size_t *"
+            }
           ]
         },
         "SDL_ICONV_ERROR": {
@@ -4049,7 +4064,10 @@
               "name": "inbuf",
               "type": "const char *"
             },
-            ");"
+            {
+              "name": "inbytesleft",
+              "type": "size_t"
+            }
           ]
         },
         "SDL_iconv_utf8_locale": {
