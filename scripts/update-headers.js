@@ -28,15 +28,15 @@ function updateHeaders(names) {
     const changes = [{
       begin: docBegin,
       end: docEnd,
-      replacement: [wrapDocString(file.doc)],
+      replacement: wrapDocString(file.doc),
     }, {
       begin: entriesBegin,
       end: entriesEnd,
-      replacement: ["// Content here"],
+      replacement: "// Content here",
     }];
     changes.reverse();
     for (const change of changes) {
-      updateRange(content, change.begin, change.end, ...(change.replacement ?? []))
+      updateRange(content, change.begin, change.end, change.replacement ?? undefined)
     }
     writeFileSync(filename, content.join('\n').trim() + '\n');
   }
