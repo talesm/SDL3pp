@@ -2920,27 +2920,6 @@
           ],
           "sourceName": "SDL_size_mul_check_overflow"
         },
-        "size_mul_check_overflow_builtin": {
-          "doc": "",
-          "name": "size_mul_check_overflow_builtin",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "size_t"
-            },
-            {
-              "name": "b",
-              "type": "size_t"
-            },
-            {
-              "name": "ret",
-              "type": "size_t *"
-            }
-          ],
-          "sourceName": "SDL_size_mul_check_overflow_builtin"
-        },
         "size_add_check_overflow": {
           "doc": "Add two integers, checking for overflow.\n\nIf `a + b` would overflow, return false.\n\nOtherwise store `a + b` via ret and return true.\n\n@param a the first addend.\n@param b the second addend.\n@param ret on non-overflow output, stores the addition result, may not be\n           NULL.\n@returns false on overflow, true if result is added without overflow.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "size_add_check_overflow",
@@ -2961,27 +2940,6 @@
             }
           ],
           "sourceName": "SDL_size_add_check_overflow"
-        },
-        "size_add_check_overflow_builtin": {
-          "doc": "",
-          "name": "size_add_check_overflow_builtin",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "size_t"
-            },
-            {
-              "name": "b",
-              "type": "size_t"
-            },
-            {
-              "name": "ret",
-              "type": "size_t *"
-            }
-          ],
-          "sourceName": "SDL_size_add_check_overflow_builtin"
         },
         "FunctionPointer": {
           "doc": "A generic function pointer.\n\nIn theory, generic function pointers should use this, instead of `void *`,\nsince some platforms could treat code addresses differently than data\naddresses. Although in current times no popular platforms make this\ndistinction, it is more correct and portable to use the correct type for a\ngeneric pointer.\n\nIf for some reason you need to force this typedef to be an actual `void *`,\nperhaps to work around a compiler or existing code, you can define\n`SDL_FUNCTION_POINTER_IS_VOID_POINTER` before including any SDL headers.\n\n@since This datatype is available since SDL 3.2.0.",

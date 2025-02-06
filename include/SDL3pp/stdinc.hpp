@@ -4995,11 +4995,6 @@ inline bool size_mul_check_overflow(size_t a, size_t b, size_t * ret)
   return SDL_size_mul_check_overflow(a, b, ret);
 }
 
-inline bool size_mul_check_overflow_builtin(size_t a, size_t b, size_t * ret)
-{
-  return SDL_size_mul_check_overflow_builtin(a, b, ret);
-}
-
 /**
  * Add two integers, checking for overflow.
  *
@@ -5020,11 +5015,6 @@ inline bool size_mul_check_overflow_builtin(size_t a, size_t b, size_t * ret)
 inline bool size_add_check_overflow(size_t a, size_t b, size_t * ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
-}
-
-inline bool size_add_check_overflow_builtin(size_t a, size_t b, size_t * ret)
-{
-  return SDL_size_add_check_overflow_builtin(a, b, ret);
 }
 
 /**
