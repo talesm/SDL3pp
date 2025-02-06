@@ -51,10 +51,10 @@ public:
 template<class T>
 struct ObjectDeleter;
 
-template<class T>
+template<class T, class DELETER = ObjectDeleter<T>>
 class ObjectUnique
 {
-  std::unique_ptr<T, ObjectDeleter<T>> value;
+  std::unique_ptr<T, DELETER> value;
 
 public:
   constexpr ObjectUnique() = default;
