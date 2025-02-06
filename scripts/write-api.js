@@ -108,6 +108,7 @@ function transformEntry(sourceEntry, context) {
   if (sourceEntry.doc) {
     targetEntry.doc = transformDoc(targetEntry.doc);
   }
+  targetEntry.sourceName = sourceEntry.name;
   switch (sourceEntry.kind) {
     case 'function':
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
@@ -159,6 +160,8 @@ function transformType(type, typeMap) {
  * @property {string=} type
  * @property {string[]} parameters
  * @property {string} doc
+ * @property {string=} sourceName
+ * @property {boolean} constexpr
  * @property {number} begin
  * @property {number} decl
  * @property {number} end
