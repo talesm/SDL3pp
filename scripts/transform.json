@@ -41,5 +41,90 @@
     "SDL_vasprintf",
     "SDL_size_mul_check_overflow_builtin",
     "SDL_size_add_check_overflow_builtin"
-  ]
+  ],
+  "includeAt": {
+    "begin": [
+      {
+        "name": "EnvironmentBase",
+        "kind": "forward",
+        "template": [
+          {
+            "name": "T",
+            "type": "class"
+          }
+        ]
+      },
+      {
+        "name": "EnvironmentRef",
+        "kind": "alias",
+        "type": "EnvironmentBase<ObjectRef<SDL_Environment>>"
+      },
+      {
+        "name": "ObjectDeleter<SDL_Renderer>",
+        "kind": "struct",
+        "template": [],
+        "entries": {
+          "name": "operator()",
+          "kind": "function",
+          "type": "void",
+          "const": true,
+          "parameters": [
+            {
+              "type": "SDL_Environment *",
+              "name": "environment"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Environment",
+        "kind": "alias",
+        "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>"
+      },
+      {
+        "name": "EnvironmentBase",
+        "kind": "forward",
+        "template": [
+          {
+            "name": "T",
+            "type": "class"
+          }
+        ]
+      },
+      {
+        "name": "IConvRef",
+        "kind": "alias",
+        "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>"
+      },
+      {
+        "name": "ObjectDeleter<SDL_iconv_data_t>",
+        "kind": "struct",
+        "template": [],
+        "entries": {
+          "name": "operator()",
+          "kind": "function",
+          "type": "void",
+          "const": true,
+          "parameters": [
+            {
+              "type": "SDL_iconv_t",
+              "name": "iconv"
+            }
+          ]
+        }
+      },
+      {
+        "name": "IConv",
+        "kind": "alias",
+        "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>"
+      }
+    ]
+  },
+  "types": {
+    "SDL_Environment": "resource",
+    "SDL_iconv_t": {
+      "kind": "resource",
+      "name": "IConv"
+    }
+  }
 }

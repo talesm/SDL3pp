@@ -4,6 +4,70 @@
       "name": "stdinc.hpp",
       "doc": "@file stdinc.hpp\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like SDL_memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\nSDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like SDL_strlcpy(), which functions as a safer form of strcpy().",
       "entries": {
+        "EnvironmentBase-forward": {
+          "name": "EnvironmentBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ]
+        },
+        "EnvironmentRef": {
+          "name": "EnvironmentRef",
+          "kind": "alias",
+          "type": "EnvironmentBase<ObjectRef<SDL_Environment>>"
+        },
+        "ObjectDeleter<SDL_Renderer>": {
+          "name": "ObjectDeleter<SDL_Renderer>",
+          "kind": "struct",
+          "template": [],
+          "entries": {
+            "name": "operator()",
+            "kind": "function",
+            "type": "void",
+            "const": true,
+            "parameters": [
+              {
+                "type": "SDL_Environment *",
+                "name": "environment"
+              }
+            ]
+          }
+        },
+        "Environment": {
+          "name": "Environment",
+          "kind": "alias",
+          "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>"
+        },
+        "IConvRef": {
+          "name": "IConvRef",
+          "kind": "alias",
+          "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>"
+        },
+        "ObjectDeleter<SDL_iconv_data_t>": {
+          "name": "ObjectDeleter<SDL_iconv_data_t>",
+          "kind": "struct",
+          "template": [],
+          "entries": {
+            "name": "operator()",
+            "kind": "function",
+            "type": "void",
+            "const": true,
+            "parameters": [
+              {
+                "type": "SDL_iconv_t",
+                "name": "iconv"
+              }
+            ]
+          }
+        },
+        "IConv": {
+          "name": "IConv",
+          "kind": "alias",
+          "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>"
+        },
         "FourCC": {
           "doc": "Define a four character code as a Uint32.\n\n@param A the first ASCII character.\n@param B the second ASCII character.\n@param C the third ASCII character.\n@param D the fourth ASCII character.\n@returns the four characters converted into a Uint32, one character\n         per-byte.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "FourCC",
@@ -294,18 +358,28 @@
           "parameters": [],
           "sourceName": "SDL_GetNumAllocations"
         },
-        "Environment": {
+        "EnvironmentBase": {
           "doc": "A thread-safe set of environment variables\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable\n@sa SDL_DestroyEnvironment",
-          "name": "Environment",
-          "kind": "alias",
-          "type": "SDL_Environment",
-          "sourceName": "SDL_Environment"
+          "name": "EnvironmentBase",
+          "kind": "struct",
+          "type": "struct SDL_Environment",
+          "sourceName": "SDL_Environment",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "base": "T",
+          "parameters": [
+            "using T::T;"
+          ]
         },
         "GetEnvironment": {
           "doc": "Get the process environment.\n\nThis is initialized at application start and is not affected by setenv()\nand unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and\nSDL_UnsetEnvironmentVariable() if you want to modify this environment, or\nSDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist\nin the C runtime environment after SDL_Quit().\n\n@returns a pointer to the environment for the process or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
           "name": "GetEnvironment",
           "kind": "function",
-          "type": "Environment *",
+          "type": "Environment",
           "parameters": [],
           "sourceName": "SDL_GetEnvironment"
         },
@@ -313,7 +387,7 @@
           "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@returns a pointer to the new environment or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable\n@sa SDL_DestroyEnvironment",
           "name": "CreateEnvironment",
           "kind": "function",
-          "type": "Environment *",
+          "type": "Environment",
           "parameters": [
             {
               "name": "populated",
@@ -330,7 +404,7 @@
           "parameters": [
             {
               "name": "env",
-              "type": "Environment *"
+              "type": "EnvironmentRef"
             },
             {
               "name": "name",
@@ -347,7 +421,7 @@
           "parameters": [
             {
               "name": "env",
-              "type": "Environment *"
+              "type": "EnvironmentRef"
             }
           ],
           "sourceName": "SDL_GetEnvironmentVariables"
@@ -360,7 +434,7 @@
           "parameters": [
             {
               "name": "env",
-              "type": "Environment *"
+              "type": "EnvironmentRef"
             },
             {
               "name": "name",
@@ -385,7 +459,7 @@
           "parameters": [
             {
               "name": "env",
-              "type": "Environment *"
+              "type": "EnvironmentRef"
             },
             {
               "name": "name",
@@ -402,7 +476,7 @@
           "parameters": [
             {
               "name": "env",
-              "type": "Environment *"
+              "type": "EnvironmentRef"
             }
           ],
           "sourceName": "SDL_DestroyEnvironment"
@@ -2636,18 +2710,28 @@
           ],
           "sourceName": "SDL_tanf"
         },
-        "iconv_t": {
+        "IConvBase": {
           "doc": "An opaque handle representing string encoding conversion state.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_iconv_open",
-          "name": "iconv_t",
-          "kind": "alias",
-          "type": "SDL_iconv_t",
-          "sourceName": "SDL_iconv_t"
+          "name": "IConvBase",
+          "kind": "struct",
+          "type": "struct SDL_iconv_data_t *",
+          "sourceName": "SDL_iconv_t",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "base": "T",
+          "parameters": [
+            "using T::T;"
+          ]
         },
         "iconv_open": {
           "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be NULL.\n@param fromcode The source character encoding, must not be NULL.\n@returns a handle that must be freed with SDL_iconv_close, or\n         SDL_ICONV_ERROR on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_close\n@sa SDL_iconv_string",
           "name": "iconv_open",
           "kind": "function",
-          "type": "iconv_t",
+          "type": "IConv",
           "parameters": [
             {
               "name": "tocode",
@@ -2668,7 +2752,7 @@
           "parameters": [
             {
               "name": "cd",
-              "type": "iconv_t"
+              "type": "IConvRef"
             }
           ],
           "sourceName": "SDL_iconv_close"
@@ -2681,7 +2765,7 @@
           "parameters": [
             {
               "name": "cd",
-              "type": "iconv_t"
+              "type": "IConvRef"
             },
             {
               "name": "inbuf",

@@ -65,6 +65,10 @@ function transformEntries(sourceEntries) {
   /** @type {ApiContext} */
   const context = { typeMap, paramTypeMap, returnTypeMap };
 
+  for (const entry of config.includeAt?.begin ?? []) {
+    const targetName = entry.kind == "forward" ? `${entry.name}-forward` : entry.name;
+    targetEntries[targetName] = entry;
+  }
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (blacklist.has(sourceName)) continue;
@@ -77,6 +81,7 @@ function transformEntries(sourceEntries) {
       });
     } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
       const targetEntry = transformEntry(sourceEntry, context);
+      targetName = transformName(targetEntry.name);
       const targetDelta = transformMap[targetName]
       if (targetDelta) {
         if (targetDelta.name) targetName = targetDelta.name;
@@ -90,6 +95,8 @@ function transformEntries(sourceEntries) {
         typeMap[`${type} *`] = `${targetName} *`;
         typeMap[`const ${type}`] = `const ${targetName}`;
         typeMap[`const ${type} *`] = `const ${targetName} *`;
+      } else if (targetEntry.kind == "forward") {
+        targetName += "-forward";
       }
       targetEntries[targetName] = targetEntry;
     }
@@ -108,13 +115,33 @@ function transformEntry(sourceEntry, context) {
   if (sourceEntry.doc) {
     targetEntry.doc = transformDoc(targetEntry.doc);
   }
-  targetEntry.sourceName = sourceEntry.name;
+  const sourceName = sourceEntry.name
+  targetEntry.sourceName = sourceName;
   switch (sourceEntry.kind) {
     case 'function':
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
       break
     case 'alias':
+      const type = config?.types[sourceName];
+      if (type === "resource" || type?.kind == "resource") {
+        targetEntry.kind = "struct";
+        targetEntry.template = [{ type: "class", name: "T" }];
+        targetEntry.base = "T";
+        targetEntry.parameters = ["using T::T;"];
+        const targetName = type?.name ?? transformName(sourceName);
+        targetEntry.name = targetName + "Base";
+        context.paramTypeMap[sourceName] = targetName + "Ref";
+        context.paramTypeMap[`${sourceName} *`] = targetName + "Ref";
+        context.returnTypeMap[sourceName] = targetName;
+        context.returnTypeMap[`${sourceName} *`] = targetName;
+      } else {
+        if (type) {
+          console.warn(`Alias ${sourceEntry.name} can not be ${type}`);
+        }
+        targetEntry.type = sourceEntry.name;
+      }
+      break;
     case 'callback':
     case 'enum':
     case 'union':
@@ -122,7 +149,7 @@ function transformEntry(sourceEntry, context) {
       targetEntry.kind = 'alias';
       targetEntry.type = sourceEntry.name;
       delete targetEntry.parameters;
-      break
+      break;
     default:
       break;
   }

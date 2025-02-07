@@ -25,6 +25,7 @@
 #define SDL3PP_STDINC_HPP_
 
 #include <SDL3/SDL_stdinc.h>
+#include "objectWrapper.hpp"
 #include "stringParam.hpp"
 
 namespace SDL {
