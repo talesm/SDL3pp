@@ -146,10 +146,7 @@ using Time = SDL_Time;
  * @sa SDL_realloc
  * @sa SDL_aligned_alloc
  **/
-inline void * malloc(size_t size)
-{
-  return SDL_malloc(size);
-}
+inline void* malloc(size_t size) { return SDL_malloc(size); }
 
 /**
  * Allocate a zero-initialized array.
@@ -170,7 +167,7 @@ inline void * malloc(size_t size)
  * @sa SDL_malloc
  * @sa SDL_realloc
  **/
-inline void * calloc(size_t nmemb, size_t size)
+inline void* calloc(size_t nmemb, size_t size)
 {
   return SDL_calloc(nmemb, size);
 }
@@ -208,10 +205,7 @@ inline void * calloc(size_t nmemb, size_t size)
  * @sa SDL_malloc
  * @sa SDL_calloc
  **/
-inline void * realloc(void * mem, size_t size)
-{
-  return SDL_realloc(mem, size);
-}
+inline void* realloc(void* mem, size_t size) { return SDL_realloc(mem, size); }
 
 /**
  * Free allocated memory.
@@ -231,10 +225,7 @@ inline void * realloc(void * mem, size_t size)
  * @sa SDL_calloc
  * @sa SDL_realloc
  **/
-inline void free(void * mem)
-{
-  SDL_free(mem);
-}
+inline void free(void* mem) { SDL_free(mem); }
 
 /**
  * A callback used to implement SDL_malloc().
@@ -332,9 +323,13 @@ using free_func = SDL_free_func;
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline void GetOriginalMemoryFunctions(malloc_func * malloc_func, calloc_func * calloc_func, realloc_func * realloc_func, free_func * free_func)
+inline void GetOriginalMemoryFunctions(malloc_func* malloc_func,
+                                       calloc_func* calloc_func,
+                                       realloc_func* realloc_func,
+                                       free_func* free_func)
 {
-  SDL_GetOriginalMemoryFunctions(malloc_func, calloc_func, realloc_func, free_func);
+  SDL_GetOriginalMemoryFunctions(
+    malloc_func, calloc_func, realloc_func, free_func);
 }
 
 /**
@@ -354,7 +349,10 @@ inline void GetOriginalMemoryFunctions(malloc_func * malloc_func, calloc_func * 
  * @sa SDL_SetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  **/
-inline void GetMemoryFunctions(malloc_func * malloc_func, calloc_func * calloc_func, realloc_func * realloc_func, free_func * free_func)
+inline void GetMemoryFunctions(malloc_func* malloc_func,
+                               calloc_func* calloc_func,
+                               realloc_func* realloc_func,
+                               free_func* free_func)
 {
   SDL_GetMemoryFunctions(malloc_func, calloc_func, realloc_func, free_func);
 }
@@ -385,9 +383,13 @@ inline void GetMemoryFunctions(malloc_func * malloc_func, calloc_func * calloc_f
  * @sa SDL_GetMemoryFunctions
  * @sa SDL_GetOriginalMemoryFunctions
  **/
-inline bool SetMemoryFunctions(malloc_func malloc_func, calloc_func calloc_func, realloc_func realloc_func, free_func free_func)
+inline bool SetMemoryFunctions(malloc_func malloc_func,
+                               calloc_func calloc_func,
+                               realloc_func realloc_func,
+                               free_func free_func)
 {
-  return SDL_SetMemoryFunctions(malloc_func, calloc_func, realloc_func, free_func);
+  return SDL_SetMemoryFunctions(
+    malloc_func, calloc_func, realloc_func, free_func);
 }
 
 /**
@@ -412,7 +414,7 @@ inline bool SetMemoryFunctions(malloc_func malloc_func, calloc_func calloc_func,
  *
  * @sa SDL_aligned_free
  **/
-inline void * aligned_alloc(size_t alignment, size_t size)
+inline void* aligned_alloc(size_t alignment, size_t size)
 {
   return SDL_aligned_alloc(alignment, size);
 }
@@ -433,10 +435,7 @@ inline void * aligned_alloc(size_t alignment, size_t size)
  *
  * @sa SDL_aligned_alloc
  **/
-inline void aligned_free(void * mem)
-{
-  SDL_aligned_free(mem);
-}
+inline void aligned_free(void* mem) { SDL_aligned_free(mem); }
 
 /**
  * Get the number of outstanding (unfreed) allocations.
@@ -448,10 +447,7 @@ inline void aligned_free(void * mem)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int GetNumAllocations()
-{
-  return SDL_GetNumAllocations();
-}
+inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
 
 /**
  * A thread-safe set of environment variables
@@ -489,10 +485,7 @@ using Environment = SDL_Environment;
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline Environment * GetEnvironment()
-{
-  return SDL_GetEnvironment();
-}
+inline Environment* GetEnvironment() { return SDL_GetEnvironment(); }
 
 /**
  * Create a set of environment variables
@@ -514,7 +507,7 @@ inline Environment * GetEnvironment()
  * @sa SDL_UnsetEnvironmentVariable
  * @sa SDL_DestroyEnvironment
  **/
-inline Environment * CreateEnvironment(bool populated)
+inline Environment* CreateEnvironment(bool populated)
 {
   return SDL_CreateEnvironment(populated);
 }
@@ -537,7 +530,7 @@ inline Environment * CreateEnvironment(bool populated)
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline const char * GetEnvironmentVariable(Environment * env, StringParam name)
+inline const char* GetEnvironmentVariable(Environment* env, StringParam name)
 {
   return SDL_GetEnvironmentVariable(env, name);
 }
@@ -561,7 +554,7 @@ inline const char * GetEnvironmentVariable(Environment * env, StringParam name)
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline char ** GetEnvironmentVariables(Environment * env)
+inline char** GetEnvironmentVariables(Environment* env)
 {
   return SDL_GetEnvironmentVariables(env);
 }
@@ -588,7 +581,10 @@ inline char ** GetEnvironmentVariables(Environment * env)
  * @sa SDL_GetEnvironmentVariables
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline bool SetEnvironmentVariable(Environment * env, StringParam name, StringParam value, bool overwrite)
+inline bool SetEnvironmentVariable(Environment* env,
+                                   StringParam name,
+                                   StringParam value,
+                                   bool overwrite)
 {
   return SDL_SetEnvironmentVariable(env, name, value, overwrite);
 }
@@ -612,7 +608,7 @@ inline bool SetEnvironmentVariable(Environment * env, StringParam name, StringPa
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline bool UnsetEnvironmentVariable(Environment * env, StringParam name)
+inline bool UnsetEnvironmentVariable(Environment* env, StringParam name)
 {
   return SDL_UnsetEnvironmentVariable(env, name);
 }
@@ -629,7 +625,7 @@ inline bool UnsetEnvironmentVariable(Environment * env, StringParam name)
  *
  * @sa SDL_CreateEnvironment
  **/
-inline void DestroyEnvironment(Environment * env)
+inline void DestroyEnvironment(Environment* env)
 {
   SDL_DestroyEnvironment(env);
 }
@@ -647,10 +643,7 @@ inline void DestroyEnvironment(Environment * env)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline const char * getenv(StringParam name)
-{
-  return SDL_getenv(name);
-}
+inline const char* getenv(StringParam name) { return SDL_getenv(name); }
 
 /**
  * Get the value of a variable in the environment.
@@ -669,7 +662,7 @@ inline const char * getenv(StringParam name)
  *
  * @sa SDL_getenv
  **/
-inline const char * getenv_unsafe(StringParam name)
+inline const char* getenv_unsafe(StringParam name)
 {
   return SDL_getenv_unsafe(name);
 }
@@ -773,7 +766,10 @@ using CompareCallback = SDL_CompareCallback;
  * @sa SDL_bsearch
  * @sa SDL_qsort_r
  **/
-inline void qsort(void * base, size_t nmemb, size_t size, CompareCallback compare)
+inline void qsort(void* base,
+                  size_t nmemb,
+                  size_t size,
+                  CompareCallback compare)
 {
   SDL_qsort(base, nmemb, size, compare);
 }
@@ -808,7 +804,8 @@ inline void qsort(void * base, size_t nmemb, size_t size, CompareCallback compar
  * };
  * data key = { 2, NULL };
  *
- * data *result = SDL_bsearch(&key, values, SDL_arraysize(values), sizeof(values[0]), compare);
+ * data *result = SDL_bsearch(&key, values, SDL_arraysize(values),
+ *sizeof(values[0]), compare);
  * ```
  *
  * @param key a pointer to a key equal to the element being searched for.
@@ -826,7 +823,11 @@ inline void qsort(void * base, size_t nmemb, size_t size, CompareCallback compar
  * @sa SDL_bsearch_r
  * @sa SDL_qsort
  **/
-inline void * bsearch(const void * key, const void * base, size_t nmemb, size_t size, CompareCallback compare)
+inline void* bsearch(const void* key,
+                     const void* base,
+                     size_t nmemb,
+                     size_t size,
+                     CompareCallback compare)
 {
   return SDL_bsearch(key, base, nmemb, size, compare);
 }
@@ -883,7 +884,8 @@ using CompareCallback_r = SDL_CompareCallback_r;
  *     { 3, "third" }, { 1, "first" }, { 2, "second" }
  * };
  *
- * SDL_qsort_r(values, SDL_arraysize(values), sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);
+ * SDL_qsort_r(values, SDL_arraysize(values), sizeof(values[0]), compare, (const
+ *void *)(uintptr_t)sort_increasing);
  * ```
  *
  * @param base a pointer to the start of the array.
@@ -899,7 +901,11 @@ using CompareCallback_r = SDL_CompareCallback_r;
  * @sa SDL_bsearch_r
  * @sa SDL_qsort
  **/
-inline void qsort_r(void * base, size_t nmemb, size_t size, CompareCallback_r compare, void * userdata)
+inline void qsort_r(void* base,
+                    size_t nmemb,
+                    size_t size,
+                    CompareCallback_r compare,
+                    void* userdata)
 {
   SDL_qsort_r(base, nmemb, size, compare, userdata);
 }
@@ -941,7 +947,8 @@ inline void qsort_r(void * base, size_t nmemb, size_t size, CompareCallback_r co
  * };
  * data key = { 2, NULL };
  *
- * data *result = SDL_bsearch_r(&key, values, SDL_arraysize(values), sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);
+ * data *result = SDL_bsearch_r(&key, values, SDL_arraysize(values),
+ *sizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);
  * ```
  *
  * @param key a pointer to a key equal to the element being searched for.
@@ -960,7 +967,12 @@ inline void qsort_r(void * base, size_t nmemb, size_t size, CompareCallback_r co
  * @sa SDL_bsearch
  * @sa SDL_qsort_r
  **/
-inline void * bsearch_r(const void * key, const void * base, size_t nmemb, size_t size, CompareCallback_r compare, void * userdata)
+inline void* bsearch_r(const void* key,
+                       const void* base,
+                       size_t nmemb,
+                       size_t size,
+                       CompareCallback_r compare,
+                       void* userdata)
 {
   return SDL_bsearch_r(key, base, nmemb, size, compare, userdata);
 }
@@ -975,10 +987,7 @@ inline void * bsearch_r(const void * key, const void * base, size_t nmemb, size_
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int abs(int x)
-{
-  return SDL_abs(x);
-}
+inline int abs(int x) { return SDL_abs(x); }
 
 /**
  * Query if a character is alphabetic (a letter).
@@ -993,10 +1002,7 @@ inline int abs(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isalpha(int x)
-{
-  return SDL_isalpha(x);
-}
+inline int isalpha(int x) { return SDL_isalpha(x); }
 
 /**
  * Query if a character is alphabetic (a letter) or a number.
@@ -1011,10 +1017,7 @@ inline int isalpha(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isalnum(int x)
-{
-  return SDL_isalnum(x);
-}
+inline int isalnum(int x) { return SDL_isalnum(x); }
 
 /**
  * Report if a character is blank (a space or tab).
@@ -1029,10 +1032,7 @@ inline int isalnum(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isblank(int x)
-{
-  return SDL_isblank(x);
-}
+inline int isblank(int x) { return SDL_isblank(x); }
 
 /**
  * Report if a character is a control character.
@@ -1047,10 +1047,7 @@ inline int isblank(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int iscntrl(int x)
-{
-  return SDL_iscntrl(x);
-}
+inline int iscntrl(int x) { return SDL_iscntrl(x); }
 
 /**
  * Report if a character is a numeric digit.
@@ -1065,10 +1062,7 @@ inline int iscntrl(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isdigit(int x)
-{
-  return SDL_isdigit(x);
-}
+inline int isdigit(int x) { return SDL_isdigit(x); }
 
 /**
  * Report if a character is a hexadecimal digit.
@@ -1083,10 +1077,7 @@ inline int isdigit(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isxdigit(int x)
-{
-  return SDL_isxdigit(x);
-}
+inline int isxdigit(int x) { return SDL_isxdigit(x); }
 
 /**
  * Report if a character is a punctuation mark.
@@ -1104,10 +1095,7 @@ inline int isxdigit(int x)
  * @sa SDL_isgraph
  * @sa SDL_isalnum
  **/
-inline int ispunct(int x)
-{
-  return SDL_ispunct(x);
-}
+inline int ispunct(int x) { return SDL_ispunct(x); }
 
 /**
  * Report if a character is whitespace.
@@ -1129,10 +1117,7 @@ inline int ispunct(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isspace(int x)
-{
-  return SDL_isspace(x);
-}
+inline int isspace(int x) { return SDL_isspace(x); }
 
 /**
  * Report if a character is upper case.
@@ -1147,10 +1132,7 @@ inline int isspace(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isupper(int x)
-{
-  return SDL_isupper(x);
-}
+inline int isupper(int x) { return SDL_isupper(x); }
 
 /**
  * Report if a character is lower case.
@@ -1165,10 +1147,7 @@ inline int isupper(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int islower(int x)
-{
-  return SDL_islower(x);
-}
+inline int islower(int x) { return SDL_islower(x); }
 
 /**
  * Report if a character is "printable".
@@ -1187,10 +1166,7 @@ inline int islower(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int isprint(int x)
-{
-  return SDL_isprint(x);
-}
+inline int isprint(int x) { return SDL_isprint(x); }
 
 /**
  * Report if a character is any "printable" except space.
@@ -1211,10 +1187,7 @@ inline int isprint(int x)
  *
  * @sa SDL_isprint
  **/
-inline int isgraph(int x)
-{
-  return SDL_isgraph(x);
-}
+inline int isgraph(int x) { return SDL_isgraph(x); }
 
 /**
  * Convert low-ASCII English letters to uppercase.
@@ -1232,10 +1205,7 @@ inline int isgraph(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int toupper(int x)
-{
-  return SDL_toupper(x);
-}
+inline int toupper(int x) { return SDL_toupper(x); }
 
 /**
  * Convert low-ASCII English letters to lowercase.
@@ -1253,10 +1223,7 @@ inline int toupper(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int tolower(int x)
-{
-  return SDL_tolower(x);
-}
+inline int tolower(int x) { return SDL_tolower(x); }
 
 /**
  * Calculate a CRC-16 value.
@@ -1277,7 +1244,7 @@ inline int tolower(int x)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline Uint16 crc16(Uint16 crc, const void * data, size_t len)
+inline Uint16 crc16(Uint16 crc, const void* data, size_t len)
 {
   return SDL_crc16(crc, data, len);
 }
@@ -1301,7 +1268,7 @@ inline Uint16 crc16(Uint16 crc, const void * data, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline Uint32 crc32(Uint32 crc, const void * data, size_t len)
+inline Uint32 crc32(Uint32 crc, const void* data, size_t len)
 {
   return SDL_crc32(crc, data, len);
 }
@@ -1330,7 +1297,7 @@ inline Uint32 crc32(Uint32 crc, const void * data, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline Uint32 murmur3_32(const void * data, size_t len, Uint32 seed)
+inline Uint32 murmur3_32(const void* data, size_t len, Uint32 seed)
 {
   return SDL_murmur3_32(data, len, seed);
 }
@@ -1353,7 +1320,7 @@ inline Uint32 murmur3_32(const void * data, size_t len, Uint32 seed)
  *
  * @sa SDL_memmove
  **/
-inline void * memcpy(void * dst, const void * src, size_t len)
+inline void* memcpy(void* dst, const void* src, size_t len)
 {
   return SDL_memcpy(dst, src, len);
 }
@@ -1375,7 +1342,7 @@ inline void * memcpy(void * dst, const void * src, size_t len)
  *
  * @sa SDL_memcpy
  **/
-inline void * memmove(void * dst, const void * src, size_t len)
+inline void* memmove(void* dst, const void* src, size_t len)
 {
   return SDL_memmove(dst, src, len);
 }
@@ -1398,7 +1365,7 @@ inline void * memmove(void * dst, const void * src, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline void * memset(void * dst, int c, size_t len)
+inline void* memset(void* dst, int c, size_t len)
 {
   return SDL_memset(dst, c, len);
 }
@@ -1421,7 +1388,7 @@ inline void * memset(void * dst, int c, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline void * memset4(void * dst, Uint32 val, size_t dwords)
+inline void* memset4(void* dst, Uint32 val, size_t dwords)
 {
   return SDL_memset4(dst, val, dwords);
 }
@@ -1440,7 +1407,7 @@ inline void * memset4(void * dst, Uint32 val, size_t dwords)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int memcmp(const void * s1, const void * s2, size_t len)
+inline int memcmp(const void* s1, const void* s2, size_t len)
 {
   return SDL_memcmp(s1, s2, len);
 }
@@ -1470,10 +1437,7 @@ inline int memcmp(const void * s1, const void * s2, size_t len)
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  **/
-inline size_t wcslen(const wchar_t * wstr)
-{
-  return SDL_wcslen(wstr);
-}
+inline size_t wcslen(const wchar_t* wstr) { return SDL_wcslen(wstr); }
 
 /**
  * This works exactly like wcsnlen() but doesn't require access to a C
@@ -1504,7 +1468,7 @@ inline size_t wcslen(const wchar_t * wstr)
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  **/
-inline size_t wcsnlen(const wchar_t * wstr, size_t maxlen)
+inline size_t wcsnlen(const wchar_t* wstr, size_t maxlen)
 {
   return SDL_wcsnlen(wstr, maxlen);
 }
@@ -1534,7 +1498,7 @@ inline size_t wcsnlen(const wchar_t * wstr, size_t maxlen)
  *
  * @sa SDL_wcslcat
  **/
-inline size_t wcslcpy(wchar_t * dst, const wchar_t * src, size_t maxlen)
+inline size_t wcslcpy(wchar_t* dst, const wchar_t* src, size_t maxlen)
 {
   return SDL_wcslcpy(dst, src, maxlen);
 }
@@ -1566,7 +1530,7 @@ inline size_t wcslcpy(wchar_t * dst, const wchar_t * src, size_t maxlen)
  *
  * @sa SDL_wcslcpy
  **/
-inline size_t wcslcat(wchar_t * dst, const wchar_t * src, size_t maxlen)
+inline size_t wcslcat(wchar_t* dst, const wchar_t* src, size_t maxlen)
 {
   return SDL_wcslcat(dst, src, maxlen);
 }
@@ -1587,10 +1551,7 @@ inline size_t wcslcat(wchar_t * dst, const wchar_t * src, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline wchar_t * wcsdup(const wchar_t * wstr)
-{
-  return SDL_wcsdup(wstr);
-}
+inline wchar_t* wcsdup(const wchar_t* wstr) { return SDL_wcsdup(wstr); }
 
 /**
  * Search a wide string for the first instance of a specific substring.
@@ -1610,7 +1571,7 @@ inline wchar_t * wcsdup(const wchar_t * wstr)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline wchar_t * wcsstr(const wchar_t * haystack, const wchar_t * needle)
+inline wchar_t* wcsstr(const wchar_t* haystack, const wchar_t* needle)
 {
   return SDL_wcsstr(haystack, needle);
 }
@@ -1638,7 +1599,9 @@ inline wchar_t * wcsstr(const wchar_t * haystack, const wchar_t * needle)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline wchar_t * wcsnstr(const wchar_t * haystack, const wchar_t * needle, size_t maxlen)
+inline wchar_t* wcsnstr(const wchar_t* haystack,
+                        const wchar_t* needle,
+                        size_t maxlen)
 {
   return SDL_wcsnstr(haystack, needle, maxlen);
 }
@@ -1660,7 +1623,7 @@ inline wchar_t * wcsnstr(const wchar_t * haystack, const wchar_t * needle, size_
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int wcscmp(const wchar_t * str1, const wchar_t * str2)
+inline int wcscmp(const wchar_t* str1, const wchar_t* str2)
 {
   return SDL_wcscmp(str1, str2);
 }
@@ -1694,7 +1657,7 @@ inline int wcscmp(const wchar_t * str1, const wchar_t * str2)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int wcsncmp(const wchar_t * str1, const wchar_t * str2, size_t maxlen)
+inline int wcsncmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
 {
   return SDL_wcsncmp(str1, str2, maxlen);
 }
@@ -1727,7 +1690,7 @@ inline int wcsncmp(const wchar_t * str1, const wchar_t * str2, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int wcscasecmp(const wchar_t * str1, const wchar_t * str2)
+inline int wcscasecmp(const wchar_t* str1, const wchar_t* str2)
 {
   return SDL_wcscasecmp(str1, str2);
 }
@@ -1772,7 +1735,7 @@ inline int wcscasecmp(const wchar_t * str1, const wchar_t * str2)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline int wcsncasecmp(const wchar_t * str1, const wchar_t * str2, size_t maxlen)
+inline int wcsncasecmp(const wchar_t* str1, const wchar_t* str2, size_t maxlen)
 {
   return SDL_wcsncasecmp(str1, str2, maxlen);
 }
@@ -1802,7 +1765,7 @@ inline int wcsncasecmp(const wchar_t * str1, const wchar_t * str2, size_t maxlen
  *
  * @sa SDL_strtol
  **/
-inline long wcstol(const wchar_t * str, wchar_t ** endp, int base)
+inline long wcstol(const wchar_t* str, wchar_t** endp, int base)
 {
   return SDL_wcstol(str, endp, base);
 }
@@ -1825,10 +1788,7 @@ inline long wcstol(const wchar_t * str, wchar_t ** endp, int base)
  * @sa SDL_utf8strlen
  * @sa SDL_utf8strnlen
  **/
-inline size_t strlen(StringParam str)
-{
-  return SDL_strlen(str);
-}
+inline size_t strlen(StringParam str) { return SDL_strlen(str); }
 
 /**
  * This works exactly like strnlen() but doesn't require access to a C
@@ -1884,7 +1844,7 @@ inline size_t strnlen(StringParam str, size_t maxlen)
  * @sa SDL_strlcat
  * @sa SDL_utf8strlcpy
  **/
-inline size_t strlcpy(char * dst, StringParam src, size_t maxlen)
+inline size_t strlcpy(char* dst, StringParam src, size_t maxlen)
 {
   return SDL_strlcpy(dst, src, maxlen);
 }
@@ -1915,7 +1875,7 @@ inline size_t strlcpy(char * dst, StringParam src, size_t maxlen)
  *
  * @sa SDL_strlcpy
  **/
-inline size_t utf8strlcpy(char * dst, StringParam src, size_t dst_bytes)
+inline size_t utf8strlcpy(char* dst, StringParam src, size_t dst_bytes)
 {
   return SDL_utf8strlcpy(dst, src, dst_bytes);
 }
@@ -1946,7 +1906,7 @@ inline size_t utf8strlcpy(char * dst, StringParam src, size_t dst_bytes)
  *
  * @sa SDL_strlcpy
  **/
-inline size_t strlcat(char * dst, StringParam src, size_t maxlen)
+inline size_t strlcat(char* dst, StringParam src, size_t maxlen)
 {
   return SDL_strlcat(dst, src, maxlen);
 }
@@ -1967,10 +1927,7 @@ inline size_t strlcat(char * dst, StringParam src, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strdup(StringParam str)
-{
-  return SDL_strdup(str);
-}
+inline char* strdup(StringParam str) { return SDL_strdup(str); }
 
 /**
  * Allocate a copy of a string, up to n characters.
@@ -1995,7 +1952,7 @@ inline char * strdup(StringParam str)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strndup(StringParam str, size_t maxlen)
+inline char* strndup(StringParam str, size_t maxlen)
 {
   return SDL_strndup(str, maxlen);
 }
@@ -2019,10 +1976,7 @@ inline char * strndup(StringParam str, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strrev(char * str)
-{
-  return SDL_strrev(str);
-}
+inline char* strrev(char* str) { return SDL_strrev(str); }
 
 /**
  * Convert a string to uppercase.
@@ -2043,10 +1997,7 @@ inline char * strrev(char * str)
  *
  * @sa SDL_strlwr
  **/
-inline char * strupr(char * str)
-{
-  return SDL_strupr(str);
-}
+inline char* strupr(char* str) { return SDL_strupr(str); }
 
 /**
  * Convert a string to lowercase.
@@ -2067,10 +2018,7 @@ inline char * strupr(char * str)
  *
  * @sa SDL_strupr
  **/
-inline char * strlwr(char * str)
-{
-  return SDL_strlwr(str);
-}
+inline char* strlwr(char* str) { return SDL_strlwr(str); }
 
 /**
  * Search a string for the first instance of a specific byte.
@@ -2090,10 +2038,7 @@ inline char * strlwr(char * str)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strchr(StringParam str, int c)
-{
-  return SDL_strchr(str, c);
-}
+inline char* strchr(StringParam str, int c) { return SDL_strchr(str, c); }
 
 /**
  * Search a string for the last instance of a specific byte.
@@ -2112,10 +2057,7 @@ inline char * strchr(StringParam str, int c)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strrchr(StringParam str, int c)
-{
-  return SDL_strrchr(str, c);
-}
+inline char* strrchr(StringParam str, int c) { return SDL_strrchr(str, c); }
 
 /**
  * Search a string for the first instance of a specific substring.
@@ -2135,7 +2077,7 @@ inline char * strrchr(StringParam str, int c)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strstr(StringParam haystack, StringParam needle)
+inline char* strstr(StringParam haystack, StringParam needle)
 {
   return SDL_strstr(haystack, needle);
 }
@@ -2161,7 +2103,7 @@ inline char * strstr(StringParam haystack, StringParam needle)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strnstr(StringParam haystack, StringParam needle, size_t maxlen)
+inline char* strnstr(StringParam haystack, StringParam needle, size_t maxlen)
 {
   return SDL_strnstr(haystack, needle, maxlen);
 }
@@ -2192,7 +2134,7 @@ inline char * strnstr(StringParam haystack, StringParam needle, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strcasestr(StringParam haystack, StringParam needle)
+inline char* strcasestr(StringParam haystack, StringParam needle)
 {
   return SDL_strcasestr(haystack, needle);
 }
@@ -2224,7 +2166,7 @@ inline char * strcasestr(StringParam haystack, StringParam needle)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strtok_r(char * str, StringParam delim, char ** saveptr)
+inline char* strtok_r(char* str, StringParam delim, char** saveptr)
 {
   return SDL_strtok_r(str, delim, saveptr);
 }
@@ -2255,10 +2197,7 @@ inline char * strtok_r(char * str, StringParam delim, char ** saveptr)
  * @sa SDL_utf8strnlen
  * @sa SDL_strlen
  **/
-inline size_t utf8strlen(StringParam str)
-{
-  return SDL_utf8strlen(str);
-}
+inline size_t utf8strlen(StringParam str) { return SDL_utf8strlen(str); }
 
 /**
  * Count the number of codepoints in a UTF-8 string, up to n bytes.
@@ -2322,7 +2261,7 @@ inline size_t utf8strnlen(StringParam str, size_t bytes)
  * @sa SDL_ltoa
  * @sa SDL_lltoa
  **/
-inline char * itoa(int value, char * str, int radix)
+inline char* itoa(int value, char* str, int radix)
 {
   return SDL_itoa(value, str, radix);
 }
@@ -2353,7 +2292,7 @@ inline char * itoa(int value, char * str, int radix)
  * @sa SDL_ultoa
  * @sa SDL_ulltoa
  **/
-inline char * uitoa(unsigned int value, char * str, int radix)
+inline char* uitoa(unsigned int value, char* str, int radix)
 {
   return SDL_uitoa(value, str, radix);
 }
@@ -2384,7 +2323,7 @@ inline char * uitoa(unsigned int value, char * str, int radix)
  * @sa SDL_itoa
  * @sa SDL_lltoa
  **/
-inline char * ltoa(long value, char * str, int radix)
+inline char* ltoa(long value, char* str, int radix)
 {
   return SDL_ltoa(value, str, radix);
 }
@@ -2415,7 +2354,7 @@ inline char * ltoa(long value, char * str, int radix)
  * @sa SDL_uitoa
  * @sa SDL_ulltoa
  **/
-inline char * ultoa(unsigned long value, char * str, int radix)
+inline char* ultoa(unsigned long value, char* str, int radix)
 {
   return SDL_ultoa(value, str, radix);
 }
@@ -2446,7 +2385,7 @@ inline char * ultoa(unsigned long value, char * str, int radix)
  * @sa SDL_itoa
  * @sa SDL_ltoa
  **/
-inline char * lltoa(long long value, char * str, int radix)
+inline char* lltoa(long long value, char* str, int radix)
 {
   return SDL_lltoa(value, str, radix);
 }
@@ -2477,7 +2416,7 @@ inline char * lltoa(long long value, char * str, int radix)
  * @sa SDL_uitoa
  * @sa SDL_ultoa
  **/
-inline char * ulltoa(unsigned long long value, char * str, int radix)
+inline char* ulltoa(unsigned long long value, char* str, int radix)
 {
   return SDL_ulltoa(value, str, radix);
 }
@@ -2503,10 +2442,7 @@ inline char * ulltoa(unsigned long long value, char * str, int radix)
  * @sa SDL_strtod
  * @sa SDL_itoa
  **/
-inline int atoi(StringParam str)
-{
-  return SDL_atoi(str);
-}
+inline int atoi(StringParam str) { return SDL_atoi(str); }
 
 /**
  * Parse a `double` from a string.
@@ -2528,10 +2464,7 @@ inline int atoi(StringParam str)
  * @sa SDL_strtoull
  * @sa SDL_strtod
  **/
-inline double atof(StringParam str)
-{
-  return SDL_atof(str);
-}
+inline double atof(StringParam str) { return SDL_atof(str); }
 
 /**
  * Parse a `long` from a string.
@@ -2565,7 +2498,7 @@ inline double atof(StringParam str)
  * @sa SDL_ltoa
  * @sa SDL_wcstol
  **/
-inline long strtol(StringParam str, char ** endp, int base)
+inline long strtol(StringParam str, char** endp, int base)
 {
   return SDL_strtol(str, endp, base);
 }
@@ -2601,7 +2534,7 @@ inline long strtol(StringParam str, char ** endp, int base)
  * @sa SDL_strtod
  * @sa SDL_ultoa
  **/
-inline unsigned long strtoul(StringParam str, char ** endp, int base)
+inline unsigned long strtoul(StringParam str, char** endp, int base)
 {
   return SDL_strtoul(str, endp, base);
 }
@@ -2637,7 +2570,7 @@ inline unsigned long strtoul(StringParam str, char ** endp, int base)
  * @sa SDL_strtod
  * @sa SDL_lltoa
  **/
-inline long long strtoll(StringParam str, char ** endp, int base)
+inline long long strtoll(StringParam str, char** endp, int base)
 {
   return SDL_strtoll(str, endp, base);
 }
@@ -2674,7 +2607,7 @@ inline long long strtoll(StringParam str, char ** endp, int base)
  * @sa SDL_strtod
  * @sa SDL_ulltoa
  **/
-inline unsigned long long strtoull(StringParam str, char ** endp, int base)
+inline unsigned long long strtoull(StringParam str, char** endp, int base)
 {
   return SDL_strtoull(str, endp, base);
 }
@@ -2706,7 +2639,7 @@ inline unsigned long long strtoull(StringParam str, char ** endp, int base)
  * @sa SDL_strtoul
  * @sa SDL_strtoull
  **/
-inline double strtod(StringParam str, char ** endp)
+inline double strtod(StringParam str, char** endp)
 {
   return SDL_strtod(str, endp);
 }
@@ -2856,7 +2789,7 @@ inline int strncasecmp(StringParam str1, StringParam str2, size_t maxlen)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * strpbrk(StringParam str, StringParam breakset)
+inline char* strpbrk(StringParam str, StringParam breakset)
 {
   return SDL_strpbrk(str, breakset);
 }
@@ -2904,7 +2837,7 @@ inline char * strpbrk(StringParam str, StringParam breakset)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline Uint32 StepUTF8(const char ** pstr, size_t * pslen)
+inline Uint32 StepUTF8(const char** pstr, size_t* pslen)
 {
   return SDL_StepUTF8(pstr, pslen);
 }
@@ -2938,7 +2871,7 @@ inline Uint32 StepUTF8(const char ** pstr, size_t * pslen)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline Uint32 StepBackUTF8(StringParam start, const char ** pstr)
+inline Uint32 StepBackUTF8(StringParam start, const char** pstr)
 {
   return SDL_StepBackUTF8(start, pstr);
 }
@@ -2970,225 +2903,9 @@ inline Uint32 StepBackUTF8(StringParam start, const char ** pstr)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline char * UCS4ToUTF8(Uint32 codepoint, char * dst)
+inline char* UCS4ToUTF8(Uint32 codepoint, char* dst)
 {
   return SDL_UCS4ToUTF8(codepoint, dst);
-}
-
-/**
- * This works exactly like sscanf() but doesn't require access to a C runtime.
- *
- * Scan a string, matching a format string, converting each '%' item and
- * storing it to pointers provided through variable arguments.
- *
- * @param text the string to scan. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
- * @param ... a list of pointers to values to be filled in with scanned items.
- * @returns the number of items that matched the format string.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int sscanf(StringParam text, SDL_SCANF_FORMAT_STRING const char * fmt, ...)
-{
-  return SDL_sscanf(text, fmt, ...);
-}
-
-/**
- * This works exactly like vsscanf() but doesn't require access to a C
- * runtime.
- *
- * Functions identically to SDL_sscanf(), except it takes a `va_list` instead
- * of using `...` variable arguments.
- *
- * @param text the string to scan. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
- * @param ap a `va_list` of pointers to values to be filled in with scanned
- *           items.
- * @returns the number of items that matched the format string.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int vsscanf(StringParam text, SDL_SCANF_FORMAT_STRING const char * fmt, va_list ap)
-{
-  return SDL_vsscanf(text, fmt, ap);
-}
-
-/**
- * This works exactly like snprintf() but doesn't require access to a C
- * runtime.
- *
- * Format a string of up to `maxlen`-1 bytes, converting each '%' item with
- * values provided through variable arguments.
- *
- * While some C runtimes differ on how to deal with too-large strings, this
- * function null-terminates the output, by treating the null-terminator as
- * part of the `maxlen` count. Note that if `maxlen` is zero, however, no
- * bytes will be written at all.
- *
- * This function returns the number of _bytes_ (not _characters_) that should
- * be written, excluding the null-terminator character. If this returns a
- * number >= `maxlen`, it means the output string was truncated. A negative
- * return value means an error occurred.
- *
- * Referencing the output string's pointer with a format item is undefined
- * behavior.
- *
- * @param text the buffer to write the string into. Must not be NULL.
- * @param maxlen the maximum bytes to write, including the null-terminator.
- * @param fmt a printf-style format string. Must not be NULL.
- * @param ... a list of values to be used with the format string.
- * @returns the number of bytes that should be written, not counting the
- *          null-terminator char, or a negative value on error.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int snprintf(char * text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const char * fmt, ...)
-{
-  return SDL_snprintf(text, maxlen, fmt, ...);
-}
-
-/**
- * This works exactly like swprintf() but doesn't require access to a C
- * runtime.
- *
- * Format a wide string of up to `maxlen`-1 wchar_t values, converting each
- * '%' item with values provided through variable arguments.
- *
- * While some C runtimes differ on how to deal with too-large strings, this
- * function null-terminates the output, by treating the null-terminator as
- * part of the `maxlen` count. Note that if `maxlen` is zero, however, no wide
- * characters will be written at all.
- *
- * This function returns the number of _wide characters_ (not _codepoints_)
- * that should be written, excluding the null-terminator character. If this
- * returns a number >= `maxlen`, it means the output string was truncated. A
- * negative return value means an error occurred.
- *
- * Referencing the output string's pointer with a format item is undefined
- * behavior.
- *
- * @param text the buffer to write the wide string into. Must not be NULL.
- * @param maxlen the maximum wchar_t values to write, including the
- *               null-terminator.
- * @param fmt a printf-style format string. Must not be NULL.
- * @param ... a list of values to be used with the format string.
- * @returns the number of wide characters that should be written, not counting
- *          the null-terminator char, or a negative value on error.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int swprintf(wchar_t * text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const wchar_t * fmt, ...)
-{
-  return SDL_swprintf(text, maxlen, fmt, ...);
-}
-
-/**
- * This works exactly like vsnprintf() but doesn't require access to a C
- * runtime.
- *
- * Functions identically to SDL_snprintf(), except it takes a `va_list`
- * instead of using `...` variable arguments.
- *
- * @param text the buffer to write the string into. Must not be NULL.
- * @param maxlen the maximum bytes to write, including the null-terminator.
- * @param fmt a printf-style format string. Must not be NULL.
- * @param ap a `va_list` values to be used with the format string.
- * @returns the number of bytes that should be written, not counting the
- *          null-terminator char, or a negative value on error.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int vsnprintf(char * text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const char * fmt, va_list ap)
-{
-  return SDL_vsnprintf(text, maxlen, fmt, ap);
-}
-
-/**
- * This works exactly like vswprintf() but doesn't require access to a C
- * runtime.
- *
- * Functions identically to SDL_swprintf(), except it takes a `va_list`
- * instead of using `...` variable arguments.
- *
- * @param text the buffer to write the string into. Must not be NULL.
- * @param maxlen the maximum wide characters to write, including the
- *               null-terminator.
- * @param fmt a printf-style format wide string. Must not be NULL.
- * @param ap a `va_list` values to be used with the format string.
- * @returns the number of wide characters that should be written, not counting
- *          the null-terminator char, or a negative value on error.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int vswprintf(wchar_t * text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const wchar_t * fmt, va_list ap)
-{
-  return SDL_vswprintf(text, maxlen, fmt, ap);
-}
-
-/**
- * This works exactly like asprintf() but doesn't require access to a C
- * runtime.
- *
- * Functions identically to SDL_snprintf(), except it allocates a buffer large
- * enough to hold the output string on behalf of the caller.
- *
- * On success, this function returns the number of bytes (not characters)
- * comprising the output string, not counting the null-terminator character,
- * and sets `*strp` to the newly-allocated string.
- *
- * On error, this function returns a negative number, and the value of `*strp`
- * is undefined.
- *
- * The returned string is owned by the caller, and should be passed to
- * SDL_free when no longer needed.
- *
- * @param strp on output, is set to the new string. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
- * @param ... a list of values to be used with the format string.
- * @returns the number of bytes in the newly-allocated string, not counting
- *          the null-terminator char, or a negative value on error.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int asprintf(char ** strp, SDL_PRINTF_FORMAT_STRING const char * fmt, ...)
-{
-  return SDL_asprintf(strp, fmt, ...);
-}
-
-/**
- * This works exactly like vasprintf() but doesn't require access to a C
- * runtime.
- *
- * Functions identically to SDL_asprintf(), except it takes a `va_list`
- * instead of using `...` variable arguments.
- *
- * @param strp on output, is set to the new string. Must not be NULL.
- * @param fmt a printf-style format string. Must not be NULL.
- * @param ap a `va_list` values to be used with the format string.
- * @returns the number of bytes in the newly-allocated string, not counting
- *          the null-terminator char, or a negative value on error.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- **/
-inline int vasprintf(char ** strp, SDL_PRINTF_FORMAT_STRING const char * fmt, va_list ap)
-{
-  return SDL_vasprintf(strp, fmt, ap);
 }
 
 /**
@@ -3209,10 +2926,7 @@ inline int vasprintf(char ** strp, SDL_PRINTF_FORMAT_STRING const char * fmt, va
  * @sa SDL_rand_bits
  * @sa SDL_randf
  **/
-inline void srand(Uint64 seed)
-{
-  SDL_srand(seed);
-}
+inline void srand(Uint64 seed) { SDL_srand(seed); }
 
 /**
  * Generate a pseudo-random number less than n for positive n
@@ -3246,10 +2960,7 @@ inline void srand(Uint64 seed)
  * @sa SDL_srand
  * @sa SDL_randf
  **/
-inline Sint32 rand(Sint32 n)
-{
-  return SDL_rand(n);
-}
+inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
@@ -3272,10 +2983,7 @@ inline Sint32 rand(Sint32 n)
  * @sa SDL_srand
  * @sa SDL_rand
  **/
-inline float randf()
-{
-  return SDL_randf();
-}
+inline float randf() { return SDL_randf(); }
 
 /**
  * Generate 32 pseudo-random bits.
@@ -3298,10 +3006,7 @@ inline float randf()
  * @sa SDL_randf
  * @sa SDL_srand
  **/
-inline Uint32 rand_bits()
-{
-  return SDL_rand_bits();
-}
+inline Uint32 rand_bits() { return SDL_rand_bits(); }
 
 /**
  * Generate a pseudo-random number less than n for positive n
@@ -3336,10 +3041,7 @@ inline Uint32 rand_bits()
  * @sa SDL_rand_bits_r
  * @sa SDL_randf_r
  **/
-inline Sint32 rand_r(Uint64 * state, Sint32 n)
-{
-  return SDL_rand_r(state, n);
-}
+inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
 
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
@@ -3366,10 +3068,7 @@ inline Sint32 rand_r(Uint64 * state, Sint32 n)
  * @sa SDL_rand_r
  * @sa SDL_randf
  **/
-inline float randf_r(Uint64 * state)
-{
-  return SDL_randf_r(state);
-}
+inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
 
 /**
  * Generate 32 pseudo-random bits.
@@ -3394,10 +3093,7 @@ inline float randf_r(Uint64 * state)
  * @sa SDL_rand_r
  * @sa SDL_randf_r
  **/
-inline Uint32 rand_bits_r(Uint64 * state)
-{
-  return SDL_rand_bits_r(state);
-}
+inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
 
 /**
  * Compute the arc cosine of `x`.
@@ -3427,10 +3123,7 @@ inline Uint32 rand_bits_r(Uint64 * state)
  * @sa SDL_asin
  * @sa SDL_cos
  **/
-inline double acos(double x)
-{
-  return SDL_acos(x);
-}
+inline double acos(double x) { return SDL_acos(x); }
 
 /**
  * Compute the arc cosine of `x`.
@@ -3460,10 +3153,7 @@ inline double acos(double x)
  * @sa SDL_asinf
  * @sa SDL_cosf
  **/
-inline float acosf(float x)
-{
-  return SDL_acosf(x);
-}
+inline float acosf(float x) { return SDL_acosf(x); }
 
 /**
  * Compute the arc sine of `x`.
@@ -3493,10 +3183,7 @@ inline float acosf(float x)
  * @sa SDL_acos
  * @sa SDL_sin
  **/
-inline double asin(double x)
-{
-  return SDL_asin(x);
-}
+inline double asin(double x) { return SDL_asin(x); }
 
 /**
  * Compute the arc sine of `x`.
@@ -3526,10 +3213,7 @@ inline double asin(double x)
  * @sa SDL_acosf
  * @sa SDL_sinf
  **/
-inline float asinf(float x)
-{
-  return SDL_asinf(x);
-}
+inline float asinf(float x) { return SDL_asinf(x); }
 
 /**
  * Compute the arc tangent of `x`.
@@ -3561,10 +3245,7 @@ inline float asinf(float x)
  * @sa SDL_atan2
  * @sa SDL_tan
  **/
-inline double atan(double x)
-{
-  return SDL_atan(x);
-}
+inline double atan(double x) { return SDL_atan(x); }
 
 /**
  * Compute the arc tangent of `x`.
@@ -3596,10 +3277,7 @@ inline double atan(double x)
  * @sa SDL_atan2f
  * @sa SDL_tanf
  **/
-inline float atanf(float x)
-{
-  return SDL_atanf(x);
-}
+inline float atanf(float x) { return SDL_atanf(x); }
 
 /**
  * Compute the arc tangent of `y / x`, using the signs of x and y to adjust
@@ -3635,10 +3313,7 @@ inline float atanf(float x)
  * @sa SDL_atan
  * @sa SDL_tan
  **/
-inline double atan2(double y, double x)
-{
-  return SDL_atan2(y, x);
-}
+inline double atan2(double y, double x) { return SDL_atan2(y, x); }
 
 /**
  * Compute the arc tangent of `y / x`, using the signs of x and y to adjust
@@ -3674,10 +3349,7 @@ inline double atan2(double y, double x)
  * @sa SDL_atan
  * @sa SDL_tan
  **/
-inline float atan2f(float y, float x)
-{
-  return SDL_atan2f(y, x);
-}
+inline float atan2f(float y, float x) { return SDL_atan2f(y, x); }
 
 /**
  * Compute the ceiling of `x`.
@@ -3705,10 +3377,7 @@ inline float atan2f(float y, float x)
  * @sa SDL_round
  * @sa SDL_lround
  **/
-inline double ceil(double x)
-{
-  return SDL_ceil(x);
-}
+inline double ceil(double x) { return SDL_ceil(x); }
 
 /**
  * Compute the ceiling of `x`.
@@ -3736,10 +3405,7 @@ inline double ceil(double x)
  * @sa SDL_roundf
  * @sa SDL_lroundf
  **/
-inline float ceilf(float x)
-{
-  return SDL_ceilf(x);
-}
+inline float ceilf(float x) { return SDL_ceilf(x); }
 
 /**
  * Copy the sign of one floating-point value to another.
@@ -3765,10 +3431,7 @@ inline float ceilf(float x)
  * @sa SDL_copysignf
  * @sa SDL_fabs
  **/
-inline double copysign(double x, double y)
-{
-  return SDL_copysign(x, y);
-}
+inline double copysign(double x, double y) { return SDL_copysign(x, y); }
 
 /**
  * Copy the sign of one floating-point value to another.
@@ -3794,10 +3457,7 @@ inline double copysign(double x, double y)
  * @sa SDL_copysignf
  * @sa SDL_fabsf
  **/
-inline float copysignf(float x, float y)
-{
-  return SDL_copysignf(x, y);
-}
+inline float copysignf(float x, float y) { return SDL_copysignf(x, y); }
 
 /**
  * Compute the cosine of `x`.
@@ -3825,10 +3485,7 @@ inline float copysignf(float x, float y)
  * @sa SDL_acos
  * @sa SDL_sin
  **/
-inline double cos(double x)
-{
-  return SDL_cos(x);
-}
+inline double cos(double x) { return SDL_cos(x); }
 
 /**
  * Compute the cosine of `x`.
@@ -3856,10 +3513,7 @@ inline double cos(double x)
  * @sa SDL_acosf
  * @sa SDL_sinf
  **/
-inline float cosf(float x)
-{
-  return SDL_cosf(x);
-}
+inline float cosf(float x) { return SDL_cosf(x); }
 
 /**
  * Compute the exponential of `x`.
@@ -3891,10 +3545,7 @@ inline float cosf(float x)
  * @sa SDL_expf
  * @sa SDL_log
  **/
-inline double exp(double x)
-{
-  return SDL_exp(x);
-}
+inline double exp(double x) { return SDL_exp(x); }
 
 /**
  * Compute the exponential of `x`.
@@ -3926,10 +3577,7 @@ inline double exp(double x)
  * @sa SDL_exp
  * @sa SDL_logf
  **/
-inline float expf(float x)
-{
-  return SDL_expf(x);
-}
+inline float expf(float x) { return SDL_expf(x); }
 
 /**
  * Compute the absolute value of `x`
@@ -3950,10 +3598,7 @@ inline float expf(float x)
  *
  * @sa SDL_fabsf
  **/
-inline double fabs(double x)
-{
-  return SDL_fabs(x);
-}
+inline double fabs(double x) { return SDL_fabs(x); }
 
 /**
  * Compute the absolute value of `x`
@@ -3974,10 +3619,7 @@ inline double fabs(double x)
  *
  * @sa SDL_fabs
  **/
-inline float fabsf(float x)
-{
-  return SDL_fabsf(x);
-}
+inline float fabsf(float x) { return SDL_fabsf(x); }
 
 /**
  * Compute the floor of `x`.
@@ -4005,10 +3647,7 @@ inline float fabsf(float x)
  * @sa SDL_round
  * @sa SDL_lround
  **/
-inline double floor(double x)
-{
-  return SDL_floor(x);
-}
+inline double floor(double x) { return SDL_floor(x); }
 
 /**
  * Compute the floor of `x`.
@@ -4036,10 +3675,7 @@ inline double floor(double x)
  * @sa SDL_roundf
  * @sa SDL_lroundf
  **/
-inline float floorf(float x)
-{
-  return SDL_floorf(x);
-}
+inline float floorf(float x) { return SDL_floorf(x); }
 
 /**
  * Truncate `x` to an integer.
@@ -4068,10 +3704,7 @@ inline float floorf(float x)
  * @sa SDL_round
  * @sa SDL_lround
  **/
-inline double trunc(double x)
-{
-  return SDL_trunc(x);
-}
+inline double trunc(double x) { return SDL_trunc(x); }
 
 /**
  * Truncate `x` to an integer.
@@ -4100,10 +3733,7 @@ inline double trunc(double x)
  * @sa SDL_roundf
  * @sa SDL_lroundf
  **/
-inline float truncf(float x)
-{
-  return SDL_truncf(x);
-}
+inline float truncf(float x) { return SDL_truncf(x); }
 
 /**
  * Return the floating-point remainder of `x / y`
@@ -4133,10 +3763,7 @@ inline float truncf(float x)
  * @sa SDL_round
  * @sa SDL_lround
  **/
-inline double fmod(double x, double y)
-{
-  return SDL_fmod(x, y);
-}
+inline double fmod(double x, double y) { return SDL_fmod(x, y); }
 
 /**
  * Return the floating-point remainder of `x / y`
@@ -4166,10 +3793,7 @@ inline double fmod(double x, double y)
  * @sa SDL_roundf
  * @sa SDL_lroundf
  **/
-inline float fmodf(float x, float y)
-{
-  return SDL_fmodf(x, y);
-}
+inline float fmodf(float x, float y) { return SDL_fmodf(x, y); }
 
 /**
  * Return whether the value is infinity.
@@ -4183,10 +3807,7 @@ inline float fmodf(float x, float y)
  *
  * @sa SDL_isinff
  **/
-inline int isinf(double x)
-{
-  return SDL_isinf(x);
-}
+inline int isinf(double x) { return SDL_isinf(x); }
 
 /**
  * Return whether the value is infinity.
@@ -4200,10 +3821,7 @@ inline int isinf(double x)
  *
  * @sa SDL_isinf
  **/
-inline int isinff(float x)
-{
-  return SDL_isinff(x);
-}
+inline int isinff(float x) { return SDL_isinff(x); }
 
 /**
  * Return whether the value is NaN.
@@ -4217,10 +3835,7 @@ inline int isinff(float x)
  *
  * @sa SDL_isnanf
  **/
-inline int isnan(double x)
-{
-  return SDL_isnan(x);
-}
+inline int isnan(double x) { return SDL_isnan(x); }
 
 /**
  * Return whether the value is NaN.
@@ -4234,10 +3849,7 @@ inline int isnan(double x)
  *
  * @sa SDL_isnan
  **/
-inline int isnanf(float x)
-{
-  return SDL_isnanf(x);
-}
+inline int isnanf(float x) { return SDL_isnanf(x); }
 
 /**
  * Compute the natural logarithm of `x`.
@@ -4267,10 +3879,7 @@ inline int isnanf(float x)
  * @sa SDL_log10
  * @sa SDL_exp
  **/
-inline double log(double x)
-{
-  return SDL_log(x);
-}
+inline double log(double x) { return SDL_log(x); }
 
 /**
  * Compute the natural logarithm of `x`.
@@ -4299,10 +3908,7 @@ inline double log(double x)
  * @sa SDL_log
  * @sa SDL_expf
  **/
-inline float logf(float x)
-{
-  return SDL_logf(x);
-}
+inline float logf(float x) { return SDL_logf(x); }
 
 /**
  * Compute the base-10 logarithm of `x`.
@@ -4332,10 +3938,7 @@ inline float logf(float x)
  * @sa SDL_log
  * @sa SDL_pow
  **/
-inline double log10(double x)
-{
-  return SDL_log10(x);
-}
+inline double log10(double x) { return SDL_log10(x); }
 
 /**
  * Compute the base-10 logarithm of `x`.
@@ -4365,10 +3968,7 @@ inline double log10(double x)
  * @sa SDL_logf
  * @sa SDL_powf
  **/
-inline float log10f(float x)
-{
-  return SDL_log10f(x);
-}
+inline float log10f(float x) { return SDL_log10f(x); }
 
 /**
  * Split `x` into integer and fractional parts
@@ -4388,10 +3988,7 @@ inline float log10f(float x)
  * @sa SDL_trunc
  * @sa SDL_fmod
  **/
-inline double modf(double x, double * y)
-{
-  return SDL_modf(x, y);
-}
+inline double modf(double x, double* y) { return SDL_modf(x, y); }
 
 /**
  * Split `x` into integer and fractional parts
@@ -4411,10 +4008,7 @@ inline double modf(double x, double * y)
  * @sa SDL_truncf
  * @sa SDL_fmodf
  **/
-inline float modff(float x, float * y)
-{
-  return SDL_modff(x, y);
-}
+inline float modff(float x, float* y) { return SDL_modff(x, y); }
 
 /**
  * Raise `x` to the power `y`
@@ -4446,10 +4040,7 @@ inline float modff(float x, float * y)
  * @sa SDL_exp
  * @sa SDL_log
  **/
-inline double pow(double x, double y)
-{
-  return SDL_pow(x, y);
-}
+inline double pow(double x, double y) { return SDL_pow(x, y); }
 
 /**
  * Raise `x` to the power `y`
@@ -4481,10 +4072,7 @@ inline double pow(double x, double y)
  * @sa SDL_expf
  * @sa SDL_logf
  **/
-inline float powf(float x, float y)
-{
-  return SDL_powf(x, y);
-}
+inline float powf(float x, float y) { return SDL_powf(x, y); }
 
 /**
  * Round `x` to the nearest integer.
@@ -4513,10 +4101,7 @@ inline float powf(float x, float y)
  * @sa SDL_ceil
  * @sa SDL_trunc
  **/
-inline double round(double x)
-{
-  return SDL_round(x);
-}
+inline double round(double x) { return SDL_round(x); }
 
 /**
  * Round `x` to the nearest integer.
@@ -4545,10 +4130,7 @@ inline double round(double x)
  * @sa SDL_ceilf
  * @sa SDL_truncf
  **/
-inline float roundf(float x)
-{
-  return SDL_roundf(x);
-}
+inline float roundf(float x) { return SDL_roundf(x); }
 
 /**
  * Round `x` to the nearest integer representable as a long
@@ -4577,10 +4159,7 @@ inline float roundf(float x)
  * @sa SDL_ceil
  * @sa SDL_trunc
  **/
-inline long lround(double x)
-{
-  return SDL_lround(x);
-}
+inline long lround(double x) { return SDL_lround(x); }
 
 /**
  * Round `x` to the nearest integer representable as a long
@@ -4609,10 +4188,7 @@ inline long lround(double x)
  * @sa SDL_ceilf
  * @sa SDL_truncf
  **/
-inline long lroundf(float x)
-{
-  return SDL_lroundf(x);
-}
+inline long lroundf(float x) { return SDL_lroundf(x); }
 
 /**
  * Scale `x` by an integer power of two.
@@ -4637,10 +4213,7 @@ inline long lroundf(float x)
  * @sa SDL_scalbnf
  * @sa SDL_pow
  **/
-inline double scalbn(double x, int n)
-{
-  return SDL_scalbn(x, n);
-}
+inline double scalbn(double x, int n) { return SDL_scalbn(x, n); }
 
 /**
  * Scale `x` by an integer power of two.
@@ -4665,10 +4238,7 @@ inline double scalbn(double x, int n)
  * @sa SDL_scalbn
  * @sa SDL_powf
  **/
-inline float scalbnf(float x, int n)
-{
-  return SDL_scalbnf(x, n);
-}
+inline float scalbnf(float x, int n) { return SDL_scalbnf(x, n); }
 
 /**
  * Compute the sine of `x`.
@@ -4696,10 +4266,7 @@ inline float scalbnf(float x, int n)
  * @sa SDL_asin
  * @sa SDL_cos
  **/
-inline double sin(double x)
-{
-  return SDL_sin(x);
-}
+inline double sin(double x) { return SDL_sin(x); }
 
 /**
  * Compute the sine of `x`.
@@ -4727,10 +4294,7 @@ inline double sin(double x)
  * @sa SDL_asinf
  * @sa SDL_cosf
  **/
-inline float sinf(float x)
-{
-  return SDL_sinf(x);
-}
+inline float sinf(float x) { return SDL_sinf(x); }
 
 /**
  * Compute the square root of `x`.
@@ -4756,10 +4320,7 @@ inline float sinf(float x)
  *
  * @sa SDL_sqrtf
  **/
-inline double sqrt(double x)
-{
-  return SDL_sqrt(x);
-}
+inline double sqrt(double x) { return SDL_sqrt(x); }
 
 /**
  * Compute the square root of `x`.
@@ -4785,10 +4346,7 @@ inline double sqrt(double x)
  *
  * @sa SDL_sqrt
  **/
-inline float sqrtf(float x)
-{
-  return SDL_sqrtf(x);
-}
+inline float sqrtf(float x) { return SDL_sqrtf(x); }
 
 /**
  * Compute the tangent of `x`.
@@ -4818,10 +4376,7 @@ inline float sqrtf(float x)
  * @sa SDL_atan
  * @sa SDL_atan2
  **/
-inline double tan(double x)
-{
-  return SDL_tan(x);
-}
+inline double tan(double x) { return SDL_tan(x); }
 
 /**
  * Compute the tangent of `x`.
@@ -4851,10 +4406,7 @@ inline double tan(double x)
  * @sa SDL_atanf
  * @sa SDL_atan2f
  **/
-inline float tanf(float x)
-{
-  return SDL_tanf(x);
-}
+inline float tanf(float x) { return SDL_tanf(x); }
 
 /**
  * An opaque handle representing string encoding conversion state.
@@ -4897,10 +4449,7 @@ inline iconv_t iconv_open(StringParam tocode, StringParam fromcode)
  * @sa SDL_iconv_open
  * @sa SDL_iconv_string
  **/
-inline int iconv_close(iconv_t cd)
-{
-  return SDL_iconv_close(cd);
-}
+inline int iconv_close(iconv_t cd) { return SDL_iconv_close(cd); }
 
 /**
  * This function converts text between encodings, reading from and writing to
@@ -4938,7 +4487,11 @@ inline int iconv_close(iconv_t cd)
  * @sa SDL_iconv_close
  * @sa SDL_iconv_string
  **/
-inline size_t iconv(iconv_t cd, const char ** inbuf, size_t * inbytesleft, char ** outbuf, size_t * outbytesleft)
+inline size_t iconv(iconv_t cd,
+                    const char** inbuf,
+                    size_t* inbytesleft,
+                    char** outbuf,
+                    size_t* outbytesleft)
 {
   return SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft);
 }
@@ -4968,7 +4521,10 @@ inline size_t iconv(iconv_t cd, const char ** inbuf, size_t * inbytesleft, char 
  * @sa SDL_iconv_close
  * @sa SDL_iconv
  **/
-inline char * iconv_string(StringParam tocode, StringParam fromcode, StringParam inbuf, size_t inbytesleft)
+inline char* iconv_string(StringParam tocode,
+                          StringParam fromcode,
+                          StringParam inbuf,
+                          size_t inbytesleft)
 {
   return SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft);
 }
@@ -4990,7 +4546,7 @@ inline char * iconv_string(StringParam tocode, StringParam fromcode, StringParam
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline bool size_mul_check_overflow(size_t a, size_t b, size_t * ret)
+inline bool size_mul_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_mul_check_overflow(a, b, ret);
 }
@@ -5012,7 +4568,7 @@ inline bool size_mul_check_overflow(size_t a, size_t b, size_t * ret)
  *
  * @since This function is available since SDL 3.2.0.
  **/
-inline bool size_add_check_overflow(size_t a, size_t b, size_t * ret)
+inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 {
   return SDL_size_add_check_overflow(a, b, ret);
 }

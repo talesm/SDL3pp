@@ -12,10 +12,11 @@ const ignorePrefixes = [
   'size_t wcsl',
   'char *str',
   '}',
+  'namespace SDL {',
 ];
 
 if (require.main == module) {
-  writeFileSync('scripts/source.json', JSON.stringify(parseApi([filename]), null, 2))
+  writeFileSync('scripts/source.json', JSON.stringify(parseApi(baseDir, [filename]), null, 2))
 }
 
 /**
@@ -25,11 +26,12 @@ if (require.main == module) {
  * 
  * @returns {{files: {[file: string]: ApiFile}}}
  */
-function parseApi(names) {
+function parseApi(baseDir, names) {
   const files = {};
   for (const name of names) {
     console.log(`Reading file ${name}`)
-    files[name] = parseContent(name)
+    const content = readFileSync(baseDir + name, 'utf-8').split('\n');
+    files[name] = parseContent(name, content)
   }
   return { files };
 }
@@ -45,11 +47,11 @@ exports.parseApi = parseApi;
 
 /**
  * 
- * @param {string} name 
+ * @param {string} name
+ * @param {string[]} content 
  */
-function parseContent(name) {
-  const content = readFileSync(baseDir + name, 'utf-8')
-  const tokens = tokenize(content.split('\n'))
+function parseContent(name, content) {
+  const tokens = tokenize(content);
 
   /** @type {ApiFile} */
   const apiFile = {
@@ -91,6 +93,7 @@ function parseContent(name) {
   }
   return apiFile
 }
+exports.parseContent = parseContent;
 
 /**
  * @typedef {object} ApiEntry
@@ -151,7 +154,7 @@ function parseToken(token) {
  * @param {string[]} params 
  */
 function parseParams(params) {
-  if (params[0] == 'void') {
+  if (params.length == 1 && (params[0] == 'void' || params[0] == '')) {
     return []
   }
   return params.map(param => {
@@ -175,6 +178,7 @@ function parseParams(params) {
  * @property {"alias"|"callback"|"def"|"doc"|"enum"|"function"|"struct"|"union"} kind
  * @property {string[]=} parameters
  * @property {string=} type
+ * @property {boolean=} constexpr
  * @property {number} begin
  * @property {number} end
  * @property {number} spaces
@@ -223,10 +227,16 @@ function tokenize(lines) {
         if (i > lines.length) break;
         ln = lines[++i]
       }
+      if (token.value.endsWith('_')) continue;
     } else if (m = line.match(/^(\s*)typedef\s+(([\w*]+\s+)+\**)(\w+);/)) {
       token.kind = "alias";
       token.value = m[4];
       token.type = m[2].trimEnd();
+      token.spaces = m[1]?.length ?? 0;
+    } else if (m = line.match(/^(\s*)using\s+(\w+)\s*=\s*([^;]+);/)) {
+      token.kind = "alias";
+      token.value = m[2];
+      token.type = m[3].trimEnd();
       token.spaces = m[1]?.length ?? 0;
     } else if (m = line.match(/^(\s*)typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)\)/)) {
       token.value = m[5];
@@ -248,14 +258,15 @@ function tokenize(lines) {
         parameters.push(line);
       }
       token.parameters = parameters;
-    } else if (m = line.match(/^(\s*)(extern|inline|SDL_FORCE_INLINE) (SDL_DECLSPEC )?(SDL_MALLOC )?(SDL_ALLOC_SIZE\d?\([\d, ]*\) )?/)) {
+    } else if (m = line.match(/^(\s*)(extern|inline|constexpr|SDL_FORCE_INLINE) (SDL_DECLSPEC )?(SDL_MALLOC )?(SDL_ALLOC_SIZE\d?\([\d, ]*\) )?/)) {
+      token.constexpr = m[2] == "constexpr";
       const signature = line.slice(m[0].length).replaceAll(/SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP\(\w+\)/g, "")
       const spaces = m[1]?.length ?? 0;
       if (signature == '"C" {') continue;
       m = signature.match(/(SDLCALL )?(\w+)\(([^)]*)(\))?/);
       token.value = m[2];
       token.kind = "function";
-      token.type = signature.slice(0, m.index).trim();
+      token.type = normalizeType(signature.slice(0, m.index).trim());
       let parameters = m[3] ?? ''
       let inline = !signature.endsWith(';');
       if (!m[4]) {
@@ -307,4 +318,9 @@ function tokenize(lines) {
     result.push(token);
   }
   return result
+}
+
+/** @param {string} typeString  */
+function normalizeType(typeString) {
+  return typeString.replaceAll(/(\w+)\s*(\*)/g, "$1 $2");
 }

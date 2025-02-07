@@ -1,5 +1,5 @@
 const { readFileSync, writeFileSync } = require("node:fs");
-const { parseApi } = require("./read-api.js")
+const { parseApi, parseContent } = require("./read-api.js")
 const target = require('./target.json');
 
 const baseDir = 'include/SDL3pp/'
@@ -24,22 +24,133 @@ function updateHeaders(names) {
     const [docBegin, docEnd] = getDocRange(content);
     const [entriesBegin, entriesEnd] = getEntriesRange(content, docEnd);
 
-    const file = target.files[name];
-    const changes = [{
+    const targetFile = target.files[name];
+    const sourceFile = parseContent(name, content);
+    const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
+    if (!changes.length) {
+      console.log(`No changes for ${name}`)
+      continue;
+    }
+    changes.push({
       begin: docBegin,
       end: docEnd,
-      replacement: wrapDocString(file.doc),
-    }, {
-      begin: entriesBegin,
-      end: entriesEnd,
-      replacement: generateEntries(file.entries),
-    }];
-    changes.reverse();
+      replacement: wrapDocString(targetFile.doc),
+    });
     for (const change of changes) {
       updateRange(content, change.begin, change.end, change.replacement ?? undefined)
     }
     writeFileSync(filename, content.join('\n').trim() + '\n');
   }
+}
+
+/**
+ * @typedef {object} ApiFile
+ * @property {string} name
+ * @property {string=} doc
+ * @property {{[name: string]: ApiEntry|ApiEntry[]}} entries
+ */
+
+/**
+ * @typedef {object} Change
+ * @property {number} begin
+ * @property {number} end
+ * @property {string=} replacement
+ */
+
+/**
+ * 
+ * @param {ApiFile} sourceFile 
+ * @param {ApiFile} targetFile 
+ * @param {number} begin 
+ * @param {number} end 
+ * @param {string=} prefix 
+ */
+function checkChanges(sourceFile, targetFile, begin, end, prefix) {
+  /** @type {Change[]} */
+  const changes = [];
+  const targetEntries = targetFile.entries
+  const targetNames = Object.keys(targetEntries)
+  if (!targetNames.length) {
+    changes.push({
+      begin,
+      end,
+    })
+    return changes;
+  }
+  const sourceEntries = sourceFile.entries
+  const sourceNames = Object.keys(sourceEntries)
+  if (!sourceNames?.length) {
+    changes.push({
+      begin,
+      end,
+      replacement: generateEntries(targetEntries, prefix)
+    })
+    return changes;
+  }
+  let sourceIndex = 0;
+  for (const targetName of targetNames) {
+    const targetEntry = targetEntries[targetName];
+    let index = sourceNames.indexOf(targetName, sourceIndex);
+    if (index == -1) {
+      changes.push({
+        begin,
+        end: begin,
+        replacement: '\n' + generateEntry(targetEntry, prefix),
+      })
+      begin += 1;
+    } else {
+      begin = sourceEntries[sourceNames[sourceIndex]].begin;
+      const sourceEntry = sourceEntries[sourceNames[index]];
+      if (checkEntryChanged(sourceEntry, targetEntry)) {
+        console.log(`${targetEntry.name} changed from: `, sourceEntry, '- to:', targetEntry)
+        changes.push({
+          begin,
+          end: sourceEntry.end,
+          replacement: generateEntry(targetEntry, prefix)
+        })
+        begin = sourceEntries.begin + 1;
+        // } else if (sourceEntry.entries || targetEntry.entries) {
+        // TODO compound structs
+      } else {
+        if (index > sourceIndex) {
+          changes.push({
+            begin,
+            end: sourceEntry.begin
+          })
+        }
+        begin = sourceEntry.end;
+      }
+      sourceIndex = index + 1;
+    }
+  }
+
+  return changes.reverse();
+}
+
+/**
+ * 
+ * @param {ApiEntry} sourceEntry 
+ * @param {ApiEntry} targetEntry 
+ */
+function checkEntryChanged(sourceEntry, targetEntry) {
+  if (sourceEntry.kind != targetEntry.kind) return true;
+  if (targetEntry.type && sourceEntry.type != targetEntry.type) return true;
+  if (targetEntry.parameters) {
+    const sourceParameters = sourceEntry.parameters;
+    const targetParameters = targetEntry.parameters;
+    if (sourceEntry.parameters?.length != targetEntry.parameters.length) return true;
+    for (let i = 0; i < targetParameters.length; i++) {
+      const targetParameter = targetParameters[i];
+      const sourceParameter = sourceParameters[i];
+      if (typeof targetParameter == "string") {
+        if (targetParameter !== sourceParameter) return true;
+      } else if (targetParameter.name != sourceParameter?.name
+        || targetParameter.type != sourceParameter?.type) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 /**
@@ -60,7 +171,7 @@ function updateRange(content, begin, end, ...replacement) {
  * @property {string} name
  * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'} kind
  * @property {string=} type
- * @property {string[]} parameters
+ * @property {(string|{type: string, name:string})[]=} parameters
  * @property {string} doc
  * @property {number} begin
  * @property {number} decl
@@ -77,7 +188,6 @@ function generateEntries(entries, prefix) {
   for (const name of Object.keys(entries)) {
     const entry = entries[name];
     if (Array.isArray(entry)) {
-
       result.push(entry.map(e => generateEntry(e, prefix)));
     } else {
       result.push(generateEntry(entry, prefix));
@@ -88,10 +198,14 @@ function generateEntries(entries, prefix) {
 
 /**
  * 
- * @param {ApiEntry} entry 
+ * @param {ApiEntry|ApiEntry[]} entry 
  * @param {string=} prefix 
+ * @returns {string}
  */
 function generateEntry(entry, prefix) {
+  if (Array.isArray(entry)) {
+    return entry.map(e => generateEntry(e, prefix)).join('\n\n');
+  }
   prefix = prefix ?? ''
   const doc = entry.doc ? wrapDocString(entry.doc, prefix) + '\n' : '';
   const placeholder = 'static_assert(false, "Not implemented");';

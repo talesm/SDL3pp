@@ -31,6 +31,14 @@
   "ignoreEntries": [
     "SDL_alignment_test",
     "SDL_DUMMY_ENUM",
+    "SDL_sscanf",
+    "SDL_vsscanf",
+    "SDL_snprintf",
+    "SDL_swprintf",
+    "SDL_vsnprintf",
+    "SDL_vswprintf",
+    "SDL_asprintf",
+    "SDL_vasprintf",
     "SDL_size_mul_check_overflow_builtin",
     "SDL_size_add_check_overflow_builtin"
   ]
