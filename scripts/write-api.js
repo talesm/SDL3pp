@@ -14,6 +14,13 @@ if (require.main == module) {
  * 
  */
 function transformApi(names) {
+  const typeMap = {};
+  const paramTypeMap = Object.create(typeMap);
+  paramTypeMap["const char *"] = "StringParam";
+  const returnTypeMap = Object.create(typeMap);
+  /** @type {ApiContext} */
+  const context = { typeMap, paramTypeMap, returnTypeMap };
+
   /** @type {{[file: string]: ApiFile}} */
   const files = {}
   const keys = Object.keys(source.files).filter(names?.length ? (name => names.includes(name)) : (() => true));
@@ -25,7 +32,7 @@ function transformApi(names) {
     files[targetName] = {
       name: targetName,
       doc: transformFileDoc(sourceFile.doc, targetName),
-      entries: transformEntries(sourceFile.entries)
+      entries: transformEntries(sourceFile.entries, context, config.files[targetName] ?? {})
     };
   }
   return { files };
@@ -41,21 +48,15 @@ function transformApi(names) {
 /**
  * 
  * @param {{[name: string]: ApiEntry|ApiEntry[]}} sourceEntries 
+ * @param {ApiContext} context 
+ * @param {TransformConfig} config
  */
-function transformEntries(sourceEntries) {
+function transformEntries(sourceEntries, context, config) {
   /** @type {{[name: string]: ApiEntry|ApiEntry[]}} */
   const targetEntries = {};
   const defWhitelist = new Set(config.includeDefs);
   const blacklist = new Set(config.ignoreEntries);
   const transformMap = config.transform
-
-  const typeMap = {};
-  const paramTypeMap = Object.create(typeMap);
-  paramTypeMap["const char *"] = "StringParam";
-  const returnTypeMap = Object.create(typeMap);
-
-  /** @type {ApiContext} */
-  const context = { typeMap, paramTypeMap, returnTypeMap };
 
   for (const entry of config.includeAt?.begin ?? []) {
     const targetName = entry.kind == "forward" ? `${entry.name}-forward` : entry.name;
@@ -67,12 +68,12 @@ function transformEntries(sourceEntries) {
     let targetName = transformName(sourceName);
     if (Array.isArray(sourceEntry)) {
       targetEntries[targetName] = sourceEntry.map(e => {
-        const targetEntry = transformEntry(e, context);
+        const targetEntry = transformEntry(e, context, config);
         targetEntry.name = targetName;
         return targetEntry;
       });
     } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
-      const targetEntry = transformEntry(sourceEntry, context);
+      const targetEntry = transformEntry(sourceEntry, context, config);
       targetName = transformName(targetEntry.name);
       const targetDelta = transformMap[targetName]
       if (targetDelta) {
@@ -86,10 +87,10 @@ function transformEntries(sourceEntries) {
           continue;
         }
         const type = targetEntry.type
-        typeMap[type] = targetName;
-        typeMap[`${type} *`] = `${targetName} *`;
-        typeMap[`const ${type}`] = `const ${targetName}`;
-        typeMap[`const ${type} *`] = `const ${targetName} *`;
+        context.typeMap[type] = targetName;
+        context.typeMap[`${type} *`] = `${targetName} *`;
+        context.typeMap[`const ${type}`] = `const ${targetName}`;
+        context.typeMap[`const ${type} *`] = `const ${targetName} *`;
       } else if (targetEntry.kind == "forward") {
         targetName += "-forward";
       }
@@ -104,8 +105,9 @@ function transformEntries(sourceEntries) {
  * 
  * @param {ApiEntry} sourceEntry 
  * @param {ApiContext} context 
+ * @param {TransformConfig} config
  */
-function transformEntry(sourceEntry, context) {
+function transformEntry(sourceEntry, context, config) {
   const targetEntry = { ...sourceEntry, begin: undefined, decl: undefined, end: undefined };
   if (sourceEntry.doc) {
     targetEntry.doc = transformDoc(targetEntry.doc);

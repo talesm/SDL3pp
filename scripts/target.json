@@ -19,8 +19,8 @@
           "kind": "alias",
           "type": "EnvironmentBase<ObjectRef<SDL_Environment>>"
         },
-        "ObjectDeleter<SDL_Renderer>": {
-          "name": "ObjectDeleter<SDL_Renderer>",
+        "ObjectDeleter<SDL_Environment>": {
+          "name": "ObjectDeleter<SDL_Environment>",
           "kind": "struct",
           "template": [],
           "entries": {
