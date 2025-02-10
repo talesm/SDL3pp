@@ -24,7 +24,7 @@ if (require.main == module) {
  * @param {string} baseDir 
  * @param {string[]} names 
  * 
- * @returns {{files: {[file: string]: ApiFile}}}
+ * @returns {Api}
  */
 function parseApi(baseDir, names) {
   const files = {};
@@ -37,13 +37,6 @@ function parseApi(baseDir, names) {
 }
 
 exports.parseApi = parseApi;
-
-/**
- * @typedef {object} ApiFile
- * @property {string} name
- * @property {string=} doc
- * @property {{[name: string]: ApiEntry|ApiEntry[]}} entries
- */
 
 /**
  * 
@@ -70,7 +63,7 @@ function parseContent(name, content) {
       lastDoc = token;
       continue;
     }
-    const entry = parseToken(token);
+    const entry = parseEntry(token);
     if (token.begin == lastDoc?.end) {
       entry.doc = lastDoc.value;
       entry.begin = lastDoc.begin;
@@ -96,22 +89,10 @@ function parseContent(name, content) {
 exports.parseContent = parseContent;
 
 /**
- * @typedef {object} ApiEntry
- * @property {string} name
- * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'} kind
- * @property {string=} type
- * @property {string[]} parameters
- * @property {string} doc
- * @property {number} begin
- * @property {number} decl
- * @property {number} end
- */
-
-/**
  * 
  * @param {FileToken} token 
  */
-function parseToken(token) {
+function parseEntry(token) {
   /** @type {ApiEntry} */
   const entry = {
     doc: '',
@@ -183,7 +164,6 @@ function parseParams(params) {
  * @property {number} end
  * @property {number} spaces
  */
-
 
 /**
  * 

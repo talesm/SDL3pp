@@ -44,13 +44,6 @@ function updateHeaders(names) {
 }
 
 /**
- * @typedef {object} ApiFile
- * @property {string} name
- * @property {string=} doc
- * @property {{[name: string]: ApiEntry|ApiEntry[]}} entries
- */
-
-/**
  * @typedef {object} Change
  * @property {number} begin
  * @property {number} end
@@ -165,18 +158,6 @@ function updateRange(content, begin, end, ...replacement) {
   if (end == begin && !replacement?.length) return;
   content.splice(begin - 1, end - begin, ...replacement);
 }
-
-/**
- * @typedef {object} ApiEntry
- * @property {string} name
- * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'} kind
- * @property {string=} type
- * @property {(string|{type: string, name:string})[]=} parameters
- * @property {string} doc
- * @property {number} begin
- * @property {number} decl
- * @property {number} end
- */
 
 /**
  * 

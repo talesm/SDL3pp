@@ -32,14 +32,6 @@ function transformApi(names) {
 }
 
 /**
- * @typedef {object} ApiFile
- * @property {string} name
- * @property {string=} doc
- * @property {{[name: string]: ApiEntry|ApiEntry[]}} entries
- */
-
-
-/**
  * @typedef {object} ApiContext
  * @property {{[source: string]: string}} typeMap 
  * @property {{[source: string]: string}} paramTypeMap
@@ -178,21 +170,6 @@ function transformParameters(parameters, context) {
 function transformType(type, typeMap) {
   return typeMap[type] ?? type;
 }
-
-
-/**
- * @typedef {object} ApiEntry
- * @property {string} name
- * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'} kind
- * @property {string=} type
- * @property {string[]} parameters
- * @property {string} doc
- * @property {string=} sourceName
- * @property {boolean} constexpr
- * @property {number} begin
- * @property {number} decl
- * @property {number} end
- */
 
 /**
  * 
