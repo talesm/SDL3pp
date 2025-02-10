@@ -50,66 +50,6 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
 }
 
 /**
- * A signed 8-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- **/
-using Sint8 = Sint8;
-
-/**
- * An unsigned 8-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- **/
-using Uint8 = Uint8;
-
-/**
- * A signed 16-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- **/
-using Sint16 = Sint16;
-
-/**
- * An unsigned 16-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- **/
-using Uint16 = Uint16;
-
-/**
- * A signed 32-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- **/
-using Sint32 = Sint32;
-
-/**
- * An unsigned 32-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- **/
-using Uint32 = Uint32;
-
-/**
- * A signed 64-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- *
- * @sa SDL_SINT64_C
- **/
-using Sint64 = Sint64;
-
-/**
- * An unsigned 64-bit integer type.
- *
- * @since This macro is available since SDL 3.2.0.
- *
- * @sa SDL_UINT64_C
- **/
-using Uint64 = Uint64;
-
-/**
  * SDL times are signed, 64-bit integers representing nanoseconds since the
  * Unix epoch (Jan 1, 1970).
  *

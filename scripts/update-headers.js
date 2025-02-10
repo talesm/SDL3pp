@@ -93,7 +93,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
       })
     } else {
       begin = sourceEntries[sourceNames[sourceIndex]].begin;
-      const sourceEntry = sourceEntries[sourceNames[index]];
+      const sourceEntry = sourceEntries[targetName];
       if (checkEntryChanged(sourceEntry, targetEntry)) {
         console.log(`${targetEntry.name} changed ${begin} - ${sourceEntry.end}`)
         changes.push({
@@ -101,7 +101,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
           end: sourceEntry.end,
           replacement: generateEntry(targetEntry, prefix)
         })
-        begin = sourceEntry.begin + 1;
+        begin = sourceEntry.end;
         // } else if (sourceEntry.entries || targetEntry.entries) {
         // TODO compound structs
       } else {
