@@ -81,7 +81,10 @@ function transformEntries(sourceEntries) {
         Object.assign(targetEntry, targetDelta);
       } else
         targetEntry.name = targetName;
-      if (targetEntry.kind == 'alias' && targetName != targetEntry.type) {
+      if (targetEntry.kind == 'alias') {
+        if (targetName == targetEntry.type) {
+          continue;
+        }
         const type = targetEntry.type
         typeMap[type] = targetName;
         typeMap[`${type} *`] = `${targetName} *`;

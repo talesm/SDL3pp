@@ -94,62 +94,6 @@
           "type": "Uint32",
           "constexpr": true
         },
-        "Sint8": {
-          "doc": "A signed 8-bit integer type.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "Sint8",
-          "kind": "alias",
-          "type": "Sint8",
-          "sourceName": "Sint8"
-        },
-        "Uint8": {
-          "doc": "An unsigned 8-bit integer type.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "Uint8",
-          "kind": "alias",
-          "type": "Uint8",
-          "sourceName": "Uint8"
-        },
-        "Sint16": {
-          "doc": "A signed 16-bit integer type.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "Sint16",
-          "kind": "alias",
-          "type": "Sint16",
-          "sourceName": "Sint16"
-        },
-        "Uint16": {
-          "doc": "An unsigned 16-bit integer type.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "Uint16",
-          "kind": "alias",
-          "type": "Uint16",
-          "sourceName": "Uint16"
-        },
-        "Sint32": {
-          "doc": "A signed 32-bit integer type.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "Sint32",
-          "kind": "alias",
-          "type": "Sint32",
-          "sourceName": "Sint32"
-        },
-        "Uint32": {
-          "doc": "An unsigned 32-bit integer type.\n\n@since This macro is available since SDL 3.2.0.",
-          "name": "Uint32",
-          "kind": "alias",
-          "type": "Uint32",
-          "sourceName": "Uint32"
-        },
-        "Sint64": {
-          "doc": "A signed 64-bit integer type.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_SINT64_C",
-          "name": "Sint64",
-          "kind": "alias",
-          "type": "Sint64",
-          "sourceName": "Sint64"
-        },
-        "Uint64": {
-          "doc": "An unsigned 64-bit integer type.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_UINT64_C",
-          "name": "Uint64",
-          "kind": "alias",
-          "type": "Uint64",
-          "sourceName": "Uint64"
-        },
         "Time": {
           "doc": "SDL times are signed, 64-bit integers representing nanoseconds since the\nUnix epoch (Jan 1, 1970).\n\nThey can be converted between POSIX time_t values with SDL_NS_TO_SECONDS()\nand SDL_SECONDS_TO_NS(), and between Windows FILETIME values with\nSDL_TimeToWindows() and SDL_TimeFromWindows().\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_MAX_SINT64\n@sa SDL_MIN_SINT64",
           "name": "Time",
