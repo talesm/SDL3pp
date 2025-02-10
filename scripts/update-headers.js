@@ -92,23 +92,23 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
     const targetEntry = targetEntries[targetName];
     let index = sourceNames.indexOf(targetName, sourceIndex);
     if (index == -1) {
+      console.log(`${targetEntry.name} added ${begin}`)
       changes.push({
         begin,
         end: begin,
         replacement: '\n' + generateEntry(targetEntry, prefix),
       })
-      begin += 1;
     } else {
       begin = sourceEntries[sourceNames[sourceIndex]].begin;
       const sourceEntry = sourceEntries[sourceNames[index]];
       if (checkEntryChanged(sourceEntry, targetEntry)) {
-        console.log(`${targetEntry.name} changed from: `, sourceEntry, '- to:', targetEntry)
+        console.log(`${targetEntry.name} changed ${begin} - ${sourceEntry.end}`)
         changes.push({
           begin,
           end: sourceEntry.end,
           replacement: generateEntry(targetEntry, prefix)
         })
-        begin = sourceEntries.begin + 1;
+        begin = sourceEntry.begin + 1;
         // } else if (sourceEntry.entries || targetEntry.entries) {
         // TODO compound structs
       } else {
