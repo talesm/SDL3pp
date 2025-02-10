@@ -30,6 +30,26 @@
 
 namespace SDL {
 
+// Forward decl
+template<class T>
+struct EnvironmentBase;
+
+using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
+
+template<>
+struct ObjectDeleter<SDL_Environment>
+{};
+
+using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
+
+using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
+
+template<>
+struct ObjectDeleter<SDL_iconv_data_t>
+{};
+
+using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
+
 /**
  * Define a four character code as a Uint32.
  *
@@ -403,7 +423,11 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @sa SDL_UnsetEnvironmentVariable
  * @sa SDL_DestroyEnvironment
  **/
-using Environment = SDL_Environment;
+template<class T>
+struct EnvironmentBase : T
+{
+  using T::T;
+};
 
 /**
  * Get the process environment.
@@ -426,7 +450,7 @@ using Environment = SDL_Environment;
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline Environment* GetEnvironment() { return SDL_GetEnvironment(); }
+inline Environment GetEnvironment() { return SDL_GetEnvironment(); }
 
 /**
  * Create a set of environment variables
@@ -448,7 +472,7 @@ inline Environment* GetEnvironment() { return SDL_GetEnvironment(); }
  * @sa SDL_UnsetEnvironmentVariable
  * @sa SDL_DestroyEnvironment
  **/
-inline Environment* CreateEnvironment(bool populated)
+inline Environment CreateEnvironment(bool populated)
 {
   return SDL_CreateEnvironment(populated);
 }
@@ -471,7 +495,7 @@ inline Environment* CreateEnvironment(bool populated)
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline const char* GetEnvironmentVariable(Environment* env, StringParam name)
+inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   return SDL_GetEnvironmentVariable(env, name);
 }
@@ -495,7 +519,7 @@ inline const char* GetEnvironmentVariable(Environment* env, StringParam name)
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline char** GetEnvironmentVariables(Environment* env)
+inline char** GetEnvironmentVariables(EnvironmentRef env)
 {
   return SDL_GetEnvironmentVariables(env);
 }
@@ -522,7 +546,7 @@ inline char** GetEnvironmentVariables(Environment* env)
  * @sa SDL_GetEnvironmentVariables
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline bool SetEnvironmentVariable(Environment* env,
+inline bool SetEnvironmentVariable(EnvironmentRef env,
                                    StringParam name,
                                    StringParam value,
                                    bool overwrite)
@@ -549,7 +573,7 @@ inline bool SetEnvironmentVariable(Environment* env,
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline bool UnsetEnvironmentVariable(Environment* env, StringParam name)
+inline bool UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
   return SDL_UnsetEnvironmentVariable(env, name);
 }
@@ -566,7 +590,7 @@ inline bool UnsetEnvironmentVariable(Environment* env, StringParam name)
  *
  * @sa SDL_CreateEnvironment
  **/
-inline void DestroyEnvironment(Environment* env)
+inline void DestroyEnvironment(EnvironmentRef env)
 {
   SDL_DestroyEnvironment(env);
 }
@@ -4356,7 +4380,11 @@ inline float tanf(float x) { return SDL_tanf(x); }
  *
  * @sa SDL_iconv_open
  **/
-using iconv_t = SDL_iconv_t;
+template<class T>
+struct IConvBase : T
+{
+  using T::T;
+};
 
 /**
  * This function allocates a context for the specified character set
@@ -4373,7 +4401,7 @@ using iconv_t = SDL_iconv_t;
  * @sa SDL_iconv_close
  * @sa SDL_iconv_string
  **/
-inline iconv_t iconv_open(StringParam tocode, StringParam fromcode)
+inline IConv iconv_open(StringParam tocode, StringParam fromcode)
 {
   return SDL_iconv_open(tocode, fromcode);
 }
@@ -4390,7 +4418,7 @@ inline iconv_t iconv_open(StringParam tocode, StringParam fromcode)
  * @sa SDL_iconv_open
  * @sa SDL_iconv_string
  **/
-inline int iconv_close(iconv_t cd) { return SDL_iconv_close(cd); }
+inline int iconv_close(IConvRef cd) { return SDL_iconv_close(cd); }
 
 /**
  * This function converts text between encodings, reading from and writing to
@@ -4428,7 +4456,7 @@ inline int iconv_close(iconv_t cd) { return SDL_iconv_close(cd); }
  * @sa SDL_iconv_close
  * @sa SDL_iconv_string
  **/
-inline size_t iconv(iconv_t cd,
+inline size_t iconv(IConvRef cd,
                     const char** inbuf,
                     size_t* inbytesleft,
                     char** outbuf,

@@ -124,7 +124,7 @@ function transformEntry(sourceEntry, context, config) {
       if (type === "resource" || type?.kind == "resource") {
         targetEntry.kind = "struct";
         targetEntry.template = [{ type: "class", name: "T" }];
-        targetEntry.base = "T";
+        targetEntry.type = "T";
         targetEntry.parameters = ["using T::T;"];
         const targetName = type?.name ?? transformName(sourceName);
         targetEntry.name = targetName + "Base";

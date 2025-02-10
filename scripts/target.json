@@ -306,7 +306,7 @@
           "doc": "A thread-safe set of environment variables\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable\n@sa SDL_DestroyEnvironment",
           "name": "EnvironmentBase",
           "kind": "struct",
-          "type": "struct SDL_Environment",
+          "type": "T",
           "sourceName": "SDL_Environment",
           "template": [
             {
@@ -314,7 +314,6 @@
               "name": "T"
             }
           ],
-          "base": "T",
           "parameters": [
             "using T::T;"
           ]
@@ -2658,7 +2657,7 @@
           "doc": "An opaque handle representing string encoding conversion state.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_iconv_open",
           "name": "IConvBase",
           "kind": "struct",
-          "type": "struct SDL_iconv_data_t *",
+          "type": "T",
           "sourceName": "SDL_iconv_t",
           "template": [
             {
@@ -2666,7 +2665,6 @@
               "name": "T"
             }
           ],
-          "base": "T",
           "parameters": [
             "using T::T;"
           ]

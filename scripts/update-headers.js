@@ -91,29 +91,39 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
         end: begin,
         replacement: '\n' + generateEntry(targetEntry, prefix),
       })
-    } else {
-      begin = sourceEntries[sourceNames[sourceIndex]].begin;
+    } else if (sourceIndex < sourceNames.length) {
+      begin = sourceEntries[sourceNames[sourceIndex]].begin ?? sourceEntries[sourceNames[sourceIndex]][0].begin;
       const sourceEntry = sourceEntries[targetName];
-      if (checkEntryChanged(sourceEntry, targetEntry)) {
-        console.log(`${targetEntry.name} changed ${begin} - ${sourceEntry.end}`)
+      const change = checkEntryChanged(sourceEntry, targetEntry)
+      const sourceEntryEnd = Array.isArray(sourceEntry) ? sourceEntry[sourceEntry.length - 1].end : sourceEntry.end;
+      if (change) {
+        console.info(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`)
         changes.push({
           begin,
-          end: sourceEntry.end,
+          end: sourceEntryEnd,
           replacement: generateEntry(targetEntry, prefix)
         })
-        begin = sourceEntry.end;
+        begin = sourceEntryEnd;
         // } else if (sourceEntry.entries || targetEntry.entries) {
         // TODO compound structs
       } else {
         if (index > sourceIndex) {
           changes.push({
             begin,
-            end: sourceEntry.begin
+            end: Array.isArray(sourceEntry) ? sourceEntry[0].begin : sourceEntry.begin
           })
         }
-        begin = sourceEntry.end;
+        begin = sourceEntryEnd;
       }
       sourceIndex = index + 1;
+    } else {
+      console.log(`${targetEntry.name} added ${begin}`)
+      changes.push({
+        begin: end,
+        end,
+        replacement: generateEntry(targetEntry, prefix) + '\n',
+      })
+
     }
   }
 
@@ -126,24 +136,24 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
  * @param {ApiEntry} targetEntry 
  */
 function checkEntryChanged(sourceEntry, targetEntry) {
-  if (sourceEntry.kind != targetEntry.kind) return true;
-  if (targetEntry.type && sourceEntry.type != targetEntry.type) return true;
+  if (sourceEntry.kind != targetEntry.kind) return 'kind';
+  if (targetEntry.type && sourceEntry.type != targetEntry.type) return "type";
   if (targetEntry.parameters) {
     const sourceParameters = sourceEntry.parameters;
     const targetParameters = targetEntry.parameters;
-    if (sourceEntry.parameters?.length != targetEntry.parameters.length) return true;
+    if (sourceEntry.parameters?.length != targetEntry.parameters.length) return "parameters";
     for (let i = 0; i < targetParameters.length; i++) {
       const targetParameter = targetParameters[i];
       const sourceParameter = sourceParameters[i];
       if (typeof targetParameter == "string") {
-        if (targetParameter !== sourceParameter) return true;
+        if (targetParameter !== sourceParameter) return "parameters";
       } else if (targetParameter.name != sourceParameter?.name
         || targetParameter.type != sourceParameter?.type) {
-        return true;
+        return "parameters";
       }
     }
   }
-  return false;
+  return null;
 }
 
 /**
@@ -193,12 +203,16 @@ function generateEntry(entry, prefix) {
   switch (entry.kind) {
     case "alias":
       return `${doc}${prefix}using ${entry.name} = ${entry.type};`
+    case "forward":
+      return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
     case "function":
       const specifier = entry.constexpr ? "constexpr" : "inline";
       const parameters = generateParameters(entry.parameters);
       const body = !entry.sourceName ? placeholder
         : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
       return `${doc}${prefix}${specifier} ${entry.type} ${entry.name}(${parameters})\n${prefix}{\n${prefix}  ${body}\n${prefix}}`
+    case "struct":
+      return doc + generateStruct(entry, prefix);
     default:
       console.warn(`Unknown kind: ${entry.kind} for ${entry.name}`)
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
@@ -219,12 +233,53 @@ function generateCall(name, ...parameters) {
 
 /**
  * 
- * @param {(string|{type: string, name: string})[]} parameters 
+ * @param {ApiEntry} entry 
+ * @param {string} prefix 
+ */
+function generateStruct(entry, prefix) {
+  const signature = generateStructSignature(entry, prefix);
+  const parent = entry.type ? ` : ${entry.type}` : ""
+  if (!entry.parameters?.length)
+    return `${signature}${parent}\n${prefix}{};`;
+  const fieldPrefix = prefix + "  ";
+  const fields = entry.parameters.map(p => fieldPrefix + generateParameter(p)).join('\n')
+  return `${signature}${parent}\n${prefix}{\n${fields}\n${prefix}};`;
+}
+
+/**
+ * 
+ * @param {ApiEntry} entry 
+ * @param {string} prefix 
+ */
+function generateStructSignature(entry, prefix) {
+  const template = entry.template ? generateTemplateSignature(entry.template, prefix) : '';
+  return `${template}${prefix}struct ${entry.name}`;
+}
+
+/**
+ * 
+ * @param {(string|ApiParameter)[]} template 
+ * @param {string} prefix 
+ */
+function generateTemplateSignature(template, prefix) {
+  return `${prefix}template<${generateParameters(template)}>\n`;
+}
+
+/**
+ * 
+ * @param {(string|ApiParameter)[]} parameters 
  */
 function generateParameters(parameters) {
-  return parameters
-    .map(p => typeof p == "string" ? p : `${p.type} ${p.name}`)
-    .join(', ');
+  return parameters.map(p => generateParameter(p)).join(', ');
+}
+
+/**
+ * 
+ * @param {(string|ApiParameter)[]} parameter
+ */
+function generateParameter(parameter) {
+  if (typeof parameter == "string") return parameter;
+  return `${parameter.type} ${parameter.name}`
 }
 
 /**
