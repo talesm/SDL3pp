@@ -57,6 +57,45 @@
               "type": "int"
             }
           ]
+        },
+        "funcIntReturnsCStr": {
+          "doc": "Documentation",
+          "begin": 33,
+          "decl": 36,
+          "end": 37,
+          "name": "funcIntReturnsCStr",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "int"
+            },
+            {
+              "name": "otherValue",
+              "type": "int"
+            }
+          ]
+        },
+        "functionConstexpr": {
+          "doc": "@brief Documentation",
+          "begin": 38,
+          "decl": 42,
+          "end": 46,
+          "name": "functionConstexpr",
+          "kind": "function",
+          "type": "int",
+          "constexpr": true,
+          "parameters": [
+            {
+              "name": "value",
+              "type": "int"
+            },
+            {
+              "name": "otherValue",
+              "type": "int"
+            }
+          ]
         }
       }
     }

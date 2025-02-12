@@ -28,7 +28,21 @@ int funcEmpty();
 /**
  * Documentation
  */
- int funcInt(int value, int otherValue);
+int funcInt(int value, int otherValue);
+
+/**
+ * Documentation
+ */
+const char* funcIntReturnsCStr(int value, int otherValue);
+
+/**
+ * @brief Documentation
+ *
+ */
+constexpr int functionConstexpr(int value, int otherValue)
+{
+  return value + otherValue;
+}
 
 } // namespace name
 

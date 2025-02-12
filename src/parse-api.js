@@ -150,6 +150,7 @@ function parseEntry(token) {
     case "function":
       entry.type = token.type;
       entry.parameters = parseParams(token.parameters);
+      entry.constexpr = token.constexpr;
       break;
     case "struct":
       entry.type = token.type;
@@ -199,6 +200,8 @@ function parseParams(params) {
  * @property {number} end
  * @property {number} spaces
  */
+
+const memberSpecifiers = new Set(["inline", "static", "constexpr"]);
 
 /**
  * 
@@ -318,49 +321,26 @@ function tokenize(lines) {
         ln = lines[i++];
       }
       continue;
-    } else if (m = line.match(/^(extern|inline|constexpr|SDL_FORCE_INLINE) (SDL_DECLSPEC )?(SDL_MALLOC )?(SDL_ALLOC_SIZE\d?\([\d, ]*\) )?/)) {
-      token.constexpr = m[1] == "constexpr";
-      const signature = line.slice(m[0].length).replaceAll(/SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP\(\w+\)/g, "");
-      if (signature == '"C" {') continue;
-      m = signature.match(/(SDLCALL )?(\w+)\(([^)]*)(\))?/);
-      token.value = m[2];
-      token.kind = "function";
-      token.type = normalizeType(signature.slice(0, m.index).trim());
-      let parameters = m[3] ?? '';
-      let inline = !signature.endsWith(';');
-      if (!m[4]) {
-        for (++i; i < lines.length; ++i) {
-          const line = lines[i];
-          if (line.endsWith(');')) {
-            inline = false;
-            parameters += '\n' + line.slice(0, line.length - 2);
-            break;
-          }
-          if (line.endsWith(')')) {
-            inline = true;
-            parameters += '\n' + line.slice(0, line.length - 1);
-            break;
-          }
-          parameters += '\n' + line;
-        }
-      }
-      token.parameters = parameters;
-      if (inline && lines[i].indexOf('}') === -1) {
-        for (i++; i < lines.length; i++) {
-          const line = lines[i].slice(spaces);
-          if (line.startsWith('}') || line.startsWith('{}')) break;
-        }
-      }
     } else {
       let member = line.replaceAll(ignoreInSignature, "");
-      m = member.match(/^(\w+\s+)*(\w+)\s*\(/);
+      m = member.match(/^(([\w*]+\s+)*)(\w+)\s*\(/);
       if (!m) {
         console.warn(`Unknown token at line ${i + 1}: ${line}`);
         continue;
       }
       token.kind = "function";
-      token.value = m[2];
-      token.type = m[1]?.trim();
+      token.value = m[3];
+      const typeWords = m[1]?.trim()?.split(/\s+/) ?? [];
+      for (let i = 0; i < typeWords.length; i++) {
+        const word = typeWords[i];
+        if (!memberSpecifiers.has(word)) {
+          typeWords.splice(0, i);
+          break;
+        }
+        if (word == "constexpr") token.constexpr = true;
+      }
+
+      token.type = normalizeType(typeWords.join(' '));
       let inline = false;
       let parameters = line.slice(m[0].length);
       const endBracket = parameters.indexOf(")");
@@ -386,7 +366,7 @@ function tokenize(lines) {
       token.parameters = parameters;
       if (inline && lines[i].indexOf('}') === -1) {
         for (i++; i < lines.length; i++) {
-          const line = lines[i].slice(spaces);
+          const line = lines[i].slice(token.spaces);
           if (line.startsWith('}') || line.startsWith('{}')) break;
         }
       }
@@ -398,10 +378,6 @@ function tokenize(lines) {
     result.push(token);
   }
   return result;
-}
-
-function tokenizeParameters(params) {
-
 }
 
 /** @param {string} line  */
@@ -416,5 +392,5 @@ function hasIgnoredPrefix(line) {
 
 /** @param {string} typeString  */
 function normalizeType(typeString) {
-  return typeString.replaceAll(/(\w+)\s*(\*)/g, "$1 $2");
+  return typeString.replaceAll(/(\w+)\s*([&*])/g, "$1 $2").replaceAll(/([*&])\s+(&*)/g, "$1$2");
 }
