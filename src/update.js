@@ -19,7 +19,7 @@ exports.updateChanges = updateChanges;
 function updateApi(config) {
   const { target, baseDir } = config;
   const files = Object.keys(target.files)
-    .filter(files?.length ? (name => files.includes(name)) : (() => true));
+    .filter(config.files?.length ? (name => config.files.includes(name)) : (() => true));
   for (const name of files) {
     console.log(`Updating ${name}`);
     const filename = baseDir + name;
@@ -44,6 +44,7 @@ function updateContent(content, targetFile) {
   const [docBegin, docEnd] = getDocRange(content);
   const [entriesBegin, entriesEnd] = getEntriesRange(content, docEnd);
 
+  const name = targetFile.name;
   const sourceFile = parseContent(name, content);
   const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
   if (!changes.length) {

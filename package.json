@@ -8,7 +8,7 @@
   },
   "scripts": {
     "parse": "node src/index.js parse",
-    "generate": "node src/index.js generate",
+    "update": "node src/index.js update",
     "transform": "node src/index.js transform",
     "test": "jest"
   },
