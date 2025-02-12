@@ -23,8 +23,8 @@
  * @property {string} name
  * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'|'forward'} kind
  * @property {string=} type
- * @property {(string|ApiParameter)[]=} parameters
- * @property {(string|ApiParameter)[]=} template
+ * @property {ApiParameters=} parameters
+ * @property {ApiParameters=} template
  * @property {string=} sourceName
  * @property {boolean=} constexpr
  * @property {string} doc
@@ -33,6 +33,9 @@
  * @property {number} end
  */
 
+/**
+ * @typedef {(string|ApiParameter)[]} ApiParameters
+ */
 
 /**
  * @typedef {object} ApiParameter
