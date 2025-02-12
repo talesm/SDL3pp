@@ -1,5 +1,5 @@
 const { writeFileSync, readFileSync } = require("fs");
-const { parseApi } = require("./parse-api.js");
+const { parseApi } = require("./parse.js");
 /**
  * Process the main
  * @param {string[]} args the arguments

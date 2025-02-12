@@ -1,4 +1,4 @@
-const { parseApi } = require("../src/parse-api.js");
+const { parseApi } = require("../src/parse.js");
 const emptyApi = require("./empty.json");
 const functionsApi = require("./functions.json");
 
