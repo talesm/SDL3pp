@@ -67,7 +67,7 @@ function parse(args) {
     const baseDirLen = config.baseDir.length;
     config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
   }
-  const api = JSON.stringify(parseApi(config.baseDir, config.files), null, 2);
+  const api = JSON.stringify(parseApi(config), null, 2);
   if (config.outputFile) {
     writeFileSync(config.outputFile, api);
   } else {

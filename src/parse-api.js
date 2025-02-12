@@ -21,20 +21,28 @@ const ignoreInSignature = new RegExp(`(${[
 ].join("|")})(\\(\\w*\\))?`, "g");
 
 /**
- * 
- * @param {string} baseDir 
- * @param {string[]} names 
- * 
- * @returns {Api}
+ * @typedef {object} ParseConfig
+ * @property {string} baseDir
+ * @property {string[]} files
  */
-function parseApi(baseDir, names) {
-  const files = {};
-  for (const name of names) {
+
+/**
+ * @param {ParseConfig} config
+ * @param {string} baseDir 
+ * @param {string[]} files 
+ * 
+ */
+function parseApi(config) {
+  const { baseDir, files } = config;
+
+  /** @type {Api} */
+  const api = { files: {} };
+  for (const name of files) {
     console.log(`Reading file ${name}`);
     const content = readFileSync(baseDir + name, 'utf-8').split(/\r?\n/);
-    files[name] = parseContent(name, content);
+    api.files[name] = parseContent(name, content);
   }
-  return { files };
+  return api;
 }
 
 exports.parseApi = parseApi;
