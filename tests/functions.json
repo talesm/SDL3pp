@@ -39,30 +39,47 @@
           "type": "int",
           "parameters": []
         },
-        "funcInt": {
-          "doc": "Documentation",
-          "begin": 28,
-          "decl": 31,
-          "end": 32,
-          "name": "funcInt",
-          "kind": "function",
-          "type": "int",
-          "parameters": [
-            {
-              "name": "value",
-              "type": "int"
-            },
-            {
-              "name": "otherValue",
-              "type": "int"
-            }
-          ]
-        },
+        "funcInt": [
+          {
+            "doc": "Documentation",
+            "begin": 28,
+            "decl": 31,
+            "end": 32,
+            "name": "funcInt",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "value",
+                "type": "int"
+              },
+              {
+                "name": "otherValue",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "doc": "Documentation",
+            "begin": 33,
+            "decl": 36,
+            "end": 37,
+            "name": "funcInt",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "value",
+                "type": "int"
+              }
+            ]
+          }
+        ],
         "funcIntReturnsCStr": {
           "doc": "Documentation",
-          "begin": 33,
-          "decl": 36,
-          "end": 37,
+          "begin": 38,
+          "decl": 41,
+          "end": 42,
           "name": "funcIntReturnsCStr",
           "kind": "function",
           "type": "const char *",
@@ -79,13 +96,12 @@
         },
         "functionConstexpr": {
           "doc": "@brief Documentation",
-          "begin": 38,
-          "decl": 42,
-          "end": 46,
+          "begin": 43,
+          "decl": 47,
+          "end": 51,
           "name": "functionConstexpr",
           "kind": "function",
           "type": "int",
-          "constexpr": true,
           "parameters": [
             {
               "name": "value",
@@ -95,7 +111,8 @@
               "name": "otherValue",
               "type": "int"
             }
-          ]
+          ],
+          "constexpr": true
         }
       }
     }

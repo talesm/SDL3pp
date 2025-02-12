@@ -33,6 +33,11 @@ int funcInt(int value, int otherValue);
 /**
  * Documentation
  */
+int funcInt(int value);
+
+/**
+ * Documentation
+ */
 const char* funcIntReturnsCStr(int value, int otherValue);
 
 /**
