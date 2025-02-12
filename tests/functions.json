@@ -1,0 +1,50 @@
+{
+  "files": {
+    "functions.h": {
+      "name": "functions.h",
+      "doc": "Documentation",
+      "entries": {
+        "funcCStr": {
+          "doc": "",
+          "begin": 11,
+          "decl": 11,
+          "end": 12,
+          "name": "funcCStr",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "funcVoid": {
+          "doc": "Documentation",
+          "begin": 13,
+          "decl": 16,
+          "end": 17,
+          "name": "funcVoid",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "funcEmpty": {
+          "doc": "Documentation",
+          "begin": 18,
+          "decl": 21,
+          "end": 22,
+          "name": "funcEmpty",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "funcInt": {
+          "doc": "Documentation",
+          "begin": 23,
+          "decl": 26,
+          "end": 27,
+          "name": "funcInt",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        }
+      }
+    }
+  }
+}
