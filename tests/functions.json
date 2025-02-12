@@ -2,7 +2,7 @@
   "files": {
     "functions.h": {
       "name": "functions.h",
-      "doc": "@file functions.h\r\n\nDocumentation",
+      "doc": "@file functions.h\n\nDocumentation",
       "entries": {
         "funcCStr": {
           "doc": "Documentation",
@@ -12,7 +12,12 @@
           "name": "funcCStr",
           "kind": "function",
           "type": "int",
-          "parameters": []
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const char *"
+            }
+          ]
         },
         "funcVoid": {
           "doc": "Documentation",
@@ -42,7 +47,16 @@
           "name": "funcInt",
           "kind": "function",
           "type": "int",
-          "parameters": []
+          "parameters": [
+            {
+              "name": "value",
+              "type": "int"
+            },
+            {
+              "name": "otherValue",
+              "type": "int"
+            }
+          ]
         }
       }
     }

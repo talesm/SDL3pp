@@ -31,7 +31,7 @@ function parseApi(baseDir, names) {
   const files = {};
   for (const name of names) {
     console.log(`Reading file ${name}`);
-    const content = readFileSync(baseDir + name, 'utf-8').split('\n');
+    const content = readFileSync(baseDir + name, 'utf-8').split(/\r?\n/);
     files[name] = parseContent(name, content);
   }
   return { files };
@@ -134,7 +134,7 @@ function parseEntry(token) {
       entry.parameters = parseParams(token.parameters);
       break;
     case "def":
-      entry.parameters = token.parameters;
+      entry.parameters = parseParams(token.parameters);
       break;
     case "enum":
       entry.parameters = token.parameters.map(p => p.replace(',', '').trim()).filter(p => !!p);
@@ -144,7 +144,6 @@ function parseEntry(token) {
       entry.parameters = parseParams(token.parameters);
       break;
     case "struct":
-      entry.parameters = parseParams(token.parameters);
       entry.type = token.type;
       break;
     case "forward":
@@ -158,13 +157,15 @@ function parseEntry(token) {
 
 /**
  * 
- * @param {string[]} params 
+ * @param {string} params 
+ * @returns {ApiParameters}
  */
 function parseParams(params) {
-  if (params.length == 1 && (params[0] == 'void' || params[0] == '')) {
+  if (params?.length == 0 || params == 'void') {
     return [];
   }
-  return params.map(param => {
+  return params.split(',').map(param => {
+    param = param.trim();
     const nameIndex = param.lastIndexOf(' ');
     if (nameIndex == -1) return param;
     let name = param.slice(nameIndex + 1).trim();
@@ -183,7 +184,7 @@ function parseParams(params) {
  * @typedef {object} FileToken
  * @property {string} value
  * @property {"alias"|"callback"|"def"|"doc"|"enum"|"forward"|"function"|"struct"|"template"|"union"} kind
- * @property {string[]=} parameters
+ * @property {string=} parameters
  * @property {string=} type
  * @property {boolean=} constexpr
  * @property {number} begin
@@ -335,7 +336,7 @@ function tokenize(lines) {
           parameters += '\n' + line;
         }
       }
-      token.parameters = parameters.split(',').map(p => p.trim()) ?? [];
+      token.parameters = parameters;
       if (inline && lines[i].indexOf('}') === -1) {
         for (i++; i < lines.length; i++) {
           const line = lines[i].slice(spaces);
@@ -352,7 +353,35 @@ function tokenize(lines) {
       token.kind = "function";
       token.value = m[2];
       token.type = m[1]?.trim();
-      token.parameters = [];
+      let inline = false;
+      let parameters = line.slice(m[0].length);
+      const endBracket = parameters.indexOf(")");
+      if (endBracket < 0) {
+        for (++i; i < lines.length; ++i) {
+          const line = lines[i];
+          if (line.endsWith(');')) {
+            inline = false;
+            parameters += '\n' + line.slice(0, line.length - 2);
+            break;
+          }
+          if (line.endsWith(')')) {
+            inline = true;
+            parameters += '\n' + line.slice(0, line.length - 1);
+            break;
+          }
+          parameters += '\n' + line;
+        }
+      } else {
+        inline = parameters[endBracket + 1] != ";" && !parameters.endsWith("}");
+        parameters = parameters.slice(0, endBracket);
+      }
+      token.parameters = parameters;
+      if (inline && lines[i].indexOf('}') === -1) {
+        for (i++; i < lines.length; i++) {
+          const line = lines[i].slice(spaces);
+          if (line.startsWith('}') || line.startsWith('{}')) break;
+        }
+      }
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {
@@ -361,6 +390,10 @@ function tokenize(lines) {
     result.push(token);
   }
   return result;
+}
+
+function tokenizeParameters(params) {
+
 }
 
 /** @param {string} line  */
