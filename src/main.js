@@ -1,4 +1,4 @@
-const { writeFileSync } = require("fs");
+const { writeFileSync, readFileSync } = require("fs");
 const { parseApi } = require("./parse-api.js");
 /**
  * Process the main
@@ -44,6 +44,10 @@ function parse(args) {
       case '': config.outputFile = ""; break;
       case '-o': config.outputFile = args[++i].replaceAll("\\", '/'); break;
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
+      case '-c':
+        const configFile = args[++i].replaceAll("\\", '/');
+        mergeInto(config, JSON.parse(readFileSync(configFile, "utf8")));
+        break;
       default:
         throw new Error(`Invalid option ${arg}`);
     }
@@ -68,6 +72,32 @@ function parse(args) {
     writeFileSync(config.outputFile, api);
   } else {
     console.log(api);
+  }
+}
+
+/**
+ * 
+ * @param {{[key: string]: any}} destiny 
+ * @param  {{[key: string]: any}} sources 
+ */
+function mergeInto(destiny, source) {
+  for (const [key, value] of Object.entries(source)) {
+    const prevValue = destiny[key];
+    if (Array.isArray(prevValue)) {
+      if (Array.isArray(value)) {
+        prevValue.push(...value);
+      } else
+        prevValue.push(value);
+    } else if (typeof prevValue != "object") {
+      if (value == null) {
+        delete destiny[key];
+      } else
+        destiny[key] = value;
+    } else if (!prevValue) {
+      destiny[key] = value;
+    } else {
+      mergeInto(prevValue, value);
+    }
   }
 }
 
