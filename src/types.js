@@ -46,3 +46,7 @@
  * @property {string}  name
  * @property {string=} type
  */
+
+/**
+ * @typedef {{[name: string]: string}} StringMap
+ */

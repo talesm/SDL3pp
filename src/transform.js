@@ -11,6 +11,9 @@ const { system } = require("./utils");
  * @prop {string[]=}             prefixes
  * @prop {ReplacementRule[]=}    renameRules
  * @prop {ReplacementRule[]=}    docRules
+ * @prop {StringMap=}             typeMap
+ * @prop {StringMap=}             paramTypeMap
+ * @prop {StringMap=}             returnTypeMap
  */
 
 /**
@@ -29,8 +32,11 @@ function transformApi(config) {
   const source = config.source;
   const typeMap = {};
   const paramTypeMap = Object.create(typeMap);
-  paramTypeMap["const char *"] = "StringParam";
   const returnTypeMap = Object.create(typeMap);
+  // paramTypeMap["const char *"] = "StringParam";
+  if (config.typeMap) Object.assign(typeMap, config.typeMap);
+  if (config.paramTypeMap) Object.assign(paramTypeMap, config.paramTypeMap);
+  if (config.returnTypeMap) Object.assign(returnTypeMap, config.returnTypeMap);
   /** @type {ApiContext} */
   const context = { typeMap, paramTypeMap, returnTypeMap };
   if (config.prefixes?.length) {
@@ -86,9 +92,9 @@ function transformApi(config) {
 function transformEntries(sourceEntries, context, config) {
   /** @type {ApiEntries} */
   const targetEntries = {};
-  const defWhitelist = new Set(config.includeDefs);
-  const blacklist = new Set(config.ignoreEntries);
-  const transformMap = config.transform;
+  const defWhitelist = new Set(config.includeDefs ?? []);
+  const blacklist = new Set(config.ignoreEntries ?? []);
+  const transformMap = config.transform ?? {};
 
   for (const entry of config.includeAt?.begin ?? []) {
     const targetName = entry.kind == "forward" ? `${entry.name}-forward` : entry.name;
@@ -114,6 +120,7 @@ function transformEntries(sourceEntries, context, config) {
         Object.assign(targetEntry, targetDelta);
       } else
         targetEntry.name = targetName;
+      if (targetName === targetEntry.sourceName) targetEntry.sourceName = "::" + targetEntry.sourceName;
       if (targetEntry.kind == 'alias') {
         if (targetName == targetEntry.type) {
           continue;
@@ -141,9 +148,9 @@ function transformEntries(sourceEntries, context, config) {
  */
 function transformEntry(sourceEntry, context, config) {
   /** @type {ApiEntry} */
-  const targetEntry = { ...sourceEntry, begin: undefined, decl: undefined, end: undefined };
+  const targetEntry = { ...sourceEntry };
   if (sourceEntry.doc) {
-    targetEntry.doc = transformDoc(targetEntry.doc);
+    targetEntry.doc = transformDoc(targetEntry.doc, context);
   }
   const sourceName = sourceEntry.name;
   targetEntry.sourceName = sourceName;
