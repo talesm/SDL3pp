@@ -11,9 +11,9 @@ const { system } = require("./utils");
  * @prop {string[]=}             prefixes
  * @prop {ReplacementRule[]=}    renameRules
  * @prop {ReplacementRule[]=}    docRules
- * @prop {StringMap=}             typeMap
- * @prop {StringMap=}             paramTypeMap
- * @prop {StringMap=}             returnTypeMap
+ * @prop {StringMap=}            typeMap
+ * @prop {StringMap=}            paramTypeMap
+ * @prop {StringMap=}            returnTypeMap
  */
 
 /**
@@ -30,24 +30,10 @@ const { system } = require("./utils");
  */
 function transformApi(config) {
   const source = config.source;
-  const typeMap = {};
-  const paramTypeMap = Object.create(typeMap);
-  const returnTypeMap = Object.create(typeMap);
-  // paramTypeMap["const char *"] = "StringParam";
-  if (config.typeMap) Object.assign(typeMap, config.typeMap);
-  if (config.paramTypeMap) Object.assign(paramTypeMap, config.paramTypeMap);
-  if (config.returnTypeMap) Object.assign(returnTypeMap, config.returnTypeMap);
   /** @type {ApiContext} */
-  const context = { typeMap, paramTypeMap, returnTypeMap };
-  if (config.prefixes?.length) {
-    context.prefixToRemove = `^(${config.prefixes.join("|")})`;
-  }
-  context.renameRules = config.renameRules ?? [];
-  context.renameRules.forEach(rule => rule.pattern = RegExp(rule.pattern));
-  context.docRules = config.docRules ?? [];
-  context.docRules.forEach(rule => rule.pattern = RegExp(rule.pattern, 'g'));
+  const context = new ApiContext(config);
 
-  /** @type {{[file: string]: ApiFile}} */
+  /** @type {ApiFileMap} */
   const files = {};
   const keys = Object.keys(source.files);
   for (const sourceName of keys) {
@@ -64,15 +50,31 @@ function transformApi(config) {
   return { files };
 }
 
-/**
- * @typedef {object} ApiContext
- * @prop {{[source: string]: string}} typeMap 
- * @prop {{[source: string]: string}} paramTypeMap
- * @prop {{[source: string]: string}} returnTypeMap 
- * @prop {RegExp=}                    prefixToRemove
- * @prop {ReplacementRule[]}          renameRules
- * @prop {ReplacementRule[]}          docRules
- */
+class ApiContext {
+  /** @param {TransformConfig} config  */
+  constructor(config) {
+    /** @type {StringMap} */
+    this.typeMap = {};
+    Object.assign(this.typeMap, config.typeMap ?? {});
+
+    /** @type {StringMap} */
+    this.paramTypeMap = Object.create(this.typeMap);
+    Object.assign(this.paramTypeMap, config.paramTypeMap ?? {});
+    // this.paramTypeMap["const char *"] = "StringParam";
+
+    /** @type {StringMap} */
+    this.returnTypeMap = Object.create(this.typeMap);
+    Object.assign(this.returnTypeMap, config.returnTypeMap ?? {});
+
+    this.prefixToRemove = config.prefixes?.length ? RegExp(`^(${config.prefixes.join("|")})`) : undefined;
+
+    this.renameRules = config.renameRules ?? [];
+    this.renameRules.forEach(rule => rule.pattern = RegExp(rule.pattern));
+
+    this.docRules = config.docRules ?? [];
+    this.docRules.forEach(rule => rule.pattern = RegExp(rule.pattern, 'g'));
+  }
+}
 
 /**
  * @typedef {object} TransformEntryConfig
