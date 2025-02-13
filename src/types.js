@@ -12,6 +12,10 @@
  * @property {string} name
  * @property {string=} doc
  * @property {ApiEntries} entries
+ * @property {number=} docBegin
+ * @property {number=} docEnd
+ * @property {number=} entriesBegin
+ * @property {number=} entriesEnd
  */
 
 /**
@@ -28,9 +32,9 @@
  * @property {string=} sourceName
  * @property {boolean=} constexpr
  * @property {string} doc
- * @property {number} begin
- * @property {number} decl
- * @property {number} end
+ * @property {number=} begin
+ * @property {number=} decl
+ * @property {number=} end
  */
 
 /**

@@ -8,7 +8,6 @@ const ignorePrefixes = [
   'size_t wcsl',
   'char *str',
   '}',
-  'namespace',
 ];
 
 const ignoreInSignature = new RegExp(`(${[
@@ -69,12 +68,10 @@ function parseContent(name, content, config) {
     doc: '',
     entries: {},
   };
-  if (tokens?.length) {
-    apiFile.doc = tokens.shift().value;
-  }
   const parser = new ContentParser(tokens, config);
+  const entryArray = parser.parseEntries();
   const entries = apiFile.entries;
-  for (const entry of parser.parseEntries()) {
+  for (const entry of entryArray) {
     const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
     if (entries[name]) {
       const currEntry = entries[name];
@@ -89,6 +86,13 @@ function parseContent(name, content, config) {
       entries[name] = entry;
     }
   }
+  if (config.storeLineNumbers) {
+    apiFile.docBegin = parser.docBegin || 1;
+    apiFile.docEnd = parser.docEnd || apiFile.docBegin;
+    apiFile.entriesBegin = parser.entriesBegin || entryArray[0]?.begin || apiFile.docEnd;
+    apiFile.entriesEnd = parser.entriesEnd || entryArray[entryArray.length - 1]?.end || apiFile.entriesBegin;
+  }
+  apiFile.doc = parser.doc;
   return apiFile;
 }
 
@@ -107,6 +111,11 @@ class ContentParser {
     /** @private */
     this.lookup = () => tokens[0];
     this.storeLineNumbers = config.storeLineNumbers;
+    this.docBegin = 0;
+    this.doc = "";
+    this.docEnd = 0;
+    this.entriesBegin = 0;
+    this.entriesEnd = 0;
   }
 
   /** Parse all entries */
@@ -118,7 +127,10 @@ class ContentParser {
     return entries;
   }
 
-  /** Parses a single entry */
+  /**
+   * Parses a single entry
+   * @returns {ApiEntry}
+   */
   parseEntry() {
     let lastEnd = 0;
     let lastDecl = 0;
@@ -129,10 +141,21 @@ class ContentParser {
 
     while (this.lookup()?.kind === "doc") {
       const token = this.match("doc");
+      this.checkFileDoc(lastBegin, lastEnd, lastDoc);
       lastDoc = token.value;
       lastEnd = token.end;
       lastBegin = token.begin;
     }
+
+    if (this.lookup()?.kind === "namespace") {
+      const token = this.match("namespace");
+      this.checkFileDoc(lastBegin, lastEnd, lastDoc);
+      if (!this.entriesBegin) {
+        this.entriesBegin = token.end;
+      }
+      return this.parseEntry();
+    }
+
     if (this.lookup()?.kind === "template") {
       const token = this.match("template");
       if (lastEnd != token.begin || lastTemplate) {
@@ -152,9 +175,6 @@ class ContentParser {
     /** @type {ApiEntry} */
     const entry = {
       doc: '',
-      begin: token.begin,
-      decl: token.begin,
-      end: token.end,
       name: token.value,
       kind: token.kind,
     };
@@ -175,7 +195,7 @@ class ContentParser {
       case "function":
         entry.type = token.type;
         entry.parameters = parseParams(token.parameters);
-        entry.constexpr = token.constexpr;
+        if (token.constexpr) entry.constexpr = token.constexpr;
         break;
       case "struct":
         entry.type = token.type;
@@ -188,11 +208,32 @@ class ContentParser {
     if (token.begin == lastEnd) {
       if (lastDoc) entry.doc = lastDoc;
       if (lastTemplate) entry.template = parseParams(lastTemplate);
-      entry.begin = lastBegin;
-      if (lastDecl) entry.decl = lastDecl;
+      if (this.storeLineNumbers) {
+        entry.begin = lastBegin;
+        entry.decl = lastDecl || token.begin;
+        entry.end = token.end;
+      }
+    } else if (this.storeLineNumbers) {
+      entry.begin = token.begin;
+      entry.decl = token.begin;
+      entry.end = token.end;
     }
-    if (!this.storeLineNumbers) removeEntryLineNumbers(entry);
     return entry;
+  }
+
+  /**
+   * Check if this is the file doc
+   * @private
+   * @param {number} begin 
+   * @param {number} end 
+   * @param {string} doc 
+   */
+  checkFileDoc(begin, end, doc) {
+    if (!this.docBegin && begin) {
+      this.docBegin = begin;
+      this.docEnd = end;
+      this.doc = doc;
+    }
   }
 
   /**
@@ -243,7 +284,7 @@ function parseParams(params) {
 }
 
 /**
- * @typedef {"alias"|"callback"|"def"|"doc"|"enum"|"forward"|"function"|"struct"|"template"|"union"} FileTokenKind
+ * @typedef {"alias"|"callback"|"def"|"doc"|"enum"|"forward"|"function"|"namespace"|"struct"|"template"|"union"} FileTokenKind
  */
 
 /**
@@ -281,6 +322,8 @@ function tokenize(lines) {
 
     if (m = line.match(/^\/\/\s*Forward decl/)) {
       token.kind = "doc";
+    } else if (m = line.match(/^#pragma\s+region\s+impl/)) {
+      break;
     } else if (m = line.match(/^\/\//)) {
       continue;
     } else if (m = line.match(/^\/\*(\*)?/)) {
@@ -371,6 +414,9 @@ function tokenize(lines) {
         }
       }
       token.parameters = parameters.split(",").map(p => p.trim()) ?? [];
+    } else if (m = line.match(/^namespace\s+([^{]*)\{/)) {
+      token.kind = "namespace";
+      token.value = m[1]?.trim();
     } else if (line.startsWith('#')) {
       let ln = line;
       while (ln.endsWith('\\')) {

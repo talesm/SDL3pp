@@ -41,22 +41,21 @@ function updateApi(config) {
  * @returns 0 if no changes happened, n > 0 if there are changes
  */
 function updateContent(content, targetFile) {
-  const [docBegin, docEnd] = getDocRange(content);
-  const [entriesBegin, entriesEnd] = getEntriesRange(content, docEnd);
-
   const name = targetFile.name;
   const sourceFile = parseContent(name, content, { storeLineNumbers: true });
+  const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
   const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
   if (!changes.length) {
     console.log(`No changes for ${name}`);
     return 0;
   }
-  changes.push({
-    begin: docBegin,
-    end: docEnd,
-    replacement: wrapDocString(targetFile.doc),
-  });
-  console.log(changes);
+  if (targetFile.doc) {
+    changes.push({
+      begin: docBegin,
+      end: docEnd,
+      replacement: wrapDocString(targetFile.doc),
+    });
+  }
   updateChanges(content, changes);
   return changes.length;
 }
@@ -93,7 +92,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
   const targetEntries = targetFile.entries;
   const targetNames = Object.keys(targetEntries);
   if (!targetNames.length) {
-    changes.push({
+    if (begin != end) changes.push({
       begin,
       end,
     });
