@@ -22,14 +22,13 @@ const ignoreInSignature = new RegExp(`(${[
 
 /**
  * @typedef {object} ParseConfig
- * @property {string} baseDir
- * @property {string[]} files
+ * @prop {string}   baseDir
+ * @prop {string[]} files
+ * @prop {boolean=} storeLineNumbers
  */
 
 /**
  * @param {ParseConfig} config
- * @param {string} baseDir 
- * @param {string[]} files 
  * 
  */
 function parseApi(config) {
@@ -40,20 +39,29 @@ function parseApi(config) {
   for (const name of files) {
     console.log(`Reading file ${name}`);
     const content = readFileSync(baseDir + name, 'utf-8').split(/\r?\n/);
-    api.files[name] = parseContent(name, content);
+    api.files[name] = parseContent(name, content, config);
   }
   return api;
 }
 
 exports.parseApi = parseApi;
+exports.parseContent = parseContent;
+exports.removeEntryLineNumbers = removeEntryLineNumbers;
+
+/**
+ * @typedef {object} ParseContentConfig
+ * @prop {boolean=} storeLineNumbers
+ */
 
 /**
  * 
  * @param {string} name
  * @param {string[]} content 
+ * @param {ParseContentConfig} config 
  */
-function parseContent(name, content) {
+function parseContent(name, content, config) {
   const tokens = tokenize(content);
+  if (!config) config = {};
 
   /** @type {ApiFile} */
   const apiFile = {
@@ -101,7 +109,7 @@ function parseContent(name, content) {
     lastDoc = null;
     lastTemplate = null;
     const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
-    if (!name) continue;
+    if (!config.storeLineNumbers) removeEntryLineNumbers(entry);
     if (entries[name]) {
       const currEntry = entries[name];
       if (Array.isArray(currEntry)) {
@@ -117,7 +125,16 @@ function parseContent(name, content) {
   }
   return apiFile;
 }
-exports.parseContent = parseContent;
+
+/**
+ * Remove line numbers from entry
+ * @param {ApiEntry} entry 
+ */
+function removeEntryLineNumbers(entry) {
+  delete entry.decl;
+  delete entry.begin;
+  delete entry.end;
+}
 
 /**
  * 

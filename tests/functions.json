@@ -6,9 +6,6 @@
       "entries": {
         "funcCStr": {
           "doc": "Documentation",
-          "begin": 13,
-          "decl": 16,
-          "end": 17,
           "name": "funcCStr",
           "kind": "function",
           "type": "int",
@@ -21,9 +18,6 @@
         },
         "funcVoid": {
           "doc": "Documentation",
-          "begin": 18,
-          "decl": 21,
-          "end": 22,
           "name": "funcVoid",
           "kind": "function",
           "type": "int",
@@ -31,9 +25,6 @@
         },
         "funcEmpty": {
           "doc": "Documentation",
-          "begin": 23,
-          "decl": 26,
-          "end": 27,
           "name": "funcEmpty",
           "kind": "function",
           "type": "int",
@@ -42,9 +33,6 @@
         "funcInt": [
           {
             "doc": "Documentation",
-            "begin": 28,
-            "decl": 31,
-            "end": 32,
             "name": "funcInt",
             "kind": "function",
             "type": "int",
@@ -61,9 +49,6 @@
           },
           {
             "doc": "Documentation",
-            "begin": 33,
-            "decl": 36,
-            "end": 37,
             "name": "funcInt",
             "kind": "function",
             "type": "int",
@@ -77,9 +62,6 @@
         ],
         "funcIntReturnsCStr": {
           "doc": "Documentation",
-          "begin": 38,
-          "decl": 41,
-          "end": 42,
           "name": "funcIntReturnsCStr",
           "kind": "function",
           "type": "const char *",
@@ -96,9 +78,6 @@
         },
         "functionConstexpr": {
           "doc": "@brief Documentation",
-          "begin": 43,
-          "decl": 47,
-          "end": 51,
           "name": "functionConstexpr",
           "kind": "function",
           "type": "int",
