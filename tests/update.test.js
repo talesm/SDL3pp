@@ -26,3 +26,13 @@ test("functions.h loopback", () => {
   expect(modifiedContent).toEqual(originalContent);
   expect(changes).toBe(0);
 });
+
+test("functions.h over empty file", () => {
+  const originalContent = readLinesSync("tests/functions.h");
+  const originalApi = parseContent("functions.h", originalContent);
+  const modifiedContent = readLinesSync("tests/empty.h");
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("functions.h", originalContent);
+  expect(modifiedApi).toEqual(originalApi);
+});
