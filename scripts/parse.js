@@ -1,8 +1,8 @@
 
 const { readFileSync, writeFileSync } = require("node:fs");
 
-const baseDir = '/usr/local/include/SDL3/'
-const filename = 'SDL_stdinc.h'
+const baseDir = '/usr/local/include/SDL3/';
+const filename = 'SDL_stdinc.h';
 
 const ignorePrefixes = [
   'void *alloca',
@@ -16,7 +16,7 @@ const ignorePrefixes = [
 ];
 
 if (require.main == module) {
-  writeFileSync('scripts/source.json', JSON.stringify(parseApi(baseDir, [filename]), null, 2))
+  writeFileSync('scripts/source.json', JSON.stringify(parseApi(baseDir, [filename]), null, 2));
 }
 
 /**
@@ -29,9 +29,9 @@ if (require.main == module) {
 function parseApi(baseDir, names) {
   const files = {};
   for (const name of names) {
-    console.log(`Reading file ${name}`)
+    console.log(`Reading file ${name}`);
     const content = readFileSync(baseDir + name, 'utf-8').split('\n');
-    files[name] = parseContent(name, content)
+    files[name] = parseContent(name, content);
   }
   return { files };
 }
@@ -51,11 +51,11 @@ function parseContent(name, content) {
     name,
     doc: '',
     entries: {},
-  }
+  };
   if (tokens?.length) {
     apiFile.doc = tokens.shift().value;
   }
-  const entries = apiFile.entries
+  const entries = apiFile.entries;
   /** @type {string} */
   let lastDoc = null;
 
@@ -66,21 +66,21 @@ function parseContent(name, content) {
   let lastEnd = null;
 
   /** @type {number} */
-  let lastBegin = null
+  let lastBegin = null;
   for (const token of tokens) {
     if (token.kind == 'doc') {
       lastDoc = token.value;
-      lastEnd = token.end
-      lastBegin = token.begin
+      lastEnd = token.end;
+      lastBegin = token.begin;
       continue;
     }
     if (token.kind == "template") {
       lastTemplate = token.parameters;
       if (lastEnd != token.begin) {
-        lastBegin = token.begin
+        lastBegin = token.begin;
         lastDoc = null;
       }
-      lastEnd = token.end
+      lastEnd = token.end;
       continue;
     }
     const entry = parseEntry(token);
@@ -90,7 +90,7 @@ function parseContent(name, content) {
       entry.begin = lastBegin;
     }
     lastDoc = null;
-    lastTemplate = null
+    lastTemplate = null;
     const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
     if (!name) continue;
     if (entries[name]) {
@@ -106,7 +106,7 @@ function parseContent(name, content) {
       entries[name] = entry;
     }
   }
-  return apiFile
+  return apiFile;
 }
 exports.parseContent = parseContent;
 
@@ -123,15 +123,15 @@ function parseEntry(token) {
     end: token.end,
     name: token.value,
     kind: token.kind,
-  }
+  };
   switch (token.kind) {
     case "alias":
       entry.type = token.type;
       break;
     case "callback":
       entry.type = token.type;
-      entry.parameters = parseParams(token.parameters)
-      break
+      entry.parameters = parseParams(token.parameters);
+      break;
     case "def":
       entry.parameters = token.parameters;
       break;
@@ -140,7 +140,7 @@ function parseEntry(token) {
       break;
     case "function":
       entry.type = token.type;
-      entry.parameters = parseParams(token.parameters)
+      entry.parameters = parseParams(token.parameters);
       break;
     case "struct":
       entry.parameters = parseParams(token.parameters);
@@ -161,7 +161,7 @@ function parseEntry(token) {
  */
 function parseParams(params) {
   if (params.length == 1 && (params[0] == 'void' || params[0] == '')) {
-    return []
+    return [];
   }
   return params.map(param => {
     const nameIndex = param.lastIndexOf(' ');
@@ -174,7 +174,7 @@ function parseParams(params) {
     }
     type = type.replaceAll(/(\w)\*/g, '$1 *').replaceAll(/\s+/g, ' ');
     return { name, type };
-  })
+  });
 
 }
 
@@ -196,20 +196,20 @@ function parseParams(params) {
  */
 function tokenize(lines) {
   /** @type {FileToken[]} */
-  const result = []
+  const result = [];
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
     /** @type {FileToken} */
     const token = {
       begin: i + 1,
-    }
+    };
     let m;
     if (m = line.match(/^(\s*)($|\/\/)/)) {
       if (!line.endsWith("Forward decl")) continue;
       token.kind = "doc";
       token.spaces = m[1]?.length ?? 0;
-      token.value = undefined
+      token.value = undefined;
     } else if (m = line.match(/^(\s*)(\/\*.*$)/)) {
       let doc = '';
       const isDoc = m[2] == '/**';
@@ -217,9 +217,9 @@ function tokenize(lines) {
       for (; i < lines.length; ++i) {
         const line = lines[i];
         if (line.match(/\*\//)) {
-          break
+          break;
         }
-        const m = line.match(/^\s*\*\s?/)
+        const m = line.match(/^\s*\*\s?/);
         doc += m ? line.slice(m[0].length) : line;
         doc += '\n';
       }
@@ -230,12 +230,12 @@ function tokenize(lines) {
       } else continue;
     } else if (m = line.match(/^#define\s+(\w+)(\(([\w\s,]+)\))?/)) {
       token.kind = "def";
-      token.value = m[1]
+      token.value = m[1];
       if (m[2]) token.parameters = m[3].split(',').map(p => p.trim());
       let ln = line;
       while (ln.endsWith('\\')) {
         if (i > lines.length) break;
-        ln = lines[++i]
+        ln = lines[++i];
       }
       if (token.value.endsWith('_')) continue;
     } else if (m = line.match(/^(\s*)typedef\s+(([\w*]+\s+)+\**)(\w+);/)) {
@@ -255,9 +255,9 @@ function tokenize(lines) {
       token.parameters = m[6]?.split(',')?.map(p => p.trim()) ?? [];
     } else if (m = line.match(/^(\s*)typedef\s+(struct|enum|union)\s+\w+\s*(\{\s*)?$/)) {
       token.kind = m[2];
-      const spaces = m[1]?.length ?? 0
+      const spaces = m[1]?.length ?? 0;
       token.spaces = spaces;
-      const parameters = []
+      const parameters = [];
       i += m[3] ? 1 : 2;
       for (; i < lines.length; i++) {
         const line = lines[i].slice(spaces);
@@ -274,13 +274,13 @@ function tokenize(lines) {
       token.value = m[2];
     } else if (m = line.match(/^(\s*)struct\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/)) {
       token.kind = "struct";
-      const spaces = m[1]?.length ?? 0
+      const spaces = m[1]?.length ?? 0;
       token.spaces = spaces;
       token.value = m[2];
       if (m[4]) {
         token.type = m[4].trim();
       }
-      const parameters = []
+      const parameters = [];
       if (!line.endsWith("{};") && !lines[++i].endsWith("{};")) {
         if (lines[i].endsWith("{")) ++i;
         for (; i < lines.length; i++) {
@@ -292,14 +292,14 @@ function tokenize(lines) {
       token.parameters = parameters;
     } else if (m = line.match(/^(\s*)(extern|inline|constexpr|SDL_FORCE_INLINE) (SDL_DECLSPEC )?(SDL_MALLOC )?(SDL_ALLOC_SIZE\d?\([\d, ]*\) )?/)) {
       token.constexpr = m[2] == "constexpr";
-      const signature = line.slice(m[0].length).replaceAll(/SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP\(\w+\)/g, "")
+      const signature = line.slice(m[0].length).replaceAll(/SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP\(\w+\)/g, "");
       const spaces = m[1]?.length ?? 0;
       if (signature == '"C" {') continue;
       m = signature.match(/(SDLCALL )?(\w+)\(([^)]*)(\))?/);
       token.value = m[2];
       token.kind = "function";
       token.type = normalizeType(signature.slice(0, m.index).trim());
-      let parameters = m[3] ?? ''
+      let parameters = m[3] ?? '';
       let inline = !signature.endsWith(';');
       if (!m[4]) {
         for (++i; i < lines.length; ++i) {
@@ -317,7 +317,7 @@ function tokenize(lines) {
           parameters += '\n' + line;
         }
       }
-      token.parameters = parameters.split(',').map(p => p.trim()) ?? []
+      token.parameters = parameters.split(',').map(p => p.trim()) ?? [];
       if (inline && lines[i].indexOf('}') === -1) {
         for (i++; i < lines.length; i++) {
           const line = lines[i].slice(spaces);
@@ -329,11 +329,11 @@ function tokenize(lines) {
       token.value = "";
       token.spaces = m[1]?.length ?? 0;
 
-      let parameters
+      let parameters;
       if (line.endsWith(">")) {
         parameters = line.slice(m[0].length, line.length - 1);
       } else {
-        parameters = line.slice(m[0].length) ?? ""
+        parameters = line.slice(m[0].length) ?? "";
         for (++i; i < lines.length; ++i) {
           const line = lines[i];
           if (line.endsWith('>')) {
@@ -343,12 +343,12 @@ function tokenize(lines) {
           parameters += '\n' + line;
         }
       }
-      token.parameters = parameters.split(",").map(p => p.trim()) ?? []
+      token.parameters = parameters.split(",").map(p => p.trim()) ?? [];
     } else if (line.startsWith('#')) {
       let ln = line;
       while (ln.endsWith('\\')) {
         if (i > lines.length) break;
-        ln = lines[i++]
+        ln = lines[i++];
       }
       continue;
     } else {
@@ -356,20 +356,20 @@ function tokenize(lines) {
       for (const prefix of ignorePrefixes) {
         if (line.startsWith(prefix)) {
           found = true;
-          break
+          break;
         }
       }
       if (found) continue;
-      console.warn(`Unknown token at line ${i + 1}: ${line}`)
+      console.warn(`Unknown token at line ${i + 1}: ${line}`);
       continue;
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {
-      console.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`)
+      console.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`);
     }
     result.push(token);
   }
-  return result
+  return result;
 }
 
 /** @param {string} typeString  */

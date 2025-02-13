@@ -2,10 +2,10 @@ const { writeFileSync } = require("node:fs");
 const source = require('./source.json');
 const config = require('./transform.json');
 
-const filename = 'SDL_stdinc.h'
+const filename = 'SDL_stdinc.h';
 
 if (require.main == module) {
-  writeFileSync('scripts/target.json', JSON.stringify(transformApi([filename]), null, 2))
+  writeFileSync('scripts/target.json', JSON.stringify(transformApi([filename]), null, 2));
 }
 
 /**
@@ -22,12 +22,12 @@ function transformApi(names) {
   const context = { typeMap, paramTypeMap, returnTypeMap };
 
   /** @type {{[file: string]: ApiFile}} */
-  const files = {}
+  const files = {};
   const keys = Object.keys(source.files).filter(names?.length ? (name => names.includes(name)) : (() => true));
   for (const sourceName of keys) {
     const sourceFile = source.files[sourceName];
     const targetName = transformIncludeName(sourceName);
-    console.log(`Transforming api ${sourceName} => ${targetName}`)
+    console.log(`Transforming api ${sourceName} => ${targetName}`);
 
     files[targetName] = {
       name: targetName,
@@ -56,7 +56,7 @@ function transformEntries(sourceEntries, context, config) {
   const targetEntries = {};
   const defWhitelist = new Set(config.includeDefs);
   const blacklist = new Set(config.ignoreEntries);
-  const transformMap = config.transform
+  const transformMap = config.transform;
 
   for (const entry of config.includeAt?.begin ?? []) {
     const targetName = entry.kind == "forward" ? `${entry.name}-forward` : entry.name;
@@ -75,7 +75,7 @@ function transformEntries(sourceEntries, context, config) {
     } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
       const targetEntry = transformEntry(sourceEntry, context, config);
       targetName = transformName(targetEntry.name);
-      const targetDelta = transformMap[targetName]
+      const targetDelta = transformMap[targetName];
       if (targetDelta) {
         if (targetDelta.name) targetName = targetDelta.name;
         else targetDelta.name = targetName;
@@ -86,7 +86,7 @@ function transformEntries(sourceEntries, context, config) {
         if (targetName == targetEntry.type) {
           continue;
         }
-        const type = targetEntry.type
+        const type = targetEntry.type;
         context.typeMap[type] = targetName;
         context.typeMap[`${type} *`] = `${targetName} *`;
         context.typeMap[`const ${type}`] = `const ${targetName}`;
@@ -98,7 +98,7 @@ function transformEntries(sourceEntries, context, config) {
     }
   }
 
-  return targetEntries
+  return targetEntries;
 }
 
 /**
@@ -112,13 +112,13 @@ function transformEntry(sourceEntry, context, config) {
   if (sourceEntry.doc) {
     targetEntry.doc = transformDoc(targetEntry.doc);
   }
-  const sourceName = sourceEntry.name
+  const sourceName = sourceEntry.name;
   targetEntry.sourceName = sourceName;
   switch (sourceEntry.kind) {
     case 'function':
       targetEntry.parameters = transformParameters(sourceEntry.parameters, context);
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
-      break
+      break;
     case 'alias':
       const type = config?.types[sourceName];
       if (type === "resource" || type?.kind == "resource") {
@@ -150,7 +150,7 @@ function transformEntry(sourceEntry, context, config) {
     default:
       break;
   }
-  return targetEntry
+  return targetEntry;
 }
 
 /**

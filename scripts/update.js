@@ -1,13 +1,13 @@
 const { readFileSync, writeFileSync } = require("node:fs");
-const { parseApi, parseContent } = require("./read-api.js")
+const { parseApi, parseContent } = require("./parse.js");
 const target = require('./target.json');
 
-const baseDir = 'include/SDL3pp/'
-const filename = 'stdinc.hpp'
+const baseDir = 'include/SDL3pp/';
+const filename = 'stdinc.hpp';
 
 
 if (require.main == module) {
-  updateHeaders([filename])
+  updateHeaders([filename]);
 }
 
 /**
@@ -28,7 +28,7 @@ function updateHeaders(names) {
     const sourceFile = parseContent(name, content);
     const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
     if (!changes.length) {
-      console.log(`No changes for ${name}`)
+      console.log(`No changes for ${name}`);
       continue;
     }
     changes.push({
@@ -37,7 +37,7 @@ function updateHeaders(names) {
       replacement: wrapDocString(targetFile.doc),
     });
     for (const change of changes) {
-      updateRange(content, change.begin, change.end, change.replacement ?? undefined)
+      updateRange(content, change.begin, change.end, change.replacement ?? undefined);
     }
     writeFileSync(filename, content.join('\n').trim() + '\n');
   }
@@ -61,23 +61,23 @@ function updateHeaders(names) {
 function checkChanges(sourceFile, targetFile, begin, end, prefix) {
   /** @type {Change[]} */
   const changes = [];
-  const targetEntries = targetFile.entries
-  const targetNames = Object.keys(targetEntries)
+  const targetEntries = targetFile.entries;
+  const targetNames = Object.keys(targetEntries);
   if (!targetNames.length) {
     changes.push({
       begin,
       end,
-    })
+    });
     return changes;
   }
-  const sourceEntries = sourceFile.entries
-  const sourceNames = Object.keys(sourceEntries)
+  const sourceEntries = sourceFile.entries;
+  const sourceNames = Object.keys(sourceEntries);
   if (!sourceNames?.length) {
     changes.push({
       begin,
       end,
       replacement: generateEntries(targetEntries, prefix)
-    })
+    });
     return changes;
   }
   let sourceIndex = 0;
@@ -85,24 +85,24 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
     const targetEntry = targetEntries[targetName];
     let index = sourceNames.indexOf(targetName, sourceIndex);
     if (index == -1) {
-      console.log(`${targetEntry.name} added ${begin}`)
+      console.log(`${targetEntry.name} added ${begin}`);
       changes.push({
         begin,
         end: begin,
         replacement: '\n' + generateEntry(targetEntry, prefix),
-      })
+      });
     } else if (sourceIndex < sourceNames.length) {
       begin = sourceEntries[sourceNames[sourceIndex]].begin ?? sourceEntries[sourceNames[sourceIndex]][0].begin;
       const sourceEntry = sourceEntries[targetName];
-      const change = checkEntryChanged(sourceEntry, targetEntry)
+      const change = checkEntryChanged(sourceEntry, targetEntry);
       const sourceEntryEnd = Array.isArray(sourceEntry) ? sourceEntry[sourceEntry.length - 1].end : sourceEntry.end;
       if (change) {
-        console.info(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`)
+        console.info(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`);
         changes.push({
           begin,
           end: sourceEntryEnd,
           replacement: generateEntry(targetEntry, prefix)
-        })
+        });
         begin = sourceEntryEnd;
         // } else if (sourceEntry.entries || targetEntry.entries) {
         // TODO compound structs
@@ -111,18 +111,18 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
           changes.push({
             begin,
             end: Array.isArray(sourceEntry) ? sourceEntry[0].begin : sourceEntry.begin
-          })
+          });
         }
         begin = sourceEntryEnd;
       }
       sourceIndex = index + 1;
     } else {
-      console.log(`${targetEntry.name} added ${begin}`)
+      console.log(`${targetEntry.name} added ${begin}`);
       changes.push({
         begin: end,
         end,
         replacement: generateEntry(targetEntry, prefix) + '\n',
-      })
+      });
 
     }
   }
@@ -197,12 +197,12 @@ function generateEntry(entry, prefix) {
   if (Array.isArray(entry)) {
     return entry.map(e => generateEntry(e, prefix)).join('\n\n');
   }
-  prefix = prefix ?? ''
+  prefix = prefix ?? '';
   const doc = entry.doc ? wrapDocString(entry.doc, prefix) + '\n' : '';
   const placeholder = 'static_assert(false, "Not implemented");';
   switch (entry.kind) {
     case "alias":
-      return `${doc}${prefix}using ${entry.name} = ${entry.type};`
+      return `${doc}${prefix}using ${entry.name} = ${entry.type};`;
     case "forward":
       return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
     case "function":
@@ -210,11 +210,11 @@ function generateEntry(entry, prefix) {
       const parameters = generateParameters(entry.parameters);
       const body = !entry.sourceName ? placeholder
         : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
-      return `${doc}${prefix}${specifier} ${entry.type} ${entry.name}(${parameters})\n${prefix}{\n${prefix}  ${body}\n${prefix}}`
+      return `${doc}${prefix}${specifier} ${entry.type} ${entry.name}(${parameters})\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
     case "struct":
       return doc + generateStruct(entry, prefix);
     default:
-      console.warn(`Unknown kind: ${entry.kind} for ${entry.name}`)
+      console.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
   }
 }
@@ -227,8 +227,8 @@ function generateEntry(entry, prefix) {
 function generateCall(name, ...parameters) {
   const paramStr = parameters
     .map(p => typeof p == "string" ? p : p.name)
-    .join(", ")
-  return `${name}(${paramStr});`
+    .join(", ");
+  return `${name}(${paramStr});`;
 }
 
 /**
@@ -238,11 +238,11 @@ function generateCall(name, ...parameters) {
  */
 function generateStruct(entry, prefix) {
   const signature = generateStructSignature(entry, prefix);
-  const parent = entry.type ? ` : ${entry.type}` : ""
+  const parent = entry.type ? ` : ${entry.type}` : "";
   if (!entry.parameters?.length)
     return `${signature}${parent}\n${prefix}{};`;
   const fieldPrefix = prefix + "  ";
-  const fields = entry.parameters.map(p => fieldPrefix + generateParameter(p)).join('\n')
+  const fields = entry.parameters.map(p => fieldPrefix + generateParameter(p)).join('\n');
   return `${signature}${parent}\n${prefix}{\n${fields}\n${prefix}};`;
 }
 
@@ -279,7 +279,7 @@ function generateParameters(parameters) {
  */
 function generateParameter(parameter) {
   if (typeof parameter == "string") return parameter;
-  return `${parameter.type} ${parameter.name}`
+  return `${parameter.type} ${parameter.name}`;
 }
 
 /**
@@ -291,8 +291,8 @@ function wrapDocString(docStr, prefix) {
   if (!docStr) return '';
   prefix = prefix ?? '';
   const replacement = `\n${prefix} *$1`;
-  docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n')
-  return `${prefix}/**\n${docStr}\n${prefix} **/`
+  docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
+  return `${prefix}/**\n${docStr}\n${prefix} **/`;
 }
 
 /**
@@ -319,6 +319,6 @@ function getDocRange(content, current) {
 function getEntriesRange(content, current) {
   current = current ? current - 1 : 0;
   const begin = content.indexOf('namespace SDL {', current) + 1;
-  const end = content.indexOf('// #pragma region implementation', begin)
+  const end = content.indexOf('// #pragma region implementation', begin);
   return [Math.max(begin, current) + 1, (end != -1 ? end : content.lastIndexOf('} // namespace SDL')) + 1];
 }
