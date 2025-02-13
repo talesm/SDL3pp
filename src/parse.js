@@ -72,44 +72,10 @@ function parseContent(name, content, config) {
   if (tokens?.length) {
     apiFile.doc = tokens.shift().value;
   }
+  const parser = new ContentParser(tokens, config);
   const entries = apiFile.entries;
-  /** @type {string} */
-  let lastDoc = null;
-
-  /** @type {(string|ApiParameter)[]} */
-  let lastTemplate = null;
-
-  /** @type {number} */
-  let lastEnd = null;
-
-  /** @type {number} */
-  let lastBegin = null;
-  for (const token of tokens) {
-    if (token.kind == 'doc') {
-      lastDoc = token.value;
-      lastEnd = token.end;
-      lastBegin = token.begin;
-      continue;
-    }
-    if (token.kind == "template") {
-      lastTemplate = token.parameters;
-      if (lastEnd != token.begin) {
-        lastBegin = token.begin;
-        lastDoc = null;
-      }
-      lastEnd = token.end;
-      continue;
-    }
-    const entry = parseEntry(token);
-    if (token.begin == lastEnd) {
-      if (lastDoc) entry.doc = lastDoc;
-      if (lastTemplate) entry.template = parseParams(lastTemplate);
-      entry.begin = lastBegin;
-    }
-    lastDoc = null;
-    lastTemplate = null;
+  for (const entry of parser.parseEntries()) {
     const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
-    if (!config.storeLineNumbers) removeEntryLineNumbers(entry);
     if (entries[name]) {
       const currEntry = entries[name];
       if (Array.isArray(currEntry)) {
@@ -127,6 +93,121 @@ function parseContent(name, content, config) {
 }
 
 /**
+ * Parses a list of tokens into Entry
+ */
+class ContentParser {
+  /**
+   * 
+   * @param {FileToken[]}        tokens the tokens
+   * @param {ParseContentConfig} config the configuration
+   */
+  constructor(tokens, config) {
+    /** @private */
+    this.next = () => tokens.shift();
+    /** @private */
+    this.lookup = () => tokens[0];
+    this.storeLineNumbers = config.storeLineNumbers;
+  }
+
+  /** Parse all entries */
+  parseEntries() {
+    const entries = [];
+    for (let entry = this.parseEntry(); !!entry; entry = this.parseEntry()) {
+      entries.push(entry);
+    }
+    return entries;
+  }
+
+  /** Parses a single entry */
+  parseEntry() {
+    let lastEnd = 0;
+    let lastDecl = 0;
+    let lastBegin = 0;
+    let lastDoc = "";
+    /** @type {ApiParameters} */
+    let lastTemplate = null;
+
+    while (this.lookup()?.kind === "doc") {
+      const token = this.match("doc");
+      lastDoc = token.value;
+      lastEnd = token.end;
+      lastBegin = token.begin;
+    }
+    if (this.lookup()?.kind === "template") {
+      const token = this.match("template");
+      if (lastEnd != token.begin || lastTemplate) {
+        lastBegin = token.begin;
+        lastDoc = null;
+      }
+      lastTemplate = token.parameters;
+      if (!lastDecl) lastDecl = token.begin;
+      lastEnd = token.end;
+    }
+    const token = this.next();
+    if (!token) {
+      if (lastTemplate) throw new Error(`Error at ${lastEnd}: Expected an entity after template signature`);
+      return undefined;
+    }
+
+    /** @type {ApiEntry} */
+    const entry = {
+      doc: '',
+      begin: token.begin,
+      decl: token.begin,
+      end: token.end,
+      name: token.value,
+      kind: token.kind,
+    };
+    switch (token.kind) {
+      case "alias":
+        entry.type = token.type;
+        break;
+      case "callback":
+        entry.type = token.type;
+        entry.parameters = parseParams(token.parameters);
+        break;
+      case "def":
+        entry.parameters = parseParams(token.parameters);
+        break;
+      case "enum":
+        entry.parameters = token.parameters.map(p => p.replace(',', '').trim()).filter(p => !!p);
+        break;
+      case "function":
+        entry.type = token.type;
+        entry.parameters = parseParams(token.parameters);
+        entry.constexpr = token.constexpr;
+        break;
+      case "struct":
+        entry.type = token.type;
+        break;
+      case "forward":
+        break;
+      default:
+        throw new Error(`Error at ${token.begin}: Unexpected ${token.kind}`);
+    }
+    if (token.begin == lastEnd) {
+      if (lastDoc) entry.doc = lastDoc;
+      if (lastTemplate) entry.template = parseParams(lastTemplate);
+      entry.begin = lastBegin;
+      if (lastDecl) entry.decl = lastDecl;
+    }
+    if (!this.storeLineNumbers) removeEntryLineNumbers(entry);
+    return entry;
+  }
+
+  /**
+   * Returns token only if matches the specific kind
+   * @param {FileTokenKind} kind 
+   */
+  match(kind) {
+    const token = this.next();
+    if (!token) throw new Error(`Error at ${token.begin}: expected ${kind}`);
+    if (token.kind !== kind) throw new Error(`Error at ${token.begin}: expected ${kind} got ${token.kind}`);
+    return token;
+  }
+}
+
+/**
  * Remove line numbers from entry
  * @param {ApiEntry} entry 
  */
@@ -134,51 +215,6 @@ function removeEntryLineNumbers(entry) {
   delete entry.decl;
   delete entry.begin;
   delete entry.end;
-}
-
-/**
- * 
- * @param {FileToken} token 
- */
-function parseEntry(token) {
-  /** @type {ApiEntry} */
-  const entry = {
-    doc: '',
-    begin: token.begin,
-    decl: token.begin,
-    end: token.end,
-    name: token.value,
-    kind: token.kind,
-  };
-  switch (token.kind) {
-    case "alias":
-      entry.type = token.type;
-      break;
-    case "callback":
-      entry.type = token.type;
-      entry.parameters = parseParams(token.parameters);
-      break;
-    case "def":
-      entry.parameters = parseParams(token.parameters);
-      break;
-    case "enum":
-      entry.parameters = token.parameters.map(p => p.replace(',', '').trim()).filter(p => !!p);
-      break;
-    case "function":
-      entry.type = token.type;
-      entry.parameters = parseParams(token.parameters);
-      entry.constexpr = token.constexpr;
-      break;
-    case "struct":
-      entry.type = token.type;
-      break;
-    case "forward":
-      break;
-    default:
-      console.error(`Unimplemented kind ${token.kind} (${token.value}) at ${token.begin}`);
-      break;
-  }
-  return entry;
 }
 
 /**
@@ -207,15 +243,19 @@ function parseParams(params) {
 }
 
 /**
+ * @typedef {"alias"|"callback"|"def"|"doc"|"enum"|"forward"|"function"|"struct"|"template"|"union"} FileTokenKind
+ */
+
+/**
  * @typedef {object} FileToken
- * @property {string} value
- * @property {"alias"|"callback"|"def"|"doc"|"enum"|"forward"|"function"|"struct"|"template"|"union"} kind
- * @property {string=} parameters
- * @property {string=} type
- * @property {boolean=} constexpr
- * @property {number} begin
- * @property {number} end
- * @property {number} spaces
+ * @property {string}         value
+ * @property {FileTokenKind}  kind
+ * @property {string=}        parameters
+ * @property {string=}        type
+ * @property {boolean=}       constexpr
+ * @property {number}         begin
+ * @property {number}         end
+ * @property {number}         spaces
  */
 
 const memberSpecifiers = new Set(["inline", "static", "constexpr"]);
