@@ -53,7 +53,7 @@ function updateContent(content, targetFile) {
     changes.push({
       begin: docBegin,
       end: docEnd,
-      replacement: wrapDocString(targetFile.doc),
+      replacement: generateDocString(targetFile.doc),
     });
   }
   updateChanges(content, changes);
@@ -226,7 +226,7 @@ function generateEntry(entry, prefix) {
     return entry.map(e => generateEntry(e, prefix)).join('\n\n');
   }
   prefix = prefix ?? '';
-  const doc = entry.doc ? wrapDocString(entry.doc, prefix) + '\n' : '';
+  const doc = entry.doc ? generateDocString(entry.doc, prefix) + '\n' : '';
   const placeholder = 'static_assert(false, "Not implemented");';
   switch (entry.kind) {
     case "alias":
@@ -315,38 +315,10 @@ function generateParameter(parameter) {
  * @param {string} docStr 
  * @param {string=} prefix 
  */
-function wrapDocString(docStr, prefix) {
+function generateDocString(docStr, prefix) {
   if (!docStr) return '';
   prefix = prefix ?? '';
   const replacement = `\n${prefix} *$1`;
   docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
   return `${prefix}/**\n${docStr}\n${prefix} **/`;
-}
-
-/**
- * 
- * @param {string[]} content 
- * @param {number=} current 
- * @returns {[number, number]}
- */
-function getDocRange(content, current) {
-  current = current ? current - 1 : 0;
-  if (!content[current].startsWith('/**')) return [current + 1, current + 1];
-  for (var i = current + 1; i < content.length; i++) {
-    if (!content[i].startsWith(' *')) break;
-  }
-  return [current + 1, i + 1];
-}
-
-/**
-* 
-* @param {string[]} content 
-* @param {number=} current 
-* @returns {[number, number]}
-*/
-function getEntriesRange(content, current) {
-  current = current ? current - 1 : 0;
-  const begin = content.indexOf('namespace SDL {', current) + 1;
-  const end = content.indexOf('// #pragma region implementation', begin);
-  return [Math.max(begin, current) + 1, (end != -1 ? end : content.lastIndexOf('} // namespace SDL')) + 1];
 }

@@ -9,9 +9,18 @@ test("updateChanges", () => {
   expect(target1).toEqual(["A", "NEW!", "D"]);
 });
 
-test("empty.h-loopback", () => {
+test("empty.h loopback", () => {
   const originalContent = readLinesSync("tests/empty.h");
   const api = parseContent("empty.h", originalContent);
+  const modifiedContent = [...originalContent];
+  const changes = updateContent(modifiedContent, api);
+  expect(modifiedContent).toEqual(originalContent);
+  expect(changes).toBe(0);
+});
+
+test("functions.h loopback", () => {
+  const originalContent = readLinesSync("tests/functions.h");
+  const api = parseContent("functions.h", originalContent);
   const modifiedContent = [...originalContent];
   const changes = updateContent(modifiedContent, api);
   expect(modifiedContent).toEqual(originalContent);
