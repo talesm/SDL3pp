@@ -1,6 +1,6 @@
-const { writeFileSync, readFileSync } = require("fs");
 const { parseApi } = require("./parse.js");
 const { updateApi } = require("./update.js");
+const { readJSONSync, writeJSONSync } = require("./utils.js");
 /**
  * Process the main
  * @param {string[]} args the arguments
@@ -43,7 +43,7 @@ function parse(args) {
     }
     if (!arg.startsWith('-')) {
       if (arg.endsWith(".json")) {
-        mergeInto(config, loadJson(arg.replaceAll("\\", '/')));
+        mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
       } else
         config.files.push(arg.replaceAll("\\", '/'));
       continue;
@@ -54,7 +54,7 @@ function parse(args) {
       case '--baseDir':
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
       case '--config':
-      case '-c': mergeInto(config, loadJson(args[++i].replaceAll("\\", '/'))); break;
+      case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
       case '--print-config': printConfig = true; break;
       default:
         throw new Error(`Invalid option ${arg}`);
@@ -75,15 +75,11 @@ function parse(args) {
     config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
   }
   if (printConfig) {
-    console.log(JSON.stringify(config, null, 2));
+    writeJSONSync(1, config);
     return;
   }
-  const api = JSON.stringify(parseApi(config), null, 2);
-  if (config.outputFile) {
-    writeFileSync(config.outputFile, api);
-  } else {
-    console.log(api);
-  }
+  const api = parseApi(config);
+  writeJSONSync(config.outputFile || 1, api);
 }
 
 /**
@@ -135,16 +131,16 @@ function update(args) {
       continue;
     }
     switch (arg) {
-      case '-t': config.target = loadJson(args[++i].replaceAll("\\", '/')); break;
+      case '-t': config.target = readJSONSync(args[++i].replaceAll("\\", '/')); break;
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
-      case '-c': mergeInto(config, loadJson(args[++i].replaceAll("\\", '/'), "utf8")); break;
+      case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'), "utf8")); break;
       default:
         throw new Error(`Invalid option ${arg}`);
     }
   }
   if (!config.target) {
     if (!config.files?.length) throw new Error("Missing target");
-    config.target = loadJson(config.files.shift());
+    config.target = readJSONSync(config.files.shift());
   }
 
   if (!config.baseDir && config.files[0].includes('/')) {
@@ -163,14 +159,6 @@ function update(args) {
     config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
   }
   updateApi(config);
-}
-
-/**
- * 
- * @param {string} filename 
- */
-function loadJson(filename) {
-  return JSON.parse(readFileSync(filename, "utf8"));
 }
 
 main(process.argv.slice(2));

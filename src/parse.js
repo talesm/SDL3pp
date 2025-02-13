@@ -1,4 +1,4 @@
-const { readFileSync } = require("node:fs");
+const { readLinesSync } = require("./utils");
 
 const ignorePrefixes = [
   'void *alloca',
@@ -38,7 +38,7 @@ function parseApi(config) {
   const api = { files: {} };
   for (const name of files) {
     console.log(`Reading file ${name}`);
-    const content = readFileSync(baseDir + name, 'utf-8').split(/\r?\n/);
+    const content = readLinesSync(baseDir + name);
     api.files[name] = parseContent(name, content, config);
   }
   return api;

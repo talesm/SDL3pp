@@ -1,5 +1,5 @@
-const { readFileSync, writeFileSync } = require("node:fs");
 const { parseContent } = require("./parse.js");
+const { readLinesSync, writeLinesSync } = require("./utils.js");
 
 exports.updateApi = updateApi;
 exports.updateContent = updateContent;
@@ -23,14 +23,14 @@ function updateApi(config) {
   for (const name of files) {
     console.log(`Updating ${name}`);
     const filename = baseDir + name;
-    const content = readFileSync(filename, "utf8").split(/\r?\n/);
+    const content = readLinesSync(filename);
     const targetFile = target.files[name];
 
     if (updateContent(content, targetFile) == 0) {
       console.log(`No changes for ${name}`);
       continue;
     }
-    writeFileSync(filename, content.join('\n').trim() + '\n');
+    writeLinesSync(filename, content);
   }
 }
 
@@ -45,7 +45,7 @@ function updateContent(content, targetFile) {
   const [entriesBegin, entriesEnd] = getEntriesRange(content, docEnd);
 
   const name = targetFile.name;
-  const sourceFile = parseContent(name, content);
+  const sourceFile = parseContent(name, content, { storeLineNumbers: true });
   const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
   if (!changes.length) {
     console.log(`No changes for ${name}`);
@@ -56,10 +56,8 @@ function updateContent(content, targetFile) {
     end: docEnd,
     replacement: wrapDocString(targetFile.doc),
   });
+  console.log(changes);
   updateChanges(content, changes);
-  for (const change of changes) {
-    updateRange(content, change.begin, change.end, change.replacement ?? undefined);
-  }
   return changes.length;
 }
 
