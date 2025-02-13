@@ -1,0 +1,7 @@
+{
+  "files": [
+    "empty.h"
+  ],
+  "outputFile": "tests/empty.json",
+  "baseDir": "tests/"
+}

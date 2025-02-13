@@ -1,0 +1,7 @@
+{
+  "files": [
+    "functions.h"
+  ],
+  "outputFile": "tests/functions.json",
+  "baseDir": "tests/"
+}

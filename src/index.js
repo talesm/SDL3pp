@@ -34,6 +34,7 @@ function parse(args) {
     outputFile: "",
     baseDir: "",
   };
+  let printConfig = false;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg == "--") {
@@ -41,20 +42,25 @@ function parse(args) {
       break;
     }
     if (!arg.startsWith('-')) {
-      config.files.push(arg.replaceAll("\\", '/'));
+      if (arg.endsWith(".json")) {
+        mergeInto(config, loadJson(arg.replaceAll("\\", '/')));
+      } else
+        config.files.push(arg.replaceAll("\\", '/'));
       continue;
     }
     switch (arg) {
-      case '': config.outputFile = ""; break;
+      case '--outputFile':
       case '-o': config.outputFile = args[++i].replaceAll("\\", '/'); break;
+      case '--baseDir':
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
-      case '-c': mergeInto(config, loadJson(args[++i].replaceAll("\\", '/'), "utf8")); break;
+      case '--config':
+      case '-c': mergeInto(config, loadJson(args[++i].replaceAll("\\", '/'))); break;
+      case '--print-config': printConfig = true; break;
       default:
         throw new Error(`Invalid option ${arg}`);
     }
   }
-  if (!config.files.length) return;
-  if (!config.baseDir && config.files[0].includes('/')) {
+  if (!config.baseDir && config.files.length && config.files[0].includes('/')) {
     config.baseDir = config.files[0].slice(0, config.files[0].lastIndexOf("/") + 1);
     for (let i = 1; i < config.files.length; i++) {
       const file = config.files[i];
@@ -67,6 +73,10 @@ function parse(args) {
   if (config.baseDir) {
     const baseDirLen = config.baseDir.length;
     config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
+  }
+  if (printConfig) {
+    console.log(JSON.stringify(config, null, 2));
+    return;
   }
   const api = JSON.stringify(parseApi(config), null, 2);
   if (config.outputFile) {
