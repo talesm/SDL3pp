@@ -1,3 +1,4 @@
+const { insertEntry } = require("./parse");
 const { system } = require("./utils");
 
 /**
@@ -35,16 +36,15 @@ function transformApi(config) {
 
   /** @type {ApiFileMap} */
   const files = {};
-  const keys = Object.keys(source.files);
-  for (const sourceName of keys) {
-    const sourceFile = source.files[sourceName];
-    const targetName = transformIncludeName(sourceName, context);
+  for (const [sourceName, sourceFile] of Object.entries(source.files)) {
+    const fileConfig = config.files[sourceName] ?? {};
+    const targetName = fileConfig.name || transformIncludeName(sourceName, context);
     system.log(`Transforming api ${sourceName} => ${targetName}`);
 
     files[targetName] = {
       name: targetName,
-      doc: transformFileDoc(sourceFile.doc, context, targetName),
-      entries: transformEntries(sourceFile.entries, context, config.files[targetName] ?? {})
+      doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context, targetName),
+      entries: transformEntries(sourceFile.entries, context, fileConfig)
     };
   }
   return { files };
@@ -81,7 +81,7 @@ class ApiContext {
  * @prop {string[]=}   includeDefs
  * @prop {string[]=}   ignoreEntries
  * @prop {ApiEntries=} transform
- * @prop {ApiEntries=} includeAt
+ * @prop {ApiEntries=} includeAfter
  * @prop {ApiEntries=} types this should be only structs
  */
 
@@ -98,9 +98,8 @@ function transformEntries(sourceEntries, context, config) {
   const blacklist = new Set(config.ignoreEntries ?? []);
   const transformMap = config.transform ?? {};
 
-  for (const entry of config.includeAt?.begin ?? []) {
-    const targetName = entry.kind == "forward" ? `${entry.name}-forward` : entry.name;
-    targetEntries[targetName] = entry;
+  if (config.includeAfter?.__begin) {
+    insertEntry(targetEntries, config.includeAfter.__begin);
   }
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -137,6 +136,13 @@ function transformEntries(sourceEntries, context, config) {
       }
       targetEntries[targetName] = targetEntry;
     }
+    const includeAfter = config.includeAfter?.[targetName];
+    if (includeAfter) {
+      insertEntry(targetEntries, includeAfter);
+    }
+  }
+  if (config.includeAfter?.__end) {
+    insertEntry(targetEntries, config.includeAfter.__end);
   }
 
   return targetEntries;

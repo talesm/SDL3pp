@@ -66,22 +66,7 @@ function parseContent(name, content, config) {
   };
   const parser = new ContentParser(tokens, config);
   const entryArray = parser.parseEntries();
-  const entries = apiFile.entries;
-  for (const entry of entryArray) {
-    const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
-    if (entries[name]) {
-      const currEntry = entries[name];
-      if (Array.isArray(currEntry)) {
-        currEntry.push(entry);
-      } else if (currEntry.kind != 'function') {
-        if (entry.doc || !currEntry.doc) entries[name] = entry;
-      } else if (entry.kind == 'function') {
-        entries[name] = [currEntry, entry];
-      }
-    } else {
-      entries[name] = entry;
-    }
-  }
+  insertEntry(apiFile.entries, entryArray);
   if (config.storeLineNumbers) {
     apiFile.docBegin = parser.docBegin || 1;
     apiFile.docEnd = parser.docEnd || apiFile.docBegin;
@@ -90,6 +75,32 @@ function parseContent(name, content, config) {
   }
   apiFile.doc = parser.doc;
   return apiFile;
+}
+
+/**
+ * Insert entry into entries
+ * 
+ * @param {ApiEntries} entries 
+ * @param {ApiEntry|ApiEntry[]} entry 
+ */
+function insertEntry(entries, entry) {
+  if (Array.isArray(entry)) {
+    entry.forEach(e => insertEntry(entries, e));
+    return;
+  }
+  const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
+  if (entries[name]) {
+    const currEntry = entries[name];
+    if (Array.isArray(currEntry)) {
+      currEntry.push(entry);
+    } else if (currEntry.kind != 'function') {
+      if (entry.doc || !currEntry.doc) entries[name] = entry;
+    } else if (entry.kind == 'function') {
+      entries[name] = [currEntry, entry];
+    }
+  } else {
+    entries[name] = entry;
+  }
 }
 
 /**
@@ -496,4 +507,5 @@ function normalizeType(typeString) {
 
 exports.parseApi = parseApi;
 exports.parseContent = parseContent;
+exports.insertEntry = insertEntry;
 exports.removeEntryLineNumbers = removeEntryLineNumbers;

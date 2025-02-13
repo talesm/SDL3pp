@@ -17,3 +17,27 @@ test("functions transform loopback", () => {
   });
   expect(modifiedApi).toMatchObject(functionsApi);
 });
+
+test("empty to functions transform", () => {
+  const functionsFile = functionsApi.files["functions.h"];
+  const newFunctions = Object.values(functionsFile.entries).reduce((acc, entry) => {
+    if (Array.isArray(entry))
+      acc.push(...entry);
+    else acc.push(entry);
+    return acc;
+  }, []);
+  console.log(newFunctions);
+  const modifiedApi = transformApi({
+    source: emptyApi,
+    files: {
+      "empty.h": {
+        name: "functions.h",
+        doc: functionsFile.doc,
+        includeAfter: {
+          __begin: newFunctions
+        }
+      }
+    },
+  });
+  expect(modifiedApi).toMatchObject(functionsApi);
+});
