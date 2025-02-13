@@ -1,4 +1,4 @@
-const { readLinesSync } = require("./utils");
+const { readLinesSync, system } = require("./utils");
 
 const ignorePrefixes = [
   'void *alloca',
@@ -36,16 +36,12 @@ function parseApi(config) {
   /** @type {Api} */
   const api = { files: {} };
   for (const name of files) {
-    console.log(`Reading file ${name}`);
+    system.log(`Reading file ${name}`);
     const content = readLinesSync(baseDir + name);
     api.files[name] = parseContent(name, content, config);
   }
   return api;
 }
-
-exports.parseApi = parseApi;
-exports.parseContent = parseContent;
-exports.removeEntryLineNumbers = removeEntryLineNumbers;
 
 /**
  * @typedef {object} ParseContentConfig
@@ -428,7 +424,7 @@ function tokenize(lines) {
       let member = line.replaceAll(ignoreInSignature, "");
       m = member.match(/^(([\w*]+\s+)*)(\w+)\s*\(/);
       if (!m) {
-        console.warn(`Unknown token at line ${i + 1}: ${line}`);
+        system.warn(`Unknown token at line ${i + 1}: ${line}`);
         continue;
       }
       token.kind = "function";
@@ -476,7 +472,7 @@ function tokenize(lines) {
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {
-      console.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`);
+      system.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`);
     }
     result.push(token);
   }
@@ -497,3 +493,7 @@ function hasIgnoredPrefix(line) {
 function normalizeType(typeString) {
   return typeString.replaceAll(/(\w+)\s*([&*])/g, "$1 $2").replaceAll(/([*&])\s+(&*)/g, "$1$2");
 }
+
+exports.parseApi = parseApi;
+exports.parseContent = parseContent;
+exports.removeEntryLineNumbers = removeEntryLineNumbers;

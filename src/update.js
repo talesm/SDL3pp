@@ -1,9 +1,5 @@
 const { parseContent } = require("./parse.js");
-const { readLinesSync, writeLinesSync } = require("./utils.js");
-
-exports.updateApi = updateApi;
-exports.updateContent = updateContent;
-exports.updateChanges = updateChanges;
+const { readLinesSync, system, writeLinesSync } = require("./utils.js");
 
 /**
  * @typedef {object} UpdateApiConfig
@@ -21,13 +17,13 @@ function updateApi(config) {
   const files = Object.keys(target.files)
     .filter(config.files?.length ? (name => config.files.includes(name)) : (() => true));
   for (const name of files) {
-    console.log(`Updating ${name}`);
+    system.log(`Updating ${name}`);
     const filename = baseDir + name;
     const content = readLinesSync(filename);
     const targetFile = target.files[name];
 
     if (updateContent(content, targetFile) == 0) {
-      console.log(`No changes for ${name}`);
+      system.log(`No changes for ${name}`);
       continue;
     }
     writeLinesSync(filename, content);
@@ -46,7 +42,7 @@ function updateContent(content, targetFile) {
   const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
   const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
   if (!changes.length) {
-    console.log(`No changes for ${name}`);
+    system.log(`No changes for ${name}`);
     return 0;
   }
   if (targetFile.doc) {
@@ -113,7 +109,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
     const targetEntry = targetEntries[targetName];
     let index = sourceNames.indexOf(targetName, sourceIndex);
     if (index == -1) {
-      console.log(`${targetEntry.name} added ${begin}`);
+      system.log(`${targetEntry.name} added ${begin}`);
       changes.push({
         begin,
         end: begin,
@@ -125,7 +121,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
       const change = checkEntryChanged(sourceEntry, targetEntry);
       const sourceEntryEnd = Array.isArray(sourceEntry) ? sourceEntry[sourceEntry.length - 1].end : sourceEntry.end;
       if (change) {
-        console.info(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`);
+        system.log(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`);
         changes.push({
           begin,
           end: sourceEntryEnd,
@@ -145,7 +141,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
       }
       sourceIndex = index + 1;
     } else {
-      console.log(`${targetEntry.name} added ${begin}`);
+      system.log(`${targetEntry.name} added ${begin}`);
       changes.push({
         begin: end,
         end,
@@ -242,7 +238,7 @@ function generateEntry(entry, prefix) {
     case "struct":
       return doc + generateStruct(entry, prefix);
     default:
-      console.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
+      system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
   }
 }
@@ -322,3 +318,7 @@ function generateDocString(docStr, prefix) {
   docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
   return `${prefix}/**\n${docStr}\n${prefix} **/`;
 }
+
+exports.updateApi = updateApi;
+exports.updateContent = updateContent;
+exports.updateChanges = updateChanges;

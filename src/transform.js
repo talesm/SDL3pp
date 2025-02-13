@@ -1,6 +1,4 @@
-exports.transformApi = transformApi;
-exports.transformEntries = transformEntries;
-exports.transformEntry = transformEntry;
+const { system } = require("./utils");
 
 /**
  * @typedef {{[name: string]: TransformEntryConfig}} TransformEntryConfigs
@@ -49,7 +47,7 @@ function transformApi(config) {
   for (const sourceName of keys) {
     const sourceFile = source.files[sourceName];
     const targetName = transformIncludeName(sourceName, context);
-    console.log(`Transforming api ${sourceName} => ${targetName}`);
+    system.log(`Transforming api ${sourceName} => ${targetName}`);
 
     files[targetName] = {
       name: targetName,
@@ -169,7 +167,7 @@ function transformEntry(sourceEntry, context, config) {
         context.returnTypeMap[`${sourceName} *`] = targetName;
       } else {
         if (type) {
-          console.warn(`Alias ${sourceEntry.name} can not be ${type}`);
+          system.warn(`Alias ${sourceEntry.name} can not be ${type}`);
         }
         targetEntry.type = sourceEntry.name;
       }
@@ -258,3 +256,7 @@ function transformString(str, rules) {
 function transformName(name, context) {
   return context?.prefixToRemove ? name.replace(context.prefixToRemove, '') : name;
 }
+
+exports.transformApi = transformApi;
+exports.transformEntries = transformEntries;
+exports.transformEntry = transformEntry;

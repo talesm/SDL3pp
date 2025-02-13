@@ -1,11 +1,13 @@
 const { parseApi } = require("./parse.js");
 const { updateApi } = require("./update.js");
-const { readJSONSync, writeJSONSync } = require("./utils.js");
+const { readJSONSync, system, writeJSONSync } = require("./utils.js");
 /**
  * Process the main
  * @param {string[]} args the arguments
  */
 function main(args) {
+  system.silent = false;
+  system.stopOnWarn = false;
 
   if (!args.length)
     throw new Error("Missing command");
