@@ -12,7 +12,7 @@ This is made from three components:
 Command:
 
 ```
-$ node cppfier parse [[-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] input1 input2 ... inputN
+$ node cppfier parse [[-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input-file>...
 ```
 
 If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash ("-") it just outputs on stdout. If the first filename ends with ".json" it interprets it as a config file, making the "-c" optional. Multiple configurations can be added and their content is merged.
@@ -33,5 +33,17 @@ interface ParseConfig {
 Command:
 
 ```
-$ node cppfier parse [[-c] <config-file.json>] [-o <output-file>] [-d <base-dir>] [--] input1 input2 ... inputN
+$ node cppfier update [[-c] <config-file>] [-a <api-file>] [-d <base-dir>] [--] [target-file]...
+```
+
+If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no api file is given it tries to read from config. If the first filename ends with ".json" it interprets it as a config file, making the "-c" optional. Multiple configurations can be added and their content is merged. If target files are added, it only updates the intersection of target file and api-file.
+
+The config file is of the following format:
+
+```ts
+interface UpdateConfig {
+  files?: string[];
+  api?: string | Api;
+  baseDir?: string;
+};
 ```

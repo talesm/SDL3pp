@@ -3,8 +3,7 @@ const { readLinesSync, system, writeLinesSync } = require("./utils.js");
 
 /**
  * @typedef {object} UpdateApiConfig
- * @prop {string[]=} files
- * @prop {Api}       target
+ * @prop {Api}       api
  * @prop {string}    baseDir
  */
 
@@ -13,19 +12,15 @@ const { readLinesSync, system, writeLinesSync } = require("./utils.js");
  * @param {UpdateApiConfig} config
  */
 function updateApi(config) {
-  const { target, baseDir } = config;
-  const files = Object.keys(target.files)
-    .filter(config.files?.length ? (name => config.files.includes(name)) : (() => true));
+  const { api, baseDir } = config;
+  const files = Object.keys(api.files);
   for (const name of files) {
     system.log(`Updating ${name}`);
     const filename = baseDir + name;
     const content = readLinesSync(filename);
-    const targetFile = target.files[name];
+    const targetFile = api.files[name];
 
-    if (updateContent(content, targetFile) == 0) {
-      system.log(`No changes for ${name}`);
-      continue;
-    }
+    if (updateContent(content, targetFile) == 0) continue;
     writeLinesSync(filename, content);
   }
 }

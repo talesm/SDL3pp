@@ -3,5 +3,6 @@
     "empty.h"
   ],
   "outputFile": "tests/empty.json",
-  "baseDir": "tests/"
+  "baseDir": "tests/",
+  "api": "tests/empty.json"
 }
