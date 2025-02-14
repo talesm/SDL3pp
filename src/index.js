@@ -1,6 +1,7 @@
 const { parseApi } = require("./parse.js");
 const { updateApi } = require("./update.js");
-const { readJSONSync, system, writeJSONSync } = require("./utils.js");
+const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
+
 /**
  * Process the main
  * @param {string[]} args the arguments
@@ -9,8 +10,10 @@ function main(args) {
   system.silent = false;
   system.stopOnWarn = false;
 
-  if (!args.length)
-    throw new Error("Missing command");
+  if (!args.length) {
+    printErrorWithGuide("Missing verb", "fatal");
+    process.exit(1);
+  }
 
   const command = args.shift();
   switch (command) {
@@ -21,8 +24,26 @@ function main(args) {
       update(args);
       break;
     default:
-      throw new Error(`Invalid command ${command}`);
+      printErrorWithGuide(`Invalid verb ${command}`, "fatal");
+      process.exit(1);
   }
+}
+
+/**
+ * Prints error with a guide
+ * @param {string} error 
+ * @param {"error"|"fatal"} level default is "error"
+ */
+function printErrorWithGuide(error, level = "error") {
+  const validCommandList = ["parse", "update"];
+  const levelStr = level == "fatal" ? "Fatal error" : "Error";
+  writeLinesSync(2, [
+    `${levelStr}: ${error}`,
+    "\nExpectedFormat:",
+    `\t$ node ${process.argv[1]} <verb> [{parameters}] {files}`,
+    "\nValid verbs are:",
+    ...validCommandList.map(c => "- " + c),
+  ]);
 }
 
 /**
@@ -58,6 +79,8 @@ function parse(args) {
       case '--config':
       case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
       case '--print-config': printConfig = true; break;
+      case '--store-line-numbers':
+      case '-l': config.storeLineNumbers = true; break;
       default:
         throw new Error(`Invalid option ${arg}`);
     }
@@ -78,7 +101,6 @@ function parse(args) {
   }
   if (printConfig) {
     writeJSONSync(1, config);
-    return;
   }
   const api = parseApi(config);
   writeJSONSync(config.outputFile || 1, api);
