@@ -11,7 +11,7 @@ function main(args) {
   system.stopOnWarn = false;
 
   if (!args.length) {
-    printErrorWithGuide("Missing verb", "fatal");
+    printErrorWithGuide("Missing verb");
     process.exit(1);
   }
 
@@ -23,27 +23,41 @@ function main(args) {
     case "update":
       update(args);
       break;
+    case "--help":
+    case "help":
+      help(args);
+      break;
     default:
-      printErrorWithGuide(`Invalid verb ${command}`, "fatal");
+      printErrorWithGuide(`Invalid verb ${command}`);
       process.exit(1);
   }
 }
 
+const guideDoc = [
+  wrapUsageText(`usage: node ${process.argv[1]} ` + "<verb> [OPTION]... [--] <file>..."),
+  "\nValid verbs are:",
+  "    parse      parse headers",
+  "    transform  transform source C API into C++ API",
+  "    update     update target headers",
+  "    help       Show help",
+];
+
 /**
  * Prints error with a guide
- * @param {string} error 
- * @param {"error"|"fatal"} level default is "error"
+ * @param {string} message 
+ * @param {string[]} parameters 
  */
-function printErrorWithGuide(error, level = "error") {
-  const validCommandList = ["parse", "update"];
-  const levelStr = level == "fatal" ? "Fatal error" : "Error";
-  writeLinesSync(2, [
-    `${levelStr}: ${error}`,
-    "\nExpectedFormat:",
-    `\t$ node ${process.argv[1]} <verb> [{parameters}] {files}`,
-    "\nValid verbs are:",
-    ...validCommandList.map(c => "- " + c),
-  ]);
+function printErrorWithGuide(message, ...parameters) {
+  return printError(message, ...parameters, "", ...guideDoc);
+}
+
+/**
+ * Prints error
+ * @param {string} message 
+ * @param {string[]} parameters 
+ */
+function printError(message, ...parameters) {
+  return printLog(`Error: ${message}`, ...parameters);
 }
 
 /**
@@ -51,6 +65,9 @@ function printErrorWithGuide(error, level = "error") {
  * @param {string[]} args the arguments
  */
 function parse(args) {
+  if (args?.length == 0) {
+    return help(["parse"]);
+  }
   const config = {
     /** @type {string[]} */
     files: [],
@@ -100,7 +117,7 @@ function parse(args) {
     config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
   }
   if (printConfig) {
-    writeJSONSync(1, config);
+    writeJSONSync(config.outputFile ? 1 : 2, config);
   }
   const api = parseApi(config);
   writeJSONSync(config.outputFile || 1, api);
@@ -137,6 +154,9 @@ function mergeInto(destiny, source) {
  * @param {string[]} args 
  */
 function update(args) {
+  if (args?.length == 0) {
+    return help("update");
+  }
   const config = {
     /** @type {string[]} */
     files: [],
@@ -183,6 +203,84 @@ function update(args) {
     config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
   }
   updateApi(config);
+}
+
+function help(args = []) {
+  switch (args[0]) {
+    case "parse":
+      printLog(
+        "Parse API from header files",
+        "",
+        wrapUsageText(
+          `usage: node ${process.argv[1]} `,
+          "parse [-c] [ <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."),
+        "",
+        wrapText("If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash (\" - \") it just outputs on stdout. If the first filename ends with \".json\" it interprets it as a config file, making the \" - c\" optional. Multiple configurations can be added and their content is merged."),
+      );
+      break;
+    default:
+      printLog("Transform OO-like C APIs into actual C++ OO API\n", ...guideDoc);
+      break;
+  }
+}
+
+/**
+ * 
+ * @param {string} prefix 
+ * @param {string} parameters 
+ */
+function wrapUsageText(prefix, parameters = "") {
+  const wordRegex = /([^\[<\s]|\[[^\]]+\]|<[^>]+>)+/;
+  let margin = prefix.length;
+  if (margin > 40) {
+    margin = 8;
+  }
+  return wrapText(prefix + parameters, { margin, wordRegex });
+}
+
+/**
+ * Format text int 80 columns
+ * @param {string} text the text to wrap
+ * @param {object} config
+ * @param {number=}     config.margin     the left margin, defaults to 0
+ * @param {wordRegex=}  config.wordRegex  the word definition, defaults to /[^\s]+/
+ * @param {number=}     config.columns    the number of columns, default to 80
+ */
+function wrapText(text, config = {}) {
+  const margin = config.margin ?? 0;
+  const wordRegex = config.wordRegex ?? /[^\s]+/;
+  const columns = config.columns ?? 80;
+
+  const result = [];
+  let currentLine = "";
+  const marginText = " ".repeat(margin);
+  while (text.length) {
+    const m = text.match(wordRegex);
+    if (!m) break;
+    const word = m[0];
+    const wordStart = m.index;
+    const wordEnd = wordStart + word.length;
+    if (currentLine.length + wordEnd < columns || !currentLine) {
+      currentLine += " ".repeat(wordStart) + word;
+    } else {
+      result.push(currentLine);
+      currentLine = marginText + word;
+    }
+    text = text.slice(wordEnd);
+  }
+  if (currentLine) result.push(currentLine);
+
+  return result.join('\n');
+}
+
+/**
+ * Print into error/log out
+ * 
+ * @param {string} message the message line
+ * @param  {...string} parameters optionally more message lines
+ */
+function printLog(message, ...parameters) {
+  writeLinesSync(2, [message, ...parameters]);
 }
 
 main(process.argv.slice(2));

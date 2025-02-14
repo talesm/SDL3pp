@@ -12,7 +12,7 @@ This is made from three components:
 Command:
 
 ```
-$ node cppfier parse [[-c] <config-file.json>] [-o <output-file>] [-d <base-dir>] [--] input1 input2 ... inputN
+$ node cppfier parse [[-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] input1 input2 ... inputN
 ```
 
 If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash ("-") it just outputs on stdout. If the first filename ends with ".json" it interprets it as a config file, making the "-c" optional. Multiple configurations can be added and their content is merged.
@@ -26,4 +26,12 @@ interface ParseConfig {
   baseDir?: string;
   storeLineNumbers?: boolean;
 };
+```
+
+## Update
+
+Command:
+
+```
+$ node cppfier parse [[-c] <config-file.json>] [-o <output-file>] [-d <base-dir>] [--] input1 input2 ... inputN
 ```
