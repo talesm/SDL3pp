@@ -1,0 +1,7 @@
+{
+  "files": [
+    "structs.h"
+  ],
+  "outputFile": "tests/structs.json",
+  "baseDir": "tests/"
+}

@@ -320,7 +320,7 @@ function tokenize(lines) {
     const line = lineUntrimmed.trim();
     if (!line || hasIgnoredPrefix(line)) continue;
 
-    let m = lineUntrimmed.match(/^s+/);
+    let m = lineUntrimmed.match(/^\s+/);
     /** @type {FileToken} */
     const token = {
       begin: i + 1,
@@ -372,19 +372,11 @@ function tokenize(lines) {
       token.kind = "callback";
       token.type = m[1].trimEnd();
       token.parameters = m[5]?.split(',')?.map(p => p.trim()) ?? [];
-    } else if (m = line.match(/^typedef\s+(struct|enum|union)\s+\w+\s*(\{\s*)?$/)) {
+    } else if (m = line.match(/^typedef\s+(struct|enum|union)\s+(\w+)?$/)) {
       token.kind = m[1];
-      const parameters = [];
-      i += m[2] ? 1 : 2;
-      for (; i < lines.length; i++) {
-        const line = lines[i].slice(spaces);
-        if (line.startsWith('}')) {
-          token.value = line.slice(1, line.length - 1).trim();
-          break;
-        }
-        parameters.push(line);
-      }
-      token.parameters = parameters;
+      token.value = m[2];
+      i += (line.endsWith("{")) ? 1 : 2;
+      i = ignoreBody(lines, i, token.spaces);
     } else if (m = line.match(/^struct\s+([\w<>]+);/)) {
       token.kind = "forward";
       token.value = m[1];
@@ -394,16 +386,8 @@ function tokenize(lines) {
       if (m[3]) {
         token.type = m[3].trim();
       }
-      const parameters = [];
-      if (!line.endsWith("{};") && !lines[++i].endsWith("{};")) {
-        if (lines[i].endsWith("{")) ++i;
-        for (; i < lines.length; i++) {
-          const line = lines[i].slice(spaces).trim();
-          if (line.startsWith('}')) break;
-          parameters.push(line);
-        }
-      }
-      token.parameters = parameters;
+      i += (line.endsWith("{")) ? 1 : 2;
+      i = ignoreBody(lines, i, token.spaces);
     } else if (m = line.match(/^template</)) {
       token.kind = "template";
       let parameters;
@@ -488,6 +472,22 @@ function tokenize(lines) {
     result.push(token);
   }
   return result;
+}
+
+/**
+ * 
+ * @param {string[]} lines 
+ * @param {number} begin 
+ * @param {number} spaces 
+ */
+function ignoreBody(lines, begin, spaces) {
+  for (let i = begin; i < lines.length; i++) {
+    const indentation = lines[i].match(/^\s+/)?.[0] ?? "";
+    if (indentation.length <= spaces) {
+      return i;
+    }
+  }
+  return lines.length;
 }
 
 /** @param {string} line  */

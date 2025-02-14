@@ -1,0 +1,26 @@
+{
+  "files": {
+    "structs.h": {
+      "name": "structs.h",
+      "doc": "",
+      "entries": {
+        "MyType1": {
+          "doc": "",
+          "name": "MyType1",
+          "kind": "struct"
+        },
+        "MyByte": {
+          "doc": "",
+          "name": "MyByte",
+          "kind": "alias",
+          "type": "unsigned char"
+        },
+        "MyType2": {
+          "doc": "",
+          "name": "MyType2",
+          "kind": "struct"
+        }
+      }
+    }
+  }
+}
