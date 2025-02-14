@@ -26,7 +26,6 @@ test("empty to functions transform", () => {
     else acc.push(entry);
     return acc;
   }, []);
-  console.log(newFunctions);
   const modifiedApi = transformApi({
     source: emptyApi,
     files: {
