@@ -164,7 +164,7 @@ function update(args) {
   }
   const config = {
     /** @type {string[]} */
-    sources: [],
+    targets: [],
     /** @type {Api} */
     api: null,
     baseDir: "",
@@ -172,14 +172,14 @@ function update(args) {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg == "--") {
-      config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      config.targets.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
       break;
     }
     if (!arg.startsWith('-')) {
       if (arg.endsWith(".json")) {
         mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
       } else
-        config.sources.push(arg.replaceAll("\\", '/'));
+        config.targets.push(arg.replaceAll("\\", '/'));
       continue;
     }
     switch (arg) {
@@ -193,8 +193,8 @@ function update(args) {
   if (!config.api) throw new Error("Missing target");
   if (typeof config.api == "string") config.api = readJSONSync(config.api);
 
-  const files = config.sources;
-  delete config.sources;
+  const files = config.targets;
+  delete config.targets;
   if (files?.length) {
     if (!config.baseDir && files[0].includes('/')) {
       config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
