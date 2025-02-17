@@ -1,0 +1,33 @@
+{
+  "sources": [
+    "structs_extends.h"
+  ],
+  "api": "tests/structs_extends.json",
+  "baseDir": "tests/",
+  "sourceApi": "tests/structs.json",
+  "transform": {
+    "prefixes": "My",
+    "renameRules": [
+      {
+        "pattern": "^([^.]*)",
+        "replacement": "$1_extends"
+      }
+    ],
+    "files": {
+      "structs.h": {
+        "transform": {
+          "Type1": {
+            "type": "MyType1",
+            "kind": "struct",
+            "entries": {}
+          },
+          "Type2": {
+            "type": "MyType2",
+            "kind": "struct",
+            "entries": {}
+          }
+        }
+      }
+    }
+  }
+}

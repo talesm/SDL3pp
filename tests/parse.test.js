@@ -3,6 +3,7 @@ const emptyApi = require("./empty.json");
 const functionsApi = require("./functions.json");
 const structsApi = require("./structs.json");
 const structsAliasesApi = require("./structs_aliases.json");
+const structsExtendsApi = require("./structs_extends.json");
 
 test("parse empty.h", () => {
   expect(parseApi({
@@ -29,5 +30,13 @@ test("parse structs_aliases.h", () => {
   expect(parseApi({
     baseDir: "tests/",
     sources: ["structs_aliases.h"]
-  })).toMatchObject(structsAliasesApi);
+  })).toEqual(structsAliasesApi);
+});
+
+
+test("parse structs_extends.h", () => {
+  expect(parseApi({
+    baseDir: "tests/",
+    sources: ["structs_extends.h"]
+  })).toEqual(structsExtendsApi);
 });

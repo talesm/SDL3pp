@@ -1,0 +1,30 @@
+{
+  "files": {
+    "structs_extends.h": {
+      "name": "structs_extends.h",
+      "doc": "",
+      "entries": {
+        "Type1": {
+          "doc": "",
+          "name": "Type1",
+          "kind": "struct",
+          "type": "MyType1",
+          "entries": {}
+        },
+        "Byte": {
+          "doc": "",
+          "name": "Byte",
+          "kind": "alias",
+          "type": "MyByte"
+        },
+        "Type2": {
+          "doc": "",
+          "name": "Type2",
+          "kind": "struct",
+          "type": "MyType2",
+          "entries": {}
+        }
+      }
+    }
+  }
+}
