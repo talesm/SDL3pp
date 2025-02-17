@@ -228,8 +228,6 @@ function transform(args) {
     return help(["transform"]);
   }
   const config = {
-    /** @type {string[]} */
-    sources: [],
     /** @type {Api} */
     sourceApi: {},
     /** @type {ApiTransform} */
@@ -238,18 +236,20 @@ function transform(args) {
     api: "",
     baseDir: "",
   };
+  /** @type {string[]} */
+  const files = [];
   let printConfig = false;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg == "--") {
-      config.files.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      files.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
       break;
     }
     if (!arg.startsWith('-')) {
       if (arg.endsWith(".json")) {
         mergeTransformInto(config, readJSONSync(arg.replaceAll("\\", '/')));
       } else
-        config.files.push(arg.replaceAll("\\", '/'));
+        files.push(arg.replaceAll("\\", '/'));
       continue;
     }
     switch (arg) {
@@ -273,19 +273,25 @@ function transform(args) {
         throw new Error(`Invalid option ${arg}`);
     }
   }
-  if (!config.baseDir && config.files.length && config.files[0].includes('/')) {
-    config.baseDir = config.files[0].slice(0, config.files[0].lastIndexOf("/") + 1);
-    for (let i = 1; i < config.files.length; i++) {
-      const file = config.files[i];
-      while (!file.startsWith(config.baseDir)) {
-        const pos = config.baseDir.lastIndexOf('/');
-        config.baseDir = config.baseDir.slice(0, pos + 1);
+  if (files?.length) {
+    if (!config.baseDir && files[0].includes('/')) {
+      config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);
+      for (let i = 1; i < files?.length; i++) {
+        const file = files[i];
+        while (!file.startsWith(config.baseDir)) {
+          const pos = config.baseDir.lastIndexOf('/');
+          config.baseDir = config.baseDir.slice(0, pos + 1);
+        }
+      }
+      if (!config.baseDir) {
+        throw new Error("Could not deduce baseDir");
       }
     }
-  }
-  if (config.baseDir && config.files?.length) {
-    const baseDirLen = config.baseDir.length;
-    config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
+    const baseDirLen = config.baseDir?.length ?? 0;
+    const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
+    for (const file of Object.keys(config.sourceApi?.files ?? {})) {
+      if (!localFiles.has(file)) delete config.api.files[file];
+    }
   }
   if (!config.outputFile && typeof config.api == "string") config.outputFile = config.api;
   if (printConfig) {
