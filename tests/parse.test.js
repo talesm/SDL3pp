@@ -24,3 +24,10 @@ test("parse structs.h", () => {
     sources: ["structs.h"]
   })).toEqual(structsApi);
 });
+
+test("parse structs_aliases.h", () => {
+  expect(parseApi({
+    baseDir: "tests/",
+    sources: ["structs_aliases.h"]
+  })).toMatchObject(structsAliasesApi);
+});

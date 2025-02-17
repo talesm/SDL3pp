@@ -1,0 +1,28 @@
+{
+  "files": {
+    "structs_aliases.h": {
+      "name": "structs_aliases.h",
+      "doc": "",
+      "entries": {
+        "Type1": {
+          "doc": "",
+          "name": "Type1",
+          "kind": "alias",
+          "type": "MyType1"
+        },
+        "Byte": {
+          "doc": "",
+          "name": "Byte",
+          "kind": "alias",
+          "type": "MyByte"
+        },
+        "Type2": {
+          "doc": "",
+          "name": "Type2",
+          "kind": "alias",
+          "type": "MyType2"
+        }
+      }
+    }
+  }
+}

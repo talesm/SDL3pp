@@ -2,25 +2,9 @@ const { insertEntry } = require("./parse");
 const { system } = require("./utils");
 
 /**
- * @typedef {{[name: string]: TransformEntryConfig}} TransformEntryConfigs
- */
-
-/**
  * @typedef {object} TransformConfig
- * @prop {Api}                   source
- * @prop {TransformEntryConfigs} files
- * @prop {string[]=}             prefixes
- * @prop {ReplacementRule[]=}    renameRules
- * @prop {ReplacementRule[]=}    docRules
- * @prop {StringMap=}            typeMap
- * @prop {StringMap=}            paramTypeMap
- * @prop {StringMap=}            returnTypeMap
- */
-
-/**
- * @typedef {object} ReplacementRule
- * @prop {RegExp} pattern
- * @prop {string} replacement
+ * @prop {Api}          sourceApi
+ * @prop {ApiTransform} transform
  */
 
 /**
@@ -30,14 +14,16 @@ const { system } = require("./utils");
  * @returns {Api} the transformed api
  */
 function transformApi(config) {
-  const source = config.source;
+  const source = config.sourceApi;
+  const transform = config.transform;
   /** @type {ApiContext} */
-  const context = new ApiContext(config);
+  const context = new ApiContext(transform);
 
   /** @type {ApiFileMap} */
   const files = {};
+  const fileTransformMap = transform?.files ?? {};
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
-    const fileConfig = config.files[sourceName] ?? {};
+    const fileConfig = fileTransformMap[sourceName] ?? {};
     const targetName = fileConfig.name || transformIncludeName(sourceName, context);
     system.log(`Transforming api ${sourceName} => ${targetName}`);
 
@@ -51,55 +37,50 @@ function transformApi(config) {
 }
 
 class ApiContext {
-  /** @param {TransformConfig} config  */
-  constructor(config) {
+  /** @param {ApiTransform} transform  */
+  constructor(transform) {
     /** @type {StringMap} */
     this.typeMap = {};
-    Object.assign(this.typeMap, config.typeMap ?? {});
+    Object.assign(this.typeMap, transform.typeMap ?? {});
 
     /** @type {StringMap} */
     this.paramTypeMap = Object.create(this.typeMap);
-    Object.assign(this.paramTypeMap, config.paramTypeMap ?? {});
+    Object.assign(this.paramTypeMap, transform.paramTypeMap ?? {});
     // this.paramTypeMap["const char *"] = "StringParam";
 
     /** @type {StringMap} */
     this.returnTypeMap = Object.create(this.typeMap);
-    Object.assign(this.returnTypeMap, config.returnTypeMap ?? {});
+    Object.assign(this.returnTypeMap, transform.returnTypeMap ?? {});
 
-    this.prefixToRemove = config.prefixes?.length ? RegExp(`^(${config.prefixes.join("|")})`) : undefined;
+    if (transform.prefixes?.length) {
+      this.prefixToRemove = Array.isArray(transform.prefixes)
+        ? RegExp(`^(${transform.prefixes.join("|")})`)
+        : RegExp("^" + transform.prefixes);
+    }
 
-    this.renameRules = config.renameRules ?? [];
+    this.renameRules = transform.renameRules ?? [];
     this.renameRules.forEach(rule => rule.pattern = RegExp(rule.pattern));
 
-    this.docRules = config.docRules ?? [];
+    this.docRules = transform.docRules ?? [];
     this.docRules.forEach(rule => rule.pattern = RegExp(rule.pattern, 'g'));
   }
 }
 
 /**
- * @typedef {object} TransformEntryConfig
- * @prop {string[]=}   includeDefs
- * @prop {string[]=}   ignoreEntries
- * @prop {ApiEntries=} transform
- * @prop {ApiEntries=} includeAfter
- * @prop {ApiEntries=} types this should be only structs
- */
-
-/**
  * 
- * @param {ApiEntries}           sourceEntries 
- * @param {ApiContext}           context 
- * @param {TransformEntryConfig} config
+ * @param {ApiEntries}     sourceEntries 
+ * @param {ApiContext}     context 
+ * @param {FileTransform} transform
  */
-function transformEntries(sourceEntries, context, config) {
+function transformEntries(sourceEntries, context, transform) {
   /** @type {ApiEntries} */
   const targetEntries = {};
-  const defWhitelist = new Set(config.includeDefs ?? []);
-  const blacklist = new Set(config.ignoreEntries ?? []);
-  const transformMap = config.transform ?? {};
+  const defWhitelist = new Set(transform.includeDefs ?? []);
+  const blacklist = new Set(transform.ignoreEntries ?? []);
+  const transformMap = transform.transform ?? {};
 
-  if (config.includeAfter?.__begin) {
-    insertEntry(targetEntries, config.includeAfter.__begin);
+  if (transform.includeAfter?.__begin) {
+    insertEntry(targetEntries, transform.includeAfter.__begin);
   }
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -107,12 +88,12 @@ function transformEntries(sourceEntries, context, config) {
     let targetName = transformName(sourceName, context);
     if (Array.isArray(sourceEntry)) {
       targetEntries[targetName] = sourceEntry.map(e => {
-        const targetEntry = transformEntry(e, context, config);
+        const targetEntry = transformEntry(e, context, transform);
         targetEntry.name = targetName;
         return targetEntry;
       });
     } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
-      const targetEntry = transformEntry(sourceEntry, context, config);
+      const targetEntry = transformEntry(sourceEntry, context, transform);
       targetName = transformName(targetEntry.name, context);
       const targetDelta = transformMap[targetName];
       if (targetDelta) {
@@ -136,13 +117,13 @@ function transformEntries(sourceEntries, context, config) {
       }
       targetEntries[targetName] = targetEntry;
     }
-    const includeAfter = config.includeAfter?.[targetName];
+    const includeAfter = transform.includeAfter?.[targetName];
     if (includeAfter) {
       insertEntry(targetEntries, includeAfter);
     }
   }
-  if (config.includeAfter?.__end) {
-    insertEntry(targetEntries, config.includeAfter.__end);
+  if (transform.includeAfter?.__end) {
+    insertEntry(targetEntries, transform.includeAfter.__end);
   }
 
   return targetEntries;
@@ -150,11 +131,11 @@ function transformEntries(sourceEntries, context, config) {
 
 /**
  * 
- * @param {ApiEntry}             sourceEntry 
- * @param {ApiContext}           context 
- * @param {TransformEntryConfig} config
+ * @param {ApiEntry}       sourceEntry 
+ * @param {ApiContext}     context 
+ * @param {FileTransform} transform
  */
-function transformEntry(sourceEntry, context, config) {
+function transformEntry(sourceEntry, context, transform) {
   /** @type {ApiEntry} */
   const targetEntry = { ...sourceEntry };
   if (sourceEntry.doc) {
@@ -168,7 +149,7 @@ function transformEntry(sourceEntry, context, config) {
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
       break;
     case 'alias':
-      const type = config?.types[sourceName];
+      const type = transform?.types?.[sourceName];
       if (type === "resource" || type?.kind == "resource") {
         targetEntry.kind = "struct";
         targetEntry.template = [{ type: "class", name: "T" }];
@@ -194,6 +175,7 @@ function transformEntry(sourceEntry, context, config) {
       targetEntry.kind = 'alias';
       targetEntry.type = sourceEntry.name;
       delete targetEntry.parameters;
+      delete targetEntry.entries;
       break;
     default:
       break;

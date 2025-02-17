@@ -1,4 +1,5 @@
 const { parseApi } = require("./parse.js");
+const { transformApi } = require("./transform.js");
 const { updateApi } = require("./update.js");
 const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
 
@@ -22,6 +23,9 @@ function main(args) {
       break;
     case "update":
       update(args);
+      break;
+    case "transform":
+      transform(args);
       break;
     case "--help":
     case "help":
@@ -127,7 +131,7 @@ function parse(args) {
 /**
  * 
  * @param {{[key: string]: any}} destiny 
- * @param  {{[key: string]: any}} sources 
+ * @param  {{[key: string]: any}} source
  */
 function mergeInto(destiny, source) {
   for (const [key, value] of Object.entries(source)) {
@@ -213,6 +217,98 @@ function update(args) {
   }
 
   updateApi(config);
+}
+
+/**
+ * Scan files
+ * @param {string[]} args the arguments
+ */
+function transform(args) {
+  if (args?.length == 0) {
+    return help(["transform"]);
+  }
+  const config = {
+    /** @type {string[]} */
+    sources: [],
+    /** @type {Api} */
+    sourceApi: {},
+    /** @type {ApiTransform} */
+    transform: {},
+    outputFile: "",
+    api: "",
+    baseDir: "",
+  };
+  let printConfig = false;
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg == "--") {
+      config.files.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      break;
+    }
+    if (!arg.startsWith('-')) {
+      if (arg.endsWith(".json")) {
+        mergeTransformInto(config, readJSONSync(arg.replaceAll("\\", '/')));
+      } else
+        config.files.push(arg.replaceAll("\\", '/'));
+      continue;
+    }
+    switch (arg) {
+      case '--sourceApi':
+      case '-s': config.sourceApi = readJSONSync(args[++i].replaceAll("\\", '/')); break;
+      case '--transform':
+      case '-t': config.transform = readJSONSync(args[++i].replaceAll("\\", '/')); break;
+      case '--outputFile':
+      case '-o': config.outputFile = args[++i].replaceAll("\\", '/'); break;
+      case '--baseDir':
+      case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
+      case '--config':
+      case '-c':
+        mergeTransformInto(config, readJSONSync(args[++i].replaceAll("\\", '/')));
+        break;
+      case '--print-config':
+      case '-p': printConfig = true; break;
+      case '--store-line-numbers':
+      case '-l': config.storeLineNumbers = true; break;
+      default:
+        throw new Error(`Invalid option ${arg}`);
+    }
+  }
+  if (!config.baseDir && config.files.length && config.files[0].includes('/')) {
+    config.baseDir = config.files[0].slice(0, config.files[0].lastIndexOf("/") + 1);
+    for (let i = 1; i < config.files.length; i++) {
+      const file = config.files[i];
+      while (!file.startsWith(config.baseDir)) {
+        const pos = config.baseDir.lastIndexOf('/');
+        config.baseDir = config.baseDir.slice(0, pos + 1);
+      }
+    }
+  }
+  if (config.baseDir && config.files?.length) {
+    const baseDirLen = config.baseDir.length;
+    config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
+  }
+  if (!config.outputFile && typeof config.api == "string") config.outputFile = config.api;
+  if (printConfig) {
+    writeJSONSync(config.outputFile ? 1 : 2, config);
+  }
+  const api = transformApi(config);
+  writeJSONSync(config.outputFile || 1, api);
+}
+
+/**
+ * 
+ * @param {{[key: string]: any}} destiny 
+ * @param  {{[key: string]: any}} sources 
+ */
+function mergeTransformInto(destiny, source) {
+  if (typeof source.sourceApi == "string") {
+    console.log(source.sourceApi);
+    source.sourceApi = readJSONSync(source.sourceApi);
+  }
+  if (typeof source.transform == "string") {
+    source.transform = readJSONSync(source.transform);
+  }
+  mergeInto(destiny, source);
 }
 
 function help(args = []) {

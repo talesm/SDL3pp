@@ -55,3 +55,35 @@
 /**
  * @typedef {{[name: string]: string}} StringMap
  */
+
+/**
+ * @typedef {object} ApiTransform
+ * @prop {FileTransformMap}      files
+ * @prop {(string|string[])=}    prefixes
+ * @prop {ReplacementRule[]=}    renameRules
+ * @prop {ReplacementRule[]=}    docRules
+ * @prop {StringMap=}            typeMap
+ * @prop {StringMap=}            paramTypeMap
+ * @prop {StringMap=}            returnTypeMap
+ */
+
+
+/**
+ * @typedef {object} FileTransform
+ * @prop {string[]=}   includeDefs
+ * @prop {string[]=}   ignoreEntries
+ * @prop {ApiEntries=} transform
+ * @prop {ApiEntries=} includeAfter
+ * @prop {ApiEntries=} types this should be only structs
+ */
+
+
+/**
+ * @typedef {{[name: string]: FileTransform}} FileTransformMap
+ */
+
+/**
+ * @typedef {object} ReplacementRule
+ * @prop {RegExp} pattern
+ * @prop {string} replacement
+ */

@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "structs_aliases.h"
+  ],
+  "api": "tests/structs_aliases.json",
+  "baseDir": "tests/",
+  "sourceApi": "tests/structs.json",
+  "transform": {
+    "prefixes": "My",
+    "renameRules": [
+      {
+        "pattern": "^([^.]*)",
+        "replacement": "$1_aliases"
+      }
+    ]
+  }
+}
