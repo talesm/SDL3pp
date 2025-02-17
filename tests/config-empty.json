@@ -1,8 +1,7 @@
 {
-  "files": [
+  "sources": [
     "empty.h"
   ],
-  "outputFile": "tests/empty.json",
-  "baseDir": "tests/",
-  "api": "tests/empty.json"
+  "api": "tests/empty.json",
+  "baseDir": "tests/"
 }

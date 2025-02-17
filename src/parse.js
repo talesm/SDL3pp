@@ -22,7 +22,7 @@ const ignoreInSignature = new RegExp(`(${[
 /**
  * @typedef {object} ParseConfig
  * @prop {string}   baseDir
- * @prop {string[]} files
+ * @prop {string[]} sources
  * @prop {boolean=} storeLineNumbers
  */
 
@@ -31,11 +31,11 @@ const ignoreInSignature = new RegExp(`(${[
  * 
  */
 function parseApi(config) {
-  const { baseDir, files } = config;
+  const { baseDir, sources } = config;
 
   /** @type {Api} */
   const api = { files: {} };
-  for (const name of files) {
+  for (const name of sources) {
     system.log(`Reading file ${name}`);
     const content = readLinesSync(baseDir + name);
     api.files[name] = parseContent(name, content, config);

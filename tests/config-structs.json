@@ -1,7 +1,7 @@
 {
-  "files": [
+  "sources": [
     "structs.h"
   ],
-  "outputFile": "tests/structs.json",
+  "api": "tests/structs.json",
   "baseDir": "tests/"
 }

@@ -70,22 +70,24 @@ function parse(args) {
   }
   const config = {
     /** @type {string[]} */
-    files: [],
+    sources: [],
     outputFile: "",
+    /** @type {*} */
+    api: null,
     baseDir: "",
   };
   let printConfig = false;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg == "--") {
-      config.files.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
       break;
     }
     if (!arg.startsWith('-')) {
       if (arg.endsWith(".json")) {
         mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
       } else
-        config.files.push(arg.replaceAll("\\", '/'));
+        config.sources.push(arg.replaceAll("\\", '/'));
       continue;
     }
     switch (arg) {
@@ -102,10 +104,10 @@ function parse(args) {
         throw new Error(`Invalid option ${arg}`);
     }
   }
-  if (!config.baseDir && config.files.length && config.files[0].includes('/')) {
-    config.baseDir = config.files[0].slice(0, config.files[0].lastIndexOf("/") + 1);
-    for (let i = 1; i < config.files.length; i++) {
-      const file = config.files[i];
+  if (!config.baseDir && config.sources.length && config.sources[0].includes('/')) {
+    config.baseDir = config.sources[0].slice(0, config.sources[0].lastIndexOf("/") + 1);
+    for (let i = 1; i < config.sources.length; i++) {
+      const file = config.sources[i];
       while (!file.startsWith(config.baseDir)) {
         const pos = config.baseDir.lastIndexOf('/');
         config.baseDir = config.baseDir.slice(0, pos + 1);
@@ -114,11 +116,10 @@ function parse(args) {
   }
   if (config.baseDir) {
     const baseDirLen = config.baseDir.length;
-    config.files = config.files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
+    config.sources = config.sources.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
   }
-  if (printConfig) {
-    writeJSONSync(config.outputFile ? 1 : 2, config);
-  }
+  if (!config.outputFile && typeof config.api == "string") config.outputFile = config.api;
+  if (printConfig) writeJSONSync(config.outputFile ? 1 : 2, config);
   const api = parseApi(config);
   writeJSONSync(config.outputFile || 1, api);
 }
@@ -159,7 +160,7 @@ function update(args) {
   }
   const config = {
     /** @type {string[]} */
-    files: [],
+    sources: [],
     /** @type {Api} */
     api: null,
     baseDir: "",
@@ -167,14 +168,14 @@ function update(args) {
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg == "--") {
-      config.files.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
+      config.sources.push(...args.slice(i + 1).map(arg => arg.replaceAll("\\", '/')));
       break;
     }
     if (!arg.startsWith('-')) {
       if (arg.endsWith(".json")) {
         mergeInto(config, readJSONSync(arg.replaceAll("\\", '/')));
       } else
-        config.files.push(arg.replaceAll("\\", '/'));
+        config.sources.push(arg.replaceAll("\\", '/'));
       continue;
     }
     switch (arg) {
@@ -188,8 +189,8 @@ function update(args) {
   if (!config.api) throw new Error("Missing target");
   if (typeof config.api == "string") config.api = readJSONSync(config.api);
 
-  const files = config.files;
-  delete config.files;
+  const files = config.sources;
+  delete config.sources;
   if (files?.length) {
     if (!config.baseDir && files[0].includes('/')) {
       config.baseDir = files[0].slice(0, files[0].lastIndexOf("/") + 1);

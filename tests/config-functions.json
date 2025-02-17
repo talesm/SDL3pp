@@ -1,7 +1,7 @@
 {
-  "files": [
+  "sources": [
     "functions.h"
   ],
-  "outputFile": "tests/functions.json",
+  "api": "tests/functions.json",
   "baseDir": "tests/"
 }
