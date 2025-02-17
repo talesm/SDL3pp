@@ -154,7 +154,7 @@ class ContentParser {
     if ((this.lookup()?.spaces ?? -1) < identLevel) return undefined;
 
     while (this.lookup()?.kind === "doc") {
-      const token = this.match("doc");
+      const token = this.expect("doc");
       this.checkFileDoc(lastBegin, lastEnd, lastDoc);
       lastDoc = token.value;
       lastEnd = token.end;
@@ -162,7 +162,7 @@ class ContentParser {
     }
 
     if (this.lookup()?.kind === "namespace") {
-      const token = this.match("namespace");
+      const token = this.expect("namespace");
       this.checkFileDoc(lastBegin, lastEnd, lastDoc);
       if (!this.entriesBegin) {
         this.entriesBegin = token.end;
@@ -171,7 +171,7 @@ class ContentParser {
     }
 
     if (this.lookup()?.kind === "template") {
-      const token = this.match("template");
+      const token = this.expect("template");
       if (lastEnd != token.begin || lastTemplate) {
         lastBegin = token.begin;
         lastDoc = null;
@@ -258,7 +258,7 @@ class ContentParser {
    * Returns token only if matches the specific kind
    * @param {FileTokenKind} kind 
    */
-  match(kind) {
+  expect(kind) {
     const token = this.next();
     if (!token) throw new Error(`Error at ${token.begin}: expected ${kind}`);
     if (token.kind !== kind) throw new Error(`Error at ${token.begin}: expected ${kind} got ${token.kind}`);
@@ -326,33 +326,36 @@ const memberSpecifiers = new Set(["inline", "static", "constexpr"]);
 function tokenize(lines) {
   /** @type {FileToken[]} */
   const result = [];
+  const spaceRegex = /^\s+/;
+  const endCommentRegex = /\*\//;
+  const continueCommentRegex = /^\s*\*\s?/;
   for (let i = 0; i < lines.length; i++) {
     const lineUntrimmed = lines[i];
     const line = lineUntrimmed.trim();
     if (!line || hasIgnoredPrefix(line)) continue;
 
-    let m = lineUntrimmed.match(/^\s+/);
+    let m = spaceRegex.exec(lineUntrimmed);
     /** @type {FileToken} */
     const token = {
       begin: i + 1,
       spaces: m?.[0]?.length ?? 0,
     };
 
-    if (m = line.match(/^\/\/\s*Forward decl/)) {
+    if (m = /^\/\/\s*Forward decl/.test(line)) {
       token.kind = "doc";
-    } else if (m = line.match(/^#pragma\s+region\s+impl/)) {
+    } else if (m = /^#pragma\s+region\s+impl/.test(line)) {
       break;
-    } else if (m = line.match(/^\/\//)) {
+    } else if (m = /^\/\//.test(line)) {
       continue;
-    } else if (m = line.match(/^\/\*(\*)?/)) {
+    } else if (m = /^\/\*(\*)?/.exec(line)) {
       let doc = '';
       const isDoc = !!m[1];
       for (; i < lines.length; ++i) {
         const line = lines[i];
-        if (line.match(/\*\//)) {
+        if (endCommentRegex.test(line)) {
           break;
         }
-        const m = line.match(/^\s*\*\s?/);
+        const m = continueCommentRegex.exec(line);
         doc += m ? line.slice(m[0].length) : line;
         doc += '\n';
       }
@@ -360,7 +363,7 @@ function tokenize(lines) {
         token.kind = "doc";
         token.value = doc.replace('/**', '').trim();
       } else continue;
-    } else if (m = line.match(/^#define\s+(\w+)(\(([\w\s,]+)\))?/)) {
+    } else if (m = /^#define\s+(\w+)(\(([\w\s,]+)\))?/.exec(line)) {
       token.kind = "def";
       token.value = m[1];
       if (m[2]) token.parameters = m[3].split(',').map(p => p.trim());
@@ -370,37 +373,37 @@ function tokenize(lines) {
         ln = lines[++i];
       }
       if (token.value.endsWith('_')) continue;
-    } else if (m = line.match(/^typedef\s+(([\w*]+\s+)+\**)(\w+);/)) {
+    } else if (m = /^typedef\s+(([\w*]+\s+)+\**)(\w+);/.exec(line)) {
       token.kind = "alias";
       token.value = m[3];
       token.type = m[1].trimEnd();
-    } else if (m = line.match(/^using\s+(\w+)\s*=\s*([^;]+);/)) {
+    } else if (m = /^using\s+(\w+)\s*=\s*([^;]+);/.exec(line)) {
       token.kind = "alias";
       token.value = m[1];
       token.type = m[2].trimEnd();
-    } else if (m = line.match(/^typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)\)/)) {
+    } else if (m = /^typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)\)/.exec(line)) {
       token.value = m[4];
       token.kind = "callback";
       token.type = m[1].trimEnd();
       token.parameters = m[5]?.split(',')?.map(p => p.trim()) ?? [];
-    } else if (m = line.match(/^typedef\s+(struct|enum|union)\s+(\w+)?$/)) {
+    } else if (m = /^typedef\s+(struct|enum|union)\s+(\w+)?$/.exec(line)) {
       token.kind = m[1];
       token.value = m[2];
       if (!line.endsWith("{")) i++;
       if (token.kind != "struct") {
         i = ignoreBody(lines, i + 1, token.spaces);
       }
-    } else if (m = line.match(/^struct\s+([\w<>]+);/)) {
+    } else if (m = /^struct\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.value = m[1];
-    } else if (m = line.match(/^struct\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/)) {
+    } else if (m = /^struct\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) {
       token.kind = "struct";
       token.value = m[1];
       if (m[3]) {
         token.type = m[3].trim();
       }
       if (!line.endsWith("{")) i++;
-    } else if (m = line.match(/^template</)) {
+    } else if (m = /^template</.exec(line)) {
       token.kind = "template";
       let parameters;
       if (line.endsWith(">")) {
@@ -417,7 +420,7 @@ function tokenize(lines) {
         }
       }
       token.parameters = parameters.split(",").map(p => p.trim()) ?? [];
-    } else if (m = line.match(/^namespace\s+([^{]*)\{/)) {
+    } else if (m = /^namespace\s+([^{]*)\{/.exec(line)) {
       token.kind = "namespace";
       token.value = m[1]?.trim();
     } else if (line.startsWith('#')) {
@@ -495,8 +498,9 @@ function tokenize(lines) {
  * @param {number} spaces 
  */
 function ignoreBody(lines, begin, spaces) {
+  const spaceRegex = /^\s+/;
   for (let i = begin; i < lines.length; i++) {
-    const indentation = lines[i].match(/^\s+/)?.[0] ?? "";
+    const indentation = spaceRegex.exec(lines[i])?.[0] ?? "";
     if (indentation.length <= spaces) {
       return i;
     }
