@@ -291,11 +291,11 @@ function parseParams(params) {
     if (nameIndex == -1) return param;
     let name = param.slice(nameIndex + 1).trim();
     let type = param.slice(0, nameIndex).trim();
-    while (name.startsWith('*')) {
+    while (name.startsWith('*') || name.startsWith('&')) {
+      type += name[0];
       name = name.slice(1);
-      type += '*';
     }
-    type = type.replaceAll(/(\w)\*/g, '$1 *').replaceAll(/\s+/g, ' ');
+    type = normalizeType(type);
     return { name, type };
   });
 

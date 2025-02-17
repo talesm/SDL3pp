@@ -11,6 +11,74 @@
           "type": "MyType1",
           "entries": {}
         },
+        "Type1Check": {
+          "doc": "",
+          "name": "Type1Check",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const Type1 *"
+            }
+          ]
+        },
+        "GetType1Var1": {
+          "doc": "",
+          "name": "GetType1Var1",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const Type1 *"
+            }
+          ]
+        },
+        "SetType1Var1": {
+          "doc": "",
+          "name": "SetType1Var1",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "Type1 *"
+            },
+            {
+              "name": "var1",
+              "type": "int"
+            }
+          ]
+        },
+        "Type1GetVar2": {
+          "doc": "",
+          "name": "Type1GetVar2",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const Type1 *"
+            }
+          ]
+        },
+        "Type1SetVar2": {
+          "doc": "",
+          "name": "Type1SetVar2",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "Type1 *"
+            },
+            {
+              "name": "var2",
+              "type": "const char *"
+            }
+          ]
+        },
         "Byte": {
           "doc": "",
           "name": "Byte",

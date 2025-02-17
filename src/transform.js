@@ -103,7 +103,7 @@ function transformEntries(sourceEntries, context, transform) {
       } else
         targetEntry.name = targetName;
       if (targetName === targetEntry.sourceName) targetEntry.sourceName = "::" + targetEntry.sourceName;
-      if (targetEntry.kind == 'alias') {
+      if (targetEntry.kind == 'alias' || targetEntry.kind == 'struct') {
         if (targetName == targetEntry.type) {
           continue;
         }
