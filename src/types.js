@@ -23,18 +23,23 @@
  */
 
 /**
+ * @typedef {"alias"|"callback"|"def"|"enum"|"forward"|"function"|"struct"|"union"|"var"} ApiEntryKind
+ */
+
+/**
  * @typedef {object} ApiEntry
- * @property {string} name
- * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'|'forward'} kind
- * @property {string=} type
+ * @property {string}         name
+ * @property {ApiEntryKind}   kind
+ * @property {string=}        type
  * @property {ApiParameters=} parameters
  * @property {ApiParameters=} template
- * @property {string=} sourceName
- * @property {boolean=} constexpr
- * @property {string} doc
- * @property {number=} begin
- * @property {number=} decl
- * @property {number=} end
+ * @property {ApiEntries}     entries
+ * @property {string=}        sourceName
+ * @property {boolean=}       constexpr
+ * @property {string}         doc
+ * @property {number=}        begin
+ * @property {number=}        decl
+ * @property {number=}        end
  */
 
 /**

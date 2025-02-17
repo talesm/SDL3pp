@@ -7,7 +7,21 @@
         "MyType1": {
           "doc": "",
           "name": "MyType1",
-          "kind": "struct"
+          "kind": "struct",
+          "entries": {
+            "var1": {
+              "doc": "",
+              "name": "var1",
+              "kind": "var",
+              "type": "int"
+            },
+            "var2": {
+              "doc": "",
+              "name": "var2",
+              "kind": "var",
+              "type": "const char *"
+            }
+          }
         },
         "MyByte": {
           "doc": "",
@@ -18,7 +32,21 @@
         "MyType2": {
           "doc": "",
           "name": "MyType2",
-          "kind": "struct"
+          "kind": "struct",
+          "entries": {
+            "var1": {
+              "doc": "",
+              "name": "var1",
+              "kind": "var",
+              "type": "MyType1"
+            },
+            "var2": {
+              "doc": "",
+              "name": "var2",
+              "kind": "var",
+              "type": "int *"
+            }
+          }
         }
       }
     }

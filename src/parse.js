@@ -86,7 +86,7 @@ function parseContent(name, content, config) {
 function insertEntry(entries, entry) {
   if (Array.isArray(entry)) {
     entry.forEach(e => insertEntry(entries, e));
-    return;
+    return entries;
   }
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
   if (entries[name]) {
@@ -101,6 +101,7 @@ function insertEntry(entries, entry) {
   } else {
     entries[name] = entry;
   }
+  return entries;
 }
 
 /**
@@ -125,10 +126,13 @@ class ContentParser {
     this.entriesEnd = 0;
   }
 
-  /** Parse all entries */
-  parseEntries() {
+  /**
+   * Parse all entries
+   * @param {number} identLevel the level of ident
+   */
+  parseEntries(identLevel = 0) {
     const entries = [];
-    for (let entry = this.parseEntry(); !!entry; entry = this.parseEntry()) {
+    for (let entry = this.parseEntry(identLevel); !!entry; entry = this.parseEntry(identLevel)) {
       entries.push(entry);
     }
     return entries;
@@ -136,15 +140,18 @@ class ContentParser {
 
   /**
    * Parses a single entry
+   * @param {number} identLevel the level of ident
    * @returns {ApiEntry}
    */
-  parseEntry() {
+  parseEntry(identLevel = 0) {
     let lastEnd = 0;
     let lastDecl = 0;
     let lastBegin = 0;
     let lastDoc = "";
     /** @type {ApiParameters} */
     let lastTemplate = null;
+
+    if ((this.lookup()?.spaces ?? -1) < identLevel) return undefined;
 
     while (this.lookup()?.kind === "doc") {
       const token = this.match("doc");
@@ -205,6 +212,10 @@ class ContentParser {
         if (token.constexpr) entry.constexpr = token.constexpr;
         break;
       case "struct":
+        entry.type = token.type;
+        entry.entries = insertEntry({}, this.parseEntries(token.spaces + 1));
+        break;
+      case "var":
         entry.type = token.type;
         break;
       case "forward":
@@ -291,7 +302,7 @@ function parseParams(params) {
 }
 
 /**
- * @typedef {"alias"|"callback"|"def"|"doc"|"enum"|"forward"|"function"|"namespace"|"struct"|"template"|"union"} FileTokenKind
+ * @typedef {ApiEntryKind|"doc"|"namespace"|"template"} FileTokenKind
  */
 
 /**
@@ -375,8 +386,10 @@ function tokenize(lines) {
     } else if (m = line.match(/^typedef\s+(struct|enum|union)\s+(\w+)?$/)) {
       token.kind = m[1];
       token.value = m[2];
-      i += (line.endsWith("{")) ? 1 : 2;
-      i = ignoreBody(lines, i, token.spaces);
+      if (!line.endsWith("{")) i++;
+      if (token.kind != "struct") {
+        i = ignoreBody(lines, i + 1, token.spaces);
+      }
     } else if (m = line.match(/^struct\s+([\w<>]+);/)) {
       token.kind = "forward";
       token.value = m[1];
@@ -386,8 +399,7 @@ function tokenize(lines) {
       if (m[3]) {
         token.type = m[3].trim();
       }
-      i += (line.endsWith("{")) ? 1 : 2;
-      i = ignoreBody(lines, i, token.spaces);
+      if (!line.endsWith("{")) i++;
     } else if (m = line.match(/^template</)) {
       token.kind = "template";
       let parameters;
@@ -416,13 +428,13 @@ function tokenize(lines) {
       }
       continue;
     } else {
-      let member = line.replaceAll(ignoreInSignature, "");
-      m = member.match(/^(([\w*]+\s+)*)(\w+)\s*\(/);
+      const member = line.replaceAll(ignoreInSignature, "");
+      m = /^(([\w*]+\s+)*)(\w+)(\s*\()?/.exec(member);
       if (!m) {
         system.warn(`Unknown token at line ${i + 1}: ${line}`);
         continue;
       }
-      token.kind = "function";
+      token.kind = m[4] ? "function" : "var";
       token.value = m[3];
       const typeWords = m[1]?.trim()?.split(/\s+/) ?? [];
       for (let i = 0; i < typeWords.length; i++) {
@@ -436,33 +448,35 @@ function tokenize(lines) {
 
       token.type = normalizeType(typeWords.join(' '));
       let inline = false;
-      let parameters = line.slice(m[0].length);
-      const endBracket = parameters.indexOf(")");
-      if (endBracket < 0) {
-        for (++i; i < lines.length; ++i) {
-          const line = lines[i];
-          if (line.endsWith(');')) {
-            inline = false;
-            parameters += '\n' + line.slice(0, line.length - 2);
-            break;
+      if (m[4]) {
+        let parameters = line.slice(m[0].length);
+        const endBracket = parameters.indexOf(")");
+        if (endBracket < 0) {
+          for (++i; i < lines.length; ++i) {
+            const line = lines[i];
+            if (line.endsWith(');')) {
+              inline = false;
+              parameters += '\n' + line.slice(0, line.length - 2);
+              break;
+            }
+            if (line.endsWith(')')) {
+              inline = true;
+              parameters += '\n' + line.slice(0, line.length - 1);
+              break;
+            }
+            parameters += '\n' + line;
           }
-          if (line.endsWith(')')) {
-            inline = true;
-            parameters += '\n' + line.slice(0, line.length - 1);
-            break;
-          }
-          parameters += '\n' + line;
+        } else {
+          inline = parameters[endBracket + 1] != ";" && !parameters.endsWith("}");
+          parameters = parameters.slice(0, endBracket);
         }
+        token.parameters = parameters;
       } else {
-        inline = parameters[endBracket + 1] != ";" && !parameters.endsWith("}");
-        parameters = parameters.slice(0, endBracket);
+        inline = member.indexOf(';') === -1;
       }
-      token.parameters = parameters;
-      if (inline && lines[i].indexOf('}') === -1) {
-        for (i++; i < lines.length; i++) {
-          const line = lines[i].slice(token.spaces);
-          if (line.startsWith('}') || line.startsWith('{}')) break;
-        }
+      if (inline && member.indexOf('}') === -1) {
+        if (lines[++i].startsWith("{")) ++i;
+        ignoreBody(lines, i, token.spaces);
       }
     }
     token.end = i + 2;

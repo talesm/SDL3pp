@@ -17,7 +17,7 @@ using MyByte = unsigned char;
 typedef struct MyType2
 {
   MyType1 var1;
-  std::optional<int> var2;
+  int* var2;
 } MyType2;
 
 } // namespace name
