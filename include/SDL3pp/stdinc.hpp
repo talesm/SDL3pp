@@ -1,6 +1,8 @@
 /**
  * @file stdinc.hpp
  *
+ * # CategoryStdinc
+ *
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
  *
@@ -450,7 +452,7 @@ struct EnvironmentBase : T
  * @sa SDL_SetEnvironmentVariable
  * @sa SDL_UnsetEnvironmentVariable
  **/
-inline Environment GetEnvironment() { return SDL_GetEnvironment(); }
+inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
 /**
  * Create a set of environment variables
@@ -474,7 +476,7 @@ inline Environment GetEnvironment() { return SDL_GetEnvironment(); }
  **/
 inline Environment CreateEnvironment(bool populated)
 {
-  return SDL_CreateEnvironment(populated);
+  return Environment{SDL_CreateEnvironment(populated)};
 }
 
 /**
@@ -497,7 +499,7 @@ inline Environment CreateEnvironment(bool populated)
  **/
 inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
-  return SDL_GetEnvironmentVariable(env, name);
+  return SDL_GetEnvironmentVariable(env.Get(), name);
 }
 
 /**
@@ -521,7 +523,7 @@ inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
  **/
 inline char** GetEnvironmentVariables(EnvironmentRef env)
 {
-  return SDL_GetEnvironmentVariables(env);
+  return SDL_GetEnvironmentVariables(env.Get());
 }
 
 /**
@@ -551,7 +553,7 @@ inline bool SetEnvironmentVariable(EnvironmentRef env,
                                    StringParam value,
                                    bool overwrite)
 {
-  return SDL_SetEnvironmentVariable(env, name, value, overwrite);
+  return SDL_SetEnvironmentVariable(env.Get(), name, value, overwrite);
 }
 
 /**
@@ -575,7 +577,7 @@ inline bool SetEnvironmentVariable(EnvironmentRef env,
  **/
 inline bool UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
 {
-  return SDL_UnsetEnvironmentVariable(env, name);
+  return SDL_UnsetEnvironmentVariable(env.Get(), name);
 }
 
 /**
@@ -592,7 +594,7 @@ inline bool UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
  **/
 inline void DestroyEnvironment(EnvironmentRef env)
 {
-  SDL_DestroyEnvironment(env);
+  SDL_DestroyEnvironment(env.Get());
 }
 
 /**

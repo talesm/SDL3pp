@@ -1,45 +1,64 @@
-const { readFileSync, writeFileSync } = require("node:fs");
-const { parseApi, parseContent } = require("./parse.js");
-const target = require('./target.json');
+const { parseContent } = require("./parse.js");
+const { readLinesSync, system, writeLinesSync } = require("./utils.js");
 
-const baseDir = 'include/SDL3pp/';
-const filename = 'stdinc.hpp';
+/**
+ * @typedef {object} UpdateApiConfig
+ * @prop {Api}       api
+ * @prop {string}    baseDir
+ */
 
+/**
+ * 
+ * @param {UpdateApiConfig} config
+ */
+function updateApi(config) {
+  const { api, baseDir } = config;
+  const files = Object.keys(api.files);
+  for (const name of files) {
+    system.log(`Updating ${name}`);
+    const filename = baseDir + name;
+    const content = readLinesSync(filename);
+    const targetFile = api.files[name];
 
-if (require.main == module) {
-  updateHeaders([filename]);
+    if (updateContent(content, targetFile) == 0) continue;
+    writeLinesSync(filename, content);
+  }
+}
+
+/**
+ * Check and applies changes.
+ * @param {string[]} content 
+ * @param {ApiFile} targetFile 
+ * @returns 0 if no changes happened, n > 0 if there are changes
+ */
+function updateContent(content, targetFile) {
+  const name = targetFile.name;
+  const sourceFile = parseContent(name, content, { storeLineNumbers: true });
+  const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
+  const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
+  if (!changes.length) {
+    system.log(`No changes for ${name}`);
+    return 0;
+  }
+  if (targetFile.doc) {
+    changes.push({
+      begin: docBegin,
+      end: docEnd,
+      replacement: generateDocString(targetFile.doc),
+    });
+  }
+  updateChanges(content, changes);
+  return changes.length;
 }
 
 /**
  * 
- * @param {string[]} names 
+ * @param {string[]} content 
+ * @param {Change[]} changes 
  */
-function updateHeaders(names) {
-  names = Object.keys(target.files)
-    .filter(names?.length ? (name => names.includes(name)) : (() => true));
-  for (const name of names) {
-    console.log(`Updating ${name}`);
-    const filename = baseDir + name;
-    const content = readFileSync(filename, "utf8").split('\n');
-    const [docBegin, docEnd] = getDocRange(content);
-    const [entriesBegin, entriesEnd] = getEntriesRange(content, docEnd);
-
-    const targetFile = target.files[name];
-    const sourceFile = parseContent(name, content);
-    const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
-    if (!changes.length) {
-      console.log(`No changes for ${name}`);
-      continue;
-    }
-    changes.push({
-      begin: docBegin,
-      end: docEnd,
-      replacement: wrapDocString(targetFile.doc),
-    });
-    for (const change of changes) {
-      updateRange(content, change.begin, change.end, change.replacement ?? undefined);
-    }
-    writeFileSync(filename, content.join('\n').trim() + '\n');
+function updateChanges(content, changes) {
+  for (const change of changes) {
+    updateRange(content, change.begin, change.end, change.replacement ?? undefined);
   }
 }
 
@@ -64,7 +83,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
   const targetEntries = targetFile.entries;
   const targetNames = Object.keys(targetEntries);
   if (!targetNames.length) {
-    changes.push({
+    if (begin != end) changes.push({
       begin,
       end,
     });
@@ -85,7 +104,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
     const targetEntry = targetEntries[targetName];
     let index = sourceNames.indexOf(targetName, sourceIndex);
     if (index == -1) {
-      console.log(`${targetEntry.name} added ${begin}`);
+      system.log(`${targetEntry.name} added ${begin}`);
       changes.push({
         begin,
         end: begin,
@@ -97,7 +116,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
       const change = checkEntryChanged(sourceEntry, targetEntry);
       const sourceEntryEnd = Array.isArray(sourceEntry) ? sourceEntry[sourceEntry.length - 1].end : sourceEntry.end;
       if (change) {
-        console.info(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`);
+        system.log(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`);
         changes.push({
           begin,
           end: sourceEntryEnd,
@@ -117,7 +136,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
       }
       sourceIndex = index + 1;
     } else {
-      console.log(`${targetEntry.name} added ${begin}`);
+      system.log(`${targetEntry.name} added ${begin}`);
       changes.push({
         begin: end,
         end,
@@ -198,7 +217,7 @@ function generateEntry(entry, prefix) {
     return entry.map(e => generateEntry(e, prefix)).join('\n\n');
   }
   prefix = prefix ?? '';
-  const doc = entry.doc ? wrapDocString(entry.doc, prefix) + '\n' : '';
+  const doc = entry.doc ? generateDocString(entry.doc, prefix) + '\n' : '';
   const placeholder = 'static_assert(false, "Not implemented");';
   switch (entry.kind) {
     case "alias":
@@ -214,7 +233,7 @@ function generateEntry(entry, prefix) {
     case "struct":
       return doc + generateStruct(entry, prefix);
     default:
-      console.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
+      system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
   }
 }
@@ -287,7 +306,7 @@ function generateParameter(parameter) {
  * @param {string} docStr 
  * @param {string=} prefix 
  */
-function wrapDocString(docStr, prefix) {
+function generateDocString(docStr, prefix) {
   if (!docStr) return '';
   prefix = prefix ?? '';
   const replacement = `\n${prefix} *$1`;
@@ -295,30 +314,6 @@ function wrapDocString(docStr, prefix) {
   return `${prefix}/**\n${docStr}\n${prefix} **/`;
 }
 
-/**
- * 
- * @param {string[]} content 
- * @param {number=} current 
- * @returns {[number, number]}
- */
-function getDocRange(content, current) {
-  current = current ? current - 1 : 0;
-  if (!content[current].startsWith('/**')) return [current + 1, current + 1];
-  for (var i = current + 1; i < content.length; i++) {
-    if (!content[i].startsWith(' *')) break;
-  }
-  return [current + 1, i + 1];
-}
-
-/**
-* 
-* @param {string[]} content 
-* @param {number=} current 
-* @returns {[number, number]}
-*/
-function getEntriesRange(content, current) {
-  current = current ? current - 1 : 0;
-  const begin = content.indexOf('namespace SDL {', current) + 1;
-  const end = content.indexOf('// #pragma region implementation', begin);
-  return [Math.max(begin, current) + 1, (end != -1 ? end : content.lastIndexOf('} // namespace SDL')) + 1];
-}
+exports.updateApi = updateApi;
+exports.updateContent = updateContent;
+exports.updateChanges = updateChanges;

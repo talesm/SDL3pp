@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "SDL_stdinc.h"
+  ],
+  "api": "scripts/target.json",
+  "baseDir": "include/SDL3pp/",
+  "outputFile": "scripts/source.json",
+  "sourceApi": "scripts/source.json",
+  "transform": "scripts/transform.json"
+}

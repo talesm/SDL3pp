@@ -12,6 +12,10 @@
  * @property {string} name
  * @property {string=} doc
  * @property {ApiEntries} entries
+ * @property {number=} docBegin
+ * @property {number=} docEnd
+ * @property {number=} entriesBegin
+ * @property {number=} entriesEnd
  */
 
 /**
@@ -19,23 +23,69 @@
  */
 
 /**
- * @typedef {object} ApiEntry
- * @property {string} name
- * @property {'alias'|'callback'|'def'|'enum'|'function'|'struct'|'union'|'forward'} kind
- * @property {string=} type
- * @property {(string|ApiParameter)[]=} parameters
- * @property {(string|ApiParameter)[]=} template
- * @property {string=} sourceName
- * @property {boolean=} constexpr
- * @property {string} doc
- * @property {number} begin
- * @property {number} decl
- * @property {number} end
+ * @typedef {"alias"|"callback"|"def"|"enum"|"forward"|"function"|"struct"|"union"|"var"} ApiEntryKind
  */
 
+/**
+ * @typedef {object} ApiEntry
+ * @property {string}         name
+ * @property {ApiEntryKind}   kind
+ * @property {string=}        type
+ * @property {ApiParameters=} parameters
+ * @property {ApiParameters=} template
+ * @property {ApiEntries}     entries
+ * @property {string=}        sourceName
+ * @property {boolean=}       constexpr
+ * @property {boolean=}       immutable
+ * @property {boolean=}       static
+ * @property {string}         doc
+ * @property {number=}        begin
+ * @property {number=}        decl
+ * @property {number=}        end
+ */
+
+/**
+ * @typedef {(string|ApiParameter)[]} ApiParameters
+ */
 
 /**
  * @typedef {object} ApiParameter
  * @property {string}  name
  * @property {string=} type
+ */
+
+/**
+ * @typedef {{[name: string]: string}} StringMap
+ */
+
+/**
+ * @typedef {object} ApiTransform
+ * @prop {FileTransformMap}      files
+ * @prop {(string|string[])=}    prefixes
+ * @prop {ReplacementRule[]=}    renameRules
+ * @prop {ReplacementRule[]=}    docRules
+ * @prop {StringMap=}            typeMap
+ * @prop {StringMap=}            paramTypeMap
+ * @prop {StringMap=}            returnTypeMap
+ */
+
+
+/**
+ * @typedef {object} FileTransform
+ * @prop {string[]=}   includeDefs
+ * @prop {string[]=}   ignoreEntries
+ * @prop {ApiEntries=} transform
+ * @prop {ApiEntries=} includeAfter
+ * @prop {ApiEntries=} types this should be only structs
+ */
+
+
+/**
+ * @typedef {{[name: string]: FileTransform}} FileTransformMap
+ */
+
+/**
+ * @typedef {object} ReplacementRule
+ * @prop {RegExp} pattern
+ * @prop {string} replacement
  */

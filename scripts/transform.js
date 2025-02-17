@@ -1,88 +1,109 @@
-const { writeFileSync } = require("node:fs");
-const source = require('./source.json');
-const config = require('./transform.json');
-
-const filename = 'SDL_stdinc.h';
-
-if (require.main == module) {
-  writeFileSync('scripts/target.json', JSON.stringify(transformApi([filename]), null, 2));
-}
+const { insertEntry } = require("./parse");
+const { system } = require("./utils");
 
 /**
- * 
- * @param {string[]} names the names to transform
- * 
+ * @typedef {object} TransformConfig
+ * @prop {Api}          sourceApi
+ * @prop {ApiTransform} transform
  */
-function transformApi(names) {
-  const typeMap = {};
-  const paramTypeMap = Object.create(typeMap);
-  paramTypeMap["const char *"] = "StringParam";
-  const returnTypeMap = Object.create(typeMap);
-  /** @type {ApiContext} */
-  const context = { typeMap, paramTypeMap, returnTypeMap };
 
-  /** @type {{[file: string]: ApiFile}} */
+/**
+ * Transform the Api
+ * 
+ * @param {TransformConfig} config the rules to apply into source
+ * @returns {Api} the transformed api
+ */
+function transformApi(config) {
+  const source = config.sourceApi;
+  const transform = config.transform;
+  /** @type {ApiContext} */
+  const context = new ApiContext(transform);
+
+  /** @type {ApiFileMap} */
   const files = {};
-  const keys = Object.keys(source.files).filter(names?.length ? (name => names.includes(name)) : (() => true));
-  for (const sourceName of keys) {
-    const sourceFile = source.files[sourceName];
-    const targetName = transformIncludeName(sourceName);
-    console.log(`Transforming api ${sourceName} => ${targetName}`);
+  const fileTransformMap = transform?.files ?? {};
+  for (const [sourceName, sourceFile] of Object.entries(source.files)) {
+    const fileConfig = fileTransformMap[sourceName] ?? {};
+    const targetName = fileConfig.name || transformIncludeName(sourceName, context);
+    system.log(`Transforming api ${sourceName} => ${targetName}`);
 
     files[targetName] = {
       name: targetName,
-      doc: transformFileDoc(sourceFile.doc, targetName),
-      entries: transformEntries(sourceFile.entries, context, config.files[targetName] ?? {})
+      doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context, targetName),
+      entries: transformEntries(sourceFile.entries, context, fileConfig)
     };
   }
   return { files };
 }
 
-/**
- * @typedef {object} ApiContext
- * @property {{[source: string]: string}} typeMap 
- * @property {{[source: string]: string}} paramTypeMap
- * @property {{[source: string]: string}} returnTypeMap 
- */
+class ApiContext {
+  /** @param {ApiTransform} transform  */
+  constructor(transform) {
+    /** @type {StringMap} */
+    this.typeMap = {};
+    Object.assign(this.typeMap, transform.typeMap ?? {});
+
+    /** @type {StringMap} */
+    this.paramTypeMap = Object.create(this.typeMap);
+    Object.assign(this.paramTypeMap, transform.paramTypeMap ?? {});
+    // this.paramTypeMap["const char *"] = "StringParam";
+
+    /** @type {StringMap} */
+    this.returnTypeMap = Object.create(this.typeMap);
+    Object.assign(this.returnTypeMap, transform.returnTypeMap ?? {});
+
+    if (transform.prefixes?.length) {
+      this.prefixToRemove = Array.isArray(transform.prefixes)
+        ? RegExp(`^(${transform.prefixes.join("|")})`)
+        : RegExp("^" + transform.prefixes);
+    }
+
+    this.renameRules = transform.renameRules ?? [];
+    this.renameRules.forEach(rule => rule.pattern = RegExp(rule.pattern));
+
+    this.docRules = transform.docRules ?? [];
+    this.docRules.forEach(rule => rule.pattern = RegExp(rule.pattern, 'g'));
+  }
+}
 
 /**
  * 
- * @param {{[name: string]: ApiEntry|ApiEntry[]}} sourceEntries 
- * @param {ApiContext} context 
- * @param {TransformConfig} config
+ * @param {ApiEntries}     sourceEntries 
+ * @param {ApiContext}     context 
+ * @param {FileTransform} transform
  */
-function transformEntries(sourceEntries, context, config) {
-  /** @type {{[name: string]: ApiEntry|ApiEntry[]}} */
+function transformEntries(sourceEntries, context, transform) {
+  /** @type {ApiEntries} */
   const targetEntries = {};
-  const defWhitelist = new Set(config.includeDefs);
-  const blacklist = new Set(config.ignoreEntries);
-  const transformMap = config.transform;
+  const defWhitelist = new Set(transform.includeDefs ?? []);
+  const blacklist = new Set(transform.ignoreEntries ?? []);
+  const transformMap = transform.transform ?? {};
 
-  for (const entry of config.includeAt?.begin ?? []) {
-    const targetName = entry.kind == "forward" ? `${entry.name}-forward` : entry.name;
-    targetEntries[targetName] = entry;
+  if (transform.includeAfter?.__begin) {
+    insertEntry(targetEntries, transform.includeAfter.__begin);
   }
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (blacklist.has(sourceName)) continue;
-    let targetName = transformName(sourceName);
+    let targetName = transformName(sourceName, context);
     if (Array.isArray(sourceEntry)) {
       targetEntries[targetName] = sourceEntry.map(e => {
-        const targetEntry = transformEntry(e, context, config);
+        const targetEntry = transformEntry(e, context, transform);
         targetEntry.name = targetName;
         return targetEntry;
       });
     } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
-      const targetEntry = transformEntry(sourceEntry, context, config);
-      targetName = transformName(targetEntry.name);
-      const targetDelta = transformMap[targetName];
+      const targetEntry = transformEntry(sourceEntry, context, transform);
+      targetName = transformName(targetEntry.name, context);
+      const targetDelta = transformMap[sourceName];
       if (targetDelta) {
         if (targetDelta.name) targetName = targetDelta.name;
         else targetDelta.name = targetName;
         Object.assign(targetEntry, targetDelta);
       } else
         targetEntry.name = targetName;
-      if (targetEntry.kind == 'alias') {
+      if (targetName === targetEntry.sourceName) targetEntry.sourceName = "::" + targetEntry.sourceName;
+      if (targetEntry.kind == 'alias' || targetEntry.kind == 'struct') {
         if (targetName == targetEntry.type) {
           continue;
         }
@@ -96,21 +117,73 @@ function transformEntries(sourceEntries, context, config) {
       }
       targetEntries[targetName] = targetEntry;
     }
+    const includeAfter = transform.includeAfter?.[targetName];
+    if (includeAfter) {
+      insertEntry(targetEntries, includeAfter);
+    }
+  }
+  if (transform.includeAfter?.__end) {
+    insertEntry(targetEntries, transform.includeAfter.__end);
+  }
+  // Change hierarchy
+  for (const key of Object.keys(targetEntries)) {
+    if (!key.includes(".")) continue;
+    const path = key.split(".");
+    let obj = targetEntries[path[0]];
+    if (!obj || Array.isArray(obj) || !obj.entries) continue;
+    let name = path[path.length - 1];
+    let i = 1;
+    for (; i < path[path.length - 1]; i++) {
+      /** @type {ApiEntry} */
+      const el = obj.entries[path[i]];
+      if (!el || Array.isArray(el) || !el.entries) {
+        name = path.slice(i).join('.');
+        break;
+      }
+      obj = el;
+    }
+    const entry = targetEntries[key];
+    const typeName = obj.name;
+    if (Array.isArray(entry)) {
+      entry.forEach(e => prepareForTypeInsert(e, name, typeName));
+    } else prepareForTypeInsert(entry, name, typeName);
+    delete targetEntries[key];
+    insertEntry(obj.entries, entry);
   }
 
   return targetEntries;
 }
 
 /**
- * 
- * @param {ApiEntry} sourceEntry 
- * @param {ApiContext} context 
- * @param {TransformConfig} config
+ * Prepare function to become class or instance function
+ * @param {ApiEntry} entry 
+ * @param {string} name 
+ * @param {string} typeName 
  */
-function transformEntry(sourceEntry, context, config) {
-  const targetEntry = { ...sourceEntry, begin: undefined, decl: undefined, end: undefined };
+function prepareForTypeInsert(entry, name, typeName) {
+  entry.name = name;
+  const parameters = entry.parameters;
+  if (!parameters?.length) return;
+  const type = parameters[0]?.type ?? "";
+  if (type.includes(typeName)) {
+    parameters.shift();
+    if (type.startsWith("const ")) entry.immutable = true;
+  } else {
+    entry.static = true;
+  }
+}
+
+/**
+ * 
+ * @param {ApiEntry}       sourceEntry 
+ * @param {ApiContext}     context 
+ * @param {FileTransform} transform
+ */
+function transformEntry(sourceEntry, context, transform) {
+  /** @type {ApiEntry} */
+  const targetEntry = { ...sourceEntry };
   if (sourceEntry.doc) {
-    targetEntry.doc = transformDoc(targetEntry.doc);
+    targetEntry.doc = transformDoc(targetEntry.doc, context);
   }
   const sourceName = sourceEntry.name;
   targetEntry.sourceName = sourceName;
@@ -120,13 +193,13 @@ function transformEntry(sourceEntry, context, config) {
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
       break;
     case 'alias':
-      const type = config?.types[sourceName];
+      const type = transform?.types?.[sourceName];
       if (type === "resource" || type?.kind == "resource") {
         targetEntry.kind = "struct";
         targetEntry.template = [{ type: "class", name: "T" }];
         targetEntry.type = "T";
         targetEntry.parameters = ["using T::T;"];
-        const targetName = type?.name ?? transformName(sourceName);
+        const targetName = type?.name ?? transformName(sourceName, context);
         targetEntry.name = targetName + "Base";
         context.paramTypeMap[sourceName] = targetName + "Ref";
         context.paramTypeMap[`${sourceName} *`] = targetName + "Ref";
@@ -134,7 +207,7 @@ function transformEntry(sourceEntry, context, config) {
         context.returnTypeMap[`${sourceName} *`] = targetName;
       } else {
         if (type) {
-          console.warn(`Alias ${sourceEntry.name} can not be ${type}`);
+          system.warn(`Alias ${sourceEntry.name} can not be ${type}`);
         }
         targetEntry.type = sourceEntry.name;
       }
@@ -146,6 +219,7 @@ function transformEntry(sourceEntry, context, config) {
       targetEntry.kind = 'alias';
       targetEntry.type = sourceEntry.name;
       delete targetEntry.parameters;
+      delete targetEntry.entries;
       break;
     default:
       break;
@@ -178,30 +252,52 @@ function transformType(type, typeMap) {
 
 /**
  * 
- * @param {string} docStr 
- * @param {string} name 
+ * @param {string}      docStr 
+ * @param {ApiContext}  context 
+ * @param {string}      filename 
  */
-function transformFileDoc(docStr, name) {
-  return transformDoc(`@file ${name}\n\n${docStr.replace(/^# Category\w*\n\n/, '')}`);
+function transformFileDoc(docStr, context, filename) {
+  if (!docStr) return "";
+  docStr = docStr.replace(/^(([@\\]file [^\n]*\s*)?)/, `@file ${filename}\n\n`);
+  return transformDoc(docStr, context);
 }
 
-/** @param {string} docStr  */
-function transformDoc(docStr) {
-  return docStr.replaceAll(/\\(\w+)/g, '@$1');
-}
-
-/**
- * 
- * @param {string} name 
- */
-function transformIncludeName(name) {
-  return transformName(name).replace(/\.h$/, ".hpp");
+/** 
+ * @param {string}      docStr
+ * @param {ApiContext}  context   
+ **/
+function transformDoc(docStr, context) {
+  return transformString(docStr.replace(/\\(\w+)/g, '@$1'), context.docRules);
 }
 
 /**
  * 
  * @param {string} name 
+ * @param {ApiContext} context 
  */
-function transformName(name) {
-  return name.replace(/^(SDL|IMG)_/, '');
+function transformIncludeName(name, context) {
+  return transformString(transformName(name, context), context.renameRules);
 }
+
+/**
+ * 
+ * @param {string} str the string to apply to
+ * @param {ReplacementRule[]} rules the replacements to apply
+ */
+function transformString(str, rules) {
+  rules.forEach(rule => str = str.replace(rule.pattern, rule.replacement));
+  return str;
+}
+
+/**
+ * 
+ * @param {string} name 
+ * @param {ApiContext} context 
+ */
+function transformName(name, context) {
+  return context?.prefixToRemove ? name.replace(context.prefixToRemove, '') : name;
+}
+
+exports.transformApi = transformApi;
+exports.transformEntries = transformEntries;
+exports.transformEntry = transformEntry;

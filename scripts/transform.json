@@ -1,11 +1,21 @@
 {
+  "prefixes": "SDL_",
+  "renameRules": [
+    {
+      "pattern": "\\.h$",
+      "replacement": ".hpp"
+    }
+  ],
+  "paramTypeMap": {
+    "const char *": "StringParam"
+  },
   "files": {
-    "stdinc.hpp": {
+    "SDL_stdinc.h": {
       "includeDefs": [
         "SDL_FOURCC"
       ],
       "transform": {
-        "FOURCC": {
+        "SDL_FOURCC": {
           "name": "FourCC",
           "type": "Uint32",
           "kind": "function",
@@ -28,6 +38,9 @@
               "type": "Uint8"
             }
           ]
+        },
+        "SDL_GetEnvironment": {
+          "type": "EnvironmentRef"
         }
       },
       "ignoreEntries": [
@@ -44,8 +57,8 @@
         "SDL_size_mul_check_overflow_builtin",
         "SDL_size_add_check_overflow_builtin"
       ],
-      "includeAt": {
-        "begin": [
+      "includeAfter": {
+        "__begin": [
           {
             "name": "EnvironmentBase",
             "kind": "forward",

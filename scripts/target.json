@@ -2,7 +2,7 @@
   "files": {
     "stdinc.hpp": {
       "name": "stdinc.hpp",
-      "doc": "@file stdinc.hpp\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like SDL_memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\nSDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like SDL_strlcpy(), which functions as a safer form of strcpy().",
+      "doc": "@file stdinc.hpp\n\n# CategoryStdinc\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like SDL_memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\nSDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like SDL_strlcpy(), which functions as a safer form of strcpy().",
       "entries": {
         "EnvironmentBase-forward": {
           "name": "EnvironmentBase",
@@ -322,7 +322,7 @@
           "doc": "Get the process environment.\n\nThis is initialized at application start and is not affected by setenv()\nand unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and\nSDL_UnsetEnvironmentVariable() if you want to modify this environment, or\nSDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist\nin the C runtime environment after SDL_Quit().\n\n@returns a pointer to the environment for the process or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
           "name": "GetEnvironment",
           "kind": "function",
-          "type": "Environment",
+          "type": "EnvironmentRef",
           "parameters": [],
           "sourceName": "SDL_GetEnvironment"
         },

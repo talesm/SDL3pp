@@ -1,8 +1,4 @@
-
-const { readFileSync, writeFileSync } = require("node:fs");
-
-const baseDir = '/usr/local/include/SDL3/';
-const filename = 'SDL_stdinc.h';
+const { readLinesSync, system } = require("./utils");
 
 const ignorePrefixes = [
   'void *alloca',
@@ -12,39 +8,57 @@ const ignorePrefixes = [
   'size_t wcsl',
   'char *str',
   '}',
-  'namespace SDL {',
 ];
 
-if (require.main == module) {
-  writeFileSync('scripts/source.json', JSON.stringify(parseApi(baseDir, [filename]), null, 2));
+const ignoreInSignature = new RegExp(`(${[
+  'extern',
+  'SDL_FORCE_INLINE',
+  'SDL_DECLSPEC',
+  'SDL_MALLOC',
+  'SDL_ALLOC_SIZE2\\(1,\\s*2\\)',
+  'SDL_ALLOC_SIZE',
+  'SDLCALL',
+  'SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP',
+].join("|")})(\\(\\w*\\))?`, "g");
+
+/**
+ * @typedef {object} ParseConfig
+ * @prop {string}   baseDir
+ * @prop {string[]} sources
+ * @prop {boolean=} storeLineNumbers
+ */
+
+/**
+ * @param {ParseConfig} config
+ * 
+ */
+function parseApi(config) {
+  const { baseDir, sources } = config;
+
+  /** @type {Api} */
+  const api = { files: {} };
+  for (const name of sources) {
+    system.log(`Reading file ${name}`);
+    const content = readLinesSync(baseDir + name);
+    api.files[name] = parseContent(name, content, config);
+  }
+  return api;
 }
 
 /**
- * 
- * @param {string} baseDir 
- * @param {string[]} names 
- * 
- * @returns {Api}
+ * @typedef {object} ParseContentConfig
+ * @prop {boolean=} storeLineNumbers
  */
-function parseApi(baseDir, names) {
-  const files = {};
-  for (const name of names) {
-    console.log(`Reading file ${name}`);
-    const content = readFileSync(baseDir + name, 'utf-8').split('\n');
-    files[name] = parseContent(name, content);
-  }
-  return { files };
-}
-
-exports.parseApi = parseApi;
 
 /**
  * 
  * @param {string} name
  * @param {string[]} content 
+ * @param {ParseContentConfig} config 
  */
-function parseContent(name, content) {
+function parseContent(name, content, config) {
   const tokens = tokenize(content);
+  if (!config) config = {};
 
   /** @type {ApiFile} */
   const apiFile = {
@@ -52,143 +66,267 @@ function parseContent(name, content) {
     doc: '',
     entries: {},
   };
-  if (tokens?.length) {
-    apiFile.doc = tokens.shift().value;
+  const parser = new ContentParser(tokens, config);
+  const entryArray = parser.parseEntries();
+  insertEntry(apiFile.entries, entryArray);
+  if (config.storeLineNumbers) {
+    apiFile.docBegin = parser.docBegin || 1;
+    apiFile.docEnd = parser.docEnd || apiFile.docBegin;
+    apiFile.entriesBegin = parser.entriesBegin || entryArray[0]?.begin || apiFile.docEnd;
+    apiFile.entriesEnd = parser.entriesEnd || entryArray[entryArray.length - 1]?.end || apiFile.entriesBegin;
   }
-  const entries = apiFile.entries;
-  /** @type {string} */
-  let lastDoc = null;
+  apiFile.doc = parser.doc;
+  return apiFile;
+}
 
-  /** @type {(string|ApiParameter)[]} */
-  let lastTemplate = null;
+/**
+ * Insert entry into entries
+ * 
+ * @param {ApiEntries} entries 
+ * @param {ApiEntry|ApiEntry[]} entry 
+ */
+function insertEntry(entries, entry) {
+  if (Array.isArray(entry)) {
+    entry.forEach(e => insertEntry(entries, e));
+    return entries;
+  }
+  const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
+  if (entries[name]) {
+    const currEntry = entries[name];
+    if (Array.isArray(currEntry)) {
+      currEntry.push(entry);
+    } else if (currEntry.kind != 'function') {
+      if (entry.doc || !currEntry.doc) entries[name] = entry;
+    } else if (entry.kind == 'function') {
+      entries[name] = [currEntry, entry];
+    }
+  } else {
+    entries[name] = entry;
+  }
+  return entries;
+}
 
-  /** @type {number} */
-  let lastEnd = null;
+/**
+ * Parses a list of tokens into Entry
+ */
+class ContentParser {
+  /**
+   * 
+   * @param {FileToken[]}        tokens the tokens
+   * @param {ParseContentConfig} config the configuration
+   */
+  constructor(tokens, config) {
+    /** @private */
+    this.next = () => tokens.shift();
+    /** @private */
+    this.lookup = () => tokens[0];
+    this.storeLineNumbers = config.storeLineNumbers;
+    this.docBegin = 0;
+    this.doc = "";
+    this.docEnd = 0;
+    this.entriesBegin = 0;
+    this.entriesEnd = 0;
+  }
 
-  /** @type {number} */
-  let lastBegin = null;
-  for (const token of tokens) {
-    if (token.kind == 'doc') {
+  /**
+   * Parse all entries
+   * @param {number} identLevel the level of ident
+   */
+  parseEntries(identLevel = 0) {
+    const entries = [];
+    for (let entry = this.parseEntry(identLevel); !!entry; entry = this.parseEntry(identLevel)) {
+      entries.push(entry);
+    }
+    return entries;
+  }
+
+  /**
+   * Parses a single entry
+   * @param {number} identLevel the level of ident
+   * @returns {ApiEntry}
+   */
+  parseEntry(identLevel = 0) {
+    let lastEnd = 0;
+    let lastDecl = 0;
+    let lastBegin = 0;
+    let lastDoc = "";
+    /** @type {ApiParameters} */
+    let lastTemplate = null;
+
+    if ((this.lookup()?.spaces ?? -1) < identLevel) return undefined;
+
+    while (this.lookup()?.kind === "doc") {
+      const token = this.expect("doc");
+      this.checkFileDoc(lastBegin, lastEnd, lastDoc);
       lastDoc = token.value;
       lastEnd = token.end;
       lastBegin = token.begin;
-      continue;
     }
-    if (token.kind == "template") {
-      lastTemplate = token.parameters;
-      if (lastEnd != token.begin) {
+
+    if (this.lookup()?.kind === "namespace") {
+      const token = this.expect("namespace");
+      this.checkFileDoc(lastBegin, lastEnd, lastDoc);
+      if (!this.entriesBegin) {
+        this.entriesBegin = token.end;
+      }
+      return this.parseEntry();
+    }
+
+    if (this.lookup()?.kind === "template") {
+      const token = this.expect("template");
+      if (lastEnd != token.begin || lastTemplate) {
+        this.checkFileDoc(lastBegin, lastEnd, lastDoc);
         lastBegin = token.begin;
         lastDoc = null;
       }
+      lastTemplate = token.parameters;
+      if (!lastDecl) lastDecl = token.begin;
       lastEnd = token.end;
-      continue;
     }
-    const entry = parseEntry(token);
+    const token = this.next();
+    if (!token) {
+      if (lastTemplate) throw new Error(`Error at ${lastEnd}: Expected an entity after template signature`);
+      return undefined;
+    }
+
+    /** @type {ApiEntry} */
+    const entry = {
+      doc: '',
+      name: token.value,
+      kind: token.kind,
+    };
+    switch (token.kind) {
+      case "alias":
+        entry.type = token.type;
+        break;
+      case "callback":
+        entry.type = token.type;
+        entry.parameters = parseParams(token.parameters);
+        break;
+      case "def":
+        if (token.parameters) entry.parameters = parseParams(token.parameters);
+        break;
+      case "enum":
+        break;
+      case "function":
+        entry.type = token.type;
+        entry.parameters = parseParams(token.parameters);
+        if (token.constexpr) entry.constexpr = token.constexpr;
+        if (token.immutable) entry.immutable = token.immutable;
+        if (token.static) entry.static = token.static;
+        break;
+      case "struct":
+        entry.type = token.type;
+        entry.entries = insertEntry({}, this.parseEntries(token.spaces + 1));
+        break;
+      case "var":
+        entry.type = token.type;
+        break;
+      case "forward":
+        break;
+      default:
+        throw new Error(`Error at ${token.begin}: Unexpected ${token.kind}`);
+    }
     if (token.begin == lastEnd) {
       if (lastDoc) entry.doc = lastDoc;
-      if (lastTemplate) entry.template = parseParams(lastTemplate);
-      entry.begin = lastBegin;
-    }
-    lastDoc = null;
-    lastTemplate = null;
-    const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
-    if (!name) continue;
-    if (entries[name]) {
-      const currEntry = entries[name];
-      if (Array.isArray(currEntry)) {
-        currEntry.push(entry);
-      } else if (currEntry.kind != 'function') {
-        if (entry.doc || !currEntry.doc) entries[name] = entry;
-      } else if (entry.kind == 'function') {
-        entries[name] = [currEntry, entry];
+      if (lastTemplate) entry.template = lastTemplate;
+      if (this.storeLineNumbers) {
+        entry.begin = lastBegin;
+        entry.decl = lastDecl || token.begin;
+        entry.end = token.end;
       }
     } else {
-      entries[name] = entry;
+      if (lastDoc) this.checkFileDoc(lastBegin, lastEnd, lastDoc);
+      if (this.storeLineNumbers) {
+        entry.begin = token.begin;
+        entry.decl = token.begin;
+        entry.end = token.end;
+      }
+    }
+    return entry;
+  }
+
+  /**
+   * Check if this is the file doc
+   * @private
+   * @param {number} begin 
+   * @param {number} end 
+   * @param {string} doc 
+   */
+  checkFileDoc(begin, end, doc) {
+    if (!this.docBegin && begin) {
+      this.docBegin = begin;
+      this.docEnd = end;
+      this.doc = doc;
     }
   }
-  return apiFile;
-}
-exports.parseContent = parseContent;
 
-/**
- * 
- * @param {FileToken} token 
- */
-function parseEntry(token) {
-  /** @type {ApiEntry} */
-  const entry = {
-    doc: '',
-    begin: token.begin,
-    decl: token.begin,
-    end: token.end,
-    name: token.value,
-    kind: token.kind,
-  };
-  switch (token.kind) {
-    case "alias":
-      entry.type = token.type;
-      break;
-    case "callback":
-      entry.type = token.type;
-      entry.parameters = parseParams(token.parameters);
-      break;
-    case "def":
-      entry.parameters = token.parameters;
-      break;
-    case "enum":
-      entry.parameters = token.parameters.map(p => p.replace(',', '').trim()).filter(p => !!p);
-      break;
-    case "function":
-      entry.type = token.type;
-      entry.parameters = parseParams(token.parameters);
-      break;
-    case "struct":
-      entry.parameters = parseParams(token.parameters);
-      entry.type = token.type;
-      break;
-    case "forward":
-      break;
-    default:
-      console.error(`Unimplemented kind ${token.kind} (${token.value}) at ${token.begin}`);
-      break;
+  /**
+   * Returns token only if matches the specific kind
+   * @param {FileTokenKind} kind 
+   */
+  expect(kind) {
+    const token = this.next();
+    if (!token) throw new Error(`Error at ${token.begin}: expected ${kind}`);
+    if (token.kind !== kind) throw new Error(`Error at ${token.begin}: expected ${kind} got ${token.kind}`);
+    return token;
   }
-  return entry;
+}
+
+/**
+ * Remove line numbers from entry
+ * @param {ApiEntry} entry 
+ */
+function removeEntryLineNumbers(entry) {
+  delete entry.decl;
+  delete entry.begin;
+  delete entry.end;
 }
 
 /**
  * 
- * @param {string[]} params 
+ * @param {string} params 
+ * @returns {ApiParameters}
  */
 function parseParams(params) {
-  if (params.length == 1 && (params[0] == 'void' || params[0] == '')) {
+  if (!params?.length || params == 'void') {
     return [];
   }
-  return params.map(param => {
+  return params.split(',').map(param => {
+    param = param.trim();
     const nameIndex = param.lastIndexOf(' ');
     if (nameIndex == -1) return param;
     let name = param.slice(nameIndex + 1).trim();
     let type = param.slice(0, nameIndex).trim();
-    while (name.startsWith('*')) {
+    while (name.startsWith('*') || name.startsWith('&')) {
+      type += name[0];
       name = name.slice(1);
-      type += '*';
     }
-    type = type.replaceAll(/(\w)\*/g, '$1 *').replaceAll(/\s+/g, ' ');
+    type = normalizeType(type);
     return { name, type };
   });
 
 }
 
 /**
- * @typedef {object} FileToken
- * @property {string} value
- * @property {"alias"|"callback"|"def"|"doc"|"enum"|"forward"|"function"|"struct"|"template"|"union"} kind
- * @property {string[]=} parameters
- * @property {string=} type
- * @property {boolean=} constexpr
- * @property {number} begin
- * @property {number} end
- * @property {number} spaces
+ * @typedef {ApiEntryKind|"doc"|"namespace"|"template"} FileTokenKind
  */
+
+/**
+ * @typedef {object} FileToken
+ * @property {string}         value
+ * @property {FileTokenKind}  kind
+ * @property {string=}        parameters
+ * @property {string=}        type
+ * @property {boolean=}       constexpr
+ * @property {boolean=}       immutable
+ * @property {boolean=}       static
+ * @property {number}         begin
+ * @property {number}         end
+ * @property {number}         spaces
+ */
+
+const memberSpecifiers = new Set(["inline", "static", "constexpr"]);
 
 /**
  * 
@@ -197,138 +335,85 @@ function parseParams(params) {
 function tokenize(lines) {
   /** @type {FileToken[]} */
   const result = [];
+  const spaceRegex = /^\s+/;
+  const endCommentRegex = /\*\//;
+  const continueCommentRegex = /^\s*\*\s?/;
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const lineUntrimmed = lines[i];
+    const line = lineUntrimmed.trim();
+    if (!line || hasIgnoredPrefix(line)) continue;
 
+    let m = spaceRegex.exec(lineUntrimmed);
     /** @type {FileToken} */
     const token = {
       begin: i + 1,
+      spaces: m?.[0]?.length ?? 0,
     };
-    let m;
-    if (m = line.match(/^(\s*)($|\/\/)/)) {
-      if (!line.endsWith("Forward decl")) continue;
+
+    if (m = /^\/\/\s*Forward decl/.test(line)) {
       token.kind = "doc";
-      token.spaces = m[1]?.length ?? 0;
-      token.value = undefined;
-    } else if (m = line.match(/^(\s*)(\/\*.*$)/)) {
+    } else if (m = /^#pragma\s+region\s+impl/.test(line)) {
+      break;
+    } else if (m = /^\/\//.test(line)) {
+      continue;
+    } else if (m = /^\/\*(\*)?/.exec(line)) {
       let doc = '';
-      const isDoc = m[2] == '/**';
-      const spaces = m[1]?.length ?? 0;
+      const isDoc = !!m[1];
       for (; i < lines.length; ++i) {
         const line = lines[i];
-        if (line.match(/\*\//)) {
+        if (endCommentRegex.test(line)) {
           break;
         }
-        const m = line.match(/^\s*\*\s?/);
+        const m = continueCommentRegex.exec(line);
         doc += m ? line.slice(m[0].length) : line;
         doc += '\n';
       }
       if (isDoc) {
         token.kind = "doc";
         token.value = doc.replace('/**', '').trim();
-        token.spaces = spaces;
       } else continue;
-    } else if (m = line.match(/^#define\s+(\w+)(\(([\w\s,]+)\))?/)) {
+    } else if (m = /^#define\s+(\w+)(\(([\w\s,]+)\))?/.exec(line)) {
       token.kind = "def";
       token.value = m[1];
-      if (m[2]) token.parameters = m[3].split(',').map(p => p.trim());
+      if (m[2]) token.parameters = m[3]?.trim();
       let ln = line;
       while (ln.endsWith('\\')) {
         if (i > lines.length) break;
         ln = lines[++i];
       }
       if (token.value.endsWith('_')) continue;
-    } else if (m = line.match(/^(\s*)typedef\s+(([\w*]+\s+)+\**)(\w+);/)) {
+    } else if (m = /^typedef\s+(([\w*]+\s+)+\**)(\w+);/.exec(line)) {
       token.kind = "alias";
+      token.value = m[3];
+      token.type = m[1].trimEnd();
+    } else if (m = /^using\s+(\w+)\s*=\s*([^;]+);/.exec(line)) {
+      token.kind = "alias";
+      token.value = m[1];
+      token.type = m[2].trimEnd();
+    } else if (m = /^typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)\)/.exec(line)) {
       token.value = m[4];
-      token.type = m[2].trimEnd();
-      token.spaces = m[1]?.length ?? 0;
-    } else if (m = line.match(/^(\s*)using\s+(\w+)\s*=\s*([^;]+);/)) {
-      token.kind = "alias";
-      token.value = m[2];
-      token.type = m[3].trimEnd();
-      token.spaces = m[1]?.length ?? 0;
-    } else if (m = line.match(/^(\s*)typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)\)/)) {
-      token.value = m[5];
       token.kind = "callback";
-      token.type = m[2].trimEnd();
-      token.parameters = m[6]?.split(',')?.map(p => p.trim()) ?? [];
-    } else if (m = line.match(/^(\s*)typedef\s+(struct|enum|union)\s+\w+\s*(\{\s*)?$/)) {
-      token.kind = m[2];
-      const spaces = m[1]?.length ?? 0;
-      token.spaces = spaces;
-      const parameters = [];
-      i += m[3] ? 1 : 2;
-      for (; i < lines.length; i++) {
-        const line = lines[i].slice(spaces);
-        if (line.startsWith('}')) {
-          token.value = line.slice(1, line.length - 1).trim();
-          break;
-        }
-        parameters.push(line);
+      token.type = m[1].trimEnd();
+      token.parameters = m[5]?.trim();
+    } else if (m = /^typedef\s+(struct|enum|union)\s+(\w+)?$/.exec(line)) {
+      token.kind = m[1];
+      token.value = m[2];
+      if (!line.endsWith("{")) i++;
+      if (token.kind != "struct") {
+        i = ignoreBody(lines, i + 1, token.spaces);
       }
-      token.parameters = parameters;
-    } else if (m = line.match(/^(\s*)struct\s+([\w<>]+);/)) {
+    } else if (m = /^struct\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
-      token.spaces = m[1]?.length ?? 0;
-      token.value = m[2];
-    } else if (m = line.match(/^(\s*)struct\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/)) {
+      token.value = m[1];
+    } else if (m = /^struct\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) {
       token.kind = "struct";
-      const spaces = m[1]?.length ?? 0;
-      token.spaces = spaces;
-      token.value = m[2];
-      if (m[4]) {
-        token.type = m[4].trim();
+      token.value = m[1];
+      if (m[3]) {
+        token.type = m[3].trim();
       }
-      const parameters = [];
-      if (!line.endsWith("{};") && !lines[++i].endsWith("{};")) {
-        if (lines[i].endsWith("{")) ++i;
-        for (; i < lines.length; i++) {
-          const line = lines[i].slice(spaces).trim();
-          if (line.startsWith('}')) break;
-          parameters.push(line);
-        }
-      }
-      token.parameters = parameters;
-    } else if (m = line.match(/^(\s*)(extern|inline|constexpr|SDL_FORCE_INLINE) (SDL_DECLSPEC )?(SDL_MALLOC )?(SDL_ALLOC_SIZE\d?\([\d, ]*\) )?/)) {
-      token.constexpr = m[2] == "constexpr";
-      const signature = line.slice(m[0].length).replaceAll(/SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP\(\w+\)/g, "");
-      const spaces = m[1]?.length ?? 0;
-      if (signature == '"C" {') continue;
-      m = signature.match(/(SDLCALL )?(\w+)\(([^)]*)(\))?/);
-      token.value = m[2];
-      token.kind = "function";
-      token.type = normalizeType(signature.slice(0, m.index).trim());
-      let parameters = m[3] ?? '';
-      let inline = !signature.endsWith(';');
-      if (!m[4]) {
-        for (++i; i < lines.length; ++i) {
-          const line = lines[i];
-          if (line.endsWith(');')) {
-            inline = false;
-            parameters += '\n' + line.slice(0, line.length - 2);
-            break;
-          }
-          if (line.endsWith(')')) {
-            inline = true;
-            parameters += '\n' + line.slice(0, line.length - 1);
-            break;
-          }
-          parameters += '\n' + line;
-        }
-      }
-      token.parameters = parameters.split(',').map(p => p.trim()) ?? [];
-      if (inline && lines[i].indexOf('}') === -1) {
-        for (i++; i < lines.length; i++) {
-          const line = lines[i].slice(spaces);
-          if (line.startsWith('}') || line.startsWith('{}')) break;
-        }
-      }
-    } else if (m = line.match(/^(\s*)template</)) {
+      if (!line.endsWith("{")) i++;
+    } else if (m = /^template</.exec(line)) {
       token.kind = "template";
-      token.value = "";
-      token.spaces = m[1]?.length ?? 0;
-
       let parameters;
       if (line.endsWith(">")) {
         parameters = line.slice(m[0].length, line.length - 1);
@@ -344,6 +429,9 @@ function tokenize(lines) {
         }
       }
       token.parameters = parameters.split(",").map(p => p.trim()) ?? [];
+    } else if (m = /^namespace\s+([^{]*)\{/.exec(line)) {
+      token.kind = "namespace";
+      token.value = m[1]?.trim();
     } else if (line.startsWith('#')) {
       let ln = line;
       while (ln.endsWith('\\')) {
@@ -352,27 +440,105 @@ function tokenize(lines) {
       }
       continue;
     } else {
-      let found = false;
-      for (const prefix of ignorePrefixes) {
-        if (line.startsWith(prefix)) {
-          found = true;
+      const member = line.replaceAll(ignoreInSignature, "").trimStart();
+      m = /^(([\w*]+\s+)*)(\w+)(\s*\()?/.exec(member);
+      if (!m) {
+        system.warn(`Unknown token at line ${i + 1}: ${member}`);
+        continue;
+      }
+      token.value = m[3];
+      const typeWords = m[1]?.trim()?.split(/\s+/) ?? [];
+      for (let i = 0; i < typeWords.length; i++) {
+        const word = typeWords[i];
+        if (!memberSpecifiers.has(word)) {
+          typeWords.splice(0, i);
           break;
         }
+        switch (word) {
+          case "constexpr": token.constexpr = true;
+          case "static": token.static = true;
+        }
       }
-      if (found) continue;
-      console.warn(`Unknown token at line ${i + 1}: ${line}`);
-      continue;
+
+      token.type = normalizeType(typeWords.join(' '));
+      let inline = false;
+      if (m[4]) {
+        token.kind = "function";
+        let parameters = member.slice(m[0].length);
+        const endBracket = parameters.indexOf(")");
+        if (endBracket < 0) {
+          for (++i; i < lines.length; ++i) {
+            const line = lines[i];
+            if (line.endsWith(');')) {
+              inline = false;
+              parameters += '\n' + line.slice(0, line.length - 2);
+              break;
+            }
+            if (line.endsWith(')')) {
+              inline = true;
+              parameters += '\n' + line.slice(0, line.length - 1);
+              break;
+            }
+            parameters += '\n' + line;
+          }
+        } else {
+          const details = parameters.slice(endBracket + 1);
+          if (details.startsWith(" const")) token.immutable = true;
+          inline = !parameters.endsWith(";") && !parameters.endsWith("}");
+          parameters = parameters.slice(0, endBracket);
+        }
+        token.parameters = parameters;
+      } else {
+        token.kind = "var";
+        inline = member.indexOf(';') === -1;
+      }
+      if (inline && member.indexOf('}') === -1) {
+        if (lines[++i].startsWith("{")) ++i;
+        i = ignoreBody(lines, i, token.spaces);
+      }
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {
-      console.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`);
+      system.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`);
     }
     result.push(token);
   }
   return result;
 }
 
+/**
+ * 
+ * @param {string[]} lines 
+ * @param {number} begin 
+ * @param {number} spaces 
+ */
+function ignoreBody(lines, begin, spaces) {
+  const spaceRegex = /^\s+/;
+  for (let i = begin; i < lines.length; i++) {
+    const indentation = spaceRegex.exec(lines[i])?.[0]?.length ?? 0;
+    if (indentation <= spaces) {
+      return i;
+    }
+  }
+  return lines.length;
+}
+
+/** @param {string} line  */
+function hasIgnoredPrefix(line) {
+  for (const prefix of ignorePrefixes) {
+    if (line.startsWith(prefix)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /** @param {string} typeString  */
 function normalizeType(typeString) {
-  return typeString.replaceAll(/(\w+)\s*(\*)/g, "$1 $2");
+  return typeString.replaceAll(/(\w+)\s*([&*])/g, "$1 $2").replaceAll(/([*&])\s+(&*)/g, "$1$2");
 }
+
+exports.parseApi = parseApi;
+exports.parseContent = parseContent;
+exports.insertEntry = insertEntry;
+exports.removeEntryLineNumbers = removeEntryLineNumbers;
