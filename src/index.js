@@ -232,7 +232,6 @@ function transform(args) {
     sourceApi: {},
     /** @type {ApiTransform} */
     transform: {},
-    outputFile: "",
     api: "",
     baseDir: "",
   };
@@ -258,7 +257,7 @@ function transform(args) {
       case '--transform':
       case '-t': config.transform = readJSONSync(args[++i].replaceAll("\\", '/')); break;
       case '--outputFile':
-      case '-o': config.outputFile = args[++i].replaceAll("\\", '/'); break;
+      case '-o': config.api = args[++i].replaceAll("\\", '/'); break;
       case '--baseDir':
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
       case '--config':
@@ -293,12 +292,11 @@ function transform(args) {
       if (!localFiles.has(file)) delete config.api.files[file];
     }
   }
-  if (!config.outputFile && typeof config.api == "string") config.outputFile = config.api;
   if (printConfig) {
-    writeJSONSync(config.outputFile ? 1 : 2, config);
+    writeJSONSync(config.api ? 1 : 2, config);
   }
   const api = transformApi(config);
-  writeJSONSync(config.outputFile || 1, api);
+  writeJSONSync(config.api || 1, api);
 }
 
 /**

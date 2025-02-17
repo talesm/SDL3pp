@@ -11,9 +11,11 @@ const ignorePrefixes = [
 ];
 
 const ignoreInSignature = new RegExp(`(${[
+  'extern',
   'SDL_FORCE_INLINE',
   'SDL_DECLSPEC',
   'SDL_MALLOC',
+  'SDL_ALLOC_SIZE2\\(1,\\s*2\\)',
   'SDL_ALLOC_SIZE',
   'SDLCALL',
   'SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP',
@@ -173,6 +175,7 @@ class ContentParser {
     if (this.lookup()?.kind === "template") {
       const token = this.expect("template");
       if (lastEnd != token.begin || lastTemplate) {
+        this.checkFileDoc(lastBegin, lastEnd, lastDoc);
         lastBegin = token.begin;
         lastDoc = null;
       }
@@ -201,10 +204,9 @@ class ContentParser {
         entry.parameters = parseParams(token.parameters);
         break;
       case "def":
-        entry.parameters = parseParams(token.parameters);
+        if (token.parameters) entry.parameters = parseParams(token.parameters);
         break;
       case "enum":
-        entry.parameters = token.parameters.map(p => p.replace(',', '').trim()).filter(p => !!p);
         break;
       case "function":
         entry.type = token.type;
@@ -227,16 +229,19 @@ class ContentParser {
     }
     if (token.begin == lastEnd) {
       if (lastDoc) entry.doc = lastDoc;
-      if (lastTemplate) entry.template = parseParams(lastTemplate);
+      if (lastTemplate) entry.template = lastTemplate;
       if (this.storeLineNumbers) {
         entry.begin = lastBegin;
         entry.decl = lastDecl || token.begin;
         entry.end = token.end;
       }
-    } else if (this.storeLineNumbers) {
-      entry.begin = token.begin;
-      entry.decl = token.begin;
-      entry.end = token.end;
+    } else {
+      if (lastDoc) this.checkFileDoc(lastBegin, lastEnd, lastDoc);
+      if (this.storeLineNumbers) {
+        entry.begin = token.begin;
+        entry.decl = token.begin;
+        entry.end = token.end;
+      }
     }
     return entry;
   }
@@ -284,7 +289,7 @@ function removeEntryLineNumbers(entry) {
  * @returns {ApiParameters}
  */
 function parseParams(params) {
-  if (params?.length == 0 || params == 'void') {
+  if (!params?.length || params == 'void') {
     return [];
   }
   return params.split(',').map(param => {
@@ -370,7 +375,7 @@ function tokenize(lines) {
     } else if (m = /^#define\s+(\w+)(\(([\w\s,]+)\))?/.exec(line)) {
       token.kind = "def";
       token.value = m[1];
-      if (m[2]) token.parameters = m[3].split(',').map(p => p.trim());
+      if (m[2]) token.parameters = m[3]?.trim();
       let ln = line;
       while (ln.endsWith('\\')) {
         if (i > lines.length) break;
@@ -389,7 +394,7 @@ function tokenize(lines) {
       token.value = m[4];
       token.kind = "callback";
       token.type = m[1].trimEnd();
-      token.parameters = m[5]?.split(',')?.map(p => p.trim()) ?? [];
+      token.parameters = m[5]?.trim();
     } else if (m = /^typedef\s+(struct|enum|union)\s+(\w+)?$/.exec(line)) {
       token.kind = m[1];
       token.value = m[2];
@@ -435,13 +440,12 @@ function tokenize(lines) {
       }
       continue;
     } else {
-      const member = line.replaceAll(ignoreInSignature, "");
+      const member = line.replaceAll(ignoreInSignature, "").trimStart();
       m = /^(([\w*]+\s+)*)(\w+)(\s*\()?/.exec(member);
       if (!m) {
-        system.warn(`Unknown token at line ${i + 1}: ${line}`);
+        system.warn(`Unknown token at line ${i + 1}: ${member}`);
         continue;
       }
-      token.kind = m[4] ? "function" : "var";
       token.value = m[3];
       const typeWords = m[1]?.trim()?.split(/\s+/) ?? [];
       for (let i = 0; i < typeWords.length; i++) {
@@ -459,7 +463,8 @@ function tokenize(lines) {
       token.type = normalizeType(typeWords.join(' '));
       let inline = false;
       if (m[4]) {
-        let parameters = line.slice(m[0].length);
+        token.kind = "function";
+        let parameters = member.slice(m[0].length);
         const endBracket = parameters.indexOf(")");
         if (endBracket < 0) {
           for (++i; i < lines.length; ++i) {
@@ -484,11 +489,12 @@ function tokenize(lines) {
         }
         token.parameters = parameters;
       } else {
+        token.kind = "var";
         inline = member.indexOf(';') === -1;
       }
       if (inline && member.indexOf('}') === -1) {
         if (lines[++i].startsWith("{")) ++i;
-        ignoreBody(lines, i, token.spaces);
+        i = ignoreBody(lines, i, token.spaces);
       }
     }
     token.end = i + 2;
@@ -509,8 +515,8 @@ function tokenize(lines) {
 function ignoreBody(lines, begin, spaces) {
   const spaceRegex = /^\s+/;
   for (let i = begin; i < lines.length; i++) {
-    const indentation = spaceRegex.exec(lines[i])?.[0] ?? "";
-    if (indentation.length <= spaces) {
+    const indentation = spaceRegex.exec(lines[i])?.[0]?.length ?? 0;
+    if (indentation <= spaces) {
       return i;
     }
   }
