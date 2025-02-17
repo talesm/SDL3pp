@@ -36,6 +36,8 @@
  * @property {ApiEntries}     entries
  * @property {string=}        sourceName
  * @property {boolean=}       constexpr
+ * @property {boolean=}       immutable
+ * @property {boolean=}       static
  * @property {string}         doc
  * @property {number=}        begin
  * @property {number=}        decl

@@ -16,12 +16,27 @@
     "files": {
       "structs.h": {
         "transform": {
-          "Type1": {
+          "MyType1": {
             "type": "MyType1",
             "kind": "struct",
             "entries": {}
           },
-          "Type2": {
+          "MyType1Check": {
+            "name": "Type1.Check"
+          },
+          "MyGetType1Var1": {
+            "name": "Type1.GetVar1"
+          },
+          "MySetType1Var1": {
+            "name": "Type1.SetVar1"
+          },
+          "MyType1GetVar2": {
+            "name": "Type1.GetVar2"
+          },
+          "MyType1SetVar2": {
+            "name": "Type1.SetVar2"
+          },
+          "MyType2": {
             "type": "MyType2",
             "kind": "struct",
             "entries": {}

@@ -95,7 +95,7 @@ function transformEntries(sourceEntries, context, transform) {
     } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
       const targetEntry = transformEntry(sourceEntry, context, transform);
       targetName = transformName(targetEntry.name, context);
-      const targetDelta = transformMap[targetName];
+      const targetDelta = transformMap[sourceName];
       if (targetDelta) {
         if (targetDelta.name) targetName = targetDelta.name;
         else targetDelta.name = targetName;
@@ -125,8 +125,52 @@ function transformEntries(sourceEntries, context, transform) {
   if (transform.includeAfter?.__end) {
     insertEntry(targetEntries, transform.includeAfter.__end);
   }
+  // Change hierarchy
+  for (const key of Object.keys(targetEntries)) {
+    if (!key.includes(".")) continue;
+    const path = key.split(".");
+    let obj = targetEntries[path[0]];
+    if (!obj || Array.isArray(obj) || !obj.entries) continue;
+    let name = path[path.length - 1];
+    let i = 1;
+    for (; i < path[path.length - 1]; i++) {
+      /** @type {ApiEntry} */
+      const el = obj.entries[path[i]];
+      if (!el || Array.isArray(el) || !el.entries) {
+        name = path.slice(i).join('.');
+        break;
+      }
+      obj = el;
+    }
+    const entry = targetEntries[key];
+    const typeName = obj.name;
+    if (Array.isArray(entry)) {
+      entry.forEach(e => prepareForTypeInsert(e, name, typeName));
+    } else prepareForTypeInsert(entry, name, typeName);
+    delete targetEntries[key];
+    insertEntry(obj.entries, entry);
+  }
 
   return targetEntries;
+}
+
+/**
+ * Prepare function to become class or instance function
+ * @param {ApiEntry} entry 
+ * @param {string} name 
+ * @param {string} typeName 
+ */
+function prepareForTypeInsert(entry, name, typeName) {
+  entry.name = name;
+  const parameters = entry.parameters;
+  if (!parameters?.length) return;
+  const type = parameters[0]?.type ?? "";
+  if (type.includes(typeName)) {
+    parameters.shift();
+    if (type.startsWith("const ")) entry.immutable = true;
+  } else {
+    entry.static = true;
+  }
 }
 
 /**

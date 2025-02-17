@@ -210,6 +210,8 @@ class ContentParser {
         entry.type = token.type;
         entry.parameters = parseParams(token.parameters);
         if (token.constexpr) entry.constexpr = token.constexpr;
+        if (token.immutable) entry.immutable = token.immutable;
+        if (token.static) entry.static = token.static;
         break;
       case "struct":
         entry.type = token.type;
@@ -312,6 +314,8 @@ function parseParams(params) {
  * @property {string=}        parameters
  * @property {string=}        type
  * @property {boolean=}       constexpr
+ * @property {boolean=}       immutable
+ * @property {boolean=}       static
  * @property {number}         begin
  * @property {number}         end
  * @property {number}         spaces
@@ -446,7 +450,10 @@ function tokenize(lines) {
           typeWords.splice(0, i);
           break;
         }
-        if (word == "constexpr") token.constexpr = true;
+        switch (word) {
+          case "constexpr": token.constexpr = true;
+          case "static": token.static = true;
+        }
       }
 
       token.type = normalizeType(typeWords.join(' '));
@@ -470,7 +477,9 @@ function tokenize(lines) {
             parameters += '\n' + line;
           }
         } else {
-          inline = parameters[endBracket + 1] != ";" && !parameters.endsWith("}");
+          const details = parameters.slice(endBracket + 1);
+          if (details.startsWith(" const")) token.immutable = true;
+          inline = !parameters.endsWith(";") && !parameters.endsWith("}");
           parameters = parameters.slice(0, endBracket);
         }
         token.parameters = parameters;

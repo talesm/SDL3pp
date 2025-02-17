@@ -6,17 +6,17 @@
 namespace name {
 
 struct Type1 : MyType1
-{};
+{
+  bool Check() const { return MyType1Check(this); }
 
-bool Type1Check(const Type1* value) { return MyType1Check(value); }
+  int GetVar1() const { return MyGetType1Var1(this); }
 
-int GetType1Var1(const Type1* value) { return MyGetType1Var1(value); }
+  void SetVar1(int var1) { MySetType1Var1(this, var1); }
 
-void SetType1Var1(Type1* value, int var1) { MySetType1Var1(value, var1); }
+  const char* GetVar2() const { return MyType1GetVar2(this); }
 
-const char* Type1GetVar2(const Type1* value) { return Type1GetVar2(value); }
-
-void Type1SetVar2(Type1* value, const char* var2) { Type1SetVar2(value, var2); }
+  void SetVar2(const char* var2) { MyType1SetVar2(this, var2); }
+};
 
 using Byte = MyByte;
 
