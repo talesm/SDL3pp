@@ -19,22 +19,13 @@
           "MyType1": {
             "type": "MyType1",
             "kind": "struct",
-            "entries": {}
-          },
-          "MyType1Check": {
-            "name": "Type1.Check"
-          },
-          "MyGetType1Var1": {
-            "name": "Type1.GetVar1"
-          },
-          "MySetType1Var1": {
-            "name": "Type1.SetVar1"
-          },
-          "MyType1GetVar2": {
-            "name": "Type1.GetVar2"
-          },
-          "MyType1SetVar2": {
-            "name": "Type1.SetVar2"
+            "entries": {
+              "MyType1Check": "function",
+              "MyGetType1Var1": "function",
+              "MySetType1Var1": "function",
+              "MyType1GetVar2": "function",
+              "MyType1SetVar2": "function"
+            }
           },
           "MyType2": {
             "type": "MyType2",

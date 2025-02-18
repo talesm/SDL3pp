@@ -112,6 +112,15 @@ function transformEntries(sourceEntries, context, transform) {
         context.typeMap[`${type} *`] = `${targetName} *`;
         context.typeMap[`const ${type}`] = `const ${targetName}`;
         context.typeMap[`const ${type} *`] = `const ${targetName} *`;
+        if (targetEntry.entries) {
+          // TODO make this an initial step
+          for (const [key, entry] of Object.entries(targetEntry.entries)) {
+            const nameChange = checkNameChange(entry, transformName(key, context), targetEntry.name);
+            if (nameChange) {
+              transformMap[key] = nameChange;
+            }
+          }
+        }
       } else if (targetEntry.kind == "forward") {
         targetName += "-forward";
       }
@@ -152,6 +161,45 @@ function transformEntries(sourceEntries, context, transform) {
   }
 
   return targetEntries;
+}
+
+/**
+ * Check and if true, marshal name of member functions
+ * @param {ApiEntry|ApiEntry[]} entry 
+ * @param {string} name 
+ * @param {string} typeName 
+ * @returns {ApiEntry|ApiEntry[]|null}
+ */
+function checkNameChange(entry, name, typeName) {
+  if (Array.isArray(entry)) {
+    return entry
+      .map(e => checkNameChange(entry, name, typeName))
+      .filter(a => a != null);
+  }
+  // const naturalName = makeNaturalName()
+  if (entry === "function") {
+    return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
+  }
+  if (entry.kind && entry.kind !== "function") return null;
+  if (entry.parameters) return null;
+  return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };
+}
+
+/**
+ * 
+ * @param {string} name 
+ * @param {string} typeName 
+ */
+function makeNaturalName(name, typeName) {
+  if (typeName.endsWith("Base")) typeName = typeName.slice(0, typeName.length - 4);
+  const m = /^([GS]et|Has)/.exec(name);
+  let prefix = "";
+  if (m) {
+    prefix = m[1];
+    name = name.slice(3);
+  }
+  if (!name.startsWith(typeName)) return prefix + name;
+  return prefix + name.slice(typeName.length);
 }
 
 /**
