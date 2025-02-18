@@ -5,8 +5,11 @@
 
 namespace name {
 
-struct Type1 : MyType1
+template<class T>
+struct Type1Base : T
 {
+  using T::T;
+
   bool Check() const { return MyType1Check(this); }
 
   int GetVar1() const { return MyGetType1Var1(this); }

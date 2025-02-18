@@ -4,27 +4,32 @@
       "name": "structs_resources.h",
       "doc": "",
       "entries": {
-        "Type1": {
+        "Type1Base": {
           "doc": "",
-          "name": "Type1",
+          "name": "Type1Base",
           "kind": "struct",
-          "type": "MyType1",
+          "type": "T",
           "entries": {
+            "T::T": {
+              "doc": "",
+              "name": "T::T",
+              "kind": "alias"
+            },
             "Check": {
               "doc": "",
               "name": "Check",
               "kind": "function",
               "type": "bool",
-              "immutable": true,
-              "parameters": []
+              "parameters": [],
+              "immutable": true
             },
             "GetVar1": {
               "doc": "",
               "name": "GetVar1",
               "kind": "function",
               "type": "int",
-              "immutable": true,
-              "parameters": []
+              "parameters": [],
+              "immutable": true
             },
             "SetVar1": {
               "doc": "",
@@ -43,8 +48,8 @@
               "name": "GetVar2",
               "kind": "function",
               "type": "const char *",
-              "immutable": true,
-              "parameters": []
+              "parameters": [],
+              "immutable": true
             },
             "SetVar2": {
               "doc": "",
@@ -58,7 +63,13 @@
                 }
               ]
             }
-          }
+          },
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ]
         },
         "Byte": {
           "doc": "",

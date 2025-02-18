@@ -112,3 +112,22 @@ test("structs_resources.h over empty file", () => {
   const modifiedApi = parseContent("structs_resources.h", originalContent);
   expect(modifiedApi).toEqual(originalApi);
 });
+
+test("using T::T ignored correctly", () => {
+  const originalContent = ["using T::T;"];
+  const originalApi = parseContent("structs_resources.h", originalContent);
+  const modifiedContent = [...originalContent];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).toBe(0);
+});
+
+test("using T::T updates correctly", () => {
+  const originalContent = ["using T::T;"];
+  const originalApi = parseContent("structs_resources.h", originalContent);
+  const modifiedContent = [];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("structs_resources.h", originalContent);
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});

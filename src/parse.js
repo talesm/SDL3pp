@@ -90,6 +90,7 @@ function insertEntry(entries, entry) {
     entry.forEach(e => insertEntry(entries, e));
     return entries;
   }
+  fixEntry(entry);
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
   if (entries[name]) {
     const currEntry = entries[name];
@@ -104,6 +105,23 @@ function insertEntry(entries, entry) {
     entries[name] = entry;
   }
   return entries;
+}
+
+/**
+ * Add missing fields
+ * @param {ApiEntry} entry 
+ */
+function fixEntry(entry) {
+  if (typeof entry.doc != "string") entry.doc = "";
+  if (entry.entries) {
+    for (const subEntry of Object.values(entry.entries)) {
+      if (Array.isArray(subEntry)) {
+        subEntry.forEach(fixEntry);
+      } else if (typeof subEntry === 'object') {
+        fixEntry(subEntry);
+      }
+    }
+  }
 }
 
 /**
@@ -179,7 +197,7 @@ class ContentParser {
         lastBegin = token.begin;
         lastDoc = null;
       }
-      lastTemplate = token.parameters;
+      lastTemplate = parseParams(token.parameters);
       if (!lastDecl) lastDecl = token.begin;
       lastEnd = token.end;
     }
@@ -390,6 +408,9 @@ function tokenize(lines) {
       token.kind = "alias";
       token.value = m[1];
       token.type = m[2].trimEnd();
+    } else if (m = /^using\s+([\w:]+)\s*;/.exec(line)) {
+      token.kind = "alias";
+      token.value = m[1];
     } else if (m = /^typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)\)/.exec(line)) {
       token.value = m[4];
       token.kind = "callback";
@@ -416,9 +437,9 @@ function tokenize(lines) {
       token.kind = "template";
       let parameters;
       if (line.endsWith(">")) {
-        parameters = line.slice(m[0].length, line.length - 1);
+        token.parameters = line.slice(m[0].length, line.length - 1).trim();
       } else {
-        parameters = line.slice(m[0].length) ?? "";
+        let parameters = line.slice(m[0].length) ?? "";
         for (++i; i < lines.length; ++i) {
           const line = lines[i];
           if (line.endsWith('>')) {
@@ -427,8 +448,8 @@ function tokenize(lines) {
           }
           parameters += '\n' + line;
         }
+        token.parameters = parameters;
       }
-      token.parameters = parameters.split(",").map(p => p.trim()) ?? [];
     } else if (m = /^namespace\s+([^{]*)\{/.exec(line)) {
       token.kind = "namespace";
       token.value = m[1]?.trim();

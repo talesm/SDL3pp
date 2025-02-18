@@ -221,6 +221,7 @@ function generateEntry(entry, prefix) {
   const placeholder = 'static_assert(false, "Not implemented");';
   switch (entry.kind) {
     case "alias":
+      if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
       return `${doc}${prefix}using ${entry.name} = ${entry.type};`;
     case "forward":
       return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
@@ -258,11 +259,7 @@ function generateCall(name, ...parameters) {
 function generateStruct(entry, prefix) {
   const signature = generateStructSignature(entry, prefix);
   const parent = entry.type ? ` : ${entry.type}` : "";
-  if (!entry.parameters?.length)
-    return `${signature}${parent}\n${prefix}{};`;
-  const fieldPrefix = prefix + "  ";
-  const fields = entry.parameters.map(p => fieldPrefix + generateParameter(p)).join('\n');
-  return `${signature}${parent}\n${prefix}{\n${fields}\n${prefix}};`;
+  return `${signature}${parent}\n${prefix}{};`;
 }
 
 /**

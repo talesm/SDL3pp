@@ -109,16 +109,19 @@ test("structs transform resources", () => {
       renameRules: [
         {
           pattern: "^([^.]*)",
-          replacement: "$1_extends",
+          replacement: "$1_resources",
         }
       ],
       files: {
         "structs.h": {
           transform: {
             MyType1: {
-              type: "MyType1",
+              name: "Type1Base",
+              type: "T",
               kind: "struct",
+              template: [{ type: "class", name: "T" }],
               entries: {
+                "T::T": { kind: "alias", name: "T::T" },
                 MyType1Check: "function",
                 MyGetType1Var1: "function",
                 MySetType1Var1: "function",
@@ -136,5 +139,5 @@ test("structs transform resources", () => {
       },
     },
   });
-  expect(modifiedApi).toMatchObject(structsExtendsApi);
+  expect(modifiedApi).toMatchObject(structsResourcesApi);
 });
