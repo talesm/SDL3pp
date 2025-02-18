@@ -76,7 +76,6 @@
  * @prop {string[]=}   ignoreEntries
  * @prop {ApiEntries=} transform
  * @prop {ApiEntries=} includeAfter
- * @prop {ApiEntries=} types this should be only structs
  */
 
 

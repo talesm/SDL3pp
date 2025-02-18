@@ -68,8 +68,8 @@ class ApiContext {
 
 /**
  * 
- * @param {ApiEntries}     sourceEntries 
- * @param {ApiContext}     context 
+ * @param {ApiEntries}    sourceEntries 
+ * @param {ApiContext}    context 
  * @param {FileTransform} transform
  */
 function transformEntries(sourceEntries, context, transform) {
@@ -87,21 +87,23 @@ function transformEntries(sourceEntries, context, transform) {
     if (blacklist.has(sourceName)) continue;
     let targetName = transformName(sourceName, context);
     if (Array.isArray(sourceEntry)) {
-      targetEntries[targetName] = sourceEntry.map(e => {
-        const targetEntry = transformEntry(e, context, transform);
-        targetEntry.name = targetName;
+      const targetDelta = transformMap[sourceName];
+      insertEntry(targetEntries, sourceEntry.map(e => {
+        const targetEntry = transformEntry(e, context);
+        if (targetDelta) {
+          if (!targetDelta.name) targetDelta.name = targetName;
+          Object.assign(targetEntry, targetDelta);
+        } else targetEntry.name = targetName;
         return targetEntry;
-      });
+      }));
     } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
-      const targetEntry = transformEntry(sourceEntry, context, transform);
-      targetName = transformName(targetEntry.name, context);
+      const targetEntry = transformEntry(sourceEntry, context);
       const targetDelta = transformMap[sourceName];
       if (targetDelta) {
         if (targetDelta.name) targetName = targetDelta.name;
         else targetDelta.name = targetName;
         Object.assign(targetEntry, targetDelta);
-      } else
-        targetEntry.name = targetName;
+      } else targetEntry.name = targetName;
       if (targetName === targetEntry.sourceName) targetEntry.sourceName = "::" + targetEntry.sourceName;
       if (targetEntry.kind == 'alias' || targetEntry.kind == 'struct') {
         if (targetName == targetEntry.type) {
@@ -112,12 +114,21 @@ function transformEntries(sourceEntries, context, transform) {
         context.typeMap[`${type} *`] = `${targetName} *`;
         context.typeMap[`const ${type}`] = `const ${targetName}`;
         context.typeMap[`const ${type} *`] = `const ${targetName} *`;
-      } else if (targetEntry.kind == "forward") {
-        targetName += "-forward";
       }
-      targetEntries[targetName] = targetEntry;
+      if (targetEntry.entries) {
+        const changes = transformSubEntries(targetEntry, context);
+        for (const [key, change] of Object.entries(changes)) {
+          const currEntry = targetEntries[key];
+          if (!currEntry) continue;
+          if (Array.isArray(currEntry)) {
+            currEntry.forEach(e => Object.assign(e, change));
+          } else Object.assign(currEntry, change);
+        }
+        Object.assign(transformMap, changes);
+      }
+      insertEntry(targetEntries, targetEntry);
     }
-    const includeAfter = transform.includeAfter?.[targetName];
+    const includeAfter = transform.includeAfter?.[sourceName];
     if (includeAfter) {
       insertEntry(targetEntries, includeAfter);
     }
@@ -125,7 +136,35 @@ function transformEntries(sourceEntries, context, transform) {
   if (transform.includeAfter?.__end) {
     insertEntry(targetEntries, transform.includeAfter.__end);
   }
-  // Change hierarchy
+  transformHierarchy(targetEntries);
+
+  validateEntries(targetEntries);
+
+  return targetEntries;
+}
+
+/**
+ * 
+ * @param {ApiEntry}    targetEntry 
+ * @param {ApiContext}  context 
+ */
+function transformSubEntries(targetEntry, context) {
+  /** @type {ApiEntries} */
+  const transformMap = {};
+  for (const [key, entry] of Object.entries(targetEntry.entries)) {
+    const nameChange = checkNameChange(entry, transformName(key, context), targetEntry.name);
+    if (nameChange) {
+      transformMap[key] = nameChange;
+    }
+  }
+  return transformMap;
+}
+
+/**
+ * Fix hierarchy, executing any pending movements
+ * @param {ApiEntries} targetEntries the entries to fix hierarchy
+ */
+function transformHierarchy(targetEntries) {
   for (const key of Object.keys(targetEntries)) {
     if (!key.includes(".")) continue;
     const path = key.split(".");
@@ -150,8 +189,51 @@ function transformEntries(sourceEntries, context, transform) {
     delete targetEntries[key];
     insertEntry(obj.entries, entry);
   }
+}
 
-  return targetEntries;
+/**
+ * Validate and report entries
+ * @param {ApiEntries} targetEntries
+ */
+function validateEntries(targetEntries) {
+  // Do nothing for now
+}
+
+/**
+ * Check and if true, marshal name of member functions
+ * @param {ApiEntry|ApiEntry[]} entry 
+ * @param {string} name 
+ * @param {string} typeName 
+ * @returns {ApiEntry|ApiEntry[]|null}
+ */
+function checkNameChange(entry, name, typeName) {
+  if (Array.isArray(entry)) {
+    return entry
+      .map(e => checkNameChange(entry, name, typeName))
+      .filter(a => a != null);
+  }
+  if (entry === "function") return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
+  if (entry === "ctor") return { name: `${typeName}.${typeName}` };
+  if (entry.kind && entry.kind !== "function") return null;
+  if (entry.parameters) return null;
+  return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };
+}
+
+/**
+ * 
+ * @param {string} name 
+ * @param {string} typeName 
+ */
+function makeNaturalName(name, typeName) {
+  typeName = normalizeTypeName(typeName);
+  const m = /^([GS]et|Has)/.exec(name);
+  let prefix = "";
+  if (m) {
+    prefix = m[1];
+    name = name.slice(3);
+  }
+  if (!name.startsWith(typeName)) return prefix + name;
+  return prefix + name.slice(typeName.length);
 }
 
 /**
@@ -161,6 +243,7 @@ function transformEntries(sourceEntries, context, transform) {
  * @param {string} typeName 
  */
 function prepareForTypeInsert(entry, name, typeName) {
+  typeName = normalizeTypeName(typeName);
   entry.name = name;
   const parameters = entry.parameters;
   if (!parameters?.length) return;
@@ -173,13 +256,18 @@ function prepareForTypeInsert(entry, name, typeName) {
   }
 }
 
+/** @param {string} typeName  */
+function normalizeTypeName(typeName) {
+  if (typeName.endsWith("Base")) return typeName.slice(0, typeName.length - 4);
+  return typeName;
+}
+
 /**
  * 
- * @param {ApiEntry}       sourceEntry 
- * @param {ApiContext}     context 
- * @param {FileTransform} transform
+ * @param {ApiEntry}    sourceEntry 
+ * @param {ApiContext}  context 
  */
-function transformEntry(sourceEntry, context, transform) {
+function transformEntry(sourceEntry, context) {
   /** @type {ApiEntry} */
   const targetEntry = { ...sourceEntry };
   if (sourceEntry.doc) {
@@ -193,24 +281,7 @@ function transformEntry(sourceEntry, context, transform) {
       targetEntry.type = transformType(sourceEntry.type, context.returnTypeMap);
       break;
     case 'alias':
-      const type = transform?.types?.[sourceName];
-      if (type === "resource" || type?.kind == "resource") {
-        targetEntry.kind = "struct";
-        targetEntry.template = [{ type: "class", name: "T" }];
-        targetEntry.type = "T";
-        targetEntry.parameters = ["using T::T;"];
-        const targetName = type?.name ?? transformName(sourceName, context);
-        targetEntry.name = targetName + "Base";
-        context.paramTypeMap[sourceName] = targetName + "Ref";
-        context.paramTypeMap[`${sourceName} *`] = targetName + "Ref";
-        context.returnTypeMap[sourceName] = targetName;
-        context.returnTypeMap[`${sourceName} *`] = targetName;
-      } else {
-        if (type) {
-          system.warn(`Alias ${sourceEntry.name} can not be ${type}`);
-        }
-        targetEntry.type = sourceEntry.name;
-      }
+      targetEntry.type = sourceEntry.name;
       break;
     case 'callback':
     case 'enum':

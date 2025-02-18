@@ -90,6 +90,7 @@ function insertEntry(entries, entry) {
     entry.forEach(e => insertEntry(entries, e));
     return entries;
   }
+  fixEntry(entry);
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
   if (entries[name]) {
     const currEntry = entries[name];
@@ -104,6 +105,23 @@ function insertEntry(entries, entry) {
     entries[name] = entry;
   }
   return entries;
+}
+
+/**
+ * Add missing fields
+ * @param {ApiEntry} entry 
+ */
+function fixEntry(entry) {
+  if (typeof entry.doc != "string") entry.doc = "";
+  if (entry.entries) {
+    for (const subEntry of Object.values(entry.entries)) {
+      if (Array.isArray(subEntry)) {
+        subEntry.forEach(fixEntry);
+      } else if (typeof subEntry === 'object') {
+        fixEntry(subEntry);
+      }
+    }
+  }
 }
 
 /**
@@ -179,7 +197,7 @@ class ContentParser {
         lastBegin = token.begin;
         lastDoc = null;
       }
-      lastTemplate = token.parameters;
+      lastTemplate = parseParams(token.parameters);
       if (!lastDecl) lastDecl = token.begin;
       lastEnd = token.end;
     }
@@ -390,6 +408,9 @@ function tokenize(lines) {
       token.kind = "alias";
       token.value = m[1];
       token.type = m[2].trimEnd();
+    } else if (m = /^using\s+([\w:]+)\s*;/.exec(line)) {
+      token.kind = "alias";
+      token.value = m[1];
     } else if (m = /^typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)\)/.exec(line)) {
       token.value = m[4];
       token.kind = "callback";
@@ -416,9 +437,9 @@ function tokenize(lines) {
       token.kind = "template";
       let parameters;
       if (line.endsWith(">")) {
-        parameters = line.slice(m[0].length, line.length - 1);
+        token.parameters = line.slice(m[0].length, line.length - 1).trim();
       } else {
-        parameters = line.slice(m[0].length) ?? "";
+        let parameters = line.slice(m[0].length) ?? "";
         for (++i; i < lines.length; ++i) {
           const line = lines[i];
           if (line.endsWith('>')) {
@@ -427,8 +448,8 @@ function tokenize(lines) {
           }
           parameters += '\n' + line;
         }
+        token.parameters = parameters;
       }
-      token.parameters = parameters.split(",").map(p => p.trim()) ?? [];
     } else if (m = /^namespace\s+([^{]*)\{/.exec(line)) {
       token.kind = "namespace";
       token.value = m[1]?.trim();
@@ -474,7 +495,7 @@ function tokenize(lines) {
               parameters += '\n' + line.slice(0, line.length - 2);
               break;
             }
-            if (line.endsWith(')')) {
+            if (line.endsWith(')') || line.endsWith(') const')) {
               inline = true;
               parameters += '\n' + line.slice(0, line.length - 1);
               break;
@@ -484,7 +505,7 @@ function tokenize(lines) {
         } else {
           const details = parameters.slice(endBracket + 1);
           if (details.startsWith(" const")) token.immutable = true;
-          inline = !parameters.endsWith(";") && !parameters.endsWith("}");
+          inline = details.endsWith("{") || (!details.endsWith(";") && !details.endsWith("}"));
           parameters = parameters.slice(0, endBracket);
         }
         token.parameters = parameters;
@@ -492,10 +513,8 @@ function tokenize(lines) {
         token.kind = "var";
         inline = member.indexOf(';') === -1;
       }
-      if (inline && member.indexOf('}') === -1) {
-        if (lines[++i].startsWith("{")) ++i;
-        i = ignoreBody(lines, i, token.spaces);
-      }
+      if (lines[i + 1].endsWith("{")) ++i;
+      i = ignoreBody(lines, i + 1, token.spaces);
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {

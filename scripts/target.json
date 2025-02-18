@@ -12,12 +12,14 @@
               "name": "T",
               "type": "class"
             }
-          ]
+          ],
+          "doc": ""
         },
         "EnvironmentRef": {
           "name": "EnvironmentRef",
           "kind": "alias",
-          "type": "EnvironmentBase<ObjectRef<SDL_Environment>>"
+          "type": "EnvironmentBase<ObjectRef<SDL_Environment>>",
+          "doc": ""
         },
         "ObjectDeleter<SDL_Environment>": {
           "name": "ObjectDeleter<SDL_Environment>",
@@ -31,20 +33,24 @@
             "parameters": [
               {
                 "type": "SDL_Environment *",
-                "name": "environment"
+                "name": "environment",
+                "doc": ""
               }
             ]
-          }
+          },
+          "doc": ""
         },
         "Environment": {
           "name": "Environment",
           "kind": "alias",
-          "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>"
+          "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>",
+          "doc": ""
         },
         "IConvRef": {
           "name": "IConvRef",
           "kind": "alias",
-          "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>"
+          "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>",
+          "doc": ""
         },
         "ObjectDeleter<SDL_iconv_data_t>": {
           "name": "ObjectDeleter<SDL_iconv_data_t>",
@@ -58,15 +64,18 @@
             "parameters": [
               {
                 "type": "SDL_iconv_t",
-                "name": "iconv"
+                "name": "iconv",
+                "doc": ""
               }
             ]
-          }
+          },
+          "doc": ""
         },
         "IConv": {
           "name": "IConv",
           "kind": "alias",
-          "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>"
+          "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>",
+          "doc": ""
         },
         "FourCC": {
           "doc": "Define a four character code as a Uint32.\n\n@param A the first ASCII character.\n@param B the second ASCII character.\n@param C the third ASCII character.\n@param D the fourth ASCII character.\n@returns the four characters converted into a Uint32, one character\n         per-byte.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -314,9 +323,13 @@
               "name": "T"
             }
           ],
-          "parameters": [
-            "using T::T;"
-          ]
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            }
+          }
         },
         "GetEnvironment": {
           "doc": "Get the process environment.\n\nThis is initialized at application start and is not affected by setenv()\nand unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and\nSDL_UnsetEnvironmentVariable() if you want to modify this environment, or\nSDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist\nin the C runtime environment after SDL_Quit().\n\n@returns a pointer to the environment for the process or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
@@ -2665,9 +2678,13 @@
               "name": "T"
             }
           ],
-          "parameters": [
-            "using T::T;"
-          ]
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            }
+          }
         },
         "iconv_open": {
           "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be NULL.\n@param fromcode The source character encoding, must not be NULL.\n@returns a handle that must be freed with SDL_iconv_close, or\n         SDL_ICONV_ERROR on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_close\n@sa SDL_iconv_string",

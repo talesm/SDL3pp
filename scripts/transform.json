@@ -7,42 +7,16 @@
     }
   ],
   "paramTypeMap": {
-    "const char *": "StringParam"
+    "const char *": "StringParam",
+    "SDL_Environment *": "EnvironmentRef",
+    "SDL_iconv_t": "IConvRef"
+  },
+  "returnTypeMap": {
+    "SDL_Environment *": "Environment",
+    "SDL_iconv_t": "IConv"
   },
   "files": {
     "SDL_stdinc.h": {
-      "includeDefs": [
-        "SDL_FOURCC"
-      ],
-      "transform": {
-        "SDL_FOURCC": {
-          "name": "FourCC",
-          "type": "Uint32",
-          "kind": "function",
-          "constexpr": true,
-          "parameters": [
-            {
-              "name": "a",
-              "type": "Uint8"
-            },
-            {
-              "name": "b",
-              "type": "Uint8"
-            },
-            {
-              "name": "c",
-              "type": "Uint8"
-            },
-            {
-              "name": "d",
-              "type": "Uint8"
-            }
-          ]
-        },
-        "SDL_GetEnvironment": {
-          "type": "EnvironmentRef"
-        }
-      },
       "ignoreEntries": [
         "SDL_alignment_test",
         "SDL_DUMMY_ENUM",
@@ -135,11 +109,70 @@
           }
         ]
       },
-      "types": {
-        "SDL_Environment": "resource",
+      "includeDefs": [
+        "SDL_FOURCC"
+      ],
+      "transform": {
+        "SDL_FOURCC": {
+          "name": "FourCC",
+          "type": "Uint32",
+          "kind": "function",
+          "constexpr": true,
+          "parameters": [
+            {
+              "name": "a",
+              "type": "Uint8"
+            },
+            {
+              "name": "b",
+              "type": "Uint8"
+            },
+            {
+              "name": "c",
+              "type": "Uint8"
+            },
+            {
+              "name": "d",
+              "type": "Uint8"
+            }
+          ]
+        },
+        "SDL_GetEnvironment": {
+          "type": "EnvironmentRef"
+        },
+        "SDL_Environment": {
+          "name": "EnvironmentBase",
+          "kind": "struct",
+          "type": "T",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T"
+            }
+          }
+        },
         "SDL_iconv_t": {
-          "kind": "resource",
-          "name": "IConv"
+          "name": "IConvBase",
+          "kind": "struct",
+          "type": "T",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T"
+            }
+          }
         }
       }
     }
