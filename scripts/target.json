@@ -26,17 +26,19 @@
           "kind": "struct",
           "template": [],
           "entries": {
-            "name": "operator()",
-            "kind": "function",
-            "type": "void",
-            "const": true,
-            "parameters": [
-              {
-                "type": "SDL_Environment *",
-                "name": "environment",
-                "doc": ""
-              }
-            ]
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "const": true,
+              "parameters": [
+                {
+                  "type": "SDL_Environment *",
+                  "name": "environment"
+                }
+              ],
+              "doc": ""
+            }
           },
           "doc": ""
         },
@@ -57,17 +59,19 @@
           "kind": "struct",
           "template": [],
           "entries": {
-            "name": "operator()",
-            "kind": "function",
-            "type": "void",
-            "const": true,
-            "parameters": [
-              {
-                "type": "SDL_iconv_t",
-                "name": "iconv",
-                "doc": ""
-              }
-            ]
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "const": true,
+              "parameters": [
+                {
+                  "type": "SDL_iconv_t",
+                  "name": "iconv"
+                }
+              ],
+              "doc": ""
+            }
           },
           "doc": ""
         },
@@ -2683,25 +2687,51 @@
               "kind": "alias",
               "name": "T::T",
               "doc": ""
+            },
+            "IConvBase": {
+              "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be NULL.\n@param fromcode The source character encoding, must not be NULL.\n@returns a handle that must be freed with SDL_iconv_close, or\n         SDL_ICONV_ERROR on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_close\n@sa SDL_iconv_string",
+              "name": "IConvBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "tocode",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "fromcode",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_iconv_open",
+              "static": true
+            },
+            "iconv": {
+              "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of succesful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n@param cd The character set conversion context, created in\n          SDL_iconv_open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success, or a negative error code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv_string",
+              "name": "iconv",
+              "kind": "function",
+              "type": "size_t",
+              "parameters": [
+                {
+                  "name": "inbuf",
+                  "type": "const char **"
+                },
+                {
+                  "name": "inbytesleft",
+                  "type": "size_t *"
+                },
+                {
+                  "name": "outbuf",
+                  "type": "char **"
+                },
+                {
+                  "name": "outbytesleft",
+                  "type": "size_t *"
+                }
+              ],
+              "sourceName": "SDL_iconv"
             }
           }
-        },
-        "iconv_open": {
-          "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be NULL.\n@param fromcode The source character encoding, must not be NULL.\n@returns a handle that must be freed with SDL_iconv_close, or\n         SDL_ICONV_ERROR on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_close\n@sa SDL_iconv_string",
-          "name": "iconv_open",
-          "kind": "function",
-          "type": "IConv",
-          "parameters": [
-            {
-              "name": "tocode",
-              "type": "StringParam"
-            },
-            {
-              "name": "fromcode",
-              "type": "StringParam"
-            }
-          ],
-          "sourceName": "SDL_iconv_open"
         },
         "iconv_close": {
           "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_open\n@sa SDL_iconv_string",
@@ -2715,35 +2745,6 @@
             }
           ],
           "sourceName": "SDL_iconv_close"
-        },
-        "iconv": {
-          "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of succesful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n@param cd The character set conversion context, created in\n          SDL_iconv_open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success, or a negative error code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv_string",
-          "name": "iconv",
-          "kind": "function",
-          "type": "size_t",
-          "parameters": [
-            {
-              "name": "cd",
-              "type": "IConvRef"
-            },
-            {
-              "name": "inbuf",
-              "type": "const char **"
-            },
-            {
-              "name": "inbytesleft",
-              "type": "size_t *"
-            },
-            {
-              "name": "outbuf",
-              "type": "char **"
-            },
-            {
-              "name": "outbytesleft",
-              "type": "size_t *"
-            }
-          ],
-          "sourceName": "SDL_iconv"
         },
         "iconv_string": {
           "doc": "Helper function to convert a string's encoding in one call.\n\nThis function converts a buffer or string between encodings in one pass.\n\nThe string does not need to be NULL-terminated; this function operates on\nthe number of bytes specified in `inbytesleft` whether there is a NULL\ncharacter anywhere in the buffer.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param tocode the character encoding of the output string. Examples are\n              \"UTF-8\", \"UCS-4\", etc.\n@param fromcode the character encoding of data in `inbuf`.\n@param inbuf the string to convert to a different encoding.\n@param inbytesleft the size of the input string _in bytes_.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv",

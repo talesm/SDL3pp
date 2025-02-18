@@ -7,7 +7,6 @@ const ignorePrefixes = [
   'size_t strl',
   'size_t wcsl',
   'char *str',
-  '}',
 ];
 
 const ignoreInSignature = new RegExp(`(${[
@@ -121,6 +120,8 @@ function fixEntry(entry) {
         fixEntry(subEntry);
       }
     }
+  } else if (entry.kind == "struct") {
+    entry.entries = {};
   }
 }
 
@@ -206,6 +207,7 @@ class ContentParser {
       if (lastTemplate) throw new Error(`Error at ${lastEnd}: Expected an entity after template signature`);
       return undefined;
     }
+    let entryEnd = token.end;
 
     /** @type {ApiEntry} */
     const entry = {
@@ -235,13 +237,18 @@ class ContentParser {
         break;
       case "struct":
         entry.type = token.type;
+        if (!lastDecl) lastDecl = token.begin;
         entry.entries = insertEntry({}, this.parseEntries(token.spaces + 1));
+        entryEnd = this.expect("endStruct").end;
         break;
       case "var":
         entry.type = token.type;
         break;
       case "forward":
         break;
+      case "endStruct":
+        if (lastTemplate) throw new Error(`Error at ${lastEnd}: Expected an entity after template signature`);
+        return undefined;
       default:
         throw new Error(`Error at ${token.begin}: Unexpected ${token.kind}`);
     }
@@ -251,14 +258,14 @@ class ContentParser {
       if (this.storeLineNumbers) {
         entry.begin = lastBegin;
         entry.decl = lastDecl || token.begin;
-        entry.end = token.end;
+        entry.end = entryEnd;
       }
     } else {
       if (lastDoc) this.checkFileDoc(lastBegin, lastEnd, lastDoc);
       if (this.storeLineNumbers) {
         entry.begin = token.begin;
         entry.decl = token.begin;
-        entry.end = token.end;
+        entry.end = entryEnd;
       }
     }
     return entry;
@@ -285,7 +292,7 @@ class ContentParser {
    */
   expect(kind) {
     const token = this.next();
-    if (!token) throw new Error(`Error at ${token.begin}: expected ${kind}`);
+    if (!token) throw new Error(`Unexpected premature end of file`);
     if (token.kind !== kind) throw new Error(`Error at ${token.begin}: expected ${kind} got ${token.kind}`);
     return token;
   }
@@ -327,7 +334,7 @@ function parseParams(params) {
 }
 
 /**
- * @typedef {ApiEntryKind|"doc"|"namespace"|"template"} FileTokenKind
+ * @typedef {ApiEntryKind|"doc"|"namespace"|"template"|"endStruct"} FileTokenKind
  */
 
 /**
@@ -368,11 +375,13 @@ function tokenize(lines) {
       spaces: m?.[0]?.length ?? 0,
     };
 
-    if (m = /^\/\/\s*Forward decl/.test(line)) {
+    if (/^\/\/\s*Forward decl/.test(line)) {
       token.kind = "doc";
-    } else if (m = /^#pragma\s+region\s+impl/.test(line)) {
+    } else if (/^#pragma\s+region\s+impl/.test(line)) {
       break;
-    } else if (m = /^\/\//.test(line)) {
+    } else if (line.startsWith("}") || line.startsWith("{}")) {
+      token.kind = "endStruct";
+    } else if (line.startsWith("//")) {
       continue;
     } else if (m = /^\/\*(\*)?/.exec(line)) {
       let doc = '';
@@ -432,10 +441,9 @@ function tokenize(lines) {
       if (m[3]) {
         token.type = m[3].trim();
       }
-      if (!line.endsWith("{")) i++;
+      if (lines[i + 1]?.endsWith("{")) i++;
     } else if (m = /^template</.exec(line)) {
       token.kind = "template";
-      let parameters;
       if (line.endsWith(">")) {
         token.parameters = line.slice(m[0].length, line.length - 1).trim();
       } else {
@@ -462,7 +470,7 @@ function tokenize(lines) {
       continue;
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
-      m = /^(([\w*]+\s+)*)(\w+)(\s*\()?/.exec(member);
+      m = /^(([\w*]+\s+)*)(operator\(\)|\w+)(\s*\()?/.exec(member);
       if (!m) {
         system.warn(`Unknown token at line ${i + 1}: ${member}`);
         continue;
@@ -515,6 +523,7 @@ function tokenize(lines) {
       }
       if (lines[i + 1].endsWith("{")) ++i;
       i = ignoreBody(lines, i + 1, token.spaces);
+      if (!lines[i].endsWith("}")) i--;
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {

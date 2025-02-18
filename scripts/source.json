@@ -448,6 +448,12 @@
               "name": "a",
               "kind": "var",
               "type": "Uint8"
+            },
+            "void": {
+              "doc": "",
+              "name": "void",
+              "kind": "var",
+              "type": ""
             }
           }
         },

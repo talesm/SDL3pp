@@ -79,9 +79,7 @@ function transformEntries(sourceEntries, context, transform) {
   const blacklist = new Set(transform.ignoreEntries ?? []);
   const transformMap = transform.transform ?? {};
 
-  if (transform.includeAfter?.__begin) {
-    insertEntry(targetEntries, transform.includeAfter.__begin);
-  }
+  insertEntry(targetEntries, transform.includeAfter?.__begin ?? []);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (blacklist.has(sourceName)) continue;
@@ -128,14 +126,9 @@ function transformEntries(sourceEntries, context, transform) {
       }
       insertEntry(targetEntries, targetEntry);
     }
-    const includeAfter = transform.includeAfter?.[sourceName];
-    if (includeAfter) {
-      insertEntry(targetEntries, includeAfter);
-    }
+    insertEntry(targetEntries, transform.includeAfter?.[sourceName] ?? []);
   }
-  if (transform.includeAfter?.__end) {
-    insertEntry(targetEntries, transform.includeAfter.__end);
-  }
+  insertEntry(targetEntries, transform.includeAfter?.__end ?? []);
   transformHierarchy(targetEntries);
 
   validateEntries(targetEntries);
@@ -154,6 +147,7 @@ function transformSubEntries(targetEntry, context) {
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     const nameChange = checkNameChange(entry, transformName(key, context), targetEntry.name);
     if (nameChange) {
+      delete targetEntry.entries[key];
       transformMap[key] = nameChange;
     }
   }
@@ -213,7 +207,7 @@ function checkNameChange(entry, name, typeName) {
       .filter(a => a != null);
   }
   if (entry === "function") return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
-  if (entry === "ctor") return { name: `${typeName}.${typeName}` };
+  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "" };
   if (entry.kind && entry.kind !== "function") return null;
   if (entry.parameters) return null;
   return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };

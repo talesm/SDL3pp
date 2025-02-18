@@ -40,7 +40,12 @@ using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 
 template<>
 struct ObjectDeleter<SDL_Environment>
-{};
+{
+  inline void operator()(SDL_Environment* environment)
+  {
+    SDL_DestroyEnvironment(environment);
+  }
+};
 
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
 
@@ -48,7 +53,9 @@ using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
 
 template<>
 struct ObjectDeleter<SDL_iconv_data_t>
-{};
+{
+  inline void operator()(SDL_iconv_t iconv) { SDL_iconv_close(iconv); }
+};
 
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
 
@@ -4386,27 +4393,71 @@ template<class T>
 struct IConvBase : T
 {
   using T::T;
-};
 
-/**
- * This function allocates a context for the specified character set
- * conversion.
- *
- * @param tocode The target character encoding, must not be NULL.
- * @param fromcode The source character encoding, must not be NULL.
- * @returns a handle that must be freed with SDL_iconv_close, or
- *          SDL_ICONV_ERROR on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_iconv
- * @sa SDL_iconv_close
- * @sa SDL_iconv_string
- **/
-inline IConv iconv_open(StringParam tocode, StringParam fromcode)
-{
-  return SDL_iconv_open(tocode, fromcode);
-}
+  /**
+   * This function allocates a context for the specified character set
+   * conversion.
+   *
+   * @param tocode The target character encoding, must not be NULL.
+   * @param fromcode The source character encoding, must not be NULL.
+   * @returns a handle that must be freed with SDL_iconv_close, or
+   *          SDL_ICONV_ERROR on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_iconv
+   * @sa SDL_iconv_close
+   * @sa SDL_iconv_string
+   **/
+  static inline IConvBase(StringParam tocode, StringParam fromcode)
+  {
+    return SDL_iconv_open(tocode, fromcode);
+  }
+
+  /**
+   * This function converts text between encodings, reading from and writing to
+   * a buffer.
+   *
+   * It returns the number of succesful conversions on success. On error,
+   * SDL_ICONV_E2BIG is returned when the output buffer is too small, or
+   * SDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,
+   * or SDL_ICONV_EINVAL is returned when an incomplete input sequence is
+   * encountered.
+   *
+   * On exit:
+   *
+   * - inbuf will point to the beginning of the next multibyte sequence. On
+   *   error, this is the location of the problematic input sequence. On
+   *   success, this is the end of the input sequence.
+   * - inbytesleft will be set to the number of bytes left to convert, which
+   *   will be 0 on success.
+   * - outbuf will point to the location where to store the next output byte.
+   * - outbytesleft will be set to the number of bytes left in the output
+   *   buffer.
+   *
+   * @param cd The character set conversion context, created in
+   *           SDL_iconv_open().
+   * @param inbuf Address of variable that points to the first character of the
+   *              input sequence.
+   * @param inbytesleft The number of bytes in the input buffer.
+   * @param outbuf Address of variable that points to the output buffer.
+   * @param outbytesleft The number of bytes in the output buffer.
+   * @returns the number of conversions on success, or a negative error code.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_iconv_open
+   * @sa SDL_iconv_close
+   * @sa SDL_iconv_string
+   **/
+  inline size_t iconv(const char** inbuf,
+                      size_t* inbytesleft,
+                      char** outbuf,
+                      size_t* outbytesleft)
+  {
+    return SDL_iconv(inbuf, inbytesleft, outbuf, outbytesleft);
+  }
+};
 
 /**
  * This function frees a context used for character set conversion.
@@ -4420,52 +4471,7 @@ inline IConv iconv_open(StringParam tocode, StringParam fromcode)
  * @sa SDL_iconv_open
  * @sa SDL_iconv_string
  **/
-inline int iconv_close(IConvRef cd) { return SDL_iconv_close(cd); }
-
-/**
- * This function converts text between encodings, reading from and writing to
- * a buffer.
- *
- * It returns the number of succesful conversions on success. On error,
- * SDL_ICONV_E2BIG is returned when the output buffer is too small, or
- * SDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,
- * or SDL_ICONV_EINVAL is returned when an incomplete input sequence is
- * encountered.
- *
- * On exit:
- *
- * - inbuf will point to the beginning of the next multibyte sequence. On
- *   error, this is the location of the problematic input sequence. On
- *   success, this is the end of the input sequence.
- * - inbytesleft will be set to the number of bytes left to convert, which
- *   will be 0 on success.
- * - outbuf will point to the location where to store the next output byte.
- * - outbytesleft will be set to the number of bytes left in the output
- *   buffer.
- *
- * @param cd The character set conversion context, created in
- *           SDL_iconv_open().
- * @param inbuf Address of variable that points to the first character of the
- *              input sequence.
- * @param inbytesleft The number of bytes in the input buffer.
- * @param outbuf Address of variable that points to the output buffer.
- * @param outbytesleft The number of bytes in the output buffer.
- * @returns the number of conversions on success, or a negative error code.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_iconv_open
- * @sa SDL_iconv_close
- * @sa SDL_iconv_string
- **/
-inline size_t iconv(IConvRef cd,
-                    const char** inbuf,
-                    size_t* inbytesleft,
-                    char** outbuf,
-                    size_t* outbytesleft)
-{
-  return SDL_iconv(cd, inbuf, inbytesleft, outbuf, outbytesleft);
-}
+inline int iconv_close(IConvRef cd) { return SDL_iconv_close(cd.Get()); }
 
 /**
  * Helper function to convert a string's encoding in one call.

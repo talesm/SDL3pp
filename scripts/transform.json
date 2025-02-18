@@ -53,16 +53,18 @@
             "kind": "struct",
             "template": [],
             "entries": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "const": true,
-              "parameters": [
-                {
-                  "type": "SDL_Environment *",
-                  "name": "environment"
-                }
-              ]
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "const": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Environment *",
+                    "name": "environment"
+                  }
+                ]
+              }
             }
           },
           {
@@ -90,16 +92,18 @@
             "kind": "struct",
             "template": [],
             "entries": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "const": true,
-              "parameters": [
-                {
-                  "type": "SDL_iconv_t",
-                  "name": "iconv"
-                }
-              ]
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "const": true,
+                "parameters": [
+                  {
+                    "type": "SDL_iconv_t",
+                    "name": "iconv"
+                  }
+                ]
+              }
             }
           },
           {
@@ -171,7 +175,9 @@
             "T::T": {
               "kind": "alias",
               "name": "T::T"
-            }
+            },
+            "SDL_iconv_open": "ctor",
+            "SDL_iconv": "function"
           }
         }
       }
