@@ -495,7 +495,7 @@ function tokenize(lines) {
               parameters += '\n' + line.slice(0, line.length - 2);
               break;
             }
-            if (line.endsWith(')')) {
+            if (line.endsWith(')') || line.endsWith(') const')) {
               inline = true;
               parameters += '\n' + line.slice(0, line.length - 1);
               break;
@@ -505,7 +505,7 @@ function tokenize(lines) {
         } else {
           const details = parameters.slice(endBracket + 1);
           if (details.startsWith(" const")) token.immutable = true;
-          inline = !parameters.endsWith(";") && !parameters.endsWith("}");
+          inline = details.endsWith("{") || (!details.endsWith(";") && !details.endsWith("}"));
           parameters = parameters.slice(0, endBracket);
         }
         token.parameters = parameters;
@@ -513,10 +513,8 @@ function tokenize(lines) {
         token.kind = "var";
         inline = member.indexOf(';') === -1;
       }
-      if (inline && member.indexOf('}') === -1) {
-        if (lines[++i].startsWith("{")) ++i;
-        i = ignoreBody(lines, i, token.spaces);
-      }
+      if (lines[i + 1].endsWith("{")) ++i;
+      i = ignoreBody(lines, i + 1, token.spaces) - 1;
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {

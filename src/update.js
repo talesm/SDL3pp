@@ -198,7 +198,7 @@ function generateEntries(entries, prefix) {
   for (const name of Object.keys(entries)) {
     const entry = entries[name];
     if (Array.isArray(entry)) {
-      result.push(entry.map(e => generateEntry(e, prefix)));
+      result.push(entry.map(e => generateEntry(e, prefix)).join("\n\n"));
     } else {
       result.push(generateEntry(entry, prefix));
     }
@@ -228,10 +228,11 @@ function generateEntry(entry, prefix) {
     case "function":
       var staticStr = entry.static ? "static " : "";
       var specifier = entry.constexpr ? "constexpr" : "inline";
+      var constStr = entry.immutable ? " const" : "";
       const parameters = generateParameters(entry.parameters);
       const body = !entry.sourceName ? placeholder
         : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
-      return `${doc}${prefix}${staticStr}${specifier} ${entry.type} ${entry.name}(${parameters})\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+      return `${doc}${prefix}${staticStr}${specifier} ${entry.type} ${entry.name}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
     case "struct":
       return doc + generateStruct(entry, prefix);
     case "var":

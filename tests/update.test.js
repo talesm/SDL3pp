@@ -33,7 +33,7 @@ test("functions.h over empty file", () => {
   const modifiedContent = readLinesSync("tests/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  const modifiedApi = parseContent("functions.h", originalContent);
+  const modifiedApi = parseContent("functions.h", reSplit(modifiedContent));
   expect(modifiedApi).toEqual(originalApi);
 });
 
@@ -52,7 +52,7 @@ test("structs.h over empty file", () => {
   const modifiedContent = readLinesSync("tests/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  const modifiedApi = parseContent("structs.h", originalContent);
+  const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));
   expect(modifiedApi).toEqual(originalApi);
 });
 
@@ -71,7 +71,7 @@ test("structs_aliases.h over empty file", () => {
   const modifiedContent = readLinesSync("tests/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  const modifiedApi = parseContent("structs_aliases.h", originalContent);
+  const modifiedApi = parseContent("structs_aliases.h", reSplit(modifiedContent));
   expect(modifiedApi).toEqual(originalApi);
 });
 
@@ -90,7 +90,7 @@ test("structs_extends.h over empty file", () => {
   const modifiedContent = readLinesSync("tests/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  const modifiedApi = parseContent("structs_extends.h", originalContent);
+  const modifiedApi = parseContent("structs_extends.h", reSplit(modifiedContent));
   expect(modifiedApi).toEqual(originalApi);
 });
 
@@ -109,7 +109,7 @@ test("structs_resources.h over empty file", () => {
   const modifiedContent = readLinesSync("tests/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  const modifiedApi = parseContent("structs_resources.h", originalContent);
+  const modifiedApi = parseContent("structs_resources.h", reSplit(modifiedContent));
   expect(modifiedApi).toEqual(originalApi);
 });
 
@@ -150,3 +150,8 @@ test("using T::T updates correctly", () => {
   expect(modifiedApi).toEqual(originalApi);
   expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
 });
+
+/** @param {string[]} lines  */
+function reSplit(lines) {
+  return lines.join("\n").split("\n");
+}
