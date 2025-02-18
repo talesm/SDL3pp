@@ -1,0 +1,79 @@
+{
+  "files": {
+    "structs_resources.h": {
+      "name": "structs_resources.h",
+      "doc": "",
+      "entries": {
+        "Type1": {
+          "doc": "",
+          "name": "Type1",
+          "kind": "struct",
+          "type": "MyType1",
+          "entries": {
+            "Check": {
+              "doc": "",
+              "name": "Check",
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetVar1": {
+              "doc": "",
+              "name": "GetVar1",
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "parameters": []
+            },
+            "SetVar1": {
+              "doc": "",
+              "name": "SetVar1",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "var1",
+                  "type": "int"
+                }
+              ]
+            },
+            "GetVar2": {
+              "doc": "",
+              "name": "GetVar2",
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "parameters": []
+            },
+            "SetVar2": {
+              "doc": "",
+              "name": "SetVar2",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "var2",
+                  "type": "const char *"
+                }
+              ]
+            }
+          }
+        },
+        "Byte": {
+          "doc": "",
+          "name": "Byte",
+          "kind": "alias",
+          "type": "MyByte"
+        },
+        "Type2": {
+          "doc": "",
+          "name": "Type2",
+          "kind": "struct",
+          "type": "MyType2",
+          "entries": {}
+        }
+      }
+    }
+  }
+}

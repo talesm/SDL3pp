@@ -4,6 +4,7 @@ const functionsApi = require("./functions.json");
 const structsApi = require("./structs.json");
 const structsAliasesApi = require("./structs_aliases.json");
 const structsExtendsApi = require("./structs_extends.json");
+const structsResourcesApi = require("./structs_resources.json");
 
 test("empty transform loopback", () => {
   const modifiedApi = transformApi({
@@ -63,6 +64,44 @@ test("structs transform basic", () => {
 });
 
 test("structs transform extends", () => {
+  const modifiedApi = transformApi({
+    sourceApi: structsApi,
+    transform: {
+      prefixes: "My",
+      renameRules: [
+        {
+          pattern: "^([^.]*)",
+          replacement: "$1_extends",
+        }
+      ],
+      files: {
+        "structs.h": {
+          transform: {
+            MyType1: {
+              type: "MyType1",
+              kind: "struct",
+              entries: {
+                MyType1Check: "function",
+                MyGetType1Var1: "function",
+                MySetType1Var1: "function",
+                MyType1GetVar2: "function",
+                MyType1SetVar2: "function",
+              },
+            },
+            MyType2: {
+              type: "MyType2",
+              kind: "struct",
+              entries: {},
+            },
+          },
+        },
+      },
+    },
+  });
+  expect(modifiedApi).toMatchObject(structsExtendsApi);
+});
+
+test("structs transform resources", () => {
   const modifiedApi = transformApi({
     sourceApi: structsApi,
     transform: {

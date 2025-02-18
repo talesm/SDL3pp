@@ -93,3 +93,22 @@ test("structs_extends.h over empty file", () => {
   const modifiedApi = parseContent("structs_extends.h", originalContent);
   expect(modifiedApi).toEqual(originalApi);
 });
+
+test("structs_resources.h loopback", () => {
+  const originalContent = readLinesSync("tests/structs_resources.h");
+  const api = parseContent("structs_resources.h", originalContent);
+  const modifiedContent = [...originalContent];
+  const changes = updateContent(modifiedContent, api);
+  expect(modifiedContent).toEqual(originalContent);
+  expect(changes).toBe(0);
+});
+
+test("structs_resources.h over empty file", () => {
+  const originalContent = readLinesSync("tests/structs_resources.h");
+  const originalApi = parseContent("structs_resources.h", originalContent);
+  const modifiedContent = readLinesSync("tests/empty.h");
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("structs_resources.h", originalContent);
+  expect(modifiedApi).toEqual(originalApi);
+});
