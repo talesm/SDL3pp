@@ -120,6 +120,8 @@ function fixEntry(entry) {
         fixEntry(subEntry);
       }
     }
+  } else if (entry.kind == "struct") {
+    entry.entries = {};
   }
 }
 
@@ -373,13 +375,13 @@ function tokenize(lines) {
       spaces: m?.[0]?.length ?? 0,
     };
 
-    if (m = /^\/\/\s*Forward decl/.test(line)) {
+    if (/^\/\/\s*Forward decl/.test(line)) {
       token.kind = "doc";
-    } else if (m = /^#pragma\s+region\s+impl/.test(line)) {
+    } else if (/^#pragma\s+region\s+impl/.test(line)) {
       break;
-    } else if (m = line.startsWith("}")) {
+    } else if (line.startsWith("}") || line.startsWith("{}")) {
       token.kind = "endStruct";
-    } else if (m = line.startsWith("//")) {
+    } else if (line.startsWith("//")) {
       continue;
     } else if (m = /^\/\*(\*)?/.exec(line)) {
       let doc = '';
@@ -439,7 +441,7 @@ function tokenize(lines) {
       if (m[3]) {
         token.type = m[3].trim();
       }
-      if (!line.endsWith("{")) i++;
+      if (lines[i + 1]?.endsWith("{")) i++;
     } else if (m = /^template</.exec(line)) {
       token.kind = "template";
       if (line.endsWith(">")) {
@@ -468,7 +470,7 @@ function tokenize(lines) {
       continue;
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
-      m = /^(([\w*]+\s+)*)(\w+)(\s*\()?/.exec(member);
+      m = /^(([\w*]+\s+)*)(operator\(\)|\w+)(\s*\()?/.exec(member);
       if (!m) {
         system.warn(`Unknown token at line ${i + 1}: ${member}`);
         continue;

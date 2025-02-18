@@ -142,6 +142,27 @@ test("struct's fields is added correctly", () => {
   expect(modifiedApi).toEqual(originalApi);
   expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
 });
+test("struct's fields is added correctly on empty struct", () => {
+  const originalContent = ["struct S", "{", "  int a;", "", "};", ""];
+  const originalApi = parseContent("structs.h", originalContent);
+  const modifiedContent = ["struct S", "{};", "", ""];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});
+test("struct's fields is added correctly on non-empty struct", () => {
+  const originalContent = ["struct S", "{", "  int a;", "", "};", ""];
+  const originalApi = parseContent("structs.h", originalContent);
+  const modifiedContent = ["struct S", "{", "  float a;", "", "};", ""];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  console.log(modifiedContent.join('\n'));
+  const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});
 
 test("using T::T ignored correctly", () => {
   const originalContent = ["using T::T;"];

@@ -79,9 +79,7 @@ function transformEntries(sourceEntries, context, transform) {
   const blacklist = new Set(transform.ignoreEntries ?? []);
   const transformMap = transform.transform ?? {};
 
-  if (transform.includeAfter?.__begin) {
-    insertEntry(targetEntries, transform.includeAfter.__begin);
-  }
+  insertEntry(targetEntries, transform.includeAfter?.__begin ?? []);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (blacklist.has(sourceName)) continue;
@@ -128,14 +126,9 @@ function transformEntries(sourceEntries, context, transform) {
       }
       insertEntry(targetEntries, targetEntry);
     }
-    const includeAfter = transform.includeAfter?.[sourceName];
-    if (includeAfter) {
-      insertEntry(targetEntries, includeAfter);
-    }
+    insertEntry(targetEntries, transform.includeAfter?.[sourceName] ?? []);
   }
-  if (transform.includeAfter?.__end) {
-    insertEntry(targetEntries, transform.includeAfter.__end);
-  }
+  insertEntry(targetEntries, transform.includeAfter?.__end ?? []);
   transformHierarchy(targetEntries);
 
   validateEntries(targetEntries);
