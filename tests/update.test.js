@@ -127,7 +127,18 @@ test("struct with fields is created correctly", () => {
   const modifiedContent = [];
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  const modifiedApi = parseContent("structs.h", originalContent);
+  const modifiedApi = parseContent("structs.h", reSplit(originalContent));
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});
+
+test("struct's fields is added correctly", () => {
+  const originalContent = ["struct S", "{", "  int a;", "", "};", ""];
+  const originalApi = parseContent("structs.h", originalContent);
+  const modifiedContent = ["struct S", "{", "};"];;
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));
   expect(modifiedApi).toEqual(originalApi);
   expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
 });
@@ -146,7 +157,7 @@ test("using T::T updates correctly", () => {
   const modifiedContent = [];
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  const modifiedApi = parseContent("structs_resources.h", originalContent);
+  const modifiedApi = parseContent("structs_resources.h", reSplit(originalContent));
   expect(modifiedApi).toEqual(originalApi);
   expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
 });

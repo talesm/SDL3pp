@@ -35,7 +35,7 @@ function updateContent(content, targetFile) {
   const name = targetFile.name;
   const sourceFile = parseContent(name, content, { storeLineNumbers: true });
   const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
-  const changes = checkChanges(sourceFile, targetFile, entriesBegin, entriesEnd);
+  const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd);
   if (!changes.length) {
     system.log(`No changes for ${name}`);
     return 0;
@@ -71,34 +71,31 @@ function updateChanges(content, changes) {
 
 /**
  * 
- * @param {ApiFile} sourceFile 
- * @param {ApiFile} targetFile 
+ * @param {ApiEntries} sourceEntries 
+ * @param {ApiEntries} targetEntries 
  * @param {number} begin 
  * @param {number} end 
  * @param {string=} prefix 
  */
-function checkChanges(sourceFile, targetFile, begin, end, prefix) {
-  /** @type {Change[]} */
-  const changes = [];
-  const targetEntries = targetFile.entries;
+function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
   const targetNames = Object.keys(targetEntries);
+  const sourceNames = Object.keys(sourceEntries);
   if (!targetNames.length) {
-    if (begin != end) changes.push({
+    if (!sourceNames.length || begin == end) return [];
+    return [{
       begin,
       end,
-    });
-    return changes;
+    }];
   }
-  const sourceEntries = sourceFile.entries;
-  const sourceNames = Object.keys(sourceEntries);
-  if (!sourceNames?.length) {
-    changes.push({
+  if (!sourceNames.length) {
+    return [{
       begin,
       end,
       replacement: "\n" + generateEntries(targetEntries, prefix)
-    });
-    return changes;
+    }];
   }
+  /** @type {Change[]} */
+  const changes = [];
   let sourceIndex = 0;
   for (const targetName of targetNames) {
     const targetEntry = targetEntries[targetName];
@@ -111,20 +108,23 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
         replacement: '\n' + generateEntry(targetEntry, prefix),
       });
     } else if (sourceIndex < sourceNames.length) {
-      begin = sourceEntries[sourceNames[sourceIndex]].begin ?? sourceEntries[sourceNames[sourceIndex]][0].begin;
+      begin = getBegin(sourceEntries[sourceNames[sourceIndex]]);
       const sourceEntry = sourceEntries[targetName];
       const change = checkEntryChanged(sourceEntry, targetEntry);
-      const sourceEntryEnd = Array.isArray(sourceEntry) ? sourceEntry[sourceEntry.length - 1].end : sourceEntry.end;
-      if (change) {
+      const sourceEntryEnd = getEnd(sourceEntry);
+      const sourceEntriesCount = Object.keys(sourceEntry.entries ?? {})?.length ?? 0;
+      const targetEntriesCount = Object.keys(targetEntry.entries ?? {})?.length ?? 0;
+      if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
         system.log(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`);
         changes.push({
           begin,
           end: sourceEntryEnd,
           replacement: generateEntry(targetEntry, prefix)
         });
-        begin = sourceEntryEnd;
-        // } else if (sourceEntry.entries || targetEntry.entries) {
-        // TODO compound structs
+      } else if (targetEntry.entries) {
+        const sourceBegin = getBegin(sourceEntry.entries);
+        const sourceEnd = getEnd(sourceEntry.entries);
+        changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
       } else {
         if (index > sourceIndex) {
           changes.push({
@@ -132,8 +132,8 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
             end: Array.isArray(sourceEntry) ? sourceEntry[0].begin : sourceEntry.begin
           });
         }
-        begin = sourceEntryEnd;
       }
+      begin = sourceEntryEnd;
       sourceIndex = index + 1;
     } else {
       system.log(`${targetEntry.name} added ${begin}`);
@@ -147,6 +147,32 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
   }
 
   return changes.reverse();
+}
+
+/**
+ * 
+ * @param {ApiEntry|ApiEntry[]} entry 
+ */
+function getBegin(entry) {
+  if (!Array.isArray(entry)) {
+    if (entry.kind) return entry.begin;
+    return getBegin(Object.values(entry));
+  }
+  if (!entry.length) return null;
+  return getBegin(entry[0]);
+}
+
+/**
+ * 
+ * @param {ApiEntry|ApiEntry[]} entry 
+ */
+function getEnd(entry) {
+  if (!Array.isArray(entry)) {
+    if (entry.kind) return entry.end;
+    return getEnd(Object.values(entry));
+  }
+  if (!entry.length) return null;
+  return getEnd(entry[entry.length - 1]);
 }
 
 /**
