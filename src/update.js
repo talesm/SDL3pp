@@ -95,7 +95,7 @@ function checkChanges(sourceFile, targetFile, begin, end, prefix) {
     changes.push({
       begin,
       end,
-      replacement: generateEntries(targetEntries, prefix)
+      replacement: "\n" + generateEntries(targetEntries, prefix)
     });
     return changes;
   }
@@ -190,7 +190,7 @@ function updateRange(content, begin, end, ...replacement) {
 
 /**
  * 
- * @param {{[name: string]: ApiEntry|ApiEntry[]}} entries 
+ * @param {ApiEntries} entries 
  * @param {string=} prefix 
  */
 function generateEntries(entries, prefix) {
@@ -203,7 +203,7 @@ function generateEntries(entries, prefix) {
       result.push(generateEntry(entry, prefix));
     }
   }
-  return '\n' + result.join('\n\n') + '\n';
+  return result.join('\n\n') + '\n';
 }
 
 /**
@@ -226,13 +226,18 @@ function generateEntry(entry, prefix) {
     case "forward":
       return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
     case "function":
-      const specifier = entry.constexpr ? "constexpr" : "inline";
+      var staticStr = entry.static ? "static " : "";
+      var specifier = entry.constexpr ? "constexpr" : "inline";
       const parameters = generateParameters(entry.parameters);
       const body = !entry.sourceName ? placeholder
         : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
-      return `${doc}${prefix}${specifier} ${entry.type} ${entry.name}(${parameters})\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+      return `${doc}${prefix}${staticStr}${specifier} ${entry.type} ${entry.name}(${parameters})\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
     case "struct":
       return doc + generateStruct(entry, prefix);
+    case "var":
+      var staticStr = entry.static ? "static " : "";
+      var specifier = entry.constexpr ? "constexpr " : "";
+      return `${doc}${prefix}${staticStr}${specifier}${entry.type} ${entry.name};`;
     default:
       system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
@@ -259,7 +264,8 @@ function generateCall(name, ...parameters) {
 function generateStruct(entry, prefix) {
   const signature = generateStructSignature(entry, prefix);
   const parent = entry.type ? ` : ${entry.type}` : "";
-  return `${signature}${parent}\n${prefix}{};`;
+  const subEntries = generateEntries(entry.entries ?? {}, prefix + "  ");
+  return `${signature}${parent}\n${prefix}{\n${subEntries}\n${prefix}};`;
 }
 
 /**

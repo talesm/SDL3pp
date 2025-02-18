@@ -113,6 +113,25 @@ test("structs_resources.h over empty file", () => {
   expect(modifiedApi).toEqual(originalApi);
 });
 
+test("struct with fields is ignored correctly", () => {
+  const originalContent = ["struct S", "{", "  int a;", "};"];
+  const originalApi = parseContent("structs.h", originalContent);
+  const modifiedContent = [...originalContent];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).toBe(0);
+});
+
+test("struct with fields is created correctly", () => {
+  const originalContent = ["struct S", "{", "  int a;", "", "};"];
+  const originalApi = parseContent("structs.h", originalContent);
+  const modifiedContent = [];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("structs.h", originalContent);
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});
+
 test("using T::T ignored correctly", () => {
   const originalContent = ["using T::T;"];
   const originalApi = parseContent("structs_resources.h", originalContent);
