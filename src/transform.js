@@ -154,6 +154,7 @@ function transformSubEntries(targetEntry, context) {
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     const nameChange = checkNameChange(entry, transformName(key, context), targetEntry.name);
     if (nameChange) {
+      delete targetEntry.entries[key];
       transformMap[key] = nameChange;
     }
   }
@@ -213,7 +214,7 @@ function checkNameChange(entry, name, typeName) {
       .filter(a => a != null);
   }
   if (entry === "function") return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
-  if (entry === "ctor") return { name: `${typeName}.${typeName}` };
+  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "" };
   if (entry.kind && entry.kind !== "function") return null;
   if (entry.parameters) return null;
   return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };

@@ -515,6 +515,7 @@ function tokenize(lines) {
       }
       if (lines[i + 1].endsWith("{")) ++i;
       i = ignoreBody(lines, i + 1, token.spaces);
+      if (!lines[i].endsWith("}")) i--;
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {
