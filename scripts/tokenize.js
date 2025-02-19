@@ -197,12 +197,22 @@ function tokenize(lines) {
       } else break;
     }
     token.end = i + 2;
-    if (token.end - token.begin > 15 && token.kind != "doc") {
-      system.warn(`Warning: Token at ${token.begin} seems very large ${token.value}`);
+    if (checkTokenTooLarge(token)) {
+      system.warn(`Warning: Token at ${token.begin} seems very large ${token.value} (${token.end - token.begin} lines)`);
     }
     result.push(token);
   }
   return result;
+}
+
+/** @param {FileToken} token  */
+function checkTokenTooLarge(token) {
+  const delta = token.end - token.begin;
+  if (token.kind == "doc") return false;
+  if (token.kind == "enum") return delta > 200;
+  if (token.kind == "union") return delta > 100;
+  if (token.kind == "function" || token.kind == "callback" || token.kind == "def") return delta > 15;
+  return delta > 5;
 }
 
 /**

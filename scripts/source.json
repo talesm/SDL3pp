@@ -3391,6 +3391,291 @@
           "parameters": []
         }
       }
+    },
+    "SDL_pixels.h": {
+      "name": "SDL_pixels.h",
+      "doc": "# CategoryPixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
+      "entries": {
+        "SDL_ALPHA_OPAQUE": {
+          "doc": "A fully opaque 8-bit alpha value.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_ALPHA_TRANSPARENT",
+          "name": "SDL_ALPHA_OPAQUE",
+          "kind": "def"
+        },
+        "SDL_ALPHA_OPAQUE_FLOAT": {
+          "doc": "A fully opaque floating point alpha value.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_ALPHA_TRANSPARENT_FLOAT",
+          "name": "SDL_ALPHA_OPAQUE_FLOAT",
+          "kind": "def"
+        },
+        "SDL_ALPHA_TRANSPARENT": {
+          "doc": "A fully transparent 8-bit alpha value.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_ALPHA_OPAQUE",
+          "name": "SDL_ALPHA_TRANSPARENT",
+          "kind": "def"
+        },
+        "SDL_ALPHA_TRANSPARENT_FLOAT": {
+          "doc": "A fully transparent floating point alpha value.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_ALPHA_OPAQUE_FLOAT",
+          "name": "SDL_ALPHA_TRANSPARENT_FLOAT",
+          "kind": "def"
+        },
+        "SDL_PixelType": {
+          "doc": "Pixel type.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_PixelType",
+          "kind": "enum"
+        },
+        "SDL_BitmapOrder": {
+          "doc": "Bitmap pixel order, high bit -> low bit.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_BitmapOrder",
+          "kind": "enum"
+        },
+        "SDL_PackedOrder": {
+          "doc": "Packed component order, high bit -> low bit.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_PackedOrder",
+          "kind": "enum"
+        },
+        "SDL_ArrayOrder": {
+          "doc": "Array component order, low byte -> high byte.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_ArrayOrder",
+          "kind": "enum"
+        },
+        "SDL_PackedLayout": {
+          "doc": "Packed component layout.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_PackedLayout",
+          "kind": "enum"
+        },
+        "SDL_DEFINE_PIXELFOURCC": {
+          "doc": "A macro for defining custom FourCC pixel formats.\n\nFor example, defining SDL_PIXELFORMAT_YV12 looks like this:\n\n```c\nSDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2')\n```\n\n\\param A the first character of the FourCC code.\n\\param B the second character of the FourCC code.\n\\param C the third character of the FourCC code.\n\\param D the fourth character of the FourCC code.\n\\returns a format value in the style of SDL_PixelFormat.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_DEFINE_PIXELFOURCC",
+          "kind": "def",
+          "parameters": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ]
+        },
+        "SDL_DEFINE_PIXELFORMAT": {
+          "doc": "A macro for defining custom non-FourCC pixel formats.\n\nFor example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:\n\n```c\nSDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA, SDL_PACKEDLAYOUT_8888, 32, 4)\n```\n\n\\param type the type of the new format, probably a SDL_PixelType value.\n\\param order the order of the new format, probably a SDL_BitmapOrder,\n             SDL_PackedOrder, or SDL_ArrayOrder value.\n\\param layout the layout of the new format, probably an SDL_PackedLayout\n              value or zero.\n\\param bits the number of bits per pixel of the new format.\n\\param bytes the number of bytes per pixel of the new format.\n\\returns a format value in the style of SDL_PixelFormat.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_DEFINE_PIXELFORMAT",
+          "kind": "def",
+          "parameters": [
+            "type",
+            "order",
+            "layout",
+            "bits",
+            "bytes"
+          ]
+        },
+        "SDL_PIXELFLAG": {
+          "doc": "A macro to retrieve the flags of an SDL_PixelFormat.\n\nThis macro is generally not needed directly by an app, which should use\nspecific tests, like SDL_ISPIXELFORMAT_FOURCC, instead.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the flags of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PIXELFLAG",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_PIXELTYPE": {
+          "doc": "A macro to retrieve the type of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_PixelType enumeration.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the type of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PIXELTYPE",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_PIXELORDER": {
+          "doc": "A macro to retrieve the order of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_BitmapOrder, SDL_PackedOrder, or\nSDL_ArrayOrder enumerations, depending on the format type.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the order of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PIXELORDER",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_PIXELLAYOUT": {
+          "doc": "A macro to retrieve the layout of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_PackedLayout enumeration, or zero if a\nlayout doesn't make sense for the format type.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the layout of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PIXELLAYOUT",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_BITSPERPIXEL": {
+          "doc": "A macro to determine an SDL_PixelFormat's bits per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats will report zero here, as it rarely makes sense to measure\nthem per-pixel.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the bits-per-pixel of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_BYTESPERPIXEL",
+          "name": "SDL_BITSPERPIXEL",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_BYTESPERPIXEL": {
+          "doc": "A macro to determine an SDL_PixelFormat's bytes per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats do their best here, but many of them don't have a meaningful\nmeasurement of bytes per pixel.\n\n\\param format an SDL_PixelFormat to check.\n\\returns the bytes-per-pixel of `format`.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_BITSPERPIXEL",
+          "name": "SDL_BYTESPERPIXEL",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_ISPIXELFORMAT_INDEXED": {
+          "doc": "A macro to determine if an SDL_PixelFormat is an indexed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is indexed, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ISPIXELFORMAT_INDEXED",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_ISPIXELFORMAT_PACKED": {
+          "doc": "A macro to determine if an SDL_PixelFormat is a packed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is packed, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ISPIXELFORMAT_PACKED",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_ISPIXELFORMAT_ARRAY": {
+          "doc": "A macro to determine if an SDL_PixelFormat is an array format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is an array, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ISPIXELFORMAT_ARRAY",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_ISPIXELFORMAT_10BIT": {
+          "doc": "A macro to determine if an SDL_PixelFormat is a 10-bit format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is 10-bit, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ISPIXELFORMAT_10BIT",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_ISPIXELFORMAT_FLOAT": {
+          "doc": "A macro to determine if an SDL_PixelFormat is a floating point format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format is 10-bit, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ISPIXELFORMAT_FLOAT",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_ISPIXELFORMAT_ALPHA": {
+          "doc": "A macro to determine if an SDL_PixelFormat has an alpha channel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format has alpha, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ISPIXELFORMAT_ALPHA",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_ISPIXELFORMAT_FOURCC": {
+          "doc": "A macro to determine if an SDL_PixelFormat is a \"FourCC\" format.\n\nThis covers custom and other unusual formats.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n\\param format an SDL_PixelFormat to check.\n\\returns true if the format has alpha, false otherwise.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_ISPIXELFORMAT_FOURCC",
+          "kind": "def",
+          "parameters": [
+            "format"
+          ]
+        },
+        "SDL_PixelFormat": {
+          "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n\\since This enum is available since SDL 3.2.0.",
+          "name": "SDL_PixelFormat",
+          "kind": "enum"
+        },
+        "SDL_PIXELFORMAT_YV12": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_YV12",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_IYUV": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_IYUV",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_YUY2": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_YUY2",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_UYVY": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_UYVY",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_YVYU": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_YVYU",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_NV12": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_NV12",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_NV21": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_NV21",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_P010": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_P010",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_EXTERNAL_OES": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_EXTERNAL_OES",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_RGBA32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_RGBA32",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_ARGB32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_ARGB32",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_BGRA32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_BGRA32",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_ABGR32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_ABGR32",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_RGBX32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_RGBX32",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_XRGB32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_XRGB32",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_BGRX32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_BGRX32",
+          "kind": "var",
+          "type": ""
+        },
+        "SDL_PIXELFORMAT_XBGR32": {
+          "doc": "",
+          "name": "SDL_PIXELFORMAT_XBGR32",
+          "kind": "var",
+          "type": ""
+        }
+      }
     }
   }
 }

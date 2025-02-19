@@ -2823,6 +2823,189 @@
           "sourceName": "SDL_FunctionPointer"
         }
       }
+    },
+    "pixels.hpp": {
+      "name": "pixels.hpp",
+      "doc": "@file pixels.hpp\n\n# CategoryPixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
+      "entries": {
+        "PixelType": {
+          "doc": "Pixel type.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PixelType",
+          "kind": "alias",
+          "sourceName": "SDL_PixelType",
+          "type": "SDL_PixelType"
+        },
+        "BitmapOrder": {
+          "doc": "Bitmap pixel order, high bit -> low bit.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "BitmapOrder",
+          "kind": "alias",
+          "sourceName": "SDL_BitmapOrder",
+          "type": "SDL_BitmapOrder"
+        },
+        "PackedOrder": {
+          "doc": "Packed component order, high bit -> low bit.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PackedOrder",
+          "kind": "alias",
+          "sourceName": "SDL_PackedOrder",
+          "type": "SDL_PackedOrder"
+        },
+        "ArrayOrder": {
+          "doc": "Array component order, low byte -> high byte.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "ArrayOrder",
+          "kind": "alias",
+          "sourceName": "SDL_ArrayOrder",
+          "type": "SDL_ArrayOrder"
+        },
+        "PackedLayout": {
+          "doc": "Packed component layout.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PackedLayout",
+          "kind": "alias",
+          "sourceName": "SDL_PackedLayout",
+          "type": "SDL_PackedLayout"
+        },
+        "PixelFormat": {
+          "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PixelFormat",
+          "kind": "struct",
+          "sourceName": "SDL_PixelFormat",
+          "type": "",
+          "entries": {
+            "format": {
+              "kind": "var",
+              "type": "SDL_PixelFormat",
+              "name": "format",
+              "doc": ""
+            },
+            "operator bool()": {
+              "kind": "function",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true,
+              "name": "operator bool()",
+              "doc": ""
+            }
+          }
+        },
+        "PIXELFORMAT_YV12": {
+          "doc": "",
+          "name": "PIXELFORMAT_YV12",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_YV12"
+        },
+        "PIXELFORMAT_IYUV": {
+          "doc": "",
+          "name": "PIXELFORMAT_IYUV",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_IYUV"
+        },
+        "PIXELFORMAT_YUY2": {
+          "doc": "",
+          "name": "PIXELFORMAT_YUY2",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_YUY2"
+        },
+        "PIXELFORMAT_UYVY": {
+          "doc": "",
+          "name": "PIXELFORMAT_UYVY",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_UYVY"
+        },
+        "PIXELFORMAT_YVYU": {
+          "doc": "",
+          "name": "PIXELFORMAT_YVYU",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_YVYU"
+        },
+        "PIXELFORMAT_NV12": {
+          "doc": "",
+          "name": "PIXELFORMAT_NV12",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_NV12"
+        },
+        "PIXELFORMAT_NV21": {
+          "doc": "",
+          "name": "PIXELFORMAT_NV21",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_NV21"
+        },
+        "PIXELFORMAT_P010": {
+          "doc": "",
+          "name": "PIXELFORMAT_P010",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_P010"
+        },
+        "PIXELFORMAT_EXTERNAL_OES": {
+          "doc": "",
+          "name": "PIXELFORMAT_EXTERNAL_OES",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_EXTERNAL_OES"
+        },
+        "PIXELFORMAT_RGBA32": {
+          "doc": "",
+          "name": "PIXELFORMAT_RGBA32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_RGBA32"
+        },
+        "PIXELFORMAT_ARGB32": {
+          "doc": "",
+          "name": "PIXELFORMAT_ARGB32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_ARGB32"
+        },
+        "PIXELFORMAT_BGRA32": {
+          "doc": "",
+          "name": "PIXELFORMAT_BGRA32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_BGRA32"
+        },
+        "PIXELFORMAT_ABGR32": {
+          "doc": "",
+          "name": "PIXELFORMAT_ABGR32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_ABGR32"
+        },
+        "PIXELFORMAT_RGBX32": {
+          "doc": "",
+          "name": "PIXELFORMAT_RGBX32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_RGBX32"
+        },
+        "PIXELFORMAT_XRGB32": {
+          "doc": "",
+          "name": "PIXELFORMAT_XRGB32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_XRGB32"
+        },
+        "PIXELFORMAT_BGRX32": {
+          "doc": "",
+          "name": "PIXELFORMAT_BGRX32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_BGRX32"
+        },
+        "PIXELFORMAT_XBGR32": {
+          "doc": "",
+          "name": "PIXELFORMAT_XBGR32",
+          "kind": "var",
+          "type": "",
+          "sourceName": "SDL_PIXELFORMAT_XBGR32"
+        }
+      }
     }
   }
 }

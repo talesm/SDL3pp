@@ -193,6 +193,26 @@
           }
         }
       }
+    },
+    "SDL_pixels.h": {
+      "transform": {
+        "SDL_PixelFormat": {
+          "kind": "struct",
+          "type": "",
+          "entries": {
+            "format": {
+              "kind": "var",
+              "type": "SDL_PixelFormat"
+            },
+            "operator bool()": {
+              "kind": "function",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            }
+          }
+        }
+      }
     }
   }
 }
