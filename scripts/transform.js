@@ -78,6 +78,7 @@ function transformEntries(sourceEntries, context, transform) {
   const defWhitelist = new Set(transform.includeDefs ?? []);
   const blacklist = new Set(transform.ignoreEntries ?? []);
   const transformMap = transform.transform ?? {};
+  if (!transform.transform) transform.transform = transformMap;
 
   insertEntry(targetEntries, transform.includeAfter?.__begin ?? []);
 
@@ -114,15 +115,15 @@ function transformEntries(sourceEntries, context, transform) {
         context.typeMap[`const ${type} *`] = `const ${targetName} *`;
       }
       if (targetEntry.entries) {
-        const changes = transformSubEntries(targetEntry, context);
-        for (const [key, change] of Object.entries(changes)) {
-          const currEntry = targetEntries[key];
-          if (!currEntry) continue;
-          if (Array.isArray(currEntry)) {
-            currEntry.forEach(e => Object.assign(e, change));
-          } else Object.assign(currEntry, change);
-        }
-        Object.assign(transformMap, changes);
+        targetEntry.entries = transformSubEntries(targetEntry, context, transform);
+        // for (const [key, change] of Object.entries(changes)) {
+        //   const currEntry = targetEntries[key];
+        //   if (!currEntry) continue;
+        //   if (Array.isArray(currEntry)) {
+        //     currEntry.forEach(e => Object.assign(e, change));
+        //   } else Object.assign(currEntry, change);
+        // }
+        // Object.assign(transformMap, changes);
       }
       insertEntry(targetEntries, targetEntry);
     }
@@ -138,20 +139,25 @@ function transformEntries(sourceEntries, context, transform) {
 
 /**
  * 
- * @param {ApiEntry}    targetEntry 
- * @param {ApiContext}  context 
+ * @param {ApiEntry}      targetEntry 
+ * @param {ApiContext}    context 
+ * @param {FileTransform} transform 
  */
-function transformSubEntries(targetEntry, context) {
+function transformSubEntries(targetEntry, context, transform) {
   /** @type {ApiEntries} */
-  const transformMap = {};
+  const entries = {};
+  const type = targetEntry.name;
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
-    const nameChange = checkNameChange(entry, transformName(key, context), targetEntry.name);
+    const nameChange = checkNameChange(entry, transformName(key, context), type);
     if (nameChange) {
-      delete targetEntry.entries[key];
-      transformMap[key] = nameChange;
+      insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
+      nameChange.name = `${type}.${nameChange.name}`;
+      transform.transform[key] = nameChange;
+    } else {
+      insertEntry(entries, entry, key);
     }
   }
-  return transformMap;
+  return entries;
 }
 
 /**
@@ -198,19 +204,17 @@ function validateEntries(targetEntries) {
  * @param {ApiEntry|ApiEntry[]} entry 
  * @param {string} name 
  * @param {string} typeName 
- * @returns {ApiEntry|ApiEntry[]|null}
+ * @returns {ApiEntry}
  */
 function checkNameChange(entry, name, typeName) {
   if (Array.isArray(entry)) {
-    return entry
-      .map(e => checkNameChange(entry, name, typeName))
-      .filter(a => a != null);
+    return null;
   }
-  if (entry === "function") return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
-  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "", static: false };
+  if (entry === "function") return { name: makeNaturalName(name, typeName) };
+  if (entry === "ctor") return { name: typeName, type: "", static: false };
   if (entry.kind && entry.kind !== "function") return null;
   if (entry.parameters) return null;
-  return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };
+  return { ...entry, name: entry.name || makeNaturalName(name, typeName) };
 }
 
 /**

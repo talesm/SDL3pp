@@ -4411,8 +4411,8 @@ struct IConvBase : T
    * @sa SDL_iconv_string
    **/
   inline IConvBase(StringParam tocode, StringParam fromcode)
+    : T(SDL_iconv_open(tocode.str(), fromcode.str()))
   {
-    return SDL_iconv_open(tocode.str(), fromcode.str());
   }
 
   /**
