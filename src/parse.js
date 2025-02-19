@@ -477,10 +477,11 @@ function tokenize(lines) {
       }
       token.value = m[3];
       const typeWords = m[1]?.trim()?.split(/\s+/) ?? [];
+      let type = "";
       for (let i = 0; i < typeWords.length; i++) {
         const word = typeWords[i];
         if (!memberSpecifiers.has(word)) {
-          typeWords.splice(0, i);
+          type = normalizeType(typeWords.slice(i).join(" "));
           break;
         }
         switch (word) {
@@ -488,9 +489,8 @@ function tokenize(lines) {
           case "static": token.static = true;
         }
       }
+      token.type = type;
 
-      token.type = normalizeType(typeWords.join(' '));
-      let inline = false;
       if (m[4]) {
         token.kind = "function";
         let parameters = member.slice(m[0].length);

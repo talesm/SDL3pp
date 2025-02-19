@@ -15,6 +15,22 @@
               "name": "T::T",
               "kind": "alias"
             },
+            "Type1Base": {
+              "doc": "",
+              "name": "Type1Base",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "var1",
+                  "type": "int"
+                },
+                {
+                  "name": "var2",
+                  "type": "const char *"
+                }
+              ]
+            },
             "Check": {
               "doc": "",
               "name": "Check",

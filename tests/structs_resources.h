@@ -10,6 +10,11 @@ struct Type1Base : T
 {
   using T::T;
 
+  inline Type1Base(int var1, const char* var2)
+  {
+    // return MyCreateType1(var1, var2);
+  }
+
   bool Check() const { return MyType1Check(this); }
 
   int GetVar1() const { return MyGetType1Var1(this); }

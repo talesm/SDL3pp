@@ -22,6 +22,8 @@ const char* MyType1GetVar2(const MyType1* value);
 
 void MyType1SetVar2(MyType1* value, const char* var2);
 
+MyType1* MyCreateType1(int var1, const char* var2);
+
 using MyByte = unsigned char;
 
 typedef struct MyType2

@@ -10,16 +10,21 @@
     "renameRules": [
       {
         "pattern": "^([^.]*)",
-        "replacement": "$1_extends"
+        "replacement": "$1_resources"
       }
     ],
     "files": {
       "structs.h": {
         "transform": {
           "MyType1": {
-            "type": "MyType1",
+            "name": "Type1Base",
+            "type": "T",
             "kind": "struct",
             "entries": {
+              "T::T": {
+                "kind": "alias"
+              },
+              "MyCreateType1": "ctor",
               "MyType1Check": "function",
               "MyGetType1Var1": "function",
               "MySetType1Var1": "function",

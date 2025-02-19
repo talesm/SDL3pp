@@ -78,6 +78,22 @@
             }
           ]
         },
+        "CreateType1": {
+          "doc": "",
+          "name": "CreateType1",
+          "kind": "function",
+          "type": "Type1 *",
+          "parameters": [
+            {
+              "name": "var1",
+              "type": "int"
+            },
+            {
+              "name": "var2",
+              "type": "const char *"
+            }
+          ]
+        },
         "Byte": {
           "doc": "",
           "name": "Byte",

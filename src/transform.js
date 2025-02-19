@@ -78,6 +78,7 @@ function transformEntries(sourceEntries, context, transform) {
   const defWhitelist = new Set(transform.includeDefs ?? []);
   const blacklist = new Set(transform.ignoreEntries ?? []);
   const transformMap = transform.transform ?? {};
+  if (!transform.transform) transform.transform = transformMap;
 
   insertEntry(targetEntries, transform.includeAfter?.__begin ?? []);
 
@@ -114,15 +115,15 @@ function transformEntries(sourceEntries, context, transform) {
         context.typeMap[`const ${type} *`] = `const ${targetName} *`;
       }
       if (targetEntry.entries) {
-        const changes = transformSubEntries(targetEntry, context);
-        for (const [key, change] of Object.entries(changes)) {
-          const currEntry = targetEntries[key];
-          if (!currEntry) continue;
-          if (Array.isArray(currEntry)) {
-            currEntry.forEach(e => Object.assign(e, change));
-          } else Object.assign(currEntry, change);
-        }
-        Object.assign(transformMap, changes);
+        targetEntry.entries = transformSubEntries(targetEntry, context, transform);
+        // for (const [key, change] of Object.entries(changes)) {
+        //   const currEntry = targetEntries[key];
+        //   if (!currEntry) continue;
+        //   if (Array.isArray(currEntry)) {
+        //     currEntry.forEach(e => Object.assign(e, change));
+        //   } else Object.assign(currEntry, change);
+        // }
+        // Object.assign(transformMap, changes);
       }
       insertEntry(targetEntries, targetEntry);
     }
@@ -138,20 +139,28 @@ function transformEntries(sourceEntries, context, transform) {
 
 /**
  * 
- * @param {ApiEntry}    targetEntry 
- * @param {ApiContext}  context 
+ * @param {ApiEntry}      targetEntry 
+ * @param {ApiContext}    context 
+ * @param {FileTransform} transform 
  */
-function transformSubEntries(targetEntry, context) {
+function transformSubEntries(targetEntry, context, transform) {
   /** @type {ApiEntries} */
-  const transformMap = {};
+  const entries = {};
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     const nameChange = checkNameChange(entry, transformName(key, context), targetEntry.name);
-    if (nameChange) {
-      delete targetEntry.entries[key];
-      transformMap[key] = nameChange;
+    if (!nameChange) {
+      if (Array.isArray(entry)) {
+        entry.forEach(e => e.name = e.name || key);
+      } else if (!entry.name) {
+        entry.name = key;
+      }
+      insertEntry(entries, entry);
+    } else {
+      insertEntry(entries, nameChange);
+      transform.transform[key] = nameChange;
     }
   }
-  return transformMap;
+  return entries;
 }
 
 /**
@@ -207,7 +216,7 @@ function checkNameChange(entry, name, typeName) {
       .filter(a => a != null);
   }
   if (entry === "function") return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
-  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "" };
+  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "", static: false };
   if (entry.kind && entry.kind !== "function") return null;
   if (entry.parameters) return null;
   return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };
@@ -245,7 +254,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   if (type.includes(typeName)) {
     parameters.shift();
     if (type.startsWith("const ")) entry.immutable = true;
-  } else {
+  } else if (entry.static !== false) {
     entry.static = true;
   }
 }

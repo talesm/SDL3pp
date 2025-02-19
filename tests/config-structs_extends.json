@@ -15,6 +15,9 @@
     ],
     "files": {
       "structs.h": {
+        "ignoreEntries": [
+          "MyCreateType1"
+        ],
         "transform": {
           "MyType1": {
             "type": "MyType1",

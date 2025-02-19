@@ -122,6 +122,7 @@ test("structs transform resources", () => {
               template: [{ type: "class", name: "T" }],
               entries: {
                 "T::T": { kind: "alias", name: "T::T" },
+                MyCreateType1: "ctor",
                 MyType1Check: "function",
                 MyGetType1Var1: "function",
                 MySetType1Var1: "function",
