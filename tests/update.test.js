@@ -153,7 +153,7 @@ test("struct's fields is added correctly on empty struct", () => {
   expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
 });
 test("struct's fields is added correctly on non-empty struct", () => {
-  const originalContent = ["struct S", "{", "  int a;", "", "};", ""];
+  const originalContent = ["struct S", "{", "  int a;", "};", ""];
   const originalApi = parseContent("structs.h", originalContent);
   const modifiedContent = ["struct S", "{", "  float a;", "", "};", ""];
   const changes = updateContent(modifiedContent, originalApi);

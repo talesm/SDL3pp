@@ -1,3 +1,4 @@
+const { system } = require("./utils");
 
 const ignorePrefixes = [
   'void *alloca',
@@ -96,10 +97,9 @@ function tokenize(lines) {
     } else if (m = /^typedef\s+(struct|enum|union)\s+(\w+)?$/.exec(line)) {
       token.kind = m[1];
       token.value = m[2];
-      if (!line.endsWith("{")) i++;
       if (token.kind != "struct") {
-        i = ignoreBody(lines, i + 1, token.spaces);
-      }
+        i = ignoreBody(lines, i, token.spaces);
+      } else if (!line.endsWith("{")) i++;
     } else if (m = /^struct\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.value = m[1];
@@ -189,9 +189,12 @@ function tokenize(lines) {
         token.kind = "var";
         inline = member.indexOf(';') === -1;
       }
-      if (lines[i + 1].endsWith("{")) ++i;
-      i = ignoreBody(lines, i + 1, token.spaces);
-      if (!lines[i].endsWith("}")) i--;
+      i = ignoreBody(lines, i, token.spaces);
+    }
+    for (let j = i + 1; j < lines.length - 1; j++) {
+      if (!lines[j].trim()) {
+        i++;
+      } else break;
     }
     token.end = i + 2;
     if (token.end - token.begin > 15 && token.kind != "doc") {
@@ -209,11 +212,26 @@ function tokenize(lines) {
  * @param {number} spaces 
  */
 function ignoreBody(lines, begin, spaces) {
+  if (!lines[begin].endsWith("{")) {
+    for (let i = begin + 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.startsWith("{")) {
+        if (line.endsWith("}")) return i;
+        begin = i;
+        break;
+      }
+      if (!line.startsWith(":") && !line.startsWith(",")) {
+        return begin;
+      }
+    }
+  } else begin++;
   const spaceRegex = /^\s+/;
-  for (let i = begin; i < lines.length; i++) {
-    const indentation = spaceRegex.exec(lines[i])?.[0]?.length ?? 0;
+  for (let i = begin + 1; i < lines.length; i++) {
+    const line = lines[i];
+    const indentation = spaceRegex.exec(line)?.[0]?.length ?? 0;
     if (indentation <= spaces) {
-      return i;
+      if (line.slice(indentation).startsWith("}")) return i;
+      return i - 1;
     }
   }
   return lines.length;
