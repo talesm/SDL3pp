@@ -146,18 +146,15 @@ function transformEntries(sourceEntries, context, transform) {
 function transformSubEntries(targetEntry, context, transform) {
   /** @type {ApiEntries} */
   const entries = {};
+  const type = targetEntry.name;
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
-    const nameChange = checkNameChange(entry, transformName(key, context), targetEntry.name);
-    if (!nameChange) {
-      if (Array.isArray(entry)) {
-        entry.forEach(e => e.name = e.name || key);
-      } else if (!entry.name) {
-        entry.name = key;
-      }
-      insertEntry(entries, entry);
-    } else {
-      insertEntry(entries, nameChange);
+    const nameChange = checkNameChange(entry, transformName(key, context), type);
+    if (nameChange) {
+      insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
+      nameChange.name = `${type}.${nameChange.name}`;
       transform.transform[key] = nameChange;
+    } else {
+      insertEntry(entries, entry, key);
     }
   }
   return entries;
@@ -207,19 +204,17 @@ function validateEntries(targetEntries) {
  * @param {ApiEntry|ApiEntry[]} entry 
  * @param {string} name 
  * @param {string} typeName 
- * @returns {ApiEntry|ApiEntry[]|null}
+ * @returns {ApiEntry}
  */
 function checkNameChange(entry, name, typeName) {
   if (Array.isArray(entry)) {
-    return entry
-      .map(e => checkNameChange(entry, name, typeName))
-      .filter(a => a != null);
+    return null;
   }
-  if (entry === "function") return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
-  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "", static: false };
+  if (entry === "function") return { name: makeNaturalName(name, typeName) };
+  if (entry === "ctor") return { name: typeName, type: "", static: false };
   if (entry.kind && entry.kind !== "function") return null;
   if (entry.parameters) return null;
-  return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };
+  return { ...entry, name: entry.name || makeNaturalName(name, typeName) };
 }
 
 /**

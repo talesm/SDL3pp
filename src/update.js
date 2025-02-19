@@ -191,7 +191,7 @@ function checkEntryChanged(sourceEntry, targetEntry) {
 
 function checkValueChanged(sourceValue, targetValue) {
   if (typeof targetValue === "undefined") return false;
-  if (typeof sourceValue === "undefined") return true;
+  if (typeof sourceValue === "undefined") return !!targetValue;
   if (Array.isArray(targetValue)) {
     if (!Array.isArray(sourceValue) || targetValue.length !== sourceValue.length) return true;
     for (let i = 0; i < sourceValue.length; i++) {
