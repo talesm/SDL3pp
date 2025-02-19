@@ -57,7 +57,7 @@
                 "name": "operator()",
                 "kind": "function",
                 "type": "void",
-                "const": true,
+                "immutable": true,
                 "parameters": [
                   {
                     "type": "SDL_Environment *",
@@ -96,7 +96,7 @@
                 "name": "operator()",
                 "kind": "function",
                 "type": "void",
-                "const": true,
+                "immutable": true,
                 "parameters": [
                   {
                     "type": "SDL_iconv_t",

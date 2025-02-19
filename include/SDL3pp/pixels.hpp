@@ -4,6 +4,7 @@
 #include <span>
 #include <SDL3/SDL_pixels.h>
 #include "objectWrapper.hpp"
+#include "stdinc.hpp"
 
 namespace SDL {
 

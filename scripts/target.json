@@ -30,7 +30,7 @@
               "name": "operator()",
               "kind": "function",
               "type": "void",
-              "const": true,
+              "immutable": true,
               "parameters": [
                 {
                   "type": "SDL_Environment *",
@@ -74,7 +74,7 @@
               "name": "operator()",
               "kind": "function",
               "type": "void",
-              "const": true,
+              "immutable": true,
               "parameters": [
                 {
                   "type": "SDL_iconv_t",
@@ -2715,7 +2715,7 @@
                 }
               ],
               "sourceName": "SDL_iconv_open",
-              "static": true
+              "static": false
             },
             "iconv": {
               "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of succesful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n@param cd The character set conversion context, created in\n          SDL_iconv_open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success, or a negative error code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv_string",

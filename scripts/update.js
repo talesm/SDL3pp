@@ -115,7 +115,7 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
       const sourceEntriesCount = Object.keys(sourceEntry.entries ?? {})?.length ?? 0;
       const targetEntriesCount = Object.keys(targetEntry.entries ?? {})?.length ?? 0;
       if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
-        system.log(`${targetName} changed ${change} from ${begin} to ${sourceEntryEnd}`);
+        system.log(`${targetName} changed "${change}" from ${begin} to ${sourceEntryEnd}`);
         changes.push({
           begin,
           end: sourceEntryEnd,
@@ -181,24 +181,32 @@ function getEnd(entry) {
  * @param {ApiEntry} targetEntry 
  */
 function checkEntryChanged(sourceEntry, targetEntry) {
-  if (sourceEntry.kind != targetEntry.kind) return 'kind';
-  if (targetEntry.type && sourceEntry.type != targetEntry.type) return "type";
-  if (targetEntry.parameters) {
-    const sourceParameters = sourceEntry.parameters;
-    const targetParameters = targetEntry.parameters;
-    if (sourceEntry.parameters?.length != targetEntry.parameters.length) return "parameters";
-    for (let i = 0; i < targetParameters.length; i++) {
-      const targetParameter = targetParameters[i];
-      const sourceParameter = sourceParameters[i];
-      if (typeof targetParameter == "string") {
-        if (targetParameter !== sourceParameter) return "parameters";
-      } else if (targetParameter.name != sourceParameter?.name
-        || targetParameter.type != sourceParameter?.type) {
-        return "parameters";
-      }
-    }
+  // TODO Check if not a array or string
+  const keys = Object.keys(targetEntry).filter(k => k !== "doc" && k !== "entries" && k !== "sourceName");
+  for (const key of keys) {
+    if (checkValueChanged(sourceEntry[key], targetEntry[key])) return key;
   }
   return null;
+}
+
+function checkValueChanged(sourceValue, targetValue) {
+  if (typeof sourceValue === "undefined") return true;
+  if (Array.isArray(targetValue)) {
+    if (!Array.isArray(sourceValue) || targetValue.length !== sourceValue.length) return true;
+    for (let i = 0; i < sourceValue.length; i++) {
+      if (checkValueChanged(sourceValue[i], targetValue[i])) return true;
+    }
+  } else if (targetValue === true) {
+    if (!sourceValue) return true;
+  } else if (targetValue === null || typeof targetValue !== "object") {
+    if (sourceValue !== targetValue) return true;
+  } else if (sourceValue != null) {
+    const keys = Object.keys(targetValue);
+    for (const key of keys) {
+      if (checkValueChanged(targetValue[key], sourceValue[key])) return true;
+    }
+  } else return true;
+  return false;
 }
 
 /**

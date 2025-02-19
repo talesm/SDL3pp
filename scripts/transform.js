@@ -207,7 +207,7 @@ function checkNameChange(entry, name, typeName) {
       .filter(a => a != null);
   }
   if (entry === "function") return { name: `${typeName}.${makeNaturalName(name, typeName)}` };
-  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "" };
+  if (entry === "ctor") return { name: `${typeName}.${typeName}`, type: "", static: false };
   if (entry.kind && entry.kind !== "function") return null;
   if (entry.parameters) return null;
   return { ...entry, name: `${typeName}.${entry.name || makeNaturalName(name, typeName)}` };
@@ -245,7 +245,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   if (type.includes(typeName)) {
     parameters.shift();
     if (type.startsWith("const ")) entry.immutable = true;
-  } else {
+  } else if (entry.static !== false) {
     entry.static = true;
   }
 }

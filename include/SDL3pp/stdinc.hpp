@@ -41,7 +41,7 @@ using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 template<>
 struct ObjectDeleter<SDL_Environment>
 {
-  inline void operator()(SDL_Environment* environment);
+  inline void operator()(SDL_Environment* environment) const;
 };
 
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
@@ -55,7 +55,7 @@ using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
 template<>
 struct ObjectDeleter<SDL_iconv_data_t>
 {
-  inline void operator()(SDL_iconv_t iconv);
+  inline void operator()(SDL_iconv_t iconv) const;
 };
 
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
@@ -4410,7 +4410,7 @@ struct IConvBase : T
    * @sa SDL_iconv_close
    * @sa SDL_iconv_string
    **/
-  static inline IConvBase(StringParam tocode, StringParam fromcode)
+  inline IConvBase(StringParam tocode, StringParam fromcode)
   {
     return SDL_iconv_open(tocode.str(), fromcode.str());
   }
@@ -4571,12 +4571,12 @@ using FunctionPointer = SDL_FunctionPointer;
 #pragma region impl
 
 inline void ObjectDeleter<SDL_Environment>::operator()(
-  SDL_Environment* environment)
+  SDL_Environment* environment) const
 {
   DestroyEnvironment(environment);
 }
 
-inline void ObjectDeleter<SDL_iconv_data_t>::operator()(SDL_iconv_t iconv)
+inline void ObjectDeleter<SDL_iconv_data_t>::operator()(SDL_iconv_t iconv) const
 {
   iconv_close(iconv);
 }
