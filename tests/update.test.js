@@ -11,18 +11,18 @@ test("updateChanges", () => {
 
 test("empty.h loopback", () => {
   const originalContent = readLinesSync("tests/empty.h");
-  const api = parseContent("empty.h", originalContent);
+  const originalApi = parseContent("empty.h", originalContent);
   const modifiedContent = [...originalContent];
-  const changes = updateContent(modifiedContent, api);
+  const changes = updateContent(modifiedContent, originalApi);
   expect(modifiedContent).toEqual(originalContent);
   expect(changes).toBe(0);
 });
 
 test("functions.h loopback", () => {
   const originalContent = readLinesSync("tests/functions.h");
-  const api = parseContent("functions.h", originalContent);
+  const originalApi = parseContent("functions.h", originalContent);
   const modifiedContent = [...originalContent];
-  const changes = updateContent(modifiedContent, api);
+  const changes = updateContent(modifiedContent, originalApi);
   expect(modifiedContent).toEqual(originalContent);
   expect(changes).toBe(0);
 });
@@ -39,9 +39,9 @@ test("functions.h over empty file", () => {
 
 test("structs.h loopback", () => {
   const originalContent = readLinesSync("tests/structs.h");
-  const api = parseContent("structs.h", originalContent);
+  const originalApi = parseContent("structs.h", originalContent);
   const modifiedContent = [...originalContent];
-  const changes = updateContent(modifiedContent, api);
+  const changes = updateContent(modifiedContent, originalApi);
   expect(modifiedContent).toEqual(originalContent);
   expect(changes).toBe(0);
 });
@@ -58,9 +58,9 @@ test("structs.h over empty file", () => {
 
 test("structs_aliases.h loopback", () => {
   const originalContent = readLinesSync("tests/structs_aliases.h");
-  const api = parseContent("structs_aliases.h", originalContent);
+  const originalApi = parseContent("structs_aliases.h", originalContent);
   const modifiedContent = [...originalContent];
-  const changes = updateContent(modifiedContent, api);
+  const changes = updateContent(modifiedContent, originalApi);
   expect(modifiedContent).toEqual(originalContent);
   expect(changes).toBe(0);
 });
@@ -77,9 +77,9 @@ test("structs_aliases.h over empty file", () => {
 
 test("structs_extends.h loopback", () => {
   const originalContent = readLinesSync("tests/structs_extends.h");
-  const api = parseContent("structs_extends.h", originalContent);
+  const originalApi = parseContent("structs_extends.h", originalContent);
   const modifiedContent = [...originalContent];
-  const changes = updateContent(modifiedContent, api);
+  const changes = updateContent(modifiedContent, originalApi);
   expect(modifiedContent).toEqual(originalContent);
   expect(changes).toBe(0);
 });
@@ -96,9 +96,9 @@ test("structs_extends.h over empty file", () => {
 
 test("structs_resources.h loopback", () => {
   const originalContent = readLinesSync("tests/structs_resources.h");
-  const api = parseContent("structs_resources.h", originalContent);
+  const originalApi = parseContent("structs_resources.h", originalContent);
   const modifiedContent = [...originalContent];
-  const changes = updateContent(modifiedContent, api);
+  const changes = updateContent(modifiedContent, originalApi);
   expect(modifiedContent).toEqual(originalContent);
   expect(changes).toBe(0);
 });
@@ -158,7 +158,6 @@ test("struct's fields is added correctly on non-empty struct", () => {
   const modifiedContent = ["struct S", "{", "  float a;", "", "};", ""];
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
-  console.log(modifiedContent.join('\n'));
   const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));
   expect(modifiedApi).toEqual(originalApi);
   expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());

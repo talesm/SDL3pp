@@ -306,7 +306,6 @@ function transform(args) {
  */
 function mergeTransformInto(destiny, source) {
   if (typeof source.sourceApi == "string") {
-    console.log(source.sourceApi);
     source.sourceApi = readJSONSync(source.sourceApi);
   }
   if (typeof source.transform == "string") {
