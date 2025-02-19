@@ -88,3 +88,22 @@
  * @prop {RegExp} pattern
  * @prop {string} replacement
  */
+
+
+/**
+ * @typedef {ApiEntryKind|"doc"|"namespace"|"template"|"endStruct"} FileTokenKind
+ */
+
+/**
+ * @typedef {object} FileToken
+ * @property {string}         value
+ * @property {FileTokenKind}  kind
+ * @property {string=}        parameters
+ * @property {string=}        type
+ * @property {boolean=}       constexpr
+ * @property {boolean=}       immutable
+ * @property {boolean=}       static
+ * @property {number}         begin
+ * @property {number}         end
+ * @property {number}         spaces
+ */
