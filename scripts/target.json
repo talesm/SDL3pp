@@ -48,6 +48,17 @@
           "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>",
           "doc": ""
         },
+        "IConvBase-forward": {
+          "name": "IConvBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ],
+          "doc": ""
+        },
         "IConvRef": {
           "name": "IConvRef",
           "kind": "alias",

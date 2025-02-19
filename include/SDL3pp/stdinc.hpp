@@ -41,20 +41,21 @@ using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 template<>
 struct ObjectDeleter<SDL_Environment>
 {
-  inline void operator()(SDL_Environment* environment)
-  {
-    SDL_DestroyEnvironment(environment);
-  }
+  inline void operator()(SDL_Environment* environment);
 };
 
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
+
+// Forward decl
+template<class T>
+struct IConvBase;
 
 using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
 
 template<>
 struct ObjectDeleter<SDL_iconv_data_t>
 {
-  inline void operator()(SDL_iconv_t iconv) { SDL_iconv_close(iconv); }
+  inline void operator()(SDL_iconv_t iconv);
 };
 
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
@@ -4411,7 +4412,7 @@ struct IConvBase : T
    **/
   static inline IConvBase(StringParam tocode, StringParam fromcode)
   {
-    return SDL_iconv_open(tocode, fromcode);
+    return SDL_iconv_open(tocode.str(), fromcode.str());
   }
 
   /**
@@ -4455,7 +4456,7 @@ struct IConvBase : T
                       char** outbuf,
                       size_t* outbytesleft)
   {
-    return SDL_iconv(inbuf, inbytesleft, outbuf, outbytesleft);
+    return SDL_iconv(T::Get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
 };
 
@@ -4566,6 +4567,21 @@ inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
  * @since This datatype is available since SDL 3.2.0.
  **/
 using FunctionPointer = SDL_FunctionPointer;
+
+#pragma region impl
+
+inline void ObjectDeleter<SDL_Environment>::operator()(
+  SDL_Environment* environment)
+{
+  DestroyEnvironment(environment);
+}
+
+inline void ObjectDeleter<SDL_iconv_data_t>::operator()(SDL_iconv_t iconv)
+{
+  iconv_close(iconv);
+}
+
+#pragma endregion impl
 
 } // namespace SDL
 

@@ -73,7 +73,7 @@
             "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>"
           },
           {
-            "name": "EnvironmentBase",
+            "name": "IConvBase",
             "kind": "forward",
             "template": [
               {
