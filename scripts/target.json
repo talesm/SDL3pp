@@ -343,6 +343,82 @@
               "kind": "alias",
               "name": "T::T",
               "doc": ""
+            },
+            "EnvironmentBase": {
+              "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@returns a pointer to the new environment or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable\n@sa SDL_DestroyEnvironment",
+              "name": "EnvironmentBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "populated",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "SDL_CreateEnvironment",
+              "static": false
+            },
+            "GetVariable": {
+              "doc": "Get the value of a variable in the environment.\n\n@param env the environment to query.\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
+              "name": "GetVariable",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_GetEnvironmentVariable"
+            },
+            "GetVariables": {
+              "doc": "Get all variables in the environment.\n\n@param env the environment to query.\n@returns a NULL terminated array of pointers to environment variables in\n         the form \"variable=value\" or NULL on failure; call SDL_GetError()\n         for more information. This is a single allocation that should be\n         freed with SDL_free() when it is no longer needed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
+              "name": "GetVariables",
+              "kind": "function",
+              "type": "char **",
+              "parameters": [],
+              "sourceName": "SDL_GetEnvironmentVariables"
+            },
+            "GetVariableCount": {
+              "kind": "function",
+              "type": "Uint64",
+              "parameters": [],
+              "name": "GetVariableCount",
+              "doc": ""
+            },
+            "SetVariable": {
+              "doc": "Set the value of a variable in the environment.\n\n@param env the environment to modify.\n@param name the name of the variable to set.\n@param value the value of the variable to set.\n@param overwrite true to overwrite the variable if it exists, false to\n                 return success without setting the variable if it already\n                 exists.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_UnsetEnvironmentVariable",
+              "name": "SetVariable",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "value",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "overwrite",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "SDL_SetEnvironmentVariable"
+            },
+            "UnsetVariable": {
+              "doc": "Clear a variable from the environment.\n\n@param env the environment to modify.\n@param name the name of the variable to unset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
+              "name": "UnsetVariable",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_UnsetEnvironmentVariable"
             }
           }
         },
@@ -353,91 +429,6 @@
           "type": "EnvironmentRef",
           "parameters": [],
           "sourceName": "SDL_GetEnvironment"
-        },
-        "CreateEnvironment": {
-          "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@returns a pointer to the new environment or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable\n@sa SDL_DestroyEnvironment",
-          "name": "CreateEnvironment",
-          "kind": "function",
-          "type": "Environment",
-          "parameters": [
-            {
-              "name": "populated",
-              "type": "bool"
-            }
-          ],
-          "sourceName": "SDL_CreateEnvironment"
-        },
-        "GetEnvironmentVariable": {
-          "doc": "Get the value of a variable in the environment.\n\n@param env the environment to query.\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
-          "name": "GetEnvironmentVariable",
-          "kind": "function",
-          "type": "const char *",
-          "parameters": [
-            {
-              "name": "env",
-              "type": "EnvironmentRef"
-            },
-            {
-              "name": "name",
-              "type": "StringParam"
-            }
-          ],
-          "sourceName": "SDL_GetEnvironmentVariable"
-        },
-        "GetEnvironmentVariables": {
-          "doc": "Get all variables in the environment.\n\n@param env the environment to query.\n@returns a NULL terminated array of pointers to environment variables in\n         the form \"variable=value\" or NULL on failure; call SDL_GetError()\n         for more information. This is a single allocation that should be\n         freed with SDL_free() when it is no longer needed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
-          "name": "GetEnvironmentVariables",
-          "kind": "function",
-          "type": "char **",
-          "parameters": [
-            {
-              "name": "env",
-              "type": "EnvironmentRef"
-            }
-          ],
-          "sourceName": "SDL_GetEnvironmentVariables"
-        },
-        "SetEnvironmentVariable": {
-          "doc": "Set the value of a variable in the environment.\n\n@param env the environment to modify.\n@param name the name of the variable to set.\n@param value the value of the variable to set.\n@param overwrite true to overwrite the variable if it exists, false to\n                 return success without setting the variable if it already\n                 exists.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_UnsetEnvironmentVariable",
-          "name": "SetEnvironmentVariable",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "env",
-              "type": "EnvironmentRef"
-            },
-            {
-              "name": "name",
-              "type": "StringParam"
-            },
-            {
-              "name": "value",
-              "type": "StringParam"
-            },
-            {
-              "name": "overwrite",
-              "type": "bool"
-            }
-          ],
-          "sourceName": "SDL_SetEnvironmentVariable"
-        },
-        "UnsetEnvironmentVariable": {
-          "doc": "Clear a variable from the environment.\n\n@param env the environment to modify.\n@param name the name of the variable to unset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
-          "name": "UnsetEnvironmentVariable",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "env",
-              "type": "EnvironmentRef"
-            },
-            {
-              "name": "name",
-              "type": "StringParam"
-            }
-          ],
-          "sourceName": "SDL_UnsetEnvironmentVariable"
         },
         "DestroyEnvironment": {
           "doc": "Destroy a set of environment variables.\n\n@param env the environment to destroy.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateEnvironment",

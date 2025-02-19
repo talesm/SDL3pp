@@ -437,8 +437,139 @@ template<class T>
 struct EnvironmentBase : T
 {
   using T::T;
-};
 
+  /**
+   * Create a set of environment variables
+   *
+   * @param populated true to initialize it from the C runtime environment,
+   *                  false to create an empty environment.
+   * @returns a pointer to the new environment or NULL on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety If `populated` is false, it is safe to call this function
+   *               from any thread, otherwise it is safe if no other threads are
+   *               calling setenv() or unsetenv()
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetEnvironmentVariable
+   * @sa SDL_GetEnvironmentVariables
+   * @sa SDL_SetEnvironmentVariable
+   * @sa SDL_UnsetEnvironmentVariable
+   * @sa SDL_DestroyEnvironment
+   **/
+  inline EnvironmentBase(bool populated)
+    : T(SDL_CreateEnvironment(populated))
+  {
+  }
+
+  /**
+   * Get the value of a variable in the environment.
+   *
+   * @param env the environment to query.
+   * @param name the name of the variable to get.
+   * @returns a pointer to the value of the variable or NULL if it can't be
+   *          found.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetEnvironment
+   * @sa SDL_CreateEnvironment
+   * @sa SDL_GetEnvironmentVariables
+   * @sa SDL_SetEnvironmentVariable
+   * @sa SDL_UnsetEnvironmentVariable
+   **/
+  inline const char* GetVariable(StringParam name)
+  {
+    return SDL_GetEnvironmentVariable(T::Get(), name);
+  }
+
+  /**
+   * Get all variables in the environment.
+   *
+   * @param env the environment to query.
+   * @returns a NULL terminated array of pointers to environment variables in
+   *          the form "variable=value" or NULL on failure; call SDL_GetError()
+   *          for more information. This is a single allocation that should be
+   *          freed with SDL_free() when it is no longer needed.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetEnvironment
+   * @sa SDL_CreateEnvironment
+   * @sa SDL_GetEnvironmentVariables
+   * @sa SDL_SetEnvironmentVariable
+   * @sa SDL_UnsetEnvironmentVariable
+   **/
+  inline char** GetVariables() { return SDL_GetEnvironmentVariables(T::Get()); }
+
+  /**
+   * @brief Get the Variables count
+   *
+   * @return Uint64
+   */
+  inline Uint64 GetVariableCount()
+  {
+    Uint64 count = 0;
+    for (auto vars = GetVariables(); vars != nullptr; ++vars) count += 1;
+    return count;
+  }
+
+  /**
+   * Set the value of a variable in the environment.
+   *
+   * @param env the environment to modify.
+   * @param name the name of the variable to set.
+   * @param value the value of the variable to set.
+   * @param overwrite true to overwrite the variable if it exists, false to
+   *                  return success without setting the variable if it already
+   *                  exists.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetEnvironment
+   * @sa SDL_CreateEnvironment
+   * @sa SDL_GetEnvironmentVariable
+   * @sa SDL_GetEnvironmentVariables
+   * @sa SDL_UnsetEnvironmentVariable
+   **/
+  inline bool SetVariable(StringParam name, StringParam value, bool overwrite)
+  {
+    return SDL_SetEnvironmentVariable(T::Get(), name, value, overwrite);
+  }
+
+  /**
+   * Clear a variable from the environment.
+   *
+   * @param env the environment to modify.
+   * @param name the name of the variable to unset.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetEnvironment
+   * @sa SDL_CreateEnvironment
+   * @sa SDL_GetEnvironmentVariable
+   * @sa SDL_GetEnvironmentVariables
+   * @sa SDL_SetEnvironmentVariable
+   * @sa SDL_UnsetEnvironmentVariable
+   **/
+  inline bool UnsetVariable(StringParam name)
+  {
+    return SDL_UnsetEnvironmentVariable(T::Get(), name);
+  }
+};
 /**
  * Get the process environment.
  *
@@ -461,132 +592,6 @@ struct EnvironmentBase : T
  * @sa SDL_UnsetEnvironmentVariable
  **/
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
-
-/**
- * Create a set of environment variables
- *
- * @param populated true to initialize it from the C runtime environment,
- *                  false to create an empty environment.
- * @returns a pointer to the new environment or NULL on failure; call
- *          SDL_GetError() for more information.
- *
- * @threadsafety If `populated` is false, it is safe to call this function
- *               from any thread, otherwise it is safe if no other threads are
- *               calling setenv() or unsetenv()
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetEnvironmentVariable
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_SetEnvironmentVariable
- * @sa SDL_UnsetEnvironmentVariable
- * @sa SDL_DestroyEnvironment
- **/
-inline Environment CreateEnvironment(bool populated)
-{
-  return Environment{SDL_CreateEnvironment(populated)};
-}
-
-/**
- * Get the value of a variable in the environment.
- *
- * @param env the environment to query.
- * @param name the name of the variable to get.
- * @returns a pointer to the value of the variable or NULL if it can't be
- *          found.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetEnvironment
- * @sa SDL_CreateEnvironment
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_SetEnvironmentVariable
- * @sa SDL_UnsetEnvironmentVariable
- **/
-inline const char* GetEnvironmentVariable(EnvironmentRef env, StringParam name)
-{
-  return SDL_GetEnvironmentVariable(env.Get(), name);
-}
-
-/**
- * Get all variables in the environment.
- *
- * @param env the environment to query.
- * @returns a NULL terminated array of pointers to environment variables in
- *          the form "variable=value" or NULL on failure; call SDL_GetError()
- *          for more information. This is a single allocation that should be
- *          freed with SDL_free() when it is no longer needed.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetEnvironment
- * @sa SDL_CreateEnvironment
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_SetEnvironmentVariable
- * @sa SDL_UnsetEnvironmentVariable
- **/
-inline char** GetEnvironmentVariables(EnvironmentRef env)
-{
-  return SDL_GetEnvironmentVariables(env.Get());
-}
-
-/**
- * Set the value of a variable in the environment.
- *
- * @param env the environment to modify.
- * @param name the name of the variable to set.
- * @param value the value of the variable to set.
- * @param overwrite true to overwrite the variable if it exists, false to
- *                  return success without setting the variable if it already
- *                  exists.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetEnvironment
- * @sa SDL_CreateEnvironment
- * @sa SDL_GetEnvironmentVariable
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_UnsetEnvironmentVariable
- **/
-inline bool SetEnvironmentVariable(EnvironmentRef env,
-                                   StringParam name,
-                                   StringParam value,
-                                   bool overwrite)
-{
-  return SDL_SetEnvironmentVariable(env.Get(), name, value, overwrite);
-}
-
-/**
- * Clear a variable from the environment.
- *
- * @param env the environment to modify.
- * @param name the name of the variable to unset.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetEnvironment
- * @sa SDL_CreateEnvironment
- * @sa SDL_GetEnvironmentVariable
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_SetEnvironmentVariable
- * @sa SDL_UnsetEnvironmentVariable
- **/
-inline bool UnsetEnvironmentVariable(EnvironmentRef env, StringParam name)
-{
-  return SDL_UnsetEnvironmentVariable(env.Get(), name);
-}
 
 /**
  * Destroy a set of environment variables.
@@ -4411,7 +4416,7 @@ struct IConvBase : T
    * @sa SDL_iconv_string
    **/
   inline IConvBase(StringParam tocode, StringParam fromcode)
-    : T(SDL_iconv_open(tocode.str(), fromcode.str()))
+    : T(SDL_iconv_open(tocode, fromcode))
   {
   }
 

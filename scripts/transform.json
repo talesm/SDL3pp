@@ -158,6 +158,18 @@
             "T::T": {
               "kind": "alias",
               "name": "T::T"
+            },
+            "SDL_CreateEnvironment": "ctor",
+            "SDL_GetEnvironmentVariable": "function",
+            "SDL_GetEnvironmentVariables": "function",
+            "GetVariableCount": {
+              "kind": "function",
+              "type": "Uint64",
+              "parameters": []
+            },
+            "SDL_SetEnvironmentVariable": "function",
+            "SDL_UnsetEnvironmentVariable": {
+              "name": "UnsetVariable"
             }
           }
         },
