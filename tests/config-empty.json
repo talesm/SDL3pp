@@ -2,6 +2,6 @@
   "sources": [
     "empty.h"
   ],
-  "api": "tests/empty.json",
-  "baseDir": "tests/"
+  "api": "tests/samples/empty.json",
+  "baseDir": "tests/samples/samples"
 }

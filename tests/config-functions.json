@@ -2,6 +2,6 @@
   "sources": [
     "functions.h"
   ],
-  "api": "tests/functions.json",
-  "baseDir": "tests/"
+  "api": "tests/samples/functions.json",
+  "baseDir": "tests/samples/samples"
 }

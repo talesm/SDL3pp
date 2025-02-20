@@ -10,7 +10,7 @@ test("updateChanges", () => {
 });
 
 test("empty.h loopback", () => {
-  const originalContent = readLinesSync("tests/empty.h");
+  const originalContent = readLinesSync("tests/samples/empty.h");
   const originalApi = parseContent("empty.h", originalContent);
   const modifiedContent = [...originalContent];
   const changes = updateContent(modifiedContent, originalApi);
@@ -19,7 +19,7 @@ test("empty.h loopback", () => {
 });
 
 test("functions.h loopback", () => {
-  const originalContent = readLinesSync("tests/functions.h");
+  const originalContent = readLinesSync("tests/samples/functions.h");
   const originalApi = parseContent("functions.h", originalContent);
   const modifiedContent = [...originalContent];
   const changes = updateContent(modifiedContent, originalApi);
@@ -28,9 +28,9 @@ test("functions.h loopback", () => {
 });
 
 test("functions.h over empty file", () => {
-  const originalContent = readLinesSync("tests/functions.h");
+  const originalContent = readLinesSync("tests/samples/functions.h");
   const originalApi = parseContent("functions.h", originalContent);
-  const modifiedContent = readLinesSync("tests/empty.h");
+  const modifiedContent = readLinesSync("tests/samples/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
   const modifiedApi = parseContent("functions.h", reSplit(modifiedContent));
@@ -38,7 +38,7 @@ test("functions.h over empty file", () => {
 });
 
 test("structs.h loopback", () => {
-  const originalContent = readLinesSync("tests/structs.h");
+  const originalContent = readLinesSync("tests/samples/structs.h");
   const originalApi = parseContent("structs.h", originalContent);
   const modifiedContent = [...originalContent];
   const changes = updateContent(modifiedContent, originalApi);
@@ -47,9 +47,9 @@ test("structs.h loopback", () => {
 });
 
 test("structs.h over empty file", () => {
-  const originalContent = readLinesSync("tests/structs.h");
+  const originalContent = readLinesSync("tests/samples/structs.h");
   const originalApi = parseContent("structs.h", originalContent);
-  const modifiedContent = readLinesSync("tests/empty.h");
+  const modifiedContent = readLinesSync("tests/samples/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
   const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));
@@ -57,7 +57,7 @@ test("structs.h over empty file", () => {
 });
 
 test("structs_aliases.h loopback", () => {
-  const originalContent = readLinesSync("tests/structs_aliases.h");
+  const originalContent = readLinesSync("tests/samples/structs_aliases.h");
   const originalApi = parseContent("structs_aliases.h", originalContent);
   const modifiedContent = [...originalContent];
   const changes = updateContent(modifiedContent, originalApi);
@@ -66,9 +66,9 @@ test("structs_aliases.h loopback", () => {
 });
 
 test("structs_aliases.h over empty file", () => {
-  const originalContent = readLinesSync("tests/structs_aliases.h");
+  const originalContent = readLinesSync("tests/samples/structs_aliases.h");
   const originalApi = parseContent("structs_aliases.h", originalContent);
-  const modifiedContent = readLinesSync("tests/empty.h");
+  const modifiedContent = readLinesSync("tests/samples/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
   const modifiedApi = parseContent("structs_aliases.h", reSplit(modifiedContent));
@@ -76,7 +76,7 @@ test("structs_aliases.h over empty file", () => {
 });
 
 test("structs_extends.h loopback", () => {
-  const originalContent = readLinesSync("tests/structs_extends.h");
+  const originalContent = readLinesSync("tests/samples/structs_extends.h");
   const originalApi = parseContent("structs_extends.h", originalContent);
   const modifiedContent = [...originalContent];
   const changes = updateContent(modifiedContent, originalApi);
@@ -85,9 +85,9 @@ test("structs_extends.h loopback", () => {
 });
 
 test("structs_extends.h over empty file", () => {
-  const originalContent = readLinesSync("tests/structs_extends.h");
+  const originalContent = readLinesSync("tests/samples/structs_extends.h");
   const originalApi = parseContent("structs_extends.h", originalContent);
-  const modifiedContent = readLinesSync("tests/empty.h");
+  const modifiedContent = readLinesSync("tests/samples/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
   const modifiedApi = parseContent("structs_extends.h", reSplit(modifiedContent));
@@ -95,7 +95,7 @@ test("structs_extends.h over empty file", () => {
 });
 
 test("structs_resources.h loopback", () => {
-  const originalContent = readLinesSync("tests/structs_resources.h");
+  const originalContent = readLinesSync("tests/samples/structs_resources.h");
   const originalApi = parseContent("structs_resources.h", originalContent);
   const modifiedContent = [...originalContent];
   const changes = updateContent(modifiedContent, originalApi);
@@ -104,9 +104,9 @@ test("structs_resources.h loopback", () => {
 });
 
 test("structs_resources.h over empty file", () => {
-  const originalContent = readLinesSync("tests/structs_resources.h");
+  const originalContent = readLinesSync("tests/samples/structs_resources.h");
   const originalApi = parseContent("structs_resources.h", originalContent);
-  const modifiedContent = readLinesSync("tests/empty.h");
+  const modifiedContent = readLinesSync("tests/samples/empty.h");
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
   const modifiedApi = parseContent("structs_resources.h", reSplit(modifiedContent));

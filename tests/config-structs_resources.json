@@ -2,9 +2,9 @@
   "sources": [
     "structs_resources.h"
   ],
-  "api": "tests/structs_resources.json",
-  "baseDir": "tests/",
-  "sourceApi": "tests/structs.json",
+  "api": "tests/samples/structs_resources.json",
+  "baseDir": "tests/samples/samples",
+  "sourceApi": "tests/samples/structs.json",
   "transform": {
     "prefixes": "My",
     "renameRules": [
