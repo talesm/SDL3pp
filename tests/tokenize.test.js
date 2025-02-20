@@ -22,8 +22,7 @@ test("tokenize doc", () => {
 });
 
 test("tokenize function", () => {
-  const tokens = tokenizeText("int func(int a, int b);");
-  expect(tokens).toEqual([{
+  expect(tokenizeText("int func(int a, int b);")).toEqual([{
     begin: 1,
     end: 2,
     spaces: 0,
@@ -32,11 +31,9 @@ test("tokenize function", () => {
     type: "int",
     parameters: "int a, int b",
   }]);
-});
 
-test("tokenize function with body", () => {
-  const tokens = tokenizeText("int func(int a, int b)\n{\n  int a;\n  ignored stuff\n}");
-  expect(tokens).toEqual([{
+  // with body
+  expect(tokenizeText("int func(int a, int b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
     spaces: 0,
@@ -45,11 +42,9 @@ test("tokenize function with body", () => {
     type: "int",
     parameters: "int a, int b",
   }]);
-});
 
-test("tokenize function with empty body", () => {
-  const tokens = tokenizeText("int func(int a, int b)\n{}");
-  expect(tokens).toEqual([{
+  // with empty body
+  expect(tokenizeText("int func(int a, int b)\n{}")).toEqual([{
     begin: 1,
     end: 3,
     spaces: 0,
@@ -58,11 +53,9 @@ test("tokenize function with empty body", () => {
     type: "int",
     parameters: "int a, int b",
   }]);
-});
 
-test("tokenize ctor with body", () => {
-  const tokens = tokenizeText("Func(int a, int b)\n{\n  int a;\n  ignored stuff\n}");
-  expect(tokens).toEqual([{
+  // with body
+  expect(tokenizeText("Func(int a, int b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
     spaces: 0,
@@ -71,11 +64,9 @@ test("tokenize ctor with body", () => {
     type: "",
     parameters: "int a, int b",
   }]);
-});
 
-test("tokenize ctor with initialization and body", () => {
-  const tokens = tokenizeText("Func(int a, int b)\n: a(a)\n  , b(b)\n{\n  int a;\n  ignored stuff\n}");
-  expect(tokens).toEqual([{
+  // with initialization and body
+  expect(tokenizeText("Func(int a, int b)\n: a(a)\n  , b(b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 8,
     spaces: 0,
