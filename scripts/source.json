@@ -449,11 +449,11 @@
               "kind": "var",
               "type": "Uint8"
             },
-            "void": {
+            "b": {
               "doc": "",
-              "name": "void",
+              "name": "b",
               "kind": "var",
-              "type": ""
+              "type": "void *"
             }
           }
         },

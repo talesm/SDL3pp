@@ -160,7 +160,7 @@ function mergeInto(destiny, source) {
  */
 function update(args) {
   if (args?.length == 0) {
-    return help("update");
+    return help(["update"]);
   }
   const config = {
     /** @type {string[]} */
@@ -314,6 +314,7 @@ function mergeTransformInto(destiny, source) {
   mergeInto(destiny, source);
 }
 
+/** @param {string[]} [args=[]]  */
 function help(args = []) {
   switch (args[0]) {
     case "parse":
@@ -322,9 +323,25 @@ function help(args = []) {
         "",
         wrapUsageText(
           `usage: node ${process.argv[1]} `,
-          "parse [-c] [ <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."),
+          "parse [ [-c] <config-file>] [-o <output-file>] [-d <base-dir>] [--] <input>..."),
         "",
         wrapText("If no base-dir is defined, we try to deduce the closest common ancestor from the inputs. If no output file is given or if it is a single dash (\" - \") it just outputs on stdout. If the first filename ends with \".json\" it interprets it as a config file, making the \" - c\" optional. Multiple configurations can be added and their content is merged."),
+      );
+      break;
+    case "update":
+      printLog(
+        "Update header file to match API",
+        "",
+        wrapUsageText(
+          `usage: node ${process.argv[1]} `,
+          "update [ [-c] <config-file>] [-a <api-file>] [-d <base-dir>] [--] [target-file]..."
+        ),
+        "",
+        wrapText(`If no base-dir is defined, we try to deduce the closest \
+common ancestor from the inputs. If no output file is given or if it is a \
+single dash ("-") it just outputs on stdout. If the first filename ends with \
+".json" it interprets it as a config file, making the "-c" optional. Multiple \
+configurations can be added and their content is merged.`),
       );
       break;
     default:
