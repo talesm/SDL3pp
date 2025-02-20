@@ -9,11 +9,14 @@
   "paramTypeMap": {
     "const char *": "StringParam",
     "SDL_Environment *": "EnvironmentRef",
-    "SDL_iconv_t": "IConvRef"
+    "SDL_iconv_t": "IConvRef",
+    "SDL_Palette *": "PaletteRef",
+    "const SDL_Palette *": "PaletteRef"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
-    "SDL_iconv_t": "IConv"
+    "SDL_iconv_t": "IConv",
+    "SDL_Palette *": "Palette"
   },
   "files": {
     "SDL_stdinc.h": {
@@ -511,7 +514,28 @@
             "T::T": {
               "kind": "alias",
               "name": "T::T"
-            }
+            },
+            "SDL_CreatePalette": "ctor",
+            "GetSize": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": []
+            },
+            "operator[]": {
+              "kind": "function",
+              "type": "Color",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "index"
+                }
+              ]
+            },
+            "SDL_SetPaletteColors": "function"
           }
         }
       }
