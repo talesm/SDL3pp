@@ -138,7 +138,7 @@ function tokenize(lines) {
       continue;
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
-      m = /^(([\w*]+\s+)*)(operator\(\)|\w+)(\s*\()?/.exec(member);
+      m = /^(([\w*]+\s+)*)(operator\(\)|[\w*&]+)(\s*\()?/.exec(member);
       if (!m) {
         system.warn(`Unknown token at line ${i + 1}: ${member}`);
         continue;
@@ -185,6 +185,10 @@ function tokenize(lines) {
           parameters = parameters.slice(0, endBracket);
         }
         token.parameters = parameters;
+        if (type.startsWith("operator")) {
+          token.type = "";
+          token.value = type + " " + (token.value.replace(/(\w+)([*&])/g, "$1 $2"));
+        }
       } else {
         token.kind = "var";
         inline = member.indexOf(';') === -1;
