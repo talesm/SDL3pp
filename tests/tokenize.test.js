@@ -112,15 +112,27 @@ test("tokenize function", () => {
   }]);
 
   // conversion operator to const pointer with body
-  expect(tokenizeText("operator const Type*() const\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
+  expect(tokenizeText("operator const Type*() const = default;")).toEqual([{
     begin: 1,
-    end: 6,
+    end: 2,
     spaces: 0,
     kind: "function",
     value: "operator const Type *",
     type: "",
     immutable: true,
     parameters: "",
+  }]);
+
+  // operator<=> immutable with body
+  expect(tokenizeText("auto operator<=>(const Type &other) const\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
+    begin: 1,
+    end: 6,
+    spaces: 0,
+    kind: "function",
+    value: "operator<=>",
+    type: "auto",
+    immutable: true,
+    parameters: "const Type &other",
   }]);
 
   // ctor with initialization and body
