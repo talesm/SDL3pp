@@ -2828,6 +2828,50 @@
       "name": "pixels.hpp",
       "doc": "@file pixels.hpp\n\n# CategoryPixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
       "entries": {
+        "PaletteBase-forward": {
+          "name": "PaletteBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ],
+          "doc": ""
+        },
+        "PaletteRef": {
+          "name": "PaletteRef",
+          "kind": "alias",
+          "type": "PaletteBase<ObjectRef<SDL_Palette>>",
+          "doc": ""
+        },
+        "ObjectDeleter<SDL_Palette>": {
+          "name": "ObjectDeleter<SDL_Palette>",
+          "kind": "struct",
+          "template": [],
+          "entries": {
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "SDL_Palette *",
+                  "name": "Palette"
+                }
+              ],
+              "doc": ""
+            }
+          },
+          "doc": ""
+        },
+        "Palette": {
+          "name": "Palette",
+          "kind": "alias",
+          "type": "PaletteBase<ObjectUnique<SDL_Palette>>",
+          "doc": ""
+        },
         "PixelType": {
           "doc": "Pixel type.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PixelType",
@@ -3143,23 +3187,150 @@
         "Color": {
           "doc": "A structure that represents a color as RGBA components.\n\nThe bits of this structure can be directly reinterpreted as an\ninteger-packed color which uses the SDL_PIXELFORMAT_RGBA32 format\n(SDL_PIXELFORMAT_ABGR8888 on little-endian systems and\nSDL_PIXELFORMAT_RGBA8888 on big-endian systems).\n\n@since This struct is available since SDL 3.2.0.",
           "name": "Color",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_Color",
-          "type": "SDL_Color"
+          "type": "SDL_Color",
+          "entries": {
+            "Color": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL_Color",
+                    "name": "color",
+                    "default": "{0}"
+                  }
+                ],
+                "name": "Color",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "r",
+                    "name": "Uint8"
+                  },
+                  {
+                    "type": "g",
+                    "name": "Uint8"
+                  },
+                  {
+                    "type": "b",
+                    "name": "Uint8"
+                  },
+                  {
+                    "type": "a",
+                    "name": "Uint8",
+                    "default": "255"
+                  }
+                ],
+                "name": "Color",
+                "doc": ""
+              }
+            ],
+            "operator <=>": {
+              "kind": "function",
+              "immutable": true,
+              "type": "auto",
+              "parameters": [
+                {
+                  "type": "const Color &",
+                  "name": "other"
+                }
+              ],
+              "name": "operator <=>",
+              "doc": ""
+            }
+          }
         },
         "FColor": {
           "doc": "The bits of this structure can be directly reinterpreted as a float-packed\ncolor which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format\n\n@since This struct is available since SDL 3.2.0.",
           "name": "FColor",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_FColor",
-          "type": "SDL_FColor"
+          "type": "SDL_FColor",
+          "entries": {
+            "FColor": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL_FColor",
+                    "name": "color",
+                    "default": "{0}"
+                  }
+                ],
+                "name": "FColor",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "r",
+                    "name": "float"
+                  },
+                  {
+                    "type": "g",
+                    "name": "float"
+                  },
+                  {
+                    "type": "b",
+                    "name": "float"
+                  },
+                  {
+                    "type": "a",
+                    "name": "float",
+                    "default": "1"
+                  }
+                ],
+                "name": "FColor",
+                "doc": ""
+              }
+            ],
+            "operator <=>": {
+              "kind": "function",
+              "immutable": true,
+              "type": "auto",
+              "parameters": [
+                {
+                  "type": "const FColor &",
+                  "name": "other"
+                }
+              ],
+              "name": "operator <=>",
+              "doc": ""
+            }
+          }
         },
-        "Palette": {
+        "PaletteBase": {
           "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_SetPaletteColors",
-          "name": "Palette",
-          "kind": "alias",
+          "name": "PaletteBase",
+          "kind": "struct",
           "sourceName": "SDL_Palette",
-          "type": "SDL_Palette"
+          "type": "T",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            }
+          }
         },
         "PixelFormatDetails": {
           "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
@@ -3172,7 +3343,7 @@
           "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@returns a new SDL_Palette structure on success or NULL on failure (e.g. if\n         there wasn't enough memory); call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyPalette\n@sa SDL_SetPaletteColors\n@sa SDL_SetSurfacePalette",
           "name": "CreatePalette",
           "kind": "function",
-          "type": "Palette *",
+          "type": "SDL_Palette *",
           "parameters": [
             {
               "name": "ncolors",
@@ -3189,7 +3360,7 @@
           "parameters": [
             {
               "name": "palette",
-              "type": "Palette *"
+              "type": "SDL_Palette *"
             },
             {
               "name": "colors",
@@ -3214,7 +3385,7 @@
           "parameters": [
             {
               "name": "palette",
-              "type": "Palette *"
+              "type": "SDL_Palette *"
             }
           ],
           "sourceName": "SDL_DestroyPalette"
@@ -3231,7 +3402,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",
@@ -3260,7 +3431,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",
@@ -3297,7 +3468,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",
@@ -3330,7 +3501,7 @@
             },
             {
               "name": "palette",
-              "type": "const Palette *"
+              "type": "const SDL_Palette *"
             },
             {
               "name": "r",

@@ -209,6 +209,49 @@
         "SDL_ISPIXELFORMAT_ALPHA",
         "SDL_ISPIXELFORMAT_FOURCC"
       ],
+      "includeAfter": {
+        "__begin": [
+          {
+            "name": "PaletteBase",
+            "kind": "forward",
+            "template": [
+              {
+                "name": "T",
+                "type": "class"
+              }
+            ]
+          },
+          {
+            "name": "PaletteRef",
+            "kind": "alias",
+            "type": "PaletteBase<ObjectRef<SDL_Palette>>"
+          },
+          {
+            "name": "ObjectDeleter<SDL_Palette>",
+            "kind": "struct",
+            "template": [],
+            "entries": {
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Palette *",
+                    "name": "Palette"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Palette",
+            "kind": "alias",
+            "type": "PaletteBase<ObjectUnique<SDL_Palette>>"
+          }
+        ]
+      },
       "transform": {
         "SDL_PIXELTYPE": {
           "kind": "function",
@@ -344,6 +387,131 @@
               "name": "ForMasks"
             },
             "SDL_GetPixelFormatDetails": "function"
+          }
+        },
+        "SDL_Color": {
+          "kind": "struct",
+          "entries": {
+            "Color": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL_Color",
+                    "name": "color",
+                    "default": "{0}"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "r",
+                    "name": "Uint8"
+                  },
+                  {
+                    "type": "g",
+                    "name": "Uint8"
+                  },
+                  {
+                    "type": "b",
+                    "name": "Uint8"
+                  },
+                  {
+                    "type": "a",
+                    "name": "Uint8",
+                    "default": "255"
+                  }
+                ]
+              }
+            ],
+            "operator<=>": {
+              "kind": "function",
+              "immutable": true,
+              "type": "auto",
+              "parameters": [
+                {
+                  "type": "const Color &",
+                  "name": "other"
+                }
+              ]
+            }
+          }
+        },
+        "SDL_FColor": {
+          "kind": "struct",
+          "entries": {
+            "FColor": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL_FColor",
+                    "name": "color",
+                    "default": "{0}"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "r",
+                    "name": "float"
+                  },
+                  {
+                    "type": "g",
+                    "name": "float"
+                  },
+                  {
+                    "type": "b",
+                    "name": "float"
+                  },
+                  {
+                    "type": "a",
+                    "name": "float",
+                    "default": "1"
+                  }
+                ]
+              }
+            ],
+            "operator<=>": {
+              "kind": "function",
+              "immutable": true,
+              "type": "auto",
+              "parameters": [
+                {
+                  "type": "const FColor &",
+                  "name": "other"
+                }
+              ]
+            }
+          }
+        },
+        "SDL_Palette": {
+          "kind": "struct",
+          "name": "PaletteBase",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "type": "T",
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T"
+            }
           }
         }
       }
