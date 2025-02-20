@@ -115,15 +115,7 @@ function transformEntries(sourceEntries, context, transform) {
         context.typeMap[`const ${type} *`] = `const ${targetName} *`;
       }
       if (targetEntry.entries) {
-        targetEntry.entries = transformSubEntries(targetEntry, context, transform);
-        // for (const [key, change] of Object.entries(changes)) {
-        //   const currEntry = targetEntries[key];
-        //   if (!currEntry) continue;
-        //   if (Array.isArray(currEntry)) {
-        //     currEntry.forEach(e => Object.assign(e, change));
-        //   } else Object.assign(currEntry, change);
-        // }
-        // Object.assign(transformMap, changes);
+        targetEntry.entries = transformSubEntries(targetEntry, context, transform, targetEntries);
       }
       insertEntry(targetEntries, targetEntry);
     }
@@ -142,15 +134,29 @@ function transformEntries(sourceEntries, context, transform) {
  * @param {ApiEntry}      targetEntry 
  * @param {ApiContext}    context 
  * @param {FileTransform} transform 
+ * @param {ApiEntries}    targetEntries
  */
-function transformSubEntries(targetEntry, context, transform) {
+function transformSubEntries(targetEntry, context, transform, targetEntries) {
   /** @type {ApiEntries} */
   const entries = {};
   const type = targetEntry.name;
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
-    const nameChange = checkNameChange(entry, transformName(key, context), type);
+    const nameCandidate = transformName(key, context);
+    const nameChange = checkNameChange(entry, nameCandidate, type);
     if (nameChange) {
-      insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
+      const currName = transform.transform[key]?.name ?? nameCandidate;
+      const currEntry = targetEntries[currName];
+      if (!currEntry) {
+        insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
+      } else {
+        if (Array.isArray(currEntry)) {
+          currEntry.forEach(e => Object.assign(e, nameChange));
+        } else {
+          Object.assign(currEntry, nameChange);
+        }
+        insertEntry(entries, currEntry);
+        delete targetEntries[currName];
+      }
       nameChange.name = `${type}.${nameChange.name}`;
       transform.transform[key] = nameChange;
     } else {
@@ -213,7 +219,7 @@ function checkNameChange(entry, name, typeName) {
   if (entry === "function") return { name: makeNaturalName(name, typeName) };
   if (entry === "ctor") return { name: typeName, type: "", static: false };
   if (entry.kind && entry.kind !== "function") return null;
-  if (entry.parameters) return null;
+  if (entry.parameters && (!entry.name || entry.name == name)) return null;
   return { ...entry, name: entry.name || makeNaturalName(name, typeName) };
 }
 
