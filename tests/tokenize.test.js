@@ -32,6 +32,17 @@ test("tokenize function", () => {
     parameters: "int a, int b",
   }]);
 
+  // returning a pointer
+  expect(tokenizeText("const char *func(int a, int b);")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "function",
+    value: "func",
+    type: "const char *",
+    parameters: "int a, int b",
+  }]);
+
   // with body
   expect(tokenizeText("int func(int a, int b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
@@ -121,6 +132,33 @@ test("tokenize function", () => {
     value: "Func",
     type: "",
     parameters: "int a, int b",
+  }]);
+});
+
+test("tokenize variables", () => {
+  expect(tokenizeText("int a;")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "var",
+    value: "a",
+    type: "int",
+  }]);
+  expect(tokenizeText("int *a;")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "var",
+    value: "a",
+    type: "int *",
+  }]);
+  expect(tokenizeText("const int **a;")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "var",
+    value: "a",
+    type: "const int **",
   }]);
 });
 

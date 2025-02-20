@@ -193,6 +193,10 @@ function tokenize(lines) {
         token.kind = "var";
         inline = member.indexOf(';') === -1;
       }
+      if (m = /^((?:[*&]\s*)+)(\w+)\s*$/.exec(token.value)) {
+        token.type += " " + m[1];
+        token.value = m[2];
+      }
       i = ignoreBody(lines, i, token.spaces);
     }
     for (let j = i + 1; j < lines.length - 1; j++) {
