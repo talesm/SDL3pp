@@ -54,7 +54,10 @@ struct PixelFormat
   constexpr operator SDL_PixelFormat() const { return format; }
 
   /// @brief Retrieve the type.
-  constexpr PixelType Type() const { return PixelType(SDL_PIXELTYPE(format)); }
+  constexpr PixelType GetType() const
+  {
+    return PixelType(SDL_PIXELTYPE(format));
+  }
 
   /**
    * @brief Retrieve the order.
@@ -64,10 +67,10 @@ struct PixelFormat
    *
    * @returns the order.
    */
-  constexpr int Order() const { return SDL_PIXELORDER(format); }
+  constexpr int GetOrder() const { return SDL_PIXELORDER(format); }
 
   /// @brief Retrieve the layout.
-  constexpr PackedLayout Layout() const
+  constexpr PackedLayout GetLayout() const
   {
     return PackedLayout(SDL_PIXELLAYOUT(format));
   }
@@ -80,7 +83,7 @@ struct PixelFormat
    *
    * @return the bits-per-pixel.
    */
-  constexpr int BitsPerPixel() const { return SDL_BITSPERPIXEL(format); }
+  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(format); }
 
   /**
    * @brief Determine this's bytes per pixel.
@@ -90,7 +93,7 @@ struct PixelFormat
    *
    * @return the bytes-per-pixel.
    */
-  constexpr int BytesPerPixel() const { return SDL_BITSPERPIXEL(format); }
+  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(format); }
 
   /// @brief Determine if this is an indexed format.
   constexpr bool IsIndexed() const { return SDL_ISPIXELFORMAT_INDEXED(format); }
@@ -118,7 +121,7 @@ struct PixelFormat
    * @return true
    * @return false
    */
-  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_ALPHA(format); }
+  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(format); }
 
   /**
    * @brief Get the human readable name of a pixel format.
