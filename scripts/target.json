@@ -2883,127 +2883,473 @@
               "constexpr": true,
               "name": "operator bool()",
               "doc": ""
+            },
+            "operator SDL_PixelFormat()": {
+              "kind": "function",
+              "parameters": [],
+              "type": "SDL_PixelFormat",
+              "immutable": true,
+              "constexpr": true,
+              "name": "operator SDL_PixelFormat()",
+              "doc": ""
+            },
+            "GetType": {
+              "doc": "A macro to retrieve the type of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_PixelType enumeration.\n\n@param format an SDL_PixelFormat to check.\n@returns the type of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetType",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_PIXELTYPE",
+              "type": "SDL_PixelFormat",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetOrder": {
+              "doc": "A macro to retrieve the order of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_BitmapOrder, SDL_PackedOrder, or\nSDL_ArrayOrder enumerations, depending on the format type.\n\n@param format an SDL_PixelFormat to check.\n@returns the order of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetOrder",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_PIXELORDER",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetLayout": {
+              "doc": "A macro to retrieve the layout of an SDL_PixelFormat.\n\nThis is usually a value from the SDL_PackedLayout enumeration, or zero if a\nlayout doesn't make sense for the format type.\n\n@param format an SDL_PixelFormat to check.\n@returns the layout of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetLayout",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_PIXELLAYOUT",
+              "type": "PackedLayout",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetBitsPerPixel": {
+              "doc": "A macro to determine an SDL_PixelFormat's bits per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats will report zero here, as it rarely makes sense to measure\nthem per-pixel.\n\n@param format an SDL_PixelFormat to check.\n@returns the bits-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_BYTESPERPIXEL",
+              "name": "GetBitsPerPixel",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_BITSPERPIXEL",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetBytesPerPixel": {
+              "doc": "A macro to determine an SDL_PixelFormat's bytes per pixel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\nFourCC formats do their best here, but many of them don't have a meaningful\nmeasurement of bytes per pixel.\n\n@param format an SDL_PixelFormat to check.\n@returns the bytes-per-pixel of `format`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_BITSPERPIXEL",
+              "name": "GetBytesPerPixel",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_BYTESPERPIXEL",
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsIndexed": {
+              "doc": "A macro to determine if an SDL_PixelFormat is an indexed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an SDL_PixelFormat to check.\n@returns true if the format is indexed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsIndexed",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISPIXELFORMAT_INDEXED",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsPacked": {
+              "doc": "A macro to determine if an SDL_PixelFormat is a packed format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an SDL_PixelFormat to check.\n@returns true if the format is packed, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsPacked",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISPIXELFORMAT_PACKED",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsArray": {
+              "doc": "A macro to determine if an SDL_PixelFormat is an array format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an SDL_PixelFormat to check.\n@returns true if the format is an array, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsArray",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISPIXELFORMAT_ARRAY",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "Is10Bit": {
+              "doc": "A macro to determine if an SDL_PixelFormat is a 10-bit format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an SDL_PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "Is10Bit",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISPIXELFORMAT_10BIT",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsFloat": {
+              "doc": "A macro to determine if an SDL_PixelFormat is a floating point format.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an SDL_PixelFormat to check.\n@returns true if the format is 10-bit, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsFloat",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISPIXELFORMAT_FLOAT",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsAlpha": {
+              "doc": "A macro to determine if an SDL_PixelFormat has an alpha channel.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an SDL_PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsAlpha",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISPIXELFORMAT_ALPHA",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsFourCC": {
+              "doc": "A macro to determine if an SDL_PixelFormat is a \"FourCC\" format.\n\nThis covers custom and other unusual formats.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param format an SDL_PixelFormat to check.\n@returns true if the format has alpha, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsFourCC",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISPIXELFORMAT_FOURCC",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetName": {
+              "doc": "Get the human readable name of a pixel format.\n\n@param format the pixel format to query.\n@returns the human readable name of the specified pixel format or\n         \"SDL_PIXELFORMAT_UNKNOWN\" if the format isn't recognized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "sourceName": "SDL_GetPixelFormatName"
+            },
+            "GetMasks": {
+              "doc": "Convert one of the enumerated pixel formats to a bpp value and RGBA masks.\n\n@param format one of the SDL_PixelFormat values.\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask a pointer filled in with the red mask for the format.\n@param Gmask a pointer filled in with the green mask for the format.\n@param Bmask a pointer filled in with the blue mask for the format.\n@param Amask a pointer filled in with the alpha mask for the format.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatForMasks",
+              "name": "GetMasks",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "bpp",
+                  "type": "int *"
+                },
+                {
+                  "name": "Rmask",
+                  "type": "Uint32 *"
+                },
+                {
+                  "name": "Gmask",
+                  "type": "Uint32 *"
+                },
+                {
+                  "name": "Bmask",
+                  "type": "Uint32 *"
+                },
+                {
+                  "name": "Amask",
+                  "type": "Uint32 *"
+                }
+              ],
+              "sourceName": "SDL_GetMasksForPixelFormat",
+              "immutable": true
+            },
+            "ForMasks": {
+              "doc": "Convert a bpp value and RGBA masks to an enumerated pixel format.\n\nThis will return `SDL_PIXELFORMAT_UNKNOWN` if the conversion wasn't\npossible.\n\n@param bpp a bits per pixel value; usually 15, 16, or 32.\n@param Rmask the red mask for the format.\n@param Gmask the green mask for the format.\n@param Bmask the blue mask for the format.\n@param Amask the alpha mask for the format.\n@returns the SDL_PixelFormat value corresponding to the format masks, or\n         SDL_PIXELFORMAT_UNKNOWN if there isn't a match.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetMasksForPixelFormat",
+              "name": "ForMasks",
+              "kind": "function",
+              "type": "SDL_PixelFormat",
+              "parameters": [
+                {
+                  "name": "bpp",
+                  "type": "int"
+                },
+                {
+                  "name": "Rmask",
+                  "type": "Uint32"
+                },
+                {
+                  "name": "Gmask",
+                  "type": "Uint32"
+                },
+                {
+                  "name": "Bmask",
+                  "type": "Uint32"
+                },
+                {
+                  "name": "Amask",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "SDL_GetPixelFormatForMasks",
+              "static": true
+            },
+            "GetDetails": {
+              "doc": "Create an SDL_PixelFormatDetails structure corresponding to a pixel format.\n\nReturned structure may come from a shared global cache (i.e. not newly\nallocated), and hence should not be modified, especially the palette. Weird\nerrors such as `Blit combination not supported` may occur.\n\n@param format one of the SDL_PixelFormat values.\n@returns a pointer to a SDL_PixelFormatDetails structure or NULL on\n         failure; call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetDetails",
+              "kind": "function",
+              "type": "const PixelFormatDetails *",
+              "parameters": [],
+              "sourceName": "SDL_GetPixelFormatDetails"
             }
           }
         },
-        "PIXELFORMAT_YV12": {
-          "doc": "",
-          "name": "PIXELFORMAT_YV12",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_YV12"
+        "ColorType": {
+          "doc": "Colorspace color type.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "ColorType",
+          "kind": "alias",
+          "sourceName": "SDL_ColorType",
+          "type": "SDL_ColorType"
         },
-        "PIXELFORMAT_IYUV": {
-          "doc": "",
-          "name": "PIXELFORMAT_IYUV",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_IYUV"
+        "ColorRange": {
+          "doc": "Colorspace color range, as described by\nhttps://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "ColorRange",
+          "kind": "alias",
+          "sourceName": "SDL_ColorRange",
+          "type": "SDL_ColorRange"
         },
-        "PIXELFORMAT_YUY2": {
-          "doc": "",
-          "name": "PIXELFORMAT_YUY2",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_YUY2"
+        "ColorPrimaries": {
+          "doc": "Colorspace color primaries, as described by\nhttps://www.itu.int/rec/T-REC-H.273-201612-S/en\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "ColorPrimaries",
+          "kind": "alias",
+          "sourceName": "SDL_ColorPrimaries",
+          "type": "SDL_ColorPrimaries"
         },
-        "PIXELFORMAT_UYVY": {
-          "doc": "",
-          "name": "PIXELFORMAT_UYVY",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_UYVY"
+        "TransferCharacteristics": {
+          "doc": "Colorspace transfer characteristics.\n\nThese are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "TransferCharacteristics",
+          "kind": "alias",
+          "sourceName": "SDL_TransferCharacteristics",
+          "type": "SDL_TransferCharacteristics"
         },
-        "PIXELFORMAT_YVYU": {
-          "doc": "",
-          "name": "PIXELFORMAT_YVYU",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_YVYU"
+        "MatrixCoefficients": {
+          "doc": "Colorspace matrix coefficients.\n\nThese are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "MatrixCoefficients",
+          "kind": "alias",
+          "sourceName": "SDL_MatrixCoefficients",
+          "type": "SDL_MatrixCoefficients"
         },
-        "PIXELFORMAT_NV12": {
-          "doc": "",
-          "name": "PIXELFORMAT_NV12",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_NV12"
+        "ChromaLocation": {
+          "doc": "Colorspace chroma sample location.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "ChromaLocation",
+          "kind": "alias",
+          "sourceName": "SDL_ChromaLocation",
+          "type": "SDL_ChromaLocation"
         },
-        "PIXELFORMAT_NV21": {
-          "doc": "",
-          "name": "PIXELFORMAT_NV21",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_NV21"
+        "Colorspace": {
+          "doc": "Colorspace definitions.\n\nSince similar colorspaces may vary in their details (matrix, transfer\nfunction, etc.), this is not an exhaustive list, but rather a\nrepresentative sample of the kinds of colorspaces supported in SDL.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_ColorPrimaries\n@sa SDL_ColorRange\n@sa SDL_ColorType\n@sa SDL_MatrixCoefficients\n@sa SDL_TransferCharacteristics",
+          "name": "Colorspace",
+          "kind": "alias",
+          "sourceName": "SDL_Colorspace",
+          "type": "SDL_Colorspace"
         },
-        "PIXELFORMAT_P010": {
-          "doc": "",
-          "name": "PIXELFORMAT_P010",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_P010"
+        "Color": {
+          "doc": "A structure that represents a color as RGBA components.\n\nThe bits of this structure can be directly reinterpreted as an\ninteger-packed color which uses the SDL_PIXELFORMAT_RGBA32 format\n(SDL_PIXELFORMAT_ABGR8888 on little-endian systems and\nSDL_PIXELFORMAT_RGBA8888 on big-endian systems).\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "Color",
+          "kind": "alias",
+          "sourceName": "SDL_Color",
+          "type": "SDL_Color"
         },
-        "PIXELFORMAT_EXTERNAL_OES": {
-          "doc": "",
-          "name": "PIXELFORMAT_EXTERNAL_OES",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_EXTERNAL_OES"
+        "FColor": {
+          "doc": "The bits of this structure can be directly reinterpreted as a float-packed\ncolor which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "FColor",
+          "kind": "alias",
+          "sourceName": "SDL_FColor",
+          "type": "SDL_FColor"
         },
-        "PIXELFORMAT_RGBA32": {
-          "doc": "",
-          "name": "PIXELFORMAT_RGBA32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_RGBA32"
+        "Palette": {
+          "doc": "A set of indexed colors representing a palette.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_SetPaletteColors",
+          "name": "Palette",
+          "kind": "alias",
+          "sourceName": "SDL_Palette",
+          "type": "SDL_Palette"
         },
-        "PIXELFORMAT_ARGB32": {
-          "doc": "",
-          "name": "PIXELFORMAT_ARGB32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_ARGB32"
+        "PixelFormatDetails": {
+          "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PixelFormatDetails",
+          "kind": "alias",
+          "sourceName": "SDL_PixelFormatDetails",
+          "type": "SDL_PixelFormatDetails"
         },
-        "PIXELFORMAT_BGRA32": {
-          "doc": "",
-          "name": "PIXELFORMAT_BGRA32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_BGRA32"
+        "CreatePalette": {
+          "doc": "Create a palette structure with the specified number of color entries.\n\nThe palette entries are initialized to white.\n\n@param ncolors represents the number of color entries in the color palette.\n@returns a new SDL_Palette structure on success or NULL on failure (e.g. if\n         there wasn't enough memory); call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyPalette\n@sa SDL_SetPaletteColors\n@sa SDL_SetSurfacePalette",
+          "name": "CreatePalette",
+          "kind": "function",
+          "type": "Palette *",
+          "parameters": [
+            {
+              "name": "ncolors",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_CreatePalette"
         },
-        "PIXELFORMAT_ABGR32": {
-          "doc": "",
-          "name": "PIXELFORMAT_ABGR32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_ABGR32"
+        "SetPaletteColors": {
+          "doc": "Set a range of colors in a palette.\n\n@param palette the SDL_Palette structure to modify.\n@param colors an array of SDL_Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "SetPaletteColors",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "palette",
+              "type": "Palette *"
+            },
+            {
+              "name": "colors",
+              "type": "const Color *"
+            },
+            {
+              "name": "firstcolor",
+              "type": "int"
+            },
+            {
+              "name": "ncolors",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_SetPaletteColors"
         },
-        "PIXELFORMAT_RGBX32": {
-          "doc": "",
-          "name": "PIXELFORMAT_RGBX32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_RGBX32"
+        "DestroyPalette": {
+          "doc": "Free a palette created with SDL_CreatePalette().\n\n@param palette the SDL_Palette structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePalette",
+          "name": "DestroyPalette",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "palette",
+              "type": "Palette *"
+            }
+          ],
+          "sourceName": "SDL_DestroyPalette"
         },
-        "PIXELFORMAT_XRGB32": {
-          "doc": "",
-          "name": "PIXELFORMAT_XRGB32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_XRGB32"
+        "MapRGB": {
+          "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGB\n@sa SDL_MapRGBA\n@sa SDL_MapSurfaceRGB",
+          "name": "MapRGB",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "const PixelFormatDetails *"
+            },
+            {
+              "name": "palette",
+              "type": "const Palette *"
+            },
+            {
+              "name": "r",
+              "type": "Uint8"
+            },
+            {
+              "name": "g",
+              "type": "Uint8"
+            },
+            {
+              "name": "b",
+              "type": "Uint8"
+            }
+          ],
+          "sourceName": "SDL_MapRGB"
         },
-        "PIXELFORMAT_BGRX32": {
-          "doc": "",
-          "name": "PIXELFORMAT_BGRX32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_BGRX32"
+        "MapRGBA": {
+          "doc": "Map an RGBA quadruple to a pixel value for a given pixel format.\n\nThis function maps the RGBA color value to the specified pixel format and\nreturns the pixel value best approximating the given RGBA color value for\nthe given pixel format.\n\nIf the specified pixel format has no alpha component the alpha value will\nbe ignored (as it will be in formats with a palette).\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@param a the alpha component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGBA\n@sa SDL_MapRGB\n@sa SDL_MapSurfaceRGBA",
+          "name": "MapRGBA",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "format",
+              "type": "const PixelFormatDetails *"
+            },
+            {
+              "name": "palette",
+              "type": "const Palette *"
+            },
+            {
+              "name": "r",
+              "type": "Uint8"
+            },
+            {
+              "name": "g",
+              "type": "Uint8"
+            },
+            {
+              "name": "b",
+              "type": "Uint8"
+            },
+            {
+              "name": "a",
+              "type": "Uint8"
+            }
+          ],
+          "sourceName": "SDL_MapRGBA"
         },
-        "PIXELFORMAT_XBGR32": {
-          "doc": "",
-          "name": "PIXELFORMAT_XBGR32",
-          "kind": "var",
-          "type": "",
-          "sourceName": "SDL_PIXELFORMAT_XBGR32"
+        "GetRGB": {
+          "doc": "Get RGB values from a pixel in the specified format.\n\nThis function uses the entire 8-bit [0..255] range when converting color\ncomponents from pixel formats with less than 8-bits per RGB component\n(e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,\n0xff, 0xff] not [0xf8, 0xfc, 0xf8]).\n\n@param pixel a pixel value.\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r a pointer filled in with the red component, may be NULL.\n@param g a pointer filled in with the green component, may be NULL.\n@param b a pointer filled in with the blue component, may be NULL.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGBA\n@sa SDL_MapRGB\n@sa SDL_MapRGBA",
+          "name": "GetRGB",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "pixel",
+              "type": "Uint32"
+            },
+            {
+              "name": "format",
+              "type": "const PixelFormatDetails *"
+            },
+            {
+              "name": "palette",
+              "type": "const Palette *"
+            },
+            {
+              "name": "r",
+              "type": "Uint8 *"
+            },
+            {
+              "name": "g",
+              "type": "Uint8 *"
+            },
+            {
+              "name": "b",
+              "type": "Uint8 *"
+            }
+          ],
+          "sourceName": "SDL_GetRGB"
+        },
+        "GetRGBA": {
+          "doc": "Get RGBA values from a pixel in the specified format.\n\nThis function uses the entire 8-bit [0..255] range when converting color\ncomponents from pixel formats with less than 8-bits per RGB component\n(e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,\n0xff, 0xff] not [0xf8, 0xfc, 0xf8]).\n\nIf the surface has no alpha component, the alpha will be returned as 0xff\n(100% opaque).\n\n@param pixel a pixel value.\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r a pointer filled in with the red component, may be NULL.\n@param g a pointer filled in with the green component, may be NULL.\n@param b a pointer filled in with the blue component, may be NULL.\n@param a a pointer filled in with the alpha component, may be NULL.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGB\n@sa SDL_MapRGB\n@sa SDL_MapRGBA",
+          "name": "GetRGBA",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "pixel",
+              "type": "Uint32"
+            },
+            {
+              "name": "format",
+              "type": "const PixelFormatDetails *"
+            },
+            {
+              "name": "palette",
+              "type": "const Palette *"
+            },
+            {
+              "name": "r",
+              "type": "Uint8 *"
+            },
+            {
+              "name": "g",
+              "type": "Uint8 *"
+            },
+            {
+              "name": "b",
+              "type": "Uint8 *"
+            },
+            {
+              "name": "a",
+              "type": "Uint8 *"
+            }
+          ],
+          "sourceName": "SDL_GetRGBA"
         }
       }
     }

@@ -246,6 +246,7 @@ function ignoreBody(lines, begin, spaces) {
   const spaceRegex = /^\s+/;
   for (let i = begin + 1; i < lines.length; i++) {
     const line = lines[i];
+    if (!line.trim()) continue;
     const indentation = spaceRegex.exec(line)?.[0]?.length ?? 0;
     if (indentation <= spaces) {
       if (line.slice(indentation).startsWith("}")) return i;

@@ -195,7 +195,27 @@
       }
     },
     "SDL_pixels.h": {
+      "includeDefs": [
+        "SDL_PIXELTYPE",
+        "SDL_PIXELORDER",
+        "SDL_PIXELLAYOUT",
+        "SDL_BITSPERPIXEL",
+        "SDL_BYTESPERPIXEL",
+        "SDL_ISPIXELFORMAT_INDEXED",
+        "SDL_ISPIXELFORMAT_PACKED",
+        "SDL_ISPIXELFORMAT_ARRAY",
+        "SDL_ISPIXELFORMAT_10BIT",
+        "SDL_ISPIXELFORMAT_FLOAT",
+        "SDL_ISPIXELFORMAT_ALPHA",
+        "SDL_ISPIXELFORMAT_FOURCC"
+      ],
       "transform": {
+        "SDL_PIXELTYPE": {
+          "kind": "function",
+          "name": "PixelFormat.GetPixelType",
+          "type": "PixelType",
+          "parameters": []
+        },
         "SDL_PixelFormat": {
           "kind": "struct",
           "type": "",
@@ -209,7 +229,121 @@
               "parameters": [],
               "immutable": true,
               "constexpr": true
-            }
+            },
+            "operator SDL_PixelFormat()": {
+              "kind": "function",
+              "parameters": [],
+              "type": "SDL_PixelFormat",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_PIXELTYPE": {
+              "kind": "function",
+              "name": "GetType",
+              "parameters": [],
+              "type": "SDL_PixelFormat",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_PIXELORDER": {
+              "kind": "function",
+              "name": "GetOrder",
+              "parameters": [],
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_PIXELLAYOUT": {
+              "kind": "function",
+              "name": "GetLayout",
+              "parameters": [],
+              "type": "PackedLayout",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_BITSPERPIXEL": {
+              "kind": "function",
+              "name": "GetBitsPerPixel",
+              "parameters": [],
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_BYTESPERPIXEL": {
+              "kind": "function",
+              "name": "GetBytesPerPixel",
+              "parameters": [],
+              "type": "int",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISPIXELFORMAT_INDEXED": {
+              "kind": "function",
+              "name": "IsIndexed",
+              "parameters": [],
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISPIXELFORMAT_PACKED": {
+              "kind": "function",
+              "name": "IsPacked",
+              "parameters": [],
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISPIXELFORMAT_ARRAY": {
+              "kind": "function",
+              "name": "IsArray",
+              "parameters": [],
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISPIXELFORMAT_10BIT": {
+              "kind": "function",
+              "name": "Is10Bit",
+              "parameters": [],
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISPIXELFORMAT_FLOAT": {
+              "kind": "function",
+              "name": "IsFloat",
+              "parameters": [],
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISPIXELFORMAT_ALPHA": {
+              "kind": "function",
+              "name": "IsAlpha",
+              "parameters": [],
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISPIXELFORMAT_FOURCC": {
+              "kind": "function",
+              "name": "IsFourCC",
+              "parameters": [],
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_GetPixelFormatName": "function",
+            "SDL_GetMasksForPixelFormat": {
+              "kind": "function",
+              "immutable": true,
+              "name": "GetMasks"
+            },
+            "SDL_GetPixelFormatForMasks": {
+              "kind": "function",
+              "name": "ForMasks"
+            },
+            "SDL_GetPixelFormatDetails": "function"
           }
         }
       }
