@@ -302,6 +302,12 @@ function parseParams(params) {
   }
   return params.split(',').map(param => {
     param = param.trim();
+    let defaultValue;
+    const defaultIndex = param.indexOf('=');
+    if (defaultIndex > -1) {
+      defaultValue = param.slice(defaultIndex + 1).trimStart();
+      param = param.slice(0, defaultIndex).trimEnd();
+    }
     const nameIndex = param.lastIndexOf(' ');
     if (nameIndex == -1) return param;
     let name = param.slice(nameIndex + 1).trim();
@@ -311,6 +317,7 @@ function parseParams(params) {
       name = name.slice(1);
     }
     type = normalizeType(type);
+    if (defaultValue) return { name, type, default: defaultValue };
     return { name, type };
   });
 

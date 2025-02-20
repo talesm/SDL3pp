@@ -3,9 +3,6 @@
     "SDL_stdinc.h",
     "SDL_pixels.h"
   ],
-  "targets": [
-    "stdinc.hpp"
-  ],
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",
   "outputFile": "scripts/source.json",

@@ -253,7 +253,11 @@
             "kind": "alias",
             "type": "PaletteBase<ObjectUnique<SDL_Palette>>"
           }
-        ]
+        ],
+        "SDL_PackedLayout": {
+          "name": "PixelFormatDetails",
+          "kind": "placeholder"
+        }
       },
       "transform": {
         "SDL_PIXELTYPE": {
@@ -270,16 +274,17 @@
               "kind": "var",
               "type": "SDL_PixelFormat"
             },
-            "operator bool()": {
+            "operator bool": {
               "kind": "function",
               "parameters": [],
+              "type": "",
               "immutable": true,
               "constexpr": true
             },
-            "operator SDL_PixelFormat()": {
+            "operator SDL_PixelFormat": {
               "kind": "function",
               "parameters": [],
-              "type": "SDL_PixelFormat",
+              "type": "",
               "immutable": true,
               "constexpr": true
             },
@@ -287,7 +292,7 @@
               "kind": "function",
               "name": "GetType",
               "parameters": [],
-              "type": "SDL_PixelFormat",
+              "type": "PixelType",
               "immutable": true,
               "constexpr": true
             },
@@ -379,7 +384,10 @@
               "immutable": true,
               "constexpr": true
             },
-            "SDL_GetPixelFormatName": "function",
+            "SDL_GetPixelFormatName": {
+              "kind": "function",
+              "immutable": true
+            },
             "SDL_GetMasksForPixelFormat": {
               "kind": "function",
               "immutable": true,
@@ -389,7 +397,10 @@
               "kind": "function",
               "name": "ForMasks"
             },
-            "SDL_GetPixelFormatDetails": "function"
+            "SDL_GetPixelFormatDetails": {
+              "kind": "function",
+              "immutable": true
+            }
           }
         },
         "SDL_Color": {

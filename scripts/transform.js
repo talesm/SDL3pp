@@ -304,15 +304,15 @@ function transformEntry(sourceEntry, context) {
 
 /**
  * 
- * @param {(string|{name: string, type: string})[]} parameters
+ * @param {ApiParameters} parameters
  * @param {ApiContext} context 
  */
 function transformParameters(parameters, context) {
   return parameters.map(parameter => {
     if (typeof parameter == "string") return parameter;
-    let { name, type } = parameter;
+    let { name, type, default: defaultValue } = parameter;
     type = transformType(type, context.paramTypeMap);
-    return { name, type };
+    return { name, type, default: defaultValue };
   });
 }
 
