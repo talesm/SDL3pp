@@ -82,12 +82,14 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
   const sourceNames = Object.keys(sourceEntries);
   if (!targetNames.length) {
     if (!sourceNames.length || begin == end) return [];
+    logEntryDeletion(Object.values(sourceEntries));
     return [{
       begin,
       end,
     }];
   }
   if (!sourceNames.length) {
+    logEntryAddition(Object.values(targetEntries), begin);
     return [{
       begin,
       end,
@@ -101,13 +103,16 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
     const targetEntry = targetEntries[targetName];
     let index = sourceNames.indexOf(targetName, sourceIndex);
     if (index == -1) {
-      system.log(`${targetEntry.name} added ${begin}`);
+      logEntryAddition(targetEntry, begin);
       changes.push({
         begin,
         end: begin,
-        replacement: '\n' + generateEntry(targetEntry, prefix),
+        replacement: generateEntry(targetEntry, prefix) + "\n",
       });
     } else if (sourceIndex < sourceNames.length) {
+      if (sourceIndex < index) {
+        logEntryDeletion(Object.values(sourceEntries).slice(sourceIndex, index));
+      }
       begin = getBegin(sourceEntries[sourceNames[sourceIndex]]);
       const sourceEntry = sourceEntries[targetName];
       const change = checkEntryChanged(sourceEntry, targetEntry);
@@ -121,10 +126,6 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
           end: sourceEntryEnd,
           replacement: generateEntry(targetEntry, prefix)
         });
-      } else if (targetEntry.entries) {
-        const sourceBegin = getBegin(sourceEntry.entries);
-        const sourceEnd = getEnd(sourceEntry.entries);
-        changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
       } else {
         if (index > sourceIndex) {
           changes.push({
@@ -132,11 +133,16 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
             end: Array.isArray(sourceEntry) ? sourceEntry[0].begin : sourceEntry.begin
           });
         }
+        if (targetEntry.entries) {
+          const sourceBegin = getBegin(sourceEntry.entries);
+          const sourceEnd = getEnd(sourceEntry.entries);
+          changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
+        }
       }
       begin = sourceEntryEnd;
       sourceIndex = index + 1;
     } else {
-      system.log(`${targetEntry.name} added ${begin}`);
+      logEntryAddition(targetEntry, begin);
       changes.push({
         begin: end,
         end,
@@ -147,6 +153,24 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
   }
 
   return changes.reverse();
+}
+
+/** @param {ApiEntry|ApiEntry[]} entry  */
+function logEntryDeletion(entry) {
+  if (Array.isArray(entry)) {
+    entry.forEach(logEntryDeletion);
+  } else {
+    system.log(`${entry.name} removed (from ${entry.begin} to ${entry.end})`);
+  }
+}
+
+/** @param {ApiEntry|ApiEntry[]} entry  */
+function logEntryAddition(entry, begin) {
+  if (Array.isArray(entry)) {
+    entry.forEach(e => logEntryAddition(e, begin));
+  } else {
+    system.log(`${entry.name} added to line ${begin} or after`);
+  }
 }
 
 /**
@@ -350,7 +374,7 @@ function generateDocString(docStr, prefix) {
   prefix = prefix ?? '';
   const replacement = `\n${prefix} *$1`;
   docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
-  return `${prefix}/**\n${docStr}\n${prefix} **/`;
+  return `${prefix}/**\n${docStr}\n${prefix} */`;
 }
 
 exports.updateApi = updateApi;
