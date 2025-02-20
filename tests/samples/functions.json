@@ -72,7 +72,8 @@
             },
             {
               "name": "otherValue",
-              "type": "int"
+              "type": "int",
+              "default": "0"
             }
           ]
         },

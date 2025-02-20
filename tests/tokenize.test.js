@@ -33,6 +33,18 @@ test("tokenize function", () => {
   }]);
 });
 
+test("tokenize function with default parameter", () => {
+  expect(tokenizeText("int func(int a, int b = 12);")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "function",
+    value: "func",
+    type: "int",
+    parameters: "int a, int b = 12",
+  }]);
+});
+
 test("tokenize function returning a pointer", () => {
   expect(tokenizeText("const char *func(int a, int b);")).toEqual([{
     begin: 1,

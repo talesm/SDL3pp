@@ -3,5 +3,5 @@
     "empty.h"
   ],
   "api": "tests/samples/empty.json",
-  "baseDir": "tests/samples/samples"
+  "baseDir": "tests/samples/"
 }

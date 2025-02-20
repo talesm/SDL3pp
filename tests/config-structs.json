@@ -3,5 +3,5 @@
     "structs.h"
   ],
   "api": "tests/samples/structs.json",
-  "baseDir": "tests/samples/samples"
+  "baseDir": "tests/samples/"
 }

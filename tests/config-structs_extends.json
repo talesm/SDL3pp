@@ -3,7 +3,7 @@
     "structs_extends.h"
   ],
   "api": "tests/samples/structs_extends.json",
-  "baseDir": "tests/samples/samples",
+  "baseDir": "tests/samples/",
   "sourceApi": "tests/samples/structs.json",
   "transform": {
     "prefixes": "My",

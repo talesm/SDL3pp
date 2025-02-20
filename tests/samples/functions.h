@@ -38,7 +38,7 @@ int funcInt(int value);
 /**
  * Documentation
  */
-const char* funcIntReturnsCStr(int value, int otherValue);
+const char* funcIntReturnsCStr(int value, int otherValue = 0);
 
 /**
  * @brief Documentation

@@ -357,11 +357,12 @@ function generateParameters(parameters) {
 
 /**
  * 
- * @param {(string|ApiParameter)[]} parameter
+ * @param {string|ApiParameter} parameter
  */
 function generateParameter(parameter) {
   if (typeof parameter == "string") return parameter;
-  return `${parameter.type} ${parameter.name}`;
+  if (!parameter.default) return `${parameter.type} ${parameter.name}`;
+  return `${parameter.type} ${parameter.name} = ${parameter.default}`;
 }
 
 /**

@@ -52,6 +52,7 @@
  * @typedef {object} ApiParameter
  * @property {string}  name
  * @property {string=} type
+ * @property {string=} default
  */
 
 /**

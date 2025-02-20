@@ -3,7 +3,7 @@
     "structs_resources.h"
   ],
   "api": "tests/samples/structs_resources.json",
-  "baseDir": "tests/samples/samples",
+  "baseDir": "tests/samples/",
   "sourceApi": "tests/samples/structs.json",
   "transform": {
     "prefixes": "My",

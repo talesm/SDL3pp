@@ -3,7 +3,7 @@
     "structs_aliases.h"
   ],
   "api": "tests/samples/structs_aliases.json",
-  "baseDir": "tests/samples/samples",
+  "baseDir": "tests/samples/",
   "sourceApi": "tests/samples/structs.json",
   "transform": {
     "prefixes": "My",
