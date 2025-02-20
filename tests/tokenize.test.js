@@ -31,8 +31,9 @@ test("tokenize function", () => {
     type: "int",
     parameters: "int a, int b",
   }]);
+});
 
-  // returning a pointer
+test("tokenize function returning a pointer", () => {
   expect(tokenizeText("const char *func(int a, int b);")).toEqual([{
     begin: 1,
     end: 2,
@@ -42,8 +43,9 @@ test("tokenize function", () => {
     type: "const char *",
     parameters: "int a, int b",
   }]);
+});
 
-  // with body
+test("tokenize function with body", () => {
   expect(tokenizeText("int func(int a, int b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
@@ -53,8 +55,9 @@ test("tokenize function", () => {
     type: "int",
     parameters: "int a, int b",
   }]);
+});
 
-  // with empty body
+test("tokenize function with empty body", () => {
   expect(tokenizeText("int func(int a, int b)\n{}")).toEqual([{
     begin: 1,
     end: 3,
@@ -64,8 +67,9 @@ test("tokenize function", () => {
     type: "int",
     parameters: "int a, int b",
   }]);
+});
 
-  // with body
+test("tokenize function with body", () => {
   expect(tokenizeText("int func(int a, int b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
@@ -75,8 +79,9 @@ test("tokenize function", () => {
     type: "int",
     parameters: "int a, int b",
   }]);
+});
 
-  // ctor with body
+test("tokenize function ctor with body", () => {
   expect(tokenizeText("Func(int a, int b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
@@ -86,8 +91,9 @@ test("tokenize function", () => {
     type: "",
     parameters: "int a, int b",
   }]);
+});
 
-  // operator() immutable with body
+test("tokenize function operator() immutable with body", () => {
   expect(tokenizeText("void operator()(int a, int b) const\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
@@ -98,8 +104,9 @@ test("tokenize function", () => {
     immutable: true,
     parameters: "int a, int b",
   }]);
+});
 
-  // conversion operator with body
+test("tokenize function conversion operator with body", () => {
   expect(tokenizeText("operator Type() const\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
@@ -110,8 +117,9 @@ test("tokenize function", () => {
     immutable: true,
     parameters: "",
   }]);
+});
 
-  // conversion operator to const pointer with body
+test("tokenize function conversion operator to const pointer with body", () => {
   expect(tokenizeText("operator const Type*() const = default;")).toEqual([{
     begin: 1,
     end: 2,
@@ -122,8 +130,9 @@ test("tokenize function", () => {
     immutable: true,
     parameters: "",
   }]);
+});
 
-  // operator<=> immutable with body
+test("tokenize function operator<=> immutable with body", () => {
   expect(tokenizeText("auto operator<=>(const Type &other) const\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 6,
@@ -134,8 +143,9 @@ test("tokenize function", () => {
     immutable: true,
     parameters: "const Type &other",
   }]);
+});
 
-  // ctor with initialization and body
+test("tokenize function ctor with initialization and body", () => {
   expect(tokenizeText("Func(int a, int b)\n: a(a)\n  , b(b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 8,
