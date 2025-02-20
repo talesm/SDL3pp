@@ -394,7 +394,6 @@ struct PixelFormat
   }
 };
 
-
 /**
  * @brief Colorspace color type.
  *
@@ -483,7 +482,7 @@ struct Color : SDL_Color
   }
 
   // Auto comparison operator
-  auto operator<=>(const Color&) const = default;
+  auto operator<=>(const Color& other) const = default;
 
   /**
    * @brief Get the red component from the color
@@ -659,18 +658,13 @@ struct FColor : SDL_FColor
   {
   }
 
-  constexpr FColor()
-    : FColor({0})
-  {
-  }
-
-  constexpr FColor(float r, float g, float b, float a)
+  constexpr FColor(float r, float g, float b, float a = 1)
     : SDL_FColor{r, g, b, a}
   {
   }
 
   // Auto comparison operator
-  auto operator<=>(const FColor&) const = default;
+  auto operator<=>(const FColor& other) const = default;
 
   /**
    * @brief Get the red component from the color

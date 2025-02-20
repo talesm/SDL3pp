@@ -425,20 +425,20 @@
                 "type": "",
                 "parameters": [
                   {
-                    "type": "r",
-                    "name": "Uint8"
+                    "name": "r",
+                    "type": "Uint8"
                   },
                   {
-                    "type": "g",
-                    "name": "Uint8"
+                    "name": "g",
+                    "type": "Uint8"
                   },
                   {
-                    "type": "b",
-                    "name": "Uint8"
+                    "name": "b",
+                    "type": "Uint8"
                   },
                   {
-                    "type": "a",
-                    "name": "Uint8",
+                    "name": "a",
+                    "type": "Uint8",
                     "default": "255"
                   }
                 ]
@@ -479,20 +479,20 @@
                 "type": "",
                 "parameters": [
                   {
-                    "type": "r",
-                    "name": "float"
+                    "name": "r",
+                    "type": "float"
                   },
                   {
-                    "type": "g",
-                    "name": "float"
+                    "name": "g",
+                    "type": "float"
                   },
                   {
-                    "type": "b",
-                    "name": "float"
+                    "name": "b",
+                    "type": "float"
                   },
                   {
-                    "type": "a",
-                    "name": "float",
+                    "name": "a",
+                    "type": "float",
                     "default": "1"
                   }
                 ]
