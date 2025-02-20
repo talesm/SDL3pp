@@ -153,8 +153,8 @@ function tokenize(lines) {
           break;
         }
         switch (word) {
-          case "constexpr": token.constexpr = true;
-          case "static": token.static = true;
+          case "constexpr": token.constexpr = true; break;
+          case "static": token.static = true; break;
         }
       }
       token.type = type;
@@ -171,9 +171,15 @@ function tokenize(lines) {
               parameters += '\n' + line.slice(0, line.length - 2);
               break;
             }
-            if (line.endsWith(')') || line.endsWith(') const')) {
+            if (line.endsWith(')')) {
               inline = true;
               parameters += '\n' + line.slice(0, line.length - 1);
+              break;
+            }
+            if (line.endsWith(') const')) {
+              token.immutable = true;
+              inline = true;
+              parameters += '\n' + line.slice(0, line.length - 7);
               break;
             }
             parameters += '\n' + line;

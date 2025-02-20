@@ -115,30 +115,8 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
       }
       begin = getBegin(sourceEntries[sourceNames[sourceIndex]]);
       const sourceEntry = sourceEntries[targetName];
-      const change = checkEntryChanged(sourceEntry, targetEntry);
       const sourceEntryEnd = getEnd(sourceEntry);
-      const sourceEntriesCount = Object.keys(sourceEntry.entries ?? {})?.length ?? 0;
-      const targetEntriesCount = Object.keys(targetEntry.entries ?? {})?.length ?? 0;
-      if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
-        system.log(`${targetName} changed "${change}" from ${begin} to ${sourceEntryEnd}`);
-        changes.push({
-          begin,
-          end: sourceEntryEnd,
-          replacement: generateEntry(targetEntry, prefix)
-        });
-      } else {
-        if (index > sourceIndex) {
-          changes.push({
-            begin,
-            end: Array.isArray(sourceEntry) ? sourceEntry[0].begin : sourceEntry.begin
-          });
-        }
-        if (targetEntry.entries) {
-          const sourceBegin = getBegin(sourceEntry.entries);
-          const sourceEnd = getEnd(sourceEntry.entries);
-          changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
-        }
-      }
+      changes.push(...checkEntryChanges(targetName, sourceEntry, targetEntry, begin, sourceEntryEnd, prefix));
       begin = sourceEntryEnd;
       sourceIndex = index + 1;
     } else {
@@ -153,6 +131,66 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
   }
 
   return changes.reverse();
+}
+
+/**
+ * 
+ * @param {string} name 
+ * @param {ApiEntry|ApiEntry[]} sourceEntry 
+ * @param {ApiEntry|ApiEntry[]} targetEntry 
+ * @param {number} begin 
+ * @param {number} end 
+ * @param {string} prefix 
+ */
+function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
+  /** @type {Change[]} */
+  const changes = [];
+  if (Array.isArray(targetEntry)) {
+    if (!Array.isArray(sourceEntry)) sourceEntry = [sourceEntry];
+    for (let i = 0; i < targetEntry.length; i++) {
+      const sourceSubEntry = sourceEntry[i];
+      if (!sourceSubEntry) {
+        system.log(`${name} overload(s) added to line ${end} or after`);
+        changes.push({ begin: end, end, replacement: generateEntry(targetEntry.slice(i), prefix) });
+        break;
+      }
+      changes.push(...checkEntryChanges(name,
+        sourceSubEntry,
+        targetEntry[i],
+        sourceSubEntry.begin,
+        sourceSubEntry.end,
+        prefix));
+    }
+    if (sourceEntry.length > targetEntry.length) {
+      begin = sourceEntry[targetEntry.length].begin;
+      system.log(`${name} overload(s) removed from line ${begin} to ${end}`);
+      changes.push({ begin, end });
+
+    }
+    return changes;
+  } else if (Array.isArray(sourceEntry)) {
+    return checkEntryChanges(name, sourceEntry, [targetEntry], begin, end, prefix);
+  }
+  const change = checkEntryChanged(sourceEntry, targetEntry);
+  const sourceEntriesCount = Object.keys(sourceEntry.entries ?? {})?.length ?? 0;
+  const targetEntriesCount = Object.keys(targetEntry.entries ?? {})?.length ?? 0;
+  if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
+    system.log(`${name} changed "${change}" from ${begin} to ${end}`);
+    changes.push({ begin, end, replacement: generateEntry(targetEntry, prefix) });
+  } else {
+    if (sourceEntry.begin > begin) {
+      changes.push({
+        begin,
+        end: Array.isArray(sourceEntry) ? sourceEntry[0].begin : sourceEntry.begin
+      });
+    }
+    if (targetEntry.entries) {
+      const sourceBegin = getBegin(sourceEntry.entries);
+      const sourceEnd = getEnd(sourceEntry.entries);
+      changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
+    }
+  }
+  return changes;
 }
 
 /** @param {ApiEntry|ApiEntry[]} entry  */
@@ -205,7 +243,6 @@ function getEnd(entry) {
  * @param {ApiEntry} targetEntry 
  */
 function checkEntryChanged(sourceEntry, targetEntry) {
-  // TODO Check if not a array or string
   const keys = Object.keys(targetEntry).filter(k => k !== "doc" && k !== "entries" && k !== "sourceName");
   for (const key of keys) {
     if (checkValueChanged(sourceEntry[key], targetEntry[key])) return key;
