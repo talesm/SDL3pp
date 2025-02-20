@@ -651,10 +651,12 @@ struct PaletteBase : T
   // TODO GetColor/ MapColor()
 };
 
+#pragma region impl
+
 inline Uint32 Color::Map(const PixelFormatDetails* format,
                          PaletteRef palette) const
 {
-  return SDL_MapRGBA(format, nullptr, r, g, b, a);
+  return SDL_MapRGBA(format, palette.Get(), r, g, b, a);
 }
 
 inline Uint32 Color::Map(const PixelFormat& format, PaletteRef palette) const
@@ -662,7 +664,7 @@ inline Uint32 Color::Map(const PixelFormat& format, PaletteRef palette) const
   return Map(format.GetDetails(), palette);
 }
 
-// TODO SDL_PixelFormatDetails
+#pragma endregion impl
 
 } // namespace SDL
 
