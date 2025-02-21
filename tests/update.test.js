@@ -113,8 +113,19 @@ test("structs_resources.h over empty file", () => {
   expect(modifiedApi).toEqual(originalApi);
 });
 
+test("function is added correctly", () => {
+  const originalContent = ["inline int a();", "", "inline int b(float b)", "{", '  static_assert(false, "Not implemented");', "}", ""];
+  const originalApi = parseContent("functions.h", originalContent);
+  const modifiedContent = ["inline int a();", ""];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0); const modifiedApi = parseContent("functions.h", reSplit(originalContent));
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});
+
+
 test("overload is added correctly", () => {
-  const originalContent = ["inline int a();", "inline int a(float b)", "{", '  static_assert(false, "Not implemented");', "}", ""];
+  const originalContent = ["inline int a();", "", "inline int a(float b)", "{", '  static_assert(false, "Not implemented");', "}", ""];
   const originalApi = parseContent("functions.h", originalContent);
   const modifiedContent = ["inline int a();", ""];
   const changes = updateContent(modifiedContent, originalApi);
