@@ -11,7 +11,8 @@
     "SDL_Environment *": "EnvironmentRef",
     "SDL_iconv_t": "IConvRef",
     "SDL_Palette *": "PaletteRef",
-    "const SDL_Palette *": "PaletteRef"
+    "const SDL_Palette *": "PaletteRef",
+    "SDL_PropertiesID": "PropertiesRef"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
@@ -565,6 +566,174 @@
             },
             "SDL_SetPaletteColors": "function"
           }
+        }
+      }
+    },
+    "SDL_properties.h": {
+      "ignoreEntries": [
+        "SDL_LockProperties",
+        "SDL_UnlockProperties"
+      ],
+      "includeAfter": {
+        "SDL_PropertyType": {
+          "kind": "struct",
+          "name": "PropertiesRef",
+          "entries": {
+            "id": {
+              "kind": "var",
+              "type": "PropertiesID"
+            },
+            "PropertiesRef": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "PropertiesID",
+                  "name": "id",
+                  "default": "0"
+                }
+              ]
+            },
+            "Valid": {
+              "kind": "function",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "Get": {
+              "kind": "function",
+              "type": "PropertiesID",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "Reset": {
+              "kind": "function",
+              "type": "void",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "PropertiesID",
+                  "name": "id",
+                  "default": "0"
+                }
+              ]
+            },
+            "SDL_CopyProperties": {
+              "kind": "function",
+              "name": "CopyPropertiesTo"
+            },
+            "CleanupCallback": {
+              "kind": "placeholder"
+            },
+            "SDL_SetPointerPropertyWithCleanup": {
+              "kind": "function",
+              "name": "SetPointerWithCleanup"
+            },
+            "SDL_SetPointerProperty": {
+              "kind": "function",
+              "name": "SetPointer"
+            },
+            "SDL_SetStringProperty": {
+              "kind": "function",
+              "name": "SetString"
+            },
+            "SDL_SetNumberProperty": {
+              "kind": "function",
+              "name": "SetNumber"
+            },
+            "SDL_SetFloatProperty": {
+              "kind": "function",
+              "name": "SetFloat"
+            },
+            "SDL_SetBooleanProperty": {
+              "kind": "function",
+              "name": "SetBoolean"
+            },
+            "SDL_HasProperty": {
+              "kind": "function",
+              "name": "Has",
+              "immutable": true
+            },
+            "SDL_GetPropertyType": {
+              "kind": "function",
+              "name": "GetType",
+              "immutable": true
+            },
+            "SDL_GetPointerProperty": {
+              "kind": "function",
+              "name": "GetPointer",
+              "immutable": true
+            },
+            "SDL_GetStringProperty": {
+              "kind": "function",
+              "name": "GetString",
+              "immutable": true
+            },
+            "SDL_GetNumberProperty": {
+              "kind": "function",
+              "name": "GetNumber",
+              "immutable": true
+            },
+            "SDL_GetFloatProperty": {
+              "kind": "function",
+              "name": "GetFloat",
+              "immutable": true
+            },
+            "SDL_GetBooleanProperty": {
+              "kind": "function",
+              "name": "GetBoolean",
+              "immutable": true
+            },
+            "SDL_ClearProperty": {
+              "kind": "function",
+              "name": "Clear"
+            },
+            "EnumerateCallback": {
+              "kind": "placeholder"
+            },
+            "SDL_EnumerateProperties": {
+              "kind": "function",
+              "name": "Enumerate"
+            }
+          }
+        },
+        "SDL_DestroyProperties": {
+          "kind": "struct",
+          "name": "Properties",
+          "type": "PropertiesRef",
+          "entries": {
+            "SDL_CreateProperties": "ctor"
+          }
+        },
+        "__end": {
+          "kind": "function",
+          "name": "Properties.Properties",
+          "type": "explicit",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "PropertiesID",
+              "name": "id"
+            }
+          ]
+        }
+      },
+      "transform": {
+        "SDL_CleanupPropertyCallback": {
+          "name": "PropertiesRef.CleanupCallback"
+        },
+        "SDL_EnumeratePropertiesCallback": {
+          "name": "PropertiesRef.EnumerateCallback"
         }
       }
     }

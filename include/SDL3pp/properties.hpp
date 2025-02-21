@@ -1,3 +1,30 @@
+/**
+ * @file properties.hpp
+ *
+ * # CategoryProperties
+ *
+ * A property is a variable that can be created and retrieved by name at
+ * runtime.
+ *
+ * All properties are part of a property group (SDL_PropertiesID). A property
+ * group can be created with the SDL_CreateProperties function and destroyed
+ * with the SDL_DestroyProperties function.
+ *
+ * Properties can be added to and retrieved from a property group through the
+ * following functions:
+ *
+ * - SDL_SetPointerProperty and SDL_GetPointerProperty operate on `void*`
+ *   pointer types.
+ * - SDL_SetStringProperty and SDL_GetStringProperty operate on string types.
+ * - SDL_SetNumberProperty and SDL_GetNumberProperty operate on signed 64-bit
+ *   integer types.
+ * - SDL_SetFloatProperty and SDL_GetFloatProperty operate on floating point
+ *   types.
+ * - SDL_SetBooleanProperty and SDL_GetBooleanProperty operate on boolean
+ *   types.
+ *
+ * Properties can be removed from a group by using SDL_ClearProperty.
+ */
 #ifndef SDL3PP_PROPERTIES_HPP_
 #define SDL3PP_PROPERTIES_HPP_
 
@@ -70,7 +97,7 @@ public:
    *
    * @param id Optional: The new value for id.
    */
-  void Reset(PropertiesID id = 0) { id = 0; }
+  constexpr void Reset(PropertiesID id = 0) { id = 0; }
 
   /**
    * @brief Copy a group of properties.
@@ -91,11 +118,35 @@ public:
     return SDL_CopyProperties(Get(), dst.Get());
   }
 
+  /**
+   * A callback used to free resources when a property is deleted.
+   *
+   * This should release any resources associated with `value` that are no
+   * longer needed.
+   *
+   * This callback is set per-property. Different properties in the same group
+   * can have different cleanup callbacks.
+   *
+   * This callback will be called _during_ SDL_SetPointerPropertyWithCleanup if
+   * the function fails for any reason.
+   *
+   * @param userdata an app-defined pointer passed to the callback.
+   * @param value the pointer assigned to the property to clean up.
+   *
+   * @threadsafety This callback may fire without any locks held; if this is a
+   *               concern, the app should provide its own locking.
+   *
+   * @since This datatype is available since SDL 3.2.0.
+   *
+   * @sa SDL_SetPointerPropertyWithCleanup
+   */
+  using CleanupCallback = SDL_CleanupPropertyCallback;
+
   // TODO SDL_LockProperties & SDL_UnlockProperties
 
   /**
-   * @brief Set a pointer property in a group of properties with a cleanup
-   * function that is called when the property is deleted.
+   * Set a pointer property in a group of properties with a cleanup function
+   * that is called when the property is deleted.
    *
    * The cleanup function is also called if setting the property fails for any
    * reason.
@@ -109,19 +160,25 @@ public:
    * @param value the new value of the property, or NULL to delete the property.
    * @param cleanup the function to call when this property is deleted, or NULL
    *                if no cleanup is necessary.
-   * @param userData a pointer that is passed to the cleanup function.
-   * @returns true on success or false on failure; call GetError() for more
+   * @param userdata a pointer that is passed to the cleanup function.
+   * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesRef.GetPointer
+   * @sa PropertiesRef.SetPointer
+   * @sa PropertiesRef.CleanupCallback
    */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             SDL_CleanupPropertyCallback cleanup,
-                             void* userData)
+  inline bool SetPointerWithCleanup(StringParam name,
+                                    void* value,
+                                    CleanupCallback cleanup,
+                                    void* userdata)
   {
     return SDL_SetPointerPropertyWithCleanup(
-      Get(), name, value, cleanup, userData);
+      Get(), name, value, cleanup, userdata);
   }
 
   /**
@@ -286,7 +343,7 @@ public:
    *               SDL_UnlockProperties().
    *
    */
-  void* GetPointer(StringParam name, void* defaultValue = nullptr) const
+  void* GetPointer(StringParam name, void* defaultValue) const
   {
     return SDL_GetPointerProperty(Get(), name, defaultValue);
   }
@@ -317,8 +374,7 @@ public:
    * @sa GetPointer()
    * @sa SetString()
    */
-  const char* GetString(StringParam name,
-                        const char* defaultValue = nullptr) const
+  const char* GetString(StringParam name, const char* defaultValue) const
   {
     return SDL_GetStringProperty(Get(), name, defaultValue);
   }
@@ -416,8 +472,7 @@ public:
    *
    * @threadsafety It is safe to call this function from any thread.
    */
-  bool EnumerateProperties(SDL_EnumeratePropertiesCallback callback,
-                           void* userdata) const
+  bool Enumerate(SDL_EnumeratePropertiesCallback callback, void* userdata) const
   {
     return SDL_EnumerateProperties(Get(), callback, userdata);
   }
@@ -426,7 +481,7 @@ public:
    * @brief A callback used to enumerate all the properties in a group of
    * properties.
    *
-   * This callback is called from EnumerateProperties(), and is called once
+   * This callback is called from Enumerate(), and is called once
    * per property in the set.
    *
    * @param props the SDL_PropertiesID that is being enumerated.
@@ -452,13 +507,13 @@ public:
    *
    * @threadsafety It is safe to call this function from any thread.
    */
-  bool EnumerateProperties(EnumeratePropertiesCallback callback) const
+  bool Enumerate(EnumeratePropertiesCallback callback) const
   {
     using Wrapper = CallbackWrapper<EnumeratePropertiesCallback>;
     void* cbHandle = Wrapper::Wrap(std::move(callback));
     bool r = false;
     try {
-      r = EnumerateProperties(&Wrapper::Call, cbHandle);
+      r = Enumerate(&Wrapper::Call, cbHandle);
     } catch (...) {
       Wrapper::Erase(cbHandle);
       throw;
@@ -477,9 +532,9 @@ public:
    * @threadsafety It is safe to call this function from any thread.
    */
   template<class IT>
-  bool EnumerateProperties(IT outputIter) const
+  bool Enumerate(IT outputIter) const
   {
-    return EnumerateProperties(
+    return Enumerate(
       [&outputIter](auto props, const char name) { *outputIter++ = name; });
   }
 };
@@ -519,7 +574,7 @@ struct Properties : PropertiesRef
   {
   }
 
-  constexpr explicit Properties(SDL_PropertiesID id)
+  constexpr explicit Properties(PropertiesID id)
     : PropertiesRef(id)
   {
   }

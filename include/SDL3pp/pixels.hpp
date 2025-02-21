@@ -362,15 +362,15 @@ struct PixelFormat
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PixelFormat.GetMasks
+   * @sa SDL_GetMasksForPixelFormat
    */
-  static inline SDL_PixelFormat ForMasks(int bpp,
-                                         Uint32 Rmask,
-                                         Uint32 Gmask,
-                                         Uint32 Bmask,
-                                         Uint32 Amask)
+  static inline PixelFormat ForMasks(int bpp,
+                                     Uint32 Rmask,
+                                     Uint32 Gmask,
+                                     Uint32 Bmask,
+                                     Uint32 Amask)
   {
-    return SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask);
+    return {SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask)};
   }
 
   /**

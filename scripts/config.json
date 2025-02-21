@@ -1,7 +1,8 @@
 {
   "sources": [
     "SDL_stdinc.h",
-    "SDL_pixels.h"
+    "SDL_pixels.h",
+    "SDL_properties.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",
