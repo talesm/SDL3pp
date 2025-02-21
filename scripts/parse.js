@@ -119,9 +119,7 @@ class ContentParser {
    */
   constructor(tokens, config) {
     /** @private */
-    this.next = () => tokens.shift();
-    /** @private */
-    this.lookup = () => tokens[0];
+    this.tokens = tokens ?? [];
     this.storeLineNumbers = config.storeLineNumbers;
     this.docBegin = 0;
     this.doc = "";
@@ -129,6 +127,18 @@ class ContentParser {
     this.entriesBegin = 0;
     this.entriesEnd = tokens[tokens.length - 1]?.end;
   }
+
+  /**
+   * @private
+   * @returns next token
+   */
+  next() { return this.tokens.shift(); }
+
+  /**
+  * @private
+  * @returns next token, but does not consume it
+  */
+  lookup() { return this.tokens[0]; }
 
   /**
    * Parse all entries
@@ -231,6 +241,8 @@ class ContentParser {
         break;
       case "endStruct":
         if (lastTemplate) throw new Error(`Error at ${lastEnd}: Expected an entity after template signature`);
+        this.entriesEnd = token.begin;
+        this.tokens = [];
         return undefined;
       default:
         throw new Error(`Error at ${token.begin}: Unexpected ${token.kind}`);
