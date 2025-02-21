@@ -257,6 +257,23 @@
         "SDL_PackedLayout": {
           "name": "PixelFormatDetails",
           "kind": "placeholder"
+        },
+        "SDL_SetPaletteColors": {
+          "kind": "function",
+          "name": "PaletteBase.SetColors",
+          "type": "bool",
+          "static": false,
+          "parameters": [
+            {
+              "type": "std::span<const SDL_Color>",
+              "name": "colors"
+            },
+            {
+              "type": "int",
+              "name": "firstcolor",
+              "default": "0"
+            }
+          ]
         }
       },
       "transform": {

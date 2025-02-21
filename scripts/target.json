@@ -3377,27 +3377,47 @@
               "name": "operator[]",
               "doc": ""
             },
-            "SetColors": {
-              "doc": "Set a range of colors in a palette.\n\n@param palette the SDL_Palette structure to modify.\n@param colors an array of SDL_Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "SetColors",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "colors",
-                  "type": "const Color *"
-                },
-                {
-                  "name": "firstcolor",
-                  "type": "int"
-                },
-                {
-                  "name": "ncolors",
-                  "type": "int"
-                }
-              ],
-              "sourceName": "SDL_SetPaletteColors"
-            }
+            "SetColors": [
+              {
+                "doc": "Set a range of colors in a palette.\n\n@param palette the SDL_Palette structure to modify.\n@param colors an array of SDL_Color structures to copy into the palette.\n@param firstcolor the index of the first palette entry to modify.\n@param ncolors the number of entries to modify.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "SetColors",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "colors",
+                    "type": "const Color *"
+                  },
+                  {
+                    "name": "firstcolor",
+                    "type": "int"
+                  },
+                  {
+                    "name": "ncolors",
+                    "type": "int"
+                  }
+                ],
+                "sourceName": "SDL_SetPaletteColors"
+              },
+              {
+                "kind": "function",
+                "name": "SetColors",
+                "type": "bool",
+                "static": false,
+                "parameters": [
+                  {
+                    "type": "std::span<const SDL_Color>",
+                    "name": "colors"
+                  },
+                  {
+                    "type": "int",
+                    "name": "firstcolor",
+                    "default": "0"
+                  }
+                ],
+                "doc": ""
+              }
+            ]
           }
         },
         "DestroyPalette": {

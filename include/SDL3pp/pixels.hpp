@@ -792,11 +792,11 @@ struct PaletteBase : T
   constexpr Color operator[](int index) const { return this->colors[index]; }
 
   /**
-   * @brief Set a range of colors in a palette.
+   * Set a range of colors in a palette.
    *
    * @param colors an array of SDL_Color structures to copy into the palette.
-   * @param firstColor the index of the first palette entry to modify.
-   * @param nColors the number of entries to modify.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @param ncolors the number of entries to modify.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -805,25 +805,25 @@ struct PaletteBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetColors(const SDL_Color* colors, int firstColor, int nColors)
+  inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
   {
-    return SDL_SetPaletteColors(Get<T>(this), colors, firstColor, nColors);
+    return SDL_SetPaletteColors(Get<T>(this), colors, firstcolor, ncolors);
   }
 
   /**
    * Set a range of colors in a palette.
    *
    * @param colors a span of SDL_Color structures to copy into the palette.
-   * @param firstColor the index of the first palette entry to modify.
+   * @param firstcolor the index of the first palette entry to modify.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    */
-  bool SetColors(std::span<const SDL_Color> colors, int firstColor)
+  bool SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
   {
-    return SetColors(colors.data(), firstColor, colors.size());
+    return SetColors(colors.data(), firstcolor, colors.size());
   }
 };
 
