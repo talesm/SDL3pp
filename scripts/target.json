@@ -3670,31 +3670,54 @@
               "type": "SDL_CleanupPropertyCallback",
               "sourceName": "SDL_CleanupPropertyCallback"
             },
-            "SetPointerWithCleanup": {
-              "doc": "Set a pointer property in a group of properties with a cleanup function\nthat is called when the property is deleted.\n\nThe cleanup function is also called if setting the property fails for any\nreason.\n\nFor simply setting basic data types, like numbers, bools, or strings, use\nSDL_SetNumberProperty, SDL_SetBooleanProperty, or SDL_SetStringProperty\ninstead, as those functions will handle cleanup on your behalf. This\nfunction is only for more complex, custom data.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or NULL to delete the property.\n@param cleanup the function to call when this property is deleted, or NULL\n               if no cleanup is necessary.\n@param userdata a pointer that is passed to the cleanup function.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPointerProperty\n@sa SDL_SetPointerProperty\n@sa SDL_CleanupPropertyCallback",
-              "name": "SetPointerWithCleanup",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "name",
-                  "type": "StringParam"
-                },
-                {
-                  "name": "value",
-                  "type": "void *"
-                },
-                {
-                  "name": "cleanup",
-                  "type": "CleanupCallback"
-                },
-                {
-                  "name": "userdata",
-                  "type": "void *"
-                }
-              ],
-              "sourceName": "SDL_SetPointerPropertyWithCleanup"
-            },
+            "SetPointerWithCleanup": [
+              {
+                "doc": "Set a pointer property in a group of properties with a cleanup function\nthat is called when the property is deleted.\n\nThe cleanup function is also called if setting the property fails for any\nreason.\n\nFor simply setting basic data types, like numbers, bools, or strings, use\nSDL_SetNumberProperty, SDL_SetBooleanProperty, or SDL_SetStringProperty\ninstead, as those functions will handle cleanup on your behalf. This\nfunction is only for more complex, custom data.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or NULL to delete the property.\n@param cleanup the function to call when this property is deleted, or NULL\n               if no cleanup is necessary.\n@param userdata a pointer that is passed to the cleanup function.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPointerProperty\n@sa SDL_SetPointerProperty\n@sa SDL_CleanupPropertyCallback",
+                "name": "SetPointerWithCleanup",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "name",
+                    "type": "StringParam"
+                  },
+                  {
+                    "name": "value",
+                    "type": "void *"
+                  },
+                  {
+                    "name": "cleanup",
+                    "type": "CleanupCallback"
+                  },
+                  {
+                    "name": "userdata",
+                    "type": "void *"
+                  }
+                ],
+                "sourceName": "SDL_SetPointerPropertyWithCleanup"
+              },
+              {
+                "kind": "function",
+                "name": "SetPointerWithCleanup",
+                "static": false,
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "StringParam",
+                    "name": "name"
+                  },
+                  {
+                    "type": "void *",
+                    "name": "value"
+                  },
+                  {
+                    "type": "std::function<void(void * value)>",
+                    "name": "cleanup"
+                  }
+                ],
+                "doc": ""
+              }
+            ],
             "SetPointer": {
               "doc": "Set a pointer property in a group of properties.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or NULL to delete the property.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPointerProperty\n@sa SDL_HasProperty\n@sa SDL_SetBooleanProperty\n@sa SDL_SetFloatProperty\n@sa SDL_SetNumberProperty\n@sa SDL_SetPointerPropertyWithCleanup\n@sa SDL_SetStringProperty",
               "name": "SetPointer",

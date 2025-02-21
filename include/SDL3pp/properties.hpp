@@ -182,25 +182,6 @@ public:
   }
 
   /**
-   * @brief A callback used to free resources when a property is deleted.
-   *
-   * This should release any resources associated with `value` that are no
-   * longer needed.
-   *
-   * This callback is set per-property. Different properties in the same group
-   * can have different cleanup callbacks.
-   *
-   * This callback will be called _during_ SDL_SetPointerPropertyWithCleanup if
-   * the function fails for any reason.
-   *
-   * @param value the pointer assigned to the property to clean up.
-   *
-   * @threadsafety This callback may fire without any locks held; if this is a
-   *               concern, the app should provide its own locking.
-   */
-  using CleanupPropertyCallback = void(void* value);
-
-  /**
    * @brief Set a pointer property in a group of properties with a cleanup
    * function that is called when the property is deleted.
    *
@@ -222,9 +203,9 @@ public:
    */
   bool SetPointerWithCleanup(StringParam name,
                              void* value,
-                             std::function<CleanupPropertyCallback> cleanup)
+                             std::function<void(void* value)> cleanup)
   {
-    using Wrapper = CallbackWrapper<CleanupPropertyCallback>;
+    using Wrapper = CallbackWrapper<void(void* value)>;
 
     return SetPointerWithCleanup(std::move(name),
                                  value,
@@ -478,24 +459,6 @@ public:
   }
 
   /**
-   * @brief A callback used to enumerate all the properties in a group of
-   * properties.
-   *
-   * This callback is called from Enumerate(), and is called once
-   * per property in the set.
-   *
-   * @param props the SDL_PropertiesID that is being enumerated.
-   * @param name the next property name in the enumeration.
-   *
-   * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
-   *               callback.
-   *
-   * @sa SDL_EnumerateProperties(EnumeratePropertiesCallback)
-   */
-  using EnumeratePropertiesCallback = void(PropertiesID props,
-                                           const char* name);
-
-  /**
    * @brief Enumerate the properties contained in a group of properties.
    *
    * The callback function is called for each property in the group of
@@ -507,9 +470,10 @@ public:
    *
    * @threadsafety It is safe to call this function from any thread.
    */
-  bool Enumerate(EnumeratePropertiesCallback callback) const
+  bool Enumerate(
+    std::function<void(PropertiesID props, const char* name)> callback) const
   {
-    using Wrapper = CallbackWrapper<EnumeratePropertiesCallback>;
+    using Wrapper = CallbackWrapper<void(PropertiesID props, const char* name)>;
     void* cbHandle = Wrapper::Wrap(std::move(callback));
     bool r = false;
     try {

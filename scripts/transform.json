@@ -715,18 +715,40 @@
             "SDL_CreateProperties": "ctor"
           }
         },
-        "__end": {
-          "kind": "function",
-          "name": "Properties.Properties",
-          "type": "explicit",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "PropertiesID",
-              "name": "id"
-            }
-          ]
-        }
+        "__end": [
+          {
+            "kind": "function",
+            "name": "PropertiesRef.SetPointerWithCleanup",
+            "static": false,
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "StringParam",
+                "name": "name"
+              },
+              {
+                "type": "void *",
+                "name": "value"
+              },
+              {
+                "type": "std::function<void(void * value)>",
+                "name": "cleanup"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "Properties.Properties",
+            "type": "explicit",
+            "constexpr": true,
+            "parameters": [
+              {
+                "type": "PropertiesID",
+                "name": "id"
+              }
+            ]
+          }
+        ]
       },
       "transform": {
         "SDL_CleanupPropertyCallback": {
