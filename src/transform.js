@@ -80,7 +80,7 @@ function transformEntries(sourceEntries, context, transform) {
   const transformMap = transform.transform ?? {};
   if (!transform.transform) transform.transform = transformMap;
 
-  insertEntry(targetEntries, transform.includeAfter?.__begin ?? []);
+  insertEntryAndCheck(targetEntries, transform.includeAfter?.__begin ?? [], context, transform);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (blacklist.has(sourceName)) continue;
@@ -108,25 +108,41 @@ function transformEntries(sourceEntries, context, transform) {
         if (targetName == targetEntry.type) {
           continue;
         }
-        const type = targetEntry.type;
-        context.typeMap[type] = targetName;
-        context.typeMap[`${type} *`] = `${targetName} *`;
-        context.typeMap[`const ${type}`] = `const ${targetName}`;
-        context.typeMap[`const ${type} *`] = `const ${targetName} *`;
+        const sourceType = targetEntry.sourceName;
+        const targetType = targetEntry.name.replace(/[^.]*\./g, "");
+        context.typeMap[sourceType] = targetType;
+        context.typeMap[`${sourceType} *`] = `${targetType} *`;
+        context.typeMap[`const ${sourceType}`] = `const ${targetType}`;
+        context.typeMap[`const ${sourceType} *`] = `const ${targetType} *`;
       }
-      if (targetEntry.entries) {
-        targetEntry.entries = transformSubEntries(targetEntry, context, transform, targetEntries);
-      }
-      insertEntry(targetEntries, targetEntry);
+      insertEntryAndCheck(targetEntries, targetEntry, context, transform, targetName);
     }
-    insertEntry(targetEntries, transform.includeAfter?.[sourceName] ?? []);
+    insertEntryAndCheck(targetEntries, transform.includeAfter?.[sourceName] ?? [], context, transform);
   }
-  insertEntry(targetEntries, transform.includeAfter?.__end ?? []);
+  insertEntryAndCheck(targetEntries, transform.includeAfter?.__end ?? [], context, transform);
   transformHierarchy(targetEntries);
 
   validateEntries(targetEntries);
 
   return targetEntries;
+}
+
+/**
+ * Insert entry into entries
+ * 
+ * @param {ApiEntries}          entries 
+ * @param {ApiEntry|ApiEntry[]} entry 
+ * @param {ApiContext}          context 
+ * @param {FileTransform}       transform
+ * @param {string=}             defaultName
+ */
+function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
+  if (Array.isArray(entry)) {
+    entry.forEach(e => insertEntryAndCheck(entries, e, context, transform, defaultName));
+    return;
+  }
+  if (entry.entries) entry.entries = transformSubEntries(entry, context, transform, entries);
+  insertEntry(entries, entry, defaultName);
 }
 
 /**

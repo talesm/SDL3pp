@@ -1,4 +1,4 @@
-const { parseApi } = require("../src/parse.js");
+const { parseApi, parseContent } = require("../src/parse.js");
 const emptyApi = require("./samples/empty.json");
 const functionsApi = require("./samples/functions.json");
 const structsApi = require("./samples/structs.json");
@@ -46,4 +46,27 @@ test("parse structs_resources.h", () => {
     baseDir: "tests/samples/",
     sources: ["structs_resources.h"]
   })).toEqual(structsResourcesApi);
+});
+
+test("parse ends on trailing }", () => {
+  const content = ["namespace {", "", "int a;", "}", "", "int b;", ""];
+  expect(parseContent("file.h", content, { storeLineNumbers: true })).toEqual({
+    name: "file.h",
+    doc: "",
+    entries: {
+      a: {
+        doc: "",
+        kind: "var",
+        name: "a",
+        type: "int",
+        begin: 3,
+        decl: 3,
+        end: 4
+      },
+    },
+    docBegin: 1,
+    docEnd: 1,
+    entriesBegin: 3,
+    entriesEnd: 4,
+  });
 });
