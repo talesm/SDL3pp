@@ -127,7 +127,7 @@ class ContentParser {
     this.doc = "";
     this.docEnd = 0;
     this.entriesBegin = 0;
-    this.entriesEnd = 0;
+    this.entriesEnd = tokens[tokens.length - 1]?.end;
   }
 
   /**

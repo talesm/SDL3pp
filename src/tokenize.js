@@ -138,7 +138,7 @@ function tokenize(lines) {
       continue;
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
-      m = /^(([\w*]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%]{1,2})|[\w*&]+)(\s*\()?/.exec(member);
+      m = /^(([\w*&]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%]{1,2})|[\w*&]+)(\s*\()?/.exec(member);
       if (!m) {
         system.warn(`Unknown token at line ${i + 1}: ${member}`);
         continue;
