@@ -7,6 +7,9 @@ const ignorePrefixes = [
   'size_t strl',
   'size_t wcsl',
   'char *str',
+  'public:',
+  'private:',
+  'protected:',
 ];
 
 const ignoreInSignature = new RegExp(`(${[
@@ -100,10 +103,10 @@ function tokenize(lines) {
       if (token.kind != "struct") {
         i = ignoreBody(lines, i, token.spaces);
       } else if (!line.endsWith("{")) i++;
-    } else if (m = /^struct\s+([\w<>]+);/.exec(line)) {
+    } else if (m = /^(?:struct|class)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.value = m[1];
-    } else if (m = /^struct\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) {
+    } else if (m = /^(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) {
       token.kind = "struct";
       token.value = m[1];
       if (m[3]) {
@@ -138,7 +141,7 @@ function tokenize(lines) {
       continue;
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
-      m = /^(([\w*&]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%]{1,2})|[\w*&]+)(\s*\()?/.exec(member);
+      m = /^(([\w*&]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%]{1,2})|[\w*&~]+)(\s*\()?/.exec(member);
       if (!m) {
         system.warn(`Unknown token at line ${i + 1}: ${member}`);
         continue;
