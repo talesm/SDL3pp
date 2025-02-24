@@ -2,6 +2,7 @@
   "sources": [
     "SDL_stdinc.h",
     "SDL_pixels.h",
+    "SDL_blendmode.h",
     "SDL_properties.h"
   ],
   "api": "scripts/target.json",
