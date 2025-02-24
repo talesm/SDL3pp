@@ -635,6 +635,11 @@
             "CleanupCallback": {
               "kind": "placeholder"
             },
+            "CleanupFunction": {
+              "doc": "@sa PropertiesRef.CleanupCallback",
+              "kind": "alias",
+              "type": "std::function<void(void *)>"
+            },
             "SDL_SetPointerPropertyWithCleanup": {
               "kind": "function",
               "name": "SetPointerWithCleanup"
@@ -701,9 +706,15 @@
             "EnumerateCallback": {
               "kind": "placeholder"
             },
+            "EnumerateFunction": {
+              "doc": "@sa PropertiesRef.EnumerateCallback",
+              "kind": "alias",
+              "type": "std::function<void(PropertiesID, const char*)>"
+            },
             "SDL_EnumerateProperties": {
               "kind": "function",
-              "name": "Enumerate"
+              "name": "Enumerate",
+              "immutable": true
             }
           }
         },
@@ -731,8 +742,40 @@
                 "name": "value"
               },
               {
-                "type": "std::function<void(void * value)>",
+                "type": "CleanupFunction",
                 "name": "cleanup"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "PropertiesRef.Enumerate",
+            "static": false,
+            "type": "bool",
+            "immutable": true,
+            "parameters": [
+              {
+                "type": "EnumerateFunction",
+                "name": "callback"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "PropertiesRef.Enumerate",
+            "static": false,
+            "type": "bool",
+            "immutable": true,
+            "template": [
+              {
+                "type": "class",
+                "name": "IT"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "IT",
+                "name": "outputIter"
               }
             ]
           },
@@ -741,10 +784,35 @@
             "name": "Properties.Properties",
             "type": "explicit",
             "constexpr": true,
+            "immutable": false,
             "parameters": [
               {
                 "type": "PropertiesID",
                 "name": "id"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "Properties.Properties",
+            "type": "",
+            "immutable": false,
+            "parameters": [
+              {
+                "type": "const Properties &",
+                "name": "other"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "Properties.Properties",
+            "type": "",
+            "immutable": false,
+            "parameters": [
+              {
+                "type": "Properties &&",
+                "name": "other"
               }
             ]
           }

@@ -3670,6 +3670,12 @@
               "type": "SDL_CleanupPropertyCallback",
               "sourceName": "SDL_CleanupPropertyCallback"
             },
+            "CleanupFunction": {
+              "doc": "@sa PropertiesRef.CleanupCallback",
+              "kind": "alias",
+              "type": "std::function<void(void *)>",
+              "name": "CleanupFunction"
+            },
             "SetPointerWithCleanup": [
               {
                 "doc": "Set a pointer property in a group of properties with a cleanup function\nthat is called when the property is deleted.\n\nThe cleanup function is also called if setting the property fails for any\nreason.\n\nFor simply setting basic data types, like numbers, bools, or strings, use\nSDL_SetNumberProperty, SDL_SetBooleanProperty, or SDL_SetStringProperty\ninstead, as those functions will handle cleanup on your behalf. This\nfunction is only for more complex, custom data.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or NULL to delete the property.\n@param cleanup the function to call when this property is deleted, or NULL\n               if no cleanup is necessary.\n@param userdata a pointer that is passed to the cleanup function.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPointerProperty\n@sa SDL_SetPointerProperty\n@sa SDL_CleanupPropertyCallback",
@@ -3711,7 +3717,7 @@
                     "name": "value"
                   },
                   {
-                    "type": "std::function<void(void * value)>",
+                    "type": "CleanupFunction",
                     "name": "cleanup"
                   }
                 ],
@@ -3941,23 +3947,66 @@
               "type": "SDL_EnumeratePropertiesCallback",
               "sourceName": "SDL_EnumeratePropertiesCallback"
             },
-            "Enumerate": {
-              "doc": "Enumerate the properties contained in a group of properties.\n\nThe callback function is called for each property in the group of\nproperties. The properties are locked during enumeration.\n\n@param props the properties to query.\n@param callback the function to call for each property.\n@param userdata a pointer that is passed to `callback`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "Enumerate",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "callback",
-                  "type": "EnumerateCallback"
-                },
-                {
-                  "name": "userdata",
-                  "type": "void *"
-                }
-              ],
-              "sourceName": "SDL_EnumerateProperties"
-            }
+            "EnumerateFunction": {
+              "doc": "@sa PropertiesRef.EnumerateCallback",
+              "kind": "alias",
+              "type": "std::function<void(PropertiesID, const char*)>",
+              "name": "EnumerateFunction"
+            },
+            "Enumerate": [
+              {
+                "doc": "Enumerate the properties contained in a group of properties.\n\nThe callback function is called for each property in the group of\nproperties. The properties are locked during enumeration.\n\n@param props the properties to query.\n@param callback the function to call for each property.\n@param userdata a pointer that is passed to `callback`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "Enumerate",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "callback",
+                    "type": "EnumerateCallback"
+                  },
+                  {
+                    "name": "userdata",
+                    "type": "void *"
+                  }
+                ],
+                "sourceName": "SDL_EnumerateProperties",
+                "immutable": true
+              },
+              {
+                "kind": "function",
+                "name": "Enumerate",
+                "static": false,
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "EnumerateFunction",
+                    "name": "callback"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "Enumerate",
+                "static": false,
+                "type": "bool",
+                "immutable": true,
+                "template": [
+                  {
+                    "type": "class",
+                    "name": "IT"
+                  }
+                ],
+                "parameters": [
+                  {
+                    "type": "IT",
+                    "name": "outputIter"
+                  }
+                ],
+                "doc": ""
+              }
+            ]
           },
           "doc": ""
         },
@@ -4002,6 +4051,23 @@
                 "name": "Properties",
                 "type": "explicit",
                 "constexpr": true,
+                "immutable": false,
+                "parameters": [],
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "Properties",
+                "type": "",
+                "immutable": true,
+                "parameters": [],
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "Properties",
+                "type": "",
+                "immutable": false,
                 "parameters": [],
                 "doc": ""
               }
