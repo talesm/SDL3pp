@@ -44,8 +44,8 @@ public:
   constexpr operator bool() const { return bool(Get()); }
   constexpr bool Valid() const { return bool(*this); }
 
-  const T* operator->() const { return Get(); }
-  T* operator->() { return Get(); }
+  const pointer operator->() const { return Get(); }
+  pointer operator->() { return Get(); }
   const T& operator*() const { return *Get(); }
   T& operator*() { return *Get(); }
 };
@@ -59,25 +59,47 @@ class ObjectUnique
   std::unique_ptr<T, DELETER> value;
 
 public:
+  using pointer = std::unique_ptr<T, DELETER>::pointer;
+
   constexpr ObjectUnique() = default;
 
-  explicit ObjectUnique(T* value)
+  explicit ObjectUnique(pointer value)
     : value(value)
   {
   }
 
-  T* Get() const { return value.get(); }
-  operator bool() const { return value != nullptr; }
+  pointer Get() const { return value.get(); }
+  operator bool() const { return bool(Get()); }
   bool Valid() const { return bool(*this); }
 
-  const T* operator->() const { return Get(); }
-  T* operator->() { return Get(); }
+  const pointer operator->() const { return Get(); }
+  pointer operator->() { return Get(); }
   const T& operator*() const { return *value; }
   T& operator*() { return *value; }
 
-  T* Release() { return value.release(); }
-  void Reset(T* other = nullptr) { return value.reset(other); }
+  pointer Release() { return value.release(); }
+  void Reset(pointer other = nullptr) { return value.reset(other); }
   void Swap(ObjectUnique& other) { return std::swap(value, other.value); }
+};
+
+template<class T, T defaultValue = 0>
+struct FancyPointer
+{
+  T value;
+
+  auto operator<=>(const FancyPointer& other) const = default;
+
+  operator bool() const { return value != defaultValue; }
+
+  bool operator==(nullptr_t) const { return bool(*this); }
+
+  T Get() const { return value; }
+  T& Get() { return value; }
+
+  T operator*() const { return Get(); }
+  T& operator*() { return Get(); }
+
+  FancyPointer& operator->() { return *this; }
 };
 
 } // namespace SDL

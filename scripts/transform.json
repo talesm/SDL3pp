@@ -6,13 +6,15 @@
       "replacement": ".hpp"
     }
   ],
+  "typeMap": {
+    "SDL_PropertiesID": "PropertiesRef"
+  },
   "paramTypeMap": {
     "const char *": "StringParam",
     "SDL_Environment *": "EnvironmentRef",
     "SDL_iconv_t": "IConvRef",
     "SDL_Palette *": "PaletteRef",
-    "const SDL_Palette *": "PaletteRef",
-    "SDL_PropertiesID": "PropertiesRef"
+    "const SDL_Palette *": "PaletteRef"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
@@ -575,65 +577,130 @@
         "SDL_UnlockProperties"
       ],
       "includeAfter": {
-        "SDL_PropertyType": {
+        "__begin": [
+          {
+            "name": "PropertiesBase",
+            "kind": "forward",
+            "template": [
+              {
+                "name": "T",
+                "type": "class"
+              }
+            ]
+          },
+          {
+            "name": "PropertiesRef",
+            "kind": "alias",
+            "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, SDL_PropertiesID>>"
+          },
+          {
+            "name": "PropertiesDeleter",
+            "kind": "struct",
+            "entries": {
+              "pointer": {
+                "kind": "alias",
+                "type": "FancyPointer<SDL_PropertiesID>"
+              },
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "pointer",
+                    "name": "props"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Properties",
+            "kind": "alias",
+            "type": "PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>"
+          },
+          {
+            "name": "PropertyType",
+            "kind": "placeholder"
+          }
+        ],
+        "__end": [
+          {
+            "kind": "function",
+            "name": "PropertiesBase.SetPointerWithCleanup",
+            "static": false,
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "StringParam",
+                "name": "name"
+              },
+              {
+                "type": "void *",
+                "name": "value"
+              },
+              {
+                "type": "CleanupFunction",
+                "name": "cleanup"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "PropertiesBase.Enumerate",
+            "static": false,
+            "type": "bool",
+            "immutable": true,
+            "parameters": [
+              {
+                "type": "EnumerateFunction",
+                "name": "callback"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "PropertiesBase.Enumerate",
+            "static": false,
+            "type": "bool",
+            "immutable": true,
+            "template": [
+              {
+                "type": "class",
+                "name": "IT"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "IT",
+                "name": "outputIter"
+              }
+            ]
+          }
+        ]
+      },
+      "transform": {
+        "SDL_PropertiesID": {
           "kind": "struct",
-          "name": "PropertiesRef",
+          "name": "PropertiesBase",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "type": "T",
           "entries": {
-            "id": {
-              "kind": "var",
-              "type": "PropertiesID"
-            },
-            "PropertiesRef": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "PropertiesID",
-                  "name": "id",
-                  "default": "0"
-                }
-              ]
-            },
-            "Valid": {
-              "kind": "function",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": []
-            },
-            "Get": {
-              "kind": "function",
-              "type": "PropertiesID",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": []
-            },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": []
-            },
-            "Reset": {
-              "kind": "function",
-              "type": "void",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "PropertiesID",
-                  "name": "id",
-                  "default": "0"
-                }
-              ]
+            "T::T": {
+              "kind": "alias"
             },
             "SDL_CopyProperties": {
               "kind": "function",
               "name": "CopyPropertiesTo"
             },
-            "CleanupCallback": {
-              "kind": "placeholder"
+            "SDL_CleanupPropertyCallback": {
+              "name": "CleanupCallback"
             },
             "CleanupFunction": {
               "doc": "@sa PropertiesRef.CleanupCallback",
@@ -703,13 +770,13 @@
               "kind": "function",
               "name": "Clear"
             },
-            "EnumerateCallback": {
-              "kind": "placeholder"
+            "SDL_EnumeratePropertiesCallback": {
+              "name": "EnumerateCallback"
             },
             "EnumerateFunction": {
               "doc": "@sa PropertiesRef.EnumerateCallback",
               "kind": "alias",
-              "type": "std::function<void(PropertiesID, const char*)>"
+              "type": "std::function<void(SDL_PropertiesID, const char *)>"
             },
             "SDL_EnumerateProperties": {
               "kind": "function",
@@ -718,112 +785,8 @@
             }
           }
         },
-        "SDL_DestroyProperties": {
-          "kind": "struct",
-          "name": "Properties",
-          "type": "PropertiesRef",
-          "entries": {
-            "SDL_CreateProperties": "ctor"
-          }
-        },
-        "__end": [
-          {
-            "kind": "function",
-            "name": "PropertiesRef.SetPointerWithCleanup",
-            "static": false,
-            "type": "bool",
-            "parameters": [
-              {
-                "type": "StringParam",
-                "name": "name"
-              },
-              {
-                "type": "void *",
-                "name": "value"
-              },
-              {
-                "type": "CleanupFunction",
-                "name": "cleanup"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "PropertiesRef.Enumerate",
-            "static": false,
-            "type": "bool",
-            "immutable": true,
-            "parameters": [
-              {
-                "type": "EnumerateFunction",
-                "name": "callback"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "PropertiesRef.Enumerate",
-            "static": false,
-            "type": "bool",
-            "immutable": true,
-            "template": [
-              {
-                "type": "class",
-                "name": "IT"
-              }
-            ],
-            "parameters": [
-              {
-                "type": "IT",
-                "name": "outputIter"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "Properties.Properties",
-            "type": "explicit",
-            "constexpr": true,
-            "immutable": false,
-            "parameters": [
-              {
-                "type": "PropertiesID",
-                "name": "id"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "Properties.Properties",
-            "type": "",
-            "immutable": false,
-            "parameters": [
-              {
-                "type": "const Properties &",
-                "name": "other"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "Properties.Properties",
-            "type": "",
-            "immutable": false,
-            "parameters": [
-              {
-                "type": "Properties &&",
-                "name": "other"
-              }
-            ]
-          }
-        ]
-      },
-      "transform": {
-        "SDL_CleanupPropertyCallback": {
-          "name": "PropertiesRef.CleanupCallback"
-        },
-        "SDL_EnumeratePropertiesCallback": {
-          "name": "PropertiesRef.EnumerateCallback"
+        "SDL_CreateProperties": {
+          "type": "Properties"
         }
       }
     }

@@ -3571,12 +3571,54 @@
       "name": "properties.hpp",
       "doc": "@file properties.hpp\n\n# CategoryProperties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (SDL_PropertiesID). A property\ngroup can be created with the SDL_CreateProperties function and destroyed\nwith the SDL_DestroyProperties function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- SDL_SetPointerProperty and SDL_GetPointerProperty operate on `void*`\n  pointer types.\n- SDL_SetStringProperty and SDL_GetStringProperty operate on string types.\n- SDL_SetNumberProperty and SDL_GetNumberProperty operate on signed 64-bit\n  integer types.\n- SDL_SetFloatProperty and SDL_GetFloatProperty operate on floating point\n  types.\n- SDL_SetBooleanProperty and SDL_GetBooleanProperty operate on boolean\n  types.\n\nProperties can be removed from a group by using SDL_ClearProperty.",
       "entries": {
-        "PropertiesID": {
-          "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.",
-          "name": "PropertiesID",
+        "PropertiesBase-forward": {
+          "name": "PropertiesBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ],
+          "doc": ""
+        },
+        "PropertiesRef": {
+          "name": "PropertiesRef",
           "kind": "alias",
-          "type": "SDL_PropertiesID",
-          "sourceName": "SDL_PropertiesID"
+          "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, SDL_PropertiesID>>",
+          "doc": ""
+        },
+        "PropertiesDeleter": {
+          "name": "PropertiesDeleter",
+          "kind": "struct",
+          "entries": {
+            "pointer": {
+              "kind": "alias",
+              "type": "FancyPointer<SDL_PropertiesID>",
+              "name": "pointer",
+              "doc": ""
+            },
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "pointer",
+                  "name": "props"
+                }
+              ],
+              "doc": ""
+            }
+          },
+          "doc": ""
+        },
+        "Properties": {
+          "name": "Properties",
+          "kind": "alias",
+          "type": "PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>",
+          "doc": ""
         },
         "PropertyType": {
           "doc": "SDL property type\n\n@since This enum is available since SDL 3.2.0.",
@@ -3585,69 +3627,22 @@
           "sourceName": "SDL_PropertyType",
           "type": "SDL_PropertyType"
         },
-        "PropertiesRef": {
+        "PropertiesBase": {
+          "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "PropertiesBase",
           "kind": "struct",
-          "name": "PropertiesRef",
+          "type": "T",
+          "sourceName": "SDL_PropertiesID",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
           "entries": {
-            "id": {
-              "kind": "var",
-              "type": "PropertiesID",
-              "name": "id",
-              "doc": ""
-            },
-            "PropertiesRef": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "PropertiesID",
-                  "name": "id",
-                  "default": "0"
-                }
-              ],
-              "name": "PropertiesRef",
-              "doc": ""
-            },
-            "Valid": {
-              "kind": "function",
-              "type": "bool",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [],
-              "name": "Valid",
-              "doc": ""
-            },
-            "Get": {
-              "kind": "function",
-              "type": "PropertiesID",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [],
-              "name": "Get",
-              "doc": ""
-            },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": [],
-              "name": "operator bool",
-              "doc": ""
-            },
-            "Reset": {
-              "kind": "function",
-              "type": "void",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "PropertiesID",
-                  "name": "id",
-                  "default": "0"
-                }
-              ],
-              "name": "Reset",
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
               "doc": ""
             },
             "CopyPropertiesTo": {
@@ -3950,7 +3945,7 @@
             "EnumerateFunction": {
               "doc": "@sa PropertiesRef.EnumerateCallback",
               "kind": "alias",
-              "type": "std::function<void(PropertiesID, const char*)>",
+              "type": "std::function<void(SDL_PropertiesID, const char *)>",
               "name": "EnumerateFunction"
             },
             "Enumerate": [
@@ -4007,16 +4002,23 @@
                 "doc": ""
               }
             ]
-          },
-          "doc": ""
+          }
         },
         "GetGlobalProperties": {
           "doc": "Get the global SDL properties.\n\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetGlobalProperties",
           "kind": "function",
-          "type": "PropertiesID",
+          "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetGlobalProperties"
+        },
+        "CreateProperties": {
+          "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyProperties",
+          "name": "CreateProperties",
+          "kind": "function",
+          "type": "Properties",
+          "parameters": [],
+          "sourceName": "SDL_CreateProperties"
         },
         "DestroyProperties": {
           "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateProperties",
@@ -4030,50 +4032,6 @@
             }
           ],
           "sourceName": "SDL_DestroyProperties"
-        },
-        "Properties": {
-          "kind": "struct",
-          "name": "Properties",
-          "type": "PropertiesRef",
-          "entries": {
-            "Properties": [
-              {
-                "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyProperties",
-                "name": "Properties",
-                "kind": "function",
-                "type": "",
-                "parameters": [],
-                "sourceName": "SDL_CreateProperties",
-                "static": false
-              },
-              {
-                "kind": "function",
-                "name": "Properties",
-                "type": "explicit",
-                "constexpr": true,
-                "immutable": false,
-                "parameters": [],
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "Properties",
-                "type": "",
-                "immutable": true,
-                "parameters": [],
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "Properties",
-                "type": "",
-                "immutable": false,
-                "parameters": [],
-                "doc": ""
-              }
-            ]
-          },
-          "doc": ""
         }
       }
     }

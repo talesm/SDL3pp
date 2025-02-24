@@ -13,17 +13,18 @@
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - SDL_SetPointerProperty and SDL_GetPointerProperty operate on `void*`
- *   pointer types.
- * - SDL_SetStringProperty and SDL_GetStringProperty operate on string types.
- * - SDL_SetNumberProperty and SDL_GetNumberProperty operate on signed 64-bit
- *   integer types.
- * - SDL_SetFloatProperty and SDL_GetFloatProperty operate on floating point
- *   types.
- * - SDL_SetBooleanProperty and SDL_GetBooleanProperty operate on boolean
- *   types.
+ * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
+ * `void*` pointer types.
+ * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
+ * types.
+ * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
+ * 64-bit integer types.
+ * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
+ * point types.
+ * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
+ * boolean types.
  *
- * Properties can be removed from a group by using SDL_ClearProperty.
+ * Properties can be removed from a group by using PropertiesBase.Clear().
  */
 #ifndef SDL3PP_PROPERTIES_HPP_
 #define SDL3PP_PROPERTIES_HPP_
@@ -47,8 +48,8 @@ using PropertiesRef =
 
 struct PropertiesDeleter
 {
-  using pointer = SDL_PropertiesID;
-  inline void operator()(PropertiesRef props) const;
+  using pointer = FancyPointer<SDL_PropertiesID>;
+  inline void operator()(pointer props) const;
 };
 
 /**
@@ -69,21 +70,21 @@ using PropertyType = SDL_PropertyType;
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
- * All properties are part of a property group (PropertiesID). A property
+ * All properties are part of a property group (Properties). A property
  * group can be created with the Properties constructor and destroyed
  * with this goes out of scope.
  *
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - SDL_SetPointerProperty and SDL_GetPointerProperty operate on `void*`
+ * - SetPointer() and GetPointer() operate on `void*`
  *   pointer types.
- * - SDL_SetStringProperty and SDL_GetStringProperty operate on string types.
- * - SDL_SetNumberProperty and SDL_GetNumberProperty operate on signed 64-bit
+ * - SetString() and GetString() operate on string types.
+ * - SetNumber() and GetNumber() operate on signed 64-bit
  *   integer types.
- * - SDL_SetFloatProperty and SDL_GetFloatProperty operate on floating point
+ * - SetFloat() and GetFloat() operate on floating point
  *   types.
- * - SDL_SetBooleanProperty and SDL_GetBooleanProperty operate on boolean
+ * - SetBoolean() and GetBoolean() operate on boolean
  *   types.
  *
  * Properties can be removed from a group by using SDL_ClearProperty.
@@ -99,7 +100,7 @@ struct PropertiesBase : T
    *
    * Copy all the properties from one group of properties to another, with the
    * exception of properties requiring cleanup (set using
-   * SDL_SetPointerPropertyWithCleanup()), which will not be copied. Any
+   * SetPointerWithCleanup()), which will not be copied. Any
    * property that already exists on `dst` will be overwritten.
    *
    * @param dst the destination properties.
@@ -122,7 +123,7 @@ struct PropertiesBase : T
    * This callback is set per-property. Different properties in the same group
    * can have different cleanup callbacks.
    *
-   * This callback will be called _during_ SDL_SetPointerPropertyWithCleanup if
+   * This callback will be called _during_ SetPointerWithCleanup() if
    * the function fails for any reason.
    *
    * @param userdata an app-defined pointer passed to the callback.
@@ -133,7 +134,7 @@ struct PropertiesBase : T
    *
    * @since This datatype is available since SDL 3.2.0.
    *
-   * @sa SDL_SetPointerPropertyWithCleanup
+   * @sa SetPointerWithCleanup
    */
   using CleanupCallback = SDL_CleanupPropertyCallback;
 
@@ -152,7 +153,7 @@ struct PropertiesBase : T
    * reason.
    *
    * For simply setting basic data types, like numbers, bools, or strings, use
-   * SDL_SetNumberProperty, SDL_SetBooleanProperty, or SDL_SetStringProperty
+   * SetNumber(), SetBoolean(), or SetString()
    * instead, as those functions will handle cleanup on your behalf. This
    * function is only for more complex, custom data.
    *
@@ -189,7 +190,7 @@ struct PropertiesBase : T
    * reason.
    *
    * For simply setting basic data types, like numbers, bools, or strings, use
-   * SDL_SetNumberProperty, SDL_SetBooleanProperty, or SDL_SetStringProperty
+   * SetNumber(), SetBoolean(), or SetString()
    * instead, as those functions will handle cleanup on your behalf. This
    * function is only for more complex, custom data.
    *
@@ -469,6 +470,7 @@ struct PropertiesBase : T
    * @sa PropertiesRef.EnumerateCallback
    */
   using EnumerateFunction = std::function<void(SDL_PropertiesID, const char*)>;
+
   /**
    * Enumerate the properties contained in a group of properties.
    *
@@ -504,15 +506,7 @@ struct PropertiesBase : T
     using Wrapper =
       CallbackWrapper<void(SDL_PropertiesID props, const char* name)>;
     void* cbHandle = Wrapper::Wrap(std::move(callback));
-    bool r = false;
-    try {
-      r = Enumerate(&Wrapper::Call, cbHandle);
-    } catch (...) {
-      Wrapper::Erase(cbHandle);
-      throw;
-    }
-    Wrapper::Erase(cbHandle);
-    return r;
+    return Enumerate(&Wrapper::CallOnce, cbHandle);
   }
 
   /**
@@ -538,9 +532,25 @@ struct PropertiesBase : T
  * @returns a valid property ID on success or 0 on failure; call
  *          GetError() for more information.
  */
-inline PropertiesRef GetGlobalProperties()
+inline PropertiesRef GetGlobalProperties() { return SDL_GetGlobalProperties(); }
+
+/**
+ * Create a group of properties.
+ *
+ * All properties are automatically destroyed when SDL_Quit() is called.
+ *
+ * @returns an ID for a new group of properties, or 0 on failure; call
+ *          SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_DestroyProperties
+ */
+inline Properties CreateProperties()
 {
-  return {SDL_GetGlobalProperties()};
+  return Properties(FancyPointer{SDL_CreateProperties()});
 }
 
 /**
@@ -566,9 +576,10 @@ inline void DestroyProperties(PropertiesRef props)
 
 #pragma region impl
 
-inline void PropertiesDeleter::operator()(PropertiesRef props) const
+inline void PropertiesDeleter::operator()(
+  PropertiesDeleter::pointer props) const
 {
-  DestroyProperties(props);
+  DestroyProperties(*props);
 }
 
 #pragma endregion impl

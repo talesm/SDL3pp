@@ -110,10 +110,12 @@ function transformEntries(sourceEntries, context, transform) {
         }
         const sourceType = targetEntry.sourceName;
         const targetType = targetEntry.name.replace(/[^.]*\./g, "");
-        context.typeMap[sourceType] = targetType;
-        context.typeMap[`${sourceType} *`] = `${targetType} *`;
-        context.typeMap[`const ${sourceType}`] = `const ${targetType}`;
-        context.typeMap[`const ${sourceType} *`] = `const ${targetType} *`;
+        if (!context.typeMap[sourceType]) {
+          context.typeMap[sourceType] = targetType;
+          context.typeMap[`${sourceType} *`] = `${targetType} *`;
+          context.typeMap[`const ${sourceType}`] = `const ${targetType}`;
+          context.typeMap[`const ${sourceType} *`] = `const ${targetType} *`;
+        }
       }
       insertEntryAndCheck(targetEntries, targetEntry, context, transform, targetName);
     }
