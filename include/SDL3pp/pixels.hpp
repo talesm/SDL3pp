@@ -86,6 +86,10 @@ struct ObjectDeleter<SDL_Palette>
  * @brief Handle to an owned surface
  */
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
+
+// Forward decl
+struct Color;
+
 /**
  * Pixel type.
  *
@@ -333,7 +337,7 @@ struct PixelFormat
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa PixelFormat.ForMasks
+   * @sa ForMasks()
    */
   inline bool GetMasks(int* bpp,
                        Uint32* Rmask,
@@ -362,7 +366,7 @@ struct PixelFormat
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetMasksForPixelFormat
+   * @sa GetMasks()
    */
   static inline PixelFormat ForMasks(int bpp,
                                      Uint32 Rmask,
@@ -392,6 +396,66 @@ struct PixelFormat
   {
     return SDL_GetPixelFormatDetails(format);
   }
+
+  /**
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param r the color components of the pixel in the range 0-255.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa Get()
+   * @sa MapRGBA()
+   * @sa Surface.MapColor()
+   */
+  inline Uint32 Map(Color color, PaletteRef palette) const;
+
+  /**
+   * Get RGBA values from a pixel in the specified format.
+   *
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+   *
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
+   *
+   * @param pixel a pixel value.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa GetRGBA()
+   * @sa Map()
+   */
+  inline Color Get(Uint32 pixel, PaletteRef palette) const;
 };
 
 /**
@@ -592,57 +656,43 @@ struct Color : SDL_Color
    *
    * @param format a pointer to PixelFormatDetails describing the pixel
    *               format.
+   * @param palette an optional palette for indexed formats, may be NULL.
    * @returns a pixel value.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified.
    */
-  Uint32 Map(const PixelFormatDetails* format) const
-  {
-    return SDL_MapRGBA(format, nullptr, r, g, b, a);
-  }
+  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
 
   /**
-   * @brief Map an RGBA quadruple to a pixel value for a given pixel format.
+   * Get RGBA values from a pixel in the specified format.
    *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
    *
-   * If the specified pixel format has no alpha component the alpha value will
-   * be ignored (as it will be in formats with a palette).
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
    *
-   * If the format has a palette (8-bit) the index of the closest matching color
-   * in the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param format a pointer to PixelFormatDetails describing the pixel
+   * @param pixel a pixel value.
+   * @param format a pointer to SDL_PixelFormatDetails describing the pixel
    *               format.
-   * @returns a pixel value.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
    *
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PixelFormat.GetDetails()
+   * @sa GetRGBA()
+   * @sa Map()
    */
-  Uint32 Map(const PixelFormat& format) const
-  {
-    return Map(format.GetDetails());
-  }
-
-  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
-  // {
-  //   return SDL_MapRGBA(format, nullptr, r, g, b, a);
-  // }
-
-  Uint32 Map(const PixelFormat& format, PaletteRef palette) const;
-  // {
-  //   return Map(format.GetDetails(), palette);
-  // }
-
-  // TODO Get()
+  static Color Get(Uint32 pixel,
+                   const PixelFormatDetails* format,
+                   PaletteRef palette);
 };
 
 /**
@@ -875,10 +925,10 @@ inline void DestroyPalette(PaletteRef palette)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetPixelFormatDetails
- * @sa SDL_GetRGB
- * @sa SDL_MapRGBA
- * @sa SDL_MapSurfaceRGB
+ * @sa GetPixelFormatDetails()
+ * @sa GetRGB()
+ * @sa MapRGBA()
+ * @sa Surface.MapColor()
  */
 inline Uint32 MapRGB(const PixelFormatDetails* format,
                      PaletteRef palette,
@@ -921,10 +971,10 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetPixelFormatDetails
- * @sa SDL_GetRGBA
- * @sa SDL_MapRGB
- * @sa SDL_MapSurfaceRGBA
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGBA()
+ * @sa MapRGB()
+ * @sa Surface.MapColor()
  */
 inline Uint32 MapRGBA(const PixelFormatDetails* format,
                       PaletteRef palette,
@@ -957,10 +1007,10 @@ inline Uint32 MapRGBA(const PixelFormatDetails* format,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetPixelFormatDetails
- * @sa SDL_GetRGBA
- * @sa SDL_MapRGB
- * @sa SDL_MapRGBA
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGBA()
+ * @sa MapRGB()
+ * @sa MapRGBA()
  */
 inline void GetRGB(Uint32 pixel,
                    const PixelFormatDetails* format,
@@ -997,10 +1047,10 @@ inline void GetRGB(Uint32 pixel,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetPixelFormatDetails
- * @sa SDL_GetRGB
- * @sa SDL_MapRGB
- * @sa SDL_MapRGBA
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGB()
+ * @sa MapRGB()
+ * @sa MapRGBA()
  */
 inline void GetRGBA(Uint32 pixel,
                     const PixelFormatDetails* format,
@@ -1021,14 +1071,28 @@ inline void ObjectDeleter<SDL_Palette>::operator()(SDL_Palette* palette) const
 }
 
 inline Uint32 Color::Map(const PixelFormatDetails* format,
-                         PaletteRef palette) const
+                         PaletteRef palette = nullptr) const
 {
-  return SDL_MapRGBA(format, palette.Get(), r, g, b, a);
+  return MapRGBA(format, palette.Get(), r, g, b, a);
 }
 
-inline Uint32 Color::Map(const PixelFormat& format, PaletteRef palette) const
+Color Get(Uint32 pixel,
+          const PixelFormatDetails* format,
+          PaletteRef palette = nullptr)
 {
-  return Map(format.GetDetails(), palette);
+  Color c;
+  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
+inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
+{
+  return color.Map(GetDetails(), palette);
+}
+
+inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
+{
+  return Color::Get(pixel, GetDetails(), palette);
 }
 
 #pragma endregion impl

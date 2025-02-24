@@ -255,6 +255,10 @@
             "name": "Palette",
             "kind": "alias",
             "type": "PaletteBase<ObjectUnique<SDL_Palette>>"
+          },
+          {
+            "name": "Color",
+            "kind": "forward"
           }
         ],
         "SDL_PackedLayout": {
@@ -420,6 +424,36 @@
             "SDL_GetPixelFormatDetails": {
               "kind": "function",
               "immutable": true
+            },
+            "Map": {
+              "kind": "function",
+              "type": "Uint32",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Color",
+                  "name": "color"
+                },
+                {
+                  "type": "PaletteRef",
+                  "name": "palette"
+                }
+              ]
+            },
+            "Get": {
+              "kind": "function",
+              "type": "Color",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Uint32",
+                  "name": "pixel"
+                },
+                {
+                  "type": "PaletteRef",
+                  "name": "palette"
+                }
+              ]
             }
           }
         },

@@ -39,6 +39,11 @@ public:
   {
   }
 
+  constexpr ObjectRef(std::nullptr_t)
+    : value{0}
+  {
+  }
+
   constexpr pointer Get() const { return value; }
 
   constexpr operator bool() const { return bool(Get()); }

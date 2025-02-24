@@ -2872,6 +2872,11 @@
           "type": "PaletteBase<ObjectUnique<SDL_Palette>>",
           "doc": ""
         },
+        "Color-forward": {
+          "name": "Color",
+          "kind": "forward",
+          "doc": ""
+        },
         "PixelType": {
           "doc": "Pixel type.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PixelType",
@@ -3142,6 +3147,40 @@
               "parameters": [],
               "sourceName": "SDL_GetPixelFormatDetails",
               "immutable": true
+            },
+            "Map": {
+              "kind": "function",
+              "type": "Uint32",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Color",
+                  "name": "color"
+                },
+                {
+                  "type": "PaletteRef",
+                  "name": "palette"
+                }
+              ],
+              "name": "Map",
+              "doc": ""
+            },
+            "Get": {
+              "kind": "function",
+              "type": "Color",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Uint32",
+                  "name": "pixel"
+                },
+                {
+                  "type": "PaletteRef",
+                  "name": "palette"
+                }
+              ],
+              "name": "Get",
+              "doc": ""
             }
           }
         },
