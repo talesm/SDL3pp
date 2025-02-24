@@ -201,20 +201,6 @@
       }
     },
     "SDL_pixels.h": {
-      "includeDefs": [
-        "SDL_PIXELTYPE",
-        "SDL_PIXELORDER",
-        "SDL_PIXELLAYOUT",
-        "SDL_BITSPERPIXEL",
-        "SDL_BYTESPERPIXEL",
-        "SDL_ISPIXELFORMAT_INDEXED",
-        "SDL_ISPIXELFORMAT_PACKED",
-        "SDL_ISPIXELFORMAT_ARRAY",
-        "SDL_ISPIXELFORMAT_10BIT",
-        "SDL_ISPIXELFORMAT_FLOAT",
-        "SDL_ISPIXELFORMAT_ALPHA",
-        "SDL_ISPIXELFORMAT_FOURCC"
-      ],
       "includeAfter": {
         "__begin": [
           {
@@ -284,12 +270,6 @@
         }
       },
       "transform": {
-        "SDL_PIXELTYPE": {
-          "kind": "function",
-          "name": "PixelFormat.GetPixelType",
-          "type": "PixelType",
-          "parameters": []
-        },
         "SDL_PixelFormat": {
           "kind": "struct",
           "type": "",
