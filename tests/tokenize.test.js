@@ -21,6 +21,28 @@ test("tokenize doc", () => {
   }]);
 });
 
+test("tokenize alias", () => {
+  expect(tokenizeText("using a = Templated<Ref<Value, OtherValue>>;")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "alias",
+    value: "a",
+    type: "Templated<Ref<Value, OtherValue>>",
+  }]);
+});
+
+test("tokenize alias defined next line", () => {
+  expect(tokenizeText("using a =\n  Templated<Ref<Value, OtherValue>>;")).toEqual([{
+    begin: 1,
+    end: 3,
+    spaces: 0,
+    kind: "alias",
+    value: "a",
+    type: "Templated<Ref<Value, OtherValue>>",
+  }]);
+});
+
 test("tokenize function", () => {
   expect(tokenizeText("int func(int a, int b);")).toEqual([{
     begin: 1,

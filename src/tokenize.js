@@ -85,10 +85,23 @@ function tokenize(lines) {
       token.kind = "alias";
       token.value = m[3];
       token.type = m[1].trimEnd();
-    } else if (m = /^using\s+(\w+)\s*=\s*([^;]+);/.exec(line)) {
+    } else if (m = /^using\s+(\w+)\s*=\s*([^;]*)(;?)/.exec(line)) {
       token.kind = "alias";
       token.value = m[1];
-      token.type = m[2].trimEnd();
+      if (m[3]) {
+        token.type = m[2].trimEnd();
+      } else {
+        let type = m[2];
+        for (i = i + 1; i < lines.length; i++) {
+          const line = lines[i];
+          if (line.endsWith(";")) {
+            type += " " + line.slice(0, line.length - 1);
+            break;
+          }
+          type += " " + line;
+        }
+        token.type = type.trim();
+      }
     } else if (m = /^using\s+([\w:]+)\s*;/.exec(line)) {
       token.kind = "alias";
       token.value = m[1];
