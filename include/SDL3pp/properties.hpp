@@ -30,15 +30,32 @@
 
 #include <SDL3/SDL_properties.h>
 #include "callbackWrapper.hpp"
+#include "objectWrapper.hpp"
 #include "stringParam.hpp"
 
 namespace SDL {
 
+// Forward decl
+template<class T>
+struct PropertiesBase;
+
 /**
- * @brief SDL properties ID
- *
+ * @brief Handle to a non owned properties
  */
-using PropertiesID = SDL_PropertiesID;
+using PropertiesRef =
+  PropertiesBase<ObjectRef<SDL_PropertiesID, SDL_PropertiesID>>;
+
+struct PropertiesDeleter
+{
+  using pointer = SDL_PropertiesID;
+  inline void operator()(PropertiesRef props) const;
+};
+
+/**
+ * @brief Handle to an owned surface
+ */
+using Properties =
+  PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
 
 /**
  * @brief SDL property type
@@ -72,32 +89,10 @@ using PropertyType = SDL_PropertyType;
  * Properties can be removed from a group by using SDL_ClearProperty.
  *
  */
-class PropertiesRef
+template<class T>
+struct PropertiesBase : T
 {
-  PropertiesID id;
-
-public:
-  constexpr PropertiesRef(PropertiesID id = 0)
-    : id(id)
-  {
-  }
-  /// @brief Returns if valid (id != 0)
-  constexpr bool Valid() const { return id != 0; }
-
-  /// @brief Returns the Id
-  constexpr PropertiesID Get() const { return id; }
-
-  /// @brief Returns if valid (id != 0)
-  constexpr operator bool() const { return Valid(); }
-
-  /**
-   * @brief Resets the status
-   *
-   * This **does not** Destroy the property group
-   *
-   * @param id Optional: The new value for id.
-   */
-  constexpr void Reset(PropertiesID id = 0) { id = 0; }
+  using T::T;
 
   /**
    * @brief Copy a group of properties.
@@ -115,7 +110,7 @@ public:
    */
   bool CopyPropertiesTo(PropertiesRef dst) const
   {
-    return SDL_CopyProperties(Get(), dst.Get());
+    return SDL_CopyProperties(Get<T>(this), dst.Get());
   }
 
   /**
@@ -183,7 +178,7 @@ public:
                                     void* userdata)
   {
     return SDL_SetPointerPropertyWithCleanup(
-      Get(), name, value, cleanup, userdata);
+      Get<T>(this), name, value, cleanup, userdata);
   }
 
   /**
@@ -230,7 +225,7 @@ public:
    */
   bool SetPointer(StringParam name, void* value)
   {
-    return SDL_SetPointerProperty(Get(), name, value);
+    return SDL_SetPointerProperty(Get<T>(this), name, value);
   }
 
   /**
@@ -248,7 +243,7 @@ public:
    */
   bool SetString(StringParam name, StringParam value)
   {
-    return SDL_SetStringProperty(Get(), name, value);
+    return SDL_SetStringProperty(Get<T>(this), name, value);
   }
 
   /**
@@ -263,7 +258,7 @@ public:
    */
   bool SetNumber(StringParam name, Sint64 value)
   {
-    return SDL_SetNumberProperty(Get(), name, value);
+    return SDL_SetNumberProperty(Get<T>(this), name, value);
   }
 
   /**
@@ -278,7 +273,7 @@ public:
    */
   bool SetFloat(StringParam name, float value)
   {
-    return SDL_SetFloatProperty(Get(), name, value);
+    return SDL_SetFloatProperty(Get<T>(this), name, value);
   }
 
   /**
@@ -293,16 +288,19 @@ public:
    */
   bool SetBoolean(StringParam name, bool value)
   {
-    return SDL_SetBooleanProperty(Get(), name, value);
+    return SDL_SetBooleanProperty(Get<T>(this), name, value);
   }
 
   /// @brief Return whether a property exists
-  bool Has(StringParam name) const { return SDL_HasProperty(Get(), name); }
+  bool Has(StringParam name) const
+  {
+    return SDL_HasProperty(Get<T>(this), name);
+  }
 
   /// @brief Get the type of a property in a group of properties.
   PropertyType GetType(StringParam name) const
   {
-    return SDL_GetPropertyType(Get(), name);
+    return SDL_GetPropertyType(Get<T>(this), name);
   }
 
   /**
@@ -331,7 +329,7 @@ public:
    */
   void* GetPointer(StringParam name, void* default_value) const
   {
-    return SDL_GetPointerProperty(Get(), name, default_value);
+    return SDL_GetPointerProperty(Get<T>(this), name, default_value);
   }
 
   /**
@@ -365,7 +363,7 @@ public:
    */
   const char* GetString(StringParam name, StringParam default_value) const
   {
-    return SDL_GetStringProperty(Get(), name, default_value);
+    return SDL_GetStringProperty(Get<T>(this), name, default_value);
   }
 
   /**
@@ -388,7 +386,7 @@ public:
    */
   Sint64 GetNumber(StringParam name, Sint64 default_value) const
   {
-    return SDL_GetNumberProperty(Get(), name, default_value);
+    return SDL_GetNumberProperty(Get<T>(this), name, default_value);
   }
 
   /**
@@ -411,7 +409,7 @@ public:
    */
   float GetFloat(StringParam name, float default_value) const
   {
-    return SDL_GetFloatProperty(Get(), name, default_value);
+    return SDL_GetFloatProperty(Get<T>(this), name, default_value);
   }
 
   /**
@@ -434,7 +432,7 @@ public:
    */
   bool GetBoolean(StringParam name, bool default_value) const
   {
-    return SDL_GetBooleanProperty(Get(), name, default_value);
+    return SDL_GetBooleanProperty(Get<T>(this), name, default_value);
   }
 
   /**
@@ -446,7 +444,7 @@ public:
    *
    * @threadsafety It is safe to call this function from any thread.
    */
-  bool Clear(StringParam name) { return SDL_ClearProperty(Get(), name); }
+  bool Clear(StringParam name) { return SDL_ClearProperty(Get<T>(this), name); }
 
   /**
    * A callback used to enumerate all the properties in a group of properties.
@@ -470,7 +468,7 @@ public:
   /**
    * @sa PropertiesRef.EnumerateCallback
    */
-  using EnumerateFunction = std::function<void(PropertiesID, const char*)>;
+  using EnumerateFunction = std::function<void(SDL_PropertiesID, const char*)>;
   /**
    * Enumerate the properties contained in a group of properties.
    *
@@ -486,7 +484,7 @@ public:
    */
   bool Enumerate(EnumerateCallback callback, void* userdata) const
   {
-    return SDL_EnumerateProperties(Get(), callback, userdata);
+    return SDL_EnumerateProperties(Get<T>(this), callback, userdata);
   }
 
   /**
@@ -503,7 +501,8 @@ public:
    */
   bool Enumerate(EnumerateFunction callback) const
   {
-    using Wrapper = CallbackWrapper<void(PropertiesID props, const char* name)>;
+    using Wrapper =
+      CallbackWrapper<void(SDL_PropertiesID props, const char* name)>;
     void* cbHandle = Wrapper::Wrap(std::move(callback));
     bool r = false;
     try {
@@ -539,7 +538,10 @@ public:
  * @returns a valid property ID on success or 0 on failure; call
  *          GetError() for more information.
  */
-inline PropertiesID GetGlobalProperties() { return SDL_GetGlobalProperties(); }
+inline PropertiesRef GetGlobalProperties()
+{
+  return {SDL_GetGlobalProperties()};
+}
 
 /**
  * Destroy a group of properties.
@@ -559,90 +561,17 @@ inline PropertiesID GetGlobalProperties() { return SDL_GetGlobalProperties(); }
  */
 inline void DestroyProperties(PropertiesRef props)
 {
-  SDL_DestroyProperties(props);
+  SDL_DestroyProperties(props.Get());
 }
 
-/**
- * @brief A owning Property group
- *
- * Besides its automatic ownership semantics, it behaves identically to
- * PropertiesRef.
- *
- */
-struct Properties : PropertiesRef
+#pragma region impl
+
+inline void PropertiesDeleter::operator()(PropertiesRef props) const
 {
-  /**
-   * @brief Create a group of properties.
-   *
-   * This is automatically destroyed when it goes out of scope
-   * or when Reset() is called, unless Release() is called first.
-   * If Release() is called, then the user might manage it with the C API.
-   *
-   * If an error occurs the new object Valid() == false and the error
-   * can be retrieved with GetError().
-   */
-  Properties()
-    : Properties(SDL_CreateProperties())
-  {
-  }
+  DestroyProperties(props);
+}
 
-  constexpr explicit Properties(PropertiesID id)
-    : PropertiesRef(id)
-  {
-  }
-
-  Properties(const Properties& other) = delete;
-  Properties(Properties&& other)
-    : Properties(other.Release())
-  {
-  }
-  Properties& operator=(const Properties& other) = delete;
-  Properties& operator=(Properties&& other)
-  {
-    Reset(other.Release());
-    return *this;
-  }
-
-  /**
-   * @brief Destroy a group of properties.
-   *
-   * All properties are deleted and their cleanup functions will be called, if
-   * any.
-   *
-   * @threadsafety This function should not be called while these properties are
-   *               locked or other threads might be setting or getting values
-   *               from these properties.
-   */
-  ~Properties() { Destroy(); }
-
-  /**
-   * @brief Releases the property id ownership.
-   *
-   * After this call the id becomes 0.
-   *
-   * @return PropertiesID the previous id.
-   */
-  PropertiesID Release()
-  {
-    auto id = Get();
-    PropertiesRef::Reset();
-    return id;
-  }
-
-  /**
-   * @brief Resets the status, destroying the property group if needed.
-   *
-   * @param id Optional: The new value for id.
-   */
-  void Reset(PropertiesID id = 0)
-  {
-    Destroy();
-    PropertiesRef::Reset(id);
-  }
-
-private:
-  void Destroy() { SDL_DestroyProperties(Get()); }
-};
+#pragma endregion impl
 
 } // namespace SDL
 

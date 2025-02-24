@@ -20,13 +20,15 @@ auto Get(const BASE* base)
     maybeConstValue);
 }
 
-template<class T>
+template<class T, class POINTER = T*>
 class ObjectRef
 {
-  T* value;
+  POINTER value;
 
 public:
-  ObjectRef(T* value)
+  using pointer = POINTER;
+
+  constexpr ObjectRef(pointer value)
     : value(value)
   {
   }
@@ -37,10 +39,10 @@ public:
   {
   }
 
-  T* Get() const { return value; }
+  constexpr pointer Get() const { return value; }
 
-  operator bool() const { return Get() != nullptr; }
-  bool Valid() const { return bool(*this); }
+  constexpr operator bool() const { return bool(Get()); }
+  constexpr bool Valid() const { return bool(*this); }
 
   const T* operator->() const { return Get(); }
   T* operator->() { return Get(); }
