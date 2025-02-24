@@ -95,7 +95,7 @@ function transformEntries(sourceEntries, context, transform) {
         } else targetEntry.name = targetName;
         return targetEntry;
       }));
-    } else if (sourceEntry.kind != "def" || defWhitelist.has(sourceName)) {
+    } else {
       const targetEntry = transformEntry(sourceEntry, context);
       const targetDelta = transformMap[sourceName];
       if (targetDelta) {
@@ -123,6 +123,11 @@ function transformEntries(sourceEntries, context, transform) {
   }
   insertEntryAndCheck(targetEntries, transform.includeAfter?.__end ?? [], context, transform);
   transformHierarchy(targetEntries);
+  for (const obj of Object.values(targetEntries)) {
+    if (!Array.isArray(obj) && obj.kind == "def" && !defWhitelist.has(obj.sourceName)) {
+      delete targetEntries[obj.name];
+    }
+  }
 
   validateEntries(targetEntries);
 
