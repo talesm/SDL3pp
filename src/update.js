@@ -35,7 +35,7 @@ function updateContent(content, targetFile) {
   const name = targetFile.name;
   const sourceFile = parseContent(name, content, { storeLineNumbers: true });
   const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
-  const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd, "");
+  const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd, "").reverse();
   if (!changes.length) {
     system.log(`No changes for ${name}`);
     return 0;
@@ -130,7 +130,7 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
     }
   }
 
-  return changes.reverse();
+  return changes;
 }
 
 /**
