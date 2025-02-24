@@ -437,6 +437,163 @@
             }
           }
         },
+        "SDL_DEFINE_COLORSPACE": {
+          "kind": "function",
+          "name": "Colorspace.Colorspace",
+          "type": "",
+          "constexpr": true,
+          "static": false,
+          "parameters": [
+            {
+              "type": "ColorType",
+              "name": "type"
+            },
+            {
+              "type": "ColorRange",
+              "name": "range"
+            },
+            {
+              "type": "ColorPrimaries",
+              "name": "primaries"
+            },
+            {
+              "type": "TransferCharacteristics",
+              "name": "transfer"
+            },
+            {
+              "type": "MatrixCoefficients",
+              "name": "matrix"
+            },
+            {
+              "type": "ChromaLocation",
+              "name": "chroma"
+            }
+          ]
+        },
+        "SDL_Colorspace": {
+          "kind": "struct",
+          "type": "",
+          "entries": {
+            "colorspace": {
+              "kind": "var",
+              "type": "SDL_Colorspace"
+            },
+            "Colorspace": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SDL_Colorspace",
+                  "name": "colorspace",
+                  "default": "SDL_COLORSPACE_UNKNOWN"
+                }
+              ]
+            },
+            "operator bool": {
+              "kind": "function",
+              "parameters": [],
+              "type": "",
+              "immutable": true,
+              "constexpr": true
+            },
+            "operator SDL_Colorspace": {
+              "kind": "function",
+              "parameters": [],
+              "type": "",
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_COLORSPACETYPE": {
+              "kind": "function",
+              "name": "GetType",
+              "type": "ColorType",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_COLORSPACERANGE": {
+              "kind": "function",
+              "name": "GetRange",
+              "type": "ColorRange",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_COLORSPACECHROMA": {
+              "kind": "function",
+              "name": "GetChroma",
+              "type": "ChromaLocation",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_COLORSPACEPRIMARIES": {
+              "kind": "function",
+              "name": "GetPrimaries",
+              "type": "ColorPrimaries",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_COLORSPACETRANSFER": {
+              "kind": "function",
+              "name": "GetTransfer",
+              "type": "TransferCharacteristics",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_COLORSPACEMATRIX": {
+              "kind": "function",
+              "name": "GetMatrix",
+              "type": "MatrixCoefficients",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISCOLORSPACE_MATRIX_BT601": {
+              "kind": "function",
+              "name": "IsMatrixBT601",
+              "type": "bool",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISCOLORSPACE_MATRIX_BT709": {
+              "kind": "function",
+              "name": "IsMatrixBT709",
+              "type": "bool",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISCOLORSPACE_MATRIX_BT2020_NCL": {
+              "kind": "function",
+              "name": "IsMatrixBT2020_NCL",
+              "type": "bool",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISCOLORSPACE_LIMITED_RANGE": {
+              "kind": "function",
+              "name": "IsLimitedRange",
+              "type": "bool",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            },
+            "SDL_ISCOLORSPACE_FULL_RANGE": {
+              "kind": "function",
+              "name": "IsFullRange",
+              "type": "bool",
+              "parameters": [],
+              "immutable": true,
+              "constexpr": true
+            }
+          }
+        },
         "SDL_Color": {
           "kind": "struct",
           "entries": {

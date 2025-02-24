@@ -515,14 +515,233 @@ using ChromaLocation = SDL_ChromaLocation;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @sa SDL_ColorPrimaries
- * @sa SDL_ColorRange
- * @sa SDL_ColorType
- * @sa SDL_MatrixCoefficients
- * @sa SDL_TransferCharacteristics
+ * @sa ColorPrimaries
+ * @sa ColorRange
+ * @sa ColorType
+ * @sa MatrixCoefficients
+ * @sa TransferCharacteristics
  */
-using Colorspace = SDL_Colorspace;
+struct Colorspace
+{
+  SDL_Colorspace colorspace;
 
+  /**
+   * Wrap a SDL_Colorspace
+   *
+   */
+  constexpr Colorspace(SDL_Colorspace colorspace = SDL_COLORSPACE_UNKNOWN)
+    : colorspace(colorspace)
+  {
+  }
+
+  /**
+   * Define custom Colorspace formats.
+   *
+   * For example, defining SDL_COLORSPACE_SRGB looks like this:
+   *
+   * ```c
+   * Colorspace(SDL_COLOR_TYPE_RGB,
+   *            SDL_COLOR_RANGE_FULL,
+   *            SDL_COLOR_PRIMARIES_BT709,
+   *            SDL_TRANSFER_CHARACTERISTICS_SRGB,
+   *            SDL_MATRIX_COEFFICIENTS_IDENTITY,
+   *            SDL_CHROMA_LOCATION_NONE)
+   * ```
+   *
+   * @param type the type of the new format, probably an ColorType value.
+   * @param range the range of the new format, probably a ColorRange value.
+   * @param primaries the primaries of the new format, probably an
+   *                  ColorPrimaries value.
+   * @param transfer the transfer characteristics of the new format, probably an
+   *                 TransferCharacteristics value.
+   * @param matrix the matrix coefficients of the new format, probably an
+   *               MatrixCoefficients value.
+   * @param chroma the chroma sample location of the new format, probably an
+   *               ChromaLocation value.
+   * @returns a format value in the style of Colorspace.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr Colorspace(ColorType type,
+                       ColorRange range,
+                       ColorPrimaries primaries,
+                       TransferCharacteristics transfer,
+                       MatrixCoefficients matrix,
+                       ChromaLocation chroma)
+    : colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
+                                                      range,
+                                                      primaries,
+                                                      transfer,
+                                                      matrix,
+                                                      chroma)))
+  {
+  }
+
+  constexpr operator bool() const
+  {
+    return colorspace != SDL_COLORSPACE_UNKNOWN;
+  }
+
+  constexpr operator SDL_Colorspace() const { return colorspace; }
+
+  /**
+   * A macro to retrieve the type of a Colorspace.
+   *
+   * @returns the ColorType for `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(colorspace); }
+
+  /**
+   * A macro to retrieve the range of a Colorspace.
+   *
+   * @returns the ColorRange of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorRange GetRange() const
+  {
+    return SDL_COLORSPACERANGE(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the chroma sample location of a Colorspace.
+   *
+   * @returns the ChromaLocation of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ChromaLocation GetChroma() const
+  {
+    return SDL_COLORSPACECHROMA(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the primaries of a Colorspace.
+   *
+   * @returns the ColorPrimaries of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorPrimaries GetPrimaries() const
+  {
+    return SDL_COLORSPACEPRIMARIES(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the transfer characteristics of a Colorspace.
+   *
+   * @returns the TransferCharacteristics of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr TransferCharacteristics GetTransfer() const
+  {
+    return SDL_COLORSPACETRANSFER(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the matrix coefficients of a Colorspace.
+   *
+   * @returns the MatrixCoefficients of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr MatrixCoefficients GetMatrix() const
+  {
+    return SDL_COLORSPACEMATRIX(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT601 (or BT470BG) matrix
+   * coefficients.
+   *
+   * Note that this macro double-evaluates its parameter, so do not use
+   * expressions with side-effects here.
+   *
+   * @returns true if BT601 or BT470BG, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT601() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT601(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT709 matrix coefficients.
+   *
+   * @returns true if BT709, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT709() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT709(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT2020_NCL matrix
+   * coefficients.
+   *
+   * @returns true if BT2020_NCL, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT2020_NCL() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace has a limited range.
+   *
+   * @returns true if limited range, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsLimitedRange() const
+  {
+    return SDL_ISCOLORSPACE_LIMITED_RANGE(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace has a full range.
+   *
+   * @returns true if full range, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsFullRange() const
+  {
+    return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
+  }
+};
 /**
  * A structure that represents a color as RGBA components.
  *

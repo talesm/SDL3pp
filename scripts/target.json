@@ -3229,9 +3229,196 @@
         "Colorspace": {
           "doc": "Colorspace definitions.\n\nSince similar colorspaces may vary in their details (matrix, transfer\nfunction, etc.), this is not an exhaustive list, but rather a\nrepresentative sample of the kinds of colorspaces supported in SDL.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_ColorPrimaries\n@sa SDL_ColorRange\n@sa SDL_ColorType\n@sa SDL_MatrixCoefficients\n@sa SDL_TransferCharacteristics",
           "name": "Colorspace",
-          "kind": "alias",
+          "kind": "struct",
           "sourceName": "SDL_Colorspace",
-          "type": "SDL_Colorspace"
+          "type": "",
+          "entries": {
+            "colorspace": {
+              "kind": "var",
+              "type": "SDL_Colorspace",
+              "name": "colorspace",
+              "doc": ""
+            },
+            "Colorspace": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Colorspace",
+                    "name": "colorspace",
+                    "default": "SDL_COLORSPACE_UNKNOWN"
+                  }
+                ],
+                "name": "Colorspace",
+                "doc": ""
+              },
+              {
+                "doc": "A macro for defining custom SDL_Colorspace formats.\n\nFor example, defining SDL_COLORSPACE_SRGB looks like this:\n\n```c\nSDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_RGB,\n                      SDL_COLOR_RANGE_FULL,\n                      SDL_COLOR_PRIMARIES_BT709,\n                      SDL_TRANSFER_CHARACTERISTICS_SRGB,\n                      SDL_MATRIX_COEFFICIENTS_IDENTITY,\n                      SDL_CHROMA_LOCATION_NONE)\n```\n\n@param type the type of the new format, probably an SDL_ColorType value.\n@param range the range of the new format, probably a SDL_ColorRange value.\n@param primaries the primaries of the new format, probably an\n                 SDL_ColorPrimaries value.\n@param transfer the transfer characteristics of the new format, probably an\n                SDL_TransferCharacteristics value.\n@param matrix the matrix coefficients of the new format, probably an\n              SDL_MatrixCoefficients value.\n@param chroma the chroma sample location of the new format, probably an\n              SDL_ChromaLocation value.\n@returns a format value in the style of SDL_Colorspace.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+                "name": "Colorspace",
+                "kind": "function",
+                "parameters": [
+                  {
+                    "type": "ColorType",
+                    "name": "type"
+                  },
+                  {
+                    "type": "ColorRange",
+                    "name": "range"
+                  },
+                  {
+                    "type": "ColorPrimaries",
+                    "name": "primaries"
+                  },
+                  {
+                    "type": "TransferCharacteristics",
+                    "name": "transfer"
+                  },
+                  {
+                    "type": "MatrixCoefficients",
+                    "name": "matrix"
+                  },
+                  {
+                    "type": "ChromaLocation",
+                    "name": "chroma"
+                  }
+                ],
+                "sourceName": "SDL_DEFINE_COLORSPACE",
+                "type": "",
+                "constexpr": true,
+                "static": false
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "parameters": [],
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "name": "operator bool",
+              "doc": ""
+            },
+            "operator SDL_Colorspace": {
+              "kind": "function",
+              "parameters": [],
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "name": "operator SDL_Colorspace",
+              "doc": ""
+            },
+            "GetType": {
+              "doc": "A macro to retrieve the type of an SDL_Colorspace.\n\n@param cspace an SDL_Colorspace to check.\n@returns the SDL_ColorType for `cspace`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetType",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_COLORSPACETYPE",
+              "type": "ColorType",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetRange": {
+              "doc": "A macro to retrieve the range of an SDL_Colorspace.\n\n@param cspace an SDL_Colorspace to check.\n@returns the SDL_ColorRange of `cspace`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetRange",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_COLORSPACERANGE",
+              "type": "ColorRange",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetChroma": {
+              "doc": "A macro to retrieve the chroma sample location of an SDL_Colorspace.\n\n@param cspace an SDL_Colorspace to check.\n@returns the SDL_ChromaLocation of `cspace`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetChroma",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_COLORSPACECHROMA",
+              "type": "ChromaLocation",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetPrimaries": {
+              "doc": "A macro to retrieve the primaries of an SDL_Colorspace.\n\n@param cspace an SDL_Colorspace to check.\n@returns the SDL_ColorPrimaries of `cspace`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetPrimaries",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_COLORSPACEPRIMARIES",
+              "type": "ColorPrimaries",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetTransfer": {
+              "doc": "A macro to retrieve the transfer characteristics of an SDL_Colorspace.\n\n@param cspace an SDL_Colorspace to check.\n@returns the SDL_TransferCharacteristics of `cspace`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetTransfer",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_COLORSPACETRANSFER",
+              "type": "TransferCharacteristics",
+              "immutable": true,
+              "constexpr": true
+            },
+            "GetMatrix": {
+              "doc": "A macro to retrieve the matrix coefficients of an SDL_Colorspace.\n\n@param cspace an SDL_Colorspace to check.\n@returns the SDL_MatrixCoefficients of `cspace`.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "GetMatrix",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_COLORSPACEMATRIX",
+              "type": "MatrixCoefficients",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsMatrixBT601": {
+              "doc": "A macro to determine if an SDL_Colorspace uses BT601 (or BT470BG) matrix\ncoefficients.\n\nNote that this macro double-evaluates its parameter, so do not use\nexpressions with side-effects here.\n\n@param cspace an SDL_Colorspace to check.\n@returns true if BT601 or BT470BG, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsMatrixBT601",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISCOLORSPACE_MATRIX_BT601",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsMatrixBT709": {
+              "doc": "A macro to determine if an SDL_Colorspace uses BT709 matrix coefficients.\n\n@param cspace an SDL_Colorspace to check.\n@returns true if BT709, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsMatrixBT709",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISCOLORSPACE_MATRIX_BT709",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsMatrixBT2020_NCL": {
+              "doc": "A macro to determine if an SDL_Colorspace uses BT2020_NCL matrix\ncoefficients.\n\n@param cspace an SDL_Colorspace to check.\n@returns true if BT2020_NCL, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsMatrixBT2020_NCL",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISCOLORSPACE_MATRIX_BT2020_NCL",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsLimitedRange": {
+              "doc": "A macro to determine if an SDL_Colorspace has a limited range.\n\n@param cspace an SDL_Colorspace to check.\n@returns true if limited range, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsLimitedRange",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISCOLORSPACE_LIMITED_RANGE",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            },
+            "IsFullRange": {
+              "doc": "A macro to determine if an SDL_Colorspace has a full range.\n\n@param cspace an SDL_Colorspace to check.\n@returns true if full range, false otherwise.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "IsFullRange",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_ISCOLORSPACE_FULL_RANGE",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true
+            }
+          }
         },
         "Color": {
           "doc": "A structure that represents a color as RGBA components.\n\nThe bits of this structure can be directly reinterpreted as an\ninteger-packed color which uses the SDL_PIXELFORMAT_RGBA32 format\n(SDL_PIXELFORMAT_ABGR8888 on little-endian systems and\nSDL_PIXELFORMAT_RGBA8888 on big-endian systems).\n\n@since This struct is available since SDL 3.2.0.",

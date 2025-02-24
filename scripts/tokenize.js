@@ -253,16 +253,20 @@ function checkTokenTooLarge(token) {
  */
 function ignoreBody(lines, begin, spaces) {
   if (!lines[begin].endsWith("{")) {
-    for (let i = begin + 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (line.startsWith("{")) {
-        if (line.endsWith("}")) return i;
-        begin = i;
-        break;
+    const line = lines[begin + 1].trim();
+    if (line.startsWith("{")) {
+      begin += 1;
+      if (line.endsWith("}")) return begin;
+    } else if (line.startsWith(":")) {
+      for (begin += 2; begin < lines.length; begin++) {
+        const line = lines[begin].trim();
+        if (line.startsWith("{")) {
+          if (line.endsWith("}")) return begin;
+          break;
+        }
       }
-      if (!line.startsWith(":") && !line.startsWith(",")) {
-        return begin;
-      }
+    } else {
+      return begin;
     }
   } else begin++;
   const spaceRegex = /^\s+/;
