@@ -2932,6 +2932,53 @@
               "name": "format",
               "doc": ""
             },
+            "PixelFormat": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SDL_PixelFormat",
+                    "name": "format",
+                    "default": "SDL_PIXELFORMAT_UNKNOWN"
+                  }
+                ],
+                "name": "PixelFormat",
+                "doc": ""
+              },
+              {
+                "doc": "A macro for defining custom non-FourCC pixel formats.\n\nFor example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:\n\n```c\nSDL_DEFINE_PIXELFORMAT(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA, SDL_PACKEDLAYOUT_8888, 32, 4)\n```\n\n@param type the type of the new format, probably a SDL_PixelType value.\n@param order the order of the new format, probably a SDL_BitmapOrder,\n             SDL_PackedOrder, or SDL_ArrayOrder value.\n@param layout the layout of the new format, probably an SDL_PackedLayout\n              value or zero.\n@param bits the number of bits per pixel of the new format.\n@param bytes the number of bytes per pixel of the new format.\n@returns a format value in the style of SDL_PixelFormat.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+                "name": "PixelFormat",
+                "kind": "function",
+                "parameters": [
+                  {
+                    "type": "SDL_PixelType",
+                    "name": "type"
+                  },
+                  {
+                    "type": "int",
+                    "name": "order"
+                  },
+                  {
+                    "type": "SDL_PackedLayout",
+                    "name": "layout"
+                  },
+                  {
+                    "type": "int",
+                    "name": "bits"
+                  },
+                  {
+                    "type": "int",
+                    "name": "bytes"
+                  }
+                ],
+                "sourceName": "SDL_DEFINE_PIXELFORMAT",
+                "type": "",
+                "constexpr": true,
+                "static": false
+              }
+            ],
             "operator bool": {
               "kind": "function",
               "parameters": [],

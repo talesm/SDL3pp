@@ -171,6 +171,44 @@ struct PixelFormat
 {
   SDL_PixelFormat format;
 
+  constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
+    : format(format)
+  {
+  }
+
+  /**
+   * Defining custom non-FourCC pixel formats.
+   *
+   * For example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:
+   *
+   * ```c
+   * PixelFormat format(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA,
+   *   SDL_PACKEDLAYOUT_8888, 32, 4);
+   * ```
+   *
+   * @param type the type of the new format, probably a SDL_PixelType value.
+   * @param order the order of the new format, probably a SDL_BitmapOrder,
+   *              SDL_PackedOrder, or SDL_ArrayOrder value.
+   * @param layout the layout of the new format, probably an SDL_PackedLayout
+   *               value or zero.
+   * @param bits the number of bits per pixel of the new format.
+   * @param bytes the number of bytes per pixel of the new format.
+   * @returns a format value in the style of SDL_PixelFormat.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr PixelFormat(SDL_PixelType type,
+                        int order,
+                        SDL_PackedLayout layout,
+                        int bits,
+                        int bytes)
+    : format(SDL_PixelFormat(
+        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
+  {
+  }
+
   constexpr operator bool() const { return format != SDL_PIXELFORMAT_UNKNOWN; }
 
   constexpr operator SDL_PixelFormat() const { return format; }

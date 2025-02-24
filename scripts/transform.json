@@ -270,6 +270,35 @@
         }
       },
       "transform": {
+        "SDL_DEFINE_PIXELFORMAT": {
+          "kind": "function",
+          "name": "PixelFormat.PixelFormat",
+          "type": "",
+          "constexpr": true,
+          "static": false,
+          "parameters": [
+            {
+              "type": "SDL_PixelType",
+              "name": "type"
+            },
+            {
+              "type": "int",
+              "name": "order"
+            },
+            {
+              "type": "SDL_PackedLayout",
+              "name": "layout"
+            },
+            {
+              "type": "int",
+              "name": "bits"
+            },
+            {
+              "type": "int",
+              "name": "bytes"
+            }
+          ]
+        },
         "SDL_PixelFormat": {
           "kind": "struct",
           "type": "",
@@ -277,6 +306,18 @@
             "format": {
               "kind": "var",
               "type": "SDL_PixelFormat"
+            },
+            "PixelFormat": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SDL_PixelFormat",
+                  "name": "format",
+                  "default": "SDL_PIXELFORMAT_UNKNOWN"
+                }
+              ]
             },
             "operator bool": {
               "kind": "function",
