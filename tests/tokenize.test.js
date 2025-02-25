@@ -115,6 +115,19 @@ test("tokenize function with body", () => {
   }]);
 });
 
+test("tokenize function with templated return type", () => {
+  expect(tokenizeText("std::optional<int> func(int a, int b) const\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
+    begin: 1,
+    end: 6,
+    spaces: 0,
+    kind: "function",
+    value: "func",
+    type: "std::optional<int>",
+    immutable: true,
+    parameters: "int a, int b",
+  }]);
+});
+
 test("tokenize function ctor with body", () => {
   expect(tokenizeText("Func(int a, int b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
