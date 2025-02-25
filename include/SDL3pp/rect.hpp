@@ -382,7 +382,7 @@ struct Point : SDL_Point
   constexpr Point& Wrap(const Rect& rect);
 
   // Auto comparison operator
-  auto operator<=>(const Point&) const = default;
+  constexpr auto operator<=>(const Point&) const = default;
 
   /**
    * @brief Converts to FPoint
@@ -698,7 +698,7 @@ struct FPoint : SDL_FPoint
   constexpr FPoint& Wrap(const FRect& rect);
 
   // Auto comparison operator
-  auto operator<=>(const FPoint&) const = default;
+  constexpr auto operator<=>(const FPoint&) const = default;
 };
 
 /**
@@ -941,6 +941,54 @@ struct Rect : SDL_Rect
   }
 
   /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] x1 Starting X-coordinate of the line
+   * @param[in,out] y1 Starting Y-coordinate of the line
+   * @param[in,out] x2 Ending X-coordinate of the line
+   * @param[in,out] y2 Ending Y-coordinate of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in x1, y1, x2, and/or y2 as
+   * necessary.
+   *
+   */
+  bool IntersectLine(int* x1, int* y1, int* x2, int* y2) const
+  {
+    return SDL_GetRectAndLineIntersection(this, x1, y1, x2, y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
+   *
+   */
+  bool IntersectLine(Point* p1, Point* p2) const
+  {
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
+  }
+
+  /**
    * @brief Get top left corner of the rect
    *
    * @returns Top left corner of the rect
@@ -1161,51 +1209,6 @@ struct Rect : SDL_Rect
                              std::max(y, rect.y),
                              std::min(GetX2(), rect.GetX2()),
                              std::min(GetY2(), rect.GetY2()));
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] x1 Starting X-coordinate of the line
-   * @param[in,out] y1 Starting Y-coordinate of the line
-   * @param[in,out] x2 Ending X-coordinate of the line
-   * @param[in,out] y2 Ending Y-coordinate of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in x1, y1, x2, and/or y2 as
-   * necessary.
-   *
-   */
-  bool IntersectLine(int& x1, int& y1, int& x2, int& y2) const
-  {
-    return SDL_GetRectAndLineIntersection(this, &x1, &y1, &x2, &y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(Point& p1, Point& p2) const
-  {
-    return IntersectLine(p1.x, p1.y, p2.x, p2.y);
   }
 
   /**
@@ -1519,6 +1522,54 @@ struct FRect : SDL_FRect
   }
 
   /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] x1 Starting X-coordinate of the line
+   * @param[in,out] y1 Starting Y-coordinate of the line
+   * @param[in,out] x2 Ending X-coordinate of the line
+   * @param[in,out] y2 Ending Y-coordinate of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in x1, y1, x2, and/or y2 as
+   * necessary.
+   *
+   */
+  bool IntersectLine(float* x1, float* y1, float* x2, float* y2) const
+  {
+    return SDL_GetRectAndLineIntersectionFloat(this, x1, y1, x2, y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
+   *
+   */
+  bool IntersectLine(FPoint* p1, FPoint* p2) const
+  {
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
+  }
+
+  /**
    * @brief Get top left corner of the rect
    *
    * @returns Top left corner of the rect
@@ -1742,51 +1793,6 @@ struct FRect : SDL_FRect
   }
 
   /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] x1 Starting X-coordinate of the line
-   * @param[in,out] y1 Starting Y-coordinate of the line
-   * @param[in,out] x2 Ending X-coordinate of the line
-   * @param[in,out] y2 Ending Y-coordinate of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in x1, y1, x2, and/or y2 as
-   * necessary.
-   *
-   */
-  bool IntersectLine(float& x1, float& y1, float& x2, float& y2) const
-  {
-    return SDL_GetRectAndLineIntersectionFloat(this, &x1, &y1, &x2, &y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(FPoint& p1, FPoint& p2) const
-  {
-    return IntersectLine(p1.x, p1.y, p2.x, p2.y);
-  }
-
-  /**
    * @brief Get rectangle moved by a given offset
    *
    * @param[in] offset Point specifying an offset
@@ -1849,6 +1855,8 @@ struct FRect : SDL_FRect
 
   constexpr operator bool() const { return IsEmpty(); }
 };
+
+#pragma region impl
 
 constexpr bool Point::IsInRect(const Rect& r) const
 {
@@ -1942,6 +1950,8 @@ constexpr Rect::operator FRect() const
 {
   return {float(x), float(y), float(w), float(h)};
 }
+
+#pragma endregion impl
 
 } // namespace SDL
 

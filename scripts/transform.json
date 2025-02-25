@@ -14,7 +14,9 @@
     "SDL_Environment *": "EnvironmentRef",
     "SDL_iconv_t": "IConvRef",
     "SDL_Palette *": "PaletteRef",
-    "const SDL_Palette *": "PaletteRef"
+    "const SDL_Palette *": "PaletteRef",
+    "const SDL_Rect *": "const Rect &",
+    "const SDL_FRect *": "const FRect &"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
@@ -999,6 +1001,159 @@
         },
         "SDL_CreateProperties": {
           "type": "Properties"
+        }
+      }
+    },
+    "SDL_rect.h": {
+      "includeAfter": {
+        "__begin": [
+          {
+            "name": "FPoint",
+            "kind": "forward"
+          },
+          {
+            "name": "Rect",
+            "kind": "forward"
+          },
+          {
+            "name": "FRect",
+            "kind": "forward"
+          }
+        ],
+        "__end": [
+          {
+            "kind": "function",
+            "name": "Rect.IntersectLine"
+          },
+          {
+            "kind": "function",
+            "name": "FRect.IntersectLine"
+          }
+        ]
+      },
+      "transform": {
+        "SDL_Point": {
+          "kind": "struct",
+          "entries": {
+            "Point": [
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              }
+            ],
+            "GetX": "function",
+            "SetX": "function",
+            "GetY": "function",
+            "SetY": "function",
+            "SDL_PointInRect": {
+              "kind": "function",
+              "name": "IsInRect"
+            }
+          }
+        },
+        "SDL_FPoint": {
+          "kind": "struct",
+          "entries": {
+            "FPoint": [
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              }
+            ],
+            "GetX": "function",
+            "SetX": "function",
+            "GetY": "function",
+            "SetY": "function",
+            "SDL_PointInRectFloat": {
+              "kind": "function",
+              "name": "IsInRect"
+            }
+          }
+        },
+        "SDL_Rect": {
+          "kind": "struct",
+          "entries": {
+            "Rect": [
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              }
+            ],
+            "SDL_GetRectEnclosingPoints": "function",
+            "GetX": "function",
+            "SetX": "function",
+            "GetY": "function",
+            "SetY": "function",
+            "GetW": "function",
+            "SetW": "function",
+            "GetH": "function",
+            "SetH": "function",
+            "GetX2": "function",
+            "SetX2": "function",
+            "GetY2": "function",
+            "SetY2": "function",
+            "SDL_GetRectAndLineIntersection": {
+              "kind": "function",
+              "name": "IntersectLine"
+            }
+          }
+        },
+        "SDL_FRect": {
+          "kind": "struct",
+          "entries": {
+            "FRect": [
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              },
+              {
+                "kind": "function"
+              }
+            ],
+            "SDL_GetRectEnclosingPointsFloat": {
+              "kind": "function",
+              "name": "GetEnclosingPoints"
+            },
+            "GetX": "function",
+            "SetX": "function",
+            "GetY": "function",
+            "SetY": "function",
+            "GetW": "function",
+            "SetW": "function",
+            "GetH": "function",
+            "SetH": "function",
+            "GetX2": "function",
+            "SetX2": "function",
+            "GetY2": "function",
+            "SetY2": "function",
+            "SDL_GetRectAndLineIntersectionFloat": {
+              "kind": "function",
+              "name": "IntersectLine"
+            }
+          }
         }
       }
     }

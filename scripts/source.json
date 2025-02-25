@@ -4675,6 +4675,440 @@
           ]
         }
       }
+    },
+    "SDL_rect.h": {
+      "name": "SDL_rect.h",
+      "doc": "# CategoryRect\n\nSome helper functions for managing rectangles and 2D points, in both\ninteger and floating point versions.",
+      "entries": {
+        "SDL_Point": {
+          "doc": "The structure that defines a point (using integers).\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_GetRectEnclosingPoints\n\\sa SDL_PointInRect",
+          "name": "SDL_Point",
+          "kind": "struct",
+          "entries": {
+            "x": {
+              "doc": "",
+              "name": "x",
+              "kind": "var",
+              "type": "int"
+            },
+            "y": {
+              "doc": "",
+              "name": "y",
+              "kind": "var",
+              "type": "int"
+            }
+          }
+        },
+        "SDL_FPoint": {
+          "doc": "The structure that defines a point (using floating point values).\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_GetRectEnclosingPointsFloat\n\\sa SDL_PointInRectFloat",
+          "name": "SDL_FPoint",
+          "kind": "struct",
+          "entries": {
+            "x": {
+              "doc": "",
+              "name": "x",
+              "kind": "var",
+              "type": "float"
+            },
+            "y": {
+              "doc": "",
+              "name": "y",
+              "kind": "var",
+              "type": "float"
+            }
+          }
+        },
+        "SDL_Rect": {
+          "doc": "A rectangle, with the origin at the upper left (using integers).\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_RectEmpty\n\\sa SDL_RectsEqual\n\\sa SDL_HasRectIntersection\n\\sa SDL_GetRectIntersection\n\\sa SDL_GetRectAndLineIntersection\n\\sa SDL_GetRectUnion\n\\sa SDL_GetRectEnclosingPoints",
+          "name": "SDL_Rect",
+          "kind": "struct",
+          "entries": {
+            "x": {
+              "doc": "",
+              "name": "x",
+              "kind": "var",
+              "type": "int"
+            },
+            "w": {
+              "doc": "",
+              "name": "w",
+              "kind": "var",
+              "type": "int"
+            }
+          }
+        },
+        "SDL_FRect": {
+          "doc": "A rectangle, with the origin at the upper left (using floating point\nvalues).\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_RectEmptyFloat\n\\sa SDL_RectsEqualFloat\n\\sa SDL_RectsEqualEpsilon\n\\sa SDL_HasRectIntersectionFloat\n\\sa SDL_GetRectIntersectionFloat\n\\sa SDL_GetRectAndLineIntersectionFloat\n\\sa SDL_GetRectUnionFloat\n\\sa SDL_GetRectEnclosingPointsFloat\n\\sa SDL_PointInRectFloat",
+          "name": "SDL_FRect",
+          "kind": "struct",
+          "entries": {
+            "x": {
+              "doc": "",
+              "name": "x",
+              "kind": "var",
+              "type": "float"
+            },
+            "y": {
+              "doc": "",
+              "name": "y",
+              "kind": "var",
+              "type": "float"
+            },
+            "w": {
+              "doc": "",
+              "name": "w",
+              "kind": "var",
+              "type": "float"
+            },
+            "h": {
+              "doc": "",
+              "name": "h",
+              "kind": "var",
+              "type": "float"
+            }
+          }
+        },
+        "SDL_RectToFRect": {
+          "doc": "Convert an SDL_Rect to SDL_FRect\n\n\\param rect a pointer to an SDL_Rect.\n\\param frect a pointer filled in with the floating point representation of\n             `rect`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_RectToFRect",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "frect",
+              "type": "SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_PointInRect": {
+          "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not NULL,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param p the point to test.\n\\param r the rectangle to test.\n\\returns true if `p` is contained by `r`, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_PointInRect",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "p",
+              "type": "const SDL_Point *"
+            },
+            {
+              "name": "r",
+              "type": "const SDL_Rect *"
+            }
+          ]
+        },
+        "SDL_RectEmpty": {
+          "doc": "Determine whether a rectangle has no area.\n\nA rectangle is considered \"empty\" for this function if `r` is NULL, or if\n`r`'s width and/or height are <= 0.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param r the rectangle to test.\n\\returns true if the rectangle is \"empty\", false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_RectEmpty",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "r",
+              "type": "const SDL_Rect *"
+            }
+          ]
+        },
+        "SDL_RectsEqual": {
+          "doc": "Determine whether two rectangles are equal.\n\nRectangles are considered equal if both are not NULL and each of their x,\ny, width and height match.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param a the first rectangle to test.\n\\param b the second rectangle to test.\n\\returns true if the rectangles are equal, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_RectsEqual",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "b",
+              "type": "const SDL_Rect *"
+            }
+          ]
+        },
+        "SDL_HasRectIntersection": {
+          "doc": "Determine whether two rectangles intersect.\n\nIf either pointer is NULL the function will return false.\n\n\\param A an SDL_Rect structure representing the first rectangle.\n\\param B an SDL_Rect structure representing the second rectangle.\n\\returns true if there is an intersection, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetRectIntersection",
+          "name": "SDL_HasRectIntersection",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_Rect *"
+            }
+          ]
+        },
+        "SDL_GetRectIntersection": {
+          "doc": "Calculate the intersection of two rectangles.\n\nIf `result` is NULL then this function will return false.\n\n\\param A an SDL_Rect structure representing the first rectangle.\n\\param B an SDL_Rect structure representing the second rectangle.\n\\param result an SDL_Rect structure filled in with the intersection of\n              rectangles `A` and `B`.\n\\returns true if there is an intersection, false otherwise.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasRectIntersection",
+          "name": "SDL_GetRectIntersection",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "result",
+              "type": "SDL_Rect *"
+            }
+          ]
+        },
+        "SDL_GetRectUnion": {
+          "doc": "Calculate the union of two rectangles.\n\n\\param A an SDL_Rect structure representing the first rectangle.\n\\param B an SDL_Rect structure representing the second rectangle.\n\\param result an SDL_Rect structure filled in with the union of rectangles\n              `A` and `B`.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetRectUnion",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "result",
+              "type": "SDL_Rect *"
+            }
+          ]
+        },
+        "SDL_GetRectEnclosingPoints": {
+          "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not NULL then only points inside of the clipping rectangle are\nconsidered.\n\n\\param points an array of SDL_Point structures representing points to be\n              enclosed.\n\\param count the number of structures in the `points` array.\n\\param clip an SDL_Rect used for clipping or NULL to enclose all points.\n\\param result an SDL_Rect structure filled in with the minimal enclosing\n              rectangle.\n\\returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetRectEnclosingPoints",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "points",
+              "type": "const SDL_Point *"
+            },
+            {
+              "name": "count",
+              "type": "int"
+            },
+            {
+              "name": "clip",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "result",
+              "type": "SDL_Rect *"
+            }
+          ]
+        },
+        "SDL_GetRectAndLineIntersection": {
+          "doc": "Calculate the intersection of a rectangle and line segment.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n\\param rect an SDL_Rect structure representing the rectangle to intersect.\n\\param X1 a pointer to the starting X-coordinate of the line.\n\\param Y1 a pointer to the starting Y-coordinate of the line.\n\\param X2 a pointer to the ending X-coordinate of the line.\n\\param Y2 a pointer to the ending Y-coordinate of the line.\n\\returns true if there is an intersection, false otherwise.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetRectAndLineIntersection",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "const SDL_Rect *"
+            },
+            {
+              "name": "X1",
+              "type": "int *"
+            },
+            {
+              "name": "Y1",
+              "type": "int *"
+            },
+            {
+              "name": "X2",
+              "type": "int *"
+            },
+            {
+              "name": "Y2",
+              "type": "int *"
+            }
+          ]
+        },
+        "SDL_PointInRectFloat": {
+          "doc": "Determine whether a point resides inside a floating point rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not NULL,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point\n(0,0) and (0,1) as \"inside\" and (0,2) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param p the point to test.\n\\param r the rectangle to test.\n\\returns true if `p` is contained by `r`, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_PointInRectFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "p",
+              "type": "const SDL_FPoint *"
+            },
+            {
+              "name": "r",
+              "type": "const SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_RectEmptyFloat": {
+          "doc": "Determine whether a floating point rectangle can contain any point.\n\nA rectangle is considered \"empty\" for this function if `r` is NULL, or if\n`r`'s width and/or height are < 0.0f.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param r the rectangle to test.\n\\returns true if the rectangle is \"empty\", false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_RectEmptyFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "r",
+              "type": "const SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_RectsEqualEpsilon": {
+          "doc": "Determine whether two floating point rectangles are equal, within some\ngiven epsilon.\n\nRectangles are considered equal if both are not NULL and each of their x,\ny, width and height are within `epsilon` of each other. If you don't know\nwhat value to use for `epsilon`, you should call the SDL_RectsEqualFloat\nfunction instead.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param a the first rectangle to test.\n\\param b the second rectangle to test.\n\\param epsilon the epsilon value for comparison.\n\\returns true if the rectangles are equal, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_RectsEqualFloat",
+          "name": "SDL_RectsEqualEpsilon",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "b",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "epsilon",
+              "type": "const float"
+            }
+          ]
+        },
+        "SDL_RectsEqualFloat": {
+          "doc": "Determine whether two floating point rectangles are equal, within a default\nepsilon.\n\nRectangles are considered equal if both are not NULL and each of their x,\ny, width and height are within SDL_FLT_EPSILON of each other. This is often\na reasonable way to compare two floating point rectangles and deal with the\nslight precision variations in floating point calculations that tend to pop\nup.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param a the first rectangle to test.\n\\param b the second rectangle to test.\n\\returns true if the rectangles are equal, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_RectsEqualEpsilon",
+          "name": "SDL_RectsEqualFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "a",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "b",
+              "type": "const SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_HasRectIntersectionFloat": {
+          "doc": "Determine whether two rectangles intersect with float precision.\n\nIf either pointer is NULL the function will return false.\n\n\\param A an SDL_FRect structure representing the first rectangle.\n\\param B an SDL_FRect structure representing the second rectangle.\n\\returns true if there is an intersection, false otherwise.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetRectIntersection",
+          "name": "SDL_HasRectIntersectionFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_GetRectIntersectionFloat": {
+          "doc": "Calculate the intersection of two rectangles with float precision.\n\nIf `result` is NULL then this function will return false.\n\n\\param A an SDL_FRect structure representing the first rectangle.\n\\param B an SDL_FRect structure representing the second rectangle.\n\\param result an SDL_FRect structure filled in with the intersection of\n              rectangles `A` and `B`.\n\\returns true if there is an intersection, false otherwise.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_HasRectIntersectionFloat",
+          "name": "SDL_GetRectIntersectionFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "result",
+              "type": "SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_GetRectUnionFloat": {
+          "doc": "Calculate the union of two rectangles with float precision.\n\n\\param A an SDL_FRect structure representing the first rectangle.\n\\param B an SDL_FRect structure representing the second rectangle.\n\\param result an SDL_FRect structure filled in with the union of rectangles\n              `A` and `B`.\n\\returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetRectUnionFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "A",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "B",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "result",
+              "type": "SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_GetRectEnclosingPointsFloat": {
+          "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not NULL then only points inside of the clipping rectangle are\nconsidered.\n\n\\param points an array of SDL_FPoint structures representing points to be\n              enclosed.\n\\param count the number of structures in the `points` array.\n\\param clip an SDL_FRect used for clipping or NULL to enclose all points.\n\\param result an SDL_FRect structure filled in with the minimal enclosing\n              rectangle.\n\\returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetRectEnclosingPointsFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "points",
+              "type": "const SDL_FPoint *"
+            },
+            {
+              "name": "count",
+              "type": "int"
+            },
+            {
+              "name": "clip",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "result",
+              "type": "SDL_FRect *"
+            }
+          ]
+        },
+        "SDL_GetRectAndLineIntersectionFloat": {
+          "doc": "Calculate the intersection of a rectangle and line segment with float\nprecision.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n\\param rect an SDL_FRect structure representing the rectangle to intersect.\n\\param X1 a pointer to the starting X-coordinate of the line.\n\\param Y1 a pointer to the starting Y-coordinate of the line.\n\\param X2 a pointer to the ending X-coordinate of the line.\n\\param Y2 a pointer to the ending Y-coordinate of the line.\n\\returns true if there is an intersection, false otherwise.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GetRectAndLineIntersectionFloat",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "rect",
+              "type": "const SDL_FRect *"
+            },
+            {
+              "name": "X1",
+              "type": "float *"
+            },
+            {
+              "name": "Y1",
+              "type": "float *"
+            },
+            {
+              "name": "X2",
+              "type": "float *"
+            },
+            {
+              "name": "Y2",
+              "type": "float *"
+            }
+          ]
+        }
+      }
     }
   }
 }
