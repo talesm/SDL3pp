@@ -259,8 +259,10 @@ function makeNaturalName(name, typeName) {
     prefix = m[1];
     name = name.slice(3);
   }
-  if (!name.startsWith(typeName)) return prefix + name;
-  return prefix + name.slice(typeName.length);
+  if (/Float$/i.test(name)) name = name.slice(0, name.length - 5);
+  if (name.startsWith(typeName)) return prefix + name.slice(typeName.length);
+  if (typeName.startsWith("F") && name.startsWith(typeName.slice(1))) return prefix + name.slice(typeName.length - 1);
+  return prefix + name;
 }
 
 /**
@@ -279,7 +281,7 @@ function prepareForTypeInsert(entry, name, typeName) {
     parameters.shift();
     if (type.startsWith("const ")) entry.immutable = true;
   } else if (entry.static !== false) {
-    entry.static = true;
+    entry.static = !entry.immutable;
   }
 }
 
