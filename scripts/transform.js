@@ -165,26 +165,26 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
   const type = targetEntry.name;
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     const nameCandidate = transformName(key, context);
-    const nameChange = checkNameChange(entry, nameCandidate, type);
-    if (nameChange) {
-      const currName = transform.transform[key]?.name ?? nameCandidate;
-      const currEntry = targetEntries[currName];
-      if (!currEntry) {
-        insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
-      } else {
-        if (Array.isArray(currEntry)) {
-          currEntry.forEach(e => Object.assign(e, nameChange));
-        } else {
-          Object.assign(currEntry, nameChange);
-        }
-        insertEntry(entries, currEntry);
-        delete targetEntries[currName];
-      }
-      nameChange.name = `${type}.${nameChange.name}`;
-      transform.transform[key] = nameChange;
-    } else {
+    if (Array.isArray(entry) || nameCandidate === key) {
       insertEntry(entries, entry, key);
+      continue;
     }
+    const nameChange = makeRenameEntry(entry, nameCandidate, type);
+    const currName = transform.transform[key]?.name ?? nameCandidate;
+    const currEntry = targetEntries[currName];
+    if (!currEntry) {
+      insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
+    } else {
+      if (Array.isArray(currEntry)) {
+        currEntry.forEach(e => Object.assign(e, nameChange));
+      } else {
+        Object.assign(currEntry, nameChange);
+      }
+      insertEntry(entries, currEntry);
+      delete targetEntries[currName];
+    }
+    nameChange.name = `${type}.${nameChange.name}`;
+    transform.transform[key] = nameChange;
   }
   return entries;
 }
@@ -229,20 +229,20 @@ function validateEntries(targetEntries) {
 }
 
 /**
- * Check and if true, marshal name of member functions
- * @param {ApiEntry|ApiEntry[]} entry 
- * @param {string} name 
- * @param {string} typeName 
+ * Marshal name of member functions
+ * @param {ApiEntry|string} entry 
+ * @param {string}          name 
+ * @param {string}          typeName 
  * @returns {ApiEntry}
  */
-function checkNameChange(entry, name, typeName) {
-  if (Array.isArray(entry)) {
-    return null;
+function makeRenameEntry(entry, name, typeName, context) {
+  if (entry === "placeholder") {
+    entry = {};
+  } else if (entry === "ctor" || entry?.kind === "ctor") {
+    entry = { ...(entry.kind ? entry : {}), kind: "function", name: typeName, type: "", static: false };
+  } else if (typeof entry !== "object") {
+    entry = { kind: entry };
   }
-  if (entry === "function") return { name: makeNaturalName(name, typeName) };
-  if (entry === "ctor") return { name: typeName, type: "", static: false };
-  if (entry.kind && entry.kind !== "function") return null;
-  if (entry.parameters && (!entry.name || entry.name == name)) return null;
   return { ...entry, name: entry.name || makeNaturalName(name, typeName) };
 }
 
@@ -259,8 +259,10 @@ function makeNaturalName(name, typeName) {
     prefix = m[1];
     name = name.slice(3);
   }
-  if (!name.startsWith(typeName)) return prefix + name;
-  return prefix + name.slice(typeName.length);
+  if (/Float$/i.test(name)) name = name.slice(0, name.length - 5);
+  if (name.startsWith(typeName)) return prefix + name.slice(typeName.length);
+  if (typeName.startsWith("F") && name.startsWith(typeName.slice(1))) return prefix + name.slice(typeName.length - 1);
+  return prefix + name;
 }
 
 /**
@@ -279,7 +281,7 @@ function prepareForTypeInsert(entry, name, typeName) {
     parameters.shift();
     if (type.startsWith("const ")) entry.immutable = true;
   } else if (entry.static !== false) {
-    entry.static = true;
+    entry.static = !entry.immutable;
   }
 }
 
