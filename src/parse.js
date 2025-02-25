@@ -62,16 +62,17 @@ function parseContent(name, content, config) {
 /**
  * Insert entry into entries
  * 
- * @param {ApiEntries}          entries 
- * @param {ApiEntry|ApiEntry[]} entry 
- * @param {string}              defaultName
+ * @param {ApiEntries}                 entries 
+ * @param {ApiEntry|ApiEntry[]|string} entry 
+ * @param {string}                     defaultName
  */
 function insertEntry(entries, entry, defaultName) {
   if (Array.isArray(entry)) {
     entry.forEach(e => insertEntry(entries, e, defaultName));
     return entries;
   }
-  if (!entry.name) entry.name = defaultName;
+  if (typeof entry === "string") entry = { kind: entry, name: defaultName };
+  else if (!entry.name) entry.name = defaultName;
   fixEntry(entry);
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
   if (entries[name]) {
