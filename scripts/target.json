@@ -437,6 +437,7 @@
           "type": "void",
           "parameters": [
             {
+              "name": "env",
               "type": "T &&"
             }
           ],
@@ -2747,6 +2748,7 @@
           "type": "int",
           "parameters": [
             {
+              "name": "cd",
               "type": "T &&"
             }
           ],
@@ -3710,6 +3712,7 @@
           "type": "void",
           "parameters": [
             {
+              "name": "palette",
               "type": "T &&"
             }
           ],
@@ -4375,6 +4378,7 @@
           "type": "void",
           "parameters": [
             {
+              "name": "props",
               "type": "T &&"
             }
           ],
@@ -4560,12 +4564,12 @@
               "type": "std::optional<Rect>",
               "parameters": [
                 {
-                  "type": "std::span<const SDL_Point>",
-                  "name": "points"
+                  "name": "points",
+                  "type": "std::span<const SDL_Point>"
                 },
                 {
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
                   "name": "clip",
+                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
                   "default": "std::nullopt"
                 }
               ],
@@ -4874,12 +4878,12 @@
               "type": "std::optional<FRect>",
               "parameters": [
                 {
-                  "type": "std::span<const SDL_FPoint>",
-                  "name": "points"
+                  "name": "points",
+                  "type": "std::span<const SDL_FPoint>"
                 },
                 {
-                  "type": "std::optional<std::reference_wrapper<const SDL_FRect>>",
                   "name": "clip",
+                  "type": "std::optional<std::reference_wrapper<const SDL_FRect>>",
                   "default": "std::nullopt"
                 }
               ],
