@@ -11,17 +11,17 @@ TEST_CASE("ObjectBox")
   struct DummyBox
   {
     Dummy* dummy;
-    Dummy* Get() const;
+    Dummy* get() const;
   };
-  CHECK(SDL::ObjectBox<DummyBox, Dummy>);
-  CHECK(SDL::ObjectBox<DummyBox, const Dummy>);
+  CHECK(SDL::ObjectBox<DummyBox, Dummy*>);
+  CHECK(SDL::ObjectBox<DummyBox, const Dummy*>);
   struct ConstDummyBox
   {
     const Dummy* dummy;
-    const Dummy* Get() const;
+    const Dummy* get() const;
   };
-  CHECK(SDL::ObjectBox<ConstDummyBox, const Dummy>);
-  CHECK_FALSE(SDL::ObjectBox<ConstDummyBox, Dummy>);
+  CHECK(SDL::ObjectBox<ConstDummyBox, const Dummy*>);
+  CHECK_FALSE(SDL::ObjectBox<ConstDummyBox, Dummy*>);
 }
 
 template<class T>
@@ -42,7 +42,7 @@ struct DummyBase : DummyConstBase<T>
   {
   }
 
-  void SetContent(int content) const { SDL::Get<T>(this)->content = content; }
+  void SetContent(int content) const { T::get()->content = content; }
 };
 
 namespace SDL {
@@ -57,7 +57,7 @@ using DummyUnique = DummyBase<SDL::ObjectUnique<Dummy>>;
 
 TEST_CASE("ObjectUnique")
 {
-  CHECK(SDL::ObjectBox<DummyUnique, Dummy>);
+  CHECK(SDL::ObjectBox<DummyUnique, Dummy*>);
   DummyUnique wrapper{42};
   auto result = wrapper->content;
   CHECK(result == 42);
@@ -68,7 +68,7 @@ using DummyConstWrapper = DummyConstBase<SDL::ObjectRef<const Dummy>>;
 
 TEST_CASE("ObjectRef")
 {
-  CHECK(SDL::ObjectBox<DummyWrapper, Dummy>);
+  CHECK(SDL::ObjectBox<DummyWrapper, Dummy*>);
 
   SUBCASE("Non-const")
   {
@@ -76,7 +76,7 @@ TEST_CASE("ObjectRef")
     {
       Dummy dummy{42};
       DummyWrapper wrapper = &dummy;
-      CHECK(wrapper.Get() == &dummy);
+      CHECK(wrapper.get() == &dummy);
       CHECK(wrapper.GetContent() == 42);
       CHECK(wrapper->content == 42);
       dummy.content = 13;
@@ -99,7 +99,7 @@ TEST_CASE("ObjectRef")
     {
       Dummy dummy{42};
       DummyConstWrapper wrapper = &dummy;
-      CHECK(wrapper.Get() == &dummy);
+      CHECK(wrapper.get() == &dummy);
       CHECK(wrapper.GetContent() == 42);
       CHECK(wrapper->content == 42);
       dummy.content = 13;

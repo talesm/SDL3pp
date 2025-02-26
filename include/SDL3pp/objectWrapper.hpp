@@ -6,19 +6,10 @@
 
 namespace SDL {
 
-template<class T, class OBJ>
+template<class T, class POINTER>
 concept ObjectBox = requires(const T a) {
-  { a.Get() } -> std::convertible_to<OBJ*>;
+  { a.get() } -> std::convertible_to<POINTER>;
 };
-
-// Helper to access the wrapped value from ObjectBase
-template<class T, class BASE>
-auto Get(const BASE* base)
-{
-  auto maybeConstValue = static_cast<const T*>(base)->Get();
-  return const_cast<std::remove_const_t<decltype(maybeConstValue)>>(
-    maybeConstValue);
-}
 
 template<class T, class POINTER = T*>
 class ObjectRef
@@ -33,7 +24,7 @@ public:
   {
   }
 
-  template<ObjectBox<T> BOX>
+  template<ObjectBox<POINTER> BOX>
   ObjectRef(const BOX& box)
     : value(box.Get())
   {
@@ -107,6 +98,7 @@ struct FancyPointer
 
   bool operator==(nullptr_t) const { return bool(*this); }
 
+  operator T() const { return value; }
   T operator*() const { return value; }
   T& operator*() { return value; }
 

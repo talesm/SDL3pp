@@ -146,10 +146,7 @@ struct SurfaceBase : T
    * @returns a valid property ID on success or 0 on failure; call
    *          GetError() for more information.
    */
-  PropertiesRef GetProperties()
-  {
-    return SDL_GetSurfaceProperties(Get<T>(this));
-  }
+  PropertiesRef GetProperties() { return SDL_GetSurfaceProperties(T::get()); }
 
   /**
    * Set the colorspace used by a surface.
@@ -163,7 +160,7 @@ struct SurfaceBase : T
    */
   bool SetSurfaceColorspace(Colorspace colorspace)
   {
-    return SDL_SetSurfaceColorspace(Get<T>(this), colorspace);
+    return SDL_SetSurfaceColorspace(T::get(), colorspace);
   }
 
   /**
@@ -178,7 +175,7 @@ struct SurfaceBase : T
    */
   Colorspace GetColorspace() const
   {
-    return SDL_GetSurfaceColorspace(Get<T>(this));
+    return SDL_GetSurfaceColorspace(T::get());
   }
 
   /**
@@ -202,7 +199,7 @@ struct SurfaceBase : T
    *          the surface didn't have an index format); call GetError() for
    *          more information.
    */
-  PaletteRef CreatePalette() { return SDL_CreateSurfacePalette(Get<T>(this)); }
+  PaletteRef CreatePalette() { return SDL_CreateSurfacePalette(T::get()); }
 
   /**
    * @brief Get the palette used by a surface.
@@ -210,7 +207,7 @@ struct SurfaceBase : T
    * @returns a pointer to the palette used by the surface, or NULL if there is
    *          no palette used.
    */
-  PaletteRef GetPalette() const { return SDL_GetSurfacePalette(Get<T>(this)); }
+  PaletteRef GetPalette() const { return SDL_GetSurfacePalette(T::get()); }
 
   /**
    * @brief Set the palette used by a surface.
@@ -223,7 +220,7 @@ struct SurfaceBase : T
    */
   bool SetPalette(PaletteRef palette)
   {
-    return SDL_SetSurfacePalette(Get<T>(this), palette.Get());
+    return SDL_SetSurfacePalette(T::get(), palette.Get());
   }
 
   // SDL_AddSurfaceAlternateImage
@@ -238,14 +235,14 @@ struct SurfaceBase : T
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
-  bool SetRLE(bool enabled) { return SDL_SetSurfaceRLE(Get<T>(this), enabled); }
+  bool SetRLE(bool enabled) { return SDL_SetSurfaceRLE(T::get(), enabled); }
 
   /**
    * @brief Returns whether the surface is RLE enabled.
    *
    * @returns true if the surface is RLE enabled, false otherwise.
    */
-  bool HasRLE() const { return SDL_SurfaceHasRLE(Get<T>(this)); }
+  bool HasRLE() const { return SDL_SurfaceHasRLE(T::get()); }
 
   /**
    * @brief Set the color key (transparent pixel) in a surface.
@@ -264,7 +261,7 @@ struct SurfaceBase : T
    */
   bool SetColorKey(bool enabled, Uint32 key)
   {
-    return SDL_SetSurfaceColorKey(Get<T>(this), enabled, key);
+    return SDL_SetSurfaceColorKey(T::get(), enabled, key);
   }
 
   /**
@@ -291,7 +288,7 @@ struct SurfaceBase : T
    *
    * @returns true if the surface has a color key, false otherwise.
    */
-  bool HasColorKey() const { return SDL_SurfaceHasColorKey(Get<T>(this)); }
+  bool HasColorKey() const { return SDL_SurfaceHasColorKey(T::get()); }
 
   /**
    * @brief Get the color key (transparent pixel) for a surface.
@@ -306,7 +303,7 @@ struct SurfaceBase : T
    */
   std::optional<Uint32> GetColorKey() const
   {
-    if (Uint32 key; SDL_GetSurfaceColorKey(Get<T>(this), &key)) return key;
+    if (Uint32 key; SDL_GetSurfaceColorKey(T::get(), &key)) return key;
     return std::nullopt;
   }
 
@@ -327,7 +324,7 @@ struct SurfaceBase : T
    */
   bool SetColorMod(Uint8 r, Uint8 g, Uint8 b)
   {
-    return SDL_SetSurfaceColorMod(Get<T>(this), r, g, b);
+    return SDL_SetSurfaceColorMod(T::get(), r, g, b);
   }
 
   /**
@@ -341,7 +338,7 @@ struct SurfaceBase : T
    */
   bool GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
   {
-    return SDL_GetSurfaceColorMod(Get<T>(this), r, g, b);
+    return SDL_GetSurfaceColorMod(T::get(), r, g, b);
   }
 
   /**
@@ -358,7 +355,7 @@ struct SurfaceBase : T
    */
   bool SetAlphaMod(Uint8 alpha)
   {
-    return SDL_SetSurfaceAlphaMod(Get<T>(this), alpha);
+    return SDL_SetSurfaceAlphaMod(T::get(), alpha);
   }
 
   /**
@@ -369,7 +366,7 @@ struct SurfaceBase : T
    */
   std::optional<Uint8> GetAlphaMod() const
   {
-    if (Uint8 alpha; SDL_GetSurfaceAlphaMod(Get<T>(this), &alpha)) return alpha;
+    if (Uint8 alpha; SDL_GetSurfaceAlphaMod(T::get(), &alpha)) return alpha;
     return std::nullopt;
   }
 
@@ -403,7 +400,7 @@ struct SurfaceBase : T
   std::optional<Color> GetColorAndAlphaMod() const
   {
     if (Color c; GetColorMod(&c.r, &c.g, &c.b) &&
-                 SDL_GetSurfaceAlphaMod(Get<T>(this), &c.a)) {
+                 SDL_GetSurfaceAlphaMod(T::get(), &c.a)) {
       return c;
     }
     return std::nullopt;
@@ -422,7 +419,7 @@ struct SurfaceBase : T
    */
   bool SetBlendMode(SDL_BlendMode blendMode)
   {
-    return SDL_SetSurfaceBlendMode(Get<T>(this), blendMode);
+    return SDL_SetSurfaceBlendMode(T::get(), blendMode);
   }
 
   /**
@@ -434,7 +431,7 @@ struct SurfaceBase : T
   std::optional<SDL_BlendMode> GetBlendMode() const
   {
     if (SDL_BlendMode blendMode;
-        SDL_GetSurfaceBlendMode(Get<T>(this), &blendMode)) {
+        SDL_GetSurfaceBlendMode(T::get(), &blendMode)) {
       return blendMode;
     }
     return std::nullopt;
@@ -458,10 +455,10 @@ struct SurfaceBase : T
    */
   bool SetClipRect(std::optional<Rect> rect)
   {
-    return SDL_SetSurfaceClipRect(Get<T>(this), rect ? &rect.value() : nullptr);
+    return SDL_SetSurfaceClipRect(T::get(), rect ? &rect.value() : nullptr);
   }
 
-  bool ResetClipRect() { return SDL_SetSurfaceClipRect(Get<T>(this), nullptr); }
+  bool ResetClipRect() { return SDL_SetSurfaceClipRect(T::get(), nullptr); }
 
   /**
    * @brief Get the clipping rectangle for a surface.
@@ -475,7 +472,7 @@ struct SurfaceBase : T
    */
   std::optional<Rect> GetClipRect() const
   {
-    if (Rect r; SDL_GetSurfaceClipRect(Get<T>(this), &r)) { return r; }
+    if (Rect r; SDL_GetSurfaceClipRect(T::get(), &r)) { return r; }
     return std::nullopt;
   }
 
@@ -488,7 +485,7 @@ struct SurfaceBase : T
    */
   bool FlipSurface(FlipMode flipMode)
   {
-    return SDL_FlipSurface(Get<T>(this), flipMode);
+    return SDL_FlipSurface(T::get(), flipMode);
   }
 
   /**
@@ -503,10 +500,7 @@ struct SurfaceBase : T
    * @returns a copy of the surface or NULL on failure; call GetError() for
    *          more information.
    */
-  Surface DuplicateSurface() const
-  {
-    return {SDL_DuplicateSurface(Get<T>(this))};
-  }
+  Surface DuplicateSurface() const { return {SDL_DuplicateSurface(T::get())}; }
 
   /**
    * @brief Creates a new surface identical to the existing surface, scaled to
@@ -523,7 +517,7 @@ struct SurfaceBase : T
    */
   Surface ScaleSurface(int width, int height, ScaleMode scaleMode) const
   {
-    return {SDL_ScaleSurface(Get<T>(this), width, height, scaleMode)};
+    return {SDL_ScaleSurface(T::get(), width, height, scaleMode)};
   }
 
   /**
@@ -546,7 +540,7 @@ struct SurfaceBase : T
    */
   Surface ConvertSurface(PixelFormat format)
   {
-    return {SDL_ConvertSurface(Get<T>(this), format)};
+    return {SDL_ConvertSurface(T::get(), format)};
   }
 
   // TODO SDL_ConvertSurfaceAndColorspace
@@ -566,7 +560,7 @@ struct SurfaceBase : T
    */
   bool ClearSurface(SDL_FColor c)
   {
-    return SDL_ClearSurface(Get<T>(this), c.r, c.g, c.b, c.a);
+    return SDL_ClearSurface(T::get(), c.r, c.g, c.b, c.a);
   }
 
   /**
@@ -587,7 +581,7 @@ struct SurfaceBase : T
    */
   bool Fill(Uint32 color)
   {
-    return SDL_FillSurfaceRect(Get<T>(this), nullptr, color);
+    return SDL_FillSurfaceRect(T::get(), nullptr, color);
   }
 
   bool Fill(SDL_Color color) { return Fill(MapColor(color)); }
@@ -611,7 +605,7 @@ struct SurfaceBase : T
    */
   bool FillRect(const SDL_Rect& rect, Uint32 color)
   {
-    return SDL_FillSurfaceRect(Get<T>(this), &rect, color);
+    return SDL_FillSurfaceRect(T::get(), &rect, color);
   }
 
   bool FillRect(const SDL_Rect& rect, SDL_Color color)
@@ -639,7 +633,7 @@ struct SurfaceBase : T
    */
   bool FillRects(const SDL_Rect* rects, int count, Uint32 color)
   {
-    return SDL_FillSurfaceRects(Get<T>(this), rects, count, color);
+    return SDL_FillSurfaceRects(T::get(), rects, count, color);
   }
   bool FillRects(const SDL_Rect* rects, int count, SDL_Color color)
   {
@@ -679,7 +673,7 @@ struct SurfaceBase : T
    */
   Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b) const
   {
-    return SDL_MapSurfaceRGB(Get<T>(this), r, g, b);
+    return SDL_MapSurfaceRGB(T::get(), r, g, b);
   }
 
   /**
@@ -708,7 +702,7 @@ struct SurfaceBase : T
    */
   Uint32 MapColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
   {
-    return SDL_MapSurfaceRGBA(Get<T>(this), r, g, b, a);
+    return SDL_MapSurfaceRGBA(T::get(), r, g, b, a);
   }
 
   /**
@@ -756,7 +750,7 @@ struct SurfaceBase : T
    */
   bool ReadPixel(int x, int y, Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
-    return SDL_ReadSurfacePixel(Get<T>(this), x, y, r, g, b, a);
+    return SDL_ReadSurfacePixel(T::get(), x, y, r, g, b, a);
   }
 
   /**
@@ -806,7 +800,7 @@ struct SurfaceBase : T
    */
   bool ReadPixel(int x, int y, float* r, float* g, float* b, float* a) const
   {
-    return SDL_ReadSurfacePixelFloat(Get<T>(this), x, y, r, g, b, a);
+    return SDL_ReadSurfacePixelFloat(T::get(), x, y, r, g, b, a);
   }
 
   /**
@@ -846,7 +840,7 @@ struct SurfaceBase : T
    */
   bool WritePixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a)
   {
-    return SDL_WriteSurfacePixel(Get<T>(this), x, y, r, g, b, a);
+    return SDL_WriteSurfacePixel(T::get(), x, y, r, g, b, a);
   }
 
   /**
@@ -884,7 +878,7 @@ struct SurfaceBase : T
    */
   bool WritePixel(int x, int y, float r, float g, float b, float a)
   {
-    return SDL_WriteSurfacePixelFloat(Get<T>(this), x, y, r, g, b, a);
+    return SDL_WriteSurfacePixelFloat(T::get(), x, y, r, g, b, a);
   }
 
   /**
@@ -905,13 +899,13 @@ struct SurfaceBase : T
   }
 
   // Convenience functions to avoid dereferencing
-  int GetWidth() const { return Get<T>(this)->w; }
+  int GetWidth() const { return T::get()->w; }
 
-  int GetHeight() const { return Get<T>(this)->w; }
+  int GetHeight() const { return T::get()->w; }
 
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
-  PixelFormat GetFormat() const { return Get<T>(this)->format; }
+  PixelFormat GetFormat() const { return T::get()->format; }
 };
 
 /**

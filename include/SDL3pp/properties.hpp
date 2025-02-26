@@ -111,7 +111,7 @@ struct PropertiesBase : T
    */
   bool CopyPropertiesTo(PropertiesRef dst) const
   {
-    return SDL_CopyProperties(Get<T>(this), dst.Get());
+    return SDL_CopyProperties(T::get(), dst.Get());
   }
 
   /**
@@ -179,7 +179,7 @@ struct PropertiesBase : T
                                     void* userdata)
   {
     return SDL_SetPointerPropertyWithCleanup(
-      Get<T>(this), name, value, cleanup, userdata);
+      T::get(), name, value, cleanup, userdata);
   }
 
   /**
@@ -226,7 +226,7 @@ struct PropertiesBase : T
    */
   bool SetPointer(StringParam name, void* value)
   {
-    return SDL_SetPointerProperty(Get<T>(this), name, value);
+    return SDL_SetPointerProperty(T::get(), name, value);
   }
 
   /**
@@ -244,7 +244,7 @@ struct PropertiesBase : T
    */
   bool SetString(StringParam name, StringParam value)
   {
-    return SDL_SetStringProperty(Get<T>(this), name, value);
+    return SDL_SetStringProperty(T::get(), name, value);
   }
 
   /**
@@ -259,7 +259,7 @@ struct PropertiesBase : T
    */
   bool SetNumber(StringParam name, Sint64 value)
   {
-    return SDL_SetNumberProperty(Get<T>(this), name, value);
+    return SDL_SetNumberProperty(T::get(), name, value);
   }
 
   /**
@@ -274,7 +274,7 @@ struct PropertiesBase : T
    */
   bool SetFloat(StringParam name, float value)
   {
-    return SDL_SetFloatProperty(Get<T>(this), name, value);
+    return SDL_SetFloatProperty(T::get(), name, value);
   }
 
   /**
@@ -289,19 +289,16 @@ struct PropertiesBase : T
    */
   bool SetBoolean(StringParam name, bool value)
   {
-    return SDL_SetBooleanProperty(Get<T>(this), name, value);
+    return SDL_SetBooleanProperty(T::get(), name, value);
   }
 
   /// @brief Return whether a property exists
-  bool Has(StringParam name) const
-  {
-    return SDL_HasProperty(Get<T>(this), name);
-  }
+  bool Has(StringParam name) const { return SDL_HasProperty(T::get(), name); }
 
   /// @brief Get the type of a property in a group of properties.
   PropertyType GetType(StringParam name) const
   {
-    return SDL_GetPropertyType(Get<T>(this), name);
+    return SDL_GetPropertyType(T::get(), name);
   }
 
   /**
@@ -330,7 +327,7 @@ struct PropertiesBase : T
    */
   void* GetPointer(StringParam name, void* default_value) const
   {
-    return SDL_GetPointerProperty(Get<T>(this), name, default_value);
+    return SDL_GetPointerProperty(T::get(), name, default_value);
   }
 
   /**
@@ -364,7 +361,7 @@ struct PropertiesBase : T
    */
   const char* GetString(StringParam name, StringParam default_value) const
   {
-    return SDL_GetStringProperty(Get<T>(this), name, default_value);
+    return SDL_GetStringProperty(T::get(), name, default_value);
   }
 
   /**
@@ -387,7 +384,7 @@ struct PropertiesBase : T
    */
   Sint64 GetNumber(StringParam name, Sint64 default_value) const
   {
-    return SDL_GetNumberProperty(Get<T>(this), name, default_value);
+    return SDL_GetNumberProperty(T::get(), name, default_value);
   }
 
   /**
@@ -410,7 +407,7 @@ struct PropertiesBase : T
    */
   float GetFloat(StringParam name, float default_value) const
   {
-    return SDL_GetFloatProperty(Get<T>(this), name, default_value);
+    return SDL_GetFloatProperty(T::get(), name, default_value);
   }
 
   /**
@@ -433,7 +430,7 @@ struct PropertiesBase : T
    */
   bool GetBoolean(StringParam name, bool default_value) const
   {
-    return SDL_GetBooleanProperty(Get<T>(this), name, default_value);
+    return SDL_GetBooleanProperty(T::get(), name, default_value);
   }
 
   /**
@@ -445,7 +442,7 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    */
-  bool Clear(StringParam name) { return SDL_ClearProperty(Get<T>(this), name); }
+  bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
 
   /**
    * A callback used to enumerate all the properties in a group of properties.
@@ -486,7 +483,7 @@ struct PropertiesBase : T
    */
   bool Enumerate(EnumerateCallback callback, void* userdata) const
   {
-    return SDL_EnumerateProperties(Get<T>(this), callback, userdata);
+    return SDL_EnumerateProperties(T::get(), callback, userdata);
   }
 
   /**

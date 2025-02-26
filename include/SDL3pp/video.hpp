@@ -613,7 +613,7 @@ struct WindowBase : T
    *          on success or 0 on failure; call GetError() for more
    *          information.
    */
-  Display GetDisplay() const { return Display::GetForWindow(Get<T>(this)); }
+  Display GetDisplay() const { return Display::GetForWindow(T::get()); }
 
   /**
    * @brief Get the pixel density of a window.
@@ -629,10 +629,7 @@ struct WindowBase : T
    *
    * @sa WindowBase.GetDisplayScale()
    */
-  float GetPixelDensity() const
-  {
-    return SDL_GetWindowPixelDensity(Get<T>(this));
-  }
+  float GetPixelDensity() const { return SDL_GetWindowPixelDensity(T::get()); }
 
   /**
    * @brief Get the content display scale relative to a window's pixel size.
@@ -653,10 +650,7 @@ struct WindowBase : T
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  float GetDisplayScale() const
-  {
-    return SDL_GetWindowDisplayScale(Get<T>(this));
-  }
+  float GetDisplayScale() const { return SDL_GetWindowDisplayScale(T::get()); }
 
   // TODO SDL_SetWindowFullscreenMode()
 
@@ -850,7 +844,7 @@ struct WindowBase : T
   {
     // Not const, as this might change window state
     // TODO Wrap into SDL::Surface
-    return SDL_GetWindowSurface(Get<T>(this));
+    return SDL_GetWindowSurface(T::get());
   }
 
   // TODO SDL_SetWindowSurfaceVSync
@@ -871,7 +865,7 @@ struct WindowBase : T
    * @sa GetSurface()
    * @sa UpdateSurfaceRects()
    */
-  bool UpdateSurface() { return SDL_UpdateWindowSurface(Get<T>(this)); }
+  bool UpdateSurface() { return SDL_UpdateWindowSurface(T::get()); }
 
   /**
    * @brief  Copy areas of the window surface to the screen.
@@ -897,7 +891,7 @@ struct WindowBase : T
    */
   bool UpdateSurfaceRects(const SDL_Rect* rects, int numRects)
   {
-    return SDL_UpdateWindowSurfaceRects(Get<T>(this), rects, numRects);
+    return SDL_UpdateWindowSurfaceRects(T::get(), rects, numRects);
   }
 
   /**
@@ -909,7 +903,7 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    */
-  bool DestroySurface() { return SDL_DestroyWindowSurface(Get<T>(this)); }
+  bool DestroySurface() { return SDL_DestroyWindowSurface(T::get()); }
 
   // TODO SDL_SetWindowKeyboardGrab
 };

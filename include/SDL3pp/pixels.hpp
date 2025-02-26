@@ -1114,7 +1114,7 @@ struct PaletteBase : T
    */
   inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
   {
-    return SDL_SetPaletteColors(Get<T>(this), colors, firstcolor, ncolors);
+    return SDL_SetPaletteColors(T::get(), colors, firstcolor, ncolors);
   }
 
   /**
