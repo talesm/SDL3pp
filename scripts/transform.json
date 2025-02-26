@@ -1052,7 +1052,8 @@
             "SetY": "function",
             "SDL_PointInRect": {
               "kind": "function",
-              "name": "IsInRect"
+              "name": "IsInRect",
+              "constexpr": true
             }
           }
         },
@@ -1076,7 +1077,8 @@
             "SetY": "function",
             "SDL_PointInRectFloat": {
               "kind": "function",
-              "name": "IsInRect"
+              "name": "IsInRect",
+              "constexpr": true
             }
           }
         },
@@ -1092,13 +1094,10 @@
               },
               {
                 "kind": "function"
-              },
-              {
-                "kind": "function"
               }
             ],
             "SDL_GetRectEnclosingPoints": {
-              "type": "Rect",
+              "type": "std::optional<Rect>",
               "parameters": [
                 {
                   "type": "std::span<const SDL_Point>",
@@ -1131,6 +1130,12 @@
             "SetX2": "function",
             "GetY2": "function",
             "SetY2": "function",
+            "GetTopLeft": "function",
+            "GetTopRight": "function",
+            "GetBottomLeft": "function",
+            "GetBottomRight": "function",
+            "GetSize": "function",
+            "GetCentroid": "function",
             "SDL_GetRectAndLineIntersection": {
               "kind": "function",
               "name": "IntersectLine"
@@ -1145,7 +1150,7 @@
             },
             "operator SDL_FRect": {
               "doc": "@sa operator FRect()",
-              "static": false,
+              "kind": "function",
               "immutable": true,
               "constexpr": true,
               "parameters": [],
@@ -1164,7 +1169,18 @@
             },
             "SDL_RectsEqual": {
               "name": "Equal",
-              "constexpr": true
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "name": "this",
+                  "type": "const Rect &"
+                },
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ]
             },
             "operator==": {
               "doc": "@sa Equal()",
@@ -1179,13 +1195,33 @@
                 }
               ]
             },
-            "SDL_HasRectIntersection": "function",
+            "Contains": [
+              "function",
+              "function"
+            ],
+            "SDL_HasRectIntersection": {
+              "kind": "function",
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "this",
+                  "type": "const Rect &"
+                },
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ]
+            },
             "SDL_GetRectIntersection": {
               "kind": "function",
-              "type": "std::optional<SDL_Rect>",
+              "type": "std::optional<Rect>",
               "immutable": true,
-              "constexpr": true,
               "parameters": [
+                {
+                  "name": "this",
+                  "type": "const Rect &"
+                },
                 {
                   "name": "other",
                   "type": "const Rect &"
@@ -1194,10 +1230,13 @@
             },
             "SDL_GetRectUnion": {
               "kind": "function",
-              "type": "std::optional<SDL_Rect>",
+              "type": "std::optional<Rect>",
               "immutable": true,
-              "constexpr": true,
               "parameters": [
+                {
+                  "name": "this",
+                  "type": "const Rect &"
+                },
                 {
                   "name": "other",
                   "type": "const Rect &"
@@ -1218,12 +1257,46 @@
               },
               {
                 "kind": "function"
-              },
-              {
-                "kind": "function"
               }
             ],
-            "SDL_GetRectEnclosingPointsFloat": "function",
+            "SDL_GetRectEnclosingPointsFloat": {
+              "type": "std::optional<FRect>",
+              "parameters": [
+                {
+                  "type": "std::span<const SDL_FPoint>",
+                  "name": "points"
+                },
+                {
+                  "type": "std::optional<std::reference_wrapper<const SDL_FRect>>",
+                  "name": "clip",
+                  "default": "std::nullopt"
+                }
+              ]
+            },
+            "FromCenter": [
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "doc": ""
+              }
+            ],
+            "FromCorners": [
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "doc": ""
+              }
+            ],
             "GetX": "function",
             "SetX": "function",
             "GetY": "function",
@@ -1236,6 +1309,12 @@
             "SetX2": "function",
             "GetY2": "function",
             "SetY2": "function",
+            "GetTopLeft": "function",
+            "GetTopRight": "function",
+            "GetBottomLeft": "function",
+            "GetBottomRight": "function",
+            "GetSize": "function",
+            "GetCentroid": "function",
             "SDL_GetRectAndLineIntersectionFloat": {
               "name": "IntersectLine"
             },
@@ -1243,7 +1322,7 @@
               "constexpr": true
             },
             "operator bool": {
-              "doc": "@sa Equal()",
+              "doc": "@sa Empty()",
               "kind": "function",
               "immutable": true,
               "constexpr": true,
@@ -1252,13 +1331,40 @@
             },
             "SDL_RectsEqualEpsilon": {
               "name": "EqualEpsilon",
-              "constexpr": true
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "name": "this",
+                  "type": "const FRect &"
+                },
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                },
+                {
+                  "name": "epsilon",
+                  "type": "const float"
+                }
+              ]
             },
             "SDL_RectsEqualFloat": {
               "name": "Equal",
-              "constexpr": true
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "name": "this",
+                  "type": "const FRect &"
+                },
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ]
             },
             "operator==": {
+              "doc": "@sa Equal()",
               "kind": "function",
               "constexpr": true,
               "immutable": true,
@@ -1270,14 +1376,33 @@
                 }
               ]
             },
-            "SDL_HasRectIntersectionFloat": "function",
+            "Contains": [
+              "function",
+              "function"
+            ],
+            "SDL_HasRectIntersectionFloat": {
+              "kind": "function",
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "this",
+                  "type": "const FRect &"
+                },
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ]
+            },
             "SDL_GetRectIntersectionFloat": {
               "kind": "function",
-              "type": "std::optional<SDL_FRect>",
-              "static": false,
+              "type": "std::optional<FRect>",
               "immutable": true,
-              "constexpr": true,
               "parameters": [
+                {
+                  "name": "this",
+                  "type": "const FRect &"
+                },
                 {
                   "name": "other",
                   "type": "const FRect &"
@@ -1286,11 +1411,13 @@
             },
             "SDL_GetRectUnionFloat": {
               "kind": "function",
-              "type": "std::optional<SDL_FRect>",
-              "static": false,
+              "type": "std::optional<FRect>",
               "immutable": true,
-              "constexpr": true,
               "parameters": [
+                {
+                  "name": "this",
+                  "type": "const FRect &"
+                },
                 {
                   "name": "other",
                   "type": "const FRect &"

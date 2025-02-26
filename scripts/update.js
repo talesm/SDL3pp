@@ -126,7 +126,6 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
         end,
         replacement: generateEntry(targetEntry, prefix) + '\n',
       });
-
     }
   }
 
@@ -176,7 +175,7 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
   const targetEntriesCount = Object.keys(targetEntry.entries ?? {})?.length ?? 0;
   if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
     system.log(`${name} changed "${change}" from ${begin} to ${end}`);
-    changes.push({ begin, end, replacement: generateEntry(targetEntry, prefix) });
+    changes.push({ begin, end, replacement: generateEntry(targetEntry, prefix) + "\n" });
   } else {
     if (sourceEntry.begin > begin) {
       changes.push({

@@ -4443,6 +4443,7 @@
                 }
               ],
               "sourceName": "SDL_PointInRect",
+              "constexpr": true,
               "immutable": true
             }
           }
@@ -4503,6 +4504,7 @@
                 }
               ],
               "sourceName": "SDL_PointInRectFloat",
+              "constexpr": true,
               "immutable": true
             }
           }
@@ -4529,18 +4531,13 @@
                 "kind": "function",
                 "name": "Rect",
                 "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "Rect",
-                "doc": ""
               }
             ],
             "GetEnclosingPoints": {
               "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not NULL then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of SDL_Point structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an SDL_Rect used for clipping or NULL to enclose all points.\n@param result an SDL_Rect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetEnclosingPoints",
               "kind": "function",
-              "type": "Rect",
+              "type": "std::optional<Rect>",
               "parameters": [
                 {
                   "type": "std::span<const SDL_Point>",
@@ -4639,6 +4636,36 @@
               "name": "SetY2",
               "doc": ""
             },
+            "GetTopLeft": {
+              "kind": "function",
+              "name": "GetTopLeft",
+              "doc": ""
+            },
+            "GetTopRight": {
+              "kind": "function",
+              "name": "GetTopRight",
+              "doc": ""
+            },
+            "GetBottomLeft": {
+              "kind": "function",
+              "name": "GetBottomLeft",
+              "doc": ""
+            },
+            "GetBottomRight": {
+              "kind": "function",
+              "name": "GetBottomRight",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "name": "GetSize",
+              "doc": ""
+            },
+            "GetCentroid": {
+              "kind": "function",
+              "name": "GetCentroid",
+              "doc": ""
+            },
             "IntersectLine": [
               {
                 "doc": "Calculate the intersection of a rectangle and line segment.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param rect an SDL_Rect structure representing the rectangle to intersect.\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
@@ -4685,7 +4712,7 @@
             },
             "operator SDL_FRect": {
               "doc": "@sa operator FRect()",
-              "static": false,
+              "kind": "function",
               "immutable": true,
               "constexpr": true,
               "parameters": [],
@@ -4718,13 +4745,13 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "b",
+                  "name": "other",
                   "type": "const Rect &"
                 }
               ],
               "sourceName": "SDL_RectsEqual",
-              "constexpr": true,
-              "immutable": true
+              "immutable": true,
+              "constexpr": true
             },
             "operator==": {
               "doc": "@sa Equal()",
@@ -4740,6 +4767,18 @@
               ],
               "name": "operator=="
             },
+            "Contains": [
+              {
+                "kind": "function",
+                "name": "Contains",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "Contains",
+                "doc": ""
+              }
+            ],
             "HasIntersection": {
               "doc": "Determine whether two rectangles intersect.\n\nIf either pointer is NULL the function will return false.\n\n@param A an SDL_Rect structure representing the first rectangle.\n@param B an SDL_Rect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRectIntersection",
               "name": "HasIntersection",
@@ -4747,7 +4786,7 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "B",
+                  "name": "other",
                   "type": "const Rect &"
                 }
               ],
@@ -4758,21 +4797,29 @@
               "doc": "Calculate the intersection of two rectangles.\n\nIf `result` is NULL then this function will return false.\n\n@param A an SDL_Rect structure representing the first rectangle.\n@param B an SDL_Rect structure representing the second rectangle.\n@param result an SDL_Rect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_HasRectIntersection",
               "name": "GetIntersection",
               "kind": "function",
-              "type": "std::optional<SDL_Rect>",
-              "parameters": [],
+              "type": "std::optional<Rect>",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ],
               "sourceName": "SDL_GetRectIntersection",
-              "immutable": true,
-              "constexpr": true
+              "immutable": true
             },
             "GetUnion": {
               "doc": "Calculate the union of two rectangles.\n\n@param A an SDL_Rect structure representing the first rectangle.\n@param B an SDL_Rect structure representing the second rectangle.\n@param result an SDL_Rect structure filled in with the union of rectangles\n              `A` and `B`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetUnion",
               "kind": "function",
-              "type": "std::optional<SDL_Rect>",
-              "parameters": [],
+              "type": "std::optional<Rect>",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const Rect &"
+                }
+              ],
               "sourceName": "SDL_GetRectUnion",
-              "immutable": true,
-              "constexpr": true
+              "immutable": true
             }
           }
         },
@@ -4798,39 +4845,51 @@
                 "kind": "function",
                 "name": "FRect",
                 "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "FRect",
-                "doc": ""
               }
             ],
             "GetEnclosingPoints": {
               "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not NULL then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of SDL_FPoint structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an SDL_FRect used for clipping or NULL to enclose all points.\n@param result an SDL_FRect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetEnclosingPoints",
               "kind": "function",
-              "type": "bool",
+              "type": "std::optional<FRect>",
               "parameters": [
                 {
-                  "name": "points",
-                  "type": "const FPoint *"
+                  "type": "std::span<const SDL_FPoint>",
+                  "name": "points"
                 },
                 {
-                  "name": "count",
-                  "type": "int"
-                },
-                {
+                  "type": "std::optional<std::reference_wrapper<const SDL_FRect>>",
                   "name": "clip",
-                  "type": "const FRect &"
-                },
-                {
-                  "name": "result",
-                  "type": "FRect *"
+                  "default": "std::nullopt"
                 }
               ],
               "sourceName": "SDL_GetRectEnclosingPointsFloat",
               "static": true
             },
+            "FromCenter": [
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "doc": ""
+              }
+            ],
+            "FromCorners": [
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "doc": ""
+              }
+            ],
             "GetX": {
               "kind": "function",
               "name": "GetX",
@@ -4891,6 +4950,36 @@
               "name": "SetY2",
               "doc": ""
             },
+            "GetTopLeft": {
+              "kind": "function",
+              "name": "GetTopLeft",
+              "doc": ""
+            },
+            "GetTopRight": {
+              "kind": "function",
+              "name": "GetTopRight",
+              "doc": ""
+            },
+            "GetBottomLeft": {
+              "kind": "function",
+              "name": "GetBottomLeft",
+              "doc": ""
+            },
+            "GetBottomRight": {
+              "kind": "function",
+              "name": "GetBottomRight",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "name": "GetSize",
+              "doc": ""
+            },
+            "GetCentroid": {
+              "kind": "function",
+              "name": "GetCentroid",
+              "doc": ""
+            },
             "IntersectLine": [
               {
                 "doc": "Calculate the intersection of a rectangle and line segment with float\nprecision.\n\nThis function is used to clip a line segment to a rectangle. A line segment\ncontained entirely within the rectangle or that does not intersect will\nremain unchanged. A line segment that crosses the rectangle at either or\nboth ends will be clipped to the boundary of the rectangle and the new\ncoordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.\n\n@param rect an SDL_FRect structure representing the rectangle to intersect.\n@param X1 a pointer to the starting X-coordinate of the line.\n@param Y1 a pointer to the starting Y-coordinate of the line.\n@param X2 a pointer to the ending X-coordinate of the line.\n@param Y2 a pointer to the ending Y-coordinate of the line.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.",
@@ -4935,7 +5024,7 @@
               "immutable": true
             },
             "operator bool": {
-              "doc": "@sa Equal()",
+              "doc": "@sa Empty()",
               "kind": "function",
               "immutable": true,
               "constexpr": true,
@@ -4950,7 +5039,7 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "b",
+                  "name": "other",
                   "type": "const FRect &"
                 },
                 {
@@ -4959,8 +5048,8 @@
                 }
               ],
               "sourceName": "SDL_RectsEqualEpsilon",
-              "constexpr": true,
-              "immutable": true
+              "immutable": true,
+              "constexpr": true
             },
             "Equal": {
               "doc": "Determine whether two floating point rectangles are equal, within a default\nepsilon.\n\nRectangles are considered equal if both are not NULL and each of their x,\ny, width and height are within SDL_FLT_EPSILON of each other. This is often\na reasonable way to compare two floating point rectangles and deal with the\nslight precision variations in floating point calculations that tend to pop\nup.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param a the first rectangle to test.\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RectsEqualEpsilon",
@@ -4969,15 +5058,16 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "b",
+                  "name": "other",
                   "type": "const FRect &"
                 }
               ],
               "sourceName": "SDL_RectsEqualFloat",
-              "constexpr": true,
-              "immutable": true
+              "immutable": true,
+              "constexpr": true
             },
             "operator==": {
+              "doc": "@sa Equal()",
               "kind": "function",
               "constexpr": true,
               "immutable": true,
@@ -4988,9 +5078,20 @@
                   "type": "const FRect &"
                 }
               ],
-              "name": "operator==",
-              "doc": ""
+              "name": "operator=="
             },
+            "Contains": [
+              {
+                "kind": "function",
+                "name": "Contains",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "name": "Contains",
+                "doc": ""
+              }
+            ],
             "HasIntersection": {
               "doc": "Determine whether two rectangles intersect with float precision.\n\nIf either pointer is NULL the function will return false.\n\n@param A an SDL_FRect structure representing the first rectangle.\n@param B an SDL_FRect structure representing the second rectangle.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRectIntersection",
               "name": "HasIntersection",
@@ -4998,7 +5099,7 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "B",
+                  "name": "other",
                   "type": "const FRect &"
                 }
               ],
@@ -5009,23 +5110,29 @@
               "doc": "Calculate the intersection of two rectangles with float precision.\n\nIf `result` is NULL then this function will return false.\n\n@param A an SDL_FRect structure representing the first rectangle.\n@param B an SDL_FRect structure representing the second rectangle.\n@param result an SDL_FRect structure filled in with the intersection of\n              rectangles `A` and `B`.\n@returns true if there is an intersection, false otherwise.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_HasRectIntersectionFloat",
               "name": "GetIntersection",
               "kind": "function",
-              "type": "std::optional<SDL_FRect>",
-              "parameters": [],
+              "type": "std::optional<FRect>",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ],
               "sourceName": "SDL_GetRectIntersectionFloat",
-              "static": false,
-              "immutable": true,
-              "constexpr": true
+              "immutable": true
             },
             "GetUnion": {
               "doc": "Calculate the union of two rectangles with float precision.\n\n@param A an SDL_FRect structure representing the first rectangle.\n@param B an SDL_FRect structure representing the second rectangle.\n@param result an SDL_FRect structure filled in with the union of rectangles\n              `A` and `B`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetUnion",
               "kind": "function",
-              "type": "std::optional<SDL_FRect>",
-              "parameters": [],
+              "type": "std::optional<FRect>",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const FRect &"
+                }
+              ],
               "sourceName": "SDL_GetRectUnionFloat",
-              "static": false,
-              "immutable": true,
-              "constexpr": true
+              "immutable": true
             }
           }
         }

@@ -1,3 +1,11 @@
+/**
+ * @file rect.hpp
+ *
+ * # CategoryRect
+ *
+ * Some helper functions for managing rectangles and 2D points, in both
+ * integer and floating point versions.
+ */
 #ifndef SDL3PP_RECT_HPP_
 #define SDL3PP_RECT_HPP_
 
@@ -10,8 +18,12 @@ namespace SDL {
 
 // Forward decl
 struct FPoint;
-struct FRect;
+
+// Forward decl
 struct Rect;
+
+// Forward decl
+struct FRect;
 
 /**
  * @brief The structure that defines a point (using integers)
@@ -706,13 +718,8 @@ struct FPoint : SDL_FPoint
  */
 struct Rect : SDL_Rect
 {
-  constexpr Rect(const SDL_Rect& rect)
+  constexpr Rect(const SDL_Rect& rect = {0})
     : SDL_Rect(rect)
-  {
-  }
-
-  constexpr Rect()
-    : Rect({0})
   {
   }
 
@@ -726,30 +733,35 @@ struct Rect : SDL_Rect
   {
   }
 
-  static Rect GetEnclosingPoints(std::span<const SDL_Point> points)
-  {
-    return GetEnclosingPoints(points.data(), points.size());
-  }
-
-  static Rect GetEnclosingPoints(std::span<const SDL_Point> points,
-                                 const SDL_Rect& clip)
-  {
-    return GetEnclosingPoints(points.data(), points.size(), clip);
-  }
-
-  static Rect GetEnclosingPoints(const SDL_Point* points, int count)
+  /**
+   * Calculate a minimal rectangle enclosing a set of points.
+   *
+   * If `clip` is not NULL then only points inside of the clipping rectangle are
+   * considered.
+   *
+   * @param points a span of SDL_Point structures representing points to be
+   *               enclosed.
+   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
+   * points.
+   * @param result an SDL_Rect structure filled in with the minimal enclosing
+   *               rectangle.
+   * @returns an SDL_Rect structure filled in with the minimal enclosing
+   *               rectangle or std::nullopt if all the points were outside of
+   * the clipping rectangle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static inline std::optional<Rect> GetEnclosingPoints(
+    std::span<const SDL_Point> points,
+    std::optional<std::reference_wrapper<const SDL_Rect>> clip = std::nullopt)
   {
     Rect result;
-    SDL_GetRectEnclosingPoints(points, count, nullptr, &result);
-    return result;
-  }
-  static Rect GetEnclosingPoints(const SDL_Point* points,
-                                 int count,
-                                 const SDL_Rect& clip)
-  {
-    Rect result;
-    SDL_GetRectEnclosingPoints(points, count, &clip, &result);
-    return result;
+    const SDL_Rect* clipPtr = clip ? &clip.value().get() : nullptr;
+    if (SDL_GetRectEnclosingPoints(
+          points.data(), points.size(), clipPtr, &result)) {
+      return result;
+    }
+    return std::nullopt;
   }
 
   /**
@@ -941,54 +953,6 @@ struct Rect : SDL_Rect
   }
 
   /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] x1 Starting X-coordinate of the line
-   * @param[in,out] y1 Starting Y-coordinate of the line
-   * @param[in,out] x2 Ending X-coordinate of the line
-   * @param[in,out] y2 Ending Y-coordinate of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in x1, y1, x2, and/or y2 as
-   * necessary.
-   *
-   */
-  bool IntersectLine(int* x1, int* y1, int* x2, int* y2) const
-  {
-    return SDL_GetRectAndLineIntersection(this, x1, y1, x2, y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(Point* p1, Point* p2) const
-  {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
-  }
-
-  /**
    * @brief Get top left corner of the rect
    *
    * @returns Top left corner of the rect
@@ -1037,96 +1001,198 @@ struct Rect : SDL_Rect
   constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
 
   /**
-   * @brief Check whether the rect contains given point
+   * Calculate the intersection of a rectangle and line segment.
    *
-   * @param[in] px X coordinate of a point
-   * @param[in] py Y coordinate of a point
+   * This function is used to clip a line segment to a rectangle. A line segment
+   * contained entirely within the rectangle or that does not intersect will
+   * remain unchanged. A line segment that crosses the rectangle at either or
+   * both ends will be clipped to the boundary of the rectangle and the new
+   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
    *
-   * @returns True if the point is contained in the rect
+   * @param X1 a pointer to the starting X-coordinate of the line.
+   * @param Y1 a pointer to the starting Y-coordinate of the line.
+   * @param X2 a pointer to the ending X-coordinate of the line.
+   * @param Y2 a pointer to the ending Y-coordinate of the line.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool IntersectLine(int* X1, int* Y1, int* X2, int* Y2) const
+  {
+    return SDL_GetRectAndLineIntersection(this, X1, Y1, X2, Y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  constexpr bool Contains(int px, int py) const
+  bool IntersectLine(Point* p1, Point* p2) const
   {
-    return px >= x && py >= y && px <= GetX2() && py <= GetY2();
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
   }
+
+  /**
+   * Convert an SDL_Rect to SDL_FRect
+   *
+   * @param rect a pointer to an SDL_Rect.
+   * @param frect a pointer filled in with the floating point representation of
+   *              `rect`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr operator FRect() const;
+
+  /**
+   * @sa operator FRect()
+   */
+  constexpr operator SDL_FRect() const { return operator SDL_FRect(); }
+
+  /**
+   * Determine whether a rectangle has no area.
+   *
+   * A rectangle is considered "empty" for this function if `r` is NULL, or if
+   * `r`'s width and/or height are <= 0.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param r the rectangle to test.
+   * @returns true if the rectangle is "empty", false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Empty() const { return SDL_RectEmpty(this); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * Determine whether two rectangles are equal.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height match.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Equal(const Rect& other) const
+  {
+    return SDL_RectsEqual(this, &other);
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const Rect& other) const { return Equal(other); }
 
   /**
    * @brief Check whether the rect contains given point
    *
-   * @param[in] point Point to check
+   * @param point Point to check
    *
    * @returns True if the point is contained in the rect
    *
    */
   constexpr bool Contains(const Point& point) const
   {
-    return point.x >= x && point.y >= y && point.x <= GetX2() &&
-           point.y <= GetY2();
+    return SDL_PointInRect(&point, this);
   }
 
   /**
-   * @brief Check whether the rect contains another rect
+   * @brief Check whether the rect contains given point
    *
-   * @param[in] rect Rect to check
+   * @param other Point to check
    *
-   * @returns True if the checked rect is contained in this rect
+   * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const Rect& rect) const
+  constexpr bool Contains(const Rect& other) const
   {
-    return rect.x >= x && rect.y >= y && rect.GetX2() <= GetX2() &&
-           rect.GetY2() <= GetY2();
+    return GetUnion(other) == *this;
   }
 
   /**
-   * @brief Check whether the rect intersects another rect
+   * Determine whether two rectangles intersect.
    *
-   * @param[in] rect Rect to check
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns true if there is an intersection, false otherwise.
    *
-   * @returns True if rectangles intersect
+   * @threadsafety It is safe to call this function from any thread.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetRectIntersection
    */
-  constexpr bool Intersects(const Rect& rect) const
+  bool HasIntersection(const Rect& other) const
   {
-    return !(rect.GetX2() < x || rect.GetY2() < y || rect.x > GetX2() ||
-             rect.y > GetY2());
+    return SDL_HasRectIntersection(this, &other);
   }
 
   /**
-   * @brief Calculate union with another rect
+   * Calculate the intersection of two rectangles.
    *
-   * @param[in] rect Rect to union with
+   * If `result` is NULL then this function will return false.
    *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns an SDL_Rect structure filled in with the intersection of
+   *               if there is intersection, std::nullopt otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa HasIntersection()
+   */
+  constexpr std::optional<Rect> GetIntersection(const Rect& other) const
+  {
+    if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
+      return result;
+    }
+    return std::nullopt;
+  }
+
+  /**
+   * Calculate the union of two rectangles.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
    * @returns Rect representing union of two rectangles
    *
+   * @since This function is available since SDL 3.2.0.
    */
-  constexpr Rect GetUnion(const Rect& rect) const
+  constexpr std::optional<Rect> GetUnion(const Rect& other) const
   {
-    return Rect::FromCorners(std::min(x, rect.x),
-                             std::min(y, rect.y),
-                             std::max(GetX2(), rect.GetX2()),
-                             std::max(GetY2(), rect.GetY2()));
-  }
-
-  /**
-   * @brief Union rect with another rect
-   *
-   * @param[in] rect Rect to union with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& Union(const Rect& rect)
-  {
-    int nx = std::min(x, rect.x);
-    int ny = std::min(y, rect.y);
-    int nx2 = std::max(GetX2(), rect.GetX2());
-    int ny2 = std::max(GetY2(), rect.GetY2());
-    x = nx;
-    y = ny;
-    SetX2(nx2);
-    SetY2(ny2);
-    return *this;
+    if (Rect result; SDL_GetRectUnion(this, &other, &result)) return result;
+    return std::nullopt;
   }
 
   /**
@@ -1193,25 +1259,6 @@ struct Rect : SDL_Rect
   }
 
   /**
-   * @brief Calculate intersection with another rect
-   *
-   * @param[in] rect Rect to intersect with
-   *
-   * @returns Rect representing intersection area or NullOpt if there was no
-   * intersection
-   *
-   */
-  constexpr std::optional<Rect> GetIntersection(const Rect& rect) const
-  {
-    if (!Intersects(rect)) return std::nullopt;
-
-    return Rect::FromCorners(std::max(x, rect.x),
-                             std::max(y, rect.y),
-                             std::min(GetX2(), rect.GetX2()),
-                             std::min(GetY2(), rect.GetY2()));
-  }
-
-  /**
    * @brief Get rectangle moved by a given offset
    *
    * @param[in] offset Point specifying an offset
@@ -1266,20 +1313,6 @@ struct Rect : SDL_Rect
     y -= offset.y;
     return *this;
   }
-
-  // Auto comparison operator
-  auto operator<=>(const Rect&) const = default;
-
-  /**
-   * @brief Converts to FRect
-   *
-   * @return FRect
-   */
-  constexpr operator FRect() const;
-
-  constexpr bool IsEmpty() const { return w <= 0 || h <= 0; }
-
-  constexpr operator bool() const { return IsEmpty(); }
 };
 
 /**
@@ -1287,13 +1320,8 @@ struct Rect : SDL_Rect
  */
 struct FRect : SDL_FRect
 {
-  constexpr FRect(const SDL_FRect& rect)
+  constexpr FRect(const SDL_FRect& rect = {0})
     : SDL_FRect(rect)
-  {
-  }
-
-  constexpr FRect()
-    : FRect({0})
   {
   }
 
@@ -1307,30 +1335,35 @@ struct FRect : SDL_FRect
   {
   }
 
-  static FRect GetEnclosingPoints(std::span<const SDL_FPoint> points)
-  {
-    return GetEnclosingPoints(points.data(), points.size());
-  }
-
-  static FRect GetEnclosingPoints(std::span<const SDL_FPoint> points,
-                                  const SDL_FRect& clip)
-  {
-    return GetEnclosingPoints(points.data(), points.size(), clip);
-  }
-
-  static FRect GetEnclosingPoints(const SDL_FPoint* points, int count)
+  /**
+   * Calculate a minimal rectangle enclosing a set of points.
+   *
+   * If `clip` is not NULL then only points inside of the clipping rectangle are
+   * considered.
+   *
+   * @param points a span of SDL_Point structures representing points to be
+   *               enclosed.
+   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
+   * points.
+   * @param result an SDL_Rect structure filled in with the minimal enclosing
+   *               rectangle.
+   * @returns an SDL_Rect structure filled in with the minimal enclosing
+   *               rectangle or std::nullopt if all the points were outside of
+   * the clipping rectangle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static inline std::optional<FRect> GetEnclosingPoints(
+    std::span<const SDL_FPoint> points,
+    std::optional<std::reference_wrapper<const SDL_FRect>> clip = std::nullopt)
   {
     FRect result;
-    SDL_GetRectEnclosingPointsFloat(points, count, nullptr, &result);
-    return result;
-  }
-  static FRect GetEnclosingPoints(const SDL_FPoint* points,
-                                  int count,
-                                  const SDL_FRect& clip)
-  {
-    FRect result;
-    SDL_GetRectEnclosingPointsFloat(points, count, &clip, &result);
-    return result;
+    const SDL_FRect* clipPtr = clip ? &clip.value().get() : nullptr;
+    if (SDL_GetRectEnclosingPointsFloat(
+          points.data(), points.size(), clipPtr, &result)) {
+      return result;
+    }
+    return std::nullopt;
   }
 
   /**
@@ -1522,54 +1555,6 @@ struct FRect : SDL_FRect
   }
 
   /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] x1 Starting X-coordinate of the line
-   * @param[in,out] y1 Starting Y-coordinate of the line
-   * @param[in,out] x2 Ending X-coordinate of the line
-   * @param[in,out] y2 Ending Y-coordinate of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in x1, y1, x2, and/or y2 as
-   * necessary.
-   *
-   */
-  bool IntersectLine(float* x1, float* y1, float* x2, float* y2) const
-  {
-    return SDL_GetRectAndLineIntersectionFloat(this, x1, y1, x2, y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(FPoint* p1, FPoint* p2) const
-  {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
-  }
-
-  /**
    * @brief Get top left corner of the rect
    *
    * @returns Top left corner of the rect
@@ -1618,96 +1603,211 @@ struct FRect : SDL_FRect
   constexpr FPoint GetCentroid() const { return FPoint(x + w / 2, y + h / 2); }
 
   /**
-   * @brief Check whether the rect contains given point
+   * Calculate the intersection of a rectangle and line segment with float
+   * precision.
    *
-   * @param[in] px X coordinate of a point
-   * @param[in] py Y coordinate of a point
+   * This function is used to clip a line segment to a rectangle. A line segment
+   * contained entirely within the rectangle or that does not intersect will
+   * remain unchanged. A line segment that crosses the rectangle at either or
+   * both ends will be clipped to the boundary of the rectangle and the new
+   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
    *
-   * @returns True if the point is contained in the rect
+   * @param X1 a pointer to the starting X-coordinate of the line.
+   * @param Y1 a pointer to the starting Y-coordinate of the line.
+   * @param X2 a pointer to the ending X-coordinate of the line.
+   * @param Y2 a pointer to the ending Y-coordinate of the line.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool IntersectLine(float* X1, float* Y1, float* X2, float* Y2) const
+  {
+    return SDL_GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
    *
    */
-  constexpr bool Contains(float px, float py) const
+  bool IntersectLine(FPoint* p1, FPoint* p2) const
   {
-    return px >= x && py >= y && px <= GetX2() && py <= GetY2();
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
   }
+
+  /**
+   * Determine whether a rectangle has no area.
+   *
+   * A rectangle is considered "empty" for this function if `r` is NULL, or if
+   * `r`'s width and/or height are <= 0.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @returns true if the rectangle is "empty", false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * Determine whether two floating point rectangles are equal, within some
+   * given epsilon.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height are within `epsilon` of each other. If you don't know
+   * what value to use for `epsilon`, you should call the SDL_RectsEqualFloat
+   * function instead.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param a the first rectangle to test.
+   * @param b the second rectangle to test.
+   * @param epsilon the epsilon value for comparison.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_RectsEqualFloat
+   */
+  constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
+  {
+    return SDL_RectsEqualEpsilon(this, &other, epsilon);
+  }
+
+  /**
+   * Determine whether two rectangles are equal.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height match.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Equal(const FRect& other) const
+  {
+    return SDL_RectsEqualFloat(this, &other);
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const FRect& other) const { return Equal(other); }
 
   /**
    * @brief Check whether the rect contains given point
    *
-   * @param[in] point Point to check
+   * @param point Point to check
    *
    * @returns True if the point is contained in the rect
    *
    */
   constexpr bool Contains(const FPoint& point) const
   {
-    return point.x >= x && point.y >= y && point.x <= GetX2() &&
-           point.y <= GetY2();
+    return SDL_PointInRectFloat(&point, this);
   }
 
   /**
-   * @brief Check whether the rect contains another rect
+   * @brief Check whether the rect contains given point
    *
-   * @param[in] rect FRect to check
+   * @param other Point to check
    *
-   * @returns True if the checked rect is contained in this rect
+   * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FRect& rect) const
+  constexpr bool Contains(const FRect& other) const
   {
-    return rect.x >= x && rect.y >= y && rect.GetX2() <= GetX2() &&
-           rect.GetY2() <= GetY2();
+    return GetUnion(other) == *this;
   }
 
   /**
-   * @brief Check whether the rect intersects another rect
+   * Determine whether two rectangles intersect.
    *
-   * @param[in] rect FRect to check
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns true if there is an intersection, false otherwise.
    *
-   * @returns True if rectangles intersect
+   * @threadsafety It is safe to call this function from any thread.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GetRectIntersection
    */
-  constexpr bool Intersects(const FRect& rect) const
+  bool HasIntersection(const FRect& other) const
   {
-    return !(rect.GetX2() < x || rect.GetY2() < y || rect.x > GetX2() ||
-             rect.y > GetY2());
+    return SDL_HasRectIntersectionFloat(this, &other);
   }
 
   /**
-   * @brief Calculate union with another rect
+   * Calculate the intersection of two rectangles.
    *
-   * @param[in] rect FRect to union with
+   * If `result` is NULL then this function will return false.
    *
-   * @returns FRect representing union of two rectangles
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns an SDL_Rect structure filled in with the intersection of
+   *               if there is intersection, std::nullopt otherwise.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa HasIntersection()
    */
-  constexpr FRect GetUnion(const FRect& rect) const
+  constexpr std::optional<FRect> GetIntersection(const FRect& other) const
   {
-    return FRect::FromCorners(std::min(x, rect.x),
-                              std::min(y, rect.y),
-                              std::max(GetX2(), rect.GetX2()),
-                              std::max(GetY2(), rect.GetY2()));
+    if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
+      return result;
+    }
+    return std::nullopt;
   }
 
   /**
-   * @brief Union rect with another rect
+   * Calculate the union of two rectangles with float precision.
    *
-   * @param[in] rect FRect to union with
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns Rect representing union of two rectangles
    *
-   * @returns Reference to self
-   *
+   * @since This function is available since SDL 3.2.0.
    */
-  constexpr FRect& Union(const FRect& rect)
+  inline std::optional<FRect> GetUnion(const FRect& other) const
   {
-    float nx = std::min(x, rect.x);
-    float ny = std::min(y, rect.y);
-    float nx2 = std::max(GetX2(), rect.GetX2());
-    float ny2 = std::max(GetY2(), rect.GetY2());
-    x = nx;
-    y = ny;
-    SetX2(nx2);
-    SetY2(ny2);
-    return *this;
+    if (FRect result; SDL_GetRectUnionFloat(this, &other, &result))
+      return result;
+    return std::nullopt;
   }
 
   /**
@@ -1718,7 +1818,7 @@ struct FRect : SDL_FRect
    * @returns Extended rect
    *
    */
-  constexpr FRect GetExtension(float amount) const
+  constexpr FRect GetExtension(unsigned int amount) const
   {
     FRect r = *this;
     r.Extend(amount);
@@ -1771,25 +1871,6 @@ struct FRect : SDL_FRect
     w += hAmount * 2;
     h += vAmount * 2;
     return *this;
-  }
-
-  /**
-   * @brief Calculate intersection with another rect
-   *
-   * @param[in] rect FRect to intersect with
-   *
-   * @returns FRect representing intersection area or NullOpt if there was no
-   * intersection
-   *
-   */
-  constexpr std::optional<FRect> GetIntersection(const FRect& rect) const
-  {
-    if (!Intersects(rect)) return std::nullopt;
-
-    return FRect::FromCorners(std::max(x, rect.x),
-                              std::max(y, rect.y),
-                              std::min(GetX2(), rect.GetX2()),
-                              std::min(GetY2(), rect.GetY2()));
   }
 
   /**
@@ -1847,13 +1928,6 @@ struct FRect : SDL_FRect
     y -= offset.y;
     return *this;
   }
-
-  // Auto comparison operator
-  auto operator<=>(const FRect&) const = default;
-
-  constexpr bool IsEmpty() const { return w <= 0 || h <= 0; }
-
-  constexpr operator bool() const { return IsEmpty(); }
 };
 
 #pragma region impl
