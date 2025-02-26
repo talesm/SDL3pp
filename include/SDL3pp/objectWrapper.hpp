@@ -53,6 +53,15 @@ public:
   pointer operator->() { return Get(); }
   const T& operator*() const { return *Get(); }
   T& operator*() { return *Get(); }
+
+  pointer Release()
+  {
+    pointer p;
+    std::swap(value, p);
+    return p;
+  }
+  void Reset(pointer other = nullptr) { return std::swap(value, other); }
+  void Swap(ObjectRef& other) { return std::swap(value, other.value); }
 };
 
 template<class T>
@@ -108,6 +117,12 @@ struct FancyPointer
 };
 
 } // namespace SDL
+
+template<class T>
+void std::swap(SDL::ObjectRef<T>& left, SDL::ObjectRef<T>& right)
+{
+  left.Swap(right);
+}
 
 template<class T>
 void std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
