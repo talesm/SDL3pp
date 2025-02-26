@@ -437,11 +437,16 @@
           "type": "void",
           "parameters": [
             {
-              "name": "env",
-              "type": "EnvironmentRef"
+              "type": "T &&"
             }
           ],
-          "sourceName": "SDL_DestroyEnvironment"
+          "sourceName": "SDL_DestroyEnvironment",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Environment *>",
+              "name": "T"
+            }
+          ]
         },
         "getenv": {
           "doc": "Get the value of a variable in the environment.\n\nThis function uses SDL's cached copy of the environment and is thread-safe.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2742,11 +2747,16 @@
           "type": "int",
           "parameters": [
             {
-              "name": "cd",
-              "type": "IConvRef"
+              "type": "T &&"
             }
           ],
-          "sourceName": "SDL_iconv_close"
+          "sourceName": "SDL_iconv_close",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_iconv_t>",
+              "name": "T"
+            }
+          ]
         },
         "iconv_string": {
           "doc": "Helper function to convert a string's encoding in one call.\n\nThis function converts a buffer or string between encodings in one pass.\n\nThe string does not need to be NULL-terminated; this function operates on\nthe number of bytes specified in `inbytesleft` whether there is a NULL\ncharacter anywhere in the buffer.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param tocode the character encoding of the output string. Examples are\n              \"UTF-8\", \"UCS-4\", etc.\n@param fromcode the character encoding of data in `inbuf`.\n@param inbuf the string to convert to a different encoding.\n@param inbytesleft the size of the input string _in bytes_.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv",
@@ -3700,11 +3710,16 @@
           "type": "void",
           "parameters": [
             {
-              "name": "palette",
-              "type": "PaletteRef"
+              "type": "T &&"
             }
           ],
-          "sourceName": "SDL_DestroyPalette"
+          "sourceName": "SDL_DestroyPalette",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Palette *>",
+              "name": "T"
+            }
+          ]
         },
         "MapRGB": {
           "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGB\n@sa SDL_MapRGBA\n@sa SDL_MapSurfaceRGB",
@@ -3918,7 +3933,7 @@
         "PropertiesRef": {
           "name": "PropertiesRef",
           "kind": "alias",
-          "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, SDL_PropertiesID>>",
+          "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>",
           "doc": ""
         },
         "PropertiesDeleter": {
@@ -4360,11 +4375,16 @@
           "type": "void",
           "parameters": [
             {
-              "name": "props",
-              "type": "PropertiesRef"
+              "type": "T &&"
             }
           ],
-          "sourceName": "SDL_DestroyProperties"
+          "sourceName": "SDL_DestroyProperties",
+          "template": [
+            {
+              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>",
+              "name": "T"
+            }
+          ]
         }
       }
     },

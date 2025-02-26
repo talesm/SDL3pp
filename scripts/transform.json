@@ -181,6 +181,19 @@
             }
           }
         },
+        "SDL_DestroyEnvironment": {
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Environment *>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T &&"
+            }
+          ]
+        },
         "SDL_iconv_t": {
           "name": "IConvBase",
           "kind": "struct",
@@ -199,6 +212,19 @@
             "SDL_iconv_open": "ctor",
             "SDL_iconv": "function"
           }
+        },
+        "SDL_iconv_close": {
+          "template": [
+            {
+              "type": "ObjectBox<SDL_iconv_t>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T &&"
+            }
+          ]
         }
       }
     },
@@ -782,6 +808,19 @@
             },
             "SDL_SetPaletteColors": "function"
           }
+        },
+        "SDL_DestroyPalette": {
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Palette *>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T &&"
+            }
+          ]
         }
       }
     },
@@ -805,7 +844,7 @@
           {
             "name": "PropertiesRef",
             "kind": "alias",
-            "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, SDL_PropertiesID>>"
+            "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>"
           },
           {
             "name": "PropertiesDeleter",
@@ -1001,6 +1040,19 @@
         },
         "SDL_CreateProperties": {
           "type": "Properties"
+        },
+        "SDL_DestroyProperties": {
+          "template": [
+            {
+              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T &&"
+            }
+          ]
         }
       }
     },

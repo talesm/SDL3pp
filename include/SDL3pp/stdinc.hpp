@@ -22,7 +22,7 @@
  * either isn't, strictly speaking, part of any C runtime standards, like
  * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
  * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
- **/
+ */
 #ifndef SDL3PP_STDINC_HPP_
 #define SDL3PP_STDINC_HPP_
 
@@ -604,7 +604,7 @@ inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SDL_CreateEnvironment
- **/
+ */
 template<ObjectBox<SDL_Environment*> T>
 inline void DestroyEnvironment(T&& env)
 {
