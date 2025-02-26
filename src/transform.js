@@ -235,7 +235,7 @@ function validateEntries(targetEntries) {
  * @param {string}          typeName 
  * @returns {ApiEntry}
  */
-function makeRenameEntry(entry, name, typeName, context) {
+function makeRenameEntry(entry, name, typeName) {
   if (entry === "placeholder") {
     entry = {};
   } else if (entry === "ctor" || entry?.kind === "ctor") {
