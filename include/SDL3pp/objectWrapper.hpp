@@ -45,6 +45,7 @@ public:
   }
 
   constexpr pointer Get() const { return value; }
+  constexpr pointer get() const { return value; }
 
   constexpr operator bool() const { return bool(Get()); }
 
@@ -82,6 +83,7 @@ public:
   }
 
   pointer Get() const { return value.get(); }
+  pointer get() const { return value.get(); }
   operator bool() const { return bool(Get()); }
 
   const pointer operator->() const { return Get(); }
@@ -105,13 +107,10 @@ struct FancyPointer
 
   bool operator==(nullptr_t) const { return bool(*this); }
 
-  T Get() const { return value; }
-  T& Get() { return value; }
+  T operator*() const { return value; }
+  T& operator*() { return value; }
 
-  T operator*() const { return Get(); }
-  T& operator*() { return Get(); }
-
-  FancyPointer& operator->() { return *this; }
+  T* operator->() { return &value; }
 };
 
 } // namespace SDL
