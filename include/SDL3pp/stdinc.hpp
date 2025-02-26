@@ -483,7 +483,7 @@ struct EnvironmentBase : T
    **/
   inline const char* GetVariable(StringParam name)
   {
-    return SDL_GetEnvironmentVariable(T::Get(), name);
+    return SDL_GetEnvironmentVariable(T::get(), name);
   }
 
   /**
@@ -505,7 +505,7 @@ struct EnvironmentBase : T
    * @sa SDL_SetEnvironmentVariable
    * @sa SDL_UnsetEnvironmentVariable
    **/
-  inline char** GetVariables() { return SDL_GetEnvironmentVariables(T::Get()); }
+  inline char** GetVariables() { return SDL_GetEnvironmentVariables(T::get()); }
 
   /**
    * @brief Get the Variables count
@@ -543,7 +543,7 @@ struct EnvironmentBase : T
    **/
   inline bool SetVariable(StringParam name, StringParam value, bool overwrite)
   {
-    return SDL_SetEnvironmentVariable(T::Get(), name, value, overwrite);
+    return SDL_SetEnvironmentVariable(T::get(), name, value, overwrite);
   }
 
   /**
@@ -567,7 +567,7 @@ struct EnvironmentBase : T
    **/
   inline bool UnsetVariable(StringParam name)
   {
-    return SDL_UnsetEnvironmentVariable(T::Get(), name);
+    return SDL_UnsetEnvironmentVariable(T::get(), name);
   }
 };
 /**
@@ -607,7 +607,7 @@ inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
  **/
 inline void DestroyEnvironment(EnvironmentRef env)
 {
-  SDL_DestroyEnvironment(env.Get());
+  SDL_DestroyEnvironment(env.get());
 }
 
 /**
@@ -4477,7 +4477,7 @@ struct IConvBase : T
  * @sa SDL_iconv_open
  * @sa SDL_iconv_string
  **/
-inline int iconv_close(IConvRef cd) { return SDL_iconv_close(cd.Get()); }
+inline int iconv_close(IConvRef cd) { return SDL_iconv_close(cd.get()); }
 
 /**
  * Helper function to convert a string's encoding in one call.

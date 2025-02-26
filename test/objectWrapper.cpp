@@ -29,7 +29,7 @@ struct DummyConstBase : T
 {
   using T::T;
 
-  int GetContent() const { return T::Get()->content; }
+  int GetContent() const { return T::get()->content; }
 };
 
 template<class T>

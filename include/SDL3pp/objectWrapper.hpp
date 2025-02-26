@@ -26,7 +26,7 @@ public:
 
   template<ObjectBox<POINTER> BOX>
   ObjectRef(const BOX& box)
-    : value(box.Get())
+    : value(box.get())
   {
   }
 
@@ -35,15 +35,14 @@ public:
   {
   }
 
-  constexpr pointer Get() const { return value; }
   constexpr pointer get() const { return value; }
 
-  constexpr operator bool() const { return bool(Get()); }
+  constexpr operator bool() const { return bool(get()); }
 
-  const pointer operator->() const { return Get(); }
-  pointer operator->() { return Get(); }
-  const T& operator*() const { return *Get(); }
-  T& operator*() { return *Get(); }
+  const pointer operator->() const { return get(); }
+  pointer operator->() { return get(); }
+  const T& operator*() const { return *get(); }
+  T& operator*() { return *get(); }
 
   pointer release()
   {
@@ -73,12 +72,11 @@ public:
   {
   }
 
-  pointer Get() const { return value.get(); }
   pointer get() const { return value.get(); }
-  operator bool() const { return bool(Get()); }
+  operator bool() const { return bool(get()); }
 
-  const pointer operator->() const { return Get(); }
-  pointer operator->() { return Get(); }
+  const pointer operator->() const { return get(); }
+  pointer operator->() { return get(); }
   const T& operator*() const { return *value; }
   T& operator*() { return *value; }
 

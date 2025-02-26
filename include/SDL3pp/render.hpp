@@ -137,7 +137,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(WindowRef window)
-    : T<SDL_Renderer>(SDL_CreateRenderer(window.Get(), nullptr))
+    : T<SDL_Renderer>(SDL_CreateRenderer(window.get(), nullptr))
   {
   }
 
@@ -166,7 +166,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(WindowRef window, StringParam name)
-    : T<SDL_Renderer>(SDL_CreateRenderer(window.Get(), name))
+    : T<SDL_Renderer>(SDL_CreateRenderer(window.get(), name))
   {
   }
 
@@ -216,7 +216,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(PropertiesRef props)
-    : T<SDL_Renderer>(SDL_CreateRendererWithProperties(props.Get()))
+    : T<SDL_Renderer>(SDL_CreateRendererWithProperties(props.get()))
   {
   }
 
@@ -238,7 +238,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(SurfaceRef surface)
-    : T<SDL_Renderer>(SDL_CreateSoftwareRenderer(surface.Get()))
+    : T<SDL_Renderer>(SDL_CreateSoftwareRenderer(surface.get()))
   {
   }
 
@@ -247,7 +247,7 @@ struct RendererBase : T<SDL_Renderer>
 
 inline RendererRef GetRenderer(WindowRef window)
 {
-  return {SDL_GetRenderer(window.Get())};
+  return {SDL_GetRenderer(window.get())};
 }
 // TODO Renderer
 // TODO Texture

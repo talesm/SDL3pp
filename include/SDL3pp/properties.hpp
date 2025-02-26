@@ -111,7 +111,7 @@ struct PropertiesBase : T
    */
   bool CopyPropertiesTo(PropertiesRef dst) const
   {
-    return SDL_CopyProperties(T::get(), dst.Get());
+    return SDL_CopyProperties(T::get(), dst.get());
   }
 
   /**
@@ -568,7 +568,7 @@ inline Properties CreateProperties()
  */
 inline void DestroyProperties(PropertiesRef props)
 {
-  SDL_DestroyProperties(props.Get());
+  SDL_DestroyProperties(props.get());
 }
 
 #pragma region impl

@@ -220,7 +220,7 @@ struct SurfaceBase : T
    */
   bool SetPalette(PaletteRef palette)
   {
-    return SDL_SetSurfacePalette(T::get(), palette.Get());
+    return SDL_SetSurfacePalette(T::get(), palette.get());
   }
 
   // SDL_AddSurfaceAlternateImage
@@ -957,7 +957,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  */
 inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
 {
-  return SDL_SaveBMP_IO(const_cast<SDL_Surface*>(surface.Get()), dst, closeio);
+  return SDL_SaveBMP_IO(const_cast<SDL_Surface*>(surface.get()), dst, closeio);
 }
 
 /**
@@ -976,7 +976,7 @@ inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
  */
 inline bool SaveBMP(SurfaceRef surface, StringParam file)
 {
-  return SDL_SaveBMP(const_cast<SDL_Surface*>(surface.Get()), file);
+  return SDL_SaveBMP(const_cast<SDL_Surface*>(surface.get()), file);
 }
 
 // TODO SDL_ConvertPixels
@@ -1055,7 +1055,7 @@ inline bool BlitSurface(SurfaceRef src,
                         const SDL_Rect& dstRect = {0, 0})
 {
   return SDL_BlitSurface(
-    src.Get(), srcRect ? &*srcRect : nullptr, dst.Get(), &dstRect);
+    src.get(), srcRect ? &*srcRect : nullptr, dst.get(), &dstRect);
 }
 inline bool BlitSurface(SurfaceRef src,
                         SurfaceRef dst,
@@ -1089,7 +1089,7 @@ inline bool BlitSurfaceUnchecked(SurfaceRef src,
                                  SurfaceRef dst,
                                  const SDL_Rect& dstRect = {0, 0})
 {
-  return SDL_BlitSurfaceUnchecked(src.Get(), &srcRect, dst.Get(), &dstRect);
+  return SDL_BlitSurfaceUnchecked(src.get(), &srcRect, dst.get(), &dstRect);
 }
 
 /**
@@ -1117,9 +1117,9 @@ inline bool BlitSurfaceScaled(SurfaceRef src,
                               std::optional<Rect> dstRect,
                               ScaleMode scaleMode)
 {
-  return SDL_BlitSurfaceScaled(src.Get(),
+  return SDL_BlitSurfaceScaled(src.get(),
                                srcRect ? &*srcRect : nullptr,
-                               dst.Get(),
+                               dst.get(),
                                dstRect ? &*dstRect : nullptr,
                                scaleMode);
 }
@@ -1151,7 +1151,7 @@ inline bool BlitSurfaceUncheckedScaled(SurfaceRef src,
                                        ScaleMode scaleMode)
 {
   return SDL_BlitSurfaceUncheckedScaled(
-    src.Get(), &srcRect, dst.Get(), &dstRect, scaleMode);
+    src.get(), &srcRect, dst.get(), &dstRect, scaleMode);
 }
 
 /**
@@ -1180,9 +1180,9 @@ inline bool BlitSurfaceTiled(SurfaceRef src,
                              SurfaceRef dst,
                              std::optional<Rect> dstRect)
 {
-  return SDL_BlitSurfaceTiled(src.Get(),
+  return SDL_BlitSurfaceTiled(src.get(),
                               srcRect ? &*srcRect : nullptr,
-                              dst.Get(),
+                              dst.get(),
                               dstRect ? &*dstRect : nullptr);
 }
 
@@ -1218,11 +1218,11 @@ inline bool BlitSurfaceTiledWithScale(SurfaceRef src,
                                       SurfaceRef dst,
                                       std::optional<Rect> dstRect)
 {
-  return SDL_BlitSurfaceTiledWithScale(src.Get(),
+  return SDL_BlitSurfaceTiledWithScale(src.get(),
                                        srcRect ? &*srcRect : nullptr,
                                        scale,
                                        scaleMode,
-                                       dst.Get(),
+                                       dst.get(),
                                        dstRect ? &*dstRect : nullptr);
 }
 
@@ -1269,7 +1269,7 @@ inline bool BlitSurface9Grid(SurfaceRef src,
                              SurfaceRef dst,
                              std::optional<Rect> dstRect)
 {
-  return SDL_BlitSurface9Grid(src.Get(),
+  return SDL_BlitSurface9Grid(src.get(),
                               srcRect ? &*srcRect : nullptr,
                               leftWidth,
                               rightWidth,
@@ -1277,7 +1277,7 @@ inline bool BlitSurface9Grid(SurfaceRef src,
                               bottomHeight,
                               scale,
                               scaleMode,
-                              dst.Get(),
+                              dst.get(),
                               dstRect ? &*dstRect : nullptr);
 }
 inline bool BlitSurface9Grid(SurfaceRef src,

@@ -602,7 +602,7 @@ struct WindowBase : T
    * @sa Properties
    */
   WindowBase(PropertiesRef props)
-    : T(SDL_CreateWindowWithProperties(props.Get()))
+    : T(SDL_CreateWindowWithProperties(props.get()))
   {
   }
 
@@ -910,7 +910,7 @@ struct WindowBase : T
 
 inline Display Display::GetForWindow(WindowRef window)
 {
-  return {SDL_GetDisplayForWindow(window.Get())};
+  return {SDL_GetDisplayForWindow(window.get())};
 }
 
 /**

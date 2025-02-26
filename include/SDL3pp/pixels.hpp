@@ -1148,7 +1148,7 @@ struct PaletteBase : T
  */
 inline void DestroyPalette(PaletteRef palette)
 {
-  SDL_DestroyPalette(palette.Get());
+  SDL_DestroyPalette(palette.get());
 }
 
 /**
@@ -1193,7 +1193,7 @@ inline Uint32 MapRGB(const PixelFormatDetails* format,
                      Uint8 g,
                      Uint8 b)
 {
-  return SDL_MapRGB(format, palette.Get(), r, g, b);
+  return SDL_MapRGB(format, palette.get(), r, g, b);
 }
 
 /**
@@ -1240,7 +1240,7 @@ inline Uint32 MapRGBA(const PixelFormatDetails* format,
                       Uint8 b,
                       Uint8 a)
 {
-  return SDL_MapRGBA(format, palette.Get(), r, g, b, a);
+  return SDL_MapRGBA(format, palette.get(), r, g, b, a);
 }
 
 /**
@@ -1276,7 +1276,7 @@ inline void GetRGB(Uint32 pixel,
                    Uint8* g,
                    Uint8* b)
 {
-  SDL_GetRGB(pixel, format, palette.Get(), r, g, b);
+  SDL_GetRGB(pixel, format, palette.get(), r, g, b);
 }
 
 /**
@@ -1317,7 +1317,7 @@ inline void GetRGBA(Uint32 pixel,
                     Uint8* b,
                     Uint8* a)
 {
-  SDL_GetRGBA(pixel, format, palette.Get(), r, g, b, a);
+  SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
 }
 
 #pragma region impl
@@ -1330,7 +1330,7 @@ inline void ObjectDeleter<SDL_Palette>::operator()(SDL_Palette* palette) const
 inline Uint32 Color::Map(const PixelFormatDetails* format,
                          PaletteRef palette = nullptr) const
 {
-  return MapRGBA(format, palette.Get(), r, g, b, a);
+  return MapRGBA(format, palette.get(), r, g, b, a);
 }
 
 Color Get(Uint32 pixel,
