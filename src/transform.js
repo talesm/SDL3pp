@@ -1,5 +1,5 @@
 const { insertEntry } = require("./parse");
-const { system } = require("./utils");
+const { system, combineObject } = require("./utils");
 
 /**
  * @typedef {object} TransformConfig
@@ -91,7 +91,7 @@ function transformEntries(sourceEntries, context, transform) {
         const targetEntry = transformEntry(e, context);
         if (targetDelta) {
           if (!targetDelta.name) targetDelta.name = targetName;
-          Object.assign(targetEntry, targetDelta);
+          combineObject(targetEntry, targetDelta);
         } else targetEntry.name = targetName;
         return targetEntry;
       }));
@@ -101,7 +101,7 @@ function transformEntries(sourceEntries, context, transform) {
       if (targetDelta) {
         if (targetDelta.name) targetName = targetDelta.name;
         else targetDelta.name = targetName;
-        Object.assign(targetEntry, targetDelta);
+        combineObject(targetEntry, targetDelta);
       } else targetEntry.name = targetName;
       if (targetName === targetEntry.sourceName) targetEntry.sourceName = "::" + targetEntry.sourceName;
       if (targetEntry.kind == 'alias' || targetEntry.kind == 'struct') {
@@ -176,9 +176,9 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
       insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
     } else {
       if (Array.isArray(currEntry)) {
-        currEntry.forEach(e => Object.assign(e, nameChange));
+        currEntry.forEach(e => combineObject(e, nameChange));
       } else {
-        Object.assign(currEntry, nameChange);
+        combineObject(currEntry, nameChange);
       }
       insertEntry(entries, currEntry);
       delete targetEntries[currName];
