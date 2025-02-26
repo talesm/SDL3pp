@@ -7,8 +7,9 @@
 namespace SDL {
 
 template<class T, class POINTER>
-concept ObjectBox = requires(const T a) {
+concept ObjectBox = requires(const T a, T b) {
   { a.get() } -> std::convertible_to<POINTER>;
+  { b.release() } -> std::convertible_to<POINTER>;
 };
 
 template<class T, class POINTER = T*>

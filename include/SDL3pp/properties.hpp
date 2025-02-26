@@ -44,7 +44,7 @@ struct PropertiesBase;
  * @brief Handle to a non owned properties
  */
 using PropertiesRef =
-  PropertiesBase<ObjectRef<SDL_PropertiesID, SDL_PropertiesID>>;
+  PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
 
 struct PropertiesDeleter
 {
@@ -529,7 +529,10 @@ struct PropertiesBase : T
  * @returns a valid property ID on success or 0 on failure; call
  *          GetError() for more information.
  */
-inline PropertiesRef GetGlobalProperties() { return SDL_GetGlobalProperties(); }
+inline PropertiesRef GetGlobalProperties()
+{
+  return FancyPointer{SDL_GetGlobalProperties()};
+}
 
 /**
  * Create a group of properties.
@@ -566,9 +569,10 @@ inline Properties CreateProperties()
  *
  * @sa SDL_CreateProperties
  */
-inline void DestroyProperties(PropertiesRef props)
+template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
+inline void DestroyProperties(T&& props)
 {
-  SDL_DestroyProperties(props.get());
+  SDL_DestroyProperties(props.release());
 }
 
 #pragma region impl
@@ -576,7 +580,7 @@ inline void DestroyProperties(PropertiesRef props)
 inline void PropertiesDeleter::operator()(
   PropertiesDeleter::pointer props) const
 {
-  DestroyProperties(*props);
+  DestroyProperties(PropertiesRef(props));
 }
 
 #pragma endregion impl

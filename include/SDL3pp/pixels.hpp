@@ -1146,9 +1146,10 @@ struct PaletteBase : T
  *
  * @sa SDL_CreatePalette
  */
-inline void DestroyPalette(PaletteRef palette)
+template<ObjectBox<SDL_Palette*> T>
+inline void DestroyPalette(T&& palette)
 {
-  SDL_DestroyPalette(palette.get());
+  SDL_DestroyPalette(palette.release());
 }
 
 /**
@@ -1324,7 +1325,7 @@ inline void GetRGBA(Uint32 pixel,
 
 inline void ObjectDeleter<SDL_Palette>::operator()(SDL_Palette* palette) const
 {
-  DestroyPalette(palette);
+  DestroyPalette(PaletteRef(palette));
 }
 
 inline Uint32 Color::Map(const PixelFormatDetails* format,

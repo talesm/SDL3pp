@@ -605,9 +605,10 @@ inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
  *
  * @sa SDL_CreateEnvironment
  **/
-inline void DestroyEnvironment(EnvironmentRef env)
+template<ObjectBox<SDL_Environment*> T>
+inline void DestroyEnvironment(T&& env)
 {
-  SDL_DestroyEnvironment(env.get());
+  SDL_DestroyEnvironment(env.release());
 }
 
 /**
@@ -4461,7 +4462,7 @@ struct IConvBase : T
                       char** outbuf,
                       size_t* outbytesleft)
   {
-    return SDL_iconv(T::Get(), inbuf, inbytesleft, outbuf, outbytesleft);
+    return SDL_iconv(T::get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
 };
 
@@ -4477,7 +4478,11 @@ struct IConvBase : T
  * @sa SDL_iconv_open
  * @sa SDL_iconv_string
  **/
-inline int iconv_close(IConvRef cd) { return SDL_iconv_close(cd.get()); }
+template<ObjectBox<SDL_iconv_t> T>
+inline int iconv_close(T&& cd)
+{
+  return SDL_iconv_close(cd.release());
+}
 
 /**
  * Helper function to convert a string's encoding in one call.
@@ -4578,12 +4583,12 @@ using FunctionPointer = SDL_FunctionPointer;
 inline void ObjectDeleter<SDL_Environment>::operator()(
   SDL_Environment* environment) const
 {
-  DestroyEnvironment(environment);
+  DestroyEnvironment(EnvironmentRef(environment));
 }
 
 inline void ObjectDeleter<SDL_iconv_data_t>::operator()(SDL_iconv_t iconv) const
 {
-  iconv_close(iconv);
+  iconv_close(IConvRef(iconv));
 }
 
 #pragma endregion impl
