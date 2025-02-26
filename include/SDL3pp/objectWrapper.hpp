@@ -47,21 +47,20 @@ public:
   constexpr pointer Get() const { return value; }
 
   constexpr operator bool() const { return bool(Get()); }
-  constexpr bool Valid() const { return bool(*this); }
 
   const pointer operator->() const { return Get(); }
   pointer operator->() { return Get(); }
   const T& operator*() const { return *Get(); }
   T& operator*() { return *Get(); }
 
-  pointer Release()
+  pointer release()
   {
     pointer p;
     std::swap(value, p);
     return p;
   }
-  void Reset(pointer other = nullptr) { return std::swap(value, other); }
-  void Swap(ObjectRef& other) { return std::swap(value, other.value); }
+  void reset(pointer other = nullptr) { return std::swap(value, other); }
+  void swap(ObjectRef& other) { return std::swap(value, other.value); }
 };
 
 template<class T>
@@ -84,16 +83,15 @@ public:
 
   pointer Get() const { return value.get(); }
   operator bool() const { return bool(Get()); }
-  bool Valid() const { return bool(*this); }
 
   const pointer operator->() const { return Get(); }
   pointer operator->() { return Get(); }
   const T& operator*() const { return *value; }
   T& operator*() { return *value; }
 
-  pointer Release() { return value.release(); }
-  void Reset(pointer other = nullptr) { return value.reset(other); }
-  void Swap(ObjectUnique& other) { return std::swap(value, other.value); }
+  pointer release() { return value.release(); }
+  void reset(pointer other = nullptr) { return value.reset(other); }
+  void swap(ObjectUnique& other) { return std::swap(value, other.value); }
 };
 
 template<class T, T defaultValue = 0>
@@ -121,13 +119,13 @@ struct FancyPointer
 template<class T>
 void std::swap(SDL::ObjectRef<T>& left, SDL::ObjectRef<T>& right)
 {
-  left.Swap(right);
+  left.swap(right);
 }
 
 template<class T>
 void std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
 {
-  left.Swap(right);
+  left.swap(right);
 }
 
 #endif /* SDL3PP_OBJECT_WRAPPER_HPP_ */

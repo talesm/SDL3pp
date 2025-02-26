@@ -31,7 +31,7 @@ struct CallbackWrapper<Result(Args...)>
   }
   static Result CallOnce(void* handle, Args... args)
   {
-    auto f = Release(handle);
+    auto f = release(handle);
     return f(args...);
   }
 
@@ -42,7 +42,7 @@ struct CallbackWrapper<Result(Args...)>
     return Values().at((size_t)(handle));
   }
 
-  static FunctionType Release(void* handle)
+  static FunctionType release(void* handle)
   {
     auto& values = Values();
     auto value = std::move(values.at((size_t)(handle)));

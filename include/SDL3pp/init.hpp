@@ -66,20 +66,20 @@ public:
   static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
 
   /**
-   * @brief Release locking such as Reset() does, but never calls SDL_Quit() or
+   * @brief release locking such as reset() does, but never calls SDL_Quit() or
    * SDL_QuitSubSystem()
    * @return false if there are still other locks, true if this was last one
    *
    * When this returns true it is safe to call SDL_Quit()
    */
-  bool Release();
+  bool release();
 
   /**
-   * @brief Reset the value of this instance, acts like it was destroyed and
+   * @brief reset the value of this instance, acts like it was destroyed and
    * then newly instantiated
    * @return false if there are still other locks, true if this was last one
    */
-  bool Reset();
+  bool reset();
 
   /// @brief returns true if active and has no errors
   operator bool() const { return active; }
@@ -166,13 +166,13 @@ inline Init& Init::operator=(Init rhs)
   return *this;
 }
 
-inline bool Init::Release()
+inline bool Init::release()
 {
   flags = 0;
   return refCount(-1, false) == 0;
 }
 
-inline bool Init::Reset() { return refCount(-1) == 0; }
+inline bool Init::reset() { return refCount(-1) == 0; }
 
 inline bool Init::IsQuitAtZero()
 {

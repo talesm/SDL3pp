@@ -918,7 +918,7 @@ struct SurfaceBase : T
  * @brief Load a BMP image from a seekable SDL data stream.
  *
  * The new surface is automatically freed when out of scope
- * if you want to manually manage its lifetime call Surface.Release()
+ * if you want to manually manage its lifetime call Surface.release()
  * to get its raw pointer (and optionally assign it to SurfaceRef).
  *
  * @param src the data stream for the surface.
@@ -936,7 +936,7 @@ inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
  * @brief  Load a BMP image from a file.
  *
  * The new surface is automatically freed when out of scope
- * if you want to manually manage its lifetime call Surface.Release()
+ * if you want to manually manage its lifetime call Surface.release()
  * to get its raw pointer (and optionally assign it to SurfaceRef).
  *
  * @param file the BMP file to load.
