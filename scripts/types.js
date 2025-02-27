@@ -30,15 +30,15 @@
  * @typedef {object} ApiEntry
  * @property {string}         name
  * @property {ApiEntryKind}   kind
+ * @property {string=}        doc
  * @property {string=}        type
  * @property {ApiParameters=} parameters
  * @property {ApiParameters=} template
- * @property {ApiEntries}     entries
+ * @property {ApiEntries=}    entries
  * @property {string=}        sourceName
  * @property {boolean=}       constexpr
  * @property {boolean=}       immutable
  * @property {boolean=}       static
- * @property {string}         doc
  * @property {number=}        begin
  * @property {number=}        decl
  * @property {number=}        end
@@ -61,18 +61,19 @@
 
 /**
  * @typedef {object} ApiTransform
- * @prop {FileTransformMap}      files
- * @prop {(string|string[])=}    prefixes
- * @prop {ReplacementRule[]=}    renameRules
- * @prop {ReplacementRule[]=}    docRules
- * @prop {StringMap=}            typeMap
- * @prop {StringMap=}            paramTypeMap
- * @prop {StringMap=}            returnTypeMap
+ * @prop {FileTransformMap=}  files
+ * @prop {(string|string[])=} prefixes
+ * @prop {ReplacementRule[]=} renameRules
+ * @prop {ReplacementRule[]=} docRules
+ * @prop {StringMap=}         typeMap
+ * @prop {StringMap=}         paramTypeMap
+ * @prop {StringMap=}         returnTypeMap
  */
 
 
 /**
  * @typedef {object} FileTransform
+ * @satisfies {ApiFile}
  * @prop {string[]=}   includeDefs
  * @prop {string[]=}   ignoreEntries
  * @prop {ApiEntries=} transform

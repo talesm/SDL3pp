@@ -34,7 +34,7 @@ function parseApi(config) {
  * 
  * @param {string} name
  * @param {string[]} content 
- * @param {ParseContentConfig} config 
+ * @param {ParseContentConfig=} config 
  */
 function parseContent(name, content, config) {
   const tokens = tokenize(content);
@@ -66,12 +66,17 @@ function parseContent(name, content, config) {
  * @param {ApiEntry|ApiEntry[]|string} entry 
  * @param {string}                     defaultName
  */
-function insertEntry(entries, entry, defaultName) {
+function insertEntry(entries, entry, defaultName = "") {
   if (Array.isArray(entry)) {
     entry.forEach(e => insertEntry(entries, e, defaultName));
     return entries;
   }
-  if (typeof entry === "string") entry = { kind: entry, name: defaultName };
+  if (typeof entry === "string") {
+    entry = /** @type {ApiEntry} */({
+      kind: entry,
+      name: defaultName
+    });
+  }
   else if (!entry.name) entry.name = defaultName;
   fixEntry(entry);
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
@@ -207,7 +212,7 @@ class ContentParser {
     const entry = {
       doc: '',
       name: token.value,
-      kind: token.kind,
+      kind: /** @type {ApiEntryKind}*/(token.kind),
     };
     switch (token.kind) {
       case "alias":

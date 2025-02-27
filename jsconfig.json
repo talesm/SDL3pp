@@ -1,11 +1,11 @@
 {
   "include": [
-    "src/*.js",
-    "tests/*.js",
+    "scripts/*.js"
   ],
   "compilerOptions": {
     "lib": [
       "ES2024"
     ],
+    "checkJs": true
   }
 }

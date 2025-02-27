@@ -184,15 +184,15 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
       });
     }
     if (targetEntry.entries) {
-      const sourceBegin = getBegin(sourceEntry.entries);
-      const sourceEnd = getEnd(sourceEntry.entries);
+      const sourceBegin = getBegin(Object.values(sourceEntry.entries));
+      const sourceEnd = getEnd(Object.values(sourceEntry.entries));
       changes.push(...checkChanges(sourceEntry.entries, targetEntry.entries, sourceBegin, sourceEnd, prefix + "  "));
     }
   }
   return changes;
 }
 
-/** @param {ApiEntry|ApiEntry[]} entry  */
+/** @param {ApiEntry|ApiEntry[]|(ApiEntry|ApiEntry[])[]} entry  */
 function logEntryDeletion(entry) {
   if (Array.isArray(entry)) {
     entry.forEach(logEntryDeletion);
@@ -201,7 +201,7 @@ function logEntryDeletion(entry) {
   }
 }
 
-/** @param {ApiEntry|ApiEntry[]} entry  */
+/** @param {ApiEntry|ApiEntry[]|(ApiEntry|ApiEntry[])[]} entry  */
 function logEntryAddition(entry, begin) {
   if (Array.isArray(entry)) {
     entry.forEach(e => logEntryAddition(e, begin));
@@ -212,26 +212,20 @@ function logEntryAddition(entry, begin) {
 
 /**
  * 
- * @param {ApiEntry|ApiEntry[]} entry 
+ * @param {ApiEntry|ApiEntry[]|(ApiEntry|ApiEntry[])[]} entry 
  */
 function getBegin(entry) {
-  if (!Array.isArray(entry)) {
-    if (entry.kind) return entry.begin;
-    return getBegin(Object.values(entry));
-  }
+  if (!Array.isArray(entry)) return entry.begin;
   if (!entry.length) return null;
   return getBegin(entry[0]);
 }
 
 /**
  * 
- * @param {ApiEntry|ApiEntry[]} entry 
+ * @param {ApiEntry|ApiEntry[]|(ApiEntry|ApiEntry[])[]} entry 
  */
 function getEnd(entry) {
-  if (!Array.isArray(entry)) {
-    if (entry.kind) return entry.end;
-    return getEnd(Object.values(entry));
-  }
+  if (!Array.isArray(entry)) return entry.end;
   if (!entry.length) return null;
   return getEnd(entry[entry.length - 1]);
 }
@@ -322,12 +316,12 @@ function generateEntry(entry, prefix) {
       return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
     case "function":
       var staticStr = entry.static ? "static " : "";
-      var specifier = entry.constexpr ? "constexpr" : "inline";
+      var specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
       var constStr = entry.immutable ? " const" : "";
       const parameters = generateParameters(entry.parameters);
       const body = !entry.sourceName ? placeholder
         : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
-      return `${doc}${prefix}${staticStr}${specifier} ${entry.type} ${entry.name}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+      return `${doc}${prefix}${staticStr}${specifier}${entry.type} ${entry.name}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
     case "struct":
       return doc + generateStruct(entry, prefix);
     case "var":
@@ -343,7 +337,7 @@ function generateEntry(entry, prefix) {
 /**
  * 
  * @param {string} name 
- * @param {string|{type: string, name: string}} parameters 
+ * @param {ApiParameters} parameters 
  */
 function generateCall(name, ...parameters) {
   const paramStr = parameters
