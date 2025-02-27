@@ -241,6 +241,8 @@ function makeRenameEntry(entry, name, typeName) {
     newEntry = { kind: "function", name: typeName, type: "", static: false };
   } else if (typeof entry !== "object") {
     newEntry = { kind: /** @type {ApiEntryKind} */(entry) };
+  } else {
+    newEntry = entry;
   }
   return /** @type {ApiEntry} */ ({ ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) });
 }
