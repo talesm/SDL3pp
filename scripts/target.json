@@ -3996,6 +3996,15 @@
               "name": "T::T",
               "doc": ""
             },
+            "PropertiesBase": {
+              "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyProperties",
+              "name": "PropertiesBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "sourceName": "SDL_CreateProperties",
+              "static": false
+            },
             "CopyPropertiesTo": {
               "doc": "Copy a group of properties.\n\nCopy all the properties from one group of properties to another, with the\nexception of properties requiring cleanup (set using\nSDL_SetPointerPropertyWithCleanup()), which will not be copied. Any\nproperty that already exists on `dst` will be overwritten.\n\n@param src the properties to copy.\n@param dst the destination properties.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "CopyPropertiesTo",
@@ -4362,14 +4371,6 @@
           "type": "PropertiesRef",
           "parameters": [],
           "sourceName": "SDL_GetGlobalProperties"
-        },
-        "CreateProperties": {
-          "doc": "Create a group of properties.\n\nAll properties are automatically destroyed when SDL_Quit() is called.\n\n@returns an ID for a new group of properties, or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyProperties",
-          "name": "CreateProperties",
-          "kind": "function",
-          "type": "Properties",
-          "parameters": [],
-          "sourceName": "SDL_CreateProperties"
         },
         "DestroyProperties": {
           "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateProperties",

@@ -173,7 +173,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     const currName = transform.transform[key]?.name ?? nameCandidate;
     const currEntry = targetEntries[currName];
     if (!currEntry) {
-      insertEntry(entries, { name: nameChange.name });
+      insertEntry(entries, { name: nameChange.name, kind: "def" });
     } else {
       if (Array.isArray(currEntry)) {
         currEntry.forEach(e => combineObject(e, nameChange));

@@ -31,6 +31,7 @@
 
 #include <SDL3/SDL_properties.h>
 #include "callbackWrapper.hpp"
+#include "error.hpp"
 #include "objectWrapper.hpp"
 #include "stringParam.hpp"
 
@@ -59,8 +60,9 @@ using Properties =
   PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
 
 /**
- * @brief SDL property type
+ * SDL property type
  *
+ * @since This enum is available since SDL 3.2.0.
  */
 using PropertyType = SDL_PropertyType;
 
@@ -94,6 +96,25 @@ template<class T>
 struct PropertiesBase : T
 {
   using T::T;
+
+  /**
+   * Create a group of properties.
+   *
+   * All properties are automatically destroyed when SDL_Quit() is called.
+   *
+   * @returns an ID for a new group of properties, or 0 on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_DestroyProperties
+   */
+  PropertiesBase()
+    : T(FancyPointer{SDL_CreateProperties()})
+  {
+  }
 
   /**
    * @brief Copy a group of properties.
@@ -532,25 +553,6 @@ struct PropertiesBase : T
 inline PropertiesRef GetGlobalProperties()
 {
   return FancyPointer{SDL_GetGlobalProperties()};
-}
-
-/**
- * Create a group of properties.
- *
- * All properties are automatically destroyed when SDL_Quit() is called.
- *
- * @returns an ID for a new group of properties, or 0 on failure; call
- *          SDL_GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_DestroyProperties
- */
-inline Properties CreateProperties()
-{
-  return Properties(FancyPointer{SDL_CreateProperties()});
 }
 
 /**

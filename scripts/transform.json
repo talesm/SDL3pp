@@ -948,6 +948,7 @@
             "T::T": {
               "kind": "alias"
             },
+            "SDL_CreateProperties": "ctor",
             "SDL_CopyProperties": {
               "kind": "function",
               "name": "CopyPropertiesTo"

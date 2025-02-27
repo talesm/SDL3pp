@@ -66,10 +66,13 @@ class ObjectUnique
 public:
   using pointer = std::unique_ptr<T, DELETER>::pointer;
 
-  constexpr ObjectUnique() = default;
-
   explicit ObjectUnique(pointer value)
     : value(value)
+  {
+  }
+
+  constexpr ObjectUnique(std::nullptr_t)
+    : value{}
   {
   }
 
