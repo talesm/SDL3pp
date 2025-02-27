@@ -260,7 +260,7 @@ function makeNaturalName(name, typeName) {
     prefix = m[1];
     name = name.slice(3);
   }
-  if (/Float$/i.test(name)) name = name.slice(0, name.length - 5);
+  if (/Float$/.test(name)) name = name.slice(0, name.length - 5);
   if (name.startsWith(typeName)) return prefix + name.slice(typeName.length);
   if (typeName.startsWith("F") && name.startsWith(typeName.slice(1))) return prefix + name.slice(typeName.length - 1);
   return prefix + name;
