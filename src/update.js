@@ -316,12 +316,12 @@ function generateEntry(entry, prefix) {
       return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
     case "function":
       var staticStr = entry.static ? "static " : "";
-      var specifier = entry.constexpr ? "constexpr" : "inline";
+      var specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
       var constStr = entry.immutable ? " const" : "";
       const parameters = generateParameters(entry.parameters);
       const body = !entry.sourceName ? placeholder
         : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
-      return `${doc}${prefix}${staticStr}${specifier} ${entry.type} ${entry.name}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+      return `${doc}${prefix}${staticStr}${specifier}${entry.type} ${entry.name}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
     case "struct":
       return doc + generateStruct(entry, prefix);
     case "var":
