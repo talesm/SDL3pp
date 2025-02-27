@@ -172,9 +172,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     const nameChange = makeRenameEntry(entry, nameCandidate, type);
     const currName = transform.transform[key]?.name ?? nameCandidate;
     const currEntry = targetEntries[currName];
-    if (!currEntry) {
-      insertEntry(entries, { name: nameChange.name, kind: "def" });
-    } else {
+    if (currEntry) {
       if (Array.isArray(currEntry)) {
         currEntry.forEach(e => combineObject(e, nameChange));
       } else {
@@ -182,6 +180,8 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
       }
       insertEntry(entries, currEntry);
       delete targetEntries[currName];
+    } else if (!entries[nameChange.name]) {
+      insertEntry(entries, { name: nameChange.name, kind: "def" });
     }
     nameChange.name = `${type}.${nameChange.name}`;
     transform.transform[key] = nameChange;
@@ -260,7 +260,7 @@ function makeNaturalName(name, typeName) {
     prefix = m[1];
     name = name.slice(3);
   }
-  if (/Float$/i.test(name)) name = name.slice(0, name.length - 5);
+  if (/Float$/.test(name)) name = name.slice(0, name.length - 5);
   if (name.startsWith(typeName)) return prefix + name.slice(typeName.length);
   if (typeName.startsWith("F") && name.startsWith(typeName.slice(1))) return prefix + name.slice(typeName.length - 1);
   return prefix + name;

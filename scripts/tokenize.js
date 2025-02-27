@@ -160,7 +160,7 @@ function tokenize(lines) {
       continue;
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
-      m = /^(([\w*&:<>]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%]{1,2})|[\w*&~]+)(\s*\()?/.exec(member);
+      m = /^(([\w*&:<>\[\]]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%]{1,2})|[\w*&~]+)(\s*\()?/.exec(member);
       if (!m) {
         system.warn(`Unknown token at line ${i + 1}: ${member}`);
         continue;
@@ -242,8 +242,8 @@ function checkTokenTooLarge(token) {
   if (token.kind == "doc") return false;
   if (token.kind == "enum") return delta > 200;
   if (token.kind == "union") return delta > 100;
-  if (token.kind == "function" || token.kind == "callback" || token.kind == "def") return delta > 15;
-  return delta > 5;
+  if (token.kind == "function" || token.kind == "callback" || token.kind == "def") return delta > 30;
+  return delta > 10;
 }
 
 /**

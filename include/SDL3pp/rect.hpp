@@ -91,7 +91,7 @@ struct Point : SDL_Point
   }
 
   /**
-   * @brief Determine whether a point resides inside a rectangle.
+   * Determine whether a point resides inside a rectangle.
    *
    * A point is considered part of a rectangle if both `p` and `r` are not NULL,
    * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
@@ -104,7 +104,11 @@ struct Point : SDL_Point
    * be able to find this function inside SDL itself).
    *
    * @param r the rectangle to test.
-   * @return true if `p` is contained by `r`, false otherwise.
+   * @returns true if this is contained by `r`, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsInRect(const Rect& r) const;
 
@@ -468,12 +472,12 @@ struct FPoint : SDL_FPoint
   }
 
   /**
-   * @brief Determine whether a point resides inside a rectangle.
+   * Determine whether a point resides inside a floating point rectangle.
    *
    * A point is considered part of a rectangle if both `p` and `r` are not NULL,
    * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
-   * and < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)
-   * as "inside" and (0,1) as not.
+   * and <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point
+   * (0,0) and (0,1) as "inside" and (0,2) as not.
    *
    * Note that this is a forced-inline function in a header, and not a public
    * API function available in the SDL library (which is to say, the code is
@@ -481,7 +485,11 @@ struct FPoint : SDL_FPoint
    * be able to find this function inside SDL itself).
    *
    * @param r the rectangle to test.
-   * @return true if `p` is contained by `r`, false otherwise.
+   * @returns true if this is contained by `r`, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
   constexpr bool IsInRect(const FRect& r) const;
 
