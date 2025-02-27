@@ -128,6 +128,8 @@ function tokenize(lines) {
       token.value = m[1];
       if (m[3]) {
         token.type = m[3].trim();
+      } else if (lines[i + 1].trimStart().startsWith(":")) {
+        token.type = lines[++i].trimStart().slice(1).trim();
       }
       if (lines[i + 1]?.endsWith("{")) i++;
     } else if (m = /^template</.exec(line)) {

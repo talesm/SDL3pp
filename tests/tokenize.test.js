@@ -232,6 +232,65 @@ test("tokenize variables", () => {
   }]);
 });
 
+test("tokenize struct", () => {
+  expect(tokenizeText("struct Test{\n};")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "struct",
+    value: "Test",
+  }, {
+    begin: 2,
+    end: 3,
+    spaces: 0,
+    kind: "endStruct",
+    value: "",
+  },]); expect(tokenizeText("struct Test\n{\n};")).toEqual([{
+    begin: 1,
+    end: 3,
+    spaces: 0,
+    kind: "struct",
+    value: "Test",
+  }, {
+    begin: 3,
+    end: 4,
+    spaces: 0,
+    kind: "endStruct",
+    value: "",
+  },]);
+});
+
+test("tokenize struct with base type", () => {
+  expect(tokenizeText("struct Test : TestBase {\n};")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "struct",
+    value: "Test",
+    type: "TestBase",
+  }, {
+    begin: 2,
+    end: 3,
+    spaces: 0,
+    kind: "endStruct",
+    value: "",
+  },]);
+  expect(tokenizeText("struct Test\n  : TestBase \n{\n};")).toEqual([{
+    begin: 1,
+    end: 4,
+    spaces: 0,
+    kind: "struct",
+    value: "Test",
+    type: "TestBase",
+  }, {
+    begin: 4,
+    end: 5,
+    spaces: 0,
+    kind: "endStruct",
+    value: "",
+  },]);
+});
+
 test("grab spaces between tokens", () => {
   expect(tokenizeText("int a;\nint b;")).toEqual([{
     begin: 1,
