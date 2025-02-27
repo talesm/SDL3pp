@@ -236,7 +236,7 @@ function validateEntries(targetEntries) {
 function makeRenameEntry(entry, name, typeName) {
   let newEntry = {};
   if (entry === "placeholder") {
-    newEntry = { kind: "def" };
+    newEntry = {};
   } else if (entry === "ctor") {
     newEntry = { kind: "function", name: typeName, type: "", static: false };
   } else if (typeof entry !== "object") {
