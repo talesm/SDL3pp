@@ -1,8 +1,9 @@
 const { readFileSync, writeFileSync } = require("node:fs");
+/** @import {PathOrFileDescriptor} from "node:fs" */
 
 /**
  * Read a file as an array of lines
- * @param {import("node:fs").PathOrFileDescriptor} path 
+ * @param {PathOrFileDescriptor} path 
  */
 function readLinesSync(path) {
   return readFileSync(path, "utf8").split(/\r?\n/);
@@ -10,7 +11,7 @@ function readLinesSync(path) {
 
 /**
  * Write an array of lines to a file
- * @param {import("node:fs").PathOrFileDescriptor} path 
+ * @param {PathOrFileDescriptor} path 
  * @param {string[]} data 
  */
 function writeLinesSync(path, data) {
@@ -19,7 +20,7 @@ function writeLinesSync(path, data) {
 
 /**
  * Read a file as a JSON
- * @param {import("node:fs").PathOrFileDescriptor} path 
+ * @param {PathOrFileDescriptor} path 
  */
 function readJSONSync(path) {
   return JSON.parse(readFileSync(path, "utf8"));
@@ -27,7 +28,7 @@ function readJSONSync(path) {
 
 /**
  * Write an array of lines to a file
- * @param {import("node:fs").PathOrFileDescriptor} path 
+ * @param {PathOrFileDescriptor} path 
  * @param {any} data 
  */
 function writeJSONSync(path, data) {
@@ -91,7 +92,7 @@ var system = {
     if (!system.silent) console.warn(...data);
     if (this.stopOnWarn) {
       let message = "Stopped on warning";
-      if (this.silent && data[0]) message += ": " + data[0] ?? "";
+      if (this.silent && data[0]) message += ": " + (data[0] ?? "");
       throw new Error(message);
     }
   },

@@ -44,7 +44,10 @@ function tokenize(lines) {
     /** @type {FileToken} */
     const token = {
       begin: i + 1,
+      end: null,
       spaces: m?.[0]?.length ?? 0,
+      kind: null,
+      value: ""
     };
 
     if (/^\/\/\s*Forward decl/.test(line)) {
@@ -111,6 +114,7 @@ function tokenize(lines) {
       token.type = m[1].trimEnd();
       token.parameters = m[5]?.trim();
     } else if (m = /^typedef\s+(struct|enum|union)\s+(\w+)?$/.exec(line)) {
+      // @ts-ignore
       token.kind = m[1];
       token.value = m[2];
       if (token.kind != "struct") {
@@ -183,18 +187,15 @@ function tokenize(lines) {
           for (++i; i < lines.length; ++i) {
             const line = lines[i];
             if (line.endsWith(');')) {
-              inline = false;
               parameters += '\n' + line.slice(0, line.length - 2);
               break;
             }
             if (line.endsWith(')')) {
-              inline = true;
               parameters += '\n' + line.slice(0, line.length - 1);
               break;
             }
             if (line.endsWith(') const')) {
               token.immutable = true;
-              inline = true;
               parameters += '\n' + line.slice(0, line.length - 7);
               break;
             }
@@ -203,7 +204,6 @@ function tokenize(lines) {
         } else {
           const details = parameters.slice(endBracket + 1);
           if (details.startsWith(" const")) token.immutable = true;
-          inline = details.endsWith("{") || (!details.endsWith(";") && !details.endsWith("}"));
           parameters = parameters.slice(0, endBracket);
         }
         token.parameters = parameters;
@@ -213,7 +213,6 @@ function tokenize(lines) {
         }
       } else {
         token.kind = "var";
-        inline = member.indexOf(';') === -1;
       }
       if (m = /^((?:[*&]\s*)+)(\w+)\s*$/.exec(token.value)) {
         token.type += " " + m[1];

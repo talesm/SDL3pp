@@ -16,7 +16,7 @@ test("empty transform loopback", () => {
 
 test("functions transform loopback", () => {
   const modifiedApi = transformApi({
-    sourceApi: functionsApi,
+    sourceApi: /** @type {Api} */(functionsApi),
     transform: {},
   });
   expect(modifiedApi).toMatchObject(functionsApi);
@@ -24,10 +24,10 @@ test("functions transform loopback", () => {
 
 test("empty to functions transform", () => {
   const functionsFile = functionsApi.files["functions.h"];
-  const newFunctions = Object.values(functionsFile.entries).reduce((acc, entry) => {
+  const newFunctions = Object.values(functionsFile.entries).reduce((/** @type {ApiEntry[]} */ acc, entry) => {
     if (Array.isArray(entry))
-      acc.push(...entry);
-    else acc.push(entry);
+      acc.push(.../** @type {ApiEntry[]} */(entry));
+    else acc.push(/** @type {ApiEntry} */(entry));
     return acc;
   }, []);
   const modifiedApi = transformApi({
@@ -49,7 +49,7 @@ test("empty to functions transform", () => {
 
 test("structs transform basic", () => {
   const modifiedApi = transformApi({
-    sourceApi: structsApi,
+    sourceApi: /** @type {Api} */(structsApi),
     transform: {
       prefixes: "My",
       renameRules: [
@@ -65,12 +65,12 @@ test("structs transform basic", () => {
 
 test("structs transform extends", () => {
   const modifiedApi = transformApi({
-    sourceApi: structsApi,
+    sourceApi: /** @type {Api} */(structsApi),
     transform: {
       prefixes: "My",
       renameRules: [
         {
-          pattern: "^([^.]*)",
+          pattern: /^([^.]*)/,
           replacement: "$1_extends",
         }
       ],
@@ -103,12 +103,12 @@ test("structs transform extends", () => {
 
 test("structs transform resources", () => {
   const modifiedApi = transformApi({
-    sourceApi: structsApi,
+    sourceApi: /** @type {Api} */(structsApi),
     transform: {
       prefixes: "My",
       renameRules: [
         {
-          pattern: "^([^.]*)",
+          pattern: /^([^.]*)/,
           replacement: "$1_resources",
         }
       ],

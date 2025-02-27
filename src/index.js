@@ -229,9 +229,9 @@ function transform(args) {
   }
   const config = {
     /** @type {Api} */
-    sourceApi: {},
+    sourceApi: null,
     /** @type {ApiTransform} */
-    transform: {},
+    transform: null,
     api: "",
     baseDir: "",
   };
@@ -289,7 +289,7 @@ function transform(args) {
     const baseDirLen = config.baseDir?.length ?? 0;
     const localFiles = new Set(files.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file));
     for (const file of Object.keys(config.sourceApi?.files ?? {})) {
-      if (!localFiles.has(file)) delete config.api.files[file];
+      if (!localFiles.has(file)) delete config.sourceApi.files[file];
     }
   }
   if (printConfig) {
@@ -302,7 +302,7 @@ function transform(args) {
 /**
  * 
  * @param {{[key: string]: any}} destiny 
- * @param  {{[key: string]: any}} sources 
+ * @param  {{[key: string]: any}} source 
  */
 function mergeTransformInto(destiny, source) {
   if (typeof source.sourceApi == "string") {
@@ -368,9 +368,9 @@ function wrapUsageText(prefix, parameters = "") {
  * Format text int 80 columns
  * @param {string} text the text to wrap
  * @param {object} config
- * @param {number=}     config.margin     the left margin, defaults to 0
- * @param {wordRegex=}  config.wordRegex  the word definition, defaults to /[^\s]+/
- * @param {number=}     config.columns    the number of columns, default to 80
+ * @param {number=} config.margin     the left margin, defaults to 0
+ * @param {RegExp=} config.wordRegex  the word definition, defaults to /[^\s]+/
+ * @param {number=} config.columns    the number of columns, default to 80
  */
 function wrapText(text, config = {}) {
   const margin = config.margin ?? 0;

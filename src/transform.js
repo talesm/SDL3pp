@@ -173,7 +173,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     const currName = transform.transform[key]?.name ?? nameCandidate;
     const currEntry = targetEntries[currName];
     if (!currEntry) {
-      insertEntry(entries, { name: nameChange.name, kind: "placeholder" });
+      insertEntry(entries, { name: nameChange.name, kind: "def" });
     } else {
       if (Array.isArray(currEntry)) {
         currEntry.forEach(e => combineObject(e, nameChange));
@@ -201,14 +201,13 @@ function transformHierarchy(targetEntries) {
     if (!obj || Array.isArray(obj) || !obj.entries) continue;
     let name = path[path.length - 1];
     let i = 1;
-    for (; i < path[path.length - 1]; i++) {
-      /** @type {ApiEntry} */
+    for (; i < path.length - 1; i++) {
       const el = obj.entries[path[i]];
       if (!el || Array.isArray(el) || !el.entries) {
         name = path.slice(i).join('.');
         break;
       }
-      obj = el;
+      obj = /**@type {ApiEntry} */(el);
     }
     const entry = targetEntries[key];
     const typeName = obj.name;
@@ -233,17 +232,17 @@ function validateEntries(targetEntries) {
  * @param {ApiEntry|string} entry 
  * @param {string}          name 
  * @param {string}          typeName 
- * @returns {ApiEntry}
  */
 function makeRenameEntry(entry, name, typeName) {
+  let newEntry = {};
   if (entry === "placeholder") {
-    entry = {};
-  } else if (entry === "ctor" || entry?.kind === "ctor") {
-    entry = { ...(entry.kind ? entry : {}), kind: "function", name: typeName, type: "", static: false };
+    newEntry = { kind: "def" };
+  } else if (entry === "ctor") {
+    newEntry = { kind: "function", name: typeName, type: "", static: false };
   } else if (typeof entry !== "object") {
-    entry = { kind: entry };
+    newEntry = { kind: /** @type {ApiEntryKind} */(entry) };
   }
-  return { ...entry, name: entry.name || makeNaturalName(name, typeName) };
+  return /** @type {ApiEntry} */ ({ ...newEntry, name: newEntry.name || makeNaturalName(name, typeName) });
 }
 
 /**
@@ -276,7 +275,8 @@ function prepareForTypeInsert(entry, name, typeName) {
   entry.name = name;
   const parameters = entry.parameters;
   if (!parameters?.length) return;
-  const type = parameters[0]?.type ?? "";
+  const parameter = parameters[0];
+  const type = typeof parameter !== "string" ? parameter.type : "";
   if (type.includes(typeName)) {
     parameters.shift();
     if (type.startsWith("const ")) entry.immutable = true;

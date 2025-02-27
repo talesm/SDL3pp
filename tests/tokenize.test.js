@@ -18,6 +18,7 @@ test("tokenize doc", () => {
     end: 7,
     spaces: 0,
     kind: "doc",
+    value: "",
   }]);
 });
 
