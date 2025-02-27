@@ -172,9 +172,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     const nameChange = makeRenameEntry(entry, nameCandidate, type);
     const currName = transform.transform[key]?.name ?? nameCandidate;
     const currEntry = targetEntries[currName];
-    if (!currEntry) {
-      insertEntry(entries, { name: nameChange.name, kind: "def" });
-    } else {
+    if (currEntry) {
       if (Array.isArray(currEntry)) {
         currEntry.forEach(e => combineObject(e, nameChange));
       } else {
@@ -182,6 +180,8 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
       }
       insertEntry(entries, currEntry);
       delete targetEntries[currName];
+    } else if (!entries[nameChange.name]) {
+      insertEntry(entries, { name: nameChange.name, kind: "def" });
     }
     nameChange.name = `${type}.${nameChange.name}`;
     transform.transform[key] = nameChange;
