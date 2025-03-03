@@ -5,7 +5,8 @@
     "SDL_blendmode.h",
     "SDL_properties.h",
     "SDL_rect.h",
-    "SDL_surface.h"
+    "SDL_surface.h",
+    "SDL_video.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",

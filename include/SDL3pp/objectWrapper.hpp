@@ -90,13 +90,19 @@ public:
 };
 
 template<class T, T defaultValue = 0>
-struct FancyPointer
+class FancyPointer
 {
   T value;
 
-  auto operator<=>(const FancyPointer& other) const = default;
+public:
+  constexpr FancyPointer(T value = defaultValue)
+    : value(value)
+  {
+  }
 
-  operator bool() const { return value != defaultValue; }
+  constexpr auto operator<=>(const FancyPointer& other) const = default;
+
+  constexpr operator bool() const { return value != defaultValue; }
 
   bool operator==(nullptr_t) const { return bool(*this); }
 

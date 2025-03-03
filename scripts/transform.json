@@ -15,15 +15,19 @@
     "SDL_iconv_t": "IConvRef",
     "SDL_Palette *": "PaletteRef",
     "const SDL_Palette *": "PaletteRef",
+    "const SDL_Point *": "const SDL_Point &",
+    "const SDL_FPoint *": "const SDL_FPoint &",
     "const SDL_Rect *": "const SDL_Rect &",
     "const SDL_FRect *": "const SDL_FRect &",
-    "SDL_Surface *": "SurfaceRef"
+    "SDL_Surface *": "SurfaceRef",
+    "SDL_Window *": "WindowRef"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
     "SDL_iconv_t": "IConv",
     "SDL_Palette *": "PaletteRef",
-    "SDL_Surface *": "SurfaceRef"
+    "SDL_Surface *": "SurfaceRef",
+    "SDL_Window *": "WindowRef"
   },
   "files": {
     "SDL_stdinc.h": {
@@ -2218,6 +2222,412 @@
           "template": [
             {
               "type": "ObjectBox<SDL_Surface *>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T &&"
+            }
+          ]
+        }
+      }
+    },
+    "SDL_video.h": {
+      "includeAfter": {
+        "__begin": [
+          {
+            "name": "WindowBase",
+            "kind": "forward",
+            "template": [
+              {
+                "name": "T",
+                "type": "class"
+              }
+            ]
+          },
+          {
+            "name": "WindowRef",
+            "kind": "alias",
+            "type": "WindowBase<ObjectRef<SDL_Window>>"
+          },
+          {
+            "name": "ObjectDeleter<SDL_Window>",
+            "kind": "struct",
+            "template": [],
+            "entries": {
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Window *",
+                    "name": "window"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Window",
+            "kind": "alias",
+            "type": "WindowBase<ObjectUnique<SDL_Window>>"
+          },
+          {
+            "name": "DisplayOrientation",
+            "kind": "placeholder"
+          },
+          {
+            "name": "DisplayModeData",
+            "kind": "placeholder"
+          },
+          {
+            "name": "DisplayMode",
+            "kind": "placeholder"
+          },
+          {
+            "name": "DisplayOrientation",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WindowFlags",
+            "kind": "placeholder"
+          },
+          {
+            "name": "FlashOperation",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HitTestResult",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HitTest",
+            "kind": "placeholder"
+          }
+        ]
+      },
+      "transform": {
+        "SDL_DisplayID": {
+          "kind": "struct",
+          "name": "Display",
+          "type": "",
+          "entries": {
+            "displayID": {
+              "kind": "var",
+              "type": "SDL_DisplayID"
+            },
+            "Display": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "name": "displayID",
+                  "type": "SDL_DisplayID",
+                  "default": "0"
+                }
+              ]
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": []
+            },
+            "SDL_GetDisplays": {
+              "kind": "function",
+              "name": "GetAll",
+              "type": "FreeWrapper<Display[]>"
+            },
+            "SDL_GetPrimaryDisplay": {
+              "kind": "function",
+              "name": "GetPrimary"
+            },
+            "SDL_GetDisplayProperties": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetDisplayName": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetDisplayBounds": {
+              "kind": "function",
+              "type": "std::optional<Rect>",
+              "parameters": [],
+              "immutable": true
+            },
+            "SDL_GetDisplayUsableBounds": {
+              "kind": "function",
+              "type": "std::optional<Rect>",
+              "parameters": [],
+              "immutable": true
+            },
+            "SDL_GetNaturalDisplayOrientation": {
+              "kind": "function",
+              "immutable": true,
+              "name": "GetNaturalOrientation"
+            },
+            "SDL_GetCurrentDisplayOrientation": {
+              "kind": "function",
+              "immutable": true,
+              "name": "GetCurrentOrientation"
+            },
+            "SDL_GetDisplayContentScale": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetFullscreenDisplayModes": {
+              "kind": "function",
+              "name": "GetFullscreenModes",
+              "immutable": true,
+              "type": "FreeWrapper<DisplayMode *[]>"
+            },
+            "SDL_GetClosestFullscreenDisplayMode": {
+              "kind": "function",
+              "name": "GetClosestFullscreenMode",
+              "immutable": true,
+              "type": "std::optional<DisplayMode>",
+              "parameters": [
+                {},
+                {},
+                {},
+                {},
+                {}
+              ]
+            },
+            "SDL_GetDesktopDisplayMode": {
+              "kind": "function",
+              "name": "GetDesktopMode",
+              "immutable": true
+            },
+            "SDL_GetCurrentDisplayMode": {
+              "kind": "function",
+              "name": "GetCurrentMode",
+              "immutable": true
+            },
+            "SDL_GetDisplayForPoint": "function",
+            "SDL_GetDisplayForRect": "function"
+          }
+        },
+        "SDL_Window": {
+          "name": "WindowBase",
+          "kind": "struct",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "type": "T",
+          "entries": {
+            "T::T": "alias",
+            "SDL_CreateWindow": "ctor",
+            "SDL_CreatePopupWindow": {
+              "kind": "function",
+              "name": "WindowBase",
+              "type": "",
+              "parameters": [
+                {},
+                {
+                  "name": "parent",
+                  "type": "WindowRef"
+                },
+                {
+                  "name": "offset_x",
+                  "type": "int"
+                },
+                {
+                  "name": "offset_y",
+                  "type": "int"
+                },
+                {
+                  "name": "w",
+                  "type": "int"
+                },
+                {
+                  "name": "h",
+                  "type": "int"
+                },
+                {
+                  "name": "flags",
+                  "type": "WindowFlags"
+                }
+              ]
+            },
+            "SDL_CreateWindowWithProperties": "ctor",
+            "SDL_GetDisplayForWindow": {
+              "kind": "function",
+              "name": "GetDisplay",
+              "immutable": true
+            },
+            "SDL_GetWindowPixelDensity": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowDisplayScale": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowFullscreenMode": {
+              "kind": "function",
+              "parameters": [
+                {},
+                {
+                  "type": "std::optional<std::reference_wrapper<const DisplayMode>>"
+                }
+              ]
+            },
+            "SDL_GetWindowFullscreenMode": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowICCProfile": {
+              "kind": "function",
+              "immutable": true,
+              "type": "FreeWrapper<void *>"
+            },
+            "SDL_GetWindowPixelFormat": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowID": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowParent": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowProperties": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowFlags": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowTitle": "function",
+            "SDL_GetWindowTitle": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowIcon": "function",
+            "SDL_SetWindowPosition": "function",
+            "SDL_GetWindowPosition": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowSize": "function",
+            "SDL_GetWindowSize": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowSafeArea": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowAspectRatio": "function",
+            "SDL_GetWindowAspectRatio": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowBordersSize": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowSizeInPixels": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowMinimumSize": "function",
+            "SDL_GetWindowMinimumSize": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowMaximumSize": "function",
+            "SDL_GetWindowMaximumSize": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowBordered": "function",
+            "SDL_SetWindowResizable": "function",
+            "SDL_SetWindowAlwaysOnTop": "function",
+            "SDL_ShowWindow": "function",
+            "SDL_HideWindow": "function",
+            "SDL_RaiseWindow": "function",
+            "SDL_MaximizeWindow": "function",
+            "SDL_MinimizeWindow": "function",
+            "SDL_RestoreWindow": "function",
+            "SDL_SetWindowFullscreen": "function",
+            "SDL_SyncWindow": "function",
+            "SDL_WindowHasSurface": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowSurface": "function",
+            "SDL_SetWindowSurfaceVSync": "function",
+            "SDL_GetWindowSurfaceVSync": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_UpdateWindowSurface": {
+              "kind": "function",
+              "name": "UpdateSurface"
+            },
+            "SDL_UpdateWindowSurfaceRects": {
+              "kind": "function",
+              "name": "UpdateSurfaceRects",
+              "parameters": [
+                {},
+                {
+                  "type": "std::span<const SDL_Rect>"
+                }
+              ]
+            },
+            "SDL_DestroyWindowSurface": "function",
+            "SDL_SetWindowKeyboardGrab": "function",
+            "SDL_SetWindowMouseGrab": "function",
+            "SDL_GetWindowKeyboardGrab": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_GetWindowMouseGrab": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowMouseRect": "function",
+            "SDL_GetWindowMouseRect": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowOpacity": "function",
+            "SDL_GetWindowOpacity": {
+              "kind": "function",
+              "immutable": true
+            },
+            "SDL_SetWindowParent": "function",
+            "SDL_SetWindowModal": "function",
+            "SDL_SetWindowFocusable": "function",
+            "SDL_ShowWindowSystemMenu": "function",
+            "SDL_SetWindowHitTest": "function",
+            "SDL_SetWindowShape": "function",
+            "SDL_FlashWindow": "function"
+          }
+        },
+        "SDL_GetWindows": {
+          "kind": "function",
+          "type": "FreeWrapper<WindowRef[]>"
+        },
+        "SDL_DestroyWindow": {
+          "kind": "function",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
               "name": "T"
             }
           ],
