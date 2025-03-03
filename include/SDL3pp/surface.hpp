@@ -17,6 +17,7 @@
  *
  * https://github.com/libsdl-org/SDL_image
  */
+
 #ifndef SDL3PP_SURFACE_HPP_
 #define SDL3PP_SURFACE_HPP_
 
@@ -720,15 +721,14 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Get the blend mode used for blit operations.
+   * Get the blend mode used for blit operations.
    *
    * @return the blendMode on success or std::nullopt on failure; call
    * GetError() for more information.
    */
-  std::optional<SDL_BlendMode> GetBlendMode() const
+  std::optional<BlendMode> GetBlendMode() const
   {
-    if (SDL_BlendMode blendMode;
-        SDL_GetSurfaceBlendMode(T::get(), &blendMode)) {
+    if (BlendMode blendMode; SDL_GetSurfaceBlendMode(T::get(), &blendMode)) {
       return blendMode;
     }
     return std::nullopt;

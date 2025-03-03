@@ -5680,7 +5680,7 @@
               "doc": "Get the blend mode used for blit operations.\n\n@param surface the SDL_Surface structure to query.\n@param blendMode a pointer filled in with the current SDL_BlendMode.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetSurfaceBlendMode",
               "name": "GetBlendMode",
               "kind": "function",
-              "type": "std::optional<SDL_BlendMode>",
+              "type": "std::optional<BlendMode>",
               "parameters": [],
               "sourceName": "SDL_GetSurfaceBlendMode",
               "immutable": true
@@ -8242,6 +8242,1852 @@
             }
           ],
           "sourceName": "SDL_GL_DestroyContext"
+        }
+      }
+    },
+    "render.hpp": {
+      "name": "render.hpp",
+      "doc": "@file render.hpp\n\n# CategoryRender\n\nHeader file for SDL 2D rendering functions.\n\nThis API supports the following features:\n\n- single pixel points\n- single pixel lines\n- filled rectangles\n- texture images\n- 2D polygons\n\nThe primitives may be drawn in opaque, blended, or additive modes.\n\nThe texture images may be drawn in opaque, blended, or additive modes. They\ncan have an additional color tint or alpha modulation applied to them, and\nmay also be stretched with linear interpolation.\n\nThis API is designed to accelerate simple 2D operations. You may want more\nfunctionality such as polygons and particle effects and in that case you\nshould use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the\nmany good 3D engines.\n\nThese functions must be called from the main thread. See this bug for\ndetails: https://github.com/libsdl-org/SDL/issues/986",
+      "entries": {
+        "RendererBase-forward": {
+          "name": "RendererBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ],
+          "doc": ""
+        },
+        "RendererRef": {
+          "name": "RendererRef",
+          "kind": "alias",
+          "type": "RendererBase<ObjectRef<SDL_Renderer>>",
+          "doc": ""
+        },
+        "ObjectDeleter<SDL_Renderer>": {
+          "name": "ObjectDeleter<SDL_Renderer>",
+          "kind": "struct",
+          "template": [],
+          "entries": {
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "SDL_Renderer *",
+                  "name": "Renderer"
+                }
+              ],
+              "doc": ""
+            }
+          },
+          "doc": ""
+        },
+        "Renderer": {
+          "name": "Renderer",
+          "kind": "alias",
+          "type": "RendererBase<ObjectUnique<SDL_Renderer>>",
+          "doc": ""
+        },
+        "TextureBase-forward": {
+          "name": "TextureBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "class"
+            }
+          ],
+          "doc": ""
+        },
+        "TextureRef": {
+          "name": "TextureRef",
+          "kind": "alias",
+          "type": "TextureBase<ObjectRef<SDL_Texture>>",
+          "doc": ""
+        },
+        "ObjectDeleter<SDL_Texture>": {
+          "name": "ObjectDeleter<SDL_Texture>",
+          "kind": "struct",
+          "template": [],
+          "entries": {
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "SDL_Texture *",
+                  "name": "Texture"
+                }
+              ],
+              "doc": ""
+            }
+          },
+          "doc": ""
+        },
+        "Texture": {
+          "name": "Texture",
+          "kind": "alias",
+          "type": "TextureBase<ObjectUnique<SDL_Texture>>",
+          "doc": ""
+        },
+        "Vertex": {
+          "doc": "Vertex structure.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "Vertex",
+          "kind": "alias",
+          "sourceName": "SDL_Vertex",
+          "type": "SDL_Vertex"
+        },
+        "TextureAccess": {
+          "doc": "The access pattern allowed for a texture.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "TextureAccess",
+          "kind": "alias",
+          "sourceName": "SDL_TextureAccess",
+          "type": "SDL_TextureAccess"
+        },
+        "RendererLogicalPresentation": {
+          "doc": "How the logical size is mapped to the output.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "RendererLogicalPresentation",
+          "kind": "alias",
+          "sourceName": "SDL_RendererLogicalPresentation",
+          "type": "SDL_RendererLogicalPresentation"
+        },
+        "RendererBase": {
+          "doc": "A structure representing rendering state\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "RendererBase",
+          "kind": "struct",
+          "type": "T",
+          "sourceName": "SDL_Renderer",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "RendererBase": [
+              {
+                "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling SDL_GetRenderDriver()\nmultiple times, with indices from 0 to SDL_GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify NULL and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call SDL_SetRenderLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or NULL to let\n            SDL choose one.\n@returns a valid rendering context or NULL if there was an error; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRendererWithProperties\n@sa SDL_CreateSoftwareRenderer\n@sa SDL_DestroyRenderer\n@sa SDL_GetNumRenderDrivers\n@sa SDL_GetRenderDriver\n@sa SDL_GetRendererName",
+                "name": "RendererBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "window",
+                    "type": "WindowRef"
+                  },
+                  {
+                    "name": "name",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "SDL_CreateRenderer",
+                "static": false
+              },
+              {
+                "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_RENDERER_CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `SDL_PROP_RENDERER_CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `SDL_PROP_RENDERER_CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER`: an SDL_Colorspace\n  value describing the colorspace for output to the display, defaults to\n  SDL_COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support SDL_COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select SDL_COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by SDL_SetRenderVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@returns a valid rendering context or NULL if there was an error; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateProperties\n@sa SDL_CreateRenderer\n@sa SDL_CreateSoftwareRenderer\n@sa SDL_DestroyRenderer\n@sa SDL_GetRendererName",
+                "name": "RendererBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "props",
+                    "type": "PropertiesRef"
+                  }
+                ],
+                "sourceName": "SDL_CreateRendererWithProperties",
+                "static": false
+              },
+              {
+                "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create SDL_Renderer:\nSDL_CreateRenderer() and SDL_CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nSDL_Window as the final destination and not an SDL_Surface.\n\n@param surface the SDL_Surface structure representing the surface where\n               rendering is done.\n@returns a valid rendering context or NULL if there was an error; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyRenderer",
+                "name": "RendererBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "surface",
+                    "type": "SurfaceRef"
+                  }
+                ],
+                "sourceName": "SDL_CreateSoftwareRenderer",
+                "static": false
+              }
+            ],
+            "GetWindow": {
+              "doc": "Get the window associated with a renderer.\n\n@param renderer the renderer to query.\n@returns the window on success or NULL on failure; call SDL_GetError() for\n         more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetWindow",
+              "kind": "function",
+              "type": "WindowRef",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderWindow"
+            },
+            "GetName": {
+              "doc": "Get the name of a renderer.\n\n@param renderer the rendering context.\n@returns the name of the selected renderer, or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer\n@sa SDL_CreateRendererWithProperties",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "sourceName": "SDL_GetRendererName",
+              "immutable": true
+            },
+            "GetOutputSize": [
+              {
+                "kind": "function",
+                "type": "std::optional<Point>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetOutputSize",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Point *",
+                    "name": "size"
+                  }
+                ],
+                "name": "GetOutputSize",
+                "doc": ""
+              },
+              {
+                "doc": "Get the output size in pixels of a rendering context.\n\nThis returns the true output size in pixels, ignoring any render targets or\nlogical size and presentation.\n\n@param renderer the rendering context.\n@param w a pointer filled in with the width in pixels.\n@param h a pointer filled in with the height in pixels.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetCurrentRenderOutputSize",
+                "name": "GetOutputSize",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int *"
+                  }
+                ],
+                "sourceName": "SDL_GetRenderOutputSize",
+                "immutable": true
+              }
+            ],
+            "GetCurrentOutputSize": [
+              {
+                "kind": "function",
+                "type": "std::optional<Point>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetCurrentOutputSize",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Point *",
+                    "name": "size"
+                  }
+                ],
+                "name": "GetCurrentOutputSize",
+                "doc": ""
+              },
+              {
+                "doc": "Get the current output size in pixels of a rendering context.\n\nIf a rendering target is active, this will return the size of the rendering\ntarget in pixels, otherwise if a logical size is set, it will return the\nlogical size, otherwise it will return the value of\nSDL_GetRenderOutputSize().\n\n@param renderer the rendering context.\n@param w a pointer filled in with the current width.\n@param h a pointer filled in with the current height.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderOutputSize",
+                "name": "GetCurrentOutputSize",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int *"
+                  }
+                ],
+                "sourceName": "SDL_GetCurrentRenderOutputSize",
+                "immutable": true
+              }
+            ],
+            "GetProperties": {
+              "doc": "Get the properties associated with a renderer.\n\nThe following read-only properties are provided by SDL:\n\n- `SDL_PROP_RENDERER_NAME_STRING`: the name of the rendering driver\n- `SDL_PROP_RENDERER_WINDOW_POINTER`: the window where rendering is\n  displayed, if any\n- `SDL_PROP_RENDERER_SURFACE_POINTER`: the surface where rendering is\n  displayed, if this is a software renderer without a window\n- `SDL_PROP_RENDERER_VSYNC_NUMBER`: the current vsync setting\n- `SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER`: the maximum texture width\n  and height\n- `SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER`: a (const SDL_PixelFormat *)\n  array of pixel formats, terminated with SDL_PIXELFORMAT_UNKNOWN,\n  representing the available texture formats for this renderer.\n- `SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER`: an SDL_Colorspace value\n  describing the colorspace for output to the display, defaults to\n  SDL_COLORSPACE_SRGB.\n- `SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN`: true if the output colorspace is\n  SDL_COLORSPACE_SRGB_LINEAR and the renderer is showing on a display with\n  HDR enabled. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT`: the value of SDR white in the\n  SDL_COLORSPACE_SRGB_LINEAR colorspace. When HDR is enabled, this value is\n  automatically multiplied into the color scale. This property can change\n  dynamically when SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n- `SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT`: the additional high dynamic range\n  that can be displayed, in terms of the SDR white point. When HDR is not\n  enabled, this will be 1.0. This property can change dynamically when\n  SDL_EVENT_WINDOW_HDR_STATE_CHANGED is sent.\n\nWith the direct3d renderer:\n\n- `SDL_PROP_RENDERER_D3D9_DEVICE_POINTER`: the IDirect3DDevice9 associated\n  with the renderer\n\nWith the direct3d11 renderer:\n\n- `SDL_PROP_RENDERER_D3D11_DEVICE_POINTER`: the ID3D11Device associated\n  with the renderer\n- `SDL_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER`: the IDXGISwapChain1\n  associated with the renderer. This may change when the window is resized.\n\nWith the direct3d12 renderer:\n\n- `SDL_PROP_RENDERER_D3D12_DEVICE_POINTER`: the ID3D12Device associated\n  with the renderer\n- `SDL_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER`: the IDXGISwapChain4\n  associated with the renderer.\n- `SDL_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER`: the ID3D12CommandQueue\n  associated with the renderer\n\nWith the vulkan renderer:\n\n- `SDL_PROP_RENDERER_VULKAN_INSTANCE_POINTER`: the VkInstance associated\n  with the renderer\n- `SDL_PROP_RENDERER_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR associated\n  with the renderer\n- `SDL_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER`: the VkPhysicalDevice\n  associated with the renderer\n- `SDL_PROP_RENDERER_VULKAN_DEVICE_POINTER`: the VkDevice associated with\n  the renderer\n- `SDL_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the queue\n  family index used for rendering\n- `SDL_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the queue\n  family index used for presentation\n- `SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER`: the number of\n  swapchain images, or potential frames in flight, used by the Vulkan\n  renderer\n\nWith the gpu renderer:\n\n- `SDL_PROP_RENDERER_GPU_DEVICE_POINTER`: the SDL_GPUDevice associated with\n  the renderer\n\n@param renderer the rendering context.\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetProperties",
+              "kind": "function",
+              "type": "PropertiesRef",
+              "parameters": [],
+              "sourceName": "SDL_GetRendererProperties",
+              "immutable": true
+            },
+            "ResetTarget": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "name": "ResetTarget",
+              "doc": ""
+            },
+            "SetTarget": {
+              "doc": "Set a texture as the current rendering target.\n\nThe default render target is the window for which the renderer was created.\nTo stop rendering to a texture and render to the window again, call this\nfunction with a NULL `texture`.\n\n@param renderer the rendering context.\n@param texture the targeted texture, which must be created with the\n               `SDL_TEXTUREACCESS_TARGET` flag, or NULL to render to the\n               window instead of a texture.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderTarget",
+              "name": "SetTarget",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                }
+              ],
+              "sourceName": "SDL_SetRenderTarget"
+            },
+            "GetTarget": {
+              "doc": "Get the current render target.\n\nThe default render target is the window for which the renderer was created,\nand is reported a NULL here.\n\n@param renderer the rendering context.\n@returns the current render target or NULL for the default render target.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderTarget",
+              "name": "GetTarget",
+              "kind": "function",
+              "type": "TextureRef",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderTarget",
+              "immutable": true
+            },
+            "SetLogicalPresentation": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "const SDL_Point &",
+                    "name": "size"
+                  },
+                  {
+                    "name": "mode",
+                    "type": "RendererLogicalPresentation"
+                  }
+                ],
+                "name": "SetLogicalPresentation",
+                "doc": ""
+              },
+              {
+                "doc": "Set a device independent resolution and presentation mode for rendering.\n\nThis function sets the width and height of the logical rendering output.\nThe renderer will act as if the window is always the requested dimensions,\nscaling to the actual window resolution as necessary.\n\nThis can be useful for games that expect a fixed size, but would like to\nscale the output to whatever is available, regardless of how a user resizes\na window, or if the display is high DPI.\n\nYou can disable logical coordinates by setting the mode to\nSDL_LOGICAL_PRESENTATION_DISABLED, and in that case you get the full pixel\nresolution of the output window; it is safe to toggle logical presentation\nduring the rendering of a frame: perhaps most of the rendering is done to\nspecific dimensions but to make fonts look sharp, the app turns off logical\npresentation while drawing text.\n\nLetterboxing will only happen if logical presentation is enabled during\nSDL_RenderPresent; be sure to reenable it first if you were using it.\n\nYou can convert coordinates in an event into rendering coordinates using\nSDL_ConvertEventToRenderCoordinates().\n\n@param renderer the rendering context.\n@param w the width of the logical resolution.\n@param h the height of the logical resolution.\n@param mode the presentation mode used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ConvertEventToRenderCoordinates\n@sa SDL_GetRenderLogicalPresentation\n@sa SDL_GetRenderLogicalPresentationRect",
+                "name": "SetLogicalPresentation",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "int"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int"
+                  },
+                  {
+                    "name": "mode",
+                    "type": "RendererLogicalPresentation"
+                  }
+                ],
+                "sourceName": "SDL_SetRenderLogicalPresentation"
+              }
+            ],
+            "GetLogicalPresentation": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "SDL_Point *",
+                    "name": "size"
+                  },
+                  {
+                    "name": "mode",
+                    "type": "RendererLogicalPresentation *"
+                  }
+                ],
+                "name": "GetLogicalPresentation",
+                "doc": ""
+              },
+              {
+                "doc": "Get device independent resolution and presentation mode for rendering.\n\nThis function gets the width and height of the logical rendering output, or\nthe output size in pixels if a logical resolution is not enabled.\n\n@param renderer the rendering context.\n@param w an int to be filled with the width.\n@param h an int to be filled with the height.\n@param mode the presentation mode used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderLogicalPresentation",
+                "name": "GetLogicalPresentation",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "mode",
+                    "type": "RendererLogicalPresentation *"
+                  }
+                ],
+                "sourceName": "SDL_GetRenderLogicalPresentation",
+                "immutable": true
+              }
+            ],
+            "GetLogicalPresentationRect": {
+              "doc": "Get the final presentation rectangle for rendering.\n\nThis function returns the calculated rectangle used for logical\npresentation, based on the presentation mode and output size. If logical\npresentation is disabled, it will fill the rectangle with the output size,\nin pixels.\n\n@param renderer the rendering context.\n@param rect a pointer filled in with the final presentation rectangle, may\n            be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderLogicalPresentation",
+              "name": "GetLogicalPresentationRect",
+              "kind": "function",
+              "type": "std::optional<FRect>",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderLogicalPresentationRect",
+              "immutable": true
+            },
+            "RenderCoordinatesFromWindow": {
+              "doc": "Get a point in render coordinates when given a point in window coordinates.\n\nThis takes into account several states:\n\n- The window dimensions.\n- The logical presentation settings (SDL_SetRenderLogicalPresentation)\n- The scale (SDL_SetRenderScale)\n- The viewport (SDL_SetRenderViewport)\n\n@param renderer the rendering context.\n@param window_x the x coordinate in window coordinates.\n@param window_y the y coordinate in window coordinates.\n@param x a pointer filled with the x coordinate in render coordinates.\n@param y a pointer filled with the y coordinate in render coordinates.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderLogicalPresentation\n@sa SDL_SetRenderScale",
+              "name": "RenderCoordinatesFromWindow",
+              "kind": "function",
+              "type": "std::optional<FPoint>",
+              "parameters": [
+                {
+                  "name": "window_coord",
+                  "type": "const SDL_FPoint &"
+                }
+              ],
+              "sourceName": "SDL_RenderCoordinatesFromWindow",
+              "immutable": true,
+              "static": false
+            },
+            "RenderCoordinatesToWindow": {
+              "doc": "Get a point in window coordinates when given a point in render coordinates.\n\nThis takes into account several states:\n\n- The window dimensions.\n- The logical presentation settings (SDL_SetRenderLogicalPresentation)\n- The scale (SDL_SetRenderScale)\n- The viewport (SDL_SetRenderViewport)\n\n@param renderer the rendering context.\n@param x the x coordinate in render coordinates.\n@param y the y coordinate in render coordinates.\n@param window_x a pointer filled with the x coordinate in window\n                coordinates.\n@param window_y a pointer filled with the y coordinate in window\n                coordinates.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderLogicalPresentation\n@sa SDL_SetRenderScale\n@sa SDL_SetRenderViewport",
+              "name": "RenderCoordinatesToWindow",
+              "kind": "function",
+              "type": "std::optional<FPoint>",
+              "parameters": [
+                {
+                  "name": "coord",
+                  "type": "const SDL_FPoint &"
+                }
+              ],
+              "sourceName": "SDL_RenderCoordinatesToWindow",
+              "immutable": true,
+              "static": false
+            },
+            "ConvertEventToRenderCoordinates": {
+              "doc": "Convert the coordinates in an event to render coordinates.\n\nThis takes into account several states:\n\n- The window dimensions.\n- The logical presentation settings (SDL_SetRenderLogicalPresentation)\n- The scale (SDL_SetRenderScale)\n- The viewport (SDL_SetRenderViewport)\n\nVarious event types are converted with this function: mouse, touch, pen,\netc.\n\nTouch coordinates are converted from normalized coordinates in the window\nto non-normalized rendering coordinates.\n\nRelative mouse coordinates (xrel and yrel event fields) are _also_\nconverted. Applications that do not want these fields converted should use\nSDL_RenderCoordinatesFromWindow() on the specific event fields instead of\nconverting the entire event structure.\n\nOnce converted, coordinates may be outside the rendering area.\n\n@param renderer the rendering context.\n@param event the event to modify.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderCoordinatesFromWindow",
+              "name": "ConvertEventToRenderCoordinates",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": "SDL_Event *"
+                }
+              ],
+              "sourceName": "SDL_ConvertEventToRenderCoordinates",
+              "immutable": true
+            },
+            "ResetViewport": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "name": "ResetViewport",
+              "doc": ""
+            },
+            "SetViewport": {
+              "doc": "Set the drawing area for rendering on the current target.\n\nDrawing will clip to this area (separately from any clipping done with\nSDL_SetRenderClipRect), and the top left of the area will become coordinate\n(0, 0) for future drawing commands.\n\nThe area's width and height must be >= 0.\n\n@param renderer the rendering context.\n@param rect the SDL_Rect structure representing the drawing area, or NULL\n            to set the viewport to the entire target.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderViewport\n@sa SDL_RenderViewportSet",
+              "name": "SetViewport",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "const SDL_Rect &"
+                }
+              ],
+              "sourceName": "SDL_SetRenderViewport"
+            },
+            "GetViewport": {
+              "doc": "Get the drawing area for the current target.\n\n@param renderer the rendering context.\n@param rect an SDL_Rect structure filled in with the current drawing area.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderViewportSet\n@sa SDL_SetRenderViewport",
+              "name": "GetViewport",
+              "kind": "function",
+              "type": "std::optional<Rect>",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderViewport",
+              "immutable": true
+            },
+            "IsViewportSet": {
+              "doc": "Return whether an explicit rectangle was set as the viewport.\n\nThis is useful if you're saving and restoring the viewport and want to know\nwhether you should restore a specific rectangle or NULL. Note that the\nviewport is always reset when changing rendering targets.\n\n@param renderer the rendering context.\n@returns true if the viewport was set to a specific rectangle, or false if\n         it was set to NULL (the entire target).\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderViewport\n@sa SDL_SetRenderViewport",
+              "name": "IsViewportSet",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_RenderViewportSet",
+              "immutable": true
+            },
+            "GetSafeArea": {
+              "doc": "Get the safe area for rendering within the current viewport.\n\nSome devices have portions of the screen which are partially obscured or\nnot interactive, possibly due to on-screen controls, curved edges, camera\nnotches, TV overscan, etc. This function provides the area of the current\nviewport which is safe to have interactible content. You should continue\nrendering into the rest of the render target, but it should not contain\nvisually important or interactible content.\n\n@param renderer the rendering context.\n@param rect a pointer filled in with the area that is safe for interactive\n            content.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetSafeArea",
+              "kind": "function",
+              "type": "std::optional<Rect>",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderSafeArea",
+              "immutable": true
+            },
+            "ResetClipRect": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "name": "ResetClipRect",
+              "doc": ""
+            },
+            "SetClipRect": {
+              "doc": "Set the clip rectangle for rendering on the specified target.\n\n@param renderer the rendering context.\n@param rect an SDL_Rect structure representing the clip area, relative to\n            the viewport, or NULL to disable clipping.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderClipRect\n@sa SDL_RenderClipEnabled",
+              "name": "SetClipRect",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "const SDL_Rect &"
+                }
+              ],
+              "sourceName": "SDL_SetRenderClipRect"
+            },
+            "GetClipRect": {
+              "doc": "Get the clip rectangle for the current target.\n\n@param renderer the rendering context.\n@param rect an SDL_Rect structure filled in with the current clipping area\n            or an empty rectangle if clipping is disabled.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderClipEnabled\n@sa SDL_SetRenderClipRect",
+              "name": "GetClipRect",
+              "kind": "function",
+              "type": "std::optional<Rect>",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderClipRect",
+              "immutable": true
+            },
+            "IsClipEnabled": {
+              "doc": "Get whether clipping is enabled on the given renderer.\n\n@param renderer the rendering context.\n@returns true if clipping is enabled or false if not; call SDL_GetError()\n         for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderClipRect\n@sa SDL_SetRenderClipRect",
+              "name": "IsClipEnabled",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_RenderClipEnabled",
+              "immutable": true
+            },
+            "SetScale": {
+              "doc": "Set the drawing scale for rendering on the current target.\n\nThe drawing coordinates are scaled by the x/y scaling factors before they\nare used by the renderer. This allows resolution independent drawing with a\nsingle coordinate system.\n\nIf this results in scaling or subpixel drawing by the rendering backend, it\nwill be handled using the appropriate quality hints. For best results use\ninteger scaling factors.\n\n@param renderer the rendering context.\n@param scaleX the horizontal scaling factor.\n@param scaleY the vertical scaling factor.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderScale",
+              "name": "SetScale",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "scale",
+                  "type": "SDL_FPoint"
+                }
+              ],
+              "sourceName": "SDL_SetRenderScale",
+              "static": false
+            },
+            "GetScale": [
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "std::optional<FPoint>",
+                "parameters": [],
+                "name": "GetScale",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "FPoint *",
+                    "name": "scale"
+                  }
+                ],
+                "name": "GetScale",
+                "doc": ""
+              },
+              {
+                "doc": "Get the drawing scale for the current target.\n\n@param renderer the rendering context.\n@param scaleX a pointer filled in with the horizontal scaling factor.\n@param scaleY a pointer filled in with the vertical scaling factor.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderScale",
+                "name": "GetScale",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "scaleX",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "scaleY",
+                    "type": "float *"
+                  }
+                ],
+                "sourceName": "SDL_GetRenderScale",
+                "immutable": true
+              }
+            ],
+            "SetDrawColor": [
+              {
+                "doc": "Set the color used for drawing operations.\n\nSet the color for drawing or filling rectangles, lines, and points, and for\nSDL_RenderClear().\n\n@param renderer the rendering context.\n@param r the red value used to draw on the rendering target.\n@param g the green value used to draw on the rendering target.\n@param b the blue value used to draw on the rendering target.\n@param a the alpha value used to draw on the rendering target; usually\n         `SDL_ALPHA_OPAQUE` (255). Use SDL_SetRenderDrawBlendMode to\n         specify how the alpha channel is used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderDrawColor\n@sa SDL_SetRenderDrawColorFloat",
+                "name": "SetDrawColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "c",
+                    "type": "SDL_Color"
+                  }
+                ],
+                "sourceName": "SDL_SetRenderDrawColor",
+                "static": false
+              },
+              {
+                "doc": "Set the color used for drawing operations (Rect, Line and Clear).\n\nSet the color for drawing or filling rectangles, lines, and points, and for\nSDL_RenderClear().\n\n@param renderer the rendering context.\n@param r the red value used to draw on the rendering target.\n@param g the green value used to draw on the rendering target.\n@param b the blue value used to draw on the rendering target.\n@param a the alpha value used to draw on the rendering target. Use\n         SDL_SetRenderDrawBlendMode to specify how the alpha channel is\n         used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderDrawColorFloat\n@sa SDL_SetRenderDrawColor",
+                "name": "SetDrawColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "c",
+                    "type": "SDL_FColor"
+                  }
+                ],
+                "sourceName": "SDL_SetRenderDrawColorFloat",
+                "static": false
+              }
+            ],
+            "GetDrawColor": [
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "std::optional<FColor>",
+                "parameters": [],
+                "name": "GetDrawColor",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "SDL_Color *",
+                    "name": "c"
+                  }
+                ],
+                "name": "GetDrawColor",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "SDL_FColor *",
+                    "name": "c"
+                  }
+                ],
+                "name": "GetDrawColor",
+                "doc": ""
+              },
+              {
+                "doc": "Get the color used for drawing operations (Rect, Line and Clear).\n\n@param renderer the rendering context.\n@param r a pointer filled in with the red value used to draw on the\n         rendering target.\n@param g a pointer filled in with the green value used to draw on the\n         rendering target.\n@param b a pointer filled in with the blue value used to draw on the\n         rendering target.\n@param a a pointer filled in with the alpha value used to draw on the\n         rendering target; usually `SDL_ALPHA_OPAQUE` (255).\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderDrawColorFloat\n@sa SDL_SetRenderDrawColor",
+                "name": "GetDrawColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "g",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "b",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "a",
+                    "type": "Uint8 *"
+                  }
+                ],
+                "sourceName": "SDL_GetRenderDrawColor",
+                "immutable": true
+              },
+              {
+                "doc": "Get the color used for drawing operations (Rect, Line and Clear).\n\n@param renderer the rendering context.\n@param r a pointer filled in with the red value used to draw on the\n         rendering target.\n@param g a pointer filled in with the green value used to draw on the\n         rendering target.\n@param b a pointer filled in with the blue value used to draw on the\n         rendering target.\n@param a a pointer filled in with the alpha value used to draw on the\n         rendering target.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderDrawColorFloat\n@sa SDL_GetRenderDrawColor",
+                "name": "GetDrawColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "g",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "b",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "a",
+                    "type": "float *"
+                  }
+                ],
+                "sourceName": "SDL_GetRenderDrawColorFloat",
+                "immutable": true
+              }
+            ],
+            "SetColorScale": {
+              "doc": "Set the color scale used for render operations.\n\nThe color scale is an additional scale multiplied into the pixel color\nvalue while rendering. This can be used to adjust the brightness of colors\nduring HDR rendering, or changing HDR video brightness when playing on an\nSDR display.\n\nThe color scale does not affect the alpha channel, only the color\nbrightness.\n\n@param renderer the rendering context.\n@param scale the color scale value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderColorScale",
+              "name": "SetColorScale",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "scale",
+                  "type": "float"
+                }
+              ],
+              "sourceName": "SDL_SetRenderColorScale"
+            },
+            "GetColorScale": {
+              "doc": "Get the color scale used for render operations.\n\n@param renderer the rendering context.\n@param scale a pointer filled in with the current color scale value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderColorScale",
+              "name": "GetColorScale",
+              "kind": "function",
+              "type": "std::optional<float>",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderColorScale",
+              "immutable": true
+            },
+            "SetDrawBlendMode": {
+              "doc": "Set the blend mode used for drawing operations (Fill and Line).\n\nIf the blend mode is not supported, the closest supported mode is chosen.\n\n@param renderer the rendering context.\n@param blendMode the SDL_BlendMode to use for blending.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderDrawBlendMode",
+              "name": "SetDrawBlendMode",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "blendMode",
+                  "type": "BlendMode"
+                }
+              ],
+              "sourceName": "SDL_SetRenderDrawBlendMode"
+            },
+            "GetDrawBlendMode": {
+              "doc": "Get the blend mode used for drawing operations.\n\n@param renderer the rendering context.\n@param blendMode a pointer filled in with the current SDL_BlendMode.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderDrawBlendMode",
+              "name": "GetDrawBlendMode",
+              "kind": "function",
+              "type": "std::optional<BlendMode>",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderDrawBlendMode",
+              "immutable": true
+            },
+            "RenderClear": {
+              "doc": "Clear the current rendering target with the drawing color.\n\nThis function clears the entire rendering target, ignoring the viewport and\nthe clip rectangle. Note, that clearing will also set/fill all pixels of\nthe rendering target to current renderer draw color, so make sure to invoke\nSDL_SetRenderDrawColor() when needed.\n\n@param renderer the rendering context.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderDrawColor",
+              "name": "RenderClear",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_RenderClear"
+            },
+            "RenderPoint": {
+              "doc": "Draw a point on the current rendering target at subpixel precision.\n\n@param renderer the renderer which should draw a point.\n@param x the x coordinate of the point.\n@param y the y coordinate of the point.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderPoints",
+              "name": "RenderPoint",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "p",
+                  "type": "SDL_FPoint"
+                }
+              ],
+              "sourceName": "SDL_RenderPoint",
+              "static": false
+            },
+            "RenderPoints": {
+              "doc": "Draw multiple points on the current rendering target at subpixel precision.\n\n@param renderer the renderer which should draw multiple points.\n@param points the points to draw.\n@param count the number of points to draw.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderPoint",
+              "name": "RenderPoints",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "points",
+                  "type": "std::span<const SDL_FPoint>"
+                }
+              ],
+              "sourceName": "SDL_RenderPoints",
+              "static": false
+            },
+            "RenderLine": {
+              "doc": "Draw a line on the current rendering target at subpixel precision.\n\n@param renderer the renderer which should draw a line.\n@param x1 the x coordinate of the start point.\n@param y1 the y coordinate of the start point.\n@param x2 the x coordinate of the end point.\n@param y2 the y coordinate of the end point.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderLines",
+              "name": "RenderLine",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "p1",
+                  "type": "SDL_FPoint"
+                },
+                {
+                  "name": "p2",
+                  "type": "SDL_FPoint"
+                }
+              ],
+              "sourceName": "SDL_RenderLine",
+              "static": false
+            },
+            "RenderLines": {
+              "doc": "Draw a series of connected lines on the current rendering target at\nsubpixel precision.\n\n@param renderer the renderer which should draw multiple lines.\n@param points the points along the lines.\n@param count the number of points, drawing count-1 lines.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderLine",
+              "name": "RenderLines",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "points",
+                  "type": "std::span<const SDL_FPoint>"
+                }
+              ],
+              "sourceName": "SDL_RenderLines",
+              "static": false
+            },
+            "RenderRect": {
+              "doc": "Draw a rectangle on the current rendering target at subpixel precision.\n\n@param renderer the renderer which should draw a rectangle.\n@param rect a pointer to the destination rectangle, or NULL to outline the\n            entire rendering target.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderRects",
+              "name": "RenderRect",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "OptionalRef<SDL_FRect>"
+                }
+              ],
+              "sourceName": "SDL_RenderRect",
+              "static": false
+            },
+            "RenderRects": {
+              "doc": "Draw some number of rectangles on the current rendering target at subpixel\nprecision.\n\n@param renderer the renderer which should draw multiple rectangles.\n@param rects a pointer to an array of destination rectangles.\n@param count the number of rectangles.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderRect",
+              "name": "RenderRects",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rects",
+                  "type": "std::span<const SDL_FRect>"
+                }
+              ],
+              "sourceName": "SDL_RenderRects",
+              "static": false
+            },
+            "RenderFillRect": {
+              "doc": "Fill a rectangle on the current rendering target with the drawing color at\nsubpixel precision.\n\n@param renderer the renderer which should fill a rectangle.\n@param rect a pointer to the destination rectangle, or NULL for the entire\n            rendering target.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderFillRects",
+              "name": "RenderFillRect",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "OptionalRef<SDL_FRect>"
+                }
+              ],
+              "sourceName": "SDL_RenderFillRect",
+              "static": false
+            },
+            "RenderFillRects": {
+              "doc": "Fill some number of rectangles on the current rendering target with the\ndrawing color at subpixel precision.\n\n@param renderer the renderer which should fill multiple rectangles.\n@param rects a pointer to an array of destination rectangles.\n@param count the number of rectangles.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderFillRect",
+              "name": "RenderFillRects",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rects",
+                  "type": "std::span<const SDL_FRect>"
+                }
+              ],
+              "sourceName": "SDL_RenderFillRects",
+              "static": false
+            },
+            "RenderTexture": {
+              "doc": "Copy a portion of the texture to the current rendering target at subpixel\nprecision.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect a pointer to the source rectangle, or NULL for the entire\n               texture.\n@param dstrect a pointer to the destination rectangle, or NULL for the\n               entire rendering target.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderTextureRotated\n@sa SDL_RenderTextureTiled",
+              "name": "RenderTexture",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "srcrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                },
+                {
+                  "name": "dstrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                }
+              ],
+              "sourceName": "SDL_RenderTexture",
+              "static": false
+            },
+            "RenderTextureRotated": {
+              "doc": "Copy a portion of the source texture to the current rendering target, with\nrotation and flipping, at subpixel precision.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect a pointer to the source rectangle, or NULL for the entire\n               texture.\n@param dstrect a pointer to the destination rectangle, or NULL for the\n               entire rendering target.\n@param angle an angle in degrees that indicates the rotation that will be\n             applied to dstrect, rotating it in a clockwise direction.\n@param center a pointer to a point indicating the point around which\n              dstrect will be rotated (if NULL, rotation will be done\n              around dstrect.w/2, dstrect.h/2).\n@param flip an SDL_FlipMode value stating which flipping actions should be\n            performed on the texture.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderTexture",
+              "name": "RenderTextureRotated",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "srcrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                },
+                {
+                  "name": "dstrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                },
+                {
+                  "name": "angle",
+                  "type": "double"
+                },
+                {
+                  "name": "center",
+                  "type": "OptionalRef<SDL_FPoint>",
+                  "default": "{}"
+                },
+                {
+                  "name": "flip",
+                  "type": "FlipMode",
+                  "default": "SDL_FLIP_NONE"
+                }
+              ],
+              "sourceName": "SDL_RenderTextureRotated",
+              "static": false
+            },
+            "RenderTextureAffine": {
+              "doc": "Copy a portion of the source texture to the current rendering target, with\naffine transform, at subpixel precision.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect a pointer to the source rectangle, or NULL for the entire\n               texture.\n@param origin a pointer to a point indicating where the top-left corner of\n              srcrect should be mapped to, or NULL for the rendering\n              target's origin.\n@param right a pointer to a point indicating where the top-right corner of\n             srcrect should be mapped to, or NULL for the rendering\n             target's top-right corner.\n@param down a pointer to a point indicating where the bottom-left corner of\n            srcrect should be mapped to, or NULL for the rendering target's\n            bottom-left corner.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety You may only call this function from the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderTexture",
+              "name": "RenderTextureAffine",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "srcrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                },
+                {
+                  "name": "origin",
+                  "type": "OptionalRef<SDL_FPoint>"
+                },
+                {
+                  "name": "right",
+                  "type": "OptionalRef<SDL_FPoint>"
+                },
+                {
+                  "name": "down",
+                  "type": "OptionalRef<SDL_FPoint>"
+                }
+              ],
+              "sourceName": "SDL_RenderTextureAffine",
+              "static": false
+            },
+            "RenderTextureTiled": {
+              "doc": "Tile a portion of the texture to the current rendering target at subpixel\nprecision.\n\nThe pixels in `srcrect` will be repeated as many times as needed to\ncompletely fill `dstrect`.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect a pointer to the source rectangle, or NULL for the entire\n               texture.\n@param scale the scale used to transform srcrect into the destination\n             rectangle, e.g. a 32x32 texture with a scale of 2 would fill\n             64x64 tiles.\n@param dstrect a pointer to the destination rectangle, or NULL for the\n               entire rendering target.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderTexture",
+              "name": "RenderTextureTiled",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "srcrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                },
+                {
+                  "name": "scale",
+                  "type": "float"
+                },
+                {
+                  "name": "dstrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                }
+              ],
+              "sourceName": "SDL_RenderTextureTiled",
+              "static": false
+            },
+            "RenderTexture9Grid": {
+              "doc": "Perform a scaled copy using the 9-grid algorithm to the current rendering\ntarget at subpixel precision.\n\nThe pixels in the texture are split into a 3x3 grid, using the different\ncorner sizes for each corner, and the sides and center making up the\nremaining pixels. The corners are then scaled using `scale` and fit into\nthe corners of the destination rectangle. The sides and center are then\nstretched into place to cover the remaining destination rectangle.\n\n@param renderer the renderer which should copy parts of a texture.\n@param texture the source texture.\n@param srcrect the SDL_Rect structure representing the rectangle to be used\n               for the 9-grid, or NULL to use the entire texture.\n@param left_width the width, in pixels, of the left corners in `srcrect`.\n@param right_width the width, in pixels, of the right corners in `srcrect`.\n@param top_height the height, in pixels, of the top corners in `srcrect`.\n@param bottom_height the height, in pixels, of the bottom corners in\n                     `srcrect`.\n@param scale the scale used to transform the corner of `srcrect` into the\n             corner of `dstrect`, or 0.0f for an unscaled copy.\n@param dstrect a pointer to the destination rectangle, or NULL for the\n               entire rendering target.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderTexture",
+              "name": "RenderTexture9Grid",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "srcrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                },
+                {
+                  "name": "left_width",
+                  "type": "float"
+                },
+                {
+                  "name": "right_width",
+                  "type": "float"
+                },
+                {
+                  "name": "top_height",
+                  "type": "float"
+                },
+                {
+                  "name": "bottom_height",
+                  "type": "float"
+                },
+                {
+                  "name": "scale",
+                  "type": "float"
+                },
+                {
+                  "name": "dstrect",
+                  "type": "OptionalRef<SDL_FRect>"
+                }
+              ],
+              "sourceName": "SDL_RenderTexture9Grid",
+              "static": false
+            },
+            "RenderGeometry": {
+              "doc": "Render a list of triangles, optionally using a texture and indices into the\nvertex array Color and alpha modulation is done per vertex\n(SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).\n\n@param renderer the rendering context.\n@param texture (optional) The SDL texture to use.\n@param vertices vertices.\n@param num_vertices number of vertices.\n@param indices (optional) An array of integer indices into the 'vertices'\n               array, if NULL all vertices will be rendered in sequential\n               order.\n@param num_indices number of indices.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderGeometryRaw",
+              "name": "RenderGeometry",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "vertices",
+                  "type": "std::span<const Vertex>"
+                },
+                {
+                  "name": "indices",
+                  "type": "std::span<const int>",
+                  "default": "{}"
+                }
+              ],
+              "sourceName": "SDL_RenderGeometry",
+              "static": false
+            },
+            "RenderGeometryRaw": {
+              "doc": "Render a list of triangles, optionally using a texture and indices into the\nvertex arrays Color and alpha modulation is done per vertex\n(SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored).\n\n@param renderer the rendering context.\n@param texture (optional) The SDL texture to use.\n@param xy vertex positions.\n@param xy_stride byte size to move from one element to the next element.\n@param color vertex colors (as SDL_FColor).\n@param color_stride byte size to move from one element to the next element.\n@param uv vertex normalized texture coordinates.\n@param uv_stride byte size to move from one element to the next element.\n@param num_vertices number of vertices.\n@param indices (optional) An array of indices into the 'vertices' arrays,\n               if NULL all vertices will be rendered in sequential order.\n@param num_indices number of indices.\n@param size_indices index size: 1 (byte), 2 (short), 4 (int).\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderGeometry",
+              "name": "RenderGeometryRaw",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "texture",
+                  "type": "TextureRef"
+                },
+                {
+                  "name": "xy",
+                  "type": "const float *"
+                },
+                {
+                  "name": "xy_stride",
+                  "type": "int"
+                },
+                {
+                  "name": "color",
+                  "type": "const FColor *"
+                },
+                {
+                  "name": "color_stride",
+                  "type": "int"
+                },
+                {
+                  "name": "uv",
+                  "type": "const float *"
+                },
+                {
+                  "name": "uv_stride",
+                  "type": "int"
+                },
+                {
+                  "name": "num_vertices",
+                  "type": "int"
+                },
+                {
+                  "name": "indices",
+                  "type": "const void *"
+                },
+                {
+                  "name": "num_indices",
+                  "type": "int"
+                },
+                {
+                  "name": "size_indices",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_RenderGeometryRaw"
+            },
+            "RenderReadPixels": {
+              "doc": "Read pixels from the current rendering target.\n\nThe returned surface should be freed with SDL_DestroySurface()\n\n**WARNING**: This is a very slow operation, and should not be used\nfrequently. If you're using this on the main rendering target, it should be\ncalled after rendering and before SDL_RenderPresent().\n\n@param renderer the rendering context.\n@param rect an SDL_Rect structure representing the area in pixels relative\n            to the to current viewport, or NULL for the entire viewport.\n@returns a new SDL_Surface on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "RenderReadPixels",
+              "kind": "function",
+              "type": "SurfaceRef",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "OptionalRef<SDL_Rect>"
+                }
+              ],
+              "sourceName": "SDL_RenderReadPixels",
+              "immutable": true,
+              "static": false
+            },
+            "Present": {
+              "doc": "Update the screen with any rendering performed since the previous call.\n\nSDL's rendering functions operate on a backbuffer; that is, calling a\nrendering function such as SDL_RenderLine() does not directly put a line on\nthe screen, but rather updates the backbuffer. As such, you compose your\nentire scene and *present* the composed backbuffer to the screen as a\ncomplete picture.\n\nTherefore, when using SDL's rendering API, one does all drawing intended\nfor the frame, and then calls this function once per frame to present the\nfinal drawing to the user.\n\nThe backbuffer should be considered invalidated after each present; do not\nassume that previous contents will exist between frames. You are strongly\nencouraged to call SDL_RenderClear() to initialize the backbuffer before\nstarting each new frame's drawing, even if you plan to overwrite every\npixel.\n\nPlease note, that in case of rendering to a texture - there is **no need**\nto call `SDL_RenderPresent` after drawing needed objects to a texture, and\nshould not be done; you are only required to change back the rendering\ntarget to default via `SDL_SetRenderTarget(renderer, NULL)` afterwards, as\ntextures by themselves do not have a concept of backbuffers. Calling\nSDL_RenderPresent while rendering to a texture will still update the screen\nwith any current drawing that has been done _to the window itself_.\n\n@param renderer the rendering context.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer\n@sa SDL_RenderClear\n@sa SDL_RenderFillRect\n@sa SDL_RenderFillRects\n@sa SDL_RenderLine\n@sa SDL_RenderLines\n@sa SDL_RenderPoint\n@sa SDL_RenderPoints\n@sa SDL_RenderRect\n@sa SDL_RenderRects\n@sa SDL_SetRenderDrawBlendMode\n@sa SDL_SetRenderDrawColor",
+              "name": "Present",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_RenderPresent"
+            },
+            "Flush": {
+              "doc": "Force the rendering context to flush any pending commands and state.\n\nYou do not need to (and in fact, shouldn't) call this function unless you\nare planning to call into OpenGL/Direct3D/Metal/whatever directly, in\naddition to using an SDL_Renderer.\n\nThis is for a very-specific case: if you are using SDL's render API, and\nyou plan to make OpenGL/D3D/whatever calls in addition to SDL render API\ncalls. If this applies, you should call this function between calls to\nSDL's render API and the low-level API you're using in cooperation.\n\nIn all other cases, you can ignore this function.\n\nThis call makes SDL flush any pending rendering work it was queueing up to\ndo later in a single batch, and marks any internal cached state as invalid,\nso it'll prepare all its state again later, from scratch.\n\nThis means you do not need to save state in your rendering code to protect\nthe SDL renderer. However, there lots of arbitrary pieces of Direct3D and\nOpenGL state that can confuse things; you should use your best judgment and\nbe prepared to make changes if specific state needs to be protected.\n\n@param renderer the rendering context.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Flush",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_FlushRenderer"
+            },
+            "SetVSync": {
+              "doc": "Toggle VSync of the given renderer.\n\nWhen a renderer is created, vsync defaults to SDL_RENDERER_VSYNC_DISABLED.\n\nThe `vsync` parameter can be 1 to synchronize present with every vertical\nrefresh, 2 to synchronize present with every second vertical refresh, etc.,\nSDL_RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or\nSDL_RENDERER_VSYNC_DISABLED to disable. Not every value is supported by\nevery driver, so you should check the return value to see whether the\nrequested setting is supported.\n\n@param renderer the renderer to toggle.\n@param vsync the vertical refresh sync interval.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderVSync",
+              "name": "SetVSync",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "vsync",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_SetRenderVSync"
+            },
+            "GetVSync": {
+              "doc": "Get VSync of the given renderer.\n\n@param renderer the renderer to toggle.\n@param vsync an int filled with the current vertical refresh sync interval.\n             See SDL_SetRenderVSync() for the meaning of the value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetRenderVSync",
+              "name": "GetVSync",
+              "kind": "function",
+              "type": "std::optional<int>",
+              "parameters": [],
+              "sourceName": "SDL_GetRenderVSync",
+              "immutable": true
+            },
+            "RenderDebugText": {
+              "doc": "Draw debug text to an SDL_Renderer.\n\nThis function will render a string of text to an SDL_Renderer. Note that\nthis is a convenience function for debugging, with severe limitations, and\nnot intended to be used for production apps and games.\n\nAmong these limitations:\n\n- It accepts UTF-8 strings, but will only renders ASCII characters.\n- It has a single, tiny size (8x8 pixels). One can use logical presentation\n  or scaling to adjust it, but it will be blurry.\n- It uses a simple, hardcoded bitmap font. It does not allow different font\n  selections and it does not support truetype, for proper scaling.\n- It does no word-wrapping and does not treat newline characters as a line\n  break. If the text goes out of the window, it's gone.\n\nFor serious text rendering, there are several good options, such as\nSDL_ttf, stb_truetype, or other external libraries.\n\nOn first use, this will create an internal texture for rendering glyphs.\nThis texture will live until the renderer is destroyed.\n\nThe text is drawn in the color specified by SDL_SetRenderDrawColor().\n\n@param renderer the renderer which should draw a line of text.\n@param x the x coordinate where the top-left corner of the text will draw.\n@param y the y coordinate where the top-left corner of the text will draw.\n@param str the string to render.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderDebugTextFormat\n@sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE",
+              "name": "RenderDebugText",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "x",
+                  "type": "float"
+                },
+                {
+                  "name": "y",
+                  "type": "float"
+                },
+                {
+                  "name": "str",
+                  "type": "StringParam"
+                }
+              ],
+              "sourceName": "SDL_RenderDebugText"
+            }
+          }
+        },
+        "TextureBase": {
+          "doc": "An efficient driver-specific representation of pixel data\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface\n@sa SDL_CreateTextureWithProperties\n@sa SDL_DestroyTexture",
+          "name": "TextureBase",
+          "kind": "struct",
+          "sourceName": "SDL_Texture",
+          "type": "T",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "TextureBase": [
+              {
+                "doc": "Create a texture for a rendering context.\n\nThe contents of a texture when first created are not defined.\n\n@param renderer the rendering context.\n@param format one of the enumerated values in SDL_PixelFormat.\n@param access one of the enumerated values in SDL_TextureAccess.\n@param w the width of the texture in pixels.\n@param h the height of the texture in pixels.\n@returns the created texture or NULL on failure; call SDL_GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTextureFromSurface\n@sa SDL_CreateTextureWithProperties\n@sa SDL_DestroyTexture\n@sa SDL_GetTextureSize\n@sa SDL_UpdateTexture",
+                "name": "TextureBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "renderer",
+                    "type": "RendererRef"
+                  },
+                  {
+                    "name": "format",
+                    "type": "PixelFormat"
+                  },
+                  {
+                    "name": "access",
+                    "type": "TextureAccess"
+                  },
+                  {
+                    "name": "w",
+                    "type": "int"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int"
+                  }
+                ],
+                "sourceName": "SDL_CreateTexture",
+                "static": false
+              },
+              {
+                "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe SDL_TextureAccess hint for the created texture is\n`SDL_TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nSDL_PROP_TEXTURE_FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SDL_Surface structure containing pixel data used to fill\n               the texture.\n@returns the created texture or NULL on failure; call SDL_GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureWithProperties\n@sa SDL_DestroyTexture",
+                "name": "TextureBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "renderer",
+                    "type": "RendererRef"
+                  },
+                  {
+                    "name": "surface",
+                    "type": "SurfaceRef"
+                  }
+                ],
+                "sourceName": "SDL_CreateTextureFromSurface",
+                "static": false
+              },
+              {
+                "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER`: an SDL_Colorspace value\n  describing the texture colorspace, defaults to SDL_COLORSPACE_SRGB_LINEAR\n  for floating point textures, SDL_COLORSPACE_HDR10 for 10-bit textures,\n  SDL_COLORSPACE_SRGB for other RGB textures and SDL_COLORSPACE_JPEG for\n  YUV textures.\n- `SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  SDL_PixelFormat, defaults to the best RGBA format for the renderer\n- `SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  SDL_TextureAccess, defaults to SDL_TEXTUREACCESS_STATIC\n- `SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@returns the created texture or NULL on failure; call SDL_GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateProperties\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface\n@sa SDL_DestroyTexture\n@sa SDL_GetTextureSize\n@sa SDL_UpdateTexture",
+                "name": "TextureBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "renderer",
+                    "type": "RendererRef"
+                  },
+                  {
+                    "name": "props",
+                    "type": "PropertiesRef"
+                  }
+                ],
+                "sourceName": "SDL_CreateTextureWithProperties",
+                "static": false
+              }
+            ],
+            "GetProperties": {
+              "doc": "Get the properties associated with a texture.\n\nThe following read-only properties are provided by SDL:\n\n- `SDL_PROP_TEXTURE_COLORSPACE_NUMBER`: an SDL_Colorspace value describing\n  the texture colorspace.\n- `SDL_PROP_TEXTURE_FORMAT_NUMBER`: one of the enumerated values in\n  SDL_PixelFormat.\n- `SDL_PROP_TEXTURE_ACCESS_NUMBER`: one of the enumerated values in\n  SDL_TextureAccess.\n- `SDL_PROP_TEXTURE_WIDTH_NUMBER`: the width of the texture in pixels.\n- `SDL_PROP_TEXTURE_HEIGHT_NUMBER`: the height of the texture in pixels.\n- `SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for other textures.\n- `SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  textures, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. If this is defined, any values outside the\n  range supported by the display will be scaled into the available HDR\n  headroom, otherwise they are clipped. This defaults to 1.0 for SDR\n  textures, 4.0 for HDR10 textures, and no default for floating point\n  textures.\n\nWith the direct3d11 renderer:\n\n- `SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D associated\n  with the texture\n- `SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture\n- `SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture\n\nWith the direct3d12 renderer:\n\n- `SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER`: the ID3D12Resource associated\n  with the texture\n- `SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource associated\n  with the U plane of a YUV texture\n- `SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource associated\n  with the V plane of a YUV texture\n\nWith the vulkan renderer:\n\n- `SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER`: the VkImage associated with the\n  texture\n\nWith the opengl renderer:\n\n- `SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER`: the GLuint texture associated\n  with the texture\n- `SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture\n- `SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture associated\n  with the U plane of a YUV texture\n- `SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture associated\n  with the V plane of a YUV texture\n- `SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER`: the GLenum for the\n  texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_RECTANGLE_ARB`, etc)\n- `SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT`: the texture coordinate width of\n  the texture (0.0 - 1.0)\n- `SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT`: the texture coordinate height of\n  the texture (0.0 - 1.0)\n\nWith the opengles2 renderer:\n\n- `SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture\n- `SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture\n- `SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture\n- `SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture\n- `SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER`: the GLenum for the\n  texture target (`GL_TEXTURE_2D`, `GL_TEXTURE_EXTERNAL_OES`, etc)\n\n@param texture the texture to query.\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetProperties",
+              "kind": "function",
+              "type": "PropertiesRef",
+              "parameters": [],
+              "sourceName": "SDL_GetTextureProperties",
+              "immutable": true
+            },
+            "GetRenderer": {
+              "doc": "Get the renderer that created an SDL_Texture.\n\n@param texture the texture to query.\n@returns a pointer to the SDL_Renderer that created the texture, or NULL on\n         failure; call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "GetRenderer",
+              "kind": "function",
+              "type": "RendererRef",
+              "parameters": [],
+              "sourceName": "SDL_GetRendererFromTexture",
+              "immutable": true
+            },
+            "GetSize": [
+              {
+                "kind": "function",
+                "type": "std::optional<FPoint>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetSize",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "FPoint *",
+                    "name": "size"
+                  }
+                ],
+                "name": "GetSize",
+                "doc": ""
+              },
+              {
+                "doc": "Get the size of a texture, as floating point values.\n\n@param texture the texture to query.\n@param w a pointer filled in with the width of the texture in pixels. This\n         argument can be NULL if you don't need this information.\n@param h a pointer filled in with the height of the texture in pixels. This\n         argument can be NULL if you don't need this information.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "GetSize",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "h",
+                    "type": "float *"
+                  }
+                ],
+                "sourceName": "SDL_GetTextureSize",
+                "immutable": true
+              }
+            ],
+            "SetColorAndAlphaMod": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "Color",
+                    "name": "c"
+                  }
+                ],
+                "name": "SetColorAndAlphaMod",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "FColor",
+                    "name": "c"
+                  }
+                ],
+                "name": "SetColorAndAlphaMod",
+                "doc": ""
+              }
+            ],
+            "GetColorAndAlphaMod": [
+              {
+                "kind": "function",
+                "type": "std::optional<FColor>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetColorAndAlphaMod",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "Color *",
+                    "name": "c"
+                  }
+                ],
+                "name": "GetColorAndAlphaMod",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "FColor *",
+                    "name": "c"
+                  }
+                ],
+                "name": "GetColorAndAlphaMod",
+                "doc": ""
+              }
+            ],
+            "SetColorMod": [
+              {
+                "doc": "Set an additional color value multiplied into render copy operations.\n\nWhen this texture is rendered, during the copy operation each source color\nchannel is modulated by the appropriate color value according to the\nfollowing formula:\n\n`srcC = srcC * (color / 255)`\n\nColor modulation is not always supported by the renderer; it will return\nfalse if color modulation is not supported.\n\n@param texture the texture to update.\n@param r the red color value multiplied into copy operations.\n@param g the green color value multiplied into copy operations.\n@param b the blue color value multiplied into copy operations.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureColorMod\n@sa SDL_SetTextureAlphaMod\n@sa SDL_SetTextureColorModFloat",
+                "name": "SetColorMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "Uint8"
+                  },
+                  {
+                    "name": "g",
+                    "type": "Uint8"
+                  },
+                  {
+                    "name": "b",
+                    "type": "Uint8"
+                  }
+                ],
+                "sourceName": "SDL_SetTextureColorMod"
+              },
+              {
+                "doc": "Set an additional color value multiplied into render copy operations.\n\nWhen this texture is rendered, during the copy operation each source color\nchannel is modulated by the appropriate color value according to the\nfollowing formula:\n\n`srcC = srcC * color`\n\nColor modulation is not always supported by the renderer; it will return\nfalse if color modulation is not supported.\n\n@param texture the texture to update.\n@param r the red color value multiplied into copy operations.\n@param g the green color value multiplied into copy operations.\n@param b the blue color value multiplied into copy operations.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureColorModFloat\n@sa SDL_SetTextureAlphaModFloat\n@sa SDL_SetTextureColorMod",
+                "name": "SetColorMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "float"
+                  },
+                  {
+                    "name": "g",
+                    "type": "float"
+                  },
+                  {
+                    "name": "b",
+                    "type": "float"
+                  }
+                ],
+                "sourceName": "SDL_SetTextureColorModFloat"
+              }
+            ],
+            "GetColorMod": [
+              {
+                "doc": "Get the additional color value multiplied into render copy operations.\n\n@param texture the texture to query.\n@param r a pointer filled in with the current red color value.\n@param g a pointer filled in with the current green color value.\n@param b a pointer filled in with the current blue color value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureAlphaMod\n@sa SDL_GetTextureColorModFloat\n@sa SDL_SetTextureColorMod",
+                "name": "GetColorMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "g",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "b",
+                    "type": "Uint8 *"
+                  }
+                ],
+                "sourceName": "SDL_GetTextureColorMod",
+                "immutable": true
+              },
+              {
+                "doc": "Get the additional color value multiplied into render copy operations.\n\n@param texture the texture to query.\n@param r a pointer filled in with the current red color value.\n@param g a pointer filled in with the current green color value.\n@param b a pointer filled in with the current blue color value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureAlphaModFloat\n@sa SDL_GetTextureColorMod\n@sa SDL_SetTextureColorModFloat",
+                "name": "GetColorMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "g",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "b",
+                    "type": "float *"
+                  }
+                ],
+                "sourceName": "SDL_GetTextureColorModFloat",
+                "immutable": true
+              }
+            ],
+            "SetAlphaMod": [
+              {
+                "doc": "Set an additional alpha value multiplied into render copy operations.\n\nWhen this texture is rendered, during the copy operation the source alpha\nvalue is modulated by this alpha value according to the following formula:\n\n`srcA = srcA * (alpha / 255)`\n\nAlpha modulation is not always supported by the renderer; it will return\nfalse if alpha modulation is not supported.\n\n@param texture the texture to update.\n@param alpha the source alpha value multiplied into copy operations.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureAlphaMod\n@sa SDL_SetTextureAlphaModFloat\n@sa SDL_SetTextureColorMod",
+                "name": "SetAlphaMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "alpha",
+                    "type": "Uint8"
+                  }
+                ],
+                "sourceName": "SDL_SetTextureAlphaMod"
+              },
+              {
+                "doc": "Set an additional alpha value multiplied into render copy operations.\n\nWhen this texture is rendered, during the copy operation the source alpha\nvalue is modulated by this alpha value according to the following formula:\n\n`srcA = srcA * alpha`\n\nAlpha modulation is not always supported by the renderer; it will return\nfalse if alpha modulation is not supported.\n\n@param texture the texture to update.\n@param alpha the source alpha value multiplied into copy operations.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureAlphaModFloat\n@sa SDL_SetTextureAlphaMod\n@sa SDL_SetTextureColorModFloat",
+                "name": "SetAlphaMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "alpha",
+                    "type": "float"
+                  }
+                ],
+                "sourceName": "SDL_SetTextureAlphaModFloat"
+              }
+            ],
+            "GetAlphaMod": [
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "std::optional<Uint8>",
+                "parameters": [],
+                "name": "GetAlphaMod",
+                "doc": ""
+              },
+              {
+                "doc": "Get the additional alpha value multiplied into render copy operations.\n\n@param texture the texture to query.\n@param alpha a pointer filled in with the current alpha value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureAlphaModFloat\n@sa SDL_GetTextureColorMod\n@sa SDL_SetTextureAlphaMod",
+                "name": "GetAlphaMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "alpha",
+                    "type": "Uint8 *"
+                  }
+                ],
+                "sourceName": "SDL_GetTextureAlphaMod",
+                "immutable": true
+              },
+              {
+                "doc": "Get the additional alpha value multiplied into render copy operations.\n\n@param texture the texture to query.\n@param alpha a pointer filled in with the current alpha value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureAlphaMod\n@sa SDL_GetTextureColorModFloat\n@sa SDL_SetTextureAlphaModFloat",
+                "name": "GetAlphaMod",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "alpha",
+                    "type": "float *"
+                  }
+                ],
+                "sourceName": "SDL_GetTextureAlphaModFloat",
+                "immutable": true
+              }
+            ],
+            "SetBlendMode": {
+              "doc": "Set the blend mode for a texture, used by SDL_RenderTexture().\n\nIf the blend mode is not supported, the closest supported mode is chosen\nand this function returns false.\n\n@param texture the texture to update.\n@param blendMode the SDL_BlendMode to use for texture blending.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureBlendMode",
+              "name": "SetBlendMode",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "blendMode",
+                  "type": "BlendMode"
+                }
+              ],
+              "sourceName": "SDL_SetTextureBlendMode"
+            },
+            "GetBlendMode": {
+              "doc": "Get the blend mode used for texture copy operations.\n\n@param texture the texture to query.\n@param blendMode a pointer filled in with the current SDL_BlendMode.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetTextureBlendMode",
+              "name": "GetBlendMode",
+              "kind": "function",
+              "type": "std::optional<BlendMode>",
+              "parameters": [],
+              "sourceName": "SDL_GetTextureBlendMode",
+              "immutable": true
+            },
+            "SetScaleMode": {
+              "doc": "Set the scale mode used for texture scale operations.\n\nThe default texture scale mode is SDL_SCALEMODE_LINEAR.\n\nIf the scale mode is not supported, the closest supported mode is chosen.\n\n@param texture the texture to update.\n@param scaleMode the SDL_ScaleMode to use for texture scaling.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetTextureScaleMode",
+              "name": "SetScaleMode",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "scaleMode",
+                  "type": "ScaleMode"
+                }
+              ],
+              "sourceName": "SDL_SetTextureScaleMode"
+            },
+            "GetScaleMode": {
+              "doc": "Get the scale mode used for texture scale operations.\n\n@param texture the texture to query.\n@param scaleMode a pointer filled in with the current scale mode.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetTextureScaleMode",
+              "name": "GetScaleMode",
+              "kind": "function",
+              "type": "std::optional<ScaleMode>",
+              "parameters": [],
+              "sourceName": "SDL_GetTextureScaleMode",
+              "immutable": true
+            },
+            "UpdateTexture": {
+              "doc": "Update the given texture rectangle with new pixel data.\n\nThe pixel data must be in the pixel format of the texture, which can be\nqueried using the SDL_PROP_TEXTURE_FORMAT_NUMBER property.\n\nThis is a fairly slow function, intended for use with static textures that\ndo not change often.\n\nIf the texture is intended to be updated often, it is preferred to create\nthe texture as streaming and use the locking functions referenced below.\nWhile this function will work with streaming textures, for optimization\nreasons you may not get the pixels back if you lock the texture afterward.\n\n@param texture the texture to update.\n@param rect an SDL_Rect structure representing the area to update, or NULL\n            to update the entire texture.\n@param pixels the raw pixel data in the format of the texture.\n@param pitch the number of bytes in a row of pixel data, including padding\n             between lines.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LockTexture\n@sa SDL_UnlockTexture\n@sa SDL_UpdateNVTexture\n@sa SDL_UpdateYUVTexture",
+              "name": "UpdateTexture",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "const SDL_Rect &"
+                },
+                {
+                  "name": "pixels",
+                  "type": "const void *"
+                },
+                {
+                  "name": "pitch",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_UpdateTexture"
+            },
+            "UpdateYUVTexture": {
+              "doc": "Update a rectangle within a planar YV12 or IYUV texture with new pixel\ndata.\n\nYou can use SDL_UpdateTexture() as long as your pixel data is a contiguous\nblock of Y and U/V planes in the proper order, but this function is\navailable if your pixel data is not contiguous.\n\n@param texture the texture to update.\n@param rect a pointer to the rectangle of pixels to update, or NULL to\n            update the entire texture.\n@param Yplane the raw pixel data for the Y plane.\n@param Ypitch the number of bytes between rows of pixel data for the Y\n              plane.\n@param Uplane the raw pixel data for the U plane.\n@param Upitch the number of bytes between rows of pixel data for the U\n              plane.\n@param Vplane the raw pixel data for the V plane.\n@param Vpitch the number of bytes between rows of pixel data for the V\n              plane.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_UpdateNVTexture\n@sa SDL_UpdateTexture",
+              "name": "UpdateYUVTexture",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "const SDL_Rect &"
+                },
+                {
+                  "name": "Yplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Ypitch",
+                  "type": "int"
+                },
+                {
+                  "name": "Uplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Upitch",
+                  "type": "int"
+                },
+                {
+                  "name": "Vplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Vpitch",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_UpdateYUVTexture"
+            },
+            "UpdateNVTexture": {
+              "doc": "Update a rectangle within a planar NV12 or NV21 texture with new pixels.\n\nYou can use SDL_UpdateTexture() as long as your pixel data is a contiguous\nblock of NV12/21 planes in the proper order, but this function is available\nif your pixel data is not contiguous.\n\n@param texture the texture to update.\n@param rect a pointer to the rectangle of pixels to update, or NULL to\n            update the entire texture.\n@param Yplane the raw pixel data for the Y plane.\n@param Ypitch the number of bytes between rows of pixel data for the Y\n              plane.\n@param UVplane the raw pixel data for the UV plane.\n@param UVpitch the number of bytes between rows of pixel data for the UV\n               plane.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_UpdateTexture\n@sa SDL_UpdateYUVTexture",
+              "name": "UpdateNVTexture",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "const SDL_Rect &"
+                },
+                {
+                  "name": "Yplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "Ypitch",
+                  "type": "int"
+                },
+                {
+                  "name": "UVplane",
+                  "type": "const Uint8 *"
+                },
+                {
+                  "name": "UVpitch",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_UpdateNVTexture"
+            }
+          }
+        },
+        "GetNumRenderDrivers": {
+          "doc": "Get the number of 2D rendering drivers available for the current display.\n\nA render driver is a set of code that handles rendering and texture\nmanagement on a particular display. Normally there is only one, but some\ndrivers may have several available with different capabilities.\n\nThere may be none if SDL was compiled without render support.\n\n@returns the number of built in render drivers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer\n@sa SDL_GetRenderDriver",
+          "name": "GetNumRenderDrivers",
+          "kind": "function",
+          "type": "int",
+          "parameters": [],
+          "sourceName": "SDL_GetNumRenderDrivers"
+        },
+        "GetRenderDriver": {
+          "doc": "Use this function to get the name of a built in 2D rendering driver.\n\nThe list of rendering drivers is given in the order that they are normally\ninitialized by default; the drivers that seem more reasonable to choose\nfirst (as far as the SDL developers believe) are earlier in the list.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"opengl\",\n\"direct3d12\" or \"metal\". These never have Unicode characters, and are not\nmeant to be proper names.\n\n@param index the index of the rendering driver; the value ranges from 0 to\n             SDL_GetNumRenderDrivers() - 1.\n@returns the name of the rendering driver at the requested index, or NULL\n         if an invalid index was specified.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetNumRenderDrivers",
+          "name": "GetRenderDriver",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "index",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_GetRenderDriver"
+        },
+        "CreateWindowAndRenderer": {
+          "doc": "Create a window and default renderer.\n\n@param title the title of the window, in UTF-8 encoding.\n@param width the width of the window.\n@param height the height of the window.\n@param window_flags the flags used to create the window (see\n                    SDL_CreateWindow()).\n@param window a pointer filled with the window, or NULL on error.\n@param renderer a pointer filled with the renderer, or NULL on error.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer\n@sa SDL_CreateWindow",
+          "name": "CreateWindowAndRenderer",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "title",
+              "type": "StringParam"
+            },
+            {
+              "name": "width",
+              "type": "int"
+            },
+            {
+              "name": "height",
+              "type": "int"
+            },
+            {
+              "name": "window_flags",
+              "type": "WindowFlags"
+            },
+            {
+              "name": "window",
+              "type": "W *"
+            },
+            {
+              "name": "renderer",
+              "type": "R *"
+            }
+          ],
+          "sourceName": "SDL_CreateWindowAndRenderer",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "W"
+            },
+            {
+              "type": "ObjectBox<SDL_Renderer *>",
+              "name": "R"
+            }
+          ]
+        },
+        "GetRenderer": {
+          "doc": "Get the renderer associated with a window.\n\n@param window the window to query.\n@returns the rendering context on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetRenderer",
+          "kind": "function",
+          "type": "RendererRef",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "sourceName": "SDL_GetRenderer"
+        },
+        "DestroyTexture": {
+          "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",
+          "name": "DestroyTexture",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "texture",
+              "type": "T &&"
+            }
+          ],
+          "sourceName": "SDL_DestroyTexture",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Texture *>",
+              "name": "T"
+            }
+          ]
+        },
+        "DestroyRenderer": {
+          "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer",
+          "name": "DestroyRenderer",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "renderer",
+              "type": "T &&"
+            }
+          ],
+          "sourceName": "SDL_DestroyRenderer",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Texture *>",
+              "name": "T"
+            }
+          ]
+        },
+        "GetRenderMetalLayer": {
+          "doc": "Get the CAMetalLayer associated with the given Metal renderer.\n\nThis function returns `void *`, so SDL doesn't have to include Metal's\nheaders, but it can be safely cast to a `CAMetalLayer *`.\n\n@param renderer the renderer to query.\n@returns a `CAMetalLayer *` on success, or NULL if the renderer isn't a\n         Metal renderer.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderMetalCommandEncoder",
+          "name": "GetRenderMetalLayer",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "renderer",
+              "type": "RendererRef"
+            }
+          ],
+          "sourceName": "SDL_GetRenderMetalLayer"
+        },
+        "GetRenderMetalCommandEncoder": {
+          "doc": "Get the Metal command encoder for the current frame.\n\nThis function returns `void *`, so SDL doesn't have to include Metal's\nheaders, but it can be safely cast to an `id<MTLRenderCommandEncoder>`.\n\nThis will return NULL if Metal refuses to give SDL a drawable to render to,\nwhich might happen if the window is hidden/minimized/offscreen. This\ndoesn't apply to command encoders for render targets, just the window's\nbackbuffer. Check your return values!\n\n@param renderer the renderer to query.\n@returns an `id<MTLRenderCommandEncoder>` on success, or NULL if the\n         renderer isn't a Metal renderer or there was an error.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderMetalLayer",
+          "name": "GetRenderMetalCommandEncoder",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            {
+              "name": "renderer",
+              "type": "RendererRef"
+            }
+          ],
+          "sourceName": "SDL_GetRenderMetalCommandEncoder"
+        },
+        "AddVulkanRenderSemaphores": {
+          "doc": "Add a set of synchronization semaphores for the current frame.\n\nThe Vulkan renderer will wait for `wait_semaphore` before submitting\nrendering commands and signal `signal_semaphore` after rendering commands\nare complete for this frame.\n\nThis should be called each frame that you want semaphore synchronization.\nThe Vulkan renderer may have multiple frames in flight on the GPU, so you\nshould have multiple semaphores that are used for synchronization. Querying\nSDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER will give you the\nmaximum number of semaphores you'll need.\n\n@param renderer the rendering context.\n@param wait_stage_mask the VkPipelineStageFlags for the wait.\n@param wait_semaphore a VkSempahore to wait on before rendering the current\n                      frame, or 0 if not needed.\n@param signal_semaphore a VkSempahore that SDL will signal when rendering\n                        for the current frame is complete, or 0 if not\n                        needed.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is **NOT** safe to call this function from two threads at\n              once.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "AddVulkanRenderSemaphores",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "renderer",
+              "type": "RendererRef"
+            },
+            {
+              "name": "wait_stage_mask",
+              "type": "Uint32"
+            },
+            {
+              "name": "wait_semaphore",
+              "type": "Sint64"
+            },
+            {
+              "name": "signal_semaphore",
+              "type": "Sint64"
+            }
+          ],
+          "sourceName": "SDL_AddVulkanRenderSemaphores"
         }
       }
     }

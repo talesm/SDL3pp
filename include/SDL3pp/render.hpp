@@ -1,6 +1,3 @@
-#ifndef SDL3PP_RENDER_HPP_
-#define SDL3PP_RENDER_HPP_
-
 /**
  * @file render.hpp
  * @brief Header file for SDL 2D rendering functions.
@@ -27,10 +24,13 @@
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
  */
+#ifndef SDL3PP_RENDER_HPP_
+#define SDL3PP_RENDER_HPP_
 
 #include <SDL3/SDL_render.h>
 #include "blendmode.hpp"
 #include "error.hpp"
+#include "optionalRef.hpp"
 #include "pixels.hpp"
 #include "properties.hpp"
 #include "rect.hpp"

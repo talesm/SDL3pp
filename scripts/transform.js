@@ -239,6 +239,8 @@ function makeRenameEntry(entry, name, typeName) {
     newEntry = {};
   } else if (entry === "ctor") {
     newEntry = { kind: "function", name: typeName, type: "", static: false };
+  } else if (entry === "immutable") {
+    newEntry = { kind: "function", immutable: true };
   } else if (typeof entry !== "object") {
     newEntry = { kind: /** @type {ApiEntryKind} */(entry) };
   } else {
