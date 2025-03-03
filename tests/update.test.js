@@ -123,6 +123,15 @@ test("function is added correctly", () => {
   expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
 });
 
+test("function template is added correctly", () => {
+  const originalContent = ["template<class T>", "inline int a()", "{", '  static_assert(false, "Not implemented");', "}", ""];
+  const originalApi = parseContent("functions.h", originalContent);
+  const modifiedContent = ["inline int a();", ""];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0); const modifiedApi = parseContent("functions.h", reSplit(originalContent));
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});
 
 test("overload is added correctly", () => {
   const originalContent = ["inline int a();", "", "inline int a(float b)", "{", '  static_assert(false, "Not implemented");', "}", ""];
@@ -198,6 +207,17 @@ test("struct's fields is replaced correctly on non-empty struct", () => {
   const originalContent = ["struct S", "{", "", "  float a;", "", "  float b;", "};", ""];
   const originalApi = parseContent("structs.h", originalContent);
   const modifiedContent = ["struct S", "{", "", "  int a;", "  float b;", "};", ""];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));
+  expect(modifiedApi).toEqual(originalApi);
+  expect(modifiedContent.join("\n").trim()).toEqual(originalContent.join("\n").trim());
+});
+
+test("struct's template is added correctly", () => {
+  const originalContent = ["template<class T>", "struct S", "{", "  int a;", "", "};", ""];
+  const originalApi = parseContent("structs.h", originalContent);
+  const modifiedContent = ["struct S", "{", "  int a;", "", "};", ""];
   const changes = updateContent(modifiedContent, originalApi);
   expect(changes).not.toBe(0);
   const modifiedApi = parseContent("structs.h", reSplit(modifiedContent));

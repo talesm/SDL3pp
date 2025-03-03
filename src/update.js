@@ -296,7 +296,6 @@ function generateEntries(entries, prefix) {
 }
 
 /**
- * 
  * @param {ApiEntry|ApiEntry[]} entry 
  * @param {string=} prefix 
  * @returns {string}
@@ -306,28 +305,20 @@ function generateEntry(entry, prefix) {
     return entry.map(e => generateEntry(e, prefix)).join('\n\n');
   }
   prefix = prefix ?? '';
-  const doc = entry.doc ? generateDocString(entry.doc, prefix) + '\n' : '';
-  const placeholder = 'static_assert(false, "Not implemented");';
+  const doc = generateDocString(entry.doc, prefix);
+  const template = generateTemplateSignature(entry.template, prefix);
   switch (entry.kind) {
     case "alias":
       if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
-      return `${doc}${prefix}using ${entry.name} = ${entry.type};`;
+      return `${doc}${template}${prefix}using ${entry.name} = ${entry.type};`;
     case "forward":
       return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
     case "function":
-      var staticStr = entry.static ? "static " : "";
-      var specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
-      var constStr = entry.immutable ? " const" : "";
-      const parameters = generateParameters(entry.parameters);
-      const body = !entry.sourceName ? placeholder
-        : (entry.type == "void" ? "" : "return ") + generateCall(entry.sourceName, ...entry.parameters);
-      return `${doc}${prefix}${staticStr}${specifier}${entry.type} ${entry.name}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+      return doc + template + generateFunction(entry, prefix);
     case "struct":
-      return doc + generateStruct(entry, prefix);
+      return doc + template + generateStruct(entry, prefix);
     case "var":
-      var staticStr = entry.static ? "static " : "";
-      var specifier = entry.constexpr ? "constexpr " : "";
-      return `${doc}${prefix}${staticStr}${specifier}${entry.type} ${entry.name};`;
+      return doc + template + generateDeclPrefix(entry, prefix) + ';';
     default:
       system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
@@ -335,15 +326,38 @@ function generateEntry(entry, prefix) {
 }
 
 /**
- * 
- * @param {string} name 
- * @param {ApiParameters} parameters 
+ * @param {ApiEntry} entry 
+ * @param {boolean}  addThis
  */
-function generateCall(name, ...parameters) {
-  const paramStr = parameters
+function generateCall(entry, addThis) {
+  if (!entry.sourceName) return 'static_assert(false, "Not implemented");';
+  const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
-  return `${name}(${paramStr});`;
+  if (addThis && !paramStr) return entry.sourceName + "(T::get());";
+  return `${entry.sourceName}(${addThis ? "T::get(), " : ""}${paramStr});`;
+}
+
+/**
+ * @param {ApiEntry} entry 
+ * @param {string} prefix 
+ */
+function generateFunction(entry, prefix) {
+  const placeholder = 'static_assert(false, "Not implemented");';
+  const constStr = entry.immutable ? " const" : "";
+  const parameters = generateParameters(entry.parameters);
+  const body = !entry.sourceName ? placeholder : "return" + generateCall(entry, !prefix && !entry.static);
+  return `${generateDeclPrefix(entry, prefix)}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+}
+
+/**
+ * @param {ApiEntry} entry 
+ * @param {string} prefix 
+ */
+function generateDeclPrefix(entry, prefix) {
+  const staticStr = entry.static ? "static " : "";
+  const specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
+  return `${prefix}${staticStr}${specifier}${entry.type} ${entry.name}`;
 }
 
 /**
@@ -364,17 +378,17 @@ function generateStruct(entry, prefix) {
  * @param {string} prefix 
  */
 function generateStructSignature(entry, prefix) {
-  const template = entry.template ? generateTemplateSignature(entry.template, prefix) : '';
-  return `${template}${prefix}struct ${entry.name}`;
+  const template = generateTemplateSignature(entry.template, prefix);
+  return `${prefix}struct ${entry.name}`;
 }
 
 /**
  * 
- * @param {(string|ApiParameter)[]} template 
- * @param {string} prefix 
+ * @param {ApiParameters} template 
+ * @param {string}        prefix 
  */
 function generateTemplateSignature(template, prefix) {
-  return `${prefix}template<${generateParameters(template)}>\n`;
+  return !template ? "" : `${prefix}template<${generateParameters(template)}>\n`;
 }
 
 /**
@@ -403,9 +417,8 @@ function generateParameter(parameter) {
 function generateDocString(docStr, prefix) {
   if (!docStr) return '';
   prefix = prefix ?? '';
-  const replacement = `\n${prefix} *$1`;
   docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
-  return `${prefix}/**\n${docStr}\n${prefix} */`;
+  return `${prefix}/**\n${docStr}\n${prefix} */\n`;
 }
 
 exports.updateApi = updateApi;
