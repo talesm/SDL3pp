@@ -31,6 +31,12 @@ public:
   {
   }
 
+  template<ObjectBox<POINTER> BOX>
+  ObjectRef(BOX&& box)
+    : value(box.release())
+  {
+  }
+
   constexpr ObjectRef(std::nullptr_t)
     : value{0}
   {
