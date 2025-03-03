@@ -312,7 +312,7 @@ function generateEntry(entry, prefix) {
       if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
       return `${doc}${template}${prefix}using ${entry.name} = ${entry.type};`;
     case "forward":
-      return '// Forward decl\n' + generateStructSignature(entry, prefix) + ';';
+      return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
     case "function":
       return doc + template + generateFunction(entry, prefix);
     case "struct":
@@ -334,8 +334,8 @@ function generateCall(entry, addThis) {
   const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
-  if (addThis && !paramStr) return entry.sourceName + "(T::get());";
-  return `${entry.sourceName}(${addThis ? "T::get(), " : ""}${paramStr});`;
+  if (addThis && !paramStr) return `return ${entry.sourceName}(T::get());`;
+  return `return ${entry.sourceName}(${addThis ? "T::get(), " : ""}${paramStr});`;
 }
 
 /**
@@ -343,10 +343,9 @@ function generateCall(entry, addThis) {
  * @param {string} prefix 
  */
 function generateFunction(entry, prefix) {
-  const placeholder = 'static_assert(false, "Not implemented");';
   const constStr = entry.immutable ? " const" : "";
   const parameters = generateParameters(entry.parameters);
-  const body = !entry.sourceName ? placeholder : "return" + generateCall(entry, !prefix && !entry.static);
+  const body = generateCall(entry, !prefix && !entry.static);
   return `${generateDeclPrefix(entry, prefix)}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
 }
 
