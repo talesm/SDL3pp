@@ -40,6 +40,21 @@
 
 namespace SDL {
 
+template<template<class OBJ> class T>
+struct RendererBase;
+
+/// @brief Handle to a non owned renderer
+using RendererRef = RendererBase<ObjectRef>;
+
+template<>
+struct ObjectDeleter<SDL_Renderer>
+{
+  void operator()(SDL_Renderer* renderer) { SDL_DestroyRenderer(renderer); }
+};
+
+/// @brief Handle to an owned renderer
+using Renderer = RendererBase<ObjectUnique>;
+
 /**
  * @brief Vertex structure.
  *
@@ -96,22 +111,6 @@ inline const char* GetRenderDriver(int index)
 {
   return SDL_GetRenderDriver(index);
 }
-
-template<template<class OBJ> class T>
-struct RendererBase;
-
-/// @brief Handle to a non owned renderer
-using RendererRef = RendererBase<ObjectRef>;
-
-template<>
-struct ObjectDeleter<SDL_Renderer>
-{
-  void operator()(SDL_Renderer* renderer) { SDL_DestroyRenderer(renderer); }
-};
-
-/// @brief Handle to an owned renderer
-using Renderer = RendererBase<ObjectUnique>;
-using RendererUnique = Renderer;
 
 /**
  * @brief A structure representing rendering state
