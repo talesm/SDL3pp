@@ -1,5 +1,5 @@
 /**
- * @file video.hpp
+ * @file SDL3pp_video.h
  *
  * # CategoryVideo
  *
@@ -26,6 +26,7 @@
  * most apps can get by with simply creating a window and listening for
  * events, so start with SDL_CreateWindow() and SDL_PollEvent().
  */
+
 #ifndef SDL3PP_VIDEO_H_
 #define SDL3PP_VIDEO_H_
 
@@ -1943,8 +1944,9 @@ struct WindowBase : T
    * @sa GetSurface()
    * @sa UpdateSurface()
    */
-  bool UpdateSurfaceRects(std::span<const SDL_Rect> rects)
+  bool UpdateSurfaceRects(SpanRef<const SDL_Rect> rects)
   {
+    SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
     return SDL_UpdateWindowSurfaceRects(T::get(), rects.data(), rects.size());
   }
 

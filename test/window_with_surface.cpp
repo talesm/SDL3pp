@@ -39,14 +39,14 @@ int main(int argc, char** argv)
 
   constexpr int WW = 64;
 
-  SDL_Rect rects[] = {
+  SDL::Rect rects[] = {
     {10, 10, WW, WW},
     {WIDTH - 10 - WW, HEIGHT - 10 - WW, WW, WW},
     {10, HEIGHT - 10 - WW, WW, WW},
     {WIDTH - 10 - WW, 10, WW, WW},
   };
 
-  SDL_Point speed[] = {
+  SDL::Point speed[] = {
     makeRandomPoint(),
     makeRandomPoint(),
     makeRandomPoint(),

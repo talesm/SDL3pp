@@ -3691,7 +3691,7 @@
                 "static": false,
                 "parameters": [
                   {
-                    "type": "std::span<const SDL_Color>",
+                    "type": "SpanRef<const SDL_Color>",
                     "name": "colors"
                   },
                   {
@@ -4566,7 +4566,7 @@
               "parameters": [
                 {
                   "name": "points",
-                  "type": "std::span<const SDL_Point>"
+                  "type": "SpanRef<const SDL_Point>"
                 },
                 {
                   "name": "clip",
@@ -4880,7 +4880,7 @@
               "parameters": [
                 {
                   "name": "points",
-                  "type": "std::span<const SDL_FPoint>"
+                  "type": "SpanRef<const SDL_FPoint>"
                 },
                 {
                   "name": "clip",
@@ -5895,7 +5895,7 @@
                 "type": "bool",
                 "parameters": [
                   {
-                    "type": "std::span<const SDL_Rect>",
+                    "type": "SpanRef<const SDL_Rect>",
                     "name": "rects"
                   },
                   {
@@ -5914,7 +5914,7 @@
                 "parameters": [
                   {
                     "name": "rects",
-                    "type": "std::span<const SDL_Rect>"
+                    "type": "SpanRef<const SDL_Rect>"
                   },
                   {
                     "name": "color",
@@ -7582,7 +7582,7 @@
               "parameters": [
                 {
                   "name": "rects",
-                  "type": "std::span<const SDL_Rect>"
+                  "type": "SpanRef<const SDL_Rect>"
                 }
               ],
               "sourceName": "SDL_UpdateWindowSurfaceRects"
@@ -9018,7 +9018,7 @@
               "parameters": [
                 {
                   "name": "points",
-                  "type": "std::span<const SDL_FPoint>"
+                  "type": "SpanRef<const SDL_FPoint>"
                 }
               ],
               "sourceName": "SDL_RenderPoints",
@@ -9050,7 +9050,7 @@
               "parameters": [
                 {
                   "name": "points",
-                  "type": "std::span<const SDL_FPoint>"
+                  "type": "SpanRef<const SDL_FPoint>"
                 }
               ],
               "sourceName": "SDL_RenderLines",
@@ -9078,7 +9078,7 @@
               "parameters": [
                 {
                   "name": "rects",
-                  "type": "std::span<const SDL_FRect>"
+                  "type": "SpanRef<const SDL_FRect>"
                 }
               ],
               "sourceName": "SDL_RenderRects",
@@ -9106,7 +9106,7 @@
               "parameters": [
                 {
                   "name": "rects",
-                  "type": "std::span<const SDL_FRect>"
+                  "type": "SpanRef<const SDL_FRect>"
                 }
               ],
               "sourceName": "SDL_RenderFillRects",

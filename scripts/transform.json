@@ -298,7 +298,7 @@
           "static": false,
           "parameters": [
             {
-              "type": "std::span<const SDL_Color>",
+              "type": "SpanRef<const SDL_Color>",
               "name": "colors"
             },
             {
@@ -1181,7 +1181,7 @@
               "type": "std::optional<Rect>",
               "parameters": [
                 {
-                  "type": "std::span<const SDL_Point>",
+                  "type": "SpanRef<const SDL_Point>",
                   "name": "points"
                 },
                 {
@@ -1344,7 +1344,7 @@
               "type": "std::optional<FRect>",
               "parameters": [
                 {
-                  "type": "std::span<const SDL_FPoint>",
+                  "type": "SpanRef<const SDL_FPoint>",
                   "name": "points"
                 },
                 {
@@ -1827,7 +1827,7 @@
               "type": "bool",
               "parameters": [
                 {
-                  "type": "std::span<const SDL_Rect>",
+                  "type": "SpanRef<const SDL_Rect>",
                   "name": "rects"
                 },
                 {
@@ -1844,7 +1844,7 @@
                   "type": "SDL_Surface *"
                 },
                 {
-                  "type": "std::span<const SDL_Rect>",
+                  "type": "SpanRef<const SDL_Rect>",
                   "name": "rects"
                 },
                 {
@@ -2591,7 +2591,7 @@
               "parameters": [
                 {},
                 {
-                  "type": "std::span<const SDL_Rect>"
+                  "type": "SpanRef<const SDL_Rect>"
                 }
               ]
             },
@@ -3066,7 +3066,7 @@
               "static": false,
               "parameters": [
                 {
-                  "type": "std::span<const SDL_FPoint>",
+                  "type": "SpanRef<const SDL_FPoint>",
                   "name": "points"
                 }
               ]
@@ -3088,7 +3088,7 @@
               "static": false,
               "parameters": [
                 {
-                  "type": "std::span<const SDL_FPoint>",
+                  "type": "SpanRef<const SDL_FPoint>",
                   "name": "points"
                 }
               ]
@@ -3106,7 +3106,7 @@
               "static": false,
               "parameters": [
                 {
-                  "type": "std::span<const SDL_FRect>",
+                  "type": "SpanRef<const SDL_FRect>",
                   "name": "rects"
                 }
               ]
@@ -3124,7 +3124,7 @@
               "static": false,
               "parameters": [
                 {
-                  "type": "std::span<const SDL_FRect>",
+                  "type": "SpanRef<const SDL_FRect>",
                   "name": "rects"
                 }
               ]

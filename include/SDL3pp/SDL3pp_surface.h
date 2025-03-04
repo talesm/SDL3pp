@@ -29,6 +29,7 @@
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
+#include "SDL3pp_spanRef.h"
 #include "SDL3pp_stdinc.h"
 #include "SDL3pp_stringParam.h"
 
@@ -1017,7 +1018,7 @@ struct SurfaceBase : T
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
-  bool FillRects(std::span<const SDL_Rect> rects, SDL_Color color)
+  bool FillRects(SpanRef<const SDL_Rect> rects, SDL_Color color)
   {
     return FillRects(rects, MapColor(color));
   }
@@ -1043,7 +1044,7 @@ struct SurfaceBase : T
    *
    * @sa FillRect()
    */
-  bool FillRects(std::span<const SDL_Rect> rects, Uint32 color)
+  bool FillRects(SpanRef<const SDL_Rect> rects, Uint32 color)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_UINT32);
     return SDL_FillSurfaceRects(T::get(), rects.data(), rects.size(), color);

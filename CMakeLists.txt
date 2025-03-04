@@ -39,6 +39,7 @@ add_executable(SDL3pp_unitTests
     test/SDL3pp_freeWrapper.cpp
     test/SDL3pp_objectWrapper.cpp
     test/SDL3pp_properties.cpp
+    test/SDL3pp_spanRef.cpp
     test/SDL3pp_stringParam.cpp
 )
 target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)

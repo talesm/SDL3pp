@@ -1,5 +1,5 @@
 /**
- * @file pixels.hpp
+ * @file SDL3pp_pixels.h
  *
  * # CategoryPixels
  *
@@ -57,12 +57,14 @@
  *
  * The matrix coefficients are used to convert between YCbCr and RGB colors.
  */
+
 #ifndef SDL3PP_PIXELS_H_
 #define SDL3PP_PIXELS_H_
 
 #include <span>
 #include <SDL3/SDL_pixels.h>
 #include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_spanRef.h"
 #include "SDL3pp_stdinc.h"
 
 namespace SDL {
@@ -1128,8 +1130,9 @@ struct PaletteBase : T
    * @threadsafety It is safe to call this function from any thread, as long as
    *               the palette is not modified or destroyed in another thread.
    */
-  bool SetColors(std::span<const SDL_Color> colors, int firstcolor = 0)
+  bool SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
   {
+    SDL_assert_paranoid(colors.size() < SDL_MAX_SINT32);
     return SetColors(colors.data(), firstcolor, colors.size());
   }
 };

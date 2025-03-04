@@ -1,0 +1,66 @@
+#ifndef SDL3PP_SPAN_REF_H_
+#define SDL3PP_SPAN_REF_H_
+
+#include <concepts>
+#include <ranges>
+#include <span>
+
+namespace SDL {
+
+template<class T, class BASE>
+concept DerivedWrapper =
+  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
+
+/**
+ * A wrapper around span that works for out derived-wrapper pattern
+ * (eg, Rect, Color)
+ *
+ */
+template<class T>
+class SpanRef
+{
+  std::span<T> value;
+
+public:
+  constexpr SpanRef() = default;
+
+  template<DerivedWrapper<T> U, size_t N>
+  constexpr SpanRef(U (&other)[N])
+    : value(static_cast<T*>(other), N)
+  {
+  }
+
+  template<DerivedWrapper<T> U>
+  constexpr SpanRef(const std::span<U>& other)
+    : value(other.data(), other.size())
+  {
+  }
+
+  template<std::contiguous_iterator It>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, size_t count)
+    : value((T*)(&*first), count)
+  {
+  }
+
+  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, End last)
+    : value((T*)(&*first), size_t(last - first))
+  {
+  }
+  template<std::ranges::contiguous_range R>
+    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
+  constexpr SpanRef(R&& range)
+    : SpanRef(std::begin(range), std::end(range))
+  {
+  }
+
+  constexpr size_t size() const { return value.size(); }
+
+  constexpr T* data() const { return value.data(); }
+};
+
+} // namespace SDL
+
+#endif /* SDL3PP_SPAN_REF_H_ */

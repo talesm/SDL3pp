@@ -1,11 +1,12 @@
 /**
- * @file rect.hpp
+ * @file SDL3pp_rect.h
  *
  * # CategoryRect
  *
  * Some helper functions for managing rectangles and 2D points, in both
  * integer and floating point versions.
  */
+
 #ifndef SDL3PP_RECT_H_
 #define SDL3PP_RECT_H_
 
@@ -14,6 +15,7 @@
 #include <span>
 #include <SDL3/SDL_rect.h>
 #include "SDL3pp_error.h"
+#include "SDL3pp_spanRef.h"
 #include "SDL3pp_stdinc.h"
 
 namespace SDL {
@@ -761,8 +763,8 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static inline std::optional<Rect> GetEnclosingPoints(
-    std::span<const SDL_Point> points,
+  static std::optional<Rect> GetEnclosingPoints(
+    SpanRef<const SDL_Point> points,
     std::optional<std::reference_wrapper<const SDL_Rect>> clip = std::nullopt)
   {
     Rect result;
@@ -1363,8 +1365,8 @@ struct FRect : SDL_FRect
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static inline std::optional<FRect> GetEnclosingPoints(
-    std::span<const SDL_FPoint> points,
+  static std::optional<FRect> GetEnclosingPoints(
+    SpanRef<const SDL_FPoint> points,
     std::optional<std::reference_wrapper<const SDL_FRect>> clip = std::nullopt)
   {
     FRect result;

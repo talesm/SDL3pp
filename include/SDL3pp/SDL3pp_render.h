@@ -1,5 +1,5 @@
 /**
- * @file render.hpp
+ * @file SDL3pp_render.h
  *
  * # CategoryRender
  *
@@ -1140,7 +1140,7 @@ struct RendererBase : T
    *
    * @sa SDL_RenderPoint
    */
-  bool RenderPoints(std::span<const SDL_FPoint> points)
+  bool RenderPoints(SpanRef<const SDL_FPoint> points)
   {
     SDL_assert_paranoid(points.size() < SDL_MAX_SINT32);
     return SDL_RenderPoints(T::get(), points.data(), points.size());
@@ -1179,7 +1179,7 @@ struct RendererBase : T
    *
    * @sa SDL_RenderLine
    */
-  bool RenderLines(std::span<const SDL_FPoint> points)
+  bool RenderLines(SpanRef<const SDL_FPoint> points)
   {
     SDL_assert_paranoid(points.size() < SDL_MAX_SINT32);
     return SDL_RenderLines(T::get(), points.data(), points.size());
@@ -1218,7 +1218,7 @@ struct RendererBase : T
    *
    * @sa SDL_RenderRect
    */
-  bool RenderRects(std::span<const SDL_FRect> rects)
+  bool RenderRects(SpanRef<const SDL_FRect> rects)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
     return SDL_RenderRects(T::get(), rects.data(), rects.size());
@@ -1258,7 +1258,7 @@ struct RendererBase : T
    *
    * @sa SDL_RenderFillRect
    */
-  bool RenderFillRects(std::span<const SDL_FRect> rects)
+  bool RenderFillRects(SpanRef<const SDL_FRect> rects)
   {
     SDL_assert_paranoid(rects.size() < SDL_MAX_SINT32);
     return SDL_RenderFillRects(T::get(), rects.data(), rects.size());
