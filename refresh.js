@@ -17,7 +17,6 @@ async function main(args) {
   if (args?.length) {
     const filter = new Set(args.map(getRadix));
     targets.push(...config.sources.map(getRadix).filter(s => !filter.has(s)).map(s => `SDL3pp_${s}.h`));
-    console.log(targets);
   }
   var { status } = spawnSync("node", ["scripts/", "update", "scripts/config.json", ...targets], { stdio: 'inherit' });
   if (status === null) process.exit(3);
