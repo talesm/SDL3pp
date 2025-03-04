@@ -23,10 +23,10 @@ target_include_directories(SDL3pp INTERFACE include/)
 target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 
 # Manual tests
-add_executable(test_window WIN32 test/SDL3pp_window.cpp)
-target_link_libraries(test_window PRIVATE SDL3pp)
-add_executable(test_renderer WIN32 test/SDL3pp_renderer.cpp)
-target_link_libraries(test_renderer PRIVATE SDL3pp)
+add_executable(test_window_with_surface WIN32 test/window_with_surface.cpp)
+target_link_libraries(test_window_with_surface PRIVATE SDL3pp)
+add_executable(test_window_with_renderer WIN32 test/window_with_renderer.cpp)
+target_link_libraries(test_window_with_renderer PRIVATE SDL3pp)
 
 # Unit tests
 add_library(test_main OBJECT test/doctest.cpp)
