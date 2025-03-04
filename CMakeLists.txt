@@ -22,6 +22,8 @@ add_library(SDL3pp INTERFACE)
 target_include_directories(SDL3pp INTERFACE include/)
 target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 
+file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
+
 # Manual tests
 add_executable(test_window_with_surface WIN32 test/window_with_surface.cpp)
 target_link_libraries(test_window_with_surface PRIVATE SDL3pp)

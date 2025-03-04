@@ -26,14 +26,8 @@ public:
   }
 
   template<ObjectBox<POINTER> BOX>
-  ObjectRef(const BOX& box)
-    : value(box.get())
-  {
-  }
-
-  template<ObjectBox<POINTER> BOX>
   ObjectRef(BOX&& box)
-    : value(box.release())
+    : value(std::is_reference_v<BOX> ? box.get() : box.release())
   {
   }
 

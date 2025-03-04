@@ -1865,14 +1865,12 @@
                   "name": "src"
                 },
                 {
-                  "type": "const SDL_Point &",
-                  "name": "dstrect",
-                  "default": "{}"
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "srcrect"
                 },
                 {
                   "type": "OptionalRef<const SDL_Rect>",
-                  "name": "srcrect",
-                  "default": "{}"
+                  "name": "dstrect"
                 }
               ]
             },
@@ -1889,11 +1887,11 @@
                 },
                 {
                   "type": "const SDL_Rect &",
-                  "name": "dstrect"
+                  "name": "srcrect"
                 },
                 {
                   "type": "const SDL_Rect &",
-                  "name": "srcrect"
+                  "name": "dstrect"
                 }
               ]
             },
@@ -1909,18 +1907,16 @@
                   "name": "src"
                 },
                 {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "srcrect"
+                },
+                {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "dstrect"
+                },
+                {
                   "type": "SDL_ScaleMode",
                   "name": "scaleMode"
-                },
-                {
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "name": "dstrect",
-                  "default": "{}"
-                },
-                {
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "name": "srcrect",
-                  "default": "{}"
                 }
               ]
             },
@@ -1936,16 +1932,16 @@
                   "name": "src"
                 },
                 {
-                  "type": "SDL_ScaleMode",
-                  "name": "scaleMode"
+                  "type": "const SDL_Rect &",
+                  "name": "srcrect"
                 },
                 {
                   "type": "const SDL_Rect &",
                   "name": "dstrect"
                 },
                 {
-                  "type": "const SDL_Rect &",
-                  "name": "srcrect"
+                  "type": "SDL_ScaleMode",
+                  "name": "scaleMode"
                 }
               ]
             },
@@ -1962,13 +1958,11 @@
                 },
                 {
                   "type": "OptionalRef<const SDL_Rect>",
-                  "name": "dstrect",
-                  "default": "{}"
+                  "name": "srcrect"
                 },
                 {
                   "type": "OptionalRef<const SDL_Rect>",
-                  "name": "srcrect",
-                  "default": "{}"
+                  "name": "dstrect"
                 }
               ]
             },
@@ -1984,6 +1978,10 @@
                   "name": "src"
                 },
                 {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "srcrect"
+                },
+                {
                   "type": "float",
                   "name": "scale"
                 },
@@ -1993,13 +1991,7 @@
                 },
                 {
                   "type": "OptionalRef<const SDL_Rect>",
-                  "name": "dstrect",
-                  "default": "{}"
-                },
-                {
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "name": "srcrect",
-                  "default": "{}"
+                  "name": "dstrect"
                 }
               ]
             },
@@ -2011,6 +2003,10 @@
                 {
                   "type": "SurfaceRef",
                   "name": "src"
+                },
+                {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "srcrect"
                 },
                 {
                   "type": "int",
@@ -2030,13 +2026,7 @@
                 },
                 {
                   "type": "OptionalRef<const SDL_Rect>",
-                  "name": "dstrect",
-                  "default": "{}"
-                },
-                {
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "name": "srcrect",
-                  "default": "{}"
+                  "name": "dstrect"
                 }
               ]
             },
@@ -2052,6 +2042,10 @@
                   "name": "src"
                 },
                 {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "srcrect"
+                },
+                {
                   "type": "int",
                   "name": "left_width"
                 },
@@ -2077,13 +2071,7 @@
                 },
                 {
                   "type": "OptionalRef<const SDL_Rect>",
-                  "name": "dstrect",
-                  "default": "{}"
-                },
-                {
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "name": "srcrect",
-                  "default": "{}"
+                  "name": "dstrect"
                 }
               ]
             },

@@ -1109,13 +1109,13 @@ struct SurfaceBase : T
    * ```
    *
    * @param src the SDL_Surface structure to be copied from.
+   * @param srcrect the SDL_Rect structure representing the rectangle to be
+   *                copied, or NULL to copy the entire surface.
    * @param dstrect the SDL_Point structure representing the x and y position in
    *                the destination surface, or NULL for (0,0). The width and
    *                height are ignored, and are copied from `srcrect`. If you
    *                want a specific width and height, you should use
    *                SDL_BlitSurfaceScaled().
-   * @param srcrect the SDL_Rect structure representing the rectangle to be
-   *                copied, or NULL to copy the entire surface.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1128,11 +1128,10 @@ struct SurfaceBase : T
    * @sa SDL_BlitSurfaceScaled
    */
   bool Blit(SurfaceRef src,
-            const SDL_Point& dstrect = {},
-            OptionalRef<const SDL_Rect> srcrect = {})
+            OptionalRef<const SDL_Rect> srcrect,
+            OptionalRef<const SDL_Rect> dstrect)
   {
-    return SDL_BlitSurface(
-      src.get(), srcrect, T::get(), {dstrect.x, dstrect.y});
+    return SDL_BlitSurface(src.get(), srcrect, T::get(), dstrect);
   }
 
   /**
@@ -1144,7 +1143,6 @@ struct SurfaceBase : T
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, may not be NULL.
-   * @param dst the SDL_Surface structure that is the blit target.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, may not be NULL.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1159,8 +1157,8 @@ struct SurfaceBase : T
    * @sa SDL_BlitSurface
    */
   bool BlitUnchecked(SurfaceRef src,
-                     const SDL_Rect& dstrect,
-                     const SDL_Rect& srcrect)
+                     const SDL_Rect& srcrect,
+                     const SDL_Rect& dstrect)
   {
     return SDL_BlitSurfaceUnchecked(src.get(), srcrect, T::get(), dstrect);
   }
@@ -1172,7 +1170,6 @@ struct SurfaceBase : T
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, or NULL to copy the entire surface.
-   * @param dst the SDL_Surface structure that is the blit target.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, or NULL to fill the entire
    *                destination surface.
@@ -1189,9 +1186,9 @@ struct SurfaceBase : T
    * @sa SDL_BlitSurface
    */
   bool BlitScaled(SurfaceRef src,
-                  SDL_ScaleMode scaleMode,
-                  OptionalRef<const SDL_Rect> dstrect = {},
-                  OptionalRef<const SDL_Rect> srcrect = {})
+                  OptionalRef<const SDL_Rect> srcrect,
+                  OptionalRef<const SDL_Rect> dstrect,
+                  SDL_ScaleMode scaleMode)
   {
     return SDL_BlitSurfaceScaled(
       src.get(), srcrect, T::get(), dstrect, scaleMode);
@@ -1206,7 +1203,6 @@ struct SurfaceBase : T
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, may not be NULL.
-   * @param dst the SDL_Surface structure that is the blit target.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, may not be NULL.
    * @param scaleMode the SDL_ScaleMode to be used.
@@ -1222,9 +1218,9 @@ struct SurfaceBase : T
    * @sa SDL_BlitSurfaceScaled
    */
   bool BlitUncheckedScaled(SurfaceRef src,
-                           SDL_ScaleMode scaleMode,
+                           const SDL_Rect& srcrect,
                            const SDL_Rect& dstrect,
-                           const SDL_Rect& srcrect)
+                           SDL_ScaleMode scaleMode)
   {
     return SDL_BlitSurfaceScaled(
       src.get(), srcrect, T::get(), dstrect, scaleMode);
@@ -1240,7 +1236,6 @@ struct SurfaceBase : T
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, or NULL to copy the entire surface.
-   * @param dst the SDL_Surface structure that is the blit target.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, or NULL to fill the entire surface.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1255,8 +1250,8 @@ struct SurfaceBase : T
    * @sa SDL_BlitSurface
    */
   bool BlitTiled(SurfaceRef src,
-                 OptionalRef<const SDL_Rect> dstrect = {},
-                 OptionalRef<const SDL_Rect> srcrect = {})
+                 OptionalRef<const SDL_Rect> srcrect,
+                 OptionalRef<const SDL_Rect> dstrect)
   {
     return SDL_BlitSurfaceTiled(src.get(), srcrect, T::get(), dstrect);
   }
@@ -1275,7 +1270,6 @@ struct SurfaceBase : T
    *              rectangle, e.g. a 32x32 texture with a scale of 2 would fill
    *              64x64 tiles.
    * @param scaleMode scale algorithm to be used.
-   * @param dst the SDL_Surface structure that is the blit target.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, or NULL to fill the entire surface.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1290,10 +1284,10 @@ struct SurfaceBase : T
    * @sa SDL_BlitSurface
    */
   bool BlitTiledWithScale(SurfaceRef src,
+                          OptionalRef<const SDL_Rect> srcrect,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const SDL_Rect> dstrect = {},
-                          OptionalRef<const SDL_Rect> srcrect = {})
+                          OptionalRef<const SDL_Rect> dstrect)
   {
     return SDL_BlitSurfaceTiledWithScale(
       src.get(), srcrect, scale, scaleMode, T::get(), dstrect);
@@ -1334,22 +1328,22 @@ struct SurfaceBase : T
    * @sa Blit()
    */
   bool Blit9Grid(SurfaceRef src,
+                 OptionalRef<const SDL_Rect> srcrect,
                  int left_width,
                  int right_width,
                  int top_height,
                  int bottom_height,
-                 OptionalRef<const SDL_Rect> dstrect = {},
-                 OptionalRef<const SDL_Rect> srcrect = {})
+                 OptionalRef<const SDL_Rect> dstrect)
   {
     return Blit9GridWithScale(src,
+                              srcrect,
                               left_width,
                               right_width,
                               top_height,
                               bottom_height,
                               0.0,
                               SDL_SCALEMODE_NEAREST,
-                              dstrect,
-                              srcrect);
+                              dstrect);
   }
 
   /**
@@ -1387,14 +1381,14 @@ struct SurfaceBase : T
    * @sa Blit()
    */
   bool Blit9GridWithScale(SurfaceRef src,
+                          OptionalRef<const SDL_Rect> srcrect,
                           int left_width,
                           int right_width,
                           int top_height,
                           int bottom_height,
                           float scale,
                           SDL_ScaleMode scaleMode,
-                          OptionalRef<const SDL_Rect> dstrect = {},
-                          OptionalRef<const SDL_Rect> srcrect = {})
+                          OptionalRef<const SDL_Rect> dstrect)
   {
     return SDL_BlitSurface9Grid(src.get(),
                                 srcrect,

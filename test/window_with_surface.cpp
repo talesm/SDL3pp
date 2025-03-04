@@ -34,10 +34,20 @@ int main(int argc, char** argv)
     return 1;
   }
   SDL::SurfaceRef screen = window.GetSurface();
+  SDL::Surface smileyImg{"assets/smiley.bmp"};
+  if (!smileyImg) {
+    SDL_Log("%s", SDL::GetError());
+    return 1;
+  }
 
   bool running = true;
 
   constexpr int WW = 64;
+
+  SDL::Rect smileyPos{WIDTH / 2 - smileyImg.GetWidth() / 2,
+                      HEIGHT / 2 - smileyImg.GetHeight() / 2,
+                      0,
+                      0};
 
   SDL::Rect rects[] = {
     {10, 10, WW, WW},
@@ -69,6 +79,7 @@ int main(int argc, char** argv)
 
     screen.Fill(SDL::Color{127, 0, 127});
 
+    screen.Blit(smileyImg, {}, smileyPos);
     screen.FillRects(rects, SDL::Color{0, 255, 0});
 
     window.UpdateSurface();

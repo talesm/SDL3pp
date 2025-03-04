@@ -5935,14 +5935,12 @@
                   "type": "SurfaceRef"
                 },
                 {
-                  "name": "dstrect",
-                  "type": "const SDL_Point &",
-                  "default": "{}"
+                  "name": "srcrect",
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
+                  "name": "dstrect",
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
               "sourceName": "SDL_BlitSurface"
@@ -5958,11 +5956,11 @@
                   "type": "SurfaceRef"
                 },
                 {
-                  "name": "dstrect",
+                  "name": "srcrect",
                   "type": "const SDL_Rect &"
                 },
                 {
-                  "name": "srcrect",
+                  "name": "dstrect",
                   "type": "const SDL_Rect &"
                 }
               ],
@@ -5979,18 +5977,16 @@
                   "type": "SurfaceRef"
                 },
                 {
-                  "name": "scaleMode",
-                  "type": "SDL_ScaleMode"
+                  "name": "srcrect",
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
+                  "name": "scaleMode",
+                  "type": "SDL_ScaleMode"
                 }
               ],
               "sourceName": "SDL_BlitSurfaceScaled"
@@ -6006,16 +6002,16 @@
                   "type": "SurfaceRef"
                 },
                 {
-                  "name": "scaleMode",
-                  "type": "SDL_ScaleMode"
+                  "name": "srcrect",
+                  "type": "const SDL_Rect &"
                 },
                 {
                   "name": "dstrect",
                   "type": "const SDL_Rect &"
                 },
                 {
-                  "name": "srcrect",
-                  "type": "const SDL_Rect &"
+                  "name": "scaleMode",
+                  "type": "SDL_ScaleMode"
                 }
               ],
               "sourceName": "SDL_BlitSurfaceUncheckedScaled"
@@ -6031,14 +6027,12 @@
                   "type": "SurfaceRef"
                 },
                 {
-                  "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
+                  "name": "srcrect",
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
+                  "name": "dstrect",
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
               "sourceName": "SDL_BlitSurfaceTiled"
@@ -6054,6 +6048,10 @@
                   "type": "SurfaceRef"
                 },
                 {
+                  "name": "srcrect",
+                  "type": "OptionalRef<const SDL_Rect>"
+                },
+                {
                   "name": "scale",
                   "type": "float"
                 },
@@ -6063,13 +6061,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
               "sourceName": "SDL_BlitSurfaceTiledWithScale"
@@ -6082,6 +6074,10 @@
                 {
                   "type": "SurfaceRef",
                   "name": "src"
+                },
+                {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "srcrect"
                 },
                 {
                   "type": "int",
@@ -6101,13 +6097,7 @@
                 },
                 {
                   "type": "OptionalRef<const SDL_Rect>",
-                  "name": "dstrect",
-                  "default": "{}"
-                },
-                {
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "name": "srcrect",
-                  "default": "{}"
+                  "name": "dstrect"
                 }
               ],
               "doc": ""
@@ -6121,6 +6111,10 @@
                 {
                   "name": "src",
                   "type": "SurfaceRef"
+                },
+                {
+                  "name": "srcrect",
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
                   "name": "left_width",
@@ -6148,13 +6142,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>",
-                  "default": "{}"
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
               "sourceName": "SDL_BlitSurface9Grid"
