@@ -27,6 +27,7 @@
 #define SDL3PP_STDINC_H_
 
 #include <SDL3/SDL_stdinc.h>
+#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_stringParam.h"
 
@@ -492,8 +493,8 @@ struct EnvironmentBase : T
    * @param env the environment to query.
    * @returns a NULL terminated array of pointers to environment variables in
    *          the form "variable=value" or NULL on failure; call SDL_GetError()
-   *          for more information. This is a single allocation that should be
-   *          freed with SDL_free() when it is no longer needed.
+   *          for more information. This is wrapped to be auto-deleted, use
+   *          FreeWrapper.release() if you want to manage manually.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -505,7 +506,10 @@ struct EnvironmentBase : T
    * @sa SDL_SetEnvironmentVariable
    * @sa SDL_UnsetEnvironmentVariable
    **/
-  inline char** GetVariables() { return SDL_GetEnvironmentVariables(T::get()); }
+  inline FreeWrapper<char*[]> GetVariables()
+  {
+    return wrapArray(SDL_GetEnvironmentVariables(T::get()));
+  }
 
   /**
    * @brief Get the Variables count

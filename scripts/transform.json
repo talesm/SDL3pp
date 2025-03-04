@@ -179,7 +179,9 @@
             },
             "SDL_CreateEnvironment": "ctor",
             "SDL_GetEnvironmentVariable": "function",
-            "SDL_GetEnvironmentVariables": "function",
+            "SDL_GetEnvironmentVariables": {
+              "type": "FreeWrapper<char *[]>"
+            },
             "GetVariableCount": {
               "kind": "function",
               "type": "Uint64",

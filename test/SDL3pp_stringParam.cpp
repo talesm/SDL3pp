@@ -12,3 +12,11 @@ TEST_CASE("StringParam")
   REQUIRE_NOTHROW(test(std::string("string")));
   CHECK(result == "string");
 }
+
+TEST_CASE("StringParam const string & optimization")
+{
+  std::string test = "test";
+
+  REQUIRE(SDL::StringParam(test) == test.c_str());
+  REQUIRE(SDL::StringParam(std::string(test)) != test.c_str());
+}

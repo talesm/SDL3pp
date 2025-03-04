@@ -3,7 +3,7 @@
 
 #include <string>
 #include <string_view>
-#include <SDL3/SDL_stdinc.h>
+#include <variant>
 
 namespace SDL {
 
@@ -25,60 +25,45 @@ namespace SDL {
  */
 class StringParamImpl
 {
+  std::variant<std::monostate, const char*, std::string> data;
+
 public:
   constexpr StringParamImpl(std::nullptr_t = nullptr) {}
   constexpr StringParamImpl(const char* str)
-    : str(str)
+    : data(str)
   {
   }
+
   StringParamImpl(const std::string& str)
     : StringParamImpl(str.c_str())
   {
   }
-  StringParamImpl(std::string_view str)
+
+  StringParamImpl(std::string&& str)
+    : data(std::move(str))
   {
-    auto sz = str.size();
-    char* data;
-    if (sz < sizeof(smallStr)) {
-      mode = 2;
-      data = smallStr;
-    } else {
-      mode = 1;
-      data = new char[sz + 1];
-      this->str = data;
-    }
-    SDL_memcpy(data, str.data(), sz);
-    data[sz] = 0;
+  }
+
+  StringParamImpl(std::string_view str)
+    : StringParamImpl(std::string{str})
+  {
   }
 
   StringParamImpl(const StringParamImpl&) = delete;
-  StringParamImpl(StringParamImpl&& lhs)
-    : mode(lhs.mode)
-  {
-    if (mode == 2) {
-      SDL_memcpy(smallStr, lhs.smallStr, sizeof(smallStr));
-    } else {
-      str = lhs.str;
-    }
-    lhs.mode = 0;
-  }
-  ~StringParamImpl()
-  {
-    if (mode == 1) delete[] str;
-  }
+  StringParamImpl(StringParamImpl&&) = default;
   StringParamImpl& operator=(const StringParamImpl&) = delete;
-  StringParamImpl& operator=(StringParamImpl&& lhs) = delete;
+  StringParamImpl& operator=(StringParamImpl&&) = default;
 
-  operator const char*() const { return mode == 2 ? smallStr : str; }
-
-private:
-  union
+  operator const char*() const
   {
-    const char* str = nullptr;
-    char smallStr[sizeof(size_t) * 2 - 1];
-  };
-  // 0: not owning, 1: owning, 2: small
-  int mode = 0;
+    struct Visitor
+    {
+      const char* operator()(const char* a) const { return a; }
+      const char* operator()(const std::string& s) const { return s.c_str(); }
+      const char* operator()(std::monostate) const { return ""; }
+    };
+    return std::visit(Visitor{}, data);
+  }
 };
 #ifdef SDLPP_ENABLE_STRING_PARAM
 using StringParam = StringParamImpl;
@@ -86,7 +71,5 @@ using StringParam = StringParamImpl;
 using StringParam = const char*;
 #endif // SDLPP_ENABLE_STRING_PARAM
 } // namespace SDL
-
-#include "SDL3pp_stdinc.h"
 
 #endif /* SDL3PP_STRING_PARAM_H_ */
