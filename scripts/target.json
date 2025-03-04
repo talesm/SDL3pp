@@ -5173,7 +5173,7 @@
           "template": [
             {
               "name": "T",
-              "type": "class"
+              "type": "ObjectBox<SDL_Surface *>"
             }
           ],
           "doc": ""
@@ -5240,7 +5240,7 @@
           "type": "T",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_Surface *>",
               "name": "T"
             }
           ],

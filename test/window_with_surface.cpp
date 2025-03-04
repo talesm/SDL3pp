@@ -10,6 +10,15 @@
 
 using namespace std::chrono_literals;
 
+static SDL::Point makeRandomPoint()
+{
+  Sint32 magnitude = 4 + SDL::rand(5); //[4-8]
+  Sint32 xx = SDL::rand(magnitude * 2 + 1) - magnitude;
+  Sint32 yy = magnitude - SDL::abs(xx);
+  if (yy > 0 && SDL::rand(2) == 1) yy *= -1;
+  return {xx, yy};
+}
+
 int main(int argc, char** argv)
 {
   SDL::SDL init(SDL_INIT_VIDEO);
@@ -17,7 +26,9 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL::GetError());
     return 1;
   }
-  SDL::Window window{"Test", 400, 400};
+  constexpr int WIDTH = 400;
+  constexpr int HEIGHT = 400;
+  SDL::Window window{"Test", WIDTH, HEIGHT};
   if (!window) {
     SDL_Log("%s", SDL::GetError());
     return 1;
@@ -25,14 +36,43 @@ int main(int argc, char** argv)
   SDL::SurfaceRef screen = window.GetSurface();
 
   bool running = true;
+
+  constexpr int WW = 64;
+
+  SDL_Rect rects[] = {
+    {10, 10, WW, WW},
+    {WIDTH - 10 - WW, HEIGHT - 10 - WW, WW, WW},
+    {10, HEIGHT - 10 - WW, WW, WW},
+    {WIDTH - 10 - WW, 10, WW, WW},
+  };
+
+  SDL_Point speed[] = {
+    makeRandomPoint(),
+    makeRandomPoint(),
+    makeRandomPoint(),
+    makeRandomPoint(),
+  };
+
   while (running) {
     SDL_Event ev;
     while (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_EVENT_QUIT) { running = false; }
     }
-    screen.Fill(0);
+    for (int i = 0; i < 4; i++) {
+      auto& xx = rects[i].x;
+      auto& yy = rects[i].y;
+      xx += speed[i].x;
+      yy += speed[i].y;
+      if (xx < 0 || xx + rects[i].w >= WIDTH) speed[i].x *= -1;
+      if (yy < 0 || yy + rects[i].h >= HEIGHT) speed[i].y *= -1;
+    }
+
+    screen.Fill(SDL::Color{127, 0, 127});
+
+    screen.FillRects(rects, SDL::Color{0, 255, 0});
+
     window.UpdateSurface();
-    SDL::Delay(1ns);
+    SDL::Delay(10ms);
   }
 
   return 0;

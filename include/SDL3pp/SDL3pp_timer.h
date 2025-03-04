@@ -22,7 +22,7 @@ namespace SDL {
  */
 inline void Delay(std::chrono::nanoseconds duration)
 {
-  SDL_Delay(std::max(duration.count(), 0l));
+  SDL_DelayNS(std::max(duration.count(), 1l));
 }
 
 /**

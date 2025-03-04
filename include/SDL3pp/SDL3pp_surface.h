@@ -35,7 +35,7 @@
 namespace SDL {
 
 // Forward decl
-template<class T>
+template<ObjectBox<SDL_Surface*> T>
 struct SurfaceBase;
 
 /**
@@ -98,7 +98,7 @@ using FlipMode = SDL_FlipMode;
  *
  * @sa SurfaceBase::SurfaceBase()
  */
-template<class T>
+template<ObjectBox<SDL_Surface*> T>
 struct SurfaceBase : T
 {
   using T::T;
@@ -1045,7 +1045,8 @@ struct SurfaceBase : T
    */
   bool FillRects(std::span<const SDL_Rect> rects, Uint32 color)
   {
-    return FillRects(rects, color);
+    SDL_assert_paranoid(rects.size() < SDL_MAX_UINT32);
+    return SDL_FillSurfaceRects(T::get(), rects.data(), rects.size(), color);
   }
 
   /**

@@ -1522,7 +1522,7 @@
             "template": [
               {
                 "name": "T",
-                "type": "class"
+                "type": "ObjectBox<SDL_Surface *>"
               }
             ]
           },
@@ -1564,7 +1564,7 @@
           "type": "T",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_Surface *>",
               "name": "T"
             }
           ],
