@@ -345,7 +345,7 @@ function generateCall(entry, addThis) {
 function generateFunction(entry, prefix) {
   const constStr = entry.immutable ? " const" : "";
   const parameters = generateParameters(entry.parameters);
-  const body = generateCall(entry, !prefix && !entry.static);
+  const body = generateCall(entry, !!prefix && !entry.static);
   return `${generateDeclPrefix(entry, prefix)}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
 }
 

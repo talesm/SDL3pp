@@ -8279,7 +8279,7 @@
               "parameters": [
                 {
                   "type": "SDL_Renderer *",
-                  "name": "Renderer"
+                  "name": "renderer"
                 }
               ],
               "doc": ""
@@ -8323,7 +8323,7 @@
               "parameters": [
                 {
                   "type": "SDL_Texture *",
-                  "name": "Texture"
+                  "name": "texture"
                 }
               ],
               "doc": ""
@@ -8377,6 +8377,18 @@
               "doc": ""
             },
             "RendererBase": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "WindowRef",
+                    "name": "window"
+                  }
+                ],
+                "name": "RendererBase",
+                "doc": ""
+              },
               {
                 "doc": "Create a 2D rendering context for a window.\n\nIf you want a specific renderer, you can specify its name here. A list of\navailable renderers can be obtained by calling SDL_GetRenderDriver()\nmultiple times, with indices from 0 to SDL_GetNumRenderDrivers()-1. If you\ndon't need a specific renderer, specify NULL and SDL will attempt to choose\nthe best option for you, based on what is available on the user's system.\n\nIf `name` is a comma-separated list, SDL will try each name, in the order\nlisted, until one succeeds or all of them fail.\n\nBy default the rendering size matches the window size in pixels, but you\ncan call SDL_SetRenderLogicalPresentation() to change the content size and\nscaling options.\n\n@param window the window where rendering is displayed.\n@param name the name of the rendering driver to initialize, or NULL to let\n            SDL choose one.\n@returns a valid rendering context or NULL if there was an error; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRendererWithProperties\n@sa SDL_CreateSoftwareRenderer\n@sa SDL_DestroyRenderer\n@sa SDL_GetNumRenderDrivers\n@sa SDL_GetRenderDriver\n@sa SDL_GetRendererName",
                 "name": "RendererBase",
@@ -8561,45 +8573,24 @@
               "sourceName": "SDL_GetRenderTarget",
               "immutable": true
             },
-            "SetLogicalPresentation": [
-              {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "type": "const SDL_Point &",
-                    "name": "size"
-                  },
-                  {
-                    "name": "mode",
-                    "type": "RendererLogicalPresentation"
-                  }
-                ],
-                "name": "SetLogicalPresentation",
-                "doc": ""
-              },
-              {
-                "doc": "Set a device independent resolution and presentation mode for rendering.\n\nThis function sets the width and height of the logical rendering output.\nThe renderer will act as if the window is always the requested dimensions,\nscaling to the actual window resolution as necessary.\n\nThis can be useful for games that expect a fixed size, but would like to\nscale the output to whatever is available, regardless of how a user resizes\na window, or if the display is high DPI.\n\nYou can disable logical coordinates by setting the mode to\nSDL_LOGICAL_PRESENTATION_DISABLED, and in that case you get the full pixel\nresolution of the output window; it is safe to toggle logical presentation\nduring the rendering of a frame: perhaps most of the rendering is done to\nspecific dimensions but to make fonts look sharp, the app turns off logical\npresentation while drawing text.\n\nLetterboxing will only happen if logical presentation is enabled during\nSDL_RenderPresent; be sure to reenable it first if you were using it.\n\nYou can convert coordinates in an event into rendering coordinates using\nSDL_ConvertEventToRenderCoordinates().\n\n@param renderer the rendering context.\n@param w the width of the logical resolution.\n@param h the height of the logical resolution.\n@param mode the presentation mode used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ConvertEventToRenderCoordinates\n@sa SDL_GetRenderLogicalPresentation\n@sa SDL_GetRenderLogicalPresentationRect",
-                "name": "SetLogicalPresentation",
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "name": "w",
-                    "type": "int"
-                  },
-                  {
-                    "name": "h",
-                    "type": "int"
-                  },
-                  {
-                    "name": "mode",
-                    "type": "RendererLogicalPresentation"
-                  }
-                ],
-                "sourceName": "SDL_SetRenderLogicalPresentation"
-              }
-            ],
+            "SetLogicalPresentation": {
+              "doc": "Set a device independent resolution and presentation mode for rendering.\n\nThis function sets the width and height of the logical rendering output.\nThe renderer will act as if the window is always the requested dimensions,\nscaling to the actual window resolution as necessary.\n\nThis can be useful for games that expect a fixed size, but would like to\nscale the output to whatever is available, regardless of how a user resizes\na window, or if the display is high DPI.\n\nYou can disable logical coordinates by setting the mode to\nSDL_LOGICAL_PRESENTATION_DISABLED, and in that case you get the full pixel\nresolution of the output window; it is safe to toggle logical presentation\nduring the rendering of a frame: perhaps most of the rendering is done to\nspecific dimensions but to make fonts look sharp, the app turns off logical\npresentation while drawing text.\n\nLetterboxing will only happen if logical presentation is enabled during\nSDL_RenderPresent; be sure to reenable it first if you were using it.\n\nYou can convert coordinates in an event into rendering coordinates using\nSDL_ConvertEventToRenderCoordinates().\n\n@param renderer the rendering context.\n@param w the width of the logical resolution.\n@param h the height of the logical resolution.\n@param mode the presentation mode used.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ConvertEventToRenderCoordinates\n@sa SDL_GetRenderLogicalPresentation\n@sa SDL_GetRenderLogicalPresentationRect",
+              "name": "SetLogicalPresentation",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "size",
+                  "type": "SDL_Point"
+                },
+                {
+                  "name": "mode",
+                  "type": "RendererLogicalPresentation"
+                }
+              ],
+              "sourceName": "SDL_SetRenderLogicalPresentation",
+              "static": false
+            },
             "GetLogicalPresentation": [
               {
                 "kind": "function",
@@ -8708,10 +8699,11 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "const SDL_Rect &"
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
-              "sourceName": "SDL_SetRenderViewport"
+              "sourceName": "SDL_SetRenderViewport",
+              "static": false
             },
             "GetViewport": {
               "doc": "Get the drawing area for the current target.\n\n@param renderer the rendering context.\n@param rect an SDL_Rect structure filled in with the current drawing area.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderViewportSet\n@sa SDL_SetRenderViewport",
@@ -8755,10 +8747,11 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "const SDL_Rect &"
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
-              "sourceName": "SDL_SetRenderClipRect"
+              "sourceName": "SDL_SetRenderClipRect",
+              "static": false
             },
             "GetClipRect": {
               "doc": "Get the clip rectangle for the current target.\n\n@param renderer the rendering context.\n@param rect an SDL_Rect structure filled in with the current clipping area\n            or an empty rectangle if clipping is disabled.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RenderClipEnabled\n@sa SDL_SetRenderClipRect",
@@ -9071,7 +9064,7 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
               "sourceName": "SDL_RenderRect",
@@ -9099,7 +9092,7 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
               "sourceName": "SDL_RenderFillRect",
@@ -9131,11 +9124,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
               "sourceName": "SDL_RenderTexture",
@@ -9153,11 +9146,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "angle",
@@ -9165,7 +9158,7 @@
                 },
                 {
                   "name": "center",
-                  "type": "OptionalRef<SDL_FPoint>",
+                  "type": "OptionalRef<const SDL_FPoint>",
                   "default": "{}"
                 },
                 {
@@ -9189,19 +9182,19 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "origin",
-                  "type": "OptionalRef<SDL_FPoint>"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 },
                 {
                   "name": "right",
-                  "type": "OptionalRef<SDL_FPoint>"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 },
                 {
                   "name": "down",
-                  "type": "OptionalRef<SDL_FPoint>"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 }
               ],
               "sourceName": "SDL_RenderTextureAffine",
@@ -9219,7 +9212,7 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "scale",
@@ -9227,7 +9220,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
               "sourceName": "SDL_RenderTextureTiled",
@@ -9245,7 +9238,7 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "left_width",
@@ -9269,7 +9262,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
               "sourceName": "SDL_RenderTexture9Grid",
@@ -9355,11 +9348,11 @@
               "doc": "Read pixels from the current rendering target.\n\nThe returned surface should be freed with SDL_DestroySurface()\n\n**WARNING**: This is a very slow operation, and should not be used\nfrequently. If you're using this on the main rendering target, it should be\ncalled after rendering and before SDL_RenderPresent().\n\n@param renderer the rendering context.\n@param rect an SDL_Rect structure representing the area in pixels relative\n            to the to current viewport, or NULL for the entire viewport.\n@returns a new SDL_Surface on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "RenderReadPixels",
               "kind": "function",
-              "type": "SurfaceRef",
+              "type": "Surface",
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "OptionalRef<SDL_Rect>"
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
               "sourceName": "SDL_RenderReadPixels",
@@ -9756,7 +9749,7 @@
               {
                 "kind": "function",
                 "immutable": true,
-                "type": "std::optional<Uint8>",
+                "type": "std::optional<float>",
                 "parameters": [],
                 "name": "GetAlphaMod",
                 "doc": ""
@@ -9834,15 +9827,15 @@
               "sourceName": "SDL_GetTextureScaleMode",
               "immutable": true
             },
-            "UpdateTexture": {
+            "Update": {
               "doc": "Update the given texture rectangle with new pixel data.\n\nThe pixel data must be in the pixel format of the texture, which can be\nqueried using the SDL_PROP_TEXTURE_FORMAT_NUMBER property.\n\nThis is a fairly slow function, intended for use with static textures that\ndo not change often.\n\nIf the texture is intended to be updated often, it is preferred to create\nthe texture as streaming and use the locking functions referenced below.\nWhile this function will work with streaming textures, for optimization\nreasons you may not get the pixels back if you lock the texture afterward.\n\n@param texture the texture to update.\n@param rect an SDL_Rect structure representing the area to update, or NULL\n            to update the entire texture.\n@param pixels the raw pixel data in the format of the texture.\n@param pitch the number of bytes in a row of pixel data, including padding\n             between lines.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LockTexture\n@sa SDL_UnlockTexture\n@sa SDL_UpdateNVTexture\n@sa SDL_UpdateYUVTexture",
-              "name": "UpdateTexture",
+              "name": "Update",
               "kind": "function",
               "type": "bool",
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "const SDL_Rect &"
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
                   "name": "pixels",
@@ -9855,15 +9848,15 @@
               ],
               "sourceName": "SDL_UpdateTexture"
             },
-            "UpdateYUVTexture": {
+            "UpdateYUV": {
               "doc": "Update a rectangle within a planar YV12 or IYUV texture with new pixel\ndata.\n\nYou can use SDL_UpdateTexture() as long as your pixel data is a contiguous\nblock of Y and U/V planes in the proper order, but this function is\navailable if your pixel data is not contiguous.\n\n@param texture the texture to update.\n@param rect a pointer to the rectangle of pixels to update, or NULL to\n            update the entire texture.\n@param Yplane the raw pixel data for the Y plane.\n@param Ypitch the number of bytes between rows of pixel data for the Y\n              plane.\n@param Uplane the raw pixel data for the U plane.\n@param Upitch the number of bytes between rows of pixel data for the U\n              plane.\n@param Vplane the raw pixel data for the V plane.\n@param Vpitch the number of bytes between rows of pixel data for the V\n              plane.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_UpdateNVTexture\n@sa SDL_UpdateTexture",
-              "name": "UpdateYUVTexture",
+              "name": "UpdateYUV",
               "kind": "function",
               "type": "bool",
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "const SDL_Rect &"
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
                   "name": "Yplane",
@@ -9892,15 +9885,15 @@
               ],
               "sourceName": "SDL_UpdateYUVTexture"
             },
-            "UpdateNVTexture": {
+            "UpdateNV": {
               "doc": "Update a rectangle within a planar NV12 or NV21 texture with new pixels.\n\nYou can use SDL_UpdateTexture() as long as your pixel data is a contiguous\nblock of NV12/21 planes in the proper order, but this function is available\nif your pixel data is not contiguous.\n\n@param texture the texture to update.\n@param rect a pointer to the rectangle of pixels to update, or NULL to\n            update the entire texture.\n@param Yplane the raw pixel data for the Y plane.\n@param Ypitch the number of bytes between rows of pixel data for the Y\n              plane.\n@param UVplane the raw pixel data for the UV plane.\n@param UVpitch the number of bytes between rows of pixel data for the UV\n               plane.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_UpdateTexture\n@sa SDL_UpdateYUVTexture",
-              "name": "UpdateNVTexture",
+              "name": "UpdateNV",
               "kind": "function",
               "type": "bool",
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "const SDL_Rect &"
+                  "type": "OptionalRef<const SDL_Rect>"
                 },
                 {
                   "name": "Yplane",
@@ -10033,7 +10026,7 @@
           "sourceName": "SDL_DestroyRenderer",
           "template": [
             {
-              "type": "ObjectBox<SDL_Texture *>",
+              "type": "ObjectBox<SDL_Renderer *>",
               "name": "T"
             }
           ]

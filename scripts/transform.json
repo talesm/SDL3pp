@@ -2680,7 +2680,7 @@
                 "parameters": [
                   {
                     "type": "SDL_Renderer *",
-                    "name": "Renderer"
+                    "name": "renderer"
                   }
                 ]
               }
@@ -2719,7 +2719,7 @@
                 "parameters": [
                   {
                     "type": "SDL_Texture *",
-                    "name": "Texture"
+                    "name": "texture"
                   }
                 ]
               }
@@ -2745,6 +2745,16 @@
           "type": "T",
           "entries": {
             "T::T": "alias",
+            "RendererBase": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "WindowRef",
+                  "name": "window"
+                }
+              ]
+            },
             "SDL_CreateRenderer": "ctor",
             "SDL_CreateRendererWithProperties": "ctor",
             "SDL_CreateSoftwareRenderer": "ctor",
@@ -2814,12 +2824,12 @@
               "immutable": true,
               "name": "GetTarget"
             },
-            "SetLogicalPresentation": {
-              "kind": "function",
-              "type": "bool",
+            "SDL_SetRenderLogicalPresentation": {
+              "name": "SetLogicalPresentation",
+              "static": false,
               "parameters": [
                 {
-                  "type": "const SDL_Point &",
+                  "type": "SDL_Point",
                   "name": "size"
                 },
                 {
@@ -2827,9 +2837,6 @@
                   "type": "RendererLogicalPresentation"
                 }
               ]
-            },
-            "SDL_SetRenderLogicalPresentation": {
-              "name": "SetLogicalPresentation"
             },
             "GetLogicalPresentation": {
               "kind": "function",
@@ -2884,7 +2891,14 @@
               "parameters": []
             },
             "SDL_SetRenderViewport": {
-              "name": "SetViewport"
+              "name": "SetViewport",
+              "static": false,
+              "parameters": [
+                {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "rect"
+                }
+              ]
             },
             "SDL_GetRenderViewport": {
               "name": "GetViewport",
@@ -2908,7 +2922,14 @@
               "parameters": []
             },
             "SDL_SetRenderClipRect": {
-              "name": "SetClipRect"
+              "name": "SetClipRect",
+              "static": false,
+              "parameters": [
+                {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "rect"
+                }
+              ]
             },
             "SDL_GetRenderClipRect": {
               "name": "GetClipRect",
@@ -3074,7 +3095,7 @@
               "static": false,
               "parameters": [
                 {
-                  "type": "OptionalRef<SDL_FRect>",
+                  "type": "OptionalRef<const SDL_FRect>",
                   "name": "rect"
                 }
               ]
@@ -3092,7 +3113,7 @@
               "static": false,
               "parameters": [
                 {
-                  "type": "OptionalRef<SDL_FRect>",
+                  "type": "OptionalRef<const SDL_FRect>",
                   "name": "rect"
                 }
               ]
@@ -3115,11 +3136,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ]
             },
@@ -3132,11 +3153,11 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "angle",
@@ -3145,7 +3166,7 @@
                 {
                   "name": "center",
                   "default": "{}",
-                  "type": "OptionalRef<SDL_FPoint>"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 },
                 {
                   "name": "flip",
@@ -3163,19 +3184,19 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "origin",
-                  "type": "OptionalRef<SDL_FPoint>"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 },
                 {
                   "name": "right",
-                  "type": "OptionalRef<SDL_FPoint>"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 },
                 {
                   "name": "down",
-                  "type": "OptionalRef<SDL_FPoint>"
+                  "type": "OptionalRef<const SDL_FPoint>"
                 }
               ]
             },
@@ -3188,7 +3209,7 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "scale",
@@ -3196,7 +3217,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ]
             },
@@ -3209,7 +3230,7 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 },
                 {
                   "name": "left_width",
@@ -3233,7 +3254,7 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "OptionalRef<SDL_FRect>"
+                  "type": "OptionalRef<const SDL_FRect>"
                 }
               ]
             },
@@ -3258,10 +3279,11 @@
             "SDL_RenderGeometryRaw": "function",
             "SDL_RenderReadPixels": {
               "immutable": true,
+              "type": "Surface",
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "OptionalRef<SDL_Rect>"
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ]
             },
@@ -3388,7 +3410,7 @@
             "GetAlphaMod": {
               "kind": "function",
               "immutable": true,
-              "type": "std::optional<Uint8>",
+              "type": "std::optional<float>",
               "parameters": []
             },
             "SDL_GetTextureAlphaMod": "immutable",
@@ -3407,9 +3429,45 @@
               "type": "std::optional<ScaleMode>",
               "parameters": []
             },
-            "SDL_UpdateTexture": "function",
-            "SDL_UpdateYUVTexture": "function",
-            "SDL_UpdateNVTexture": "function"
+            "SDL_UpdateTexture": {
+              "name": "Update",
+              "parameters": [
+                {},
+                {
+                  "type": "OptionalRef<const SDL_Rect>"
+                },
+                {},
+                {}
+              ]
+            },
+            "SDL_UpdateYUVTexture": {
+              "name": "UpdateYUV",
+              "parameters": [
+                {},
+                {
+                  "type": "OptionalRef<const SDL_Rect>"
+                },
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
+              ]
+            },
+            "SDL_UpdateNVTexture": {
+              "name": "UpdateNV",
+              "parameters": [
+                {},
+                {
+                  "type": "OptionalRef<const SDL_Rect>"
+                },
+                {},
+                {},
+                {},
+                {}
+              ]
+            }
           }
         },
         "SDL_CreateWindowAndRenderer": {
@@ -3452,7 +3510,7 @@
         "SDL_DestroyRenderer": {
           "template": [
             {
-              "type": "ObjectBox<SDL_Texture *>",
+              "type": "ObjectBox<SDL_Renderer *>",
               "name": "T"
             }
           ],
