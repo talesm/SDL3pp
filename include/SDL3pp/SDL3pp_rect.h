@@ -6,13 +6,15 @@
  * Some helper functions for managing rectangles and 2D points, in both
  * integer and floating point versions.
  */
-#ifndef SDL3PP_RECT_HPP_
-#define SDL3PP_RECT_HPP_
+#ifndef SDL3PP_RECT_H_
+#define SDL3PP_RECT_H_
 
 #include <cmath>
 #include <optional>
 #include <span>
 #include <SDL3/SDL_rect.h>
+#include "SDL3pp_error.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -2037,4 +2039,4 @@ constexpr Rect::operator FRect() const
 
 } // namespace SDL
 
-#endif /* SDL3PP_RECT_HPP_ */
+#endif /* SDL3PP_RECT_H_ */

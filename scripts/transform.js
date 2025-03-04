@@ -380,7 +380,7 @@ function transformDoc(docStr, context) {
  * @param {ApiContext} context 
  */
 function transformIncludeName(name, context) {
-  return transformString(transformName(name, context), context.renameRules);
+  return transformString(name, context.renameRules);
 }
 
 /**

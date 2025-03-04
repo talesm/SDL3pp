@@ -1,4 +1,4 @@
-#include "SDL3pp/objectWrapper.hpp"
+#include "SDL3pp/SDL3pp_objectWrapper.h"
 #include "doctest.h"
 
 struct Dummy

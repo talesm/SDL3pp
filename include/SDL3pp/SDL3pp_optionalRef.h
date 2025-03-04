@@ -1,5 +1,5 @@
-#ifndef SDL3PP_OPTIONAL_REF_HPP_
-#define SDL3PP_OPTIONAL_REF_HPP_
+#ifndef SDL3PP_OPTIONAL_REF_H_
+#define SDL3PP_OPTIONAL_REF_H_
 
 #include <optional>
 
@@ -52,4 +52,4 @@ constexpr OptionalRef<T> fromNullable(T* ptr)
 
 } // namespace SDL
 
-#endif /* SDL3PP_OPTIONAL_REF_HPP_ */
+#endif /* SDL3PP_OPTIONAL_REF_H_ */

@@ -1,5 +1,5 @@
-#ifndef SDL3PP_ERROR_HPP_
-#define SDL3PP_ERROR_HPP_
+#ifndef SDL3PP_ERROR_H_
+#define SDL3PP_ERROR_H_
 
 #include <SDL3/SDL_error.h>
 
@@ -52,4 +52,4 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 } // namespace SDL
 
-#endif /* SDL3PP_ERROR_HPP_ */
+#endif /* SDL3PP_ERROR_H_ */

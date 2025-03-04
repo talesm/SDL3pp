@@ -1,5 +1,5 @@
-#ifndef SDL3PP_CALLBACK_WRAPPER_HPP_
-#define SDL3PP_CALLBACK_WRAPPER_HPP_
+#ifndef SDL3PP_CALLBACK_WRAPPER_H_
+#define SDL3PP_CALLBACK_WRAPPER_H_
 
 #include <functional>
 #include <map>
@@ -70,4 +70,4 @@ struct CallbackWrapper<Result(Args...)>
 
 } // namespace SDL
 
-#endif /* SDL3PP_CALLBACK_WRAPPER_HPP_ */
+#endif /* SDL3PP_CALLBACK_WRAPPER_H_ */

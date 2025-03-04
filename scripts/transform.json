@@ -2,8 +2,8 @@
   "prefixes": "SDL_",
   "renameRules": [
     {
-      "pattern": "\\.h$",
-      "replacement": ".hpp"
+      "pattern": "^SDL_(.*)\\.h$",
+      "replacement": "SDL3pp_$1.h"
     }
   ],
   "typeMap": {

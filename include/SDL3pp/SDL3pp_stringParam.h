@@ -1,5 +1,5 @@
-#ifndef SDL3PP_STRINGWRAPPER_HPP_
-#define SDL3PP_STRINGWRAPPER_HPP_
+#ifndef SDL3PP_STRING_PARAM_H_
+#define SDL3PP_STRING_PARAM_H_
 
 #include <string>
 #include <string_view>
@@ -13,7 +13,7 @@ namespace SDL {
 #define SDLPP_ENABLE_STRING_PARAM
 #endif // SDLPP_DISABLE_STRING_PARAM
 
-#endif // SDLPP_ENABLE_STRING_PARAM
+#endif // SDLPP_ENABLE_STRING_PARAM''
 
 /**
  * @brief A safe and mostly efficient wrapper to std::string and
@@ -87,4 +87,6 @@ using StringParam = const char*;
 #endif // SDLPP_ENABLE_STRING_PARAM
 } // namespace SDL
 
-#endif /* SDL3PP_STRINGWRAPPER_HPP_ */
+#include "SDL3pp_stdinc.h"
+
+#endif /* SDL3PP_STRING_PARAM_H_ */

@@ -18,17 +18,19 @@
  * https://github.com/libsdl-org/SDL_image
  */
 
-#ifndef SDL3PP_SURFACE_HPP_
-#define SDL3PP_SURFACE_HPP_
+#ifndef SDL3PP_SURFACE_H_
+#define SDL3PP_SURFACE_H_
 
 #include <SDL3/SDL_surface.h>
-#include "blendmode.hpp"
-#include "freeWrapper.hpp"
-#include "objectWrapper.hpp"
-#include "pixels.hpp"
-#include "properties.hpp"
-#include "rect.hpp"
-#include "stringParam.hpp"
+#include "SDL3pp_blendmode.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_freeWrapper.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_pixels.h"
+#include "SDL3pp_properties.h"
+#include "SDL3pp_rect.h"
+#include "SDL3pp_stdinc.h"
+#include "SDL3pp_stringParam.h"
 
 namespace SDL {
 
@@ -1853,4 +1855,4 @@ void ObjectDeleter<SDL_Surface>::operator()(SDL_Surface* surface) const
 
 } // namespace SDL
 
-#endif /* SDL3PP_SURFACE_HPP_ */
+#endif /* SDL3PP_SURFACE_H_ */

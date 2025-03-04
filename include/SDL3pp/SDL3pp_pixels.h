@@ -57,13 +57,13 @@
  *
  * The matrix coefficients are used to convert between YCbCr and RGB colors.
  */
-#ifndef SDL3PP_PIXELS_HPP_
-#define SDL3PP_PIXELS_HPP_
+#ifndef SDL3PP_PIXELS_H_
+#define SDL3PP_PIXELS_H_
 
 #include <span>
 #include <SDL3/SDL_pixels.h>
-#include "objectWrapper.hpp"
-#include "stdinc.hpp"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -1357,4 +1357,4 @@ inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
 
 } // namespace SDL
 
-#endif /* SDL3PP_PIXELS_HPP_ */
+#endif /* SDL3PP_PIXELS_H_ */

@@ -1,5 +1,5 @@
-#ifndef SDL3PP_OBJECT_WRAPPER_HPP_
-#define SDL3PP_OBJECT_WRAPPER_HPP_
+#ifndef SDL3PP_OBJECT_WRAPPER_H_
+#define SDL3PP_OBJECT_WRAPPER_H_
 
 #include <concepts>
 #include <memory>
@@ -133,4 +133,4 @@ void std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
   left.swap(right);
 }
 
-#endif /* SDL3PP_OBJECT_WRAPPER_HPP_ */
+#endif /* SDL3PP_OBJECT_WRAPPER_H_ */

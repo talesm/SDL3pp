@@ -1,4 +1,4 @@
-#include "SDL3pp/freeWrapper.hpp"
+#include "SDL3pp/SDL3pp_freeWrapper.h"
 #include "doctest.h"
 
 struct Dummy

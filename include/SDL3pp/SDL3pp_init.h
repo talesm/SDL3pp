@@ -1,9 +1,11 @@
-#ifndef SDL3PP_INIT_HPP_
-#define SDL3PP_INIT_HPP_
+#ifndef SDL3PP_INIT_H_
+#define SDL3PP_INIT_H_
 
 #include <SDL3/SDL_init.h>
-#include "callbackWrapper.hpp"
-#include "stringParam.hpp"
+#include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_stdinc.h"
+#include "SDL3pp_stringParam.h"
 
 /**
  * @namespace SDL
@@ -182,4 +184,4 @@ inline int SDL::refCount(int delta, bool autoQuit)
 
 } // namespace SDL
 
-#endif /* SDL3PP_INIT_HPP_ */
+#endif /* SDL3PP_INIT_H_ */

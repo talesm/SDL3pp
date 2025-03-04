@@ -1,5 +1,5 @@
-#ifndef SDL3PP_BLENDMODE_HPP_
-#define SDL3PP_BLENDMODE_HPP_
+#ifndef SDL3PP_BLENDMODE_H_
+#define SDL3PP_BLENDMODE_H_
 
 /**
  * @file blendmode.hpp
@@ -139,4 +139,4 @@ inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
 
 } // namespace SDL
 
-#endif /* SDL3PP_BLENDMODE_HPP_ */
+#endif /* SDL3PP_BLENDMODE_H_ */

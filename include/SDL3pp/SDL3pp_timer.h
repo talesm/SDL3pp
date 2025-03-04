@@ -1,8 +1,10 @@
-#ifndef SDL3PP_TIMER_HPP_
-#define SDL3PP_TIMER_HPP_
+#ifndef SDL3PP_TIMER_H_
+#define SDL3PP_TIMER_H_
 
 #include <chrono>
 #include <SDL3/SDL_timer.h>
+#include "SDL3pp_error.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -54,4 +56,4 @@ inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
 
 } // namespace SDL
 
-#endif /* SDL3PP_TIMER_HPP_ */
+#endif /* SDL3PP_TIMER_H_ */

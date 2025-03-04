@@ -1,4 +1,4 @@
-#include "SDL3pp/callbackWrapper.hpp"
+#include "SDL3pp/SDL3pp_callbackWrapper.h"
 #include "doctest.h"
 
 TEST_CASE("CallbackWrapper no params")

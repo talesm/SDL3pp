@@ -1,4 +1,4 @@
-#include "SDL3pp/stringParam.hpp"
+#include "SDL3pp/SDL3pp_stringParam.h"
 #include "doctest.h"
 
 TEST_CASE("StringParam")

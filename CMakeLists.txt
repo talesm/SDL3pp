@@ -23,9 +23,9 @@ target_include_directories(SDL3pp INTERFACE include/)
 target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 
 # Manual tests
-add_executable(test_window WIN32 test/window.cpp)
+add_executable(test_window WIN32 test/SDL3pp_window.cpp)
 target_link_libraries(test_window PRIVATE SDL3pp)
-add_executable(test_renderer WIN32 test/renderer.cpp)
+add_executable(test_renderer WIN32 test/SDL3pp_renderer.cpp)
 target_link_libraries(test_renderer PRIVATE SDL3pp)
 
 # Unit tests
@@ -33,10 +33,10 @@ add_library(test_main OBJECT test/doctest.cpp)
 enable_testing()
 
 add_executable(SDL3pp_unitTests 
-    test/callbackWrapper.cpp
-    test/freeWrapper.cpp
-    test/objectWrapper.cpp
-    test/stringParam.cpp
+    test/SDL3pp_callbackWrapper.cpp
+    test/SDL3pp_freeWrapper.cpp
+    test/SDL3pp_objectWrapper.cpp
+    test/SDL3pp_stringParam.cpp
 )
 target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)
 add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)

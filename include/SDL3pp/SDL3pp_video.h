@@ -26,20 +26,20 @@
  * most apps can get by with simply creating a window and listening for
  * events, so start with SDL_CreateWindow() and SDL_PollEvent().
  */
-#ifndef SDL3PP_VIDEO_HPP_
-#define SDL3PP_VIDEO_HPP_
+#ifndef SDL3PP_VIDEO_H_
+#define SDL3PP_VIDEO_H_
 
 #include <memory>
 #include <optional>
 #include <vector>
 #include <SDL3/SDL_video.h>
-#include "error.hpp"
-#include "freeWrapper.hpp"
-#include "objectWrapper.hpp"
-#include "properties.hpp"
-#include "rect.hpp"
-#include "stringParam.hpp"
-#include "surface.hpp"
+#include "SDL3pp_error.h"
+#include "SDL3pp_freeWrapper.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_properties.h"
+#include "SDL3pp_rect.h"
+#include "SDL3pp_stringParam.h"
+#include "SDL3pp_surface.h"
 
 namespace SDL {
 
@@ -3151,4 +3151,4 @@ inline void ObjectDeleter<SDL_Window>::operator()(SDL_Window* window) const
 
 } // namespace SDL
 
-#endif /* SDL3PP_VIDEO_HPP_ */
+#endif /* SDL3PP_VIDEO_H_ */

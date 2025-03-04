@@ -26,14 +26,14 @@
  *
  * Properties can be removed from a group by using PropertiesBase.Clear().
  */
-#ifndef SDL3PP_PROPERTIES_HPP_
-#define SDL3PP_PROPERTIES_HPP_
+#ifndef SDL3PP_PROPERTIES_H_
+#define SDL3PP_PROPERTIES_H_
 
 #include <SDL3/SDL_properties.h>
-#include "callbackWrapper.hpp"
-#include "error.hpp"
-#include "objectWrapper.hpp"
-#include "stringParam.hpp"
+#include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_stringParam.h"
 
 namespace SDL {
 
@@ -589,4 +589,4 @@ inline void PropertiesDeleter::operator()(
 
 } // namespace SDL
 
-#endif /* SDL3PP_PROPERTIES_HPP_ */
+#endif /* SDL3PP_PROPERTIES_H_ */

@@ -23,12 +23,12 @@
  * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
  * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
  */
-#ifndef SDL3PP_STDINC_HPP_
-#define SDL3PP_STDINC_HPP_
+#ifndef SDL3PP_STDINC_H_
+#define SDL3PP_STDINC_H_
 
 #include <SDL3/SDL_stdinc.h>
-#include "objectWrapper.hpp"
-#include "stringParam.hpp"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_stringParam.h"
 
 namespace SDL {
 
@@ -4595,4 +4595,4 @@ inline void ObjectDeleter<SDL_iconv_data_t>::operator()(SDL_iconv_t iconv) const
 
 } // namespace SDL
 
-#endif /* SDL3PP_STDINC_HPP_ */
+#endif /* SDL3PP_STDINC_H_ */
