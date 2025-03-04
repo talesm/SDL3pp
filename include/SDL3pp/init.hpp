@@ -28,7 +28,7 @@ using AppResult = SDL_AppResult;
  * The SubSystems are out of the refCount, as SDL itself already keep track
  * internally.
  */
-class Init
+class SDL
 {
 public:
   /**
@@ -42,14 +42,14 @@ public:
    * this flag, so you can use this to initialize subSystems as well.
    */
 
-  Init(InitFlags flags)
+  SDL(InitFlags flags)
     : flags(flags)
   {
     refCount(+1, true);
   }
 
   // Copy ctor
-  Init(const Init& rhs)
+  SDL(const SDL& rhs)
     : flags(rhs.flags)
     , active(rhs.active)
   {
@@ -57,7 +57,7 @@ public:
   }
 
   // Move ctor
-  Init(Init&& rhs)
+  SDL(SDL&& rhs)
     : flags(rhs.flags)
     , active(rhs.active)
   {
@@ -65,12 +65,12 @@ public:
   }
 
   // Dtor
-  ~Init()
+  ~SDL()
   {
     if (active) refCount(-1);
   }
 
-  Init& operator=(Init rhs)
+  SDL& operator=(SDL rhs)
   {
     std::swap(active, rhs.active);
     std::swap(flags, rhs.flags);
@@ -150,7 +150,9 @@ inline const char* GetAppMetadataProperty(StringParam name)
   return SDL_GetAppMetadataProperty(name);
 }
 
-inline int Init::refCount(int delta, bool autoQuit)
+#pragma region impl
+
+inline int SDL::refCount(int delta, bool autoQuit)
 {
   // TODO Locking these?
   static int refCount = 0;
@@ -175,6 +177,8 @@ inline int Init::refCount(int delta, bool autoQuit)
   }
   return refCount;
 }
+
+#pragma endregion
 
 } // namespace SDL
 
