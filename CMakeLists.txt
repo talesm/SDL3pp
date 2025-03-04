@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(SDL3pp)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 # Create an option to switch between a system sdl library and a vendored SDL library
 option(SDL3PP_VENDORED "Use vendored libraries" OFF)

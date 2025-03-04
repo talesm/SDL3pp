@@ -31,9 +31,6 @@ using AppResult = SDL_AppResult;
 class Init
 {
 public:
-  /// @brief Create object but don't initialize any subSystem
-  Init(bool autoQuit = true);
-
   /**
    * @brief Init given subsystems
    * @param flags
@@ -45,7 +42,7 @@ public:
    * this flag, so you can use this to initialize subSystems as well.
    */
 
-  Init(InitFlags flags, bool autoQuit = true);
+  Init(InitFlags flags = 0);
 
   // Copy ctor
   Init(const Init& rhs);
@@ -66,25 +63,23 @@ public:
   static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
 
   /**
-   * @brief Release locking such as Reset() does, but never calls SDL_Quit() or
+   * @brief release locking such as reset() does, but never calls SDL_Quit() or
    * SDL_QuitSubSystem()
    * @return false if there are still other locks, true if this was last one
    *
    * When this returns true it is safe to call SDL_Quit()
    */
-  bool Release();
+  bool release();
 
   /**
-   * @brief Reset the value of this instance, acts like it was destroyed and
+   * @brief reset the value of this instance, acts like it was destroyed and
    * then newly instantiated
    * @return false if there are still other locks, true if this was last one
    */
-  bool Reset();
+  bool reset();
 
   /// @brief returns true if active and has no errors
   operator bool() const { return active; }
-
-  bool IsQuitAtZero();
 
   InitFlags GetCurrentFlags() const { return flags; }
 
@@ -92,8 +87,7 @@ private:
   InitFlags flags = 0;
   bool active = true;
 
-  // Update refCount and quit if necessary
-  int refCount(int delta, bool autoQuit = true, bool* autoQuitOut = nullptr);
+  int refCount(int delta, bool autoQuit = true);
 };
 
 inline bool IsMainThread() { return SDL_IsMainThread(); }
@@ -132,10 +126,10 @@ inline const char* GetAppMetadataProperty(StringParam name)
   return SDL_GetAppMetadataProperty(name);
 }
 
-inline Init::Init(InitFlags flags, bool autoQuit)
+inline Init::Init(InitFlags flags)
   : flags(flags)
 {
-  refCount(+1, autoQuit);
+  refCount(+1, true);
 }
 
 // Copy ctor
@@ -166,41 +160,37 @@ inline Init& Init::operator=(Init rhs)
   return *this;
 }
 
-inline bool Init::Release()
+inline bool Init::release()
 {
   flags = 0;
   return refCount(-1, false) == 0;
 }
 
-inline bool Init::Reset() { return refCount(-1) == 0; }
+inline bool Init::reset() { return refCount(-1) == 0; }
 
-inline bool Init::IsQuitAtZero()
-{
-  bool result;
-  refCount(0, false, &result);
-  return result;
-}
-
-inline int Init::refCount(int delta, bool autoQuit, bool* autoQuitOut)
+inline int Init::refCount(int delta, bool autoQuit)
 {
   // TODO Locking these?
   static int refCount = 0;
-  static bool quitAtZero = false;
   if (delta && active) {
     if (delta > 0) {
-      if (refCount++ == 0) quitAtZero = autoQuit;
+      refCount += 1;
       if (flags) active = SDL_InitSubSystem(flags);
     } else {
       SDL_assert_always(refCount > 0);
       active = false;
-      if (--refCount <= 0 && quitAtZero && autoQuit) {
-        SDL_Quit();
-      } else if (flags) {
-        SDL_QuitSubSystem(flags);
+      refCount -= 1;
+
+      if (autoQuit) {
+        if (refCount <= 0) {
+          // TODO Make this under FLAG
+          SDL_Quit();
+        } else if (flags) {
+          SDL_QuitSubSystem(flags);
+        }
       }
     }
   }
-  if (autoQuitOut) *autoQuitOut = quitAtZero;
   return refCount;
 }
 
