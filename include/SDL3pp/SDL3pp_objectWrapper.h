@@ -112,7 +112,8 @@ public:
 
   bool operator==(nullptr_t) const { return bool(*this); }
 
-  operator T() const { return value; }
+  constexpr operator T() const { return value; }
+
   T operator*() const { return value; }
   T& operator*() { return value; }
 

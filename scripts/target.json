@@ -4349,7 +4349,7 @@
                 "immutable": true,
                 "template": [
                   {
-                    "type": "class",
+                    "type": "std::output_iterator<const char *>",
                     "name": "IT"
                   }
                 ],

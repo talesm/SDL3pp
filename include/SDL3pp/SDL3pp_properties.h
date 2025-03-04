@@ -536,11 +536,25 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    */
-  template<class IT>
+  template<std::output_iterator<const char*> IT>
   bool Enumerate(IT outputIter) const
   {
     return Enumerate(
       [&outputIter](auto props, const char name) { *outputIter++ = name; });
+  }
+
+  /**
+   * Returns the number of properties this has
+   *
+   * This uses Enumerate() internally, so might not be so fast
+   */
+  Uint64 GetCount() const
+  {
+    Uint64 count = 0;
+    if (Enumerate([&](SDL_PropertiesID, const char*) { count++; })) {
+      return count;
+    }
+    return 0;
   }
 };
 
