@@ -10083,6 +10083,270 @@
           "sourceName": "SDL_AddVulkanRenderSemaphores"
         }
       }
+    },
+    "SDL3pp_init.h": {
+      "name": "SDL3pp_init.h",
+      "doc": "@file SDL3pp_init.h\n\n# CategoryInit\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call SDL_Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `SDL_INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call SDL_Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSDL_SetAppMetadataProperty().",
+      "entries": {
+        "InitFlags": {
+          "doc": "Initialization flags for SDL_Init and/or SDL_InitSubSystem\n\nThese are the flags which may be passed to SDL_Init(). You should specify\nthe subsystems which you will be using in your application.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_Quit\n@sa SDL_InitSubSystem\n@sa SDL_QuitSubSystem\n@sa SDL_WasInit",
+          "name": "InitFlags",
+          "kind": "alias",
+          "type": "SDL_InitFlags",
+          "sourceName": "SDL_InitFlags"
+        },
+        "AppResult": {
+          "doc": "Return values for optional main callbacks.\n\nReturning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,\nSDL_AppEvent, or SDL_AppIterate will terminate the program and report\nsuccess/failure to the operating system. What that means is\nplatform-dependent. On Unix, for example, on success, the process error\ncode will be zero, and on failure it will be 1. This interface doesn't\nallow you to return specific exit codes, just whether there was an error\ngenerally or not.\n\nReturning SDL_APP_CONTINUE from these functions will let the app continue\nto run.\n\nSee\n[Main callbacks in SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)\nfor complete details.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "AppResult",
+          "kind": "alias",
+          "sourceName": "SDL_AppResult",
+          "type": "SDL_AppResult"
+        },
+        "AppInit_func": {
+          "doc": "Function pointer typedef for SDL_AppInit.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppInit directly.\n\n@param appstate a place where the app can optionally store a pointer for\n                future use.\n@param argc the standard ANSI C main's argc; number of elements in `argv`.\n@param argv the standard ANSI C main's argv; array of command line\n            arguments.\n@returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to\n         terminate with success, SDL_APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppInit_func",
+          "kind": "alias",
+          "type": "SDL_AppInit_func",
+          "sourceName": "SDL_AppInit_func"
+        },
+        "AppIterate_func": {
+          "doc": "Function pointer typedef for SDL_AppIterate.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppIterate directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to\n         terminate with success, SDL_APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppIterate_func",
+          "kind": "alias",
+          "type": "SDL_AppIterate_func",
+          "sourceName": "SDL_AppIterate_func"
+        },
+        "AppEvent_func": {
+          "doc": "Function pointer typedef for SDL_AppEvent.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param event the new event for the app to examine.\n@returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to\n         terminate with success, SDL_APP_CONTINUE to continue.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppEvent_func",
+          "kind": "alias",
+          "type": "SDL_AppEvent_func",
+          "sourceName": "SDL_AppEvent_func"
+        },
+        "AppQuit_func": {
+          "doc": "Function pointer typedef for SDL_AppQuit.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppEvent directly.\n\n@param appstate an optional pointer, provided by the app in SDL_AppInit.\n@param result the result code that terminated the app (success or failure).\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AppQuit_func",
+          "kind": "alias",
+          "type": "SDL_AppQuit_func",
+          "sourceName": "SDL_AppQuit_func"
+        },
+        "Init": {
+          "doc": "Initialize the SDL library.\n\nSDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nSDL_Init fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as SDL_Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem\n- `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `SDL_INIT_EVENTS`: events subsystem\n- `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call SDL_QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall SDL_Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling SDL_Init, using either SDL_SetAppMetadata() or\nSDL_SetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAppMetadata\n@sa SDL_SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa SDL_Quit\n@sa SDL_SetMainReady\n@sa SDL_WasInit",
+          "name": "Init",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_Init"
+        },
+        "InitSubSystem": {
+          "doc": "Compatibility function to initialize the SDL library.\n\nThis function and SDL_Init() are interchangeable.\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_Quit\n@sa SDL_QuitSubSystem",
+          "name": "InitSubSystem",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_InitSubSystem"
+        },
+        "QuitSubSystem": {
+          "doc": "Shut down specific SDL subsystems.\n\nYou still need to call SDL_Quit() even if you close all open subsystems\nwith SDL_QuitSubSystem().\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_InitSubSystem\n@sa SDL_Quit",
+          "name": "QuitSubSystem",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_QuitSubSystem"
+        },
+        "WasInit": {
+          "doc": "Get a mask of the specified subsystems which are currently initialized.\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n@returns a mask of all initialized subsystems if `flags` is 0, otherwise it\n         returns the initialization status of the specified subsystems.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_InitSubSystem",
+          "name": "WasInit",
+          "kind": "function",
+          "type": "InitFlags",
+          "parameters": [
+            {
+              "name": "flags",
+              "type": "InitFlags"
+            }
+          ],
+          "sourceName": "SDL_WasInit"
+        },
+        "Quit": {
+          "doc": "Clean up all initialized subsystems.\n\nYou should call this function even if you have already shutdown each\ninitialized subsystem with SDL_QuitSubSystem(). It is safe to call this\nfunction even in the case of errors in initialization.\n\nYou can use this function with atexit() to ensure that it is run when your\napplication is shutdown, but it is not wise to do this from a library or\nother dynamically loaded code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_QuitSubSystem",
+          "name": "Quit",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_Quit"
+        },
+        "SDL": {
+          "kind": "struct",
+          "name": "SDL",
+          "entries": {
+            "SDL": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "InitFlags",
+                    "name": "flags"
+                  }
+                ],
+                "name": "SDL",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const SDL &",
+                    "name": "other"
+                  }
+                ],
+                "name": "SDL",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL &&",
+                    "name": "other"
+                  }
+                ],
+                "name": "SDL",
+                "doc": ""
+              }
+            ]
+          },
+          "doc": ""
+        },
+        "IsMainThread": {
+          "doc": "Return whether this is the main thread.\n\nOn Apple platforms, the main thread is the thread that runs your program's\nmain() entry point. On other platforms, the main thread is the one that\ncalls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs\nyour program's main() entry point. If you are using the main callbacks,\nSDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the\nmain thread.\n\n@returns true if this thread is the main thread, or false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RunOnMainThread",
+          "name": "IsMainThread",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_IsMainThread"
+        },
+        "MainThreadCallback": {
+          "doc": "Callback run on the main thread.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_RunOnMainThread",
+          "name": "MainThreadCallback",
+          "kind": "alias",
+          "type": "SDL_MainThreadCallback",
+          "sourceName": "SDL_MainThreadCallback"
+        },
+        "MainThreadFunction": {
+          "kind": "alias",
+          "name": "MainThreadFunction",
+          "type": "std::function<void()>",
+          "doc": ""
+        },
+        "RunOnMainThread": [
+          {
+            "doc": "Call a function on the main thread during event processing.\n\nIf this is called on the main thread, the callback is executed immediately.\nIf this is called on another thread, this callback is queued for execution\non the main thread during event processing.\n\nBe careful of deadlocks when using this functionality. You should not have\nthe main thread wait for the current thread while this function is being\ncalled with `wait_complete` true.\n\n@param callback the callback to call on the main thread.\n@param userdata a pointer that is passed to `callback`.\n@param wait_complete true to wait for the callback to complete, false to\n                     return immediately.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_IsMainThread",
+            "name": "RunOnMainThread",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "MainThreadCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              },
+              {
+                "name": "wait_complete",
+                "type": "bool"
+              }
+            ],
+            "sourceName": "SDL_RunOnMainThread"
+          },
+          {
+            "kind": "function",
+            "name": "RunOnMainThread",
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "MainThreadFunction",
+                "name": "callback"
+              },
+              {
+                "type": "bool",
+                "name": "wait_complete"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "SetAppMetadata": {
+          "doc": "Specify basic metadata about your app.\n\nYou can optionally provide metadata about your app to SDL. This is not\nrequired, but strongly encouraged.\n\nThere are several locations where SDL can make use of metadata (an \"About\"\nbox in the macOS menu bar, the name of the app can be shown on some audio\nmixers, etc). Any piece of metadata can be left as NULL, if a specific\ndetail doesn't make sense for the app.\n\nThis function should be called as early as possible, before SDL_Init.\nMultiple calls to this function are allowed, but various state might not\nchange once it has been set up with a previous call to this function.\n\nPassing a NULL removes any previous metadata.\n\nThis is a simplified interface for the most important information. You can\nsupply significantly more detailed metadata with\nSDL_SetAppMetadataProperty().\n\n@param appname The name of the application (\"My Game 2: Bad Guy's\n               Revenge!\").\n@param appversion The version of the application (\"1.0.0beta5\" or a git\n                  hash, or whatever makes sense).\n@param appidentifier A unique string in reverse-domain format that\n                     identifies this app (\"com.example.mygame2\").\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAppMetadataProperty",
+          "name": "SetAppMetadata",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "appname",
+              "type": "StringParam"
+            },
+            {
+              "name": "appversion",
+              "type": "StringParam"
+            },
+            {
+              "name": "appidentifier",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_SetAppMetadata"
+        },
+        "SetAppMetadataProperty": {
+          "doc": "Specify metadata about your app through a set of properties.\n\nYou can optionally provide metadata about your app to SDL. This is not\nrequired, but strongly encouraged.\n\nThere are several locations where SDL can make use of metadata (an \"About\"\nbox in the macOS menu bar, the name of the app can be shown on some audio\nmixers, etc). Any piece of metadata can be left out, if a specific detail\ndoesn't make sense for the app.\n\nThis function should be called as early as possible, before SDL_Init.\nMultiple calls to this function are allowed, but various state might not\nchange once it has been set up with a previous call to this function.\n\nOnce set, this metadata can be read using SDL_GetAppMetadataProperty().\n\nThese are the supported properties:\n\n- `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the\n  application, like \"My Game 2: Bad Guy's Revenge!\". This will show up\n  anywhere the OS shows the name of the application separately from window\n  titles, such as volume control applets, etc. This defaults to \"SDL\n  Application\".\n- `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is\n  running; there are no rules on format, so \"1.0.3beta2\" and \"April 22nd,\n  2024\" and a git hash are all valid options. This has no default.\n- `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that\n  identifies this app. This must be in reverse-domain format, like\n  \"com.example.mygame2\". This string is used by desktop compositors to\n  identify and group windows together, as well as match applications with\n  associated desktop settings and icons. If you plan to package your\n  application in a container such as Flatpak, the app ID should match the\n  name of your Flatpak container as well. This has no default.\n- `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the\n  creator/developer/maker of this app, like \"MojoWorkshop, LLC\"\n- `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright\n  notice, like \"Copyright (c) 2024 MojoWorkshop, LLC\" or whatnot. Keep this\n  to one line, don't paste a copy of a whole software license in here. This\n  has no default.\n- `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a\n  product page, or a storefront, or even a GitHub repository, for user's\n  further information This has no default.\n- `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.\n  Currently this string can be \"game\" for a video game, \"mediaplayer\" for a\n  media player, or generically \"application\" if nothing else applies.\n  Future versions of SDL might add new types. This defaults to\n  \"application\".\n\n@param name the name of the metadata property to set.\n@param value the value of the property, or NULL to remove that property.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetAppMetadataProperty\n@sa SDL_SetAppMetadata",
+          "name": "SetAppMetadataProperty",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_SetAppMetadataProperty"
+        },
+        "GetAppMetadataProperty": {
+          "doc": "Get metadata about your app.\n\nThis returns metadata previously set using SDL_SetAppMetadata() or\nSDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list\nof available properties and their meanings.\n\n@param name the name of the metadata property to get.\n@returns the current value of the metadata property, or the default if it\n         is not set, NULL for properties with no default.\n\n@threadsafety It is safe to call this function from any thread, although\n              the string returned is not protected and could potentially be\n              freed if you call SDL_SetAppMetadataProperty() to set that\n              property from another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAppMetadata\n@sa SDL_SetAppMetadataProperty",
+          "name": "GetAppMetadataProperty",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_GetAppMetadataProperty"
+        }
+      }
     }
   }
 }

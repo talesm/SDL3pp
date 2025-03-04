@@ -3521,6 +3521,68 @@
           ]
         }
       }
+    },
+    "SDL_init.h": {
+      "includeAfter": {
+        "SDL_Quit": {
+          "kind": "struct",
+          "name": "SDL",
+          "entries": {
+            "SDL": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "InitFlags",
+                    "name": "flags"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const SDL &",
+                    "name": "other"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL &&",
+                    "name": "other"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "SDL_MainThreadCallback": {
+          "kind": "alias",
+          "name": "MainThreadFunction",
+          "type": "std::function<void()>"
+        },
+        "SDL_RunOnMainThread": {
+          "kind": "function",
+          "name": "RunOnMainThread",
+          "type": "bool",
+          "parameters": [
+            {
+              "type": "MainThreadFunction",
+              "name": "callback"
+            },
+            {
+              "type": "bool",
+              "name": "wait_complete"
+            }
+          ]
+        }
+      }
     }
   }
 }

@@ -7,7 +7,8 @@
     "SDL_rect.h",
     "SDL_surface.h",
     "SDL_video.h",
-    "SDL_render.h"
+    "SDL_render.h",
+    "SDL_init.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",
