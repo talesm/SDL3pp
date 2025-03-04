@@ -1,5 +1,5 @@
 /**
- * @file surface.hpp
+ * @file SDL3pp_surface.h
  *
  * # CategorySurface
  *
@@ -26,6 +26,7 @@
 #include "SDL3pp_error.h"
 #include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_optionalRef.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
@@ -738,7 +739,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Set the clipping rectangle for a surface.
+   * Set the clipping rectangle for a surface.
    *
    * When `surface` is the destination of a blit, only the area within the clip
    * rectangle is drawn into.
@@ -747,15 +748,17 @@ struct SurfaceBase : T
    * destination surfaces.
    *
    * @param rect the SDL_Rect structure representing the clipping rectangle or
-   * nullopt to disable it
+   *        nullopt to disable it
    * @returns true if the rectangle intersects the surface, otherwise false and
    *          blits will be completely clipped.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
    * @sa ResetClipRect()
    */
-  bool SetClipRect(std::optional<std::reference_wrapper<const SDL_Rect>> rect)
+  bool SetClipRect(OptionalRef<const SDL_Rect> rect)
   {
-    return SDL_SetSurfaceClipRect(T::get(), rect ? &rect.value() : nullptr);
+    return SDL_SetSurfaceClipRect(T::get(), rect);
   }
 
   /**
@@ -1126,12 +1129,10 @@ struct SurfaceBase : T
    */
   bool Blit(SurfaceRef src,
             const SDL_Point& dstrect = {},
-            std::optional<std::reference_wrapper<const SDL_Rect>> srcrect = {})
+            OptionalRef<const SDL_Rect> srcrect = {})
   {
-    return SDL_BlitSurface(src.get(),
-                           srcrect ? &srcrect.value().get() : nullptr,
-                           T::get(),
-                           {dstrect.x, dstrect.y});
+    return SDL_BlitSurface(
+      src.get(), srcrect, T::get(), {dstrect.x, dstrect.y});
   }
 
   /**
@@ -1187,17 +1188,13 @@ struct SurfaceBase : T
    *
    * @sa SDL_BlitSurface
    */
-  bool BlitScaled(
-    SurfaceRef src,
-    SDL_ScaleMode scaleMode,
-    std::optional<std::reference_wrapper<const SDL_Rect>> dstrect = {},
-    std::optional<std::reference_wrapper<const SDL_Rect>> srcrect = {})
+  bool BlitScaled(SurfaceRef src,
+                  SDL_ScaleMode scaleMode,
+                  OptionalRef<const SDL_Rect> dstrect = {},
+                  OptionalRef<const SDL_Rect> srcrect = {})
   {
-    return SDL_BlitSurfaceScaled(src.get(),
-                                 srcrect ? &srcrect.value().get() : nullptr,
-                                 T::get(),
-                                 dstrect ? &dstrect.value().get() : nullptr,
-                                 scaleMode);
+    return SDL_BlitSurfaceScaled(
+      src.get(), srcrect, T::get(), dstrect, scaleMode);
   }
 
   /**
@@ -1257,15 +1254,11 @@ struct SurfaceBase : T
    *
    * @sa SDL_BlitSurface
    */
-  bool BlitTiled(
-    SurfaceRef src,
-    std::optional<std::reference_wrapper<const SDL_Rect>> dstrect = {},
-    std::optional<std::reference_wrapper<const SDL_Rect>> srcrect = {})
+  bool BlitTiled(SurfaceRef src,
+                 OptionalRef<const SDL_Rect> dstrect = {},
+                 OptionalRef<const SDL_Rect> srcrect = {})
   {
-    return SDL_BlitSurfaceTiled(src.get(),
-                                srcrect ? &srcrect.value().get() : nullptr,
-                                T::get(),
-                                dstrect ? &dstrect.value().get() : nullptr);
+    return SDL_BlitSurfaceTiled(src.get(), srcrect, T::get(), dstrect);
   }
 
   /**
@@ -1296,20 +1289,14 @@ struct SurfaceBase : T
    *
    * @sa SDL_BlitSurface
    */
-  bool BlitTiledWithScale(
-    SurfaceRef src,
-    float scale,
-    SDL_ScaleMode scaleMode,
-    std::optional<std::reference_wrapper<const SDL_Rect>> dstrect = {},
-    std::optional<std::reference_wrapper<const SDL_Rect>> srcrect = {})
+  bool BlitTiledWithScale(SurfaceRef src,
+                          float scale,
+                          SDL_ScaleMode scaleMode,
+                          OptionalRef<const SDL_Rect> dstrect = {},
+                          OptionalRef<const SDL_Rect> srcrect = {})
   {
     return SDL_BlitSurfaceTiledWithScale(
-      src.get(),
-      srcrect ? &srcrect.value().get() : nullptr,
-      scale,
-      scaleMode,
-      T::get(),
-      dstrect ? &dstrect.value().get() : nullptr);
+      src.get(), srcrect, scale, scaleMode, T::get(), dstrect);
   }
 
   /**
@@ -1346,14 +1333,13 @@ struct SurfaceBase : T
    *
    * @sa Blit()
    */
-  bool Blit9Grid(
-    SurfaceRef src,
-    int left_width,
-    int right_width,
-    int top_height,
-    int bottom_height,
-    std::optional<std::reference_wrapper<const SDL_Rect>> dstrect = {},
-    std::optional<std::reference_wrapper<const SDL_Rect>> srcrect = {})
+  bool Blit9Grid(SurfaceRef src,
+                 int left_width,
+                 int right_width,
+                 int top_height,
+                 int bottom_height,
+                 OptionalRef<const SDL_Rect> dstrect = {},
+                 OptionalRef<const SDL_Rect> srcrect = {})
   {
     return Blit9GridWithScale(src,
                               left_width,
@@ -1400,19 +1386,18 @@ struct SurfaceBase : T
    *
    * @sa Blit()
    */
-  bool Blit9GridWithScale(
-    SurfaceRef src,
-    int left_width,
-    int right_width,
-    int top_height,
-    int bottom_height,
-    float scale,
-    SDL_ScaleMode scaleMode,
-    std::optional<std::reference_wrapper<const SDL_Rect>> dstrect = {},
-    std::optional<std::reference_wrapper<const SDL_Rect>> srcrect = {})
+  bool Blit9GridWithScale(SurfaceRef src,
+                          int left_width,
+                          int right_width,
+                          int top_height,
+                          int bottom_height,
+                          float scale,
+                          SDL_ScaleMode scaleMode,
+                          OptionalRef<const SDL_Rect> dstrect = {},
+                          OptionalRef<const SDL_Rect> srcrect = {})
   {
     return SDL_BlitSurface9Grid(src.get(),
-                                srcrect ? &srcrect.value().get() : nullptr,
+                                srcrect,
                                 left_width,
                                 right_width,
                                 top_height,
@@ -1420,7 +1405,7 @@ struct SurfaceBase : T
                                 scale,
                                 scaleMode,
                                 T::get(),
-                                dstrect ? &dstrect.value().get() : nullptr);
+                                dstrect);
   }
 
   /**

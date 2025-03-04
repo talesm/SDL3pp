@@ -4570,7 +4570,7 @@
                 },
                 {
                   "name": "clip",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "std::nullopt"
                 }
               ],
@@ -4884,7 +4884,7 @@
                 },
                 {
                   "name": "clip",
-                  "type": "std::optional<std::reference_wrapper<const SDL_FRect>>",
+                  "type": "OptionalRef<const SDL_FRect>",
                   "default": "std::nullopt"
                 }
               ],
@@ -5693,7 +5693,7 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>"
+                  "type": "OptionalRef<const SDL_Rect>"
                 }
               ],
               "sourceName": "SDL_SetSurfaceClipRect",
@@ -5941,7 +5941,7 @@
                 },
                 {
                   "name": "srcrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 }
               ],
@@ -5984,12 +5984,12 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 },
                 {
                   "name": "srcrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 }
               ],
@@ -6032,12 +6032,12 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 },
                 {
                   "name": "srcrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 }
               ],
@@ -6063,12 +6063,12 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 },
                 {
                   "name": "srcrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 }
               ],
@@ -6100,12 +6100,12 @@
                   "name": "bottom_height"
                 },
                 {
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "name": "dstrect",
                   "default": "{}"
                 },
                 {
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "name": "srcrect",
                   "default": "{}"
                 }
@@ -6148,12 +6148,12 @@
                 },
                 {
                   "name": "dstrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 },
                 {
                   "name": "srcrect",
-                  "type": "std::optional<std::reference_wrapper<const SDL_Rect>>",
+                  "type": "OptionalRef<const SDL_Rect>",
                   "default": "{}"
                 }
               ],
@@ -7073,7 +7073,7 @@
               "parameters": [
                 {
                   "name": "mode",
-                  "type": "std::optional<std::reference_wrapper<const DisplayMode>>"
+                  "type": "OptionalRef<const DisplayMode>"
                 }
               ],
               "sourceName": "SDL_SetWindowFullscreenMode"

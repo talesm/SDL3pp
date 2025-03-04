@@ -865,8 +865,7 @@ struct WindowBase : T
    * @sa SDL_SetWindowFullscreen
    * @sa SDL_SyncWindow
    */
-  bool SetFullscreenMode(
-    std::optional<std::reference_wrapper<const DisplayMode>> mode)
+  bool SetFullscreenMode(OptionalRef<const DisplayMode> mode)
   {
     return SDL_SetWindowFullscreenMode(T::get(), mode);
   }

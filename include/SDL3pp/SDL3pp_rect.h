@@ -15,6 +15,7 @@
 #include <span>
 #include <SDL3/SDL_rect.h>
 #include "SDL3pp_error.h"
+#include "SDL3pp_optionalRef.h"
 #include "SDL3pp_spanRef.h"
 #include "SDL3pp_stdinc.h"
 
@@ -765,12 +766,11 @@ struct Rect : SDL_Rect
    */
   static std::optional<Rect> GetEnclosingPoints(
     SpanRef<const SDL_Point> points,
-    std::optional<std::reference_wrapper<const SDL_Rect>> clip = std::nullopt)
+    OptionalRef<const SDL_Rect> clip = std::nullopt)
   {
     Rect result;
-    const SDL_Rect* clipPtr = clip ? &clip.value().get() : nullptr;
     if (SDL_GetRectEnclosingPoints(
-          points.data(), points.size(), clipPtr, &result)) {
+          points.data(), points.size(), clip, &result)) {
       return result;
     }
     return std::nullopt;
@@ -1367,12 +1367,11 @@ struct FRect : SDL_FRect
    */
   static std::optional<FRect> GetEnclosingPoints(
     SpanRef<const SDL_FPoint> points,
-    std::optional<std::reference_wrapper<const SDL_FRect>> clip = std::nullopt)
+    OptionalRef<const SDL_FRect> clip = std::nullopt)
   {
     FRect result;
-    const SDL_FRect* clipPtr = clip ? &clip.value().get() : nullptr;
     if (SDL_GetRectEnclosingPointsFloat(
-          points.data(), points.size(), clipPtr, &result)) {
+          points.data(), points.size(), clip, &result)) {
       return result;
     }
     return std::nullopt;
