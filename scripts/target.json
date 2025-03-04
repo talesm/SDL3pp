@@ -8254,8 +8254,8 @@
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "class"
+              "type": "ObjectBox<SDL_Renderer *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -8298,8 +8298,8 @@
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "class"
+              "type": "ObjectBox<SDL_Texture *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -8366,7 +8366,7 @@
           "sourceName": "SDL_Renderer",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_Renderer *>",
               "name": "T"
             }
           ],
@@ -9435,7 +9435,7 @@
           "type": "T",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_Texture *>",
               "name": "T"
             }
           ],

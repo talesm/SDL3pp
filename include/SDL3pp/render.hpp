@@ -40,11 +40,11 @@
 
 namespace SDL {
 
-template<template<class OBJ> class T>
+template<ObjectBox<SDL_Renderer*> T>
 struct RendererBase;
 
 /// @brief Handle to a non owned renderer
-using RendererRef = RendererBase<ObjectRef>;
+using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
 
 template<>
 struct ObjectDeleter<SDL_Renderer>
@@ -53,7 +53,7 @@ struct ObjectDeleter<SDL_Renderer>
 };
 
 /// @brief Handle to an owned renderer
-using Renderer = RendererBase<ObjectUnique>;
+using Renderer = RendererBase<ObjectUnique<SDL_Renderer>>;
 
 /**
  * @brief Vertex structure.
@@ -116,10 +116,10 @@ inline const char* GetRenderDriver(int index)
  * @brief A structure representing rendering state
  *
  */
-template<template<class OBJ> class T>
-struct RendererBase : T<SDL_Renderer>
+template<ObjectBox<SDL_Renderer*> T>
+struct RendererBase : T
 {
-  using T<SDL_Renderer>::T;
+  using T::T;
 
   /**
    * @brief Create a 2D rendering context for a window.
@@ -136,7 +136,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(WindowRef window)
-    : T<SDL_Renderer>(SDL_CreateRenderer(window.get(), nullptr))
+    : T(SDL_CreateRenderer(window.get(), nullptr))
   {
   }
 
@@ -165,7 +165,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(WindowRef window, StringParam name)
-    : T<SDL_Renderer>(SDL_CreateRenderer(window.get(), name))
+    : T(SDL_CreateRenderer(window.get(), name))
   {
   }
 
@@ -215,7 +215,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(PropertiesRef props)
-    : T<SDL_Renderer>(SDL_CreateRendererWithProperties(props.get()))
+    : T(SDL_CreateRendererWithProperties(props.get()))
   {
   }
 
@@ -237,7 +237,7 @@ struct RendererBase : T<SDL_Renderer>
    * @threadsafety This function should only be called on the main thread.
    */
   RendererBase(SurfaceRef surface)
-    : T<SDL_Renderer>(SDL_CreateSoftwareRenderer(surface.get()))
+    : T(SDL_CreateSoftwareRenderer(surface.get()))
   {
   }
 
