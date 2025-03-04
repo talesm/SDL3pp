@@ -42,18 +42,40 @@ public:
    * this flag, so you can use this to initialize subSystems as well.
    */
 
-  Init(InitFlags flags = 0);
+  Init(InitFlags flags)
+    : flags(flags)
+  {
+    refCount(+1, true);
+  }
 
   // Copy ctor
-  Init(const Init& rhs);
+  Init(const Init& rhs)
+    : flags(rhs.flags)
+    , active(rhs.active)
+  {
+    if (active) refCount(+1);
+  }
 
   // Move ctor
-  Init(Init&& rhs);
+  Init(Init&& rhs)
+    : flags(rhs.flags)
+    , active(rhs.active)
+  {
+    rhs.active = false;
+  }
 
   // Dtor
-  ~Init();
+  ~Init()
+  {
+    if (active) refCount(-1);
+  }
 
-  Init& operator=(Init rhs);
+  Init& operator=(Init rhs)
+  {
+    std::swap(active, rhs.active);
+    std::swap(flags, rhs.flags);
+    return *this;
+  }
 
   /**
    * @brief Check if given subSystems are initialized
@@ -69,14 +91,18 @@ public:
    *
    * When this returns true it is safe to call SDL_Quit()
    */
-  bool release();
+  bool release()
+  {
+    flags = 0;
+    return refCount(-1, false) == 0;
+  }
 
   /**
    * @brief reset the value of this instance, acts like it was destroyed and
    * then newly instantiated
    * @return false if there are still other locks, true if this was last one
    */
-  bool reset();
+  bool reset() { return refCount(-1) == 0; }
 
   /// @brief returns true if active and has no errors
   operator bool() const { return active; }
@@ -99,12 +125,10 @@ inline bool RunOnMainThread(SDL_MainThreadCallback callback,
   return SDL_RunOnMainThread(callback, userData, waitComplete);
 }
 
-using MainThreadCallback = void();
-
-inline bool RunOnMainThread(std::function<MainThreadCallback> callback,
+inline bool RunOnMainThread(std::function<void()> callback,
                             bool waitComplete = false)
 {
-  using Wrapper = CallbackWrapper<MainThreadCallback>;
+  using Wrapper = CallbackWrapper<void()>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), waitComplete);
 }
@@ -125,48 +149,6 @@ inline const char* GetAppMetadataProperty(StringParam name)
 {
   return SDL_GetAppMetadataProperty(name);
 }
-
-inline Init::Init(InitFlags flags)
-  : flags(flags)
-{
-  refCount(+1, true);
-}
-
-// Copy ctor
-inline Init::Init(const Init& rhs)
-  : flags(rhs.flags)
-  , active(rhs.active)
-{
-  if (active) refCount(+1);
-}
-
-// Move ctor
-inline Init::Init(Init&& rhs)
-  : flags(rhs.flags)
-  , active(rhs.active)
-{
-  rhs.active = false;
-}
-
-inline Init::~Init()
-{
-  if (active) refCount(-1);
-}
-
-inline Init& Init::operator=(Init rhs)
-{
-  std::swap(active, rhs.active);
-  std::swap(flags, rhs.flags);
-  return *this;
-}
-
-inline bool Init::release()
-{
-  flags = 0;
-  return refCount(-1, false) == 0;
-}
-
-inline bool Init::reset() { return refCount(-1) == 0; }
 
 inline int Init::refCount(int delta, bool autoQuit)
 {
