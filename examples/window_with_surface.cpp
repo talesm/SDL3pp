@@ -26,9 +26,8 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL::GetError());
     return 1;
   }
-  constexpr int WIDTH = 400;
-  constexpr int HEIGHT = 400;
-  SDL::Window window{"Test", WIDTH, HEIGHT};
+  constexpr SDL::Point WINDOW_SZ = {400, 400};
+  SDL::Window window{"Test", WINDOW_SZ};
   if (!window) {
     SDL_Log("%s", SDL::GetError());
     return 1;
@@ -44,14 +43,14 @@ int main(int argc, char** argv)
 
   constexpr int WW = 64;
 
-  SDL::Point smileyPos{WIDTH / 2 - smileyImg.GetWidth() / 2,
-                       HEIGHT / 2 - smileyImg.GetHeight() / 2};
+  SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg.GetWidth() / 2,
+                       WINDOW_SZ.y / 2 - smileyImg.GetHeight() / 2};
 
   SDL::Rect rects[] = {
     {10, 10, WW, WW},
-    {WIDTH - 10 - WW, HEIGHT - 10 - WW, WW, WW},
-    {10, HEIGHT - 10 - WW, WW, WW},
-    {WIDTH - 10 - WW, 10, WW, WW},
+    {WINDOW_SZ.x - 10 - WW, WINDOW_SZ.y - 10 - WW, WW, WW},
+    {10, WINDOW_SZ.y - 10 - WW, WW, WW},
+    {WINDOW_SZ.x - 10 - WW, 10, WW, WW},
   };
 
   SDL::Point speed[] = {
@@ -71,8 +70,8 @@ int main(int argc, char** argv)
       auto& yy = rects[i].y;
       xx += speed[i].x;
       yy += speed[i].y;
-      if (xx < 0 || xx + rects[i].w >= WIDTH) speed[i].x *= -1;
-      if (yy < 0 || yy + rects[i].h >= HEIGHT) speed[i].y *= -1;
+      if (xx < 0 || xx + rects[i].w >= WINDOW_SZ.x) speed[i].x *= -1;
+      if (yy < 0 || yy + rects[i].h >= WINDOW_SZ.y) speed[i].y *= -1;
     }
 
     screen.Fill(SDL::Color{127, 0, 127});

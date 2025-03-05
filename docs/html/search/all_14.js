@@ -14,7 +14,7 @@ var searchData=
   ['wcsstr_11',['wcsstr',['../namespaceSDL.html#ad864d11d477fc831eb7fcd5a40fbe615',1,'SDL']]],
   ['wcstol_12',['wcstol',['../namespaceSDL.html#a0408a155d55fa0fc2d0198de99ca0dc4',1,'SDL']]],
   ['window_13',['Window',['../namespaceSDL.html#adc7408c6cf3381faad6fc9ec0ef39847',1,'SDL']]],
-  ['windowbase_14',['windowbase',['../structSDL_1_1WindowBase.html#aa4592b6d2149a41cbab5bd6da9f42bec',1,'SDL::WindowBase::WindowBase()'],['../structSDL_1_1WindowBase.html',1,'SDL::WindowBase&lt; T &gt;'],['../structSDL_1_1WindowBase.html#a76b026b11865259f032c0c660b870984',1,'SDL::WindowBase::WindowBase(WindowRef parent, int offset_x, int offset_y, int w, int h, WindowFlags flags=0)'],['../structSDL_1_1WindowBase.html#aa53f308f46a1c76ec83d6f1e204def89',1,'SDL::WindowBase::WindowBase(PropertiesRef props)']]],
+  ['windowbase_14',['windowbase',['../structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614',1,'SDL::WindowBase::WindowBase()'],['../structSDL_1_1WindowBase.html',1,'SDL::WindowBase&lt; T &gt;'],['../structSDL_1_1WindowBase.html#acb74480c07b4832be01028e828f23284',1,'SDL::WindowBase::WindowBase(WindowRef parent, SDL_Point offset, SDL_Point size, WindowFlags flags=0)'],['../structSDL_1_1WindowBase.html#aa53f308f46a1c76ec83d6f1e204def89',1,'SDL::WindowBase::WindowBase(PropertiesRef props)']]],
   ['windowflags_15',['WindowFlags',['../namespaceSDL.html#a0e89cce67b0f90eb3a4b57249f949f67',1,'SDL']]],
   ['windowid_16',['WindowID',['../namespaceSDL.html#a8ea0dc352d3237a35b3e2bf4c6ebe7e3',1,'SDL']]],
   ['windowref_17',['WindowRef',['../namespaceSDL.html#a42069207012bd44674fe1677bd5a1066',1,'SDL']]],

@@ -15,7 +15,7 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL::GetError());
     return 1;
   }
-  SDL::Window window{"Test", 400, 400};
+  SDL::Window window{"Test", {400, 400}};
   if (!window) {
     SDL_Log("%s", SDL::GetError());
     return 1;

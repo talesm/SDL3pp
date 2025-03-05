@@ -469,10 +469,7 @@
               "immutable": true,
               "constexpr": true
             },
-            "SDL_GetPixelFormatName": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetPixelFormatName": "immutable",
             "SDL_GetMasksForPixelFormat": {
               "kind": "function",
               "immutable": true,
@@ -482,10 +479,7 @@
               "kind": "function",
               "name": "ForMasks"
             },
-            "SDL_GetPixelFormatDetails": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetPixelFormatDetails": "immutable",
             "Map": {
               "kind": "function",
               "type": "Uint32",
@@ -1658,32 +1652,20 @@
             "T::T": "alias",
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
-            "SDL_GetSurfaceProperties": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
-            "SDL_GetSurfaceColorspace": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetSurfaceColorspace": "immutable",
             "SDL_CreateSurfacePalette": {
               "kind": "function",
               "name": "CreatePalette"
             },
             "SDL_SetSurfacePalette": "function",
-            "SDL_GetSurfacePalette": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetSurfacePalette": "immutable",
             "SDL_AddSurfaceAlternateImage": {
               "kind": "function",
               "name": "AddAlternateImage"
             },
-            "SDL_SurfaceHasAlternateImages": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_SurfaceHasAlternateImages": "immutable",
             "SDL_GetSurfaceImages": {
               "kind": "function",
               "immutable": true,
@@ -1727,10 +1709,7 @@
               "immutable": true
             },
             "SDL_SetSurfaceRLE": "function",
-            "SDL_SurfaceHasRLE": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
               "kind": "function",
               "type": "bool",
@@ -1758,10 +1737,7 @@
               "type": "bool",
               "parameters": []
             },
-            "SDL_SurfaceHasColorKey": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_SurfaceHasColorKey": "immutable",
             "GetColorKey": [
               {
                 "kind": "function",
@@ -1781,15 +1757,9 @@
                 ]
               }
             ],
-            "SDL_GetSurfaceColorKey": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetSurfaceColorKey": "immutable",
             "SDL_SetSurfaceColorMod": "function",
-            "SDL_GetSurfaceColorMod": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetSurfaceColorMod": "immutable",
             "SDL_SetSurfaceAlphaMod": "function",
             "SDL_GetSurfaceAlphaMod": {
               "kind": "function",
@@ -2450,14 +2420,8 @@
               "kind": "function",
               "name": "GetPrimary"
             },
-            "SDL_GetDisplayProperties": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_GetDisplayName": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetDisplayProperties": "immutable",
+            "SDL_GetDisplayName": "immutable",
             "SDL_GetDisplayBounds": {
               "kind": "function",
               "type": "std::optional<Rect>",
@@ -2480,10 +2444,7 @@
               "immutable": true,
               "name": "GetCurrentOrientation"
             },
-            "SDL_GetDisplayContentScale": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetDisplayContentScale": "immutable",
             "SDL_GetFullscreenDisplayModes": {
               "kind": "function",
               "name": "GetFullscreenModes",
@@ -2529,7 +2490,27 @@
           "type": "T",
           "entries": {
             "T::T": "alias",
-            "SDL_CreateWindow": "ctor",
+            "SDL_CreateWindow": {
+              "kind": "function",
+              "name": "WindowBase",
+              "type": "",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "title",
+                  "type": "StringParam"
+                },
+                {
+                  "name": "size",
+                  "type": "SDL_Point"
+                },
+                {
+                  "name": "flags",
+                  "type": "WindowFlags",
+                  "default": "0"
+                }
+              ]
+            },
             "SDL_CreatePopupWindow": {
               "kind": "function",
               "name": "WindowBase",
@@ -2541,24 +2522,17 @@
                   "type": "WindowRef"
                 },
                 {
-                  "name": "offset_x",
-                  "type": "int"
+                  "name": "offset",
+                  "type": "SDL_Point"
                 },
                 {
-                  "name": "offset_y",
-                  "type": "int"
-                },
-                {
-                  "name": "w",
-                  "type": "int"
-                },
-                {
-                  "name": "h",
-                  "type": "int"
+                  "name": "size",
+                  "type": "SDL_Point"
                 },
                 {
                   "name": "flags",
-                  "type": "WindowFlags"
+                  "type": "WindowFlags",
+                  "default": "0"
                 }
               ]
             },
@@ -2568,14 +2542,8 @@
               "name": "GetDisplay",
               "immutable": true
             },
-            "SDL_GetWindowPixelDensity": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_GetWindowDisplayScale": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowPixelDensity": "immutable",
+            "SDL_GetWindowDisplayScale": "immutable",
             "SDL_SetWindowFullscreenMode": {
               "kind": "function",
               "parameters": [
@@ -2585,78 +2553,104 @@
                 }
               ]
             },
-            "SDL_GetWindowFullscreenMode": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowFullscreenMode": "immutable",
             "SDL_GetWindowICCProfile": {
               "kind": "function",
               "immutable": true,
               "type": "FreeWrapper<void *>"
             },
-            "SDL_GetWindowPixelFormat": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_GetWindowID": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_GetWindowParent": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_GetWindowProperties": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_GetWindowFlags": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowPixelFormat": "immutable",
+            "SDL_GetWindowID": "immutable",
+            "SDL_GetWindowParent": "immutable",
+            "SDL_GetWindowProperties": "immutable",
+            "SDL_GetWindowFlags": "immutable",
             "SDL_SetWindowTitle": "function",
-            "SDL_GetWindowTitle": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowTitle": "immutable",
             "SDL_SetWindowIcon": "function",
-            "SDL_SetWindowPosition": "function",
-            "SDL_GetWindowPosition": {
+            "SetRect": {
               "kind": "function",
-              "immutable": true
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "Rect",
+                  "name": "rect"
+                }
+              ]
             },
-            "SDL_SetWindowSize": "function",
-            "SDL_GetWindowSize": {
+            "GetRect": {
               "kind": "function",
-              "immutable": true
+              "type": "std::optional<Rect>",
+              "immutable": true,
+              "parameters": []
             },
+            "SDL_SetWindowPosition": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "SDL_Point",
+                  "name": "p"
+                }
+              ]
+            },
+            "GetPosition": {
+              "kind": "function",
+              "type": "std::optional<Point>",
+              "immutable": true,
+              "parameters": []
+            },
+            "SDL_GetWindowPosition": "immutable",
+            "SDL_SetWindowSize": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "SDL_Point",
+                  "name": "p"
+                }
+              ]
+            },
+            "GetSize": {
+              "kind": "function",
+              "type": "std::optional<Point>",
+              "immutable": true,
+              "parameters": []
+            },
+            "SDL_GetWindowSize": "immutable",
             "SDL_GetWindowSafeArea": {
               "kind": "function",
-              "immutable": true
+              "type": "std::optional<Rect>",
+              "immutable": true,
+              "parameters": []
             },
             "SDL_SetWindowAspectRatio": "function",
-            "SDL_GetWindowAspectRatio": {
+            "SDL_GetWindowAspectRatio": "immutable",
+            "SDL_GetWindowBordersSize": "immutable",
+            "GetSizeInPixels": {
               "kind": "function",
-              "immutable": true
+              "type": "std::optional<Point>",
+              "immutable": true,
+              "parameters": []
             },
-            "SDL_GetWindowBordersSize": {
-              "kind": "function",
-              "immutable": true
+            "SDL_GetWindowSizeInPixels": "immutable",
+            "SDL_SetWindowMinimumSize": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "SDL_Point",
+                  "name": "p"
+                }
+              ]
             },
-            "SDL_GetWindowSizeInPixels": {
-              "kind": "function",
-              "immutable": true
+            "SDL_GetWindowMinimumSize": "immutable",
+            "SDL_SetWindowMaximumSize": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "SDL_Point",
+                  "name": "p"
+                }
+              ]
             },
-            "SDL_SetWindowMinimumSize": "function",
-            "SDL_GetWindowMinimumSize": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_SetWindowMaximumSize": "function",
-            "SDL_GetWindowMaximumSize": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowMaximumSize": "immutable",
             "SDL_SetWindowBordered": "function",
             "SDL_SetWindowResizable": "function",
             "SDL_SetWindowAlwaysOnTop": "function",
@@ -2668,15 +2662,13 @@
             "SDL_RestoreWindow": "function",
             "SDL_SetWindowFullscreen": "function",
             "SDL_SyncWindow": "function",
-            "SDL_WindowHasSurface": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_WindowHasSurface": "immutable",
             "SDL_GetWindowSurface": "function",
             "SDL_SetWindowSurfaceVSync": "function",
             "SDL_GetWindowSurfaceVSync": {
-              "kind": "function",
-              "immutable": true
+              "immutable": true,
+              "type": "std::optional<int>",
+              "parameters": []
             },
             "SDL_UpdateWindowSurface": {
               "kind": "function",
@@ -2695,28 +2687,24 @@
             "SDL_DestroyWindowSurface": "function",
             "SDL_SetWindowKeyboardGrab": "function",
             "SDL_SetWindowMouseGrab": "function",
-            "SDL_GetWindowKeyboardGrab": {
-              "kind": "function",
-              "immutable": true
-            },
-            "SDL_GetWindowMouseGrab": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowKeyboardGrab": "immutable",
+            "SDL_GetWindowMouseGrab": "immutable",
             "SDL_SetWindowMouseRect": "function",
-            "SDL_GetWindowMouseRect": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowMouseRect": "immutable",
             "SDL_SetWindowOpacity": "function",
-            "SDL_GetWindowOpacity": {
-              "kind": "function",
-              "immutable": true
-            },
+            "SDL_GetWindowOpacity": "immutable",
             "SDL_SetWindowParent": "function",
             "SDL_SetWindowModal": "function",
             "SDL_SetWindowFocusable": "function",
-            "SDL_ShowWindowSystemMenu": "function",
+            "SDL_ShowWindowSystemMenu": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "SDL_Point",
+                  "name": "p"
+                }
+              ]
+            },
             "SDL_HitTestResult": "alias",
             "SDL_HitTest": "alias",
             "HitTestFunction": {

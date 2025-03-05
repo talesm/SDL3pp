@@ -141,7 +141,7 @@ struct Display
    * @param count a pointer filled in with the number of displays returned, may
    *              be NULL.
    * @returns a 0 terminated array of display instance IDs or NULL on failure;
-   *          call SDL_GetError() for more information. This should be freed
+   *          call GetError() for more information. This should be freed
    *          with SDL_free() when it is no longer needed.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -157,7 +157,7 @@ struct Display
    * Return the primary display.
    *
    * @returns the instance ID of the primary display on success or 0 on failure;
-   *          call SDL_GetError() for more information.
+   *          call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -186,7 +186,7 @@ struct Display
    *   requested display orientation.
    *
    * @returns a valid property ID on success or 0 on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -421,7 +421,7 @@ struct Display
    *
    * @param point the point to query.
    * @returns the instance ID of the display containing the point or 0 on
-   *          failure; call SDL_GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -554,19 +554,19 @@ struct WindowBase : T
    * in a future version of SDL.
    *
    * @param title the title of the window, in UTF-8 encoding.
-   * @param w the width of the window.
-   * @param h the height of the window.
+   * @param size the width and height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
    * @post the window that was created, convertible to true on success or
    * convertible to false on failure; call GetError() for more information.
    *
-   * If fails window converts false; call GetError() for more information.
-   *
    * @threadsafety This function should only be called on the main thread.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa CreateWindowAndRenderer()
    */
-  WindowBase(StringParam title, int w, int h, WindowFlags flags = 0)
-    : T(SDL_CreateWindow(title, w, h, flags))
+  WindowBase(StringParam title, SDL_Point size, WindowFlags flags = 0)
+    : T(SDL_CreateWindow(title, size.x, size.y, flags))
   {
   }
 
@@ -610,12 +610,9 @@ struct WindowBase : T
    * hidden will be restored when the parent is shown.
    *
    * @param parent the parent of the window, must not be NULL.
-   * @param offset_x the x position of the popup window relative to the origin
-   *                 of the parent.
-   * @param offset_y the y position of the popup window relative to the origin
-   *                 of the parent window.
-   * @param w the width of the window.
-   * @param h the height of the window.
+   * @param offset the x, y position of the popup window relative to the origin
+   *               of the parent.
+   * @param size the width and height of the window.
    * @param flags SDL_WINDOW_TOOLTIP or SDL_WINDOW_POPUP_MENU, and zero or more
    *              additional SDL_WindowFlags OR'd together.
    * @post the window that was created, convertible to true on success or
@@ -625,18 +622,18 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateWindow
-   * @sa SDL_CreateWindowWithProperties
-   * @sa SDL_DestroyWindow
-   * @sa SDL_GetWindowParent
+   * @sa GetParent()
    */
   WindowBase(WindowRef parent,
-             int offset_x,
-             int offset_y,
-             int w,
-             int h,
+             SDL_Point offset,
+             SDL_Point size,
              WindowFlags flags = 0)
-    : T(SDL_CreatePopupWindow(parent.get(), offset_x, offset_y, w, h, flags))
+    : T(SDL_CreatePopupWindow(parent.get(),
+                              offset.x,
+                              offset.y,
+                              size.x,
+                              size.y,
+                              flags))
   {
   }
 
@@ -828,7 +825,7 @@ struct WindowBase : T
    *             borderless fullscreen desktop mode, or one of the fullscreen
    *             modes returned by SDL_GetFullscreenDisplayModes() to set an
    *             exclusive fullscreen mode.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -867,7 +864,7 @@ struct WindowBase : T
    *
    * @param size the size of the ICC profile.
    * @returns the raw ICC profile data on success or NULL on failure; call
-   *          SDL_GetError() for more information. This should be freed with
+   *          GetError() for more information. This should be freed with
    *          SDL_free() when it is no longer needed.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -883,7 +880,7 @@ struct WindowBase : T
    * Get the pixel format associated with the window.
    *
    * @returns the pixel format of the window on success or
-   *          SDL_PIXELFORMAT_UNKNOWN on failure; call SDL_GetError() for more
+   *          SDL_PIXELFORMAT_UNKNOWN on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -906,7 +903,7 @@ struct WindowBase : T
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  WindowID GetID() const { return SDL_GetWindowID(Get<T>()); }
+  WindowID GetID() const { return SDL_GetWindowID(T::get()); }
 
   /**
    * Get parent of a window.
@@ -1040,7 +1037,7 @@ struct WindowBase : T
    */
   PropertiesRef GetProperties() const
   {
-    return SDL_GetWindowProperties(Get<T>());
+    return {SDL_GetWindowProperties(T::get())};
   }
 
   /**
@@ -1052,15 +1049,14 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateWindow
-   * @sa SDL_HideWindow
-   * @sa SDL_MaximizeWindow
-   * @sa SDL_MinimizeWindow
-   * @sa SDL_SetWindowFullscreen
-   * @sa SDL_SetWindowMouseGrab
-   * @sa SDL_ShowWindow
+   * @sa Hide()
+   * @sa Maximize()
+   * @sa Minimize()
+   * @sa SetFullscreen()
+   * @sa SetMouseGrab()
+   * @sa Show()
    */
-  WindowFlags GetFlags() const { return SDL_GetWindowFlags(Get<T>()); }
+  WindowFlags GetFlags() const { return SDL_GetWindowFlags(T::get()); }
 
   /**
    * Set the title of a window.
@@ -1068,7 +1064,7 @@ struct WindowBase : T
    * This string is expected to be in UTF-8 encoding.
    *
    * @param title the desired window title in UTF-8 format.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1079,7 +1075,7 @@ struct WindowBase : T
    */
   bool SetTitle(StringParam title)
   {
-    return SDL_SetWindowTitle(Get<T>(), title);
+    return SDL_SetWindowTitle(T::get(), title);
   }
 
   /**
@@ -1094,7 +1090,7 @@ struct WindowBase : T
    *
    * @sa SDL_SetWindowTitle
    */
-  const char* GetTitle() const { return SDL_GetWindowTitle(Get<T>()); }
+  const char* GetTitle() const { return SDL_GetWindowTitle(T::get()); }
 
   /**
    * Set the icon for a window.
@@ -1110,14 +1106,50 @@ struct WindowBase : T
    * smaller image will be upscaled and be used instead.
    *
    * @param icon an SDL_Surface structure containing the icon for the window.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool SetIcon(SurfaceRef icon) { return SDL_SetWindowIcon(Get<T>(), icon); }
+  bool SetIcon(SurfaceRef icon) { return SDL_SetWindowIcon(T::get(), icon); }
+
+  /**
+   * @brief Request the window's position and size to be set.
+   *
+   * @param rect the rect containing the new coordinates
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @sa SetPosition()
+   * @sa SetSize()
+   */
+  bool SetRect(Rect rect)
+  {
+    return SetPosition(rect.GetTopLeft()) && SetSize(rect.GetSize());
+  }
+
+  /**
+   * Get the position and client size of a window.
+   *
+   * This is the current position of the window as last reported by the
+   * windowing system.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use SDL_GetWindowSizeInPixels()
+   * or SDL_GetRenderOutputSize() to get the real client area size in pixels.
+   *
+   * @return std::optional<Rect>
+   */
+  std::optional<Rect> GetRect() const
+  {
+    if (Rect rect; GetPosition(rect.x, rect.y) && GetSize(rect.w, rect.h))
+      return rect;
+    return std::nullopt;
+  }
 
   /**
    * Request that the window's position be set.
@@ -1128,12 +1160,12 @@ struct WindowBase : T
    * This can be used to reposition fullscreen-desktop windows onto a different
    * display, however, as exclusive fullscreen windows are locked to a specific
    * display, they can only be repositioned programmatically via
-   * SDL_SetWindowFullscreenMode().
+   * SetFullscreenMode().
    *
    * On some windowing systems this request is asynchronous and the new
    * coordinates may not have have been applied immediately upon the return of
-   * this function. If an immediate change is required, call SDL_SyncWindow()
-   * to block until the changes have taken effect.
+   * this function. If an immediate change is required, call Sync() to block
+   * until the changes have taken effect.
    *
    * When the window position changes, an SDL_EVENT_WINDOW_MOVED event will be
    * emitted with the window's new coordinates. Note that the new coordinates
@@ -1143,23 +1175,43 @@ struct WindowBase : T
    * Additionally, as this is just a request, it can be denied by the windowing
    * system.
    *
-   * @param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
+   * @param p the x, y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
    *          `SDL_WINDOWPOS_UNDEFINED`.
-   * @param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
-   *          `SDL_WINDOWPOS_UNDEFINED`.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowPosition
-   * @sa SDL_SyncWindow
+   * @sa GetPosition()
+   * @sa Sync()
    */
-  bool SetPosition(int x, int y)
+  bool SetPosition(SDL_Point p)
   {
-    return SDL_SetWindowPosition(Get<T>(), x, y);
+    return SDL_SetWindowPosition(T::get(), p.x, p.y);
+  }
+
+  /**
+   * Get the position of a window.
+   *
+   * This is the current position of the window as last reported by the
+   * windowing system.
+   *
+   * @returns the position on success or false on std::nullopt; call
+   * GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetPosition()
+   * @sa SetPosition(int *, int *)
+   */
+  std::optional<Point> GetPosition() const
+  {
+    if (Point p; GetPosition(&p.x, &p.y)) return p;
+    return std::nullopt;
   }
 
   /**
@@ -1175,18 +1227,18 @@ struct WindowBase : T
    *          NULL.
    * @param y a pointer filled in with the y position of the window, may be
    *          NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowPosition
+   * @sa SetPosition()
    */
   bool GetPosition(int* x, int* y) const
   {
-    return SDL_GetWindowPosition(Get<T>(), x, y);
+    return SDL_GetWindowPosition(T::get(), x, y);
   }
 
   /**
@@ -1210,9 +1262,8 @@ struct WindowBase : T
    * content area to remain within the usable desktop bounds). Additionally, as
    * this is just a request, it can be denied by the windowing system.
    *
-   * @param w the width of the window, must be > 0.
-   * @param h the height of the window, must be > 0.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @param p the width, height of the window, both must be > 0.
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1223,31 +1274,56 @@ struct WindowBase : T
    * @sa SDL_SetWindowFullscreenMode
    * @sa SDL_SyncWindow
    */
-  bool SetSize(int w, int h) { return SDL_SetWindowSize(Get<T>(), w, h); }
+  bool SetSize(SDL_Point p) { return SDL_SetWindowSize(T::get(), p.x, p.y); }
 
   /**
    * Get the size of a window's client area.
    *
    * The window pixel size may differ from its window coordinate size if the
-   * window is on a high pixel density display. Use SDL_GetWindowSizeInPixels()
-   * or SDL_GetRenderOutputSize() to get the real client area size in pixels.
+   * window is on a high pixel density display. Use GetSizeInPixels()
+   * or Renderer.GetOutputSize() to get the real client area size in pixels.
+   *
+   * @returns a point with width and height on success or std::nullopt on
+   * failure; call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Renderer.GetOutputSize()
+   * @sa GetSizeInPixels()
+   * @sa SetSize()
+   * @sa GetSize(int *, int *)
+   */
+  std::optional<Point> GetSize() const
+  {
+    if (Point p; GetSize(&p.x, &p.y)) return p;
+    return std::nullopt;
+  }
+
+  /**
+   * Get the size of a window's client area.
+   *
+   * The window pixel size may differ from its window coordinate size if the
+   * window is on a high pixel density display. Use GetSizeInPixels()
+   * or Renderer.GetOutputSize() to get the real client area size in pixels.
    *
    * @param w a pointer filled in with the width of the window, may be NULL.
    * @param h a pointer filled in with the height of the window, may be NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderOutputSize
-   * @sa SDL_GetWindowSizeInPixels
-   * @sa SDL_SetWindowSize
+   * @sa Renderer.GetOutputSize()
+   * @sa GetSizeInPixels()
+   * @sa SetSize()
    */
   bool GetSize(int* w, int* h) const
   {
-    return SDL_GetWindowSize(Get<T>(), w, h);
+    return SDL_GetWindowSize(T::get(), w, h);
   }
 
   /**
@@ -1260,18 +1336,17 @@ struct WindowBase : T
    * into the rest of the window, but it should not contain visually important
    * or interactible content.
    *
-   * @param rect a pointer filled in with the client area that is safe for
-   *             interactive content.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the client area that is safe for interactive content on success or
+   * std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool GetSafeArea(Rect* rect) const
+  std::optional<Rect> GetSafeArea() const
   {
-    return SDL_GetWindowSafeArea(Get<T>(), rect);
+    if (Rect rect; SDL_GetWindowSafeArea(T::get(), &rect)) return rect;
+    return std::nullopt;
   }
 
   /**
@@ -1302,19 +1377,19 @@ struct WindowBase : T
    *                   limit.
    * @param max_aspect the maximum aspect ratio of the window, or 0.0f for no
    *                   limit.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowAspectRatio
-   * @sa SDL_SyncWindow
+   * @sa GetAspectRatio()
+   * @sa Sync()
    */
   bool SetAspectRatio(float min_aspect, float max_aspect)
   {
-    return SDL_SetWindowAspectRatio(Get<T>(), min_aspect, max_aspect);
+    return SDL_SetWindowAspectRatio(T::get(), min_aspect, max_aspect);
   }
 
   /**
@@ -1324,18 +1399,18 @@ struct WindowBase : T
    *                   window, may be NULL.
    * @param max_aspect a pointer filled in with the maximum aspect ratio of the
    *                   window, may be NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowAspectRatio
+   * @sa SetspectRatio()
    */
   bool GetAspectRatio(float* min_aspect, float* max_aspect) const
   {
-    return SDL_GetWindowAspectRatio(Get<T>(), min_aspect, max_aspect);
+    return SDL_GetWindowAspectRatio(T::get(), min_aspect, max_aspect);
   }
 
   /**
@@ -1362,18 +1437,37 @@ struct WindowBase : T
    *               border; NULL is permitted.
    * @param right pointer to variable for storing the size of the right border;
    *              NULL is permitted.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowSize
+   * @sa GetSize()
    */
   bool GetBordersSize(int* top, int* left, int* bottom, int* right) const
   {
-    return SDL_GetWindowBordersSize(Get<T>(), top, left, bottom, right);
+    return SDL_GetWindowBordersSize(T::get(), top, left, bottom, right);
+  }
+
+  /**
+   * Get the size of a window's client area, in pixels.
+   *
+   * @returns the size on success or std::nullopt on failure; call GetError()
+   * for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetSize()
+   * @sa GetSizeInPixels(int*, int*)
+   */
+  std::optional<Point> GetSizeInPixels() const
+  {
+    if (Point p; GetSizeInPixels(&p.x, &p.y)) return p;
+    return std::nullopt;
   }
 
   /**
@@ -1383,39 +1477,37 @@ struct WindowBase : T
    *          NULL.
    * @param h a pointer to variable for storing the height in pixels, may be
    *          NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateWindow
-   * @sa SDL_GetWindowSize
+   * @sa GetSize()
    */
   bool GetSizeInPixels(int* w, int* h) const
   {
-    return SDL_GetWindowSizeInPixels(Get<T>(), w, h);
+    return SDL_GetWindowSizeInPixels(T::get(), w, h);
   }
 
   /**
    * Set the minimum size of a window's client area.
    *
-   * @param min_w the minimum width of the window, or 0 for no limit.
-   * @param min_h the minimum height of the window, or 0 for no limit.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @param p the minimum width and height of the window, or 0 for no limit.
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowMinimumSize
-   * @sa SDL_SetWindowMaximumSize
+   * @sa GetMinimumSize()
+   * @sa SetMaximumSize()
    */
-  bool SetMinimumSize(int min_w, int min_h)
+  bool SetMinimumSize(SDL_Point p)
   {
-    return SDL_SetWindowMinimumSize(Get<T>(), min_w, min_h);
+    return SDL_SetWindowMinimumSize(T::get(), p.x, p.y);
   }
 
   /**
@@ -1425,39 +1517,38 @@ struct WindowBase : T
    *          NULL.
    * @param h a pointer filled in with the minimum height of the window, may be
    *          NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowMaximumSize
-   * @sa SDL_SetWindowMinimumSize
+   * @sa GetMaximumSize()
+   * @sa SetMinimumSize()
    */
   bool GetMinimumSize(int* w, int* h) const
   {
-    return SDL_GetWindowMinimumSize(Get<T>(), w, h);
+    return SDL_GetWindowMinimumSize(T::get(), w, h);
   }
 
   /**
    * Set the maximum size of a window's client area.
    *
-   * @param max_w the maximum width of the window, or 0 for no limit.
-   * @param max_h the maximum height of the window, or 0 for no limit.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @param p the maximum width and height of the window, or 0 for no limit.
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowMaximumSize
-   * @sa SDL_SetWindowMinimumSize
+   * @sa GetMaximumSize()
+   * @sa SetMinimumSize()
    */
-  bool SetMaximumSize(int max_w, int max_h)
+  bool SetMaximumSize(SDL_Point p)
   {
-    return SDL_SetWindowMaximumSize(Get<T>(), max_w, max_h);
+    return SDL_SetWindowMaximumSize(T::get(), p.x, p.y);
   }
 
   /**
@@ -1467,19 +1558,19 @@ struct WindowBase : T
    *          NULL.
    * @param h a pointer filled in with the maximum height of the window, may be
    *          NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowMinimumSize
-   * @sa SDL_SetWindowMaximumSize
+   * @sa GetMinimumSize()
+   * @sa SetMaximumSize()
    */
   bool GetMaximumSize(int* w, int* h) const
   {
-    return SDL_GetWindowMaximumSize(Get<T>(), w, h);
+    return SDL_GetWindowMaximumSize(T::get(), w, h);
   }
 
   /**
@@ -1492,18 +1583,18 @@ struct WindowBase : T
    * You can't change the border state of a fullscreen window.
    *
    * @param bordered false to remove border, true to add border.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowFlags
+   * @sa GetFlags()
    */
   bool SetBordered(bool bordered)
   {
-    return SDL_SetWindowBordered(Get<T>(), bordered);
+    return SDL_SetWindowBordered(T::get(), bordered);
   }
 
   /**
@@ -1516,18 +1607,18 @@ struct WindowBase : T
    * You can't change the resizable state of a fullscreen window.
    *
    * @param resizable true to allow resizing, false to disallow.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowFlags
+   * @sa GetWindowFlags()
    */
   bool SetResizable(bool resizable)
   {
-    return SDL_SetWindowResizable(Get<T>(), resizable);
+    return SDL_SetWindowResizable(T::get(), resizable);
   }
 
   /**
@@ -1537,39 +1628,39 @@ struct WindowBase : T
    * will bring the window to the front and keep the window above the rest.
    *
    * @param on_top true to set the window always on top, false to disable.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowFlags
+   * @sa GetFlags()
    */
   bool SetAlwaysOnTop(bool on_top)
   {
-    return SDL_SetWindowAlwaysOnTop(Get<T>(), on_top);
+    return SDL_SetWindowAlwaysOnTop(T::get(), on_top);
   }
 
   /**
    * Show a window.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_HideWindow
-   * @sa SDL_RaiseWindow
+   * @sa Hide
+   * @sa Raise
    */
-  bool ShowWindow() { return SDL_ShowWindow(Get<T>()); }
+  bool ShowWindow() { return SDL_ShowWindow(T::get()); }
 
   /**
    * Hide a window.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1579,7 +1670,7 @@ struct WindowBase : T
    * @sa SDL_ShowWindow
    * @sa SDL_WINDOW_HIDDEN
    */
-  bool HideWindow() { return SDL_HideWindow(Get<T>()); }
+  bool HideWindow() { return SDL_HideWindow(T::get()); }
 
   /**
    * Request that a window be raised above other windows and gain the input
@@ -1591,14 +1682,14 @@ struct WindowBase : T
    * gains input focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted,
    * and the window will have the SDL_WINDOW_INPUT_FOCUS flag set.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool RaiseWindow() { return SDL_RaiseWindow(Get<T>()); }
+  bool RaiseWindow() { return SDL_RaiseWindow(T::get()); }
 
   /**
    * Request that the window be made as large as possible.
@@ -1620,7 +1711,7 @@ struct WindowBase : T
    * manager. Win32 and macOS enforce the constraints when maximizing, while
    * X11 and Wayland window managers may vary.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1631,7 +1722,7 @@ struct WindowBase : T
    * @sa SDL_RestoreWindow
    * @sa SDL_SyncWindow
    */
-  bool MaximizeWindow() { return SDL_MaximizeWindow(Get<T>()); }
+  bool MaximizeWindow() { return SDL_MaximizeWindow(T::get()); }
 
   /**
    * Request that the window be minimized to an iconic representation.
@@ -1648,7 +1739,7 @@ struct WindowBase : T
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1659,7 +1750,7 @@ struct WindowBase : T
    * @sa SDL_RestoreWindow
    * @sa SDL_SyncWindow
    */
-  bool MinimizeWindow() { return SDL_MinimizeWindow(Get<T>()); }
+  bool MinimizeWindow() { return SDL_MinimizeWindow(T::get()); }
 
   /**
    * Request that the size and position of a minimized or maximized window be
@@ -1677,7 +1768,7 @@ struct WindowBase : T
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1688,7 +1779,7 @@ struct WindowBase : T
    * @sa SDL_MinimizeWindow
    * @sa SDL_SyncWindow
    */
-  bool RestoreWindow() { return SDL_RestoreWindow(Get<T>()); }
+  bool RestoreWindow() { return SDL_RestoreWindow(T::get()); }
 
   /**
    * Request that the window's fullscreen state be changed.
@@ -1707,7 +1798,7 @@ struct WindowBase : T
    * this is just a request, it can be denied by the windowing system.
    *
    * @param fullscreen true for fullscreen mode, false for windowed mode.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1721,7 +1812,7 @@ struct WindowBase : T
    */
   bool SetFullscreen(bool fullscreen)
   {
-    return SDL_SetWindowFullscreen(Get<T>(), fullscreen);
+    return SDL_SetWindowFullscreen(T::get(), fullscreen);
   }
 
   /**
@@ -1752,7 +1843,7 @@ struct WindowBase : T
    * @sa SDL_RestoreWindow
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
-  bool SyncWindow() { return SDL_SyncWindow(Get<T>()); }
+  bool SyncWindow() { return SDL_SyncWindow(T::get()); }
 
   /**
    * @brief Return whether the window has a surface associated with it.
@@ -1763,7 +1854,7 @@ struct WindowBase : T
    *
    * @sa WindowBase.GetSurface()
    */
-  bool HasSurface() const { return SDL_WindowHasSurface(Get<T>()); }
+  bool HasSurface() const { return SDL_WindowHasSurface(T::get()); }
 
   /**
    * @brief Get the SDL surface associated with the window.
@@ -1804,14 +1895,14 @@ struct WindowBase : T
    * whether the requested setting is supported.
    *
    * @param vsync the vertical refresh sync interval.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowSurfaceVSync
+   * @sa GetSurfaceVSync()
    */
   bool SetSurfaceVSync(int vsync)
   {
@@ -1821,20 +1912,19 @@ struct WindowBase : T
   /**
    * Get VSync for the window surface.
    *
-   * @param vsync an int filled with the current vertical refresh sync
-   * interval. See SDL_SetWindowSurfaceVSync() for the meaning of the value.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the current vertical refresh sync interval on success or
+   * std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowSurfaceVSync
+   * @sa SetSurfaceVSync()
    */
-  bool GetSurfaceVSync(int* vsync) const
+  std::optional<int> GetSurfaceVSync() const
   {
-    return SDL_GetWindowSurfaceVSync(T::get(), vsync);
+    if (int vsync; SDL_GetWindowSurfaceVSync(T::get(), vsync)) return vsync;
+    return std::nullopt;
   }
 
   // TODO SDL_SetWindowSurfaceVSync
@@ -1891,7 +1981,7 @@ struct WindowBase : T
   /**
    * Destroy the surface associated with the window.
    *
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1923,7 +2013,7 @@ struct WindowBase : T
    * the other window loses its grab in favor of the caller's window.
    *
    * @param grabbed this is true to grab keyboard, and false to release.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1944,7 +2034,7 @@ struct WindowBase : T
    * Mouse grab confines the mouse cursor to the window.
    *
    * @param grabbed this is true to grab mouse, and false to release.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1998,7 +2088,7 @@ struct WindowBase : T
    *
    * @param rect a rectangle area in window-relative coordinates. If NULL the
    *             barrier for the specified window will be destroyed.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2039,7 +2129,7 @@ struct WindowBase : T
    * This function also returns false if setting the opacity isn't supported.
    *
    * @param opacity the opacity value (0.0f - transparent, 1.0f - opaque).
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2060,7 +2150,7 @@ struct WindowBase : T
    * as 1.0f without error.
    *
    * @returns the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on
-   *          failure; call SDL_GetError() for more information.
+   *          failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2092,7 +2182,7 @@ struct WindowBase : T
    * child window results in undefined behavior.
    *
    * @param parent the new parent window for the child window.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2103,7 +2193,7 @@ struct WindowBase : T
    */
   bool SetParent(WindowRef parent)
   {
-    return SDL_SetWindowParent(T::get(), parent);
+    return SDL_SetWindowParent(T::get(), parent.get());
   }
 
   /**
@@ -2113,7 +2203,7 @@ struct WindowBase : T
    * window of a parent, or toggling modal status on will fail.
    *
    * @param modal true to toggle modal status on, false to toggle it off.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2130,7 +2220,7 @@ struct WindowBase : T
    *
    * @param focusable true to allow input focus, false to not allow input
    * focus.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2153,20 +2243,18 @@ struct WindowBase : T
    * On platforms or desktops where this is unsupported, this function does
    * nothing.
    *
-   * @param x the x coordinate of the menu, relative to the origin (top-left)
+   * @param p the x, y coordinate of the menu, relative to the origin (top-left)
    * of the client area.
-   * @param y the y coordinate of the menu, relative to the origin (top-left)
-   * of the client area.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ShowWindowSystemMenu(int x, int y)
+  bool ShowWindowSystemMenu(SDL_Point p)
   {
-    return SDL_ShowWindowSystemMenu(T::get(), x, y);
+    return SDL_ShowWindowSystemMenu(T::get(), p.x, p.y);
   }
 
   /**
@@ -2231,7 +2319,7 @@ struct WindowBase : T
    * devoid of allocations, etc.
    *
    * @param callback the function to call when doing a hit-test.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2280,7 +2368,7 @@ struct WindowBase : T
    *
    * @param callback the function to call when doing a hit-test.
    * @param callback_data an app-defined void pointer passed to **callback**.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2310,7 +2398,7 @@ struct WindowBase : T
    *
    * @param shape the surface representing the shape of the window, or NULL to
    *              remove any current shape.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2326,7 +2414,7 @@ struct WindowBase : T
    * Request a window to demand attention from the user.
    *
    * @param operation the operation to perform.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2563,7 +2651,7 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  * @param count a pointer filled in with the number of windows returned, may
  *              be NULL.
  * @returns a NULL terminated array of SDL_Window pointers or NULL on failure;
- *          call SDL_GetError() for more information. This is a single
+ *          call GetError() for more information. This is a single
  *          allocation that should be freed with SDL_free() when it is no
  *          longer needed.
  *
@@ -2584,7 +2672,7 @@ inline FreeWrapper<WindowRef[]> GetWindows(int* count)
  *
  * @param id the ID of the window.
  * @returns the window associated with `id` or NULL if it doesn't exist; call
- *          SDL_GetError() for more information.
+ *          GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -2702,7 +2790,7 @@ inline bool DisableScreenSaver() { return SDL_DisableScreenSaver(); }
  *
  * @param path the platform dependent OpenGL library name, or NULL to open the
  *             default OpenGL library.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -2857,7 +2945,7 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  * @param attr an SDL_GLAttr enum value specifying the OpenGL attribute to
  *             set.
  * @param value the desired value for the attribute.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -2878,7 +2966,7 @@ inline bool GL_SetAttribute(GLAttr attr, int value)
  * @param attr an SDL_GLAttr enum value specifying the OpenGL attribute to
  *             get.
  * @param value a pointer filled in with the current value of `attr`.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -2906,7 +2994,7 @@ inline bool GL_GetAttribute(GLAttr attr, int* value)
  *
  * @param window the window to associate with the context.
  * @returns the OpenGL context associated with `window` or NULL on failure;
- *          call SDL_GetError() for more information.
+ *          call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -2927,7 +3015,7 @@ inline GLContext GL_CreateContext(WindowRef window)
  *
  * @param window the window to associate with the context.
  * @param context the OpenGL context to associate with the window.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -2945,7 +3033,7 @@ inline bool GL_MakeCurrent(WindowRef window, GLContext context)
  * Get the currently active OpenGL window.
  *
  * @returns the currently active OpenGL window on success or NULL on failure;
- *          call SDL_GetError() for more information.
+ *          call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -2957,7 +3045,7 @@ inline WindowRef GL_GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
  * Get the currently active OpenGL context.
  *
  * @returns the currently active OpenGL context or NULL on failure; call
- *          SDL_GetError() for more information.
+ *          GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -2971,7 +3059,7 @@ inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
  * Get the currently active EGL display.
  *
  * @returns the currently active EGL display or NULL on failure; call
- *          SDL_GetError() for more information.
+ *          GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -2986,7 +3074,7 @@ inline EGLDisplay EGL_GetCurrentDisplay()
  * Get the currently active EGL config.
  *
  * @returns the currently active EGL config or NULL on failure; call
- *          SDL_GetError() for more information.
+ *          GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
@@ -3062,7 +3150,7 @@ inline void EGL_SetAttributeCallbacks(
  *
  * @param interval 0 for immediate updates, 1 for updates synchronized with
  *                 the vertical retrace, -1 for adaptive vsync.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -3086,7 +3174,7 @@ inline bool GL_SetSwapInterval(int interval)
  *                 synchronization, 1 if the buffer swap is synchronized with
  *                 the vertical retrace, and -1 if late swaps happen
  *                 immediately instead of waiting for the next retrace.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -3111,7 +3199,7 @@ inline bool GL_GetSwapInterval(int* interval)
  * extra.
  *
  * @param window the window to change.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.
@@ -3127,7 +3215,7 @@ inline bool GL_SwapWindow(WindowRef window)
  * Delete an OpenGL context.
  *
  * @param context the OpenGL context to be deleted.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @threadsafety This function should only be called on the main thread.

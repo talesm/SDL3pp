@@ -7103,16 +7103,13 @@
                     "type": "StringParam"
                   },
                   {
-                    "name": "w",
-                    "type": "int"
-                  },
-                  {
-                    "name": "h",
-                    "type": "int"
+                    "name": "size",
+                    "type": "SDL_Point"
                   },
                   {
                     "name": "flags",
-                    "type": "WindowFlags"
+                    "type": "WindowFlags",
+                    "default": "0"
                   }
                 ],
                 "sourceName": "SDL_CreateWindow",
@@ -7129,24 +7126,17 @@
                     "type": "WindowRef"
                   },
                   {
-                    "name": "offset_x",
-                    "type": "int"
+                    "name": "offset",
+                    "type": "SDL_Point"
                   },
                   {
-                    "name": "offset_y",
-                    "type": "int"
-                  },
-                  {
-                    "name": "w",
-                    "type": "int"
-                  },
-                  {
-                    "name": "h",
-                    "type": "int"
+                    "name": "size",
+                    "type": "SDL_Point"
                   },
                   {
                     "name": "flags",
-                    "type": "WindowFlags"
+                    "type": "WindowFlags",
+                    "default": "0"
                   }
                 ],
                 "sourceName": "SDL_CreatePopupWindow"
@@ -7309,6 +7299,26 @@
               ],
               "sourceName": "SDL_SetWindowIcon"
             },
+            "SetRect": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "Rect",
+                  "name": "rect"
+                }
+              ],
+              "name": "SetRect",
+              "doc": ""
+            },
+            "GetRect": {
+              "kind": "function",
+              "type": "std::optional<Rect>",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetRect",
+              "doc": ""
+            },
             "SetPosition": {
               "doc": "Request that the window's position be set.\n\nIf the window is in an exclusive fullscreen or maximized state, this\nrequest has no effect.\n\nThis can be used to reposition fullscreen-desktop windows onto a different\ndisplay, however, as exclusive fullscreen windows are locked to a specific\ndisplay, they can only be repositioned programmatically via\nSDL_SetWindowFullscreenMode().\n\nOn some windowing systems this request is asynchronous and the new\ncoordinates may not have have been applied immediately upon the return of\nthis function. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window position changes, an SDL_EVENT_WINDOW_MOVED event will be\nemitted with the window's new coordinates. Note that the new coordinates\nmay not match the exact coordinates requested, as some windowing systems\ncan restrict the position of the window in certain scenarios (e.g.\nconstraining the position so the window is always within desktop bounds).\nAdditionally, as this is just a request, it can be denied by the windowing\nsystem.\n\n@param window the window to reposition.\n@param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or\n         `SDL_WINDOWPOS_UNDEFINED`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetWindowPosition\n@sa SDL_SyncWindow",
               "name": "SetPosition",
@@ -7316,34 +7326,41 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "x",
-                  "type": "int"
-                },
-                {
-                  "name": "y",
-                  "type": "int"
+                  "name": "p",
+                  "type": "SDL_Point"
                 }
               ],
-              "sourceName": "SDL_SetWindowPosition"
+              "sourceName": "SDL_SetWindowPosition",
+              "static": false
             },
-            "GetPosition": {
-              "doc": "Get the position of a window.\n\nThis is the current position of the window as last reported by the\nwindowing system.\n\nIf you do not need the value for one of the positions a NULL may be passed\nin the `x` or `y` parameter.\n\n@param window the window to query.\n@param x a pointer filled in with the x position of the window, may be\n         NULL.\n@param y a pointer filled in with the y position of the window, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetWindowPosition",
-              "name": "GetPosition",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "x",
-                  "type": "int *"
-                },
-                {
-                  "name": "y",
-                  "type": "int *"
-                }
-              ],
-              "sourceName": "SDL_GetWindowPosition",
-              "immutable": true
-            },
+            "GetPosition": [
+              {
+                "kind": "function",
+                "type": "std::optional<Point>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetPosition",
+                "doc": ""
+              },
+              {
+                "doc": "Get the position of a window.\n\nThis is the current position of the window as last reported by the\nwindowing system.\n\nIf you do not need the value for one of the positions a NULL may be passed\nin the `x` or `y` parameter.\n\n@param window the window to query.\n@param x a pointer filled in with the x position of the window, may be\n         NULL.\n@param y a pointer filled in with the y position of the window, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetWindowPosition",
+                "name": "GetPosition",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "x",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "y",
+                    "type": "int *"
+                  }
+                ],
+                "sourceName": "SDL_GetWindowPosition",
+                "immutable": true
+              }
+            ],
             "SetSize": {
               "doc": "Request that the size of a window's client area be set.\n\nIf the window is in a fullscreen or maximized state, this request has no\neffect.\n\nTo change the exclusive fullscreen mode of a window, use\nSDL_SetWindowFullscreenMode().\n\nOn some windowing systems, this request is asynchronous and the new window\nsize may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window size changes, an SDL_EVENT_WINDOW_RESIZED event will be\nemitted with the new window dimensions. Note that the new dimensions may\nnot match the exact size requested, as some windowing systems can restrict\nthe window size in certain scenarios (e.g. constraining the size of the\ncontent area to remain within the usable desktop bounds). Additionally, as\nthis is just a request, it can be denied by the windowing system.\n\n@param window the window to change.\n@param w the width of the window, must be > 0.\n@param h the height of the window, must be > 0.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetWindowSize\n@sa SDL_SetWindowFullscreenMode\n@sa SDL_SyncWindow",
               "name": "SetSize",
@@ -7351,45 +7368,47 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "w",
-                  "type": "int"
-                },
-                {
-                  "name": "h",
-                  "type": "int"
+                  "name": "p",
+                  "type": "SDL_Point"
                 }
               ],
-              "sourceName": "SDL_SetWindowSize"
+              "sourceName": "SDL_SetWindowSize",
+              "static": false
             },
-            "GetSize": {
-              "doc": "Get the size of a window's client area.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use SDL_GetWindowSizeInPixels()\nor SDL_GetRenderOutputSize() to get the real client area size in pixels.\n\n@param window the window to query the width and height from.\n@param w a pointer filled in with the width of the window, may be NULL.\n@param h a pointer filled in with the height of the window, may be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderOutputSize\n@sa SDL_GetWindowSizeInPixels\n@sa SDL_SetWindowSize",
-              "name": "GetSize",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "w",
-                  "type": "int *"
-                },
-                {
-                  "name": "h",
-                  "type": "int *"
-                }
-              ],
-              "sourceName": "SDL_GetWindowSize",
-              "immutable": true
-            },
+            "GetSize": [
+              {
+                "kind": "function",
+                "type": "std::optional<Point>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetSize",
+                "doc": ""
+              },
+              {
+                "doc": "Get the size of a window's client area.\n\nThe window pixel size may differ from its window coordinate size if the\nwindow is on a high pixel density display. Use SDL_GetWindowSizeInPixels()\nor SDL_GetRenderOutputSize() to get the real client area size in pixels.\n\n@param window the window to query the width and height from.\n@param w a pointer filled in with the width of the window, may be NULL.\n@param h a pointer filled in with the height of the window, may be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderOutputSize\n@sa SDL_GetWindowSizeInPixels\n@sa SDL_SetWindowSize",
+                "name": "GetSize",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int *"
+                  }
+                ],
+                "sourceName": "SDL_GetWindowSize",
+                "immutable": true
+              }
+            ],
             "GetSafeArea": {
               "doc": "Get the safe area for this window.\n\nSome devices have portions of the screen which are partially obscured or\nnot interactive, possibly due to on-screen controls, curved edges, camera\nnotches, TV overscan, etc. This function provides the area of the window\nwhich is safe to have interactable content. You should continue rendering\ninto the rest of the window, but it should not contain visually important\nor interactible content.\n\n@param window the window to query.\n@param rect a pointer filled in with the client area that is safe for\n            interactive content.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetSafeArea",
               "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "rect",
-                  "type": "Rect *"
-                }
-              ],
+              "type": "std::optional<Rect>",
+              "parameters": [],
               "sourceName": "SDL_GetWindowSafeArea",
               "immutable": true
             },
@@ -7454,24 +7473,34 @@
               "sourceName": "SDL_GetWindowBordersSize",
               "immutable": true
             },
-            "GetSizeInPixels": {
-              "doc": "Get the size of a window's client area, in pixels.\n\n@param window the window from which the drawable size should be queried.\n@param w a pointer to variable for storing the width in pixels, may be\n         NULL.\n@param h a pointer to variable for storing the height in pixels, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateWindow\n@sa SDL_GetWindowSize",
-              "name": "GetSizeInPixels",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "w",
-                  "type": "int *"
-                },
-                {
-                  "name": "h",
-                  "type": "int *"
-                }
-              ],
-              "sourceName": "SDL_GetWindowSizeInPixels",
-              "immutable": true
-            },
+            "GetSizeInPixels": [
+              {
+                "kind": "function",
+                "type": "std::optional<Point>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetSizeInPixels",
+                "doc": ""
+              },
+              {
+                "doc": "Get the size of a window's client area, in pixels.\n\n@param window the window from which the drawable size should be queried.\n@param w a pointer to variable for storing the width in pixels, may be\n         NULL.\n@param h a pointer to variable for storing the height in pixels, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateWindow\n@sa SDL_GetWindowSize",
+                "name": "GetSizeInPixels",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int *"
+                  }
+                ],
+                "sourceName": "SDL_GetWindowSizeInPixels",
+                "immutable": true
+              }
+            ],
             "SetMinimumSize": {
               "doc": "Set the minimum size of a window's client area.\n\n@param window the window to change.\n@param min_w the minimum width of the window, or 0 for no limit.\n@param min_h the minimum height of the window, or 0 for no limit.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetWindowMinimumSize\n@sa SDL_SetWindowMaximumSize",
               "name": "SetMinimumSize",
@@ -7479,15 +7508,12 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "min_w",
-                  "type": "int"
-                },
-                {
-                  "name": "min_h",
-                  "type": "int"
+                  "name": "p",
+                  "type": "SDL_Point"
                 }
               ],
-              "sourceName": "SDL_SetWindowMinimumSize"
+              "sourceName": "SDL_SetWindowMinimumSize",
+              "static": false
             },
             "GetMinimumSize": {
               "doc": "Get the minimum size of a window's client area.\n\n@param window the window to query.\n@param w a pointer filled in with the minimum width of the window, may be\n         NULL.\n@param h a pointer filled in with the minimum height of the window, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetWindowMaximumSize\n@sa SDL_SetWindowMinimumSize",
@@ -7514,15 +7540,12 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "max_w",
-                  "type": "int"
-                },
-                {
-                  "name": "max_h",
-                  "type": "int"
+                  "name": "p",
+                  "type": "SDL_Point"
                 }
               ],
-              "sourceName": "SDL_SetWindowMaximumSize"
+              "sourceName": "SDL_SetWindowMaximumSize",
+              "static": false
             },
             "GetMaximumSize": {
               "doc": "Get the maximum size of a window's client area.\n\n@param window the window to query.\n@param w a pointer filled in with the maximum width of the window, may be\n         NULL.\n@param h a pointer filled in with the maximum height of the window, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetWindowMinimumSize\n@sa SDL_SetWindowMaximumSize",
@@ -7684,13 +7707,8 @@
               "doc": "Get VSync for the window surface.\n\n@param window the window to query.\n@param vsync an int filled with the current vertical refresh sync interval.\n             See SDL_SetWindowSurfaceVSync() for the meaning of the value.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetWindowSurfaceVSync",
               "name": "GetSurfaceVSync",
               "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "vsync",
-                  "type": "int *"
-                }
-              ],
+              "type": "std::optional<int>",
+              "parameters": [],
               "sourceName": "SDL_GetWindowSurfaceVSync",
               "immutable": true
             },
@@ -7857,15 +7875,12 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "x",
-                  "type": "int"
-                },
-                {
-                  "name": "y",
-                  "type": "int"
+                  "name": "p",
+                  "type": "SDL_Point"
                 }
               ],
-              "sourceName": "SDL_ShowWindowSystemMenu"
+              "sourceName": "SDL_ShowWindowSystemMenu",
+              "static": false
             },
             "HitTestResult": {
               "doc": "Possible return values from the SDL_HitTest callback.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_HitTest",

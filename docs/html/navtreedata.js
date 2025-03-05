@@ -75,7 +75,8 @@ var NAVTREEINDEX =
 "structSDL_1_1Display.html#acfbf256e101a9a1350b35e9230406381",
 "structSDL_1_1PixelFormat.html#a8ac60139e746de17f891713edcea24a4",
 "structSDL_1_1RendererBase.html#a157ad97e3ed83a6c87b21cb5094c57b4",
-"structSDL_1_1SurfaceBase.html#a9175d7e19c831c65e125ce07498ba15c"
+"structSDL_1_1SurfaceBase.html#a9175d7e19c831c65e125ce07498ba15c",
+"structSDL_1_1WindowBase.html#af519b9dd35b6c07c64236f567ca99e14"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
