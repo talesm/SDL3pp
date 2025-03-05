@@ -218,7 +218,7 @@ struct SDL::PropertiesBase&lt; T &gt;</div><p>Wrap properties id. </p>
 </ul>
 <p>Properties can be removed from a group by using SDL_ClearProperty. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00096">96</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00094">94</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a3211c215f11b6f0942ab111bca359c24" name="a3211c215f11b6f0942ab111bca359c24"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3211c215f11b6f0942ab111bca359c24">&#9670;&#160;</a></span>CleanupCallback</h2>
@@ -245,11 +245,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </table>
   </dd>
 </dl>
-<p>@threadsafety This callback may fire without any locks held; if this is a concern, the app should provide its own locking.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This callback may fire without any locks held; if this is a concern, the app should provide its own locking.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a168539fbe50fb9d64ce3e83aaeb3309e" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">SetPointerWithCleanup</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00160">160</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00159">159</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +268,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a3211c215f11b6f0942ab111bca359c24" title="A callback used to free resources when a property is deleted.">PropertiesRef.CleanupCallback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00165">165</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00164">164</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -296,11 +296,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </table>
   </dd>
 </dl>
-<p>@threadsafety SDL_EnumerateProperties holds a lock on <code>props</code> during this callback.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>SDL_EnumerateProperties holds a lock on <code>props</code> during this callback.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_EnumerateProperties </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00485">485</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00484">484</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -319,7 +319,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#aa5ea04792dd6fde23ffadf9c52e7d454" title="A callback used to enumerate all the properties in a group of properties.">PropertiesRef.EnumerateCallback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00490">490</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00489">489</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -351,12 +351,12 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 
 <p>Create a group of properties. </p>
 <p>All properties are automatically destroyed when SDL_Quit() is called.</p>
-<dl class="section return"><dt>Returns</dt><dd>an ID for a new group of properties, or 0 on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread.</p>
+<dl class="section post"><dt>Postcondition</dt><dd>a valid Properties ready to be manipulated and convertible to true on success, or convertible to false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_DestroyProperties </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00114">114</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00113">113</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -395,9 +395,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00466">466</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00465">465</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -436,9 +436,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00133">133</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00132">132</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -488,9 +488,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00505">505</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00504">504</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -529,9 +529,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00522">522</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00521">521</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -571,9 +571,9 @@ template&lt;std::output_iterator&lt; <a class="el" href="classSDL_1_1OptionalRef
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00540">540</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00539">539</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -624,9 +624,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a boolean property.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00452">452</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00451">451</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -658,7 +658,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <p>Returns the number of properties this has. </p>
 <p>This uses <a class="el" href="structSDL_1_1PropertiesBase.html#a3e6a66a9538e777284e5c23ae8632dfa" title="Enumerate the properties contained in a group of properties.">Enumerate()</a> internally, so might not be so fast </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00551">551</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00550">550</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -709,9 +709,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a float property.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00429">429</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00428">428</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -762,9 +762,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a number property.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00406">406</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00405">405</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -809,15 +809,15 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <p>By convention, the names of properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">the</td><td>name of the property to query. </td></tr>
+    <tr><td class="paramname">name</td><td>the name of the property to query. </td></tr>
     <tr><td class="paramname">default_value</td><td>the default value of the property. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a pointer property.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread, although the data returned is not protected and could potentially be freed if you call SetProperty() or ClearProperty() on these properties from another thread. If you need to avoid this, use SDL_LockProperties() and SDL_UnlockProperties(). </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, although the data returned is not protected and could potentially be freed if you call SetProperty() or ClearProperty() on these properties from another thread. If you need to avoid this, use SDL_LockProperties() and SDL_UnlockProperties(). </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00349">349</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00348">348</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -868,7 +868,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a string property.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread, although the data returned is not protected and could potentially be freed if you call <a class="el" href="structSDL_1_1PropertiesBase.html#a6d0127edfa671c7c02b0890dd923e41d" title="Set a string property in a group of properties.">SetString()</a> or ClearProperty() on these properties from another thread. If you need to avoid this, use SDL_LockProperties() and SDL_UnlockProperties().</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, although the data returned is not protected and could potentially be freed if you call <a class="el" href="structSDL_1_1PropertiesBase.html#a6d0127edfa671c7c02b0890dd923e41d" title="Set a string property in a group of properties.">SetString()</a> or ClearProperty() on these properties from another thread. If you need to avoid this, use SDL_LockProperties() and SDL_UnlockProperties().</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a54840945564bad4d728db1024266916c" title="Get the type of a property in a group of properties.">PropertiesRef.GetType()</a> </dd>
 <dd>
@@ -876,7 +876,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a6d0127edfa671c7c02b0890dd923e41d" title="Set a string property in a group of properties.">PropertiesRef.SetString()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00383">383</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00382">382</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -908,7 +908,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 
 <p>Get the type of a property in a group of properties. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00320">320</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00319">319</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -940,7 +940,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 
 <p>Return whether a property exists. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00317">317</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00316">316</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -989,9 +989,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00311">311</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00310">310</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -1040,9 +1040,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00296">296</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00295">295</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -1091,9 +1091,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00281">281</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00280">280</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -1142,9 +1142,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00248">248</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00247">247</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -1209,7 +1209,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#acb96e7a51b367caef8e2c3b338383335" title="Get a pointer property from a group of properties.">PropertiesRef.GetPointer</a> </dd>
 <dd>
@@ -1217,7 +1217,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a3211c215f11b6f0942ab111bca359c24" title="A callback used to free resources when a property is deleted.">PropertiesRef.CleanupCallback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00197">197</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00196">196</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -1275,9 +1275,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00226">226</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00225">225</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -1327,9 +1327,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00266">266</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00265">265</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>

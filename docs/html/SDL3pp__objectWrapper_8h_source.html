@@ -238,19 +238,21 @@ $(document).ready(function(){initNavTree('SDL3pp__objectWrapper_8h_source.html',
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keywordtype">void</span> std::swap(<a class="code hl_class" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef&lt;T&gt;</a>&amp; left, <a class="code hl_class" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef&lt;T&gt;</a>&amp; right)</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>{</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  left.<a class="code hl_function" href="classSDL_1_1ObjectRef.html#a420eb2fcb0acda70c2a971583d151dfe">swap</a>(right);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keywordtype">void</span> std::swap(<a class="code hl_class" href="classSDL_1_1ObjectUnique.html">SDL::ObjectUnique&lt;T&gt;</a>&amp; left, <a class="code hl_class" href="classSDL_1_1ObjectUnique.html">SDL::ObjectUnique&lt;T&gt;</a>&amp; right)</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>{</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  left.<a class="code hl_function" href="classSDL_1_1ObjectUnique.html#a526a3bc20034b15c51079b03bf62f992">swap</a>(right);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_OBJECT_WRAPPER_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T, <span class="keyword">class</span> POINTER&gt;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keywordtype">void</span> std::swap(<a class="code hl_class" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef&lt;T, POINTER&gt;</a>&amp; left,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>               <a class="code hl_class" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef&lt;T, POINTER&gt;</a>&amp; right)</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>{</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>  left.<a class="code hl_function" href="classSDL_1_1ObjectRef.html#a420eb2fcb0acda70c2a971583d151dfe">swap</a>(right);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>}</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T, <span class="keyword">class</span> DELETER&gt;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keywordtype">void</span> std::swap(<a class="code hl_class" href="classSDL_1_1ObjectUnique.html">SDL::ObjectUnique&lt;T, DELETER&gt;</a> left,</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>               <a class="code hl_class" href="classSDL_1_1ObjectUnique.html">SDL::ObjectUnique&lt;T, DELETER&gt;</a>&amp; right)</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>{</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  left.<a class="code hl_function" href="classSDL_1_1ObjectUnique.html#a526a3bc20034b15c51079b03bf62f992">swap</a>(right);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>}</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_OBJECT_WRAPPER_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1FancyPointer_html"><div class="ttname"><a href="classSDL_1_1FancyPointer.html">SDL::FancyPointer</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00093">SDL3pp_objectWrapper.h:94</a></div></div>
 <div class="ttc" id="aclassSDL_1_1FancyPointer_html_a1927ac970948b2ef4e581c68716c7c87"><div class="ttname"><a href="classSDL_1_1FancyPointer.html#a1927ac970948b2ef4e581c68716c7c87">SDL::FancyPointer::FancyPointer</a></div><div class="ttdeci">constexpr FancyPointer(T value=defaultValue)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00098">SDL3pp_objectWrapper.h:98</a></div></div>
 <div class="ttc" id="aclassSDL_1_1FancyPointer_html_a1f5b5da0d860385928bd2af5693d23c3"><div class="ttname"><a href="classSDL_1_1FancyPointer.html#a1f5b5da0d860385928bd2af5693d23c3">SDL::FancyPointer::operator*</a></div><div class="ttdeci">T &amp; operator*()</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00112">SDL3pp_objectWrapper.h:112</a></div></div>
@@ -284,7 +286,7 @@ $(document).ready(function(){initNavTree('SDL3pp__objectWrapper_8h_source.html',
 <div class="ttc" id="aclassSDL_1_1ObjectUnique_html_af03f97e653901e7d3dbd06a75c392430"><div class="ttname"><a href="classSDL_1_1ObjectUnique.html#af03f97e653901e7d3dbd06a75c392430">SDL::ObjectUnique::get</a></div><div class="ttdeci">pointer get() const</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00079">SDL3pp_objectWrapper.h:79</a></div></div>
 <div class="ttc" id="aclassSDL_1_1ObjectUnique_html_afe11540a8ee4f1469692960c53fc953e"><div class="ttname"><a href="classSDL_1_1ObjectUnique.html#afe11540a8ee4f1469692960c53fc953e">SDL::ObjectUnique::ObjectUnique</a></div><div class="ttdeci">ObjectUnique(pointer value)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00069">SDL3pp_objectWrapper.h:69</a></div></div>
 <div class="ttc" id="aconceptSDL_1_1ObjectBox_html"><div class="ttname"><a href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00010">SDL3pp_objectWrapper.h:10</a></div></div>
-<div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__blendmode_8h_source.html#l00015">SDL3pp_blendmode.h:15</a></div></div>
+<div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__blendmode_8h_source.html#l00014">SDL3pp_blendmode.h:14</a></div></div>
 <div class="ttc" id="astructSDL_1_1ObjectDeleter_html"><div class="ttname"><a href="structSDL_1_1ObjectDeleter.html">SDL::ObjectDeleter</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00059">SDL3pp_objectWrapper.h:59</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

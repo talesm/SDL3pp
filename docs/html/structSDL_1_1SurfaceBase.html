@@ -272,7 +272,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:abf1919c862ee98d5a677ea44ac328ed8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a rectangle with a specific color.  <br /></td></tr>
 <tr class="separator:abf1919c862ee98d5a677ea44ac328ed8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33b49820c04e2ee5a5ec84bdcb974788" id="r_a33b49820c04e2ee5a5ec84bdcb974788"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a33b49820c04e2ee5a5ec84bdcb974788">FillRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">const</a> SDL_Rect &gt; <a class="el" href="classSDL_1_1OptionalRef.html">rects</a>, SDL_Color <a class="el" href="classSDL_1_1OptionalRef.html">color</a>)</td></tr>
-<tr class="memdesc:a33b49820c04e2ee5a5ec84bdcb974788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a rectangle with a specific color.  <br /></td></tr>
+<tr class="memdesc:a33b49820c04e2ee5a5ec84bdcb974788"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a set of rectangles with a specific color.  <br /></td></tr>
 <tr class="separator:a33b49820c04e2ee5a5ec84bdcb974788"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ed65545c8452c8abb264720bdf0d49d" id="r_a2ed65545c8452c8abb264720bdf0d49d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#a2ed65545c8452c8abb264720bdf0d49d">FillRects</a> (<a class="el" href="classSDL_1_1SpanRef.html">SpanRef</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">const</a> SDL_Rect &gt; <a class="el" href="classSDL_1_1OptionalRef.html">rects</a>, <a class="el" href="classSDL_1_1OptionalRef.html">Uint32</a> <a class="el" href="classSDL_1_1OptionalRef.html">color</a>)</td></tr>
 <tr class="memdesc:a2ed65545c8452c8abb264720bdf0d49d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform a fast fill of a set of rectangles with a specific color.  <br /></td></tr>
@@ -358,7 +358,7 @@ struct SDL::SurfaceBase&lt; T &gt;</div><p>A collection of pixels used in softwa
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#a2bcd68e82fb03ca260196e4a8a2f9596" title="Allocate a new surface with a specific pixel format.">SurfaceBase::SurfaceBase()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00107">107</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00105">105</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2bcd68e82fb03ca260196e4a8a2f9596" name="a2bcd68e82fb03ca260196e4a8a2f9596"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2bcd68e82fb03ca260196e4a8a2f9596">&#9670;&#160;</a></span>SurfaceBase() <span class="overload">[1/4]</span></h2>
@@ -412,11 +412,10 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the new SDL_Surface structure that is created or NULL on failure; call SDL_GetError() for more information.</dd></dl>
-<p>If fails window converts false; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
+<dl class="section post"><dt>Postcondition</dt><dd>the new structure that is created and convertible to true on success or convertible to false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00126">126</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00123">123</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -484,14 +483,14 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
     <tr><td class="paramname">height</td><td>the height of the surface. </td></tr>
     <tr><td class="paramname">format</td><td>the <a class="el" href="structSDL_1_1PixelFormat.html" title="Pixel format.">PixelFormat</a> for the new surface's pixel format. </td></tr>
     <tr><td class="paramname">pixels</td><td>a pointer to existing pixel data. </td></tr>
-    <tr><td class="paramname">pitch</td><td>the number of bytes between each row, including padding.</td></tr>
+    <tr><td class="paramname">pitch</td><td>the number of bytes between each row, including padding. </td></tr>
   </table>
   </dd>
 </dl>
-<p>If fails the object converts false; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
+<dl class="section post"><dt>Postcondition</dt><dd>the new structure that is created and convertible to true on success or convertible to false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00154">154</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00152">152</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -540,10 +539,10 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to a new SDL_Surface structure or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new structure that is created and convertible to true on success or convertible to false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00177">177</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00176">176</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -581,7 +580,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a pointer to a new SDL_Surface structure or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>the new structure that is created and convertible to true on success or convertible to false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00194">194</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
@@ -620,7 +619,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>This function adds a reference to the alternate version, so you should call SDL_DestroySurface() on the image after this call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the SDL_Surface structure to update. </td></tr>
     <tr><td class="paramname">image</td><td>a pointer to an alternate SDL_Surface to associate with this surface. </td></tr>
   </table>
   </dd>
@@ -633,7 +631,7 @@ SDL_GetSurfaceImages </dd>
 <dd>
 SDL_SurfaceHasAlternateImages </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00340">340</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00339">339</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -731,11 +729,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_BlitSurfaceScaled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01163">1163</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01149">1149</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -832,11 +830,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_BlitSurfaceScaled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01244">1244</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01230">1230</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -915,19 +913,17 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
     <tr><td class="paramname">right_width</td><td>the width, in pixels, of the right corners in <code>srcrect</code>. </td></tr>
     <tr><td class="paramname">top_height</td><td>the height, in pixels, of the top corners in <code>srcrect</code>. </td></tr>
     <tr><td class="paramname">bottom_height</td><td>the height, in pixels, of the bottom corners in <code>srcrect</code>. </td></tr>
-    <tr><td class="paramname">scale</td><td>the scale used to transform the corner of <code>srcrect</code> into the corner of <code>dstrect</code>, or 0.0f for an unscaled blit. </td></tr>
-    <tr><td class="paramname">scaleMode</td><td>scale algorithm to be used. </td></tr>
     <tr><td class="paramname">dstrect</td><td>the SDL_Rect structure representing the target rectangle in the destination surface, or NULL to fill the entire surface. </td></tr>
     <tr><td class="paramname">srcrect</td><td>the SDL_Rect structure representing the rectangle to be used for the 9-grid, or NULL to use the entire surface. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#a55250326edd31885a182c6d2efd96a70" title="Performs a fast blit from the source surface to the destination surface with clipping.">Blit()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01444">1444</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01427">1427</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1026,11 +1022,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#a55250326edd31885a182c6d2efd96a70" title="Performs a fast blit from the source surface to the destination surface with clipping.">Blit()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01497">1497</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01480">1480</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1093,11 +1089,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_BlitSurface </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01302">1302</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01288">1288</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1154,11 +1150,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_BlitSurface </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01366">1366</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01352">1352</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1229,11 +1225,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_BlitSurface </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01400">1400</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01386">1386</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1290,11 +1286,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_BlitSurface </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01273">1273</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01259">1259</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1358,11 +1354,11 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>The same destination surface should not be used from two threads at once. It is safe to use the same source surface from multiple threads.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_BlitSurfaceScaled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01334">1334</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01320">1320</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1397,14 +1393,14 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>If the surface is YUV, the color is assumed to be in the sRGB colorspace, otherwise the color is assumed to be in the colorspace of the surface.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">c</td><td>the color of the pixel, normally in the range 0-1. </td></tr>
+    <tr><td class="paramname">color</td><td>the color of the pixel, normally in the range 0-1. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00952">952</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00944">944</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1437,7 +1433,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>The color key defines a pixel value that will be treated as transparent in a blit. For example, one can use this to specify that cyan pixels should be considered transparent, and therefore not rendered.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00560">560</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00554">554</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1480,7 +1476,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section return"><dt>Returns</dt><dd>the new Surface that is created or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00885">885</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00877">877</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1547,7 +1543,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section return"><dt>Returns</dt><dd>the new SDL_Surface structure that is created or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00910">910</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00902">902</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1618,7 +1614,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>The returned surface automatically calls SDL_free after result is out of scope.</p>
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00845">845</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00837">837</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1659,7 +1655,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00973">973</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00965">965</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1700,7 +1696,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00991">991</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00983">983</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1741,7 +1737,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </div><div class="memdoc">
 
 <p>Perform a fast fill of a rectangle with a specific color. </p>
-<p><code>color</code> should be a pixel of the format used by the surface, and can be generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an alpha component then the destination is simply filled with that alpha information, no blending takes place.</p>
 <p>If there is a clip rectangle set on the destination (set via SDL_SetSurfaceClipRect()), then this function will fill based on the intersection of the clip rectangle and <code>rect</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1752,7 +1747,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01013">1013</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01000">1000</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1804,7 +1799,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01035">1035</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01022">1022</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1844,19 +1839,20 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p>Perform a fast fill of a rectangle with a specific color. </p>
-<p><code>color</code> should be a pixel of the format used by the surface, and can be generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an alpha component then the destination is simply filled with that alpha information, no blending takes place.</p>
+<p>Perform a fast fill of a set of rectangles with a specific color. </p>
 <p>If there is a clip rectangle set on the destination (set via SDL_SetSurfaceClipRect()), then this function will fill based on the intersection of the clip rectangle and <code>rect</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rect</td><td>the SDL_Rect structure representing the rectangle to fill. </td></tr>
+    <tr><td class="paramname">rects</td><td>an array of SDL_Rects representing the rectangles to fill. </td></tr>
     <tr><td class="paramname">color</td><td>the color to fill with. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#a901b8312b075f6a21c5fdf88c3cc6cf1" title="Perform a fast fill of a rectangle with a specific color.">FillRect()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01057">1057</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01043">1043</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1910,7 +1906,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#a901b8312b075f6a21c5fdf88c3cc6cf1" title="Perform a fast fill of a rectangle with a specific color.">FillRect()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01083">1083</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01069">1069</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1950,7 +1946,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00831">831</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00823">823</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -1982,7 +1978,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Get the additional alpha value used in blit operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>alpha on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00698">698</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00690">690</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2014,7 +2010,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Get the blend mode used for blit operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>the blendMode on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00766">766</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00758">758</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2047,7 +2043,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>When <code>surface</code> is the destination of a blit, only the area within the clip rectangle is drawn into.</p>
 <dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the clipping rectangle for the surface on success, or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00816">816</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00808">808</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2079,7 +2075,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Get the additional color and alpha value multiplied into blit operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> containing RGBA value on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00731">731</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00723">723</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2117,7 +2113,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#a29d193c9002f1a3098544305bf9b188f" title="Returns whether the surface has a color key.">HasColorKey()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00585">585</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00579">579</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2152,7 +2148,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>If the surface doesn't have color key enabled this function returns false.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the SDL_Surface structure to query. </td></tr>
     <tr><td class="paramname">key</td><td>a pointer filled in with the transparent pixel. </td></tr>
   </table>
   </dd>
@@ -2163,7 +2158,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#a29d193c9002f1a3098544305bf9b188f" title="Returns whether the surface has a color key.">HasColorKey()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00609">609</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00602">602</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2198,7 +2193,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>If the surface doesn't have color key enabled this function returns false.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the SDL_Surface structure to query. </td></tr>
     <tr><td class="paramname">key</td><td>a pointer filled in with the transparent pixel. </td></tr>
   </table>
   </dd>
@@ -2209,7 +2203,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#a29d193c9002f1a3098544305bf9b188f" title="Returns whether the surface has a color key.">HasColorKey()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00636">636</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00628">628</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2266,7 +2260,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00670">670</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00662">662</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2328,7 +2322,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01795">1795</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01776">1776</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2357,7 +2351,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01791">1791</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01772">1772</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2404,7 +2398,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#a6102c18105dd1f140f46fb47e4c4db80" title="Return whether a surface has alternate versions available.">HasAlternateImages()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00384">384</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00382">382</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2504,7 +2498,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01793">1793</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01774">1774</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2533,7 +2527,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01789">1789</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01770">1770</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2563,12 +2557,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </div><div class="memdoc">
 
 <p>Return whether a surface has alternate versions available. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">surface</td><td>the SDL_Surface structure to query. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>true if alternate versions are available or false otherwise.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_AddSurfaceAlternateImage </dd>
@@ -2577,7 +2565,7 @@ SDL_RemoveSurfaceAlternateImages </dd>
 <dd>
 SDL_GetSurfaceImages </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00357">357</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00355">355</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2609,7 +2597,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Returns whether the surface has a color key. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the surface has a color key, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00567">567</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00561">561</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2641,7 +2629,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Returns whether the surface is RLE enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if the surface is RLE enabled, false otherwise. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00501">501</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00495">495</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2671,7 +2659,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807" title="Release the locked surface after directly accessing the pixels.">SurfaceLock.Unlock()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l02022">2022</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l02003">2003</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2714,7 +2702,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a pixel value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01540">1540</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01523">1523</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2775,7 +2763,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a pixel value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01568">1568</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01551">1551</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2843,7 +2831,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a pixel value. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01597">1597</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01580">1580</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2875,7 +2863,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Evaluates to true if the surface needs to be locked before access. </p>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00410">410</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00406">406</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2916,7 +2904,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00931">931</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00923">923</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -2967,7 +2955,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>color on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01614">1614</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01597">1597</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3035,7 +3023,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>This function prioritizes correctness over speed: it is suitable for unit tests, but is not intended for use in a game engine.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the surface to read. </td></tr>
     <tr><td class="paramname">x</td><td>the horizontal coordinate, 0 &lt;= x &lt; width. </td></tr>
     <tr><td class="paramname">y</td><td>the vertical coordinate, 0 &lt;= y &lt; height. </td></tr>
     <tr><td class="paramname">r</td><td>a pointer filled in with the red channel, normally in the range 0-1, or NULL to ignore this channel. </td></tr>
@@ -3047,7 +3034,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01707">1707</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01688">1688</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3105,7 +3092,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01634">1634</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01617">1617</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3155,7 +3142,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>This function prioritizes correctness over speed: it is suitable for unit tests, but is not intended for use in a game engine.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the surface to read. </td></tr>
     <tr><td class="paramname">x</td><td>the horizontal coordinate, 0 &lt;= x &lt; width. </td></tr>
     <tr><td class="paramname">y</td><td>the vertical coordinate, 0 &lt;= y &lt; height. </td></tr>
     <tr><td class="paramname">c</td><td>a color pointer to be filled with the color information. Must not be NULL. </td></tr>
@@ -3164,7 +3150,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01653">1653</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01635">1635</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3245,7 +3231,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01682">1682</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01664">1664</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3276,12 +3262,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 
 <p>Remove all alternate versions of a surface. </p>
 <p>This function removes a reference from all the alternative versions, destroying them if this is the last reference to them.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">surface</td><td>the SDL_Surface structure to update.</td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#a5489278a992e1c5255f7aff9de6b003d" title="Add an alternate version of a surface.">AddAlternateImage()</a> </dd>
 <dd>
@@ -3289,7 +3269,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#a6102c18105dd1f140f46fb47e4c4db80" title="Return whether a surface has alternate versions available.">HasAlternateImages()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00403">403</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00399">399</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3322,7 +3302,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section return"><dt>Returns</dt><dd>true if clips was reset successfully</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#ae14de89586edba11c5038593ce919593" title="Set the clipping rectangle for a surface.">SetClipRect()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00804">804</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00796">796</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3366,7 +3346,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the BMP directly. Other RGB formats with 8-bit or higher get converted to a 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit surface before they are saved. YUV and paletted 1-bit and 4-bit formats are not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the SDL_Surface structure containing the image to be saved. </td></tr>
     <tr><td class="paramname">dst</td><td>a data stream to save to. </td></tr>
     <tr><td class="paramname">closeio</td><td>if true, calls SDL_CloseIO() on <code>dst</code> before returning, even in the case of an error. </td></tr>
   </table>
@@ -3378,7 +3357,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 SDL_SaveBMP </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00456">456</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00451">451</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3412,7 +3391,6 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the BMP directly. Other RGB formats with 8-bit or higher get converted to a 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit surface before they are saved. YUV and paletted 1-bit and 4-bit formats are not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">surface</td><td>the SDL_Surface structure containing the image to be saved. </td></tr>
     <tr><td class="paramname">file</td><td>a file to save to. </td></tr>
   </table>
   </dd>
@@ -3423,7 +3401,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 SDL_SaveBMP_IO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00480">480</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00474">474</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3481,7 +3459,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a copy of the surface or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00860">860</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00852">852</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3516,13 +3494,13 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p><code>srcA = srcA * (alpha / 255)</code></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">the</td><td>alpha value multiplied into blit operations. </td></tr>
+    <tr><td class="paramname">alpha</td><td>the alpha value multiplied into blit operations. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00687">687</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00679">679</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3564,7 +3542,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetSurfaceBlendMode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00755">755</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00747">747</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3607,7 +3585,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1SurfaceBase.html#ab56e2c8d5eafb9f36fbe8e33cc98144e" title="Disable the clipping rectangle for a surface.">ResetClipRect()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00792">792</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00784">784</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3648,7 +3626,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00719">719</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00711">711</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3695,7 +3673,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#a29d193c9002f1a3098544305bf9b188f" title="Returns whether the surface has a color key.">HasColorKey()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00523">523</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00517">517</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3742,7 +3720,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#a29d193c9002f1a3098544305bf9b188f" title="Returns whether the surface has a color key.">HasColorKey()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00545">545</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00539">539</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3801,7 +3779,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00656">656</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00648">648</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -3927,7 +3905,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00494">494</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l00488">488</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -4006,7 +3984,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01783">1783</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01764">1764</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -4064,7 +4042,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01725">1725</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01706">1706</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -4122,7 +4100,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01742">1742</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01723">1723</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -4201,7 +4179,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01763">1763</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01744">1744</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>

@@ -6613,7 +6613,7 @@
             },
             "GetFormat": {
               "kind": "function",
-              "type": "PixelType",
+              "type": "PixelFormat",
               "immutable": true,
               "parameters": [],
               "name": "GetFormat",
@@ -9566,12 +9566,8 @@
               "type": "bool",
               "parameters": [
                 {
-                  "name": "x",
-                  "type": "float"
-                },
-                {
-                  "name": "y",
-                  "type": "float"
+                  "name": "p",
+                  "type": "FPoint"
                 },
                 {
                   "name": "str",

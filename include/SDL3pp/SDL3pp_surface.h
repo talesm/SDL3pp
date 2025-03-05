@@ -1,8 +1,6 @@
 /**
  * @file SDL3pp_surface.h
  *
- * # CategorySurface
- *
  * SDL surfaces are buffers of pixels in system RAM. These are useful for
  * passing around and manipulating images that are not stored in GPU memory.
  *
@@ -116,10 +114,9 @@ struct SurfaceBase : T
    * @param width the width of the surface.
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
-   * @returns the new SDL_Surface structure that is created or NULL on failure;
-   *          call SDL_GetError() for more information.
-   *
-   * If fails window converts false; call GetError() for more information.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call SDL_GetError() for more
+   * information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -146,8 +143,9 @@ struct SurfaceBase : T
    * @param format the PixelFormat for the new surface's pixel format.
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
-   *
-   * If fails the object converts false; call GetError() for more information.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call SDL_GetError() for more
+   * information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -169,8 +167,9 @@ struct SurfaceBase : T
    * @param src the data stream for the surface.
    * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
    *                in the case of an error.
-   * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call SDL_GetError() for more
+   * information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -186,8 +185,9 @@ struct SurfaceBase : T
    * will result in a memory leak.
    *
    * @param file the BMP file to load.
-   * @returns a pointer to a new SDL_Surface structure or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call SDL_GetError() for more
+   * information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -325,7 +325,6 @@ struct SurfaceBase : T
    * This function adds a reference to the alternate version, so you should call
    * SDL_DestroySurface() on the image after this call.
    *
-   * @param surface the SDL_Surface structure to update.
    * @param image a pointer to an alternate SDL_Surface to associate with this
    *              surface.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -345,7 +344,6 @@ struct SurfaceBase : T
   /**
    * Return whether a surface has alternate versions available.
    *
-   * @param surface the SDL_Surface structure to query.
    * @returns true if alternate versions are available or false otherwise.
    *
    * @since This function is available since SDL 3.2.0.
@@ -391,8 +389,6 @@ struct SurfaceBase : T
    *
    * This function removes a reference from all the alternative versions,
    * destroying them if this is the last reference to them.
-   *
-   * @param surface the SDL_Surface structure to update.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -441,7 +437,6 @@ struct SurfaceBase : T
    * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
    * not supported.
    *
-   * @param surface the SDL_Surface structure containing the image to be saved.
    * @param dst a data stream to save to.
    * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
    *                in the case of an error.
@@ -467,7 +462,6 @@ struct SurfaceBase : T
    * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
    * not supported.
    *
-   * @param surface the SDL_Surface structure containing the image to be saved.
    * @param file a file to save to.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -596,7 +590,6 @@ struct SurfaceBase : T
    *
    * If the surface doesn't have color key enabled this function returns false.
    *
-   * @param surface the SDL_Surface structure to query.
    * @param key a pointer filled in with the transparent pixel.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -623,7 +616,6 @@ struct SurfaceBase : T
    *
    * If the surface doesn't have color key enabled this function returns false.
    *
-   * @param surface the SDL_Surface structure to query.
    * @param key a pointer filled in with the transparent pixel.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -680,7 +672,7 @@ struct SurfaceBase : T
    *
    * `srcA = srcA * (alpha / 255)`
    *
-   * @param the alpha value multiplied into blit operations.
+   * @param alpha the alpha value multiplied into blit operations.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    */
@@ -943,7 +935,7 @@ struct SurfaceBase : T
    * If the surface is YUV, the color is assumed to be in the sRGB colorspace,
    * otherwise the color is assumed to be in the colorspace of the surface.
    *
-   * @param c the color of the pixel, normally in the range 0-1.
+   * @param color the color of the pixel, normally in the range 0-1.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -996,11 +988,6 @@ struct SurfaceBase : T
   /**
    * Perform a fast fill of a rectangle with a specific color.
    *
-   * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
-   * information, no blending takes place.
-   *
    * If there is a clip rectangle set on the destination (set via
    * SDL_SetSurfaceClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
@@ -1038,21 +1025,20 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Perform a fast fill of a rectangle with a specific color.
-   *
-   * `color` should be a pixel of the format used by the surface, and can be
-   * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
-   * alpha component then the destination is simply filled with that alpha
-   * information, no blending takes place.
+   * Perform a fast fill of a set of rectangles with a specific color.
    *
    * If there is a clip rectangle set on the destination (set via
    * SDL_SetSurfaceClipRect()), then this function will fill based on the
    * intersection of the clip rectangle and `rect`.
    *
-   * @param rect the SDL_Rect structure representing the rectangle to fill.
+   * @param rects an array of SDL_Rects representing the rectangles to fill.
    * @param color the color to fill with.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa FillRect()
    */
   bool FillRects(SpanRef<const SDL_Rect> rects, SDL_Color color)
   {
@@ -1423,9 +1409,6 @@ struct SurfaceBase : T
    * @param top_height the height, in pixels, of the top corners in `srcrect`.
    * @param bottom_height the height, in pixels, of the bottom corners in
    *                      `srcrect`.
-   * @param scale the scale used to transform the corner of `srcrect` into the
-   *              corner of `dstrect`, or 0.0f for an unscaled blit.
-   * @param scaleMode scale algorithm to be used.
    * @param dstrect the SDL_Rect structure representing the target rectangle in
    *                the destination surface, or NULL to fill the entire surface.
    * @param srcrect the SDL_Rect structure representing the rectangle to be used
@@ -1642,7 +1625,6 @@ struct SurfaceBase : T
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param surface the surface to read.
    * @param x the horizontal coordinate, 0 <= x < width.
    * @param y the vertical coordinate, 0 <= y < height.
    * @param c a color pointer to be filled with the color information. Must not
@@ -1690,7 +1672,6 @@ struct SurfaceBase : T
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
    *
-   * @param surface the surface to read.
    * @param x the horizontal coordinate, 0 <= x < width.
    * @param y the vertical coordinate, 0 <= y < height.
    * @param r a pointer filled in with the red channel, normally in the range

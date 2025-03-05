@@ -142,7 +142,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T&gt;<br />
 struct SDL::PaletteBase&lt; T &gt;</div><p>A set of indexed colors representing a palette. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01072">1072</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01066">1066</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af7a8456013b5d87afaf714783f98f891" name="af7a8456013b5d87afaf714783f98f891"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7a8456013b5d87afaf714783f98f891">&#9670;&#160;</a></span>PaletteBase()</h2>
@@ -178,8 +178,8 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a new SDL_Palette structure on success or NULL on failure (e.g. if there wasn't enough memory); call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread.</p>
+<dl class="section post"><dt>Postcondition</dt><dd>this represents a new Palette structure convertible to true on success or converts to false on failure (e.g. if there wasn't enough memory); call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_DestroyPalette </dd>
 <dd>
@@ -187,7 +187,7 @@ SDL_SetPaletteColors </dd>
 <dd>
 SDL_SetSurfacePalette </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01095">1095</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01089">1089</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -217,7 +217,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01100">1100</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01094">1094</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -247,7 +247,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01102">1102</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01096">1096</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -303,10 +303,10 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01118">1118</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01112">1112</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -355,9 +355,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01134">1134</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01128">1128</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>

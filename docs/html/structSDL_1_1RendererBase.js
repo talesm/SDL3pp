@@ -39,7 +39,7 @@ var structSDL_1_1RendererBase =
     [ "RenderClear", "structSDL_1_1RendererBase.html#aeb6edc12d14e357905ec3b408f1eaf3b", null ],
     [ "RenderCoordinatesFromWindow", "structSDL_1_1RendererBase.html#a59c7fdbb523366fa5691fa2cd18bf7f3", null ],
     [ "RenderCoordinatesToWindow", "structSDL_1_1RendererBase.html#a4ee953b66b42c5d7672db78aa5a7e735", null ],
-    [ "RenderDebugText", "structSDL_1_1RendererBase.html#a2f6da0d5dbdc6e08be60f0fa78eced72", null ],
+    [ "RenderDebugText", "structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc", null ],
     [ "RenderFillRect", "structSDL_1_1RendererBase.html#a18cf4e2266ac4aebb2cbe9578f019aa8", null ],
     [ "RenderFillRects", "structSDL_1_1RendererBase.html#aa112dbeabca41279666106c3a3c4adc5", null ],
     [ "RenderGeometry", "structSDL_1_1RendererBase.html#a73e5115b6632a6f0f6b68e5acd5f5b9c", null ],

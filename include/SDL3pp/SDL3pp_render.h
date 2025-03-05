@@ -1,8 +1,6 @@
 /**
  * @file SDL3pp_render.h
  *
- * # CategoryRender
- *
  * Header file for SDL 2D rendering functions.
  *
  * This API supports the following features:
@@ -483,8 +481,7 @@ struct RendererBase : T
    * You can convert coordinates in an event into rendering coordinates using
    * SDL_ConvertEventToRenderCoordinates().
    *
-   * @param w the width of the logical resolution.
-   * @param h the height of the logical resolution.
+   * @param size the width and height of the logical resolution.
    * @param mode the presentation mode used.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -586,12 +583,9 @@ struct RendererBase : T
    * - The scale (SDL_SetRenderScale)
    * - The viewport (SDL_SetRenderViewport)
    *
-   * @param window_x the x coordinate in window coordinates.
-   * @param window_y the y coordinate in window coordinates.
-   * @param x a pointer filled with the x coordinate in render coordinates.
-   * @param y a pointer filled with the y coordinate in render coordinates.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @param window_coord the x, y coordinate in window coordinates.
+   * @returns a FPoint containing ther render coordinates on success or
+   * std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -616,14 +610,9 @@ struct RendererBase : T
    * - The scale (SDL_SetRenderScale)
    * - The viewport (SDL_SetRenderViewport)
    *
-   * @param x the x coordinate in render coordinates.
-   * @param y the y coordinate in render coordinates.
-   * @param window_x a pointer filled with the x coordinate in window
-   *                 coordinates.
-   * @param window_y a pointer filled with the y coordinate in window
-   *                 coordinates.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @param coord the x, y coordinate in render coordinates.
+   * @returns a FPoint filled with window coordinates on success or std::nullopt
+   * on failure; call SDL_GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -707,7 +696,6 @@ struct RendererBase : T
   /**
    * Get the drawing area for the current target.
    *
-   * @param rect an SDL_Rect structure filled in with the current drawing area.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -753,10 +741,8 @@ struct RendererBase : T
    * rendering into the rest of the render target, but it should not contain
    * visually important or interactible content.
    *
-   * @param rect a pointer filled in with the area that is safe for interactive
-   *             content.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the rect filled the area that is safe for interactive content on
+   * success or std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -793,10 +779,9 @@ struct RendererBase : T
   /**
    * Get the clip rectangle for the current target.
    *
-   * @param rect an SDL_Rect structure filled in with the current clipping area
-   *             or an empty rectangle if clipping is disabled.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the rect filled in with the current clipping area or an empty
+   * rectangle if clipping is disabled on success; std::nullopt on failure, call
+   * GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -837,8 +822,7 @@ struct RendererBase : T
    * will be handled using the appropriate quality hints. For best results use
    * integer scaling factors.
    *
-   * @param scaleX the horizontal scaling factor.
-   * @param scaleY the vertical scaling factor.
+   * @param scale the x, y scaling factors.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -909,12 +893,7 @@ struct RendererBase : T
    * Set the color for drawing or filling rectangles, lines, and points, and for
    * SDL_RenderClear().
    *
-   * @param r the red value used to draw on the rendering target.
-   * @param g the green value used to draw on the rendering target.
-   * @param b the blue value used to draw on the rendering target.
-   * @param a the alpha value used to draw on the rendering target. Use
-   *          SDL_SetRenderDrawBlendMode to specify how the alpha channel is
-   *          used.
+   * @param c the RGBA values used to draw on the rendering target.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1035,9 +1014,8 @@ struct RendererBase : T
   /**
    * Get the color scale used for render operations.
    *
-   * @param scale a pointer filled in with the current color scale value.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns a float representing the current color scale on success or
+   * std::nullopt on failure; call SDL_GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1074,9 +1052,8 @@ struct RendererBase : T
   /**
    * Get the blend mode used for drawing operations.
    *
-   * @param blendMode a pointer filled in with the current SDL_BlendMode.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the current BlendMode on success or std::nullopt on failure; call
+   * SDL_GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1114,8 +1091,7 @@ struct RendererBase : T
   /**
    * Draw a point on the current rendering target at subpixel precision.
    *
-   * @param x the x coordinate of the point.
-   * @param y the y coordinate of the point.
+   * @param p the x, y coordinates of the point.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1529,7 +1505,6 @@ struct RendererBase : T
    * SDL_RenderPresent while rendering to a texture will still update the screen
    * with any current drawing that has been done _to the window itself_.
    *
-   * @param renderer the rendering context.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1611,11 +1586,8 @@ struct RendererBase : T
   /**
    * Get VSync of the given renderer.
    *
-   * @param renderer the renderer to toggle.
-   * @param vsync an int filled with the current vertical refresh sync interval.
-   *              See SDL_SetRenderVSync() for the meaning of the value.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the current vertical refresh sync interval on success or
+   * std::nullopt on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1654,9 +1626,8 @@ struct RendererBase : T
    *
    * The text is drawn in the color specified by SDL_SetRenderDrawColor().
    *
-   * @param renderer the renderer which should draw a line of text.
-   * @param x the x coordinate where the top-left corner of the text will draw.
-   * @param y the y coordinate where the top-left corner of the text will draw.
+   * @param p the x, y coordinates where the top-left corner of the text will
+   * draw.
    * @param str the string to render.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1668,9 +1639,9 @@ struct RendererBase : T
    * @sa SDL_RenderDebugTextFormat
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
-  bool RenderDebugText(float x, float y, StringParam str)
+  bool RenderDebugText(FPoint p, StringParam str)
   {
-    return SDL_RenderDebugText(T::get(), x, y, str);
+    return SDL_RenderDebugText(T::get(), p.x, p.y, str);
   }
 
   // TODO RenderDebugTextFormat
@@ -1701,8 +1672,8 @@ struct TextureBase : T
    * @param access one of the enumerated values in SDL_TextureAccess.
    * @param w the width of the texture in pixels.
    * @param h the height of the texture in pixels.
-   * @returns the created texture or NULL on failure; call SDL_GetError() for
-   *          more information.
+   * @post the created texture is convertible to true on success or false on
+   * failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1735,8 +1706,8 @@ struct TextureBase : T
    * @param renderer the rendering context.
    * @param surface the SDL_Surface structure containing pixel data used to fill
    *                the texture.
-   * @returns the created texture or NULL on failure; call SDL_GetError() for
-   *          more information.
+   * @post the created texture is convertible to true on success or false on
+   * failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -1846,8 +1817,8 @@ struct TextureBase : T
    *
    * @param renderer the rendering context.
    * @param props the properties to use.
-   * @returns the created texture or NULL on failure; call SDL_GetError() for
-   *          more information.
+   * @post the created texture is convertible to true on success or false on
+   * failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2253,9 +2224,8 @@ struct TextureBase : T
   /**
    * Get the blend mode used for texture copy operations.
    *
-   * @param blendMode a pointer filled in with the current SDL_BlendMode.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the current SDL_BlendMode on success or std::nullopt on failure;
+   * call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -2296,9 +2266,8 @@ struct TextureBase : T
   /**
    * Get the scale mode used for texture scale operations.
    *
-   * @param scaleMode a pointer filled in with the current scale mode.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the current scale mode on success or std::nullopt on failure; call
+   * SDL_GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *

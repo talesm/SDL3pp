@@ -1,8 +1,6 @@
 /**
  * @file SDL3pp_init.h
  *
- * # CategoryInit
- *
  * All SDL programs need to initialize the library before starting to work
  * with it.
  *
@@ -250,7 +248,6 @@ struct SDL
   /**
    * @brief Init given subsystems
    * @param flags
-   * @param autoQuit if true automatically quits when destroyed.
    *
    * This uses a refCount internally, so it is safe to call
    * this multiple times, the quit will be called only on the last call.

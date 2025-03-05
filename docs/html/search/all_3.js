@@ -17,6 +17,6 @@ var searchData=
   ['displaymode_14',['DisplayMode',['../namespaceSDL.html#a65322ad2ac8ca3b685a8696dc5dc713a',1,'SDL']]],
   ['displaymodedata_15',['DisplayModeData',['../namespaceSDL.html#a767d0eff87f8af9d61ac0624d582c78c',1,'SDL']]],
   ['displayorientation_16',['DisplayOrientation',['../namespaceSDL.html#a0576b193a1d4adcb648fc1242fbc5cb8',1,'SDL']]],
-  ['documentation_17',['Documentation',['../index.html#autotoc_md10',1,'']]],
+  ['documentation_17',['Documentation',['../index.html#autotoc_md2',1,'']]],
   ['duplicate_18',['Duplicate',['../structSDL_1_1SurfaceBase.html#a2b8d60357059a34ea1724fcacdc23c42',1,'SDL::SurfaceBase']]]
 ];

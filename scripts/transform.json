@@ -3422,7 +3422,21 @@
               "immutable": true,
               "parameters": []
             },
-            "SDL_RenderDebugText": "function"
+            "SDL_RenderDebugText": {
+              "parameters": [
+                {
+                  "name": "this"
+                },
+                {
+                  "type": "FPoint",
+                  "name": "p"
+                },
+                {
+                  "type": "StringParam",
+                  "name": "str"
+                }
+              ]
+            }
           }
         },
         "SDL_Texture": {

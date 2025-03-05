@@ -1,8 +1,6 @@
 /**
  * @file SDL3pp_rect.h
  *
- * # CategoryRect
- *
  * Some helper functions for managing rectangles and 2D points, in both
  * integer and floating point versions.
  */
@@ -755,12 +753,10 @@ struct Rect : SDL_Rect
    * @param points a span of SDL_Point structures representing points to be
    *               enclosed.
    * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
-   * points.
-   * @param result an SDL_Rect structure filled in with the minimal enclosing
-   *               rectangle.
-   * @returns an SDL_Rect structure filled in with the minimal enclosing
-   *               rectangle or std::nullopt if all the points were outside of
-   * the clipping rectangle.
+   *             points.
+   * @returns a SDL_Rect structure filled in with the minimal enclosing
+   * rectangle or std::nullopt if all the points were outside of the
+   * clipping rectangle.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1061,8 +1057,7 @@ struct Rect : SDL_Rect
   /**
    * Convert an SDL_Rect to SDL_FRect
    *
-   * @param rect a pointer to an SDL_Rect.
-   * @param frect a pointer filled in with the floating point representation of
+   * @return A FRect filled in with the floating point representation of
    *              `rect`.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -1087,7 +1082,6 @@ struct Rect : SDL_Rect
    * embedded in the calling program and the linker and dynamic loader will not
    * be able to find this function inside SDL itself).
    *
-   * @param r the rectangle to test.
    * @returns true if the rectangle is "empty", false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -1356,11 +1350,9 @@ struct FRect : SDL_FRect
    * @param points a span of SDL_Point structures representing points to be
    *               enclosed.
    * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
-   * points.
-   * @param result an SDL_Rect structure filled in with the minimal enclosing
-   *               rectangle.
-   * @returns an SDL_Rect structure filled in with the minimal enclosing
-   *               rectangle or std::nullopt if all the points were outside of
+   *             points.
+   * @returns a FRect structure filled in with the minimal enclosing
+   *          rectangle or std::nullopt if all the points were outside of
    * the clipping rectangle.
    *
    * @since This function is available since SDL 3.2.0.
@@ -1698,8 +1690,7 @@ struct FRect : SDL_FRect
    * embedded in the calling program and the linker and dynamic loader will not
    * be able to find this function inside SDL itself).
    *
-   * @param a the first rectangle to test.
-   * @param b the second rectangle to test.
+   * @param other the second rectangle to test.
    * @param epsilon the epsilon value for comparison.
    * @returns true if the rectangles are equal, false otherwise.
    *

@@ -98,6 +98,9 @@ $(document).ready(function(){initNavTree('SDL3pp__init_8h.html',''); initResizab
   <div class="headertitle"><div class="title">SDL3pp_init.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> programs need to initialize the library before starting to work with it.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;SDL3/SDL_init.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__callbackWrapper_8h_source.html">SDL3pp_callbackWrapper.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>&quot;</code><br />
@@ -108,14 +111,14 @@ Include dependency graph for SDL3pp_init.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="SDL3pp__init_8h__incl.png" border="0" usemap="#aSDL3pp_2SDL3pp__init_8h" alt=""/></div>
 <map name="aSDL3pp_2SDL3pp__init_8h" id="aSDL3pp_2SDL3pp__init_8h">
-<area shape="rect" title=" " alt="" coords="355,5,519,31"/>
+<area shape="rect" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="355,5,519,31"/>
 <area shape="rect" title=" " alt="" coords="5,79,129,104"/>
 <area shape="poly" title=" " alt="" coords="378,33,141,79,140,73,377,28"/>
 <area shape="rect" href="SDL3pp__callbackWrapper_8h.html" title=" " alt="" coords="153,79,352,104"/>
 <area shape="poly" title=" " alt="" coords="408,33,297,76,295,71,406,28"/>
 <area shape="rect" href="SDL3pp__error_8h.html" title=" " alt="" coords="377,79,497,104"/>
 <area shape="poly" title=" " alt="" coords="439,31,439,65,434,65,434,31"/>
-<area shape="rect" href="SDL3pp__stdinc_8h.html" title=" " alt="" coords="588,79,717,104"/>
+<area shape="rect" href="SDL3pp__stdinc_8h.html" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="588,79,717,104"/>
 <area shape="poly" title=" " alt="" coords="472,28,606,72,604,77,471,33"/>
 <area shape="rect" href="SDL3pp__stringParam_8h.html" title=" " alt="" coords="970,152,1138,177"/>
 <area shape="poly" title=" " alt="" coords="498,28,729,76,1001,146,999,151,728,81,497,33"/>
@@ -225,9 +228,7 @@ Functions</h2></td></tr>
 <tr class="separator:a7ae0a016d954f3a072c0a49d9dd9caf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
-CategoryInit</h1>
-<p>All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> programs need to initialize the library before starting to work with it.</p>
+<div class="textblock"><p>All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> programs need to initialize the library before starting to work with it. </p>
 <p>Almost everything can simply call SDL_Init() near startup, with a handful of flags to specify subsystems to touch. These are here to make sure <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not even attempt to touch low-level pieces of the operating system that you don't intend to use. For example, you might be using <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> for video and input but chose an external library for audio, and in this case you would just need to leave off the <code>SDL_INIT_AUDIO</code> flag to make sure that external library has complete control.</p>
 <p>Most apps, when terminating, should call SDL_Quit(). This will clean up (nearly) everything that <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might have allocated, and crucially, it'll make sure that the display's resolution is back to what the user expects if you had previously changed it for your game.</p>
 <p>SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup to fill in details about the program. This is completely optional, but it helps in small ways (we can provide an About dialog box for the macOS menu, we can name the app in the system's audio mixer, etc). Those that want to provide a <em>lot</em> of information should look at the more-detailed SDL_SetAppMetadataProperty(). </p>

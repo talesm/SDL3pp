@@ -173,7 +173,7 @@ Public Attributes</h2></td></tr>
 <p>The value 0 is an invalid ID.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00129">129</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00127">127</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4a37345ff543bff5ac3553e53690cf52" name="a4a37345ff543bff5ac3553e53690cf52"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a37345ff543bff5ac3553e53690cf52">&#9670;&#160;</a></span>Display()</h2>
@@ -199,7 +199,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00133">133</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00131">131</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -236,10 +236,10 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a 0 terminated array of display instance IDs or NULL on failure; call SDL_GetError() for more information. This should be freed with SDL_free() when it is no longer needed.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00153">153</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00151">151</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -269,9 +269,9 @@ Public Attributes</h2></td></tr>
 <p>Get the desktop area represented by a display. </p>
 <p>The primary display is often located at (0,0), but may be placed at a different location depending on monitor layout.</p>
 <dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the display bounds on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00224">224</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00221">221</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -329,18 +329,17 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">h</td><td>the height in pixels of the desired display mode. </td></tr>
     <tr><td class="paramname">refresh_rate</td><td>the refresh rate of the desired display mode, or 0.0f for the desktop refresh rate. </td></tr>
     <tr><td class="paramname">include_high_density_modes</td><td>boolean to include high density modes in the search. </td></tr>
-    <tr><td class="paramname">closest</td><td>a pointer filled in with the closest display mode equal to or larger than the desired mode. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section return"><dt>Returns</dt><dd>the closest display mode equal to or larger than the desired mode on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#a8d224fd400f019b8ff6da17a68980ff0" title="Get a list of fullscreen display modes available on a display.">Display.GetFullscreenModes()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00361">361</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00357">357</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -369,14 +368,14 @@ Public Attributes</h2></td></tr>
 
 <p>Get the content scale of a display. </p>
 <dl class="section return"><dt>Returns</dt><dd>the content scale of the display, or 0.0f on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a75077a1e44bec472624f3b5ac47de3c8" title="Get the content display scale relative to a window&#39;s pixel size.">WindowBase.GetDisplayScale()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00299">299</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00296">296</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -406,14 +405,14 @@ GetDisplays() </dd></dl>
 <p>Get information about the current display mode. </p>
 <p>There's a difference between this function and SDL_GetDesktopDisplayMode() when <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the current display mode, and not the previous native display mode.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the desktop display mode or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a06fc8005d9275739d915d59088ae59b0" title="Get information about the desktop&#39;s display mode.">Display.GetDesktopMode()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00418">418</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00414">414</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -442,12 +441,12 @@ GetDisplays() </dd></dl>
 
 <p>Get the orientation of a display. </p>
 <dl class="section return"><dt>Returns</dt><dd>the SDL_DisplayOrientation enum value of the display, or <code>SDL_ORIENTATION_UNKNOWN</code> if it isn't available.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00282">282</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00279">279</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -477,14 +476,14 @@ GetDisplays() </dd></dl>
 <p>Get information about the desktop's display mode. </p>
 <p>There's a difference between this function and SDL_GetCurrentDisplayMode() when <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the previous native display mode, and not the current display mode.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the desktop display mode or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae60fa581de6bf108440cb5da32b92fcb" title="Get information about the current display mode.">Display.GetCurrentMode()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00396">396</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00392">392</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -520,13 +519,13 @@ GetDisplays() </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the display containing the point or 0 on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a56679cc0b89ce0933cc7a6a50d3bf06e" title="Get the desktop area represented by a display.">GetBounds()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">GetAll()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00437">437</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00433">433</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -562,9 +561,9 @@ GetDisplays() </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the display entirely containing the rect or closest to the center of the rect on success or 0 on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00451">451</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00447">447</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -600,9 +599,9 @@ GetDisplays() </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the display containing the center of the window on success or 0 on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02693">2693</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02640">2640</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -647,13 +646,13 @@ GetDisplays() </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a NULL terminated array of display mode pointers or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <p>This automatically calls SDL_free after result is out of scope.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00328">328</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00325">325</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -682,9 +681,9 @@ GetDisplays() </dd></dl>
 
 <p>Get the name of a display in UTF-8 encoding. </p>
 <dl class="section return"><dt>Returns</dt><dd>the name of a display or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00211">211</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00208">208</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -713,12 +712,12 @@ GetDisplays() </dd></dl>
 
 <p>Get the orientation of a display when it is unrotated. </p>
 <dl class="section return"><dt>Returns</dt><dd>the SDL_DisplayOrientation enum value of the display, or <code>SDL_ORIENTATION_UNKNOWN</code> if it isn't available.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetDisplays() </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#a6139fc3cf0675238bf2e220d9c124167" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00266">266</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00263">263</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -747,11 +746,11 @@ GetDisplays() </dd></dl>
 
 <p>Return the primary display. </p>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the primary display on success or 0 on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetDisplays </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00170">170</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00168">168</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -788,17 +787,11 @@ GetDisplays() </dd></dl>
 <li><code>SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER</code>: the "panel
   orientation" property for the display in degrees of clockwise rotation. Note that this is provided only as a hint, and the application is responsible for any coordinate transformations needed to conform to the requested display orientation.</li>
 </ul>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">displayID</td><td>the instance ID of the display to query. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00198">198</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00195">195</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -829,9 +822,9 @@ GetDisplays() </dd></dl>
 <p>This is the same area as <a class="el" href="structSDL_1_1Display.html#a56679cc0b89ce0933cc7a6a50d3bf06e" title="Get the desktop area represented by a display.">Display.GetBounds()</a> reports, but with portions reserved by the system removed. For example, on Apple's macOS, this subtracts the area occupied by the menu bar and dock.</p>
 <p>Setting a window to be fullscreen generally bypasses these unusable areas, so these are good guidelines for the maximum space available to a non-fullscreen window.</p>
 <dl class="section return"><dt>Returns</dt><dd>he <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the display bounds on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<p>@threadsafety This function should only be called on the main thread. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00248">248</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00245">245</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -858,7 +851,7 @@ GetDisplays() </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00138">138</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00136">136</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -875,7 +868,7 @@ GetDisplays() </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00131">131</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00129">129</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>

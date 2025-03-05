@@ -14,5 +14,5 @@ var searchData=
   ['transformations_11',['Transformations',['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html',1,'']]],
   ['trunc_12',['trunc',['../namespaceSDL.html#aeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
   ['truncf_13',['truncf',['../namespaceSDL.html#ae6b046a5844394a19061a8544376ffac',1,'SDL']]],
-  ['type_20rules_14',['Type rules',['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md15',1,'']]]
+  ['type_20rules_14',['Type rules',['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md7',1,'']]]
 ];

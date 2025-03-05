@@ -99,225 +99,225 @@ $(document).ready(function(){initNavTree('SDL3pp__init_8h_source.html',''); init
 </div><!--header-->
 <div class="contents">
 <a href="SDL3pp__init_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="preprocessor">#ifndef SDL3PP_INIT_H_</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#define SDL3PP_INIT_H_</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &lt;SDL3/SDL_init.h&gt;</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__callbackWrapper_8h.html">SDL3pp_callbackWrapper.h</a>&quot;</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__error_8h.html">SDL3pp_error.h</a>&quot;</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a>&quot;</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__stringParam_8h.html">SDL3pp_stringParam.h</a>&quot;</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">   48</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> = SDL_InitFlags;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a8cfb5253a0e7d61a295144448a8d4273">   49</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#a8cfb5253a0e7d61a295144448a8d4273">AppResult</a> = SDL_AppResult;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="namespaceSDL.html#aa769d313fe619516b0b4e621de494b1c">   68</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#aa769d313fe619516b0b4e621de494b1c">AppInit_func</a> = SDL_AppInit_func;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a649ccd445bb0296103ce839b05fb8ddf">   83</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#a649ccd445bb0296103ce839b05fb8ddf">AppIterate_func</a> = SDL_AppIterate_func;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ac6fad763c6a19060601dfb3b0bc06706">   99</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#ac6fad763c6a19060601dfb3b0bc06706">AppEvent_func</a> = SDL_AppEvent_func;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ae10f17c2662e06ffae89564b29eb7e3a">  113</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#ae10f17c2662e06ffae89564b29eb7e3a">AppQuit_func</a> = SDL_AppQuit_func;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ab53d2dea05d627f11cb7a8c24a8e1a44">  170</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#ab53d2dea05d627f11cb7a8c24a8e1a44">Init</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_Init(flags); }</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a7621ccbf8a8e81e8ff90b14397f87c1e">  187</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#a7621ccbf8a8e81e8ff90b14397f87c1e">InitSubSystem</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_InitSubSystem(flags); }</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ac6d7bd19a4918a51d2a4fc0501f77da5">  202</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceSDL.html#ac6d7bd19a4918a51d2a4fc0501f77da5">QuitSubSystem</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_QuitSubSystem(flags); }</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a2d9c710ec219aa2818bfdc55e4115f44">  216</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> <a class="code hl_function" href="namespaceSDL.html#a2d9c710ec219aa2818bfdc55e4115f44">WasInit</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_WasInit(flags); }</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ac0812d3287da34e3d6b228677440a24c">  234</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceSDL.html#ac0812d3287da34e3d6b228677440a24c">Quit</a>() { <span class="keywordflow">return</span> SDL_Quit(); }</div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="foldopen" id="foldopen00247" data-start="{" data-end="};">
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html">  247</a></span><span class="keyword">struct </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>{</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
-<div class="foldopen" id="foldopen00258" data-start="{" data-end="}">
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a0e72541758d27f3e99122049947f7d9c">  258</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a0e72541758d27f3e99122049947f7d9c">SDL</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    : flags(flags)</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>  {</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    refCount(+1, <span class="keyword">true</span>);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>  }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#ifndef SDL3PP_INIT_H_</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">#define SDL3PP_INIT_H_</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#include &lt;SDL3/SDL_init.h&gt;</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__callbackWrapper_8h.html">SDL3pp_callbackWrapper.h</a>&quot;</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__error_8h.html">SDL3pp_error.h</a>&quot;</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a>&quot;</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__stringParam_8h.html">SDL3pp_stringParam.h</a>&quot;</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">   46</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> = SDL_InitFlags;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a8cfb5253a0e7d61a295144448a8d4273">   47</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#a8cfb5253a0e7d61a295144448a8d4273">AppResult</a> = SDL_AppResult;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespaceSDL.html#aa769d313fe619516b0b4e621de494b1c">   66</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#aa769d313fe619516b0b4e621de494b1c">AppInit_func</a> = SDL_AppInit_func;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a649ccd445bb0296103ce839b05fb8ddf">   81</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#a649ccd445bb0296103ce839b05fb8ddf">AppIterate_func</a> = SDL_AppIterate_func;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ac6fad763c6a19060601dfb3b0bc06706">   97</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#ac6fad763c6a19060601dfb3b0bc06706">AppEvent_func</a> = SDL_AppEvent_func;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ae10f17c2662e06ffae89564b29eb7e3a">  111</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#ae10f17c2662e06ffae89564b29eb7e3a">AppQuit_func</a> = SDL_AppQuit_func;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ab53d2dea05d627f11cb7a8c24a8e1a44">  168</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#ab53d2dea05d627f11cb7a8c24a8e1a44">Init</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_Init(flags); }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a7621ccbf8a8e81e8ff90b14397f87c1e">  185</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#a7621ccbf8a8e81e8ff90b14397f87c1e">InitSubSystem</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_InitSubSystem(flags); }</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ac6d7bd19a4918a51d2a4fc0501f77da5">  200</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceSDL.html#ac6d7bd19a4918a51d2a4fc0501f77da5">QuitSubSystem</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_QuitSubSystem(flags); }</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a2d9c710ec219aa2818bfdc55e4115f44">  214</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> <a class="code hl_function" href="namespaceSDL.html#a2d9c710ec219aa2818bfdc55e4115f44">WasInit</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags) { <span class="keywordflow">return</span> SDL_WasInit(flags); }</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ac0812d3287da34e3d6b228677440a24c">  232</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespaceSDL.html#ac0812d3287da34e3d6b228677440a24c">Quit</a>() { <span class="keywordflow">return</span> SDL_Quit(); }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="foldopen" id="foldopen00245" data-start="{" data-end="};">
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html">  245</a></span><span class="keyword">struct </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a></div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>{</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="foldopen" id="foldopen00255" data-start="{" data-end="}">
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a0e72541758d27f3e99122049947f7d9c">  255</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a0e72541758d27f3e99122049947f7d9c">SDL</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    : flags(flags)</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>  {</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    refCount(+1, <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>  }</div>
 </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>  <span class="comment">// Copy ctor</span></div>
-<div class="foldopen" id="foldopen00265" data-start="{" data-end="}">
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a62b2f28c06870f67981e38b4900a2f6c">  265</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a62b2f28c06870f67981e38b4900a2f6c">SDL</a>(<span class="keyword">const</span> <a class="code hl_namespace" href="namespaceSDL.html">SDL</a>&amp; other)</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    : flags(other.flags)</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    , active(other.active)</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>  {</div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    <span class="keywordflow">if</span> (active) refCount(+1);</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>  }</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>  <span class="comment">// Copy ctor</span></div>
+<div class="foldopen" id="foldopen00262" data-start="{" data-end="}">
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a62b2f28c06870f67981e38b4900a2f6c">  262</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a62b2f28c06870f67981e38b4900a2f6c">SDL</a>(<span class="keyword">const</span> <a class="code hl_namespace" href="namespaceSDL.html">SDL</a>&amp; other)</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    : flags(other.flags)</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    , active(other.active)</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>  {</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    <span class="keywordflow">if</span> (active) refCount(+1);</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>  }</div>
 </div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>  <span class="comment">// Move ctor</span></div>
-<div class="foldopen" id="foldopen00273" data-start="{" data-end="}">
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a31ab33b0b5695716f9318b2da47421fd">  273</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a31ab33b0b5695716f9318b2da47421fd">SDL</a>(<a class="code hl_namespace" href="namespaceSDL.html">SDL</a>&amp;&amp; other)</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    : flags(other.flags)</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    , active(other.active)</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>  {</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    other.active = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>  }</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>  <span class="comment">// Move ctor</span></div>
+<div class="foldopen" id="foldopen00270" data-start="{" data-end="}">
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a31ab33b0b5695716f9318b2da47421fd">  270</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a31ab33b0b5695716f9318b2da47421fd">SDL</a>(<a class="code hl_namespace" href="namespaceSDL.html">SDL</a>&amp;&amp; other)</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    : flags(other.flags)</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    , active(other.active)</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>  {</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    other.active = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>  }</div>
 </div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>  <span class="comment">// Dtor</span></div>
-<div class="foldopen" id="foldopen00281" data-start="{" data-end="}">
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a98221fe7655ef540a3833824272b66b9">  281</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a98221fe7655ef540a3833824272b66b9">~SDL</a>()</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>  {</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    <span class="keywordflow">if</span> (active) refCount(-1);</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  }</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>  <span class="comment">// Dtor</span></div>
+<div class="foldopen" id="foldopen00278" data-start="{" data-end="}">
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a98221fe7655ef540a3833824272b66b9">  278</a></span>  <a class="code hl_function" href="structSDL_1_1SDL.html#a98221fe7655ef540a3833824272b66b9">~SDL</a>()</div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>  {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>    <span class="keywordflow">if</span> (active) refCount(-1);</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>  }</div>
 </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
-<div class="foldopen" id="foldopen00286" data-start="{" data-end="}">
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#ae916adb2c5b03bc84a380d9113c807fc">  286</a></span>  <a class="code hl_namespace" href="namespaceSDL.html">SDL</a>&amp; <a class="code hl_function" href="structSDL_1_1SDL.html#ae916adb2c5b03bc84a380d9113c807fc">operator=</a>(<a class="code hl_namespace" href="namespaceSDL.html">SDL</a> rhs)</div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>  {</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    std::swap(active, rhs.active);</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    std::swap(flags, rhs.flags);</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>  }</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
+<div class="foldopen" id="foldopen00283" data-start="{" data-end="}">
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#ae916adb2c5b03bc84a380d9113c807fc">  283</a></span>  <a class="code hl_namespace" href="namespaceSDL.html">SDL</a>&amp; <a class="code hl_function" href="structSDL_1_1SDL.html#ae916adb2c5b03bc84a380d9113c807fc">operator=</a>(<a class="code hl_namespace" href="namespaceSDL.html">SDL</a> rhs)</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>  {</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    std::swap(active, rhs.active);</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    std::swap(flags, rhs.flags);</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="keywordflow">return</span> *<span class="keyword">this</span>;</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>  }</div>
 </div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e">  298</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> <a class="code hl_function" href="structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e">WasInit</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags = 0) { <span class="keywordflow">return</span> SDL_WasInit(flags); }</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
-<div class="foldopen" id="foldopen00307" data-start="{" data-end="}">
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546">  307</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546">release</a>()</div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  {</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    flags = 0;</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    <span class="keywordflow">return</span> refCount(-1, <span class="keyword">false</span>) == 0;</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>  }</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e">  295</a></span>  <span class="keyword">static</span> <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> <a class="code hl_function" href="structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e">WasInit</a>(<a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags = 0) { <span class="keywordflow">return</span> SDL_WasInit(flags); }</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="foldopen" id="foldopen00304" data-start="{" data-end="}">
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546">  304</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546">release</a>()</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>  {</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>    flags = 0;</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>    <span class="keywordflow">return</span> refCount(-1, <span class="keyword">false</span>) == 0;</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>  }</div>
 </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#ad5662e67dc408ba8865e66a72b60d0f5">  318</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1SDL.html#ad5662e67dc408ba8865e66a72b60d0f5">reset</a>() { <span class="keywordflow">return</span> refCount(-1) == 0; }</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#ad5662e67dc408ba8865e66a72b60d0f5">  315</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1SDL.html#ad5662e67dc408ba8865e66a72b60d0f5">reset</a>() { <span class="keywordflow">return</span> refCount(-1) == 0; }</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span> </div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a50b917dfd774a464476459afaacb3e83">  318</a></span>  <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> active; }</div>
 <div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span> </div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a50b917dfd774a464476459afaacb3e83">  321</a></span>  <span class="keyword">operator</span> bool()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> active; }</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a7502d7e3f0dc659bb877bec3a1342f7e">  323</a></span>  <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> <a class="code hl_function" href="structSDL_1_1SDL.html#a7502d7e3f0dc659bb877bec3a1342f7e">GetCurrentFlags</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> flags; }</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags = 0;</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>  <span class="keywordtype">bool</span> active = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno"><a class="line" href="structSDL_1_1SDL.html#a7502d7e3f0dc659bb877bec3a1342f7e">  320</a></span>  <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> <a class="code hl_function" href="structSDL_1_1SDL.html#a7502d7e3f0dc659bb877bec3a1342f7e">GetCurrentFlags</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> flags; }</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>  <a class="code hl_typedef" href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">InitFlags</a> flags = 0;</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>  <span class="keywordtype">bool</span> active = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span> </div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>  <span class="keywordtype">int</span> refCount(<span class="keywordtype">int</span> delta, <span class="keywordtype">bool</span> autoQuit = <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>};</div>
+</div>
 <div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>  <span class="keywordtype">int</span> refCount(<span class="keywordtype">int</span> delta, <span class="keywordtype">bool</span> autoQuit = <span class="keyword">true</span>);</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>};</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ad2fef35eb16c9c97f46423b6d5df6b5c">  347</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#ad2fef35eb16c9c97f46423b6d5df6b5c">IsMainThread</a>() { <span class="keywordflow">return</span> SDL_IsMainThread(); }</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">  358</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> = SDL_MainThreadCallback;</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno"><a class="line" href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">  363</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> = std::function&lt;void()&gt;;</div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span> </div>
+<div class="foldopen" id="foldopen00389" data-start="{" data-end="}">
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno"><a class="line" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">  389</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> callback,</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>                            <span class="keywordtype">void</span>* userdata,</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                            <span class="keywordtype">bool</span> wait_complete)</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>{</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>  <span class="keywordflow">return</span> SDL_RunOnMainThread(callback, userdata, wait_complete);</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>}</div>
 </div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno"><a class="line" href="namespaceSDL.html#ad2fef35eb16c9c97f46423b6d5df6b5c">  350</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#ad2fef35eb16c9c97f46423b6d5df6b5c">IsMainThread</a>() { <span class="keywordflow">return</span> SDL_IsMainThread(); }</div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">  361</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> = SDL_MainThreadCallback;</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span> </div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno"><a class="line" href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">  366</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> = std::function&lt;void()&gt;;</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span> </div>
-<div class="foldopen" id="foldopen00392" data-start="{" data-end="}">
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno"><a class="line" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">  392</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> callback,</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>                            <span class="keywordtype">void</span>* userdata,</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                            <span class="keywordtype">bool</span> wait_complete)</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>{</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>  <span class="keywordflow">return</span> SDL_RunOnMainThread(callback, userdata, wait_complete);</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>}</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span> </div>
+<div class="foldopen" id="foldopen00419" data-start="{" data-end="}">
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a02cae05cce6b7468a89fa31cc991c2de">  419</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> callback, <span class="keywordtype">bool</span> wait_complete)</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>{</div>
+<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>  <span class="keyword">using </span>Wrapper = <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>&lt;void()&gt;;</div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>    &amp;Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>}</div>
 </div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
-<div class="foldopen" id="foldopen00422" data-start="{" data-end="}">
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a02cae05cce6b7468a89fa31cc991c2de">  422</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> callback, <span class="keywordtype">bool</span> wait_complete)</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>{</div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>  <span class="keyword">using </span>Wrapper = <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper</a>&lt;void()&gt;;</div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(</div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    &amp;Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);</div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span>}</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="foldopen" id="foldopen00462" data-start="{" data-end="}">
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a9cb24cc6035ea3ba1c152347e2114e6b">  462</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#a9cb24cc6035ea3ba1c152347e2114e6b">SetAppMetadata</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appname,</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appversion,</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appidentifier)</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>{</div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>  <span class="keywordflow">return</span> SDL_SetAppMetadata(appname, appversion, appidentifier);</div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>}</div>
 </div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span> </div>
-<div class="foldopen" id="foldopen00465" data-start="{" data-end="}">
-<div class="line"><a id="l00465" name="l00465"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a9cb24cc6035ea3ba1c152347e2114e6b">  465</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#a9cb24cc6035ea3ba1c152347e2114e6b">SetAppMetadata</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appname,</div>
-<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appversion,</div>
-<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appidentifier)</div>
-<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span>{</div>
-<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span>  <span class="keywordflow">return</span> SDL_SetAppMetadata(appname, appversion, appidentifier);</div>
-<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span>}</div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span> </div>
+<div class="foldopen" id="foldopen00530" data-start="{" data-end="}">
+<div class="line"><a id="l00530" name="l00530"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a46def1efc7856e6d4842d4d7cd05aa78">  530</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#a46def1efc7856e6d4842d4d7cd05aa78">SetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> value)</div>
+<div class="line"><a id="l00531" name="l00531"></a><span class="lineno">  531</span>{</div>
+<div class="line"><a id="l00532" name="l00532"></a><span class="lineno">  532</span>  <span class="keywordflow">return</span> SDL_SetAppMetadataProperty(name, value);</div>
+<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>}</div>
 </div>
-<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span> </div>
-<div class="foldopen" id="foldopen00533" data-start="{" data-end="}">
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a46def1efc7856e6d4842d4d7cd05aa78">  533</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespaceSDL.html#a46def1efc7856e6d4842d4d7cd05aa78">SetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> value)</div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>{</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>  <span class="keywordflow">return</span> SDL_SetAppMetadataProperty(name, value);</div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>}</div>
+<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span> </div>
+<div class="foldopen" id="foldopen00556" data-start="{" data-end="}">
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a7ae0a016d954f3a072c0a49d9dd9caf2">  556</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="namespaceSDL.html#a7ae0a016d954f3a072c0a49d9dd9caf2">GetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>{</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>  <span class="keywordflow">return</span> SDL_GetAppMetadataProperty(name);</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>}</div>
 </div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span> </div>
-<div class="foldopen" id="foldopen00559" data-start="{" data-end="}">
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a7ae0a016d954f3a072c0a49d9dd9caf2">  559</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="namespaceSDL.html#a7ae0a016d954f3a072c0a49d9dd9caf2">GetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>{</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>  <span class="keywordflow">return</span> SDL_GetAppMetadataProperty(name);</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>}</div>
-</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span> </div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span><span class="preprocessor">#pragma region impl</span></div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span> </div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span><span class="keyword">inline</span> <span class="keywordtype">int</span> SDL::refCount(<span class="keywordtype">int</span> delta, <span class="keywordtype">bool</span> autoQuit)</div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>{</div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>  <span class="comment">// TODO Locking these?</span></div>
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> refCount = 0;</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>  <span class="keywordflow">if</span> (delta &amp;&amp; active) {</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    <span class="keywordflow">if</span> (delta &gt; 0) {</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>      refCount += 1;</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>      <span class="keywordflow">if</span> (flags) active = SDL_InitSubSystem(flags);</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>      SDL_assert_always(refCount &gt; 0);</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>      active = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>      refCount -= 1;</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span> </div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>      <span class="keywordflow">if</span> (autoQuit) {</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>        <span class="keywordflow">if</span> (refCount &lt;= 0) {</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>          <span class="comment">// TODO Make this under FLAG</span></div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>          SDL_Quit();</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flags) {</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>          SDL_QuitSubSystem(flags);</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>        }</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>      }</div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>    }</div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>  }</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>  <span class="keywordflow">return</span> refCount;</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>}</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span> </div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span><span class="preprocessor">#pragma endregion</span></div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span> </div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span> </div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_INIT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span> </div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span><span class="preprocessor">#pragma region impl</span></div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span> </div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span><span class="keyword">inline</span> <span class="keywordtype">int</span> SDL::refCount(<span class="keywordtype">int</span> delta, <span class="keywordtype">bool</span> autoQuit)</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>{</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>  <span class="comment">// TODO Locking these?</span></div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> refCount = 0;</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>  <span class="keywordflow">if</span> (delta &amp;&amp; active) {</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>    <span class="keywordflow">if</span> (delta &gt; 0) {</div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>      refCount += 1;</div>
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>      <span class="keywordflow">if</span> (flags) active = SDL_InitSubSystem(flags);</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>      SDL_assert_always(refCount &gt; 0);</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>      active = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>      refCount -= 1;</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span> </div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>      <span class="keywordflow">if</span> (autoQuit) {</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>        <span class="keywordflow">if</span> (refCount &lt;= 0) {</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>          <span class="comment">// TODO Make this under FLAG</span></div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>          SDL_Quit();</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flags) {</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>          SDL_QuitSubSystem(flags);</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>        }</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>      }</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>    }</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>  }</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>  <span class="keywordflow">return</span> refCount;</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>}</div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span> </div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span><span class="preprocessor">#pragma endregion</span></div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span> </div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span> </div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_INIT_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aSDL3pp__callbackWrapper_8h_html"><div class="ttname"><a href="SDL3pp__callbackWrapper_8h.html">SDL3pp_callbackWrapper.h</a></div></div>
 <div class="ttc" id="aSDL3pp__error_8h_html"><div class="ttname"><a href="SDL3pp__error_8h.html">SDL3pp_error.h</a></div></div>
-<div class="ttc" id="aSDL3pp__stdinc_8h_html"><div class="ttname"><a href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a></div></div>
+<div class="ttc" id="aSDL3pp__stdinc_8h_html"><div class="ttname"><a href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a></div><div class="ttdoc">SDL provides its own implementation of some of the most important C runtime functions.</div></div>
 <div class="ttc" id="aSDL3pp__stringParam_8h_html"><div class="ttname"><a href="SDL3pp__stringParam_8h.html">SDL3pp_stringParam.h</a></div></div>
 <div class="ttc" id="aclassSDL_1_1StringParamImpl_html"><div class="ttname"><a href="classSDL_1_1StringParamImpl.html">SDL::StringParamImpl</a></div><div class="ttdoc">A safe and mostly efficient wrapper to std::string and std::string_view parameters.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__stringParam_8h_source.html#l00026">SDL3pp_stringParam.h:27</a></div></div>
-<div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__blendmode_8h_source.html#l00015">SDL3pp_blendmode.h:15</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a2d9c710ec219aa2818bfdc55e4115f44"><div class="ttname"><a href="namespaceSDL.html#a2d9c710ec219aa2818bfdc55e4115f44">SDL::WasInit</a></div><div class="ttdeci">InitFlags WasInit(InitFlags flags)</div><div class="ttdoc">Get a mask of the specified subsystems which are currently initialized.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00216">SDL3pp_init.h:216</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a46def1efc7856e6d4842d4d7cd05aa78"><div class="ttname"><a href="namespaceSDL.html#a46def1efc7856e6d4842d4d7cd05aa78">SDL::SetAppMetadataProperty</a></div><div class="ttdeci">bool SetAppMetadataProperty(StringParam name, StringParam value)</div><div class="ttdoc">Specify metadata about your app through a set of properties.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00533">SDL3pp_init.h:533</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a649ccd445bb0296103ce839b05fb8ddf"><div class="ttname"><a href="namespaceSDL.html#a649ccd445bb0296103ce839b05fb8ddf">SDL::AppIterate_func</a></div><div class="ttdeci">SDL_AppIterate_func AppIterate_func</div><div class="ttdoc">Function pointer typedef for SDL_AppIterate.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00083">SDL3pp_init.h:83</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a7621ccbf8a8e81e8ff90b14397f87c1e"><div class="ttname"><a href="namespaceSDL.html#a7621ccbf8a8e81e8ff90b14397f87c1e">SDL::InitSubSystem</a></div><div class="ttdeci">bool InitSubSystem(InitFlags flags)</div><div class="ttdoc">Compatibility function to initialize the SDL library.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00187">SDL3pp_init.h:187</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a7ae0a016d954f3a072c0a49d9dd9caf2"><div class="ttname"><a href="namespaceSDL.html#a7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a></div><div class="ttdeci">const char * GetAppMetadataProperty(StringParam name)</div><div class="ttdoc">Get metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00559">SDL3pp_init.h:559</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a85ebd45ffe827a5fe36abd499560314c"><div class="ttname"><a href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">SDL::MainThreadCallback</a></div><div class="ttdeci">SDL_MainThreadCallback MainThreadCallback</div><div class="ttdoc">Callback run on the main thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00361">SDL3pp_init.h:361</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a8cfb5253a0e7d61a295144448a8d4273"><div class="ttname"><a href="namespaceSDL.html#a8cfb5253a0e7d61a295144448a8d4273">SDL::AppResult</a></div><div class="ttdeci">SDL_AppResult AppResult</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00049">SDL3pp_init.h:49</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_a9cb24cc6035ea3ba1c152347e2114e6b"><div class="ttname"><a href="namespaceSDL.html#a9cb24cc6035ea3ba1c152347e2114e6b">SDL::SetAppMetadata</a></div><div class="ttdeci">bool SetAppMetadata(StringParam appname, StringParam appversion, StringParam appidentifier)</div><div class="ttdoc">Specify basic metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00465">SDL3pp_init.h:465</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_aa0da34c8dc3a2eca5592eb26d8867bbd"><div class="ttname"><a href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">SDL::MainThreadFunction</a></div><div class="ttdeci">std::function&lt; void()&gt; MainThreadFunction</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00366">SDL3pp_init.h:366</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_aa769d313fe619516b0b4e621de494b1c"><div class="ttname"><a href="namespaceSDL.html#aa769d313fe619516b0b4e621de494b1c">SDL::AppInit_func</a></div><div class="ttdeci">SDL_AppInit_func AppInit_func</div><div class="ttdoc">Function pointer typedef for SDL_AppInit.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00068">SDL3pp_init.h:68</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_ab53d2dea05d627f11cb7a8c24a8e1a44"><div class="ttname"><a href="namespaceSDL.html#ab53d2dea05d627f11cb7a8c24a8e1a44">SDL::Init</a></div><div class="ttdeci">bool Init(InitFlags flags)</div><div class="ttdoc">Initialize the SDL library.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00170">SDL3pp_init.h:170</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_ac0812d3287da34e3d6b228677440a24c"><div class="ttname"><a href="namespaceSDL.html#ac0812d3287da34e3d6b228677440a24c">SDL::Quit</a></div><div class="ttdeci">void Quit()</div><div class="ttdoc">Clean up all initialized subsystems.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00234">SDL3pp_init.h:234</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_ac6d7bd19a4918a51d2a4fc0501f77da5"><div class="ttname"><a href="namespaceSDL.html#ac6d7bd19a4918a51d2a4fc0501f77da5">SDL::QuitSubSystem</a></div><div class="ttdeci">void QuitSubSystem(InitFlags flags)</div><div class="ttdoc">Shut down specific SDL subsystems.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00202">SDL3pp_init.h:202</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_ac6fad763c6a19060601dfb3b0bc06706"><div class="ttname"><a href="namespaceSDL.html#ac6fad763c6a19060601dfb3b0bc06706">SDL::AppEvent_func</a></div><div class="ttdeci">SDL_AppEvent_func AppEvent_func</div><div class="ttdoc">Function pointer typedef for SDL_AppEvent.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00099">SDL3pp_init.h:99</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_ad2fef35eb16c9c97f46423b6d5df6b5c"><div class="ttname"><a href="namespaceSDL.html#ad2fef35eb16c9c97f46423b6d5df6b5c">SDL::IsMainThread</a></div><div class="ttdeci">bool IsMainThread()</div><div class="ttdoc">Return whether this is the main thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00350">SDL3pp_init.h:350</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_ae10f17c2662e06ffae89564b29eb7e3a"><div class="ttname"><a href="namespaceSDL.html#ae10f17c2662e06ffae89564b29eb7e3a">SDL::AppQuit_func</a></div><div class="ttdeci">SDL_AppQuit_func AppQuit_func</div><div class="ttdoc">Function pointer typedef for SDL_AppQuit.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00113">SDL3pp_init.h:113</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_af819cae500f98321d9ec860a18c50f9b"><div class="ttname"><a href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">SDL::RunOnMainThread</a></div><div class="ttdeci">bool RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)</div><div class="ttdoc">Call a function on the main thread during event processing.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00392">SDL3pp_init.h:392</a></div></div>
-<div class="ttc" id="anamespaceSDL_html_afd0701244620c6298147fe6cc25a4771"><div class="ttname"><a href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">SDL::InitFlags</a></div><div class="ttdeci">SDL_InitFlags InitFlags</div><div class="ttdoc">Initialization flags for SDL.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00048">SDL3pp_init.h:48</a></div></div>
+<div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__blendmode_8h_source.html#l00014">SDL3pp_blendmode.h:14</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a2d9c710ec219aa2818bfdc55e4115f44"><div class="ttname"><a href="namespaceSDL.html#a2d9c710ec219aa2818bfdc55e4115f44">SDL::WasInit</a></div><div class="ttdeci">InitFlags WasInit(InitFlags flags)</div><div class="ttdoc">Get a mask of the specified subsystems which are currently initialized.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00214">SDL3pp_init.h:214</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a46def1efc7856e6d4842d4d7cd05aa78"><div class="ttname"><a href="namespaceSDL.html#a46def1efc7856e6d4842d4d7cd05aa78">SDL::SetAppMetadataProperty</a></div><div class="ttdeci">bool SetAppMetadataProperty(StringParam name, StringParam value)</div><div class="ttdoc">Specify metadata about your app through a set of properties.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00530">SDL3pp_init.h:530</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a649ccd445bb0296103ce839b05fb8ddf"><div class="ttname"><a href="namespaceSDL.html#a649ccd445bb0296103ce839b05fb8ddf">SDL::AppIterate_func</a></div><div class="ttdeci">SDL_AppIterate_func AppIterate_func</div><div class="ttdoc">Function pointer typedef for SDL_AppIterate.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00081">SDL3pp_init.h:81</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a7621ccbf8a8e81e8ff90b14397f87c1e"><div class="ttname"><a href="namespaceSDL.html#a7621ccbf8a8e81e8ff90b14397f87c1e">SDL::InitSubSystem</a></div><div class="ttdeci">bool InitSubSystem(InitFlags flags)</div><div class="ttdoc">Compatibility function to initialize the SDL library.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00185">SDL3pp_init.h:185</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a7ae0a016d954f3a072c0a49d9dd9caf2"><div class="ttname"><a href="namespaceSDL.html#a7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a></div><div class="ttdeci">const char * GetAppMetadataProperty(StringParam name)</div><div class="ttdoc">Get metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00556">SDL3pp_init.h:556</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a85ebd45ffe827a5fe36abd499560314c"><div class="ttname"><a href="namespaceSDL.html#a85ebd45ffe827a5fe36abd499560314c">SDL::MainThreadCallback</a></div><div class="ttdeci">SDL_MainThreadCallback MainThreadCallback</div><div class="ttdoc">Callback run on the main thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00358">SDL3pp_init.h:358</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a8cfb5253a0e7d61a295144448a8d4273"><div class="ttname"><a href="namespaceSDL.html#a8cfb5253a0e7d61a295144448a8d4273">SDL::AppResult</a></div><div class="ttdeci">SDL_AppResult AppResult</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00047">SDL3pp_init.h:47</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_a9cb24cc6035ea3ba1c152347e2114e6b"><div class="ttname"><a href="namespaceSDL.html#a9cb24cc6035ea3ba1c152347e2114e6b">SDL::SetAppMetadata</a></div><div class="ttdeci">bool SetAppMetadata(StringParam appname, StringParam appversion, StringParam appidentifier)</div><div class="ttdoc">Specify basic metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00462">SDL3pp_init.h:462</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_aa0da34c8dc3a2eca5592eb26d8867bbd"><div class="ttname"><a href="namespaceSDL.html#aa0da34c8dc3a2eca5592eb26d8867bbd">SDL::MainThreadFunction</a></div><div class="ttdeci">std::function&lt; void()&gt; MainThreadFunction</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00363">SDL3pp_init.h:363</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_aa769d313fe619516b0b4e621de494b1c"><div class="ttname"><a href="namespaceSDL.html#aa769d313fe619516b0b4e621de494b1c">SDL::AppInit_func</a></div><div class="ttdeci">SDL_AppInit_func AppInit_func</div><div class="ttdoc">Function pointer typedef for SDL_AppInit.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00066">SDL3pp_init.h:66</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_ab53d2dea05d627f11cb7a8c24a8e1a44"><div class="ttname"><a href="namespaceSDL.html#ab53d2dea05d627f11cb7a8c24a8e1a44">SDL::Init</a></div><div class="ttdeci">bool Init(InitFlags flags)</div><div class="ttdoc">Initialize the SDL library.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00168">SDL3pp_init.h:168</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_ac0812d3287da34e3d6b228677440a24c"><div class="ttname"><a href="namespaceSDL.html#ac0812d3287da34e3d6b228677440a24c">SDL::Quit</a></div><div class="ttdeci">void Quit()</div><div class="ttdoc">Clean up all initialized subsystems.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00232">SDL3pp_init.h:232</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_ac6d7bd19a4918a51d2a4fc0501f77da5"><div class="ttname"><a href="namespaceSDL.html#ac6d7bd19a4918a51d2a4fc0501f77da5">SDL::QuitSubSystem</a></div><div class="ttdeci">void QuitSubSystem(InitFlags flags)</div><div class="ttdoc">Shut down specific SDL subsystems.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00200">SDL3pp_init.h:200</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_ac6fad763c6a19060601dfb3b0bc06706"><div class="ttname"><a href="namespaceSDL.html#ac6fad763c6a19060601dfb3b0bc06706">SDL::AppEvent_func</a></div><div class="ttdeci">SDL_AppEvent_func AppEvent_func</div><div class="ttdoc">Function pointer typedef for SDL_AppEvent.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00097">SDL3pp_init.h:97</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_ad2fef35eb16c9c97f46423b6d5df6b5c"><div class="ttname"><a href="namespaceSDL.html#ad2fef35eb16c9c97f46423b6d5df6b5c">SDL::IsMainThread</a></div><div class="ttdeci">bool IsMainThread()</div><div class="ttdoc">Return whether this is the main thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00347">SDL3pp_init.h:347</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_ae10f17c2662e06ffae89564b29eb7e3a"><div class="ttname"><a href="namespaceSDL.html#ae10f17c2662e06ffae89564b29eb7e3a">SDL::AppQuit_func</a></div><div class="ttdeci">SDL_AppQuit_func AppQuit_func</div><div class="ttdoc">Function pointer typedef for SDL_AppQuit.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00111">SDL3pp_init.h:111</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_af819cae500f98321d9ec860a18c50f9b"><div class="ttname"><a href="namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b">SDL::RunOnMainThread</a></div><div class="ttdeci">bool RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)</div><div class="ttdoc">Call a function on the main thread during event processing.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00389">SDL3pp_init.h:389</a></div></div>
+<div class="ttc" id="anamespaceSDL_html_afd0701244620c6298147fe6cc25a4771"><div class="ttname"><a href="namespaceSDL.html#afd0701244620c6298147fe6cc25a4771">SDL::InitFlags</a></div><div class="ttdeci">SDL_InitFlags InitFlags</div><div class="ttdoc">Initialization flags for SDL.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00046">SDL3pp_init.h:46</a></div></div>
 <div class="ttc" id="astructSDL_1_1CallbackWrapper_html"><div class="ttname"><a href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__callbackWrapper_8h_source.html#l00011">SDL3pp_callbackWrapper.h:11</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_a0e72541758d27f3e99122049947f7d9c"><div class="ttname"><a href="structSDL_1_1SDL.html#a0e72541758d27f3e99122049947f7d9c">SDL::SDL::SDL</a></div><div class="ttdeci">SDL(InitFlags flags)</div><div class="ttdoc">Init given subsystems.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00258">SDL3pp_init.h:258</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_a14c88fafe1a191c18be8793b289e906e"><div class="ttname"><a href="structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e">SDL::SDL::WasInit</a></div><div class="ttdeci">static InitFlags WasInit(InitFlags flags=0)</div><div class="ttdoc">Check if given subSystems are initialized.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00298">SDL3pp_init.h:298</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_a31ab33b0b5695716f9318b2da47421fd"><div class="ttname"><a href="structSDL_1_1SDL.html#a31ab33b0b5695716f9318b2da47421fd">SDL::SDL::SDL</a></div><div class="ttdeci">SDL(SDL &amp;&amp;other)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00273">SDL3pp_init.h:273</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_a62b2f28c06870f67981e38b4900a2f6c"><div class="ttname"><a href="structSDL_1_1SDL.html#a62b2f28c06870f67981e38b4900a2f6c">SDL::SDL::SDL</a></div><div class="ttdeci">SDL(const SDL &amp;other)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00265">SDL3pp_init.h:265</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_a7502d7e3f0dc659bb877bec3a1342f7e"><div class="ttname"><a href="structSDL_1_1SDL.html#a7502d7e3f0dc659bb877bec3a1342f7e">SDL::SDL::GetCurrentFlags</a></div><div class="ttdeci">InitFlags GetCurrentFlags() const</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00323">SDL3pp_init.h:323</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_a98221fe7655ef540a3833824272b66b9"><div class="ttname"><a href="structSDL_1_1SDL.html#a98221fe7655ef540a3833824272b66b9">SDL::SDL::~SDL</a></div><div class="ttdeci">~SDL()</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00281">SDL3pp_init.h:281</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_ad5662e67dc408ba8865e66a72b60d0f5"><div class="ttname"><a href="structSDL_1_1SDL.html#ad5662e67dc408ba8865e66a72b60d0f5">SDL::SDL::reset</a></div><div class="ttdeci">bool reset()</div><div class="ttdoc">reset the value of this instance, acts like it was destroyed and then newly instantiated</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00318">SDL3pp_init.h:318</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_ae916adb2c5b03bc84a380d9113c807fc"><div class="ttname"><a href="structSDL_1_1SDL.html#ae916adb2c5b03bc84a380d9113c807fc">SDL::SDL::operator=</a></div><div class="ttdeci">SDL &amp; operator=(SDL rhs)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00286">SDL3pp_init.h:286</a></div></div>
-<div class="ttc" id="astructSDL_1_1SDL_html_af59afb2f4b848cdb4c2492a5023a7546"><div class="ttname"><a href="structSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546">SDL::SDL::release</a></div><div class="ttdeci">bool release()</div><div class="ttdoc">release locking such as reset() does, but never calls SDL_Quit() or SDL_QuitSubSystem()</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00307">SDL3pp_init.h:307</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_a0e72541758d27f3e99122049947f7d9c"><div class="ttname"><a href="structSDL_1_1SDL.html#a0e72541758d27f3e99122049947f7d9c">SDL::SDL::SDL</a></div><div class="ttdeci">SDL(InitFlags flags)</div><div class="ttdoc">Init given subsystems.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00255">SDL3pp_init.h:255</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_a14c88fafe1a191c18be8793b289e906e"><div class="ttname"><a href="structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e">SDL::SDL::WasInit</a></div><div class="ttdeci">static InitFlags WasInit(InitFlags flags=0)</div><div class="ttdoc">Check if given subSystems are initialized.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00295">SDL3pp_init.h:295</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_a31ab33b0b5695716f9318b2da47421fd"><div class="ttname"><a href="structSDL_1_1SDL.html#a31ab33b0b5695716f9318b2da47421fd">SDL::SDL::SDL</a></div><div class="ttdeci">SDL(SDL &amp;&amp;other)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00270">SDL3pp_init.h:270</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_a62b2f28c06870f67981e38b4900a2f6c"><div class="ttname"><a href="structSDL_1_1SDL.html#a62b2f28c06870f67981e38b4900a2f6c">SDL::SDL::SDL</a></div><div class="ttdeci">SDL(const SDL &amp;other)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00262">SDL3pp_init.h:262</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_a7502d7e3f0dc659bb877bec3a1342f7e"><div class="ttname"><a href="structSDL_1_1SDL.html#a7502d7e3f0dc659bb877bec3a1342f7e">SDL::SDL::GetCurrentFlags</a></div><div class="ttdeci">InitFlags GetCurrentFlags() const</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00320">SDL3pp_init.h:320</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_a98221fe7655ef540a3833824272b66b9"><div class="ttname"><a href="structSDL_1_1SDL.html#a98221fe7655ef540a3833824272b66b9">SDL::SDL::~SDL</a></div><div class="ttdeci">~SDL()</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00278">SDL3pp_init.h:278</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_ad5662e67dc408ba8865e66a72b60d0f5"><div class="ttname"><a href="structSDL_1_1SDL.html#ad5662e67dc408ba8865e66a72b60d0f5">SDL::SDL::reset</a></div><div class="ttdeci">bool reset()</div><div class="ttdoc">reset the value of this instance, acts like it was destroyed and then newly instantiated</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00315">SDL3pp_init.h:315</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_ae916adb2c5b03bc84a380d9113c807fc"><div class="ttname"><a href="structSDL_1_1SDL.html#ae916adb2c5b03bc84a380d9113c807fc">SDL::SDL::operator=</a></div><div class="ttdeci">SDL &amp; operator=(SDL rhs)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00283">SDL3pp_init.h:283</a></div></div>
+<div class="ttc" id="astructSDL_1_1SDL_html_af59afb2f4b848cdb4c2492a5023a7546"><div class="ttname"><a href="structSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546">SDL::SDL::release</a></div><div class="ttdeci">bool release()</div><div class="ttdoc">release locking such as reset() does, but never calls SDL_Quit() or SDL_QuitSubSystem()</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00304">SDL3pp_init.h:304</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

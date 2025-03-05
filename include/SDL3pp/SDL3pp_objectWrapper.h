@@ -116,14 +116,16 @@ public:
 
 } // namespace SDL
 
-template<class T>
-void std::swap(SDL::ObjectRef<T>& left, SDL::ObjectRef<T>& right)
+template<class T, class POINTER>
+void std::swap(SDL::ObjectRef<T, POINTER>& left,
+               SDL::ObjectRef<T, POINTER>& right)
 {
   left.swap(right);
 }
 
-template<class T>
-void std::swap(SDL::ObjectUnique<T>& left, SDL::ObjectUnique<T>& right)
+template<class T, class DELETER>
+void std::swap(SDL::ObjectUnique<T, DELETER> left,
+               SDL::ObjectUnique<T, DELETER>& right)
 {
   left.swap(right);
 }

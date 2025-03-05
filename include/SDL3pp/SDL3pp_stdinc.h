@@ -1,7 +1,5 @@
 /**
- * @file stdinc.hpp
- *
- * # CategoryStdinc
+ * @file SDL3pp_stdinc.h
  *
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
@@ -64,10 +62,10 @@ using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
 /**
  * Define a four character code as a Uint32.
  *
- * @param A the first ASCII character.
- * @param B the second ASCII character.
- * @param C the third ASCII character.
- * @param D the fourth ASCII character.
+ * @param a the first ASCII character.
+ * @param b the second ASCII character.
+ * @param c the third ASCII character.
+ * @param d the fourth ASCII character.
  * @returns the four characters converted into a Uint32, one character
  *          per-byte.
  *
@@ -444,8 +442,8 @@ struct EnvironmentBase : T
    *
    * @param populated true to initialize it from the C runtime environment,
    *                  false to create an empty environment.
-   * @returns a pointer to the new environment or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @post the new environment (convertible to true) on success or convertible
+   * to false on failure; call GetError() for more information.
    *
    * @threadsafety If `populated` is false, it is safe to call this function
    *               from any thread, otherwise it is safe if no other threads are
@@ -467,7 +465,6 @@ struct EnvironmentBase : T
   /**
    * Get the value of a variable in the environment.
    *
-   * @param env the environment to query.
    * @param name the name of the variable to get.
    * @returns a pointer to the value of the variable or NULL if it can't be
    *          found.
@@ -490,7 +487,6 @@ struct EnvironmentBase : T
   /**
    * Get all variables in the environment.
    *
-   * @param env the environment to query.
    * @returns a NULL terminated array of pointers to environment variables in
    *          the form "variable=value" or NULL on failure; call SDL_GetError()
    *          for more information. This is wrapped to be auto-deleted, use
@@ -526,7 +522,6 @@ struct EnvironmentBase : T
   /**
    * Set the value of a variable in the environment.
    *
-   * @param env the environment to modify.
    * @param name the name of the variable to set.
    * @param value the value of the variable to set.
    * @param overwrite true to overwrite the variable if it exists, false to
@@ -553,7 +548,6 @@ struct EnvironmentBase : T
   /**
    * Clear a variable from the environment.
    *
-   * @param env the environment to modify.
    * @param name the name of the variable to unset.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -562,12 +556,12 @@ struct EnvironmentBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetEnvironment
-   * @sa SDL_CreateEnvironment
-   * @sa SDL_GetEnvironmentVariable
-   * @sa SDL_GetEnvironmentVariables
-   * @sa SDL_SetEnvironmentVariable
-   * @sa SDL_UnsetEnvironmentVariable
+   * @sa GetEnvironment()
+   * @sa EnvironmentBase()
+   * @sa GetVariable()
+   * @sa GetVariables()
+   * @sa SetVariable()
+   * @sa UnsetVariable()
    **/
   inline bool UnsetVariable(StringParam name)
   {
@@ -590,10 +584,10 @@ struct EnvironmentBase : T
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetEnvironmentVariable
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_SetEnvironmentVariable
- * @sa SDL_UnsetEnvironmentVariable
+ * @sa GetVariable()
+ * @sa GetVariables()
+ * @sa SetVariable()
+ * @sa UnsetVariable()
  **/
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
@@ -4411,14 +4405,14 @@ struct IConvBase : T
    *
    * @param tocode The target character encoding, must not be NULL.
    * @param fromcode The source character encoding, must not be NULL.
-   * @returns a handle that must be freed with SDL_iconv_close, or
-   *          SDL_ICONV_ERROR on failure.
+   * @post this becomes a valid handle convertible to true on success, or
+   *          convertible to false on failure.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_iconv
-   * @sa SDL_iconv_close
-   * @sa SDL_iconv_string
+   * @sa iconv()
+   * @sa iconv_close()
+   * @sa iconv_string()
    **/
   inline IConvBase(StringParam tocode, StringParam fromcode)
     : T(SDL_iconv_open(tocode, fromcode))
@@ -4446,8 +4440,6 @@ struct IConvBase : T
    * - outbytesleft will be set to the number of bytes left in the output
    *   buffer.
    *
-   * @param cd The character set conversion context, created in
-   *           SDL_iconv_open().
    * @param inbuf Address of variable that points to the first character of the
    *              input sequence.
    * @param inbytesleft The number of bytes in the input buffer.

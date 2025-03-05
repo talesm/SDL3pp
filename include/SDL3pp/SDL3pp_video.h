@@ -1,8 +1,6 @@
 /**
  * @file SDL3pp_video.h
  *
- * # CategoryVideo
- *
  * SDL's video subsystem is largely interested in abstracting window
  * management from the underlying operating system. You can create windows,
  * manage them in various ways, set them fullscreen, and get events when
@@ -187,7 +185,6 @@ struct Display
    *   responsible for any coordinate transformations needed to conform to the
    *   requested display orientation.
    *
-   * @param displayID the instance ID of the display to query.
    * @returns a valid property ID on success or 0 on failure; call
    *          SDL_GetError() for more information.
    *
@@ -346,10 +343,9 @@ struct Display
    *                     for the desktop refresh rate.
    * @param include_high_density_modes boolean to include high density modes in
    *                                   the search.
-   * @param closest a pointer filled in with the closest display mode equal to
-   *                or larger than the desired mode.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the closest display mode equal to or larger than the desired mode
+   * on success or std::nullopt on failure; call GetError() for more
+   * information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -561,6 +557,8 @@ struct WindowBase : T
    * @param w the width of the window.
    * @param h the height of the window.
    * @param flags 0, or one or more WindowFlags OR'd together.
+   * @post the window that was created, convertible to true on success or
+   * convertible to false on failure; call GetError() for more information.
    *
    * If fails window converts false; call GetError() for more information.
    *
@@ -620,8 +618,8 @@ struct WindowBase : T
    * @param h the height of the window.
    * @param flags SDL_WINDOW_TOOLTIP or SDL_WINDOW_POPUP_MENU, and zero or more
    *              additional SDL_WindowFlags OR'd together.
-   * @returns the window that was created or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @post the window that was created, convertible to true on success or
+   * convertible to false on failure; call GetError() for more information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
@@ -826,7 +824,6 @@ struct WindowBase : T
    * SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new
    * mode dimensions.
    *
-   * @param window the window to affect.
    * @param mode a pointer to the display mode to use, which can be NULL for
    *             borderless fullscreen desktop mode, or one of the fullscreen
    *             modes returned by SDL_GetFullscreenDisplayModes() to set an
@@ -850,7 +847,6 @@ struct WindowBase : T
   /**
    * Query the display mode to use when a window is visible at fullscreen.
    *
-   * @param window the window to query.
    * @returns a pointer to the exclusive fullscreen mode to use or NULL for
    *          borderless fullscreen desktop mode.
    *
@@ -869,7 +865,6 @@ struct WindowBase : T
   /**
    * Get the raw ICC profile data for the screen the window is currently on.
    *
-   * @param window the window to query.
    * @param size the size of the ICC profile.
    * @returns the raw ICC profile data on success or NULL on failure; call
    *          SDL_GetError() for more information. This should be freed with
@@ -887,7 +882,6 @@ struct WindowBase : T
   /**
    * Get the pixel format associated with the window.
    *
-   * @param window the window to query.
    * @returns the pixel format of the window on success or
    *          SDL_PIXELFORMAT_UNKNOWN on failure; call SDL_GetError() for more
    *          information.
@@ -1052,7 +1046,6 @@ struct WindowBase : T
   /**
    * Get the window flags.
    *
-   * @param window the window to query.
    * @returns a mask of the SDL_WindowFlags associated with `window`.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -1074,7 +1067,6 @@ struct WindowBase : T
    *
    * This string is expected to be in UTF-8 encoding.
    *
-   * @param window the window to change.
    * @param title the desired window title in UTF-8 format.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1093,7 +1085,6 @@ struct WindowBase : T
   /**
    * Get the title of a window.
    *
-   * @param window the window to query.
    * @returns the title of the window in UTF-8 format or "" if there is no
    *          title.
    *
@@ -1118,7 +1109,6 @@ struct WindowBase : T
    * appropriate size and be used instead, if available. Otherwise, the closest
    * smaller image will be upscaled and be used instead.
    *
-   * @param window the window to change.
    * @param icon an SDL_Surface structure containing the icon for the window.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1153,7 +1143,6 @@ struct WindowBase : T
    * Additionally, as this is just a request, it can be denied by the windowing
    * system.
    *
-   * @param window the window to reposition.
    * @param x the x coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
    *          `SDL_WINDOWPOS_UNDEFINED`.
    * @param y the y coordinate of the window, or `SDL_WINDOWPOS_CENTERED` or
@@ -1182,7 +1171,6 @@ struct WindowBase : T
    * If you do not need the value for one of the positions a NULL may be passed
    * in the `x` or `y` parameter.
    *
-   * @param window the window to query.
    * @param x a pointer filled in with the x position of the window, may be
    *          NULL.
    * @param y a pointer filled in with the y position of the window, may be
@@ -1222,7 +1210,6 @@ struct WindowBase : T
    * content area to remain within the usable desktop bounds). Additionally, as
    * this is just a request, it can be denied by the windowing system.
    *
-   * @param window the window to change.
    * @param w the width of the window, must be > 0.
    * @param h the height of the window, must be > 0.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1245,7 +1232,6 @@ struct WindowBase : T
    * window is on a high pixel density display. Use SDL_GetWindowSizeInPixels()
    * or SDL_GetRenderOutputSize() to get the real client area size in pixels.
    *
-   * @param window the window to query the width and height from.
    * @param w a pointer filled in with the width of the window, may be NULL.
    * @param h a pointer filled in with the height of the window, may be NULL.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1274,7 +1260,6 @@ struct WindowBase : T
    * into the rest of the window, but it should not contain visually important
    * or interactible content.
    *
-   * @param window the window to query.
    * @param rect a pointer filled in with the client area that is safe for
    *             interactive content.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1313,7 +1298,6 @@ struct WindowBase : T
    * Additionally, as this is just a request, it can be denied by the windowing
    * system.
    *
-   * @param window the window to change.
    * @param min_aspect the minimum aspect ratio of the window, or 0.0f for no
    *                   limit.
    * @param max_aspect the maximum aspect ratio of the window, or 0.0f for no
@@ -1336,7 +1320,6 @@ struct WindowBase : T
   /**
    * Get the size of a window's client area.
    *
-   * @param window the window to query the width and height from.
    * @param min_aspect a pointer filled in with the minimum aspect ratio of the
    *                   window, may be NULL.
    * @param max_aspect a pointer filled in with the maximum aspect ratio of the
@@ -1371,8 +1354,6 @@ struct WindowBase : T
    * This function also returns false if getting the information is not
    * supported.
    *
-   * @param window the window to query the size values of the border
-   *               (decorations) from.
    * @param top pointer to variable for storing the size of the top border;
    * NULL is permitted.
    * @param left pointer to variable for storing the size of the left border;
@@ -1398,7 +1379,6 @@ struct WindowBase : T
   /**
    * Get the size of a window's client area, in pixels.
    *
-   * @param window the window from which the drawable size should be queried.
    * @param w a pointer to variable for storing the width in pixels, may be
    *          NULL.
    * @param h a pointer to variable for storing the height in pixels, may be
@@ -1421,7 +1401,6 @@ struct WindowBase : T
   /**
    * Set the minimum size of a window's client area.
    *
-   * @param window the window to change.
    * @param min_w the minimum width of the window, or 0 for no limit.
    * @param min_h the minimum height of the window, or 0 for no limit.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1442,7 +1421,6 @@ struct WindowBase : T
   /**
    * Get the minimum size of a window's client area.
    *
-   * @param window the window to query.
    * @param w a pointer filled in with the minimum width of the window, may be
    *          NULL.
    * @param h a pointer filled in with the minimum height of the window, may be
@@ -1465,7 +1443,6 @@ struct WindowBase : T
   /**
    * Set the maximum size of a window's client area.
    *
-   * @param window the window to change.
    * @param max_w the maximum width of the window, or 0 for no limit.
    * @param max_h the maximum height of the window, or 0 for no limit.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1486,7 +1463,6 @@ struct WindowBase : T
   /**
    * Get the maximum size of a window's client area.
    *
-   * @param window the window to query.
    * @param w a pointer filled in with the maximum width of the window, may be
    *          NULL.
    * @param h a pointer filled in with the maximum height of the window, may be
@@ -1515,7 +1491,6 @@ struct WindowBase : T
    *
    * You can't change the border state of a fullscreen window.
    *
-   * @param window the window of which to change the border state.
    * @param bordered false to remove border, true to add border.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1540,7 +1515,6 @@ struct WindowBase : T
    *
    * You can't change the resizable state of a fullscreen window.
    *
-   * @param window the window of which to change the resizable state.
    * @param resizable true to allow resizing, false to disallow.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1562,7 +1536,6 @@ struct WindowBase : T
    * This will add or remove the window's `SDL_WINDOW_ALWAYS_ON_TOP` flag. This
    * will bring the window to the front and keep the window above the rest.
    *
-   * @param window the window of which to change the always on top state.
    * @param on_top true to set the window always on top, false to disable.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1581,7 +1554,6 @@ struct WindowBase : T
   /**
    * Show a window.
    *
-   * @param window the window to show.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1597,7 +1569,6 @@ struct WindowBase : T
   /**
    * Hide a window.
    *
-   * @param window the window to hide.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1620,7 +1591,6 @@ struct WindowBase : T
    * gains input focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted,
    * and the window will have the SDL_WINDOW_INPUT_FOCUS flag set.
    *
-   * @param window the window to raise.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1650,7 +1620,6 @@ struct WindowBase : T
    * manager. Win32 and macOS enforce the constraints when maximizing, while
    * X11 and Wayland window managers may vary.
    *
-   * @param window the window to maximize.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1679,7 +1648,6 @@ struct WindowBase : T
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
-   * @param window the window to minimize.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1709,7 +1677,6 @@ struct WindowBase : T
    * emitted. Note that, as this is just a request, the windowing system can
    * deny the state change.
    *
-   * @param window the window to restore.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1739,7 +1706,6 @@ struct WindowBase : T
    * SDL_EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as
    * this is just a request, it can be denied by the windowing system.
    *
-   * @param window the window to change.
    * @param fullscreen true for fullscreen mode, false for windowed mode.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1771,8 +1737,6 @@ struct WindowBase : T
    *
    * On windowing systems where changes are immediate, this does nothing.
    *
-   * @param window the window for which to wait for the pending state to be
-   *               applied.
    * @returns true on success or false if the operation timed out before the
    *          window was in the requested state.
    *
@@ -1839,7 +1803,6 @@ struct WindowBase : T
    * is supported by every driver, so you should check the return value to see
    * whether the requested setting is supported.
    *
-   * @param window the window.
    * @param vsync the vertical refresh sync interval.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1858,7 +1821,6 @@ struct WindowBase : T
   /**
    * Get VSync for the window surface.
    *
-   * @param window the window to query.
    * @param vsync an int filled with the current vertical refresh sync
    * interval. See SDL_SetWindowSurfaceVSync() for the meaning of the value.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1929,7 +1891,6 @@ struct WindowBase : T
   /**
    * Destroy the surface associated with the window.
    *
-   * @param window the window to update.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -1961,7 +1922,6 @@ struct WindowBase : T
    * If the caller enables a grab while another window is currently grabbed,
    * the other window loses its grab in favor of the caller's window.
    *
-   * @param window the window for which the keyboard grab mode should be set.
    * @param grabbed this is true to grab keyboard, and false to release.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -1983,7 +1943,6 @@ struct WindowBase : T
    *
    * Mouse grab confines the mouse cursor to the window.
    *
-   * @param window the window for which the mouse grab mode should be set.
    * @param grabbed this is true to grab mouse, and false to release.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -2005,7 +1964,6 @@ struct WindowBase : T
   /**
    * Get a window's keyboard grab mode.
    *
-   * @param window the window to query.
    * @returns true if keyboard is grabbed, and false otherwise.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2019,7 +1977,6 @@ struct WindowBase : T
   /**
    * Get a window's mouse grab mode.
    *
-   * @param window the window to query.
    * @returns true if mouse is grabbed, and false otherwise.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -2039,7 +1996,6 @@ struct WindowBase : T
    * Note that this does NOT grab the cursor, it only defines the area a cursor
    * is restricted to when the window has mouse focus.
    *
-   * @param window the window that will be associated with the barrier.
    * @param rect a rectangle area in window-relative coordinates. If NULL the
    *             barrier for the specified window will be destroyed.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -2061,7 +2017,6 @@ struct WindowBase : T
   /**
    * Get the mouse confinement rectangle of a window.
    *
-   * @param window the window to query.
    * @returns a pointer to the mouse confinement rectangle of a window, or NULL
    *          if there isn't one.
    *
@@ -2083,7 +2038,6 @@ struct WindowBase : T
    *
    * This function also returns false if setting the opacity isn't supported.
    *
-   * @param window the window which will be made transparent or opaque.
    * @param opacity the opacity value (0.0f - transparent, 1.0f - opaque).
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -2105,7 +2059,6 @@ struct WindowBase : T
    * If transparency isn't supported on this platform, opacity will be returned
    * as 1.0f without error.
    *
-   * @param window the window to get the current opacity value from.
    * @returns the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on
    *          failure; call SDL_GetError() for more information.
    *
@@ -2138,7 +2091,6 @@ struct WindowBase : T
    * Setting a parent window that is currently the sibling or descendent of the
    * child window results in undefined behavior.
    *
-   * @param window the window that should become the child of a parent.
    * @param parent the new parent window for the child window.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -2160,7 +2112,6 @@ struct WindowBase : T
    * To enable modal status on a window, the window must currently be the child
    * window of a parent, or toggling modal status on will fail.
    *
-   * @param window the window on which to set the modal state.
    * @param modal true to toggle modal status on, false to toggle it off.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -2177,7 +2128,6 @@ struct WindowBase : T
   /**
    * Set whether the window may have input focus.
    *
-   * @param window the window to set focusable state.
    * @param focusable true to allow input focus, false to not allow input
    * focus.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -2203,7 +2153,6 @@ struct WindowBase : T
    * On platforms or desktops where this is unsupported, this function does
    * nothing.
    *
-   * @param window the window for which the menu will be displayed.
    * @param x the x coordinate of the menu, relative to the origin (top-left)
    * of the client area.
    * @param y the y coordinate of the menu, relative to the origin (top-left)
@@ -2359,7 +2308,6 @@ struct WindowBase : T
    *
    * The window must have been created with the SDL_WINDOW_TRANSPARENT flag.
    *
-   * @param window the window.
    * @param shape the surface representing the shape of the window, or NULL to
    *              remove any current shape.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -2377,7 +2325,6 @@ struct WindowBase : T
   /**
    * Request a window to demand attention from the user.
    *
-   * @param window the window to be flashed.
    * @param operation the operation to perform.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.

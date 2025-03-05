@@ -93,9 +93,9 @@ $(document).ready(function(){initNavTree('md__2home_2talesm_2dev_2SDL3_2SDL3pp_2
   <div class="headertitle"><div class="title">Transformations</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md12"></a> We try make the binding as objective as possible, in order to minimize any semantic deviation from the C interface.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md4"></a> We try make the binding as objective as possible, in order to minimize any semantic deviation from the C interface.</p>
 <p>To do so we define the some rules so each C type or function is almost mechanically transformed into a C++ type or function.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 General rules</h1>
 <ul>
 <li>The C++ header files should have the same name than <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s C headers, minus its prefix.<ul>
@@ -104,7 +104,7 @@ General rules</h1>
 </li>
 <li>All definitions are inside the <code><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a></code> namespace, definition names lose their prefix. Eg <code>SDL_Surface</code> becomes <code><a class="el" href="namespaceSDL.html#a5128f762b815ce424b759043e06fd646" title="Handle to an owned surface.">SDL::Surface</a></code>;</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Function rules</h1>
 <ul>
 <li>All method definitions are inline. We have a header only library here;<ul>
@@ -132,7 +132,7 @@ Function rules</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md15"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Type rules</h1>
 <ul>
 <li>Type that aren't opaque and nor have method-like functions are just typedef'd into the namespace. Eg: <code>using InitFlags = SDL_InitFlags</code>;</li>
@@ -168,7 +168,7 @@ Type rules</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Callback rules</h1>
 <ul>
 <li>todo </li>

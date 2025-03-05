@@ -1,7 +1,5 @@
 /**
- * @file properties.hpp
- *
- * # CategoryProperties
+ * @file SDL3pp_properties.h
  *
  * A property is a variable that can be created and retrieved by name at
  * runtime.
@@ -102,8 +100,9 @@ struct PropertiesBase : T
    *
    * All properties are automatically destroyed when SDL_Quit() is called.
    *
-   * @returns an ID for a new group of properties, or 0 on failure; call
-   *          SDL_GetError() for more information.
+   * @post a valid Properties ready to be manipulated and convertible to true on
+   * success, or convertible to false on failure; call GetError() for more
+   * information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -333,7 +332,7 @@ struct PropertiesBase : T
    * "SDL.internal.". These should be considered read-only and should not be
    * modified by applications.
    *
-   * @param the name of the property to query.
+   * @param name the name of the property to query.
    * @param default_value the default value of the property.
    * @returns the value of the property, or `default_value` if it is not set or
    *          not a pointer property.

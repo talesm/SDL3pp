@@ -25,15 +25,15 @@
 var NAVTREE =
 [
   [ "SDL3pp", "index.html", [
-    [ "Goals", "index.html#autotoc_md8", null ],
-    [ "Examples", "index.html#autotoc_md9", null ],
-    [ "Documentation", "index.html#autotoc_md10", null ],
-    [ "Building", "index.html#autotoc_md11", null ],
+    [ "Goals", "index.html#autotoc_md0", null ],
+    [ "Examples", "index.html#autotoc_md1", null ],
+    [ "Documentation", "index.html#autotoc_md2", null ],
+    [ "Building", "index.html#autotoc_md3", null ],
     [ "Transformations", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html", [
-      [ "General rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md13", null ],
-      [ "Function rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md14", null ],
-      [ "Type rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md15", null ],
-      [ "Callback rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md16", null ]
+      [ "General rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md5", null ],
+      [ "Function rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md6", null ],
+      [ "Type rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md7", null ],
+      [ "Callback rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md8", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

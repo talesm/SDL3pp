@@ -1,11 +1,11 @@
 <map id="SDL3pp/SDL3pp_blendmode.h" name="SDL3pp/SDL3pp_blendmode.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,221,31"/>
-<area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title=" " alt="" coords="5,225,189,251"/>
+<area shape="rect" id="Node000001" title="Blend modes decide how two colors will mix together." alt="" coords="5,5,221,31"/>
+<area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="5,225,189,251"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,43,83,60,75,79,69,120,74,162,84,198,94,224,90,226,79,200,69,163,64,120,69,78,79,57,91,40"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__surface_8h.html" title=" " alt="" coords="85,79,275,104"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__surface_8h.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="85,79,275,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="136,39,171,77,167,80,132,43"/>
 <area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="157,115,140,133,125,153,109,192,102,226,96,224,104,190,120,151,136,130,153,112"/>
-<area shape="rect" id="Node000004" href="$SDL3pp__video_8h.html" title=" " alt="" coords="135,152,313,177"/>
+<area shape="rect" id="Node000004" href="$SDL3pp__video_8h.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="135,152,313,177"/>
 <area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="197,114,219,150,215,153,192,117"/>
 <area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="193,186,119,227,117,223,190,182"/>
 </map>

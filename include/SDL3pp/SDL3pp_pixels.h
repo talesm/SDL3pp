@@ -1,8 +1,6 @@
 /**
  * @file SDL3pp_pixels.h
  *
- * # CategoryPixels
- *
  * SDL offers facilities for pixel management.
  *
  * Largely these facilities deal with pixel _format_: what does this set of
@@ -196,7 +194,6 @@ struct PixelFormat
    *               value or zero.
    * @param bits the number of bits per pixel of the new format.
    * @param bytes the number of bytes per pixel of the new format.
-   * @returns a format value in the style of SDL_PixelFormat.
    *
    * @threadsafety It is safe to call this macro from any thread.
    *
@@ -425,7 +422,6 @@ struct PixelFormat
    * allocated), and hence should not be modified, especially the palette. Weird
    * errors such as `Blit combination not supported` may occur.
    *
-   * @param format one of the SDL_PixelFormat values.
    * @returns a pointer to a SDL_PixelFormatDetails structure or NULL on
    *          failure; call SDL_GetError() for more information.
    *
@@ -456,7 +452,7 @@ struct PixelFormat
    * format the return value can be assigned to a Uint16, and similarly a Uint8
    * for an 8-bpp format).
    *
-   * @param r the color components of the pixel in the range 0-255.
+   * @param color the color components of the pixel in the range 0-255.
    * @param palette an optional palette for indexed formats, may be NULL.
    * @returns a pixel value.
    *
@@ -580,13 +576,13 @@ struct Colorspace
    *
    * For example, defining SDL_COLORSPACE_SRGB looks like this:
    *
-   * ```c
-   * Colorspace(SDL_COLOR_TYPE_RGB,
-   *            SDL_COLOR_RANGE_FULL,
-   *            SDL_COLOR_PRIMARIES_BT709,
-   *            SDL_TRANSFER_CHARACTERISTICS_SRGB,
-   *            SDL_MATRIX_COEFFICIENTS_IDENTITY,
-   *            SDL_CHROMA_LOCATION_NONE)
+   * ```cpp
+   * Colorspace colorspace(SDL_COLOR_TYPE_RGB,
+   *                       SDL_COLOR_RANGE_FULL,
+   *                       SDL_COLOR_PRIMARIES_BT709,
+   *                       SDL_TRANSFER_CHARACTERISTICS_SRGB,
+   *                       SDL_MATRIX_COEFFICIENTS_IDENTITY,
+   *                       SDL_CHROMA_LOCATION_NONE)
    * ```
    *
    * @param type the type of the new format, probably an ColorType value.
@@ -599,8 +595,6 @@ struct Colorspace
    *               MatrixCoefficients value.
    * @param chroma the chroma sample location of the new format, probably an
    *               ChromaLocation value.
-   * @returns a format value in the style of Colorspace.
-   *
    * @threadsafety It is safe to call this macro from any thread.
    *
    * @since This macro is available since SDL 3.2.0.
@@ -1080,9 +1074,9 @@ struct PaletteBase : T
    * The palette entries are initialized to white.
    *
    * @param ncolors represents the number of color entries in the color palette.
-   * @returns a new SDL_Palette structure on success or NULL on failure (e.g. if
-   *          there wasn't enough memory); call SDL_GetError() for more
-   *          information.
+   * @post this represents a new Palette structure convertible to true on
+   * success or converts to false on failure (e.g. if there wasn't enough
+   * memory); call GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
