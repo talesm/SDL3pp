@@ -62,6 +62,7 @@
 #define SDL3PP_PIXELS_H_
 
 #include <span>
+#include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_pixels.h>
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_spanRef.h"

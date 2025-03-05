@@ -43,6 +43,7 @@ add_executable(SDL3pp_unitTests
     test/SDL3pp_properties.cpp
     test/SDL3pp_spanRef.cpp
     test/SDL3pp_stringParam.cpp
+    test/SDL3pp_surface.cpp
 )
 target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)
 add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)

@@ -199,25 +199,21 @@ function tokenize(lines) {
         if (endBracket < 0) {
           for (++i; i < lines.length; ++i) {
             const line = lines[i];
-            if (line.endsWith(');')) {
-              parameters += '\n' + line.slice(0, line.length - 2);
-              break;
-            }
-            if (line.endsWith(')')) {
-              parameters += '\n' + line.slice(0, line.length - 1);
-              break;
-            }
-            if (line.endsWith(') const')) {
-              token.immutable = true;
-              parameters += '\n' + line.slice(0, line.length - 7);
+            const m = /\)\s*(const)?(&{0,2});?$/.exec(line);
+            if (m) {
+              parameters += '\n' + line.slice(0, line.length - m[0].length);
+              if (m[1]) token.immutable = true;
+              if (m?.[2]) token.reference = m[2].length;
               break;
             }
             parameters += '\n' + line;
           }
         } else {
           const details = parameters.slice(endBracket + 1);
-          if (details.startsWith(" const")) token.immutable = true;
           parameters = parameters.slice(0, endBracket);
+          const m = /^\s+(const)?(&{0,2})/.exec(details);
+          if (m?.[1]) token.immutable = true;
+          if (m?.[2]) token.reference = m[2].length;
         }
         token.parameters = parameters;
         if (type.startsWith("operator")) {

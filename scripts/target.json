@@ -5211,6 +5211,11 @@
           "type": "SurfaceBase<ObjectUnique<SDL_Surface>>",
           "doc": ""
         },
+        "SurfaceLock-forward": {
+          "name": "SurfaceLock",
+          "kind": "forward",
+          "doc": ""
+        },
         "SurfaceFlags": {
           "doc": "The flags on an SDL_Surface.\n\nThese are generally considered read-only.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "SurfaceFlags",
@@ -5441,6 +5446,25 @@
               "type": "void",
               "parameters": [],
               "sourceName": "SDL_RemoveSurfaceAlternateImages"
+            },
+            "MustLock": {
+              "doc": "Evaluates to true if the surface needs to be locked before access.\n\n@since This macro is available since SDL 3.2.0.",
+              "name": "MustLock",
+              "kind": "function",
+              "parameters": [],
+              "sourceName": "SDL_MUSTLOCK",
+              "constexpr": true,
+              "immutable": true,
+              "type": "bool"
+            },
+            "Lock": {
+              "doc": "Set up a surface for directly accessing the pixels.\n\nBetween calls to SDL_LockSurface() / SDL_UnlockSurface(), you can write to\nand read from `surface->pixels`, using the pixel format stored in\n`surface->format`. Once you are done accessing the surface, you should use\nSDL_UnlockSurface() to release it.\n\nNot all surfaces require locking. If `SDL_MUSTLOCK(surface)` evaluates to\n0, then you can read and write to the surface at any time, and the pixel\nformat of the surface will not change.\n\n@param surface the SDL_Surface structure to be locked.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MUSTLOCK\n@sa SDL_UnlockSurface",
+              "name": "Lock",
+              "kind": "function",
+              "type": "SurfaceLock",
+              "parameters": [],
+              "sourceName": "SDL_LockSurface",
+              "reference": 1
             },
             "Save": [
               {
@@ -6488,6 +6512,115 @@
               "name": "T"
             }
           ]
+        },
+        "SurfaceLock": {
+          "name": "SurfaceLock",
+          "kind": "struct",
+          "entries": {
+            "surface": {
+              "kind": "var",
+              "type": "SurfaceRef",
+              "name": "surface",
+              "doc": ""
+            },
+            "SurfaceLock": [
+              {
+                "doc": "@sa SurfaceBase.Lock()",
+                "kind": "function",
+                "type": "explicit",
+                "parameters": [
+                  {
+                    "name": "surface",
+                    "type": "SurfaceRef"
+                  }
+                ],
+                "name": "SurfaceLock"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [],
+                "name": "SurfaceLock",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const SurfaceLock &",
+                    "name": "other"
+                  }
+                ],
+                "name": "SurfaceLock",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SurfaceLock &&",
+                    "name": "other"
+                  }
+                ],
+                "name": "SurfaceLock",
+                "doc": ""
+              }
+            ],
+            "~SurfaceLock": {
+              "kind": "function",
+              "doc": "@sa Unlock()",
+              "type": "",
+              "parameters": [],
+              "name": "~SurfaceLock"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "SurfaceLock &",
+              "parameters": [
+                {
+                  "type": "SurfaceLock",
+                  "name": "other"
+                }
+              ],
+              "name": "operator=",
+              "doc": ""
+            },
+            "Unlock": {
+              "doc": "Release a surface after directly accessing the pixels.\n\n@param surface the SDL_Surface structure to be unlocked.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LockSurface",
+              "name": "Unlock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_UnlockSurface"
+            },
+            "GetPixels": {
+              "kind": "function",
+              "type": "void *",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetPixels",
+              "doc": ""
+            },
+            "GetPitch": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetPitch",
+              "doc": ""
+            },
+            "GetFormat": {
+              "kind": "function",
+              "type": "PixelType",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetFormat",
+              "doc": ""
+            }
+          },
+          "doc": ""
         },
         "ConvertPixels": {
           "doc": "Copy a block of pixels of one format to another format.\n\n@param width the width of the block to copy, in pixels.\n@param height the height of the block to copy, in pixels.\n@param src_format an SDL_PixelFormat value of the `src` pixels format.\n@param src a pointer to the source pixels.\n@param src_pitch the pitch of the source pixels, in bytes.\n@param dst_format an SDL_PixelFormat value of the `dst` pixels format.\n@param dst a pointer to be filled in with new pixel data.\n@param dst_pitch the pitch of the destination pixels, in bytes.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ConvertPixelsAndColorspace",

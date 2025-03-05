@@ -56,6 +56,9 @@ struct ObjectDeleter<SDL_Surface>
  */
 using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
 
+// Forward decl
+struct SurfaceLock;
+
 /**
  * @brief The flags on an SDL_Surface.
  *
@@ -398,6 +401,36 @@ struct SurfaceBase : T
    * @sa HasAlternateImages()
    */
   void RemoveAlternateImages() { SDL_RemoveSurfaceAlternateImages(T::get()); }
+
+  /**
+   * Evaluates to true if the surface needs to be locked before access.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool MustLock() const { return SDL_MUSTLOCK(T::get()); }
+
+  /**
+   * Set up a surface for directly accessing the pixels.
+   *
+   * Between calls to SurfaceBase.Lock() / Unlock(), you can write
+   * to and read from `GetPixels()`, using the pixel format stored in
+   * `GetFormat()`. Once you are done accessing the surface, you should use
+   * Unlock() to release it or let the destructor take care of this
+   * for you.
+   *
+   * Not all surfaces require locking. If `SurfaceBase.MustLock(surface)`
+   * evaluates to false, then you can read and write to the surface at any time,
+   * and the pixel format of the surface will not change.
+   *
+   * @returns SurfaceLock object that converts to true on success or false on
+   * failure; call GetError() for more information.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa MustLock()
+   * @sa SurfaceLock.Unlock()
+   */
+  SurfaceLock Lock() &;
 
   /**
    * Save a surface to a seekable SDL data stream in BMP format.
@@ -1765,20 +1798,92 @@ struct SurfaceBase : T
 /**
  * Free a surface.
  *
- * It is safe to pass NULL to this function.
- *
  * @param surface the SDL_Surface to free.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_CreateSurface
- * @sa SDL_CreateSurfaceFrom
+ * @sa Surface.Surface()
  */
 template<ObjectBox<SDL_Surface*> T>
 inline void DestroySurface(T&& surface)
 {
   SDL_DestroySurface(surface.release());
 }
+
+/**
+ * @brief Locks a Surface for access to its pixels
+ *
+ * Only really necessary if Surface.MustLock() returns t
+ */
+class SurfaceLock
+{
+  SurfaceRef surface;
+
+  /**
+   * @sa SurfaceBase.Lock()
+   */
+  explicit SurfaceLock(SurfaceRef surface)
+    : surface(std::move(surface))
+  {
+    if (!SDL_LockSurface(this->surface.get())) this->surface.reset();
+  }
+
+public:
+  // default ctor
+  SurfaceLock()
+    : surface(nullptr)
+  {
+  }
+
+  // Copy ctor
+  SurfaceLock(const SurfaceLock& other) = delete;
+
+  // Move ctor
+  SurfaceLock(SurfaceLock&& other)
+    : surface(other.surface.release())
+  {
+  }
+
+  /**
+   * destructor
+   * @sa Unlock()
+   */
+  ~SurfaceLock() { SDL_UnlockSurface(surface.get()); }
+
+  // Assignment operator
+  SurfaceLock& operator=(SurfaceLock other)
+  {
+    std::swap(surface, other.surface);
+    return *this;
+  }
+
+  /**
+   * Release the locked surface after directly accessing the pixels.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_SurfaceLock
+   */
+  void Unlock() { return SDL_UnlockSurface(surface.release()); }
+
+  /**
+   * Get the pixels
+   */
+  void* GetPixels() const { return surface->pixels; }
+
+  /**
+   * Get pitch (the number of bytes between the start of one row the next)
+   */
+  int GetPitch() const { return surface->pitch; }
+
+  /**
+   * @brief Get the pixel format
+   */
+  PixelFormat GetFormat() const { return surface->format; }
+
+  template<ObjectBox<SDL_Surface*> T>
+  friend class SurfaceBase;
+};
 
 /**
  * Copy a block of pixels of one format to another format.
@@ -1911,6 +2016,12 @@ inline bool PremultiplyAlpha(int width,
 void ObjectDeleter<SDL_Surface>::operator()(SDL_Surface* surface) const
 {
   DestroySurface(SurfaceRef(surface));
+}
+
+template<ObjectBox<SDL_Surface*> T>
+SurfaceLock SurfaceBase<T>::Lock() &
+{
+  return SurfaceLock{*this};
 }
 
 #pragma endregion impl

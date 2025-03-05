@@ -38,6 +38,7 @@
  * @property {string=}        sourceName
  * @property {boolean=}       constexpr
  * @property {boolean=}       immutable
+ * @property {number=}        reference
  * @property {boolean=}       static
  * @property {number=}        begin
  * @property {number=}        decl
@@ -104,6 +105,7 @@
  * @property {string=}        type
  * @property {boolean=}       constexpr
  * @property {boolean=}       immutable
+ * @property {number=}        reference
  * @property {boolean=}       static
  * @property {number}         begin
  * @property {number}         end

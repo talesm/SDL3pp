@@ -343,10 +343,11 @@ function generateCall(entry, addThis) {
  * @param {string} prefix 
  */
 function generateFunction(entry, prefix) {
-  const constStr = entry.immutable ? " const" : "";
+  const reference = entry.reference ? "&".repeat(entry.reference) : "";
+  const specifier = entry.immutable ? ` const${reference}` : (reference ? " " + reference : "");
   const parameters = generateParameters(entry.parameters);
   const body = generateCall(entry, !!prefix && !entry.static);
-  return `${generateDeclPrefix(entry, prefix)}(${parameters})${constStr}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+  return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
 }
 
 /**
@@ -377,7 +378,6 @@ function generateStruct(entry, prefix) {
  * @param {string} prefix 
  */
 function generateStructSignature(entry, prefix) {
-  const template = generateTemplateSignature(entry.template, prefix);
   return `${prefix}struct ${entry.name}`;
 }
 

@@ -1510,10 +1510,6 @@
       }
     },
     "SDL_surface.h": {
-      "ignoreEntries": [
-        "SDL_LockSurface",
-        "SDL_UnlockSurface"
-      ],
       "includeAfter": {
         "__begin": [
           {
@@ -1554,8 +1550,98 @@
             "name": "Surface",
             "kind": "alias",
             "type": "SurfaceBase<ObjectUnique<SDL_Surface>>"
+          },
+          {
+            "name": "SurfaceLock",
+            "kind": "forward"
           }
-        ]
+        ],
+        "SDL_DestroySurface": {
+          "name": "SurfaceLock",
+          "kind": "struct",
+          "entries": {
+            "surface": {
+              "kind": "var",
+              "type": "SurfaceRef"
+            },
+            "SurfaceLock": [
+              {
+                "doc": "@sa SurfaceBase.Lock()",
+                "kind": "function",
+                "type": "explicit",
+                "parameters": [
+                  {
+                    "name": "surface",
+                    "type": "SurfaceRef"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const SurfaceLock &",
+                    "name": "other"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SurfaceLock &&",
+                    "name": "other"
+                  }
+                ]
+              }
+            ],
+            "~SurfaceLock": {
+              "kind": "function",
+              "doc": "@sa Unlock()",
+              "type": "",
+              "parameters": []
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "SurfaceLock &",
+              "parameters": [
+                {
+                  "type": "SurfaceLock",
+                  "name": "other"
+                }
+              ]
+            },
+            "SDL_UnlockSurface": {
+              "name": "Unlock",
+              "parameters": []
+            },
+            "GetPixels": {
+              "kind": "function",
+              "type": "void *",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetPitch": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetFormat": {
+              "kind": "function",
+              "type": "PixelFormat",
+              "immutable": true,
+              "parameters": []
+            }
+          }
+        }
       },
       "transform": {
         "SDL_Surface": {
@@ -1614,6 +1700,19 @@
             "SDL_RemoveSurfaceAlternateImages": {
               "kind": "function",
               "name": "RemoveAlternateImages"
+            },
+            "SDL_MUSTLOCK": {
+              "kind": "function",
+              "name": "MustLock",
+              "constexpr": true,
+              "immutable": true,
+              "type": "bool",
+              "parameters": []
+            },
+            "SDL_LockSurface": {
+              "name": "Lock",
+              "type": "SurfaceLock",
+              "reference": 1
             },
             "SDL_LoadBMP_IO": "ctor",
             "SDL_LoadBMP": "ctor",
