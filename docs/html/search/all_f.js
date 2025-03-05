@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['raisewindow_0',['RaiseWindow',['../structSDL_1_1WindowBase.html#aa7b7882c04f3e4240556d625542e9a37',1,'SDL::WindowBase']]],
+  ['raise_0',['Raise',['../structSDL_1_1WindowBase.html#ad2e6a8e788af1805e9c6afafffdb9b38',1,'SDL::WindowBase']]],
   ['rand_1',['rand',['../namespaceSDL.html#aa0d119f7b42130eb3a652f7e243c8cf7',1,'SDL']]],
   ['rand_5fbits_2',['rand_bits',['../namespaceSDL.html#ae6517052066ab937273e6a89c7d1eca8',1,'SDL']]],
   ['rand_5fbits_5fr_3',['rand_bits_r',['../namespaceSDL.html#a5fa067963ccb1728fb4e81abe36c46c6',1,'SDL']]],
@@ -42,7 +42,7 @@ var searchData=
   ['resetcliprect_39',['resetcliprect',['../structSDL_1_1SurfaceBase.html#ab56e2c8d5eafb9f36fbe8e33cc98144e',1,'SDL::SurfaceBase::ResetClipRect()'],['../structSDL_1_1RendererBase.html#aadf093d5d6a7423dab461367031cffbd',1,'SDL::RendererBase::ResetClipRect()']]],
   ['resettarget_40',['ResetTarget',['../structSDL_1_1RendererBase.html#a4ca57a9d138be624fa363a40cb887718',1,'SDL::RendererBase']]],
   ['resetviewport_41',['ResetViewport',['../structSDL_1_1RendererBase.html#aa44e212c72e672a441ec729a18c26ecb',1,'SDL::RendererBase']]],
-  ['restorewindow_42',['RestoreWindow',['../structSDL_1_1WindowBase.html#ad18ea6b38224810849014ad96dbdac53',1,'SDL::WindowBase']]],
+  ['restore_42',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
   ['round_43',['round',['../namespaceSDL.html#a58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
   ['roundf_44',['roundf',['../namespaceSDL.html#a9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
   ['rules_45',['rules',['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md8',1,'Callback rules'],['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md6',1,'Function rules'],['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md5',1,'General rules'],['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md7',1,'Type rules']]],

@@ -7604,49 +7604,49 @@
               ],
               "sourceName": "SDL_SetWindowAlwaysOnTop"
             },
-            "ShowWindow": {
+            "Show": {
               "doc": "Show a window.\n\n@param window the window to show.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_HideWindow\n@sa SDL_RaiseWindow",
-              "name": "ShowWindow",
+              "name": "Show",
               "kind": "function",
               "type": "bool",
               "parameters": [],
               "sourceName": "SDL_ShowWindow"
             },
-            "HideWindow": {
+            "Hide": {
               "doc": "Hide a window.\n\n@param window the window to hide.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ShowWindow\n@sa SDL_WINDOW_HIDDEN",
-              "name": "HideWindow",
+              "name": "Hide",
               "kind": "function",
               "type": "bool",
               "parameters": [],
               "sourceName": "SDL_HideWindow"
             },
-            "RaiseWindow": {
+            "Raise": {
               "doc": "Request that a window be raised above other windows and gain the input\nfocus.\n\nThe result of this request is subject to desktop window manager policy,\nparticularly if raising the requested window would result in stealing focus\nfrom another application. If the window is successfully raised and gains\ninput focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted, and\nthe window will have the SDL_WINDOW_INPUT_FOCUS flag set.\n\n@param window the window to raise.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "RaiseWindow",
+              "name": "Raise",
               "kind": "function",
               "type": "bool",
               "parameters": [],
               "sourceName": "SDL_RaiseWindow"
             },
-            "MaximizeWindow": {
+            "Maximize": {
               "doc": "Request that the window be made as large as possible.\n\nNon-resizable windows can't be maximized. The window must have the\nSDL_WINDOW_RESIZABLE flag set, or this will have no effect.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MAXIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\nWhen maximizing a window, whether the constraints set via\nSDL_SetWindowMaximumSize() are honored depends on the policy of the window\nmanager. Win32 and macOS enforce the constraints when maximizing, while X11\nand Wayland window managers may vary.\n\n@param window the window to maximize.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MinimizeWindow\n@sa SDL_RestoreWindow\n@sa SDL_SyncWindow",
-              "name": "MaximizeWindow",
+              "name": "Maximize",
               "kind": "function",
               "type": "bool",
               "parameters": [],
               "sourceName": "SDL_MaximizeWindow"
             },
-            "MinimizeWindow": {
+            "Minimize": {
               "doc": "Request that the window be minimized to an iconic representation.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have been applied immediately upon the return of this\nfunction. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_MINIMIZED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@param window the window to minimize.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MaximizeWindow\n@sa SDL_RestoreWindow\n@sa SDL_SyncWindow",
-              "name": "MinimizeWindow",
+              "name": "Minimize",
               "kind": "function",
               "type": "bool",
               "parameters": [],
               "sourceName": "SDL_MinimizeWindow"
             },
-            "RestoreWindow": {
+            "Restore": {
               "doc": "Request that the size and position of a minimized or maximized window be\nrestored.\n\nIf the window is in a fullscreen state, this request has no direct effect.\nIt may alter the state the window is returned to when leaving fullscreen.\n\nOn some windowing systems this request is asynchronous and the new window\nstate may not have have been applied immediately upon the return of this\nfunction. If an immediate change is required, call SDL_SyncWindow() to\nblock until the changes have taken effect.\n\nWhen the window state changes, an SDL_EVENT_WINDOW_RESTORED event will be\nemitted. Note that, as this is just a request, the windowing system can\ndeny the state change.\n\n@param window the window to restore.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_MaximizeWindow\n@sa SDL_MinimizeWindow\n@sa SDL_SyncWindow",
-              "name": "RestoreWindow",
+              "name": "Restore",
               "kind": "function",
               "type": "bool",
               "parameters": [],
@@ -7665,9 +7665,9 @@
               ],
               "sourceName": "SDL_SetWindowFullscreen"
             },
-            "SyncWindow": {
+            "Sync": {
               "doc": "Block until any pending window state is finalized.\n\nOn asynchronous windowing systems, this acts as a synchronization barrier\nfor pending window state. It will attempt to wait until any pending window\nstate has been applied and is guaranteed to return within finite time. Note\nthat for how long it can potentially block depends on the underlying window\nsystem, as window state changes may involve somewhat lengthy animations\nthat must complete before the window is in its final requested state.\n\nOn windowing systems where changes are immediate, this does nothing.\n\n@param window the window for which to wait for the pending state to be\n              applied.\n@returns true on success or false if the operation timed out before the\n         window was in the requested state.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetWindowSize\n@sa SDL_SetWindowPosition\n@sa SDL_SetWindowFullscreen\n@sa SDL_MinimizeWindow\n@sa SDL_MaximizeWindow\n@sa SDL_RestoreWindow\n@sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS",
-              "name": "SyncWindow",
+              "name": "Sync",
               "kind": "function",
               "type": "bool",
               "parameters": [],
@@ -7733,9 +7733,9 @@
               ],
               "sourceName": "SDL_UpdateWindowSurfaceRects"
             },
-            "DestroyWindowSurface": {
+            "DestroySurface": {
               "doc": "Destroy the surface associated with the window.\n\n@param window the window to update.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetWindowSurface\n@sa SDL_WindowHasSurface",
-              "name": "DestroyWindowSurface",
+              "name": "DestroySurface",
               "kind": "function",
               "type": "bool",
               "parameters": [],
@@ -7868,9 +7868,9 @@
               ],
               "sourceName": "SDL_SetWindowFocusable"
             },
-            "ShowWindowSystemMenu": {
+            "ShowSystemMenu": {
               "doc": "Display the system-level window menu.\n\nThis default window menu is provided by the system and on some platforms\nprovides functionality for setting or changing privileged state on the\nwindow, such as moving it between workspaces or displays, or toggling the\nalways-on-top property.\n\nOn platforms or desktops where this is unsupported, this function does\nnothing.\n\n@param window the window for which the menu will be displayed.\n@param x the x coordinate of the menu, relative to the origin (top-left) of\n         the client area.\n@param y the y coordinate of the menu, relative to the origin (top-left) of\n         the client area.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "ShowWindowSystemMenu",
+              "name": "ShowSystemMenu",
               "kind": "function",
               "type": "bool",
               "parameters": [
@@ -7946,9 +7946,9 @@
               ],
               "sourceName": "SDL_SetWindowShape"
             },
-            "FlashWindow": {
+            "Flash": {
               "doc": "Request a window to demand attention from the user.\n\n@param window the window to be flashed.\n@param operation the operation to perform.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "FlashWindow",
+              "name": "Flash",
               "kind": "function",
               "type": "bool",
               "parameters": [

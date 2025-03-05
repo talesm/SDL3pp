@@ -91,8 +91,8 @@ var searchData=
   ['setx2_88',['setx2',['../structSDL_1_1FRect.html#aa8d58be556c2a84bbaefc7802b3437f5',1,'SDL::FRect::SetX2()'],['../structSDL_1_1Rect.html#aa5aefc696da1e3c7c570c1a439131a8a',1,'SDL::Rect::SetX2()']]],
   ['sety_89',['sety',['../structSDL_1_1FRect.html#a7ec90df1431264bf4ac71e84388f6d6b',1,'SDL::FRect::SetY()'],['../structSDL_1_1Rect.html#a22df2e15a3c339a7f79c07535a14e8c7',1,'SDL::Rect::SetY()'],['../structSDL_1_1FPoint.html#a69923cfad53d0be30e478f94d749c8e7',1,'SDL::FPoint::SetY()'],['../structSDL_1_1Point.html#a3cfdde145ddd6ff9226185afa558ba05',1,'SDL::Point::SetY()']]],
   ['sety2_90',['sety2',['../structSDL_1_1FRect.html#a9319d987aa75d8ed3bb2fd6feb7eeadb',1,'SDL::FRect::SetY2()'],['../structSDL_1_1Rect.html#aef1db4d9c52a41b4a278bee1410c96ca',1,'SDL::Rect::SetY2()']]],
-  ['showwindow_91',['ShowWindow',['../structSDL_1_1WindowBase.html#a0195092c6724089a3caa949cb2f028e9',1,'SDL::WindowBase']]],
-  ['showwindowsystemmenu_92',['ShowWindowSystemMenu',['../structSDL_1_1WindowBase.html#aa853f25a60dd01e8c57fcdfb1f0fff24',1,'SDL::WindowBase']]],
+  ['show_91',['Show',['../structSDL_1_1WindowBase.html#a5697f649732d90c479758befb7ef8426',1,'SDL::WindowBase']]],
+  ['showsystemmenu_92',['ShowSystemMenu',['../structSDL_1_1WindowBase.html#a795c0db196d642fc565586a45983c107',1,'SDL::WindowBase']]],
   ['sin_93',['sin',['../namespaceSDL.html#a88bf16c79b920ce54e0ae909b2948663',1,'SDL']]],
   ['sinf_94',['sinf',['../namespaceSDL.html#ab41ffcc72f47ca7757cdaa4a0844dd7c',1,'SDL']]],
   ['size_95',['size',['../classSDL_1_1SpanRef.html#ab2f850fb52fefb67e54ac2e416d4a711',1,'SDL::SpanRef']]],
@@ -138,6 +138,6 @@ var searchData=
   ['surfacelock_135',['surfacelock',['../classSDL_1_1SurfaceLock.html#ada96db96a7be754fc0e08f3dfd79f447',1,'SDL::SurfaceLock::SurfaceLock()'],['../classSDL_1_1SurfaceLock.html',1,'SDL::SurfaceLock'],['../classSDL_1_1SurfaceLock.html#a664bd0a7dbabb24bf664c265be7b318d',1,'SDL::SurfaceLock::SurfaceLock()'],['../classSDL_1_1SurfaceLock.html#ac20472d94ae80e63002af3a1f636f65f',1,'SDL::SurfaceLock::SurfaceLock(const SurfaceLock &amp;other)=delete']]],
   ['surfaceref_136',['SurfaceRef',['../namespaceSDL.html#a2ea8e6016ec594c51738ef06f469d5d2',1,'SDL']]],
   ['swap_137',['swap',['../classSDL_1_1ObjectUnique.html#a526a3bc20034b15c51079b03bf62f992',1,'SDL::ObjectUnique::swap()'],['../classSDL_1_1ObjectRef.html#a420eb2fcb0acda70c2a971583d151dfe',1,'SDL::ObjectRef::swap()']]],
-  ['syncwindow_138',['SyncWindow',['../structSDL_1_1WindowBase.html#a25cd2a763f74a11990d5d6431d0d9b28',1,'SDL::WindowBase']]],
+  ['sync_138',['Sync',['../structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf',1,'SDL::WindowBase']]],
   ['systemtheme_139',['SystemTheme',['../namespaceSDL.html#a6d46b1179134bbd5203db0a7a74b89ed',1,'SDL']]]
 ];

@@ -1652,10 +1652,10 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa Hide
-   * @sa Raise
+   * @sa Hide()
+   * @sa Raise()
    */
-  bool ShowWindow() { return SDL_ShowWindow(T::get()); }
+  bool Show() { return SDL_ShowWindow(T::get()); }
 
   /**
    * Hide a window.
@@ -1670,7 +1670,7 @@ struct WindowBase : T
    * @sa SDL_ShowWindow
    * @sa SDL_WINDOW_HIDDEN
    */
-  bool HideWindow() { return SDL_HideWindow(T::get()); }
+  bool Hide() { return SDL_HideWindow(T::get()); }
 
   /**
    * Request that a window be raised above other windows and gain the input
@@ -1689,7 +1689,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool RaiseWindow() { return SDL_RaiseWindow(T::get()); }
+  bool Raise() { return SDL_RaiseWindow(T::get()); }
 
   /**
    * Request that the window be made as large as possible.
@@ -1722,7 +1722,7 @@ struct WindowBase : T
    * @sa SDL_RestoreWindow
    * @sa SDL_SyncWindow
    */
-  bool MaximizeWindow() { return SDL_MaximizeWindow(T::get()); }
+  bool Maximize() { return SDL_MaximizeWindow(T::get()); }
 
   /**
    * Request that the window be minimized to an iconic representation.
@@ -1750,7 +1750,7 @@ struct WindowBase : T
    * @sa SDL_RestoreWindow
    * @sa SDL_SyncWindow
    */
-  bool MinimizeWindow() { return SDL_MinimizeWindow(T::get()); }
+  bool Minimize() { return SDL_MinimizeWindow(T::get()); }
 
   /**
    * Request that the size and position of a minimized or maximized window be
@@ -1779,7 +1779,7 @@ struct WindowBase : T
    * @sa SDL_MinimizeWindow
    * @sa SDL_SyncWindow
    */
-  bool RestoreWindow() { return SDL_RestoreWindow(T::get()); }
+  bool Restore() { return SDL_RestoreWindow(T::get()); }
 
   /**
    * Request that the window's fullscreen state be changed.
@@ -1843,7 +1843,7 @@ struct WindowBase : T
    * @sa SDL_RestoreWindow
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
-  bool SyncWindow() { return SDL_SyncWindow(T::get()); }
+  bool Sync() { return SDL_SyncWindow(T::get()); }
 
   /**
    * @brief Return whether the window has a surface associated with it.
@@ -1874,10 +1874,10 @@ struct WindowBase : T
    *
    * @threadsafety This function should only be called on the main thread.
    *
-   * @sa WindowBase.DestroySurface()
-   * @sa WindowBase.HasSurface()
-   * @sa WindowBase.UpdateSurface()
-   * @sa WindowBase.UpdateSurfaceRects()
+   * @sa DestroySurface()
+   * @sa HasSurface()
+   * @sa UpdateSurface()
+   * @sa UpdateSurfaceRects()
    */
   SurfaceRef GetSurface() { return SDL_GetWindowSurface(T::get()); }
 
@@ -1991,7 +1991,7 @@ struct WindowBase : T
    * @sa SDL_GetWindowSurface
    * @sa SDL_WindowHasSurface
    */
-  bool DestroyWindowSurface() { return SDL_DestroyWindowSurface(T::get()); }
+  bool DestroySurface() { return SDL_DestroyWindowSurface(T::get()); }
 
   /**
    * Set a window's keyboard grab mode.
@@ -2252,7 +2252,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool ShowWindowSystemMenu(SDL_Point p)
+  bool ShowSystemMenu(SDL_Point p)
   {
     return SDL_ShowWindowSystemMenu(T::get(), p.x, p.y);
   }
@@ -2421,7 +2421,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool FlashWindow(FlashOperation operation)
+  bool Flash(FlashOperation operation)
   {
     return SDL_FlashWindow(T::get(), operation);
   }

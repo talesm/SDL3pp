@@ -7,7 +7,7 @@ var searchData=
   ['hasintersection_4',['hasintersection',['../structSDL_1_1Rect.html#ade19828e88fe7ba4a55ff4c527538059',1,'SDL::Rect::HasIntersection()'],['../structSDL_1_1FRect.html#a137cd01f73f24987717216478faeb7ff',1,'SDL::FRect::HasIntersection()']]],
   ['hasrle_5',['HasRLE',['../structSDL_1_1SurfaceBase.html#a6f916834a4f556a743da62c263920840',1,'SDL::SurfaceBase']]],
   ['hassurface_6',['HasSurface',['../structSDL_1_1WindowBase.html#a3323af4fd14511ce3074a2d0840665bb',1,'SDL::WindowBase']]],
-  ['hidewindow_7',['HideWindow',['../structSDL_1_1WindowBase.html#acfd02d98fe94431de3448f19ba82d465',1,'SDL::WindowBase']]],
+  ['hide_7',['Hide',['../structSDL_1_1WindowBase.html#aacfd463171baa3b337fb09c29b613de2',1,'SDL::WindowBase']]],
   ['hittest_8',['HitTest',['../structSDL_1_1WindowBase.html#af22deedf419728468ebed702609b564e',1,'SDL::WindowBase']]],
   ['hittestfunction_9',['HitTestFunction',['../structSDL_1_1WindowBase.html#a937c0b696f6fb0d38aa731263d084efa',1,'SDL::WindowBase']]],
   ['hittestresult_10',['HitTestResult',['../structSDL_1_1WindowBase.html#aef689a4f4f814d7689bdee9a4a6aaf67',1,'SDL::WindowBase']]]

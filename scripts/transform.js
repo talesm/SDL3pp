@@ -256,16 +256,10 @@ function makeRenameEntry(entry, name, typeName) {
  */
 function makeNaturalName(name, typeName) {
   typeName = normalizeTypeName(typeName);
-  const m = /^([GS]et|Has)/.exec(name);
-  let prefix = "";
-  if (m) {
-    prefix = m[1];
-    name = name.slice(3);
-  }
+  const replaceRegexp = new RegExp(typeName.startsWith("F") ? "F?" + typeName.slice(1) : typeName);
+  name = name.replace(replaceRegexp, "");
   if (/Float$/.test(name)) name = name.slice(0, name.length - 5);
-  if (name.startsWith(typeName)) return prefix + name.slice(typeName.length);
-  if (typeName.startsWith("F") && name.startsWith(typeName.slice(1))) return prefix + name.slice(typeName.length - 1);
-  return prefix + name;
+  return name;
 }
 
 /**

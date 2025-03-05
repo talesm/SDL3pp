@@ -69,8 +69,8 @@ var searchData=
   ['setx2_66',['setx2',['../structSDL_1_1Rect.html#aa5aefc696da1e3c7c570c1a439131a8a',1,'SDL::Rect::SetX2()'],['../structSDL_1_1FRect.html#aa8d58be556c2a84bbaefc7802b3437f5',1,'SDL::FRect::SetX2()']]],
   ['sety_67',['sety',['../structSDL_1_1FPoint.html#a69923cfad53d0be30e478f94d749c8e7',1,'SDL::FPoint::SetY()'],['../structSDL_1_1Point.html#a3cfdde145ddd6ff9226185afa558ba05',1,'SDL::Point::SetY()'],['../structSDL_1_1Rect.html#a22df2e15a3c339a7f79c07535a14e8c7',1,'SDL::Rect::SetY()'],['../structSDL_1_1FRect.html#a7ec90df1431264bf4ac71e84388f6d6b',1,'SDL::FRect::SetY()']]],
   ['sety2_68',['sety2',['../structSDL_1_1Rect.html#aef1db4d9c52a41b4a278bee1410c96ca',1,'SDL::Rect::SetY2()'],['../structSDL_1_1FRect.html#a9319d987aa75d8ed3bb2fd6feb7eeadb',1,'SDL::FRect::SetY2()']]],
-  ['showwindow_69',['ShowWindow',['../structSDL_1_1WindowBase.html#a0195092c6724089a3caa949cb2f028e9',1,'SDL::WindowBase']]],
-  ['showwindowsystemmenu_70',['ShowWindowSystemMenu',['../structSDL_1_1WindowBase.html#aa853f25a60dd01e8c57fcdfb1f0fff24',1,'SDL::WindowBase']]],
+  ['show_69',['Show',['../structSDL_1_1WindowBase.html#a5697f649732d90c479758befb7ef8426',1,'SDL::WindowBase']]],
+  ['showsystemmenu_70',['ShowSystemMenu',['../structSDL_1_1WindowBase.html#a795c0db196d642fc565586a45983c107',1,'SDL::WindowBase']]],
   ['sin_71',['sin',['../namespaceSDL.html#a88bf16c79b920ce54e0ae909b2948663',1,'SDL']]],
   ['sinf_72',['sinf',['../namespaceSDL.html#ab41ffcc72f47ca7757cdaa4a0844dd7c',1,'SDL']]],
   ['size_73',['size',['../classSDL_1_1SpanRef.html#ab2f850fb52fefb67e54ac2e416d4a711',1,'SDL::SpanRef']]],
@@ -111,5 +111,5 @@ var searchData=
   ['surfacebase_108',['surfacebase',['../structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23',1,'SDL::SurfaceBase::SurfaceBase(StringParam file)'],['../structSDL_1_1SurfaceBase.html#a2f5528c2425029259e29b487b97d4de2',1,'SDL::SurfaceBase::SurfaceBase(SDL_IOStream *src, bool closeio)'],['../structSDL_1_1SurfaceBase.html#ad380fbca29727790d7c67cda2da2f411',1,'SDL::SurfaceBase::SurfaceBase(int width, int height, PixelFormat format, void *pixels, int pitch)'],['../structSDL_1_1SurfaceBase.html#a2bcd68e82fb03ca260196e4a8a2f9596',1,'SDL::SurfaceBase::SurfaceBase(int width, int height, PixelFormat format)']]],
   ['surfacelock_109',['surfacelock',['../classSDL_1_1SurfaceLock.html#ada96db96a7be754fc0e08f3dfd79f447',1,'SDL::SurfaceLock::SurfaceLock(SurfaceLock &amp;&amp;other)'],['../classSDL_1_1SurfaceLock.html#ac20472d94ae80e63002af3a1f636f65f',1,'SDL::SurfaceLock::SurfaceLock(const SurfaceLock &amp;other)=delete'],['../classSDL_1_1SurfaceLock.html#a664bd0a7dbabb24bf664c265be7b318d',1,'SDL::SurfaceLock::SurfaceLock()']]],
   ['swap_110',['swap',['../classSDL_1_1ObjectUnique.html#a526a3bc20034b15c51079b03bf62f992',1,'SDL::ObjectUnique::swap()'],['../classSDL_1_1ObjectRef.html#a420eb2fcb0acda70c2a971583d151dfe',1,'SDL::ObjectRef::swap()']]],
-  ['syncwindow_111',['SyncWindow',['../structSDL_1_1WindowBase.html#a25cd2a763f74a11990d5d6431d0d9b28',1,'SDL::WindowBase']]]
+  ['sync_111',['Sync',['../structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf',1,'SDL::WindowBase']]]
 ];
