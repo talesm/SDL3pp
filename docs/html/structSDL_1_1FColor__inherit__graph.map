@@ -1,0 +1,5 @@
+<map id="SDL::FColor" name="SDL::FColor">
+<area shape="rect" id="Node000001" title="The bits of this structure can be directly reinterpreted as a float&#45;packed color which uses the SDL_P..." alt="" coords="5,79,103,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="6,5,102,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="57,44,57,79,51,79,51,44"/>
+</map>

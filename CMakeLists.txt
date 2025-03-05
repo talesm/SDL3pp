@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.27)
 project(SDL3pp)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -23,6 +23,20 @@ target_include_directories(SDL3pp INTERFACE include/)
 target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
+
+# The documentation
+option(BUILD_DOC "Build documentation" OFF)
+
+if (BUILD_DOC)
+    # check if Doxygen is installed
+    find_package(Doxygen REQUIRED dot)
+
+    doxygen_add_docs(doxygen_docs
+        COMMENT "Generate API docs for SDL3pp"
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/include
+        CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+    )
+endif (BUILD_DOC)
 
 # Manual tests
 add_executable(example_window_with_surface WIN32 examples/window_with_surface.cpp)
