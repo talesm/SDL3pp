@@ -233,6 +233,7 @@ class ContentParser {
         if (token.constexpr) entry.constexpr = token.constexpr;
         if (token.immutable) entry.immutable = token.immutable;
         if (token.static) entry.static = token.static;
+        if (token.reference) entry.reference = token.reference;
         break;
       case "struct":
         if (token.type) entry.type = normalizeType(token.type);
