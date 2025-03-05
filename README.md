@@ -9,6 +9,8 @@ It was inspired on [SDL2pp](https://github.com/libSDL2pp/libSDL2pp),
 with the addition of flexible memory management and wrappers for 
 string and callbacks.
 
+See API reference [here](https://talesm.github.io/SDL3pp/).
+
 ## Goals
 
 - Be header only, we are mostly wrapping thing here
@@ -26,7 +28,7 @@ TODO
 
 - See [Transformations](./transformation.md) to understand the design approach.
 - Todo file (TODO)
-- Doxygen (TODO)
+- See [Doxygen](https://talesm.github.io/SDL3pp/)
 
 ## Building
 
