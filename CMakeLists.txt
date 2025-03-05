@@ -25,12 +25,12 @@ target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
 
 # Manual tests
-add_executable(test_window_with_surface WIN32 test/window_with_surface.cpp)
-target_link_libraries(test_window_with_surface PRIVATE SDL3pp)
-add_executable(test_window_with_renderer WIN32 test/window_with_renderer.cpp)
-target_link_libraries(test_window_with_renderer PRIVATE SDL3pp)
-add_executable(test_environment_list WIN32 test/environment_list.cpp)
-target_link_libraries(test_environment_list PRIVATE SDL3pp)
+add_executable(example_window_with_surface WIN32 examples/window_with_surface.cpp)
+target_link_libraries(example_window_with_surface PRIVATE SDL3pp)
+add_executable(example_window_with_renderer WIN32 examples/window_with_renderer.cpp)
+target_link_libraries(example_window_with_renderer PRIVATE SDL3pp)
+add_executable(example_environment_list WIN32 examples/environment_list.cpp)
+target_link_libraries(example_environment_list PRIVATE SDL3pp)
 
 # Unit tests
 add_library(test_main OBJECT test/doctest.cpp)
