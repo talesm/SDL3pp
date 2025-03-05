@@ -32,6 +32,7 @@ if (BUILD_DOC)
     find_package(Doxygen REQUIRED dot)
 
     doxygen_add_docs(doxygen_docs
+        ALL
         COMMENT "Generate API docs for SDL3pp"
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/include
         CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
