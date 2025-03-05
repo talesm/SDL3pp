@@ -26,7 +26,12 @@ struct CallbackWrapper<Result(Args...)>
 
   static Result Call(void* handle, Args... args)
   {
-    auto& f = Get(handle);
+    auto& f = at(handle);
+    return f(args...);
+  }
+  static Result CallSuffixed(Args... args, void* handle)
+  {
+    auto& f = at(handle);
     return f(args...);
   }
   static Result CallOnce(void* handle, Args... args)
@@ -34,10 +39,18 @@ struct CallbackWrapper<Result(Args...)>
     auto f = release(handle);
     return f(args...);
   }
+  static Result CallOnceSuffixed(Args... args, void* handle)
+  {
+    auto& f = release(handle);
+    return f(args...);
+  }
 
-  static bool Has(void* handle) { return Values().count((size_t)handle); }
+  static bool contains(void* handle)
+  {
+    return Values().contains((size_t)handle);
+  }
 
-  static const FunctionType& Get(void* handle)
+  static const FunctionType& at(void* handle)
   {
     return Values().at((size_t)(handle));
   }

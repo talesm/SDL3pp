@@ -117,29 +117,6 @@ using WindowFlags = SDL_WindowFlags;
 using FlashOperation = SDL_FlashOperation;
 
 /**
- * Possible return values from the SDL_HitTest callback.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa SDL_HitTest
- */
-using HitTestResult = SDL_HitTestResult;
-
-/**
- * Callback used for hit-testing.
- *
- * @param win the SDL_Window where hit-testing was set on.
- * @param area an SDL_Point which should be hit-tested.
- * @param data what was passed as `callback_data` to SDL_SetWindowHitTest().
- * @returns an SDL_HitTestResult value.
- *
- * @sa SDL_SetWindowHitTest
- */
-using HitTest = SDL_HitTest;
-
-/**
  * This is a unique ID for a display for the time it is connected to the
  * system, and is never reused for the lifetime of the application.
  *
@@ -2244,6 +2221,35 @@ struct WindowBase : T
   }
 
   /**
+   * Possible return values from the SDL_HitTest callback.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This enum is available since SDL 3.2.0.
+   *
+   * @sa SDL_HitTest
+   */
+  using HitTestResult = SDL_HitTestResult;
+
+  /**
+   * Callback used for hit-testing.
+   *
+   * @param win the SDL_Window where hit-testing was set on.
+   * @param area an SDL_Point which should be hit-tested.
+   * @param data what was passed as `callback_data` to SDL_SetWindowHitTest().
+   * @returns an SDL_HitTestResult value.
+   *
+   * @sa SDL_SetWindowHitTest
+   */
+  using HitTest = SDL_HitTest;
+
+  /**
+   * @sa HitTest
+   */
+  using HitTestFunction =
+    std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
+
+  /**
    * Provide a callback that decides if a window region has special properties.
    *
    * Normally windows are dragged and resized by decorations provided by the
@@ -2275,7 +2281,54 @@ struct WindowBase : T
    * can fire at any time, you should try to keep your callback efficient,
    * devoid of allocations, etc.
    *
-   * @param window the window to set hit-testing on.
+   * @param callback the function to call when doing a hit-test.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool SetHitTest(HitTestFunction callback)
+  {
+    using Wrapper = CallbackWrapper<HitTestResult(SDL_Window * window,
+                                                  const SDL_Point* area)>;
+    void* cbHandle = Wrapper::Wrap(std::move(callback));
+    return SetHitTest(&Wrapper::CallSuffixed, cbHandle);
+  }
+
+  /**
+   * Provide a callback that decides if a window region has special properties.
+   *
+   * Normally windows are dragged and resized by decorations provided by the
+   * system window manager (a title bar, borders, etc), but for some apps, it
+   * makes sense to drag them from somewhere else inside the window itself; for
+   * example, one might have a borderless window that wants to be draggable from
+   * any part, or simulate its own title bar, etc.
+   *
+   * This function lets the app provide a callback that designates pieces of a
+   * given window as special. This callback is run during event processing if we
+   * need to tell the OS to treat a region of the window specially; the use of
+   * this callback is known as "hit testing."
+   *
+   * Mouse input may not be delivered to your application if it is within a
+   * special area; the OS will often apply that input to moving the window or
+   * resizing the window and not deliver it to the application.
+   *
+   * Specifying NULL for a callback disables hit-testing. Hit-testing is
+   * disabled by default.
+   *
+   * Platforms that don't support this functionality will return false
+   * unconditionally, even if you're attempting to disable hit-testing.
+   *
+   * Your callback may fire at any time, and its firing does not indicate any
+   * specific behavior (for example, on Windows, this certainly might fire when
+   * the OS is deciding whether to drag your window, but it fires for lots of
+   * other reasons, too, some unrelated to anything you probably care about _and
+   * when the mouse isn't actually at the location it is testing_). Since this
+   * can fire at any time, you should try to keep your callback efficient,
+   * devoid of allocations, etc.
+   *
    * @param callback the function to call when doing a hit-test.
    * @param callback_data an app-defined void pointer passed to **callback**.
    * @returns true on success or false on failure; call SDL_GetError() for more

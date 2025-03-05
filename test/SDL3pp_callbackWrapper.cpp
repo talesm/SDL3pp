@@ -9,25 +9,25 @@ TEST_CASE("CallbackWrapper no params")
   using CallbackWrapper = SDL::CallbackWrapper<CallbackType>;
   void* addCounterHandle = CallbackWrapper::Wrap(addCounterCB);
   CHECK(addCounterHandle != nullptr);
-  SUBCASE("Has")
+  SUBCASE("contains")
   {
-    CHECK(CallbackWrapper::Has(addCounterHandle));
-    CHECK_FALSE(CallbackWrapper::Has((void*)2));
+    CHECK(CallbackWrapper::contains(addCounterHandle));
+    CHECK_FALSE(CallbackWrapper::contains((void*)2));
     void* otherHandle = CallbackWrapper::Wrap(addCounterCB);
-    CHECK(CallbackWrapper::Has(otherHandle));
+    CHECK(CallbackWrapper::contains(otherHandle));
     CHECK(addCounterHandle != otherHandle);
   }
   SUBCASE("Call")
   {
     CallbackWrapper::Call(addCounterHandle);
     CHECK(counter == 1);
-    CHECK(CallbackWrapper::Has(addCounterHandle));
+    CHECK(CallbackWrapper::contains(addCounterHandle));
   }
   SUBCASE("CallOnce")
   {
     CallbackWrapper::CallOnce(addCounterHandle);
     CHECK(counter == 1);
-    CHECK_FALSE(CallbackWrapper::Has(addCounterHandle));
+    CHECK_FALSE(CallbackWrapper::contains(addCounterHandle));
   }
 }
 TEST_CASE("CallbackWrapper with params")
@@ -40,11 +40,11 @@ TEST_CASE("CallbackWrapper with params")
   SUBCASE("Call")
   {
     CHECK(CallbackWrapper::Call(addTwoHandle, 42) == 44);
-    CHECK(CallbackWrapper::Has(addTwoHandle));
+    CHECK(CallbackWrapper::contains(addTwoHandle));
   }
   SUBCASE("CallOnce")
   {
     CHECK(CallbackWrapper::CallOnce(addTwoHandle, 13) == 15);
-    CHECK_FALSE(CallbackWrapper::Has(addTwoHandle));
+    CHECK_FALSE(CallbackWrapper::contains(addTwoHandle));
   }
 }

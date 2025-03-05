@@ -2310,14 +2310,6 @@
           {
             "name": "FlashOperation",
             "kind": "placeholder"
-          },
-          {
-            "name": "HitTestResult",
-            "kind": "placeholder"
-          },
-          {
-            "name": "HitTest",
-            "kind": "placeholder"
           }
         ]
       },
@@ -2626,6 +2618,23 @@
             "SDL_SetWindowModal": "function",
             "SDL_SetWindowFocusable": "function",
             "SDL_ShowWindowSystemMenu": "function",
+            "SDL_HitTestResult": "alias",
+            "SDL_HitTest": "alias",
+            "HitTestFunction": {
+              "kind": "alias",
+              "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
+              "doc": "@sa HitTest"
+            },
+            "SetHitTest": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "callback",
+                  "type": "HitTestFunction"
+                }
+              ]
+            },
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
             "SDL_FlashWindow": "function"

@@ -6717,20 +6717,6 @@
           "sourceName": "SDL_FlashOperation",
           "type": "SDL_FlashOperation"
         },
-        "HitTestResult": {
-          "doc": "Possible return values from the SDL_HitTest callback.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_HitTest",
-          "name": "HitTestResult",
-          "kind": "alias",
-          "sourceName": "SDL_HitTestResult",
-          "type": "SDL_HitTestResult"
-        },
-        "HitTest": {
-          "doc": "Callback used for hit-testing.\n\n@param win the SDL_Window where hit-testing was set on.\n@param area an SDL_Point which should be hit-tested.\n@param data what was passed as `callback_data` to SDL_SetWindowHitTest().\n@returns an SDL_HitTestResult value.\n\n@sa SDL_SetWindowHitTest",
-          "name": "HitTest",
-          "kind": "alias",
-          "type": "SDL_HitTest",
-          "sourceName": "SDL_HitTest"
-        },
         "Display": {
           "doc": "This is a unique ID for a display for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the display is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "Display",
@@ -7748,23 +7734,57 @@
               ],
               "sourceName": "SDL_ShowWindowSystemMenu"
             },
-            "SetHitTest": {
-              "doc": "Provide a callback that decides if a window region has special properties.\n\nNormally windows are dragged and resized by decorations provided by the\nsystem window manager (a title bar, borders, etc), but for some apps, it\nmakes sense to drag them from somewhere else inside the window itself; for\nexample, one might have a borderless window that wants to be draggable from\nany part, or simulate its own title bar, etc.\n\nThis function lets the app provide a callback that designates pieces of a\ngiven window as special. This callback is run during event processing if we\nneed to tell the OS to treat a region of the window specially; the use of\nthis callback is known as \"hit testing.\"\n\nMouse input may not be delivered to your application if it is within a\nspecial area; the OS will often apply that input to moving the window or\nresizing the window and not deliver it to the application.\n\nSpecifying NULL for a callback disables hit-testing. Hit-testing is\ndisabled by default.\n\nPlatforms that don't support this functionality will return false\nunconditionally, even if you're attempting to disable hit-testing.\n\nYour callback may fire at any time, and its firing does not indicate any\nspecific behavior (for example, on Windows, this certainly might fire when\nthe OS is deciding whether to drag your window, but it fires for lots of\nother reasons, too, some unrelated to anything you probably care about _and\nwhen the mouse isn't actually at the location it is testing_). Since this\ncan fire at any time, you should try to keep your callback efficient,\ndevoid of allocations, etc.\n\n@param window the window to set hit-testing on.\n@param callback the function to call when doing a hit-test.\n@param callback_data an app-defined void pointer passed to **callback**.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "SetHitTest",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "callback",
-                  "type": "HitTest"
-                },
-                {
-                  "name": "callback_data",
-                  "type": "void *"
-                }
-              ],
-              "sourceName": "SDL_SetWindowHitTest"
+            "HitTestResult": {
+              "doc": "Possible return values from the SDL_HitTest callback.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_HitTest",
+              "name": "HitTestResult",
+              "kind": "alias",
+              "sourceName": "SDL_HitTestResult",
+              "type": "SDL_HitTestResult"
             },
+            "HitTest": {
+              "doc": "Callback used for hit-testing.\n\n@param win the SDL_Window where hit-testing was set on.\n@param area an SDL_Point which should be hit-tested.\n@param data what was passed as `callback_data` to SDL_SetWindowHitTest().\n@returns an SDL_HitTestResult value.\n\n@sa SDL_SetWindowHitTest",
+              "name": "HitTest",
+              "kind": "alias",
+              "type": "SDL_HitTest",
+              "sourceName": "SDL_HitTest"
+            },
+            "HitTestFunction": {
+              "kind": "alias",
+              "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
+              "doc": "@sa HitTest",
+              "name": "HitTestFunction"
+            },
+            "SetHitTest": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "callback",
+                    "type": "HitTestFunction"
+                  }
+                ],
+                "name": "SetHitTest",
+                "doc": ""
+              },
+              {
+                "doc": "Provide a callback that decides if a window region has special properties.\n\nNormally windows are dragged and resized by decorations provided by the\nsystem window manager (a title bar, borders, etc), but for some apps, it\nmakes sense to drag them from somewhere else inside the window itself; for\nexample, one might have a borderless window that wants to be draggable from\nany part, or simulate its own title bar, etc.\n\nThis function lets the app provide a callback that designates pieces of a\ngiven window as special. This callback is run during event processing if we\nneed to tell the OS to treat a region of the window specially; the use of\nthis callback is known as \"hit testing.\"\n\nMouse input may not be delivered to your application if it is within a\nspecial area; the OS will often apply that input to moving the window or\nresizing the window and not deliver it to the application.\n\nSpecifying NULL for a callback disables hit-testing. Hit-testing is\ndisabled by default.\n\nPlatforms that don't support this functionality will return false\nunconditionally, even if you're attempting to disable hit-testing.\n\nYour callback may fire at any time, and its firing does not indicate any\nspecific behavior (for example, on Windows, this certainly might fire when\nthe OS is deciding whether to drag your window, but it fires for lots of\nother reasons, too, some unrelated to anything you probably care about _and\nwhen the mouse isn't actually at the location it is testing_). Since this\ncan fire at any time, you should try to keep your callback efficient,\ndevoid of allocations, etc.\n\n@param window the window to set hit-testing on.\n@param callback the function to call when doing a hit-test.\n@param callback_data an app-defined void pointer passed to **callback**.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "SetHitTest",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "callback",
+                    "type": "HitTest"
+                  },
+                  {
+                    "name": "callback_data",
+                    "type": "void *"
+                  }
+                ],
+                "sourceName": "SDL_SetWindowHitTest"
+              }
+            ],
             "SetShape": {
               "doc": "Set the shape of a transparent window.\n\nThis sets the alpha channel of a transparent window and any fully\ntransparent areas are also transparent to mouse clicks. If you are using\nsomething besides the SDL render API, then you are responsible for drawing\nthe alpha channel of the window to match the shape alpha channel to get\nconsistent cross-platform results.\n\nThe shape is copied inside this function, so you can free it afterwards. If\nyour shape surface changes, you should call SDL_SetWindowShape() again to\nupdate the window. This is an expensive operation, so should be done\nsparingly.\n\nThe window must have been created with the SDL_WINDOW_TRANSPARENT flag.\n\n@param window the window.\n@param shape the surface representing the shape of the window, or NULL to\n             remove any current shape.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "SetShape",
