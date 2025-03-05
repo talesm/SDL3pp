@@ -22,7 +22,7 @@
  * The video subsystem covers a lot of functionality, out of necessity, so it
  * is worth perusing the list of functions just to see what's available, but
  * most apps can get by with simply creating a window and listening for
- * events, so start with SDL_CreateWindow() and SDL_PollEvent().
+ * events, so start with Window and PollEvent().
  */
 
 #ifndef SDL3PP_VIDEO_H_
@@ -97,7 +97,7 @@ using DisplayMode = SDL_DisplayMode;
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
- * immutable after being set through SDL_CreateWindow(), some of it can be
+ * immutable after being set through Window::Window(), some of it can be
  * changed on existing windows by the app, and some of it might be altered by
  * the user or system outside of the app's control.
  *
@@ -540,13 +540,13 @@ struct WindowBase : T
    * corresponding UnloadLibrary function is called by SDL_DestroyWindow().
    *
    * If SDL_WINDOW_VULKAN is specified and there isn't a working Vulkan driver,
-   * SDL_CreateWindow() will fail, because SDL_Vulkan_LoadLibrary() will fail.
+   * this will fail, because SDL_Vulkan_LoadLibrary() will fail.
    *
    * If SDL_WINDOW_METAL is specified on an OS that does not support Metal,
-   * SDL_CreateWindow() will fail.
+   * this will fail.
    *
    * If you intend to use this window with an SDL_Renderer, you should use
-   * SDL_CreateWindowAndRenderer() instead of this function, to avoid window
+   * CreateWindowAndRenderer() instead of this function, to avoid window
    * flicker.
    *
    * On non-Apple devices, SDL requires you to either not link to the Vulkan
@@ -832,9 +832,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowFullscreenMode
-   * @sa SDL_SetWindowFullscreen
-   * @sa SDL_SyncWindow
+   * @sa GetFullscreenMode()
+   * @sa SetFullscreen()
+   * @sa Sync()
    */
   bool SetFullscreenMode(OptionalRef<const DisplayMode> mode)
   {
@@ -851,8 +851,8 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowFullscreenMode
-   * @sa SDL_SetWindowFullscreen
+   * @sa SetFullscreenMode()
+   * @sa SetFullscreen()
    */
   const DisplayMode* GetFullscreenMode() const
   {
@@ -1071,7 +1071,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowTitle
+   * @sa GetTitle()
    */
   bool SetTitle(StringParam title)
   {
@@ -1088,7 +1088,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowTitle
+   * @sa SetTitle()
    */
   const char* GetTitle() const { return SDL_GetWindowTitle(T::get()); }
 
@@ -1270,9 +1270,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowSize
-   * @sa SDL_SetWindowFullscreenMode
-   * @sa SDL_SyncWindow
+   * @sa GetSize()
+   * @sa SetFullscreenMode()
+   * @sa Sync()
    */
   bool SetSize(SDL_Point p) { return SDL_SetWindowSize(T::get(), p.x, p.y); }
 
@@ -1422,9 +1422,9 @@ struct WindowBase : T
    *
    * Note: This function may fail on systems where the window has not yet been
    * decorated by the display server (for example, immediately after calling
-   * SDL_CreateWindow). It is recommended that you wait at least until the
-   * window has been presented and composited, so that the window system has a
-   * chance to decorate the window and provide the border dimensions to SDL.
+   * WindowBase::WindowBase()). It is recommended that you wait at least until
+   * the window has been presented and composited, so that the window system has
+   * a chance to decorate the window and provide the border dimensions to SDL.
    *
    * This function also returns false if getting the information is not
    * supported.
@@ -1667,7 +1667,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_ShowWindow
+   * @sa Show()
    * @sa SDL_WINDOW_HIDDEN
    */
   bool Hide() { return SDL_HideWindow(T::get()); }
@@ -1718,9 +1718,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_MinimizeWindow
-   * @sa SDL_RestoreWindow
-   * @sa SDL_SyncWindow
+   * @sa Minimize()
+   * @sa Restore()
+   * @sa Sync()
    */
   bool Maximize() { return SDL_MaximizeWindow(T::get()); }
 
@@ -1746,9 +1746,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_MaximizeWindow
-   * @sa SDL_RestoreWindow
-   * @sa SDL_SyncWindow
+   * @sa Maximize()
+   * @sa Restore()
+   * @sa Sync()
    */
   bool Minimize() { return SDL_MinimizeWindow(T::get()); }
 
@@ -1775,9 +1775,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_MaximizeWindow
-   * @sa SDL_MinimizeWindow
-   * @sa SDL_SyncWindow
+   * @sa Maximize()
+   * @sa Minimize()
+   * @sa Sync()
    */
   bool Restore() { return SDL_RestoreWindow(T::get()); }
 
@@ -1805,9 +1805,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowFullscreenMode
-   * @sa SDL_SetWindowFullscreenMode
-   * @sa SDL_SyncWindow
+   * @sa GetFullscreenMode()
+   * @sa SetFullscreenMode()
+   * @sa Sync()
    * @sa SDL_WINDOW_FULLSCREEN
    */
   bool SetFullscreen(bool fullscreen)
@@ -1835,12 +1835,12 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowSize
-   * @sa SDL_SetWindowPosition
-   * @sa SDL_SetWindowFullscreen
-   * @sa SDL_MinimizeWindow
-   * @sa SDL_MaximizeWindow
-   * @sa SDL_RestoreWindow
+   * @sa SetSize()
+   * @sa SetPosition()
+   * @sa SetFullscreen()
+   * @sa Minimize()
+   * @sa Maximize()
+   * @sa Restore()
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
   bool Sync() { return SDL_SyncWindow(T::get()); }
@@ -1988,8 +1988,8 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowSurface
-   * @sa SDL_WindowHasSurface
+   * @sa GetSurface()
+   * @sa HasSurface()
    */
   bool DestroySurface() { return SDL_DestroyWindowSurface(T::get()); }
 
@@ -2020,8 +2020,8 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowKeyboardGrab
-   * @sa SDL_SetWindowMouseGrab
+   * @sa GetKeyboardGrab()
+   * @sa SetMouseGrab()
    */
   bool SetKeyboardGrab(bool grabbed)
   {
@@ -2041,10 +2041,10 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowMouseRect
-   * @sa SDL_SetWindowMouseRect
-   * @sa SDL_SetWindowMouseGrab
-   * @sa SDL_SetWindowKeyboardGrab
+   * @sa GetMouseRect()
+   * @sa SetMouseRect()
+   * @sa SetMouseGrab()
+   * @sa SetKeyboardGrab()
    */
   bool SetMouseGrab(bool grabbed)
   {
@@ -2060,7 +2060,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowKeyboardGrab
+   * @sa SetKeyboardGrab()
    */
   bool GetKeyboardGrab() const { return SDL_GetWindowKeyboardGrab(T::get()); }
 
@@ -2073,10 +2073,10 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowMouseRect
-   * @sa SDL_SetWindowMouseRect
-   * @sa SDL_SetWindowMouseGrab
-   * @sa SDL_SetWindowKeyboardGrab
+   * @sa GetMouseRect()
+   * @sa SetMouseRect()
+   * @sa SetMouseGrab()
+   * @sa SetKeyboardGrab()
    */
   bool GetMouseGrab() const { return SDL_GetWindowMouseGrab(T::get()); }
 
@@ -2095,9 +2095,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowMouseRect
-   * @sa SDL_GetWindowMouseGrab
-   * @sa SDL_SetWindowMouseGrab
+   * @sa GetMouseRect()
+   * @sa GetMouseGrab()
+   * @sa SetMouseGrab()
    */
   bool SetMouseRect(const SDL_Rect& rect)
   {
@@ -2114,9 +2114,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowMouseRect
-   * @sa SDL_GetWindowMouseGrab
-   * @sa SDL_SetWindowMouseGrab
+   * @sa SetMouseRect()
+   * @sa GetMouseGrab()
+   * @sa SetMouseGrab()
    */
   const Rect* GetMouseRect() const { return SDL_GetWindowMouseRect(T::get()); }
 
@@ -2136,7 +2136,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetWindowOpacity
+   * @sa GetOpacity()
    */
   bool SetOpacity(float opacity)
   {
@@ -2156,7 +2156,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowOpacity
+   * @sa SetOpacity()
    */
   float GetOpacity() const { return SDL_GetWindowOpacity(T::get()); }
 
@@ -2189,7 +2189,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowModal
+   * @sa SetModal()
    */
   bool SetParent(WindowRef parent)
   {
@@ -2210,7 +2210,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetWindowParent
+   * @sa SetParent()
    * @sa SDL_WINDOW_MODAL
    */
   bool SetModal(bool modal) { return SDL_SetWindowModal(T::get(), modal); }
@@ -2276,7 +2276,7 @@ struct WindowBase : T
    * @param data what was passed as `callback_data` to SDL_SetWindowHitTest().
    * @returns an SDL_HitTestResult value.
    *
-   * @sa SDL_SetWindowHitTest
+   * @sa SetHitTest()
    */
   using HitTest = SDL_HitTest;
 
@@ -2678,7 +2678,7 @@ inline FreeWrapper<WindowRef[]> GetWindows(int* count)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetWindowID
+ * @sa GetID()
  */
 inline WindowRef GetWindowFromID(WindowID id)
 {
@@ -2694,8 +2694,8 @@ inline WindowRef GetWindowFromID(WindowID id)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_SetWindowMouseGrab
- * @sa SDL_SetWindowKeyboardGrab
+ * @sa SetMouseGrab()
+ * @sa SetKeyboardGrab()
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
@@ -2715,9 +2715,7 @@ inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_CreatePopupWindow
- * @sa SDL_CreateWindow
- * @sa SDL_CreateWindowWithProperties
+ * @sa WindowBase::WindowBase()
  */
 template<ObjectBox<SDL_Window*> T>
 inline void DestroyWindow(T&& window)

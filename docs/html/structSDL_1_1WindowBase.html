@@ -374,7 +374,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an SDL_HitTestResult value.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowHitTest </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a6a29f41f5e9608270f7241d1ef8392ca" title="Provide a callback that decides if a window region has special properties.">SetHitTest()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02281">2281</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -497,9 +497,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <p>On Apple's macOS, you <b>must</b> set the NSHighResolutionCapable Info.plist property to YES, otherwise you will not receive a High-DPI OpenGL canvas.</p>
 <p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use SDL_GetWindowSize() to query the client area's size in window coordinates, and SDL_GetWindowSizeInPixels() or SDL_GetRenderOutputSize() to query the drawable size in pixels. Note that the drawable size can vary after the window is created and should be queried again if you get an SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event.</p>
 <p>If the window is created with any of the SDL_WINDOW_OPENGL or SDL_WINDOW_VULKAN flags, then the corresponding LoadLibrary function (SDL_GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by SDL_DestroyWindow().</p>
-<p>If SDL_WINDOW_VULKAN is specified and there isn't a working Vulkan driver, SDL_CreateWindow() will fail, because SDL_Vulkan_LoadLibrary() will fail.</p>
-<p>If SDL_WINDOW_METAL is specified on an OS that does not support Metal, SDL_CreateWindow() will fail.</p>
-<p>If you intend to use this window with an SDL_Renderer, you should use SDL_CreateWindowAndRenderer() instead of this function, to avoid window flicker.</p>
+<p>If SDL_WINDOW_VULKAN is specified and there isn't a working Vulkan driver, this will fail, because SDL_Vulkan_LoadLibrary() will fail.</p>
+<p>If SDL_WINDOW_METAL is specified on an OS that does not support Metal, this will fail.</p>
+<p>If you intend to use this window with an SDL_Renderer, you should use <a class="el" href="namespaceSDL.html#a69cb7b5159652873f437004a60e8901b" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> instead of this function, to avoid window flicker.</p>
 <p>On non-Apple devices, <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -730,9 +730,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowSurface </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#abdc683dcdc473d25d7489a429ec35fa5" title="Get the SDL surface associated with the window.">GetSurface()</a> </dd>
 <dd>
-SDL_WindowHasSurface </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a3323af4fd14511ce3074a2d0840665bb" title="Return whether the window has a surface associated with it.">HasSurface()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01994">1994</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -882,7 +882,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 
 <p>Get the size of a window's borders (decorations) around the client area. </p>
 <p>Note: If this function fails (returns false), the size values will be initialized to 0, 0, 0, 0 (if a non-NULL pointer is provided), as if the window in question was borderless.</p>
-<p>Note: This function may fail on systems where the window has not yet been decorated by the display server (for example, immediately after calling SDL_CreateWindow). It is recommended that you wait at least until the window has been presented and composited, so that the window system has a chance to decorate the window and provide the border dimensions to <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
+<p>Note: This function may fail on systems where the window has not yet been decorated by the display server (for example, immediately after calling <a class="el" href="structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614" title="Create a window with the specified dimensions and flags.">WindowBase::WindowBase()</a>). It is recommended that you wait at least until the window has been presented and composited, so that the window system has a chance to decorate the window and provide the border dimensions to <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
 <p>This function also returns false if getting the information is not supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1043,9 +1043,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the exclusive fullscreen mode to use or NULL for borderless fullscreen desktop mode.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowFullscreenMode </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a250d0a52a35036c577173ff3a60a138f" title="Set the display mode to use when a window is visible and fullscreen.">SetFullscreenMode()</a> </dd>
 <dd>
-SDL_SetWindowFullscreen </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a20e380d4c0f9c08ec3387853b75fdb6a" title="Request that the window&#39;s fullscreen state be changed.">SetFullscreen()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00857">857</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -1155,7 +1155,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true if keyboard is grabbed, and false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowKeyboardGrab </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02065">2065</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -1300,13 +1300,13 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true if mouse is grabbed, and false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowMouseRect </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a5a6a5e3dc972b1590ebf22d8627a83e1" title="Get the mouse confinement rectangle of a window.">GetMouseRect()</a> </dd>
 <dd>
-SDL_SetWindowMouseRect </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#ab5f8d31cd084c06bd2593b0ffe0cbe0d" title="Confines the cursor to the specified area of a window.">SetMouseRect()</a> </dd>
 <dd>
-SDL_SetWindowMouseGrab </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd>
 <dd>
-SDL_SetWindowKeyboardGrab </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02081">2081</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -1341,11 +1341,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the mouse confinement rectangle of a window, or NULL if there isn't one.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowMouseRect </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#ab5f8d31cd084c06bd2593b0ffe0cbe0d" title="Confines the cursor to the specified area of a window.">SetMouseRect()</a> </dd>
 <dd>
-SDL_GetWindowMouseGrab </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#ae3c56bba66cffdf46ade7aefaa70ba9a" title="Get a window&#39;s mouse grab mode.">GetMouseGrab()</a> </dd>
 <dd>
-SDL_SetWindowMouseGrab </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02121">2121</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -1381,7 +1381,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowOpacity </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a8f9d58a02dc960f280d967f8ffa132d9" title="Set the opacity for a window.">SetOpacity()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02161">2161</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2048,7 +2048,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>the title of the window in UTF-8 format or "" if there is no title.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowTitle </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a71234a32ca6fc918001ae9068f182375" title="Set the title of a window.">SetTitle()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01093">1093</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2117,7 +2117,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_ShowWindow </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a5697f649732d90c479758befb7ef8426" title="Show a window.">Show()</a> </dd>
 <dd>
 SDL_WINDOW_HIDDEN </dd></dl>
 
@@ -2158,11 +2158,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_MinimizeWindow </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73" title="Request that the window be minimized to an iconic representation.">Minimize()</a> </dd>
 <dd>
-SDL_RestoreWindow </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2" title="Request that the size and position of a minimized or maximized window be restored.">Restore()</a> </dd>
 <dd>
-SDL_SyncWindow </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01725">1725</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2200,11 +2200,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_MaximizeWindow </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#aaa2a9bfec6b4314f80f03cc45255a00a" title="Request that the window be made as large as possible.">Maximize()</a> </dd>
 <dd>
-SDL_RestoreWindow </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2" title="Request that the size and position of a minimized or maximized window be restored.">Restore()</a> </dd>
 <dd>
-SDL_SyncWindow </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01753">1753</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2277,11 +2277,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_MaximizeWindow </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#aaa2a9bfec6b4314f80f03cc45255a00a" title="Request that the window be made as large as possible.">Maximize()</a> </dd>
 <dd>
-SDL_MinimizeWindow </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73" title="Request that the window be minimized to an iconic representation.">Minimize()</a> </dd>
 <dd>
-SDL_SyncWindow </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01782">1782</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2513,11 +2513,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowFullscreenMode </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#affd6b08b65f17c3dfff0205fcc64d4a8" title="Query the display mode to use when a window is visible at fullscreen.">GetFullscreenMode()</a> </dd>
 <dd>
-SDL_SetWindowFullscreenMode </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a250d0a52a35036c577173ff3a60a138f" title="Set the display mode to use when a window is visible and fullscreen.">SetFullscreenMode()</a> </dd>
 <dd>
-SDL_SyncWindow </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd>
 <dd>
 SDL_WINDOW_FULLSCREEN </dd></dl>
 
@@ -2564,11 +2564,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowFullscreenMode </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#affd6b08b65f17c3dfff0205fcc64d4a8" title="Query the display mode to use when a window is visible at fullscreen.">GetFullscreenMode()</a> </dd>
 <dd>
-SDL_SetWindowFullscreen </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a20e380d4c0f9c08ec3387853b75fdb6a" title="Request that the window&#39;s fullscreen state be changed.">SetFullscreen()</a> </dd>
 <dd>
-SDL_SyncWindow </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00839">839</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2761,9 +2761,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowKeyboardGrab </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a0c44f7ffd50e28265cfc9ef18a2b8760" title="Get a window&#39;s keyboard grab mode.">GetKeyboardGrab()</a> </dd>
 <dd>
-SDL_SetWindowMouseGrab </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02026">2026</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2894,7 +2894,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowParent </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a51b96b1e643958a47ce12e6da2cbaaab" title="Set the window as a child of a parent window.">SetParent()</a> </dd>
 <dd>
 SDL_WINDOW_MODAL </dd></dl>
 
@@ -2939,13 +2939,13 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowMouseRect </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a5a6a5e3dc972b1590ebf22d8627a83e1" title="Get the mouse confinement rectangle of a window.">GetMouseRect()</a> </dd>
 <dd>
-SDL_SetWindowMouseRect </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#ab5f8d31cd084c06bd2593b0ffe0cbe0d" title="Confines the cursor to the specified area of a window.">SetMouseRect()</a> </dd>
 <dd>
-SDL_SetWindowMouseGrab </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd>
 <dd>
-SDL_SetWindowKeyboardGrab </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02049">2049</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -2988,11 +2988,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowMouseRect </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a5a6a5e3dc972b1590ebf22d8627a83e1" title="Get the mouse confinement rectangle of a window.">GetMouseRect()</a> </dd>
 <dd>
-SDL_GetWindowMouseGrab </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#ae3c56bba66cffdf46ade7aefaa70ba9a" title="Get a window&#39;s mouse grab mode.">GetMouseGrab()</a> </dd>
 <dd>
-SDL_SetWindowMouseGrab </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02102">2102</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -3036,7 +3036,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowOpacity </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#af519b9dd35b6c07c64236f567ca99e14" title="Get the opacity of a window.">GetOpacity()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02141">2141</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -3083,7 +3083,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowModal </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a7b5953075255b793ed8f04503b76fa07" title="Toggle the state of the window as modal.">SetModal()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02194">2194</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -3308,11 +3308,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowSize </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a9c7cdebba6f3911ed72e1bfbae7747e6" title="Get the size of a window&#39;s client area.">GetSize()</a> </dd>
 <dd>
-SDL_SetWindowFullscreenMode </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a250d0a52a35036c577173ff3a60a138f" title="Set the display mode to use when a window is visible and fullscreen.">SetFullscreenMode()</a> </dd>
 <dd>
-SDL_SyncWindow </dd></dl>
+<a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01277">1277</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -3399,7 +3399,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_GetWindowTitle </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#aa89aeab4b9966165a28017025986d28a" title="Get the title of a window.">GetTitle()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01076">1076</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -3516,17 +3516,17 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false if the operation timed out before the window was in the requested state.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_SetWindowSize </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3" title="Request that the size of a window&#39;s client area be set.">SetSize()</a> </dd>
 <dd>
-SDL_SetWindowPosition </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a89a23881e6b70255345e9595eb6bccc0" title="Request that the window&#39;s position be set.">SetPosition()</a> </dd>
 <dd>
-SDL_SetWindowFullscreen </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a20e380d4c0f9c08ec3387853b75fdb6a" title="Request that the window&#39;s fullscreen state be changed.">SetFullscreen()</a> </dd>
 <dd>
-SDL_MinimizeWindow </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73" title="Request that the window be minimized to an iconic representation.">Minimize()</a> </dd>
 <dd>
-SDL_MaximizeWindow </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#aaa2a9bfec6b4314f80f03cc45255a00a" title="Request that the window be made as large as possible.">Maximize()</a> </dd>
 <dd>
-SDL_RestoreWindow </dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2" title="Request that the size and position of a minimized or maximized window be restored.">Restore()</a> </dd>
 <dd>
 SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS </dd></dl>
 
