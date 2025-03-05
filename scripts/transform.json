@@ -1853,6 +1853,24 @@
                 }
               ]
             },
+            "Blit": {
+              "kind": "function",
+              "name": "Blit",
+              "parameters": [
+                {
+                  "type": "SurfaceRef",
+                  "name": "src"
+                },
+                {
+                  "type": "OptionalRef<const SDL_Rect>",
+                  "name": "srcrect"
+                },
+                {
+                  "type": "const SDL_Point &",
+                  "name": "dstpos"
+                }
+              ]
+            },
             "SDL_BlitSurface": {
               "kind": "function",
               "name": "Blit",

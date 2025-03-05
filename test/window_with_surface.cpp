@@ -44,10 +44,8 @@ int main(int argc, char** argv)
 
   constexpr int WW = 64;
 
-  SDL::Rect smileyPos{WIDTH / 2 - smileyImg.GetWidth() / 2,
-                      HEIGHT / 2 - smileyImg.GetHeight() / 2,
-                      0,
-                      0};
+  SDL::Point smileyPos{WIDTH / 2 - smileyImg.GetWidth() / 2,
+                       HEIGHT / 2 - smileyImg.GetHeight() / 2};
 
   SDL::Rect rects[] = {
     {10, 10, WW, WW},

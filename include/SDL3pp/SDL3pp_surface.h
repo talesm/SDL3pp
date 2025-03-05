@@ -1111,6 +1111,87 @@ struct SurfaceBase : T
    * @param src the SDL_Surface structure to be copied from.
    * @param srcrect the SDL_Rect structure representing the rectangle to be
    *                copied, or NULL to copy the entire surface.
+   * @param dstpos  the SDL_Point structure representing the x and y position in
+   *                the destination surface, or NULL for (0,0). The width and
+   *                height are ignored, and are copied from `srcrect`. If you
+   *                want a specific width and height, you should use
+   *                SDL_BlitSurfaceScaled().
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety The same destination surface should not be used from two
+   *               threads at once. It is safe to use the same source surface
+   *               from multiple threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_BlitSurfaceScaled
+   */
+  bool Blit(SurfaceRef src,
+            OptionalRef<const SDL_Rect> srcrect,
+            const SDL_Point& dstpos)
+  {
+    return Blit(src, srcrect, Rect{dstpos, {}});
+  }
+
+  /**
+   * Performs a fast blit from the source surface to the destination surface
+   * with clipping.
+   *
+   * If either `srcrect` or `dstrect` are NULL, the entire surface (`src` or
+   * `dst`) is copied while ensuring clipping to `dst->clip_rect`.
+   *
+   * The final blit rectangles are saved in `srcrect` and `dstrect` after all
+   * clipping is performed.
+   *
+   * The blit function should not be called on a locked surface.
+   *
+   * The blit semantics for surfaces with and without blending and colorkey are
+   * defined as follows:
+   *
+   * ```
+   *    RGBA->RGB:
+   *      Source surface blend mode set to SDL_BLENDMODE_BLEND:
+   *       alpha-blend (using the source alpha-channel and per-surface alpha)
+   *       SDL_SRCCOLORKEY ignored.
+   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
+   *       copy RGB.
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       RGB values of the source color key, ignoring alpha in the
+   *       comparison.
+   *
+   *   RGB->RGBA:
+   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
+   *       alpha-blend (using the source per-surface alpha)
+   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
+   *       copy RGB, set destination alpha to source per-surface alpha value.
+   *     both:
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       source color key.
+   *
+   *   RGBA->RGBA:
+   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
+   *       alpha-blend (using the source alpha-channel and per-surface alpha)
+   *       SDL_SRCCOLORKEY ignored.
+   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
+   *       copy all of RGBA to the destination.
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       RGB values of the source color key, ignoring alpha in the
+   *       comparison.
+   *
+   *   RGB->RGB:
+   *     Source surface blend mode set to SDL_BLENDMODE_BLEND:
+   *       alpha-blend (using the source per-surface alpha)
+   *     Source surface blend mode set to SDL_BLENDMODE_NONE:
+   *       copy RGB.
+   *     both:
+   *       if SDL_SRCCOLORKEY set, only copy the pixels that do not match the
+   *       source color key.
+   * ```
+   *
+   * @param src the SDL_Surface structure to be copied from.
+   * @param srcrect the SDL_Rect structure representing the rectangle to be
+   *                copied, or NULL to copy the entire surface.
    * @param dstrect the SDL_Point structure representing the x and y position in
    *                the destination surface, or NULL for (0,0). The width and
    *                height are ignored, and are copied from `srcrect`. If you

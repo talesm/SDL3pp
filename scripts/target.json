@@ -5924,27 +5924,48 @@
                 "sourceName": "SDL_FillSurfaceRects"
               }
             ],
-            "Blit": {
-              "doc": "Performs a fast blit from the source surface to the destination surface\nwith clipping.\n\nIf either `srcrect` or `dstrect` are NULL, the entire surface (`src` or\n`dst`) is copied while ensuring clipping to `dst->clip_rect`.\n\nThe final blit rectangles are saved in `srcrect` and `dstrect` after all\nclipping is performed.\n\nThe blit function should not be called on a locked surface.\n\nThe blit semantics for surfaces with and without blending and colorkey are\ndefined as follows:\n\n```\n   RGBA->RGB:\n     Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB, set destination alpha to source per-surface alpha value.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n\n  RGBA->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy all of RGBA to the destination.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGB:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n```\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, or NULL to copy the entire surface.\n@param dst the SDL_Surface structure that is the blit target.\n@param dstrect the SDL_Rect structure representing the x and y position in\n               the destination surface, or NULL for (0,0). The width and\n               height are ignored, and are copied from `srcrect`. If you\n               want a specific width and height, you should use\n               SDL_BlitSurfaceScaled().\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_BlitSurfaceScaled",
-              "name": "Blit",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "src",
-                  "type": "SurfaceRef"
-                },
-                {
-                  "name": "srcrect",
-                  "type": "OptionalRef<const SDL_Rect>"
-                },
-                {
-                  "name": "dstrect",
-                  "type": "OptionalRef<const SDL_Rect>"
-                }
-              ],
-              "sourceName": "SDL_BlitSurface"
-            },
+            "Blit": [
+              {
+                "kind": "function",
+                "name": "Blit",
+                "parameters": [
+                  {
+                    "type": "SurfaceRef",
+                    "name": "src"
+                  },
+                  {
+                    "type": "OptionalRef<const SDL_Rect>",
+                    "name": "srcrect"
+                  },
+                  {
+                    "type": "const SDL_Point &",
+                    "name": "dstpos"
+                  }
+                ],
+                "doc": ""
+              },
+              {
+                "doc": "Performs a fast blit from the source surface to the destination surface\nwith clipping.\n\nIf either `srcrect` or `dstrect` are NULL, the entire surface (`src` or\n`dst`) is copied while ensuring clipping to `dst->clip_rect`.\n\nThe final blit rectangles are saved in `srcrect` and `dstrect` after all\nclipping is performed.\n\nThe blit function should not be called on a locked surface.\n\nThe blit semantics for surfaces with and without blending and colorkey are\ndefined as follows:\n\n```\n   RGBA->RGB:\n     Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB, set destination alpha to source per-surface alpha value.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n\n  RGBA->RGBA:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source alpha-channel and per-surface alpha)\n      SDL_SRCCOLORKEY ignored.\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy all of RGBA to the destination.\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      RGB values of the source color key, ignoring alpha in the\n      comparison.\n\n  RGB->RGB:\n    Source surface blend mode set to SDL_BLENDMODE_BLEND:\n      alpha-blend (using the source per-surface alpha)\n    Source surface blend mode set to SDL_BLENDMODE_NONE:\n      copy RGB.\n    both:\n      if SDL_SRCCOLORKEY set, only copy the pixels that do not match the\n      source color key.\n```\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, or NULL to copy the entire surface.\n@param dst the SDL_Surface structure that is the blit target.\n@param dstrect the SDL_Rect structure representing the x and y position in\n               the destination surface, or NULL for (0,0). The width and\n               height are ignored, and are copied from `srcrect`. If you\n               want a specific width and height, you should use\n               SDL_BlitSurfaceScaled().\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_BlitSurfaceScaled",
+                "name": "Blit",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "src",
+                    "type": "SurfaceRef"
+                  },
+                  {
+                    "name": "srcrect",
+                    "type": "OptionalRef<const SDL_Rect>"
+                  },
+                  {
+                    "name": "dstrect",
+                    "type": "OptionalRef<const SDL_Rect>"
+                  }
+                ],
+                "sourceName": "SDL_BlitSurface"
+              }
+            ],
             "BlitUnchecked": {
               "doc": "Perform low-level surface blitting only.\n\nThis is a semi-private blit function and it performs low-level surface\nblitting, assuming the input rectangles have already been clipped.\n\n@param src the SDL_Surface structure to be copied from.\n@param srcrect the SDL_Rect structure representing the rectangle to be\n               copied, may not be NULL.\n@param dst the SDL_Surface structure that is the blit target.\n@param dstrect the SDL_Rect structure representing the target rectangle in\n               the destination surface, may not be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety The same destination surface should not be used from two\n              threads at once. It is safe to use the same source surface\n              from multiple threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_BlitSurface",
               "name": "BlitUnchecked",
