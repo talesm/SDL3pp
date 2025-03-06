@@ -6,6 +6,7 @@ var structSDL_1_1WindowBase =
     [ "WindowBase", "structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614", null ],
     [ "WindowBase", "structSDL_1_1WindowBase.html#acb74480c07b4832be01028e828f23284", null ],
     [ "WindowBase", "structSDL_1_1WindowBase.html#aa53f308f46a1c76ec83d6f1e204def89", null ],
+    [ "Destroy", "structSDL_1_1WindowBase.html#a2c9868cfe69ee8f29755a815494b79b6", null ],
     [ "DestroySurface", "structSDL_1_1WindowBase.html#af9a4b5f910f8cea4284b39dc903da4cb", null ],
     [ "Flash", "structSDL_1_1WindowBase.html#a5bea4b5b12e5a704f6eb63cc289f34a4", null ],
     [ "GetAspectRatio", "structSDL_1_1WindowBase.html#a444bb72b41d352bedd387a488864a918", null ],

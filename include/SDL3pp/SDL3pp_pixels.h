@@ -80,7 +80,7 @@ using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 template<>
 struct ObjectDeleter<SDL_Palette>
 {
-  inline void operator()(SDL_Palette* Palette) const;
+  void operator()(PaletteRef palette) const;
 };
 
 /**
@@ -1132,25 +1132,21 @@ struct PaletteBase : T
     SDL_assert_paranoid(colors.size() < SDL_MAX_SINT32);
     return SetColors(colors.data(), firstcolor, colors.size());
   }
-};
 
-/**
- * Free a palette created with SDL_CreatePalette().
- *
- * @param palette the SDL_Palette structure to be freed.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified or destroyed in another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_CreatePalette
- */
-template<ObjectBox<SDL_Palette*> T>
-inline void DestroyPalette(T&& palette)
-{
-  SDL_DestroyPalette(palette.release());
-}
+  /**
+   * Free a palette
+   *
+   * After calling, this object becomes empty.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreatePalette
+   */
+  void Destroy() { return SDL_DestroyPalette(T::release()); }
+};
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -1323,9 +1319,9 @@ inline void GetRGBA(Uint32 pixel,
 
 #pragma region impl
 
-inline void ObjectDeleter<SDL_Palette>::operator()(SDL_Palette* palette) const
+inline void ObjectDeleter<SDL_Palette>::operator()(PaletteRef palette) const
 {
-  DestroyPalette(PaletteRef(palette));
+  palette.Destroy();
 }
 
 inline Uint32 Color::Map(const PixelFormatDetails* format,

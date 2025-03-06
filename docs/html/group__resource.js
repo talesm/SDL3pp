@@ -2,6 +2,7 @@ var group__resource =
 [
     [ "SDL::PaletteBase< T >", "structSDL_1_1PaletteBase.html", [
       [ "PaletteBase", "structSDL_1_1PaletteBase.html#af7a8456013b5d87afaf714783f98f891", null ],
+      [ "Destroy", "structSDL_1_1PaletteBase.html#ab538b0d8ff6a60477d1bb4c14d21ae98", null ],
       [ "GetSize", "structSDL_1_1PaletteBase.html#ac89c5d4d1d2f9712e633e90113d2090e", null ],
       [ "operator[]", "structSDL_1_1PaletteBase.html#a8ea21122bc06522344aee70aecdf90de", null ],
       [ "SetColors", "structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831", null ],
@@ -15,6 +16,7 @@ var group__resource =
       [ "PropertiesBase", "structSDL_1_1PropertiesBase.html#a579657df53c773d33a5588e0f03f58b0", null ],
       [ "Clear", "structSDL_1_1PropertiesBase.html#a51304743586ee1c78c49f5be5f665743", null ],
       [ "CopyPropertiesTo", "structSDL_1_1PropertiesBase.html#a1296853289d558578a7e9efdc5d9b977", null ],
+      [ "Destroy", "structSDL_1_1PropertiesBase.html#afd46fcab027c88f135202d11a5780e2f", null ],
       [ "Enumerate", "structSDL_1_1PropertiesBase.html#a3e6a66a9538e777284e5c23ae8632dfa", null ],
       [ "Enumerate", "structSDL_1_1PropertiesBase.html#afa78aa69719a820addb9d374d0f0c6ba", null ],
       [ "Enumerate", "structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8", null ],
@@ -38,6 +40,7 @@ var group__resource =
       [ "TextureBase", "structSDL_1_1TextureBase.html#a26b12859b23ad925ae7bed0c81ab0f46", null ],
       [ "TextureBase", "structSDL_1_1TextureBase.html#ac9fb768abf109729277163693dfef21e", null ],
       [ "TextureBase", "structSDL_1_1TextureBase.html#adf253d6d8727fca312e9707681ced937", null ],
+      [ "Destroy", "structSDL_1_1TextureBase.html#a64977c5b509bb54fc412ec577c7db2e5", null ],
       [ "GetAlphaMod", "structSDL_1_1TextureBase.html#acc7d66e8309fcf784ffae07c85decae5", null ],
       [ "GetAlphaMod", "structSDL_1_1TextureBase.html#a4206de1417b0b360c2a6639ee9d2831e", null ],
       [ "GetAlphaMod", "structSDL_1_1TextureBase.html#ae2982c1ed7424b984cccfd8853b2672c", null ],
@@ -67,6 +70,7 @@ var group__resource =
     ] ],
     [ "SDL::EnvironmentBase< T >", "structSDL_1_1EnvironmentBase.html", [
       [ "EnvironmentBase", "structSDL_1_1EnvironmentBase.html#a880debc9b624b80f3879ff6946b9cb7b", null ],
+      [ "Destroy", "structSDL_1_1EnvironmentBase.html#af4869b8834a581757030a9b7c311eab2", null ],
       [ "GetVariable", "structSDL_1_1EnvironmentBase.html#a4b6abcb1989c00fbf4d2dcb9444ccfc1", null ],
       [ "GetVariableCount", "structSDL_1_1EnvironmentBase.html#ac76d82950ec49f67bb71ff7ff7a8e770", null ],
       [ "GetVariables", "structSDL_1_1EnvironmentBase.html#a7e0446c1a17d40d70904bf1a616df74a", null ],
@@ -75,6 +79,7 @@ var group__resource =
     ] ],
     [ "SDL::IConvBase< T >", "structSDL_1_1IConvBase.html", [
       [ "IConvBase", "structSDL_1_1IConvBase.html#abf7d2e32c4df9eb6529c9d1631eb25cc", null ],
+      [ "close", "structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66", null ],
       [ "iconv", "structSDL_1_1IConvBase.html#aaf6d92aadf3ee0b63e487d5ee2bce12e", null ]
     ] ],
     [ "SDL::SurfaceBase< T >", "structSDL_1_1SurfaceBase.html", [
@@ -97,6 +102,7 @@ var group__resource =
       [ "Convert", "structSDL_1_1SurfaceBase.html#a6a6b84f8c84046fe8fa4f0c498fd76db", null ],
       [ "Convert", "structSDL_1_1SurfaceBase.html#a9ccf82503e809a7bc890b1662ede3d5c", null ],
       [ "CreatePalette", "structSDL_1_1SurfaceBase.html#aaa82afa72b93cc2d04f005775c667415", null ],
+      [ "Destroy", "structSDL_1_1SurfaceBase.html#ae35a2d03e5429009c55289a504d49ecb", null ],
       [ "Duplicate", "structSDL_1_1SurfaceBase.html#a2b8d60357059a34ea1724fcacdc23c42", null ],
       [ "Fill", "structSDL_1_1SurfaceBase.html#ac21134197559fbe37e58a0bb6151ea65", null ],
       [ "Fill", "structSDL_1_1SurfaceBase.html#a0bafdc08ac13d4a6842990f9350d1b78", null ],
@@ -162,6 +168,7 @@ var group__resource =
       [ "WindowBase", "structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614", null ],
       [ "WindowBase", "structSDL_1_1WindowBase.html#acb74480c07b4832be01028e828f23284", null ],
       [ "WindowBase", "structSDL_1_1WindowBase.html#aa53f308f46a1c76ec83d6f1e204def89", null ],
+      [ "Destroy", "structSDL_1_1WindowBase.html#a2c9868cfe69ee8f29755a815494b79b6", null ],
       [ "DestroySurface", "structSDL_1_1WindowBase.html#af9a4b5f910f8cea4284b39dc903da4cb", null ],
       [ "Flash", "structSDL_1_1WindowBase.html#a5bea4b5b12e5a704f6eb63cc289f34a4", null ],
       [ "GetAspectRatio", "structSDL_1_1WindowBase.html#a444bb72b41d352bedd387a488864a918", null ],

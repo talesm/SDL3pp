@@ -22,7 +22,7 @@
  * The video subsystem covers a lot of functionality, out of necessity, so it
  * is worth perusing the list of functions just to see what's available, but
  * most apps can get by with simply creating a window and listening for
- * events, so start with Window and PollEvent().
+ * events, so start with SDL_CreateWindow() and SDL_PollEvent().
  */
 
 #ifndef SDL3PP_VIDEO_H_
@@ -54,7 +54,7 @@ using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 template<>
 struct ObjectDeleter<SDL_Window>
 {
-  void operator()(SDL_Window* window) const;
+  void operator()(WindowRef window) const;
 };
 
 /**
@@ -2426,6 +2426,26 @@ struct WindowBase : T
   {
     return SDL_FlashWindow(T::get(), operation);
   }
+
+  /**
+   * Destroy a window.
+   *
+   * Any child windows owned by the window will be recursively destroyed as
+   * well.
+   *
+   * Note that on some platforms, the visible window may not actually be removed
+   * from the screen until the SDL event loop is pumped again, even though the
+   * SDL_Window is no longer valid after this call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreatePopupWindow
+   * @sa SDL_CreateWindow
+   * @sa SDL_CreateWindowWithProperties
+   */
+  void Destroy() { return SDL_DestroyWindow(T::release()); }
 };
 
 /**
@@ -2699,35 +2719,6 @@ inline WindowRef GetWindowFromID(WindowID id)
  * @sa SetKeyboardGrab()
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
-
-/**
- * Destroy a window.
- *
- * Any child windows owned by the window will be recursively destroyed as
- * well.
- *
- * Note that on some platforms, the visible window may not actually be removed
- * from the screen until the SDL event loop is pumped again, even though the
- * SDL_Window is no longer valid after this call.
- *
- * @param window the window to destroy.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa WindowBase::WindowBase()
- */
-template<ObjectBox<SDL_Window*> T>
-inline void DestroyWindow(T&& window)
-{
-  SDL_DestroyWindow(window.release());
-}
-
-inline Display Display::GetForWindow(WindowRef window)
-{
-  return {SDL_GetDisplayForWindow(window.get())};
-}
 
 /**
  * @brief  Check whether the screensaver is currently enabled.
@@ -3230,9 +3221,9 @@ inline bool GL_DestroyContext(GLContext context)
 
 #pragma region impl
 
-inline void ObjectDeleter<SDL_Window>::operator()(SDL_Window* window) const
+inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
 {
-  DestroyWindow(WindowRef(window));
+  window.Destroy();
 }
 
 #pragma endregion impl

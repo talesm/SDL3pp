@@ -5,6 +5,7 @@ var structSDL_1_1RendererBase =
     [ "RendererBase", "structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc", null ],
     [ "RendererBase", "structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92", null ],
     [ "ConvertEventToRenderCoordinates", "structSDL_1_1RendererBase.html#a8883859100726a7c7f08134ee0fc0229", null ],
+    [ "Destroy", "structSDL_1_1RendererBase.html#a8e5798bee1abea5a16b88b6ab0667c76", null ],
     [ "Flush", "structSDL_1_1RendererBase.html#abaf3c91b4c53fdd0b9ca34594b0e87f6", null ],
     [ "GetClipRect", "structSDL_1_1RendererBase.html#a755bccca740076de95e4a4a889a54b48", null ],
     [ "GetColorScale", "structSDL_1_1RendererBase.html#aa3455f1ed5c9673fb3560f769fcfdca1", null ],

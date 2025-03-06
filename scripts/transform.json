@@ -57,7 +57,7 @@
             "template": [
               {
                 "name": "T",
-                "type": "class"
+                "type": "ObjectBox<SDL_Environment *>"
               }
             ]
           },
@@ -78,7 +78,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_Environment *",
+                    "type": "EnvironmentRef",
                     "name": "environment"
                   }
                 ]
@@ -96,7 +96,7 @@
             "template": [
               {
                 "name": "T",
-                "type": "class"
+                "type": "ObjectBox<SDL_iconv_t>"
               }
             ]
           },
@@ -117,7 +117,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_iconv_t",
+                    "type": "IConvRef",
                     "name": "iconv"
                   }
                 ]
@@ -168,7 +168,7 @@
           "type": "T",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_Environment *>",
               "name": "T"
             }
           ],
@@ -188,23 +188,9 @@
               "parameters": []
             },
             "SDL_SetEnvironmentVariable": "function",
-            "SDL_UnsetEnvironmentVariable": {
-              "name": "UnsetVariable"
-            }
+            "SDL_UnsetEnvironmentVariable": "function",
+            "SDL_DestroyEnvironment": "function"
           }
-        },
-        "SDL_DestroyEnvironment": {
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Environment *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
-            }
-          ]
         },
         "SDL_iconv_t": {
           "name": "IConvBase",
@@ -212,7 +198,7 @@
           "type": "T",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_iconv_t>",
               "name": "T"
             }
           ],
@@ -222,21 +208,11 @@
               "name": "T::T"
             },
             "SDL_iconv_open": "ctor",
-            "SDL_iconv": "function"
+            "SDL_iconv": "function",
+            "SDL_iconv_close": {
+              "name": "close"
+            }
           }
-        },
-        "SDL_iconv_close": {
-          "template": [
-            {
-              "type": "ObjectBox<SDL_iconv_t>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
-            }
-          ]
         }
       }
     },
@@ -270,8 +246,8 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_Palette *",
-                    "name": "Palette"
+                    "type": "PaletteRef",
+                    "name": "palette"
                   }
                 ]
               }
@@ -812,21 +788,9 @@
                 }
               ]
             },
-            "SDL_SetPaletteColors": "function"
+            "SDL_SetPaletteColors": "function",
+            "SDL_DestroyPalette": "function"
           }
-        },
-        "SDL_DestroyPalette": {
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Palette *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
-            }
-          ]
         }
       }
     },
@@ -867,7 +831,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "pointer",
+                    "type": "PropertiesRef",
                     "name": "props"
                   }
                 ]
@@ -1042,24 +1006,9 @@
               "kind": "function",
               "name": "Enumerate",
               "immutable": true
-            }
+            },
+            "SDL_DestroyProperties": "function"
           }
-        },
-        "SDL_CreateProperties": {
-          "type": "Properties"
-        },
-        "SDL_DestroyProperties": {
-          "template": [
-            {
-              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
-            }
-          ]
         }
       }
     },
@@ -1533,7 +1482,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_Surface *",
+                    "type": "SurfaceRef",
                     "name": "Surface"
                   }
                 ]
@@ -1550,7 +1499,7 @@
             "kind": "forward"
           }
         ],
-        "SDL_DestroySurface": {
+        "SDL_Surface": {
           "name": "SurfaceLock",
           "kind": "struct",
           "entries": {
@@ -1652,6 +1601,7 @@
             "T::T": "alias",
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
+            "SDL_DestroySurface": "function",
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
             "SDL_GetSurfaceColorspace": "immutable",
@@ -2298,19 +2248,6 @@
               "name": "WritePixel"
             }
           }
-        },
-        "SDL_DestroySurface": {
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Surface *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
-            }
-          ]
         }
       }
     },
@@ -2344,7 +2281,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_Window *",
+                    "type": "WindowRef",
                     "name": "window"
                   }
                 ]
@@ -2724,26 +2661,13 @@
             },
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
-            "SDL_FlashWindow": "function"
+            "SDL_FlashWindow": "function",
+            "SDL_DestroyWindow": "function"
           }
         },
         "SDL_GetWindows": {
           "kind": "function",
           "type": "FreeWrapper<WindowRef[]>"
-        },
-        "SDL_DestroyWindow": {
-          "kind": "function",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
-            }
-          ]
         }
       }
     },
@@ -2783,7 +2707,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_Renderer *",
+                    "type": "RendererRef",
                     "name": "renderer"
                   }
                 ]
@@ -2822,7 +2746,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "SDL_Texture *",
+                    "type": "TextureRef",
                     "name": "texture"
                   }
                 ]
@@ -3395,10 +3319,8 @@
               "kind": "function",
               "name": "Present"
             },
-            "SDL_FlushRenderer": {
-              "kind": "function",
-              "name": "Flush"
-            },
+            "SDL_DestroyRenderer": "function",
+            "SDL_FlushRenderer": "function",
             "SDL_SetRenderVSync": {
               "kind": "function",
               "name": "SetVSync"
@@ -3585,7 +3507,8 @@
                 {},
                 {}
               ]
-            }
+            },
+            "SDL_DestroyTexture": "function"
           }
         },
         "SDL_CreateWindowAndRenderer": {
@@ -3609,32 +3532,6 @@
             },
             {
               "type": "R *"
-            }
-          ]
-        },
-        "SDL_DestroyTexture": {
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Texture *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
-            }
-          ]
-        },
-        "SDL_DestroyRenderer": {
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Renderer *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "T &&"
             }
           ]
         }

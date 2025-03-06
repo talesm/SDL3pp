@@ -7,6 +7,7 @@ var structSDL_1_1PropertiesBase =
     [ "PropertiesBase", "structSDL_1_1PropertiesBase.html#a579657df53c773d33a5588e0f03f58b0", null ],
     [ "Clear", "structSDL_1_1PropertiesBase.html#a51304743586ee1c78c49f5be5f665743", null ],
     [ "CopyPropertiesTo", "structSDL_1_1PropertiesBase.html#a1296853289d558578a7e9efdc5d9b977", null ],
+    [ "Destroy", "structSDL_1_1PropertiesBase.html#afd46fcab027c88f135202d11a5780e2f", null ],
     [ "Enumerate", "structSDL_1_1PropertiesBase.html#a3e6a66a9538e777284e5c23ae8632dfa", null ],
     [ "Enumerate", "structSDL_1_1PropertiesBase.html#afa78aa69719a820addb9d374d0f0c6ba", null ],
     [ "Enumerate", "structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8", null ],

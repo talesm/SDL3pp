@@ -343,6 +343,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5bea4b5b12e5a704f6eb63cc289f34a4" id="r_a5bea4b5b12e5a704f6eb63cc289f34a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a5bea4b5b12e5a704f6eb63cc289f34a4">Flash</a> (<a class="el" href="namespaceSDL.html#a9d43efa44ae8a04c595ca7018e8ff813">FlashOperation</a> <a class="el" href="classSDL_1_1OptionalRef.html">operation</a>)</td></tr>
 <tr class="memdesc:a5bea4b5b12e5a704f6eb63cc289f34a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request a window to demand attention from the user.  <br /></td></tr>
 <tr class="separator:a5bea4b5b12e5a704f6eb63cc289f34a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c9868cfe69ee8f29755a815494b79b6" id="r_a2c9868cfe69ee8f29755a815494b79b6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a2c9868cfe69ee8f29755a815494b79b6">Destroy</a> ()</td></tr>
+<tr class="memdesc:a2c9868cfe69ee8f29755a815494b79b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a window.  <br /></td></tr>
+<tr class="separator:a2c9868cfe69ee8f29755a815494b79b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T&gt;<br />
@@ -701,6 +704,46 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2c9868cfe69ee8f29755a815494b79b6" name="a2c9868cfe69ee8f29755a815494b79b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c9868cfe69ee8f29755a815494b79b6">&#9670;&#160;</a></span>Destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">void</a> <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destroy a window. </p>
+<p>Any child windows owned by the window will be recursively destroyed as well.</p>
+<p>Note that on some platforms, the visible window may not actually be removed from the screen until the <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> event loop is pumped again, even though the SDL_Window is no longer valid after this call.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_CreatePopupWindow </dd>
+<dd>
+SDL_CreateWindow </dd>
+<dd>
+SDL_CreateWindowWithProperties </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02448">2448</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
 <a id="af9a4b5f910f8cea4284b39dc903da4cb" name="af9a4b5f910f8cea4284b39dc903da4cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af9a4b5f910f8cea4284b39dc903da4cb">&#9670;&#160;</a></span>DestroySurface()</h2>
 

@@ -24,7 +24,6 @@ var SDL3pp__video_8h =
     [ "WindowFlags", "SDL3pp__video_8h.html#a0e89cce67b0f90eb3a4b57249f949f67", null ],
     [ "WindowID", "SDL3pp__video_8h.html#a8ea0dc352d3237a35b3e2bf4c6ebe7e3", null ],
     [ "WindowRef", "SDL3pp__video_8h.html#a42069207012bd44674fe1677bd5a1066", null ],
-    [ "DestroyWindow", "SDL3pp__video_8h.html#ad4bece8f40c91601e10f6353cdd52bd9", null ],
     [ "DisableScreenSaver", "SDL3pp__video_8h.html#a13f5c7a04ece8b15a167476f84cd8975", null ],
     [ "EGL_GetCurrentConfig", "SDL3pp__video_8h.html#ae68ab6ffb4d3cf2ba086f783e8b1e20c", null ],
     [ "EGL_GetCurrentDisplay", "SDL3pp__video_8h.html#af7a215247d95db258fcef5ea80e54fe2", null ],

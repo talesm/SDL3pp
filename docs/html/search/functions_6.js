@@ -49,7 +49,7 @@ var searchData=
   ['getformat_46',['getformat',['../classSDL_1_1SurfaceLock.html#ad45c70cb1482f64ebe35023214a8627f',1,'SDL::SurfaceLock::GetFormat()'],['../structSDL_1_1SurfaceBase.html#ad44c4a1a19094feae1b873f0d2a1ce32',1,'SDL::SurfaceBase::GetFormat()']]],
   ['getforpoint_47',['GetForPoint',['../structSDL_1_1Display.html#a174cdf9b3f4129d3741a94849ff7f7a1',1,'SDL::Display']]],
   ['getforrect_48',['GetForRect',['../structSDL_1_1Display.html#a20f5e92fea06720484e9e5266da9b536',1,'SDL::Display']]],
-  ['getforwindow_49',['GetForWindow',['../structSDL_1_1Display.html#a514382e58c5156f41af9d8aaa921a50a',1,'SDL::Display']]],
+  ['getforwindow_49',['GetForWindow',['../structSDL_1_1Display.html#a6dc370142a78c053232562f79aa53265',1,'SDL::Display']]],
   ['getfullscreenmode_50',['GetFullscreenMode',['../structSDL_1_1WindowBase.html#affd6b08b65f17c3dfff0205fcc64d4a8',1,'SDL::WindowBase']]],
   ['getfullscreenmodes_51',['GetFullscreenModes',['../structSDL_1_1Display.html#a8d224fd400f019b8ff6da17a68980ff0',1,'SDL::Display']]],
   ['getglobalproperties_52',['GetGlobalProperties',['../namespaceSDL.html#aff19b3a34bf82cdd3bd6e32d47e1481a',1,'SDL']]],

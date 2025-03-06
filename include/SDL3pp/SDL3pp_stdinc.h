@@ -21,6 +21,7 @@
  * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
  * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
  */
+
 #ifndef SDL3PP_STDINC_H_
 #define SDL3PP_STDINC_H_
 
@@ -32,7 +33,7 @@
 namespace SDL {
 
 // Forward decl
-template<class T>
+template<ObjectBox<SDL_Environment*> T>
 struct EnvironmentBase;
 
 using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
@@ -40,13 +41,13 @@ using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 template<>
 struct ObjectDeleter<SDL_Environment>
 {
-  inline void operator()(SDL_Environment* environment) const;
+  inline void operator()(EnvironmentRef environment) const;
 };
 
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
 
 // Forward decl
-template<class T>
+template<ObjectBox<SDL_iconv_t> T>
 struct IConvBase;
 
 using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
@@ -54,7 +55,7 @@ using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
 template<>
 struct ObjectDeleter<SDL_iconv_data_t>
 {
-  inline void operator()(SDL_iconv_t iconv) const;
+  inline void operator()(IConvRef iconv) const;
 };
 
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
@@ -426,7 +427,7 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @ingroup resource
  **/
-template<class T>
+template<ObjectBox<SDL_Environment*> T>
 struct EnvironmentBase : T
 {
   using T::T;
@@ -561,6 +562,20 @@ struct EnvironmentBase : T
   {
     return SDL_UnsetEnvironmentVariable(T::get(), name);
   }
+
+  /**
+   * Destroy a set of environment variables.
+   *
+   * This object becomes empty after the call.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the environment is no longer in use.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreateEnvironment
+   */
+  void Destroy() { return SDL_DestroyEnvironment(T::release()); }
 };
 /**
  * Get the process environment.
@@ -584,24 +599,6 @@ struct EnvironmentBase : T
  * @sa UnsetVariable()
  **/
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
-
-/**
- * Destroy a set of environment variables.
- *
- * @param env the environment to destroy.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the environment is no longer in use.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_CreateEnvironment
- */
-template<ObjectBox<SDL_Environment*> T>
-inline void DestroyEnvironment(T&& env)
-{
-  SDL_DestroyEnvironment(env.release());
-}
 
 /**
  * Get the value of a variable in the environment.
@@ -4387,8 +4384,8 @@ inline float tanf(float x) { return SDL_tanf(x); }
  * @since This datatype is available since SDL 3.2.0.
  *
  * @ingroup resource
- **/
-template<class T>
+ */
+template<ObjectBox<SDL_iconv_t> T>
 struct IConvBase : T
 {
   using T::T;
@@ -4408,7 +4405,7 @@ struct IConvBase : T
    * @sa iconv_close()
    * @sa iconv_string()
    **/
-  inline IConvBase(StringParam tocode, StringParam fromcode)
+  IConvBase(StringParam tocode, StringParam fromcode)
     : T(SDL_iconv_open(tocode, fromcode))
   {
   }
@@ -4444,33 +4441,29 @@ struct IConvBase : T
    * @since This function is available since SDL 3.2.0.
    *
    * @sa iconv_string
-   **/
-  inline size_t iconv(const char** inbuf,
-                      size_t* inbytesleft,
-                      char** outbuf,
-                      size_t* outbytesleft)
+   */
+  size_t iconv(const char** inbuf,
+               size_t* inbytesleft,
+               char** outbuf,
+               size_t* outbytesleft)
   {
     return SDL_iconv(T::get(), inbuf, inbytesleft, outbuf, outbytesleft);
   }
-};
 
-/**
- * This function frees a context used for character set conversion.
- *
- * @param cd The character set conversion handle.
- * @returns 0 on success, or -1 on failure.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_iconv
- * @sa SDL_iconv_open
- * @sa SDL_iconv_string
- **/
-template<ObjectBox<SDL_iconv_t> T>
-inline int iconv_close(T&& cd)
-{
-  return SDL_iconv_close(cd.release());
-}
+  /**
+   * This function frees a context used for character set conversion.
+   *
+   * This object becomes empty after the call.
+   * @returns 0 on success, or -1 on failure.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_iconv
+   * @sa SDL_iconv_open
+   * @sa SDL_iconv_string
+   */
+  int close() { return SDL_iconv_close(T::release()); }
+};
 
 /**
  * Helper function to convert a string's encoding in one call.
@@ -4569,14 +4562,14 @@ using FunctionPointer = SDL_FunctionPointer;
 #pragma region impl
 
 inline void ObjectDeleter<SDL_Environment>::operator()(
-  SDL_Environment* environment) const
+  EnvironmentRef environment) const
 {
-  DestroyEnvironment(EnvironmentRef(environment));
+  environment.Destroy();
 }
 
-inline void ObjectDeleter<SDL_iconv_data_t>::operator()(SDL_iconv_t iconv) const
+inline void ObjectDeleter<SDL_iconv_data_t>::operator()(IConvRef iconv) const
 {
-  iconv_close(IConvRef(iconv));
+  iconv.close();
 }
 
 #pragma endregion impl

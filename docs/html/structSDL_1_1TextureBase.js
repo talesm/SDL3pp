@@ -3,6 +3,7 @@ var structSDL_1_1TextureBase =
     [ "TextureBase", "structSDL_1_1TextureBase.html#a26b12859b23ad925ae7bed0c81ab0f46", null ],
     [ "TextureBase", "structSDL_1_1TextureBase.html#ac9fb768abf109729277163693dfef21e", null ],
     [ "TextureBase", "structSDL_1_1TextureBase.html#adf253d6d8727fca312e9707681ced937", null ],
+    [ "Destroy", "structSDL_1_1TextureBase.html#a64977c5b509bb54fc412ec577c7db2e5", null ],
     [ "GetAlphaMod", "structSDL_1_1TextureBase.html#acc7d66e8309fcf784ffae07c85decae5", null ],
     [ "GetAlphaMod", "structSDL_1_1TextureBase.html#a4206de1417b0b360c2a6639ee9d2831e", null ],
     [ "GetAlphaMod", "structSDL_1_1TextureBase.html#ae2982c1ed7424b984cccfd8853b2672c", null ],

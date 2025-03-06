@@ -46,7 +46,7 @@ using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
 template<>
 struct ObjectDeleter<SDL_Surface>
 {
-  void operator()(SDL_Surface* Surface) const;
+  void operator()(SurfaceRef Surface) const;
 };
 
 /**
@@ -197,6 +197,15 @@ struct SurfaceBase : T
     : T(SDL_LoadBMP(file))
   {
   }
+
+  /**
+   * Free a surface.
+   *
+   * This makes this object empty
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { return SDL_DestroySurface(T::release()); }
 
   /**
    * Get the properties associated with a surface.
@@ -1779,21 +1788,6 @@ struct SurfaceBase : T
 };
 
 /**
- * Free a surface.
- *
- * @param surface the SDL_Surface to free.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Surface.Surface()
- */
-template<ObjectBox<SDL_Surface*> T>
-inline void DestroySurface(T&& surface)
-{
-  SDL_DestroySurface(surface.release());
-}
-
-/**
  * @brief Locks a Surface for access to its pixels
  *
  * Only really necessary if Surface.MustLock() returns t
@@ -1996,9 +1990,9 @@ inline bool PremultiplyAlpha(int width,
 
 #pragma region impl
 
-void ObjectDeleter<SDL_Surface>::operator()(SDL_Surface* surface) const
+void ObjectDeleter<SDL_Surface>::operator()(SurfaceRef surface) const
 {
-  DestroySurface(SurfaceRef(surface));
+  surface.Destroy();
 }
 
 template<ObjectBox<SDL_Surface*> T>

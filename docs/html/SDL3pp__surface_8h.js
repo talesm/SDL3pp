@@ -9,6 +9,5 @@ var SDL3pp__surface_8h =
     [ "SurfaceRef", "SDL3pp__surface_8h.html#a2ea8e6016ec594c51738ef06f469d5d2", null ],
     [ "ConvertPixels", "SDL3pp__surface_8h.html#a7da7ef5a1a25db72469c18bd37fbb299", null ],
     [ "ConvertPixelsAndColorspace", "SDL3pp__surface_8h.html#a9d6ced48f8f7fb71dff04aff0364adcd", null ],
-    [ "DestroySurface", "SDL3pp__surface_8h.html#a99821a583e39bda4c0aa402846b04505", null ],
     [ "PremultiplyAlpha", "SDL3pp__surface_8h.html#a57055f9765ed7d38d27856c7b29cffd5", null ]
 ];

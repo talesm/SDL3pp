@@ -130,13 +130,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf6d92aadf3ee0b63e487d5ee2bce12e" id="r_aaf6d92aadf3ee0b63e487d5ee2bce12e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#aaf6d92aadf3ee0b63e487d5ee2bce12e">iconv</a> (<a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> **<a class="el" href="classSDL_1_1OptionalRef.html">inbuf</a>, <a class="el" href="classSDL_1_1OptionalRef.html">size_t</a> *<a class="el" href="classSDL_1_1OptionalRef.html">inbytesleft</a>, <a class="el" href="classSDL_1_1OptionalRef.html">char</a> **<a class="el" href="classSDL_1_1OptionalRef.html">outbuf</a>, <a class="el" href="classSDL_1_1OptionalRef.html">size_t</a> *<a class="el" href="classSDL_1_1OptionalRef.html">outbytesleft</a>)</td></tr>
 <tr class="memdesc:aaf6d92aadf3ee0b63e487d5ee2bce12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function converts text between encodings, reading from and writing to a buffer.  <br /></td></tr>
 <tr class="separator:aaf6d92aadf3ee0b63e487d5ee2bce12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99c167b7ae250819364ec59b56f2d66" id="r_ae99c167b7ae250819364ec59b56f2d66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66">close</a> ()</td></tr>
+<tr class="memdesc:ae99c167b7ae250819364ec59b56f2d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
+<tr class="separator:ae99c167b7ae250819364ec59b56f2d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt;<br />
 struct SDL::IConvBase&lt; T &gt;</div><p>An opaque handle representing string encoding conversion state. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04392">4392</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04389">4389</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abf7d2e32c4df9eb6529c9d1631eb25cc" name="abf7d2e32c4df9eb6529c9d1631eb25cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf7d2e32c4df9eb6529c9d1631eb25cc">&#9670;&#160;</a></span>IConvBase()</h2>
@@ -144,7 +147,7 @@ struct SDL::IConvBase&lt; T &gt;</div><p>An opaque handle representing string en
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; </div>
+template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -186,22 +189,60 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1IConvBase.html#aaf6d92aadf3ee0b63e487d5ee2bce12e" title="This function converts text between encodings, reading from and writing to a buffer.">iconv()</a> </dd>
 <dd>
-<a class="el" href="namespaceSDL.html#ab6b8c5d14418a587acab77338e25a629" title="This function frees a context used for character set conversion.">iconv_close()</a> </dd>
+iconv_close() </dd>
 <dd>
 <a class="el" href="namespaceSDL.html#a8101a1c19844c8cb72600a9aa6238327" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04411">4411</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04408">4408</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae99c167b7ae250819364ec59b56f2d66" name="ae99c167b7ae250819364ec59b56f2d66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae99c167b7ae250819364ec59b56f2d66">&#9670;&#160;</a></span>close()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">int</a> <a class="el" href="structSDL_1_1IConvBase.html">SDL::IConvBase</a>&lt; T &gt;::close </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This function frees a context used for character set conversion. </p>
+<p>This object becomes empty after the call. </p><dl class="section return"><dt>Returns</dt><dd>0 on success, or -1 on failure.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_iconv </dd>
+<dd>
+SDL_iconv_open </dd>
+<dd>
+SDL_iconv_string </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04465">4465</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
 <a id="aaf6d92aadf3ee0b63e487d5ee2bce12e" name="aaf6d92aadf3ee0b63e487d5ee2bce12e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaf6d92aadf3ee0b63e487d5ee2bce12e">&#9670;&#160;</a></span>iconv()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; </div>
+template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -265,7 +306,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceSDL.html#a8101a1c19844c8cb72600a9aa6238327" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04448">4448</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04445">4445</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>

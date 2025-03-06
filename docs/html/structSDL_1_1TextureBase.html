@@ -203,13 +203,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a03be377c1b2770c7b2d610d280b8ba87" id="r_a03be377c1b2770c7b2d610d280b8ba87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a03be377c1b2770c7b2d610d280b8ba87">UpdateNV</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">const</a> SDL_Rect &gt; <a class="el" href="classSDL_1_1OptionalRef.html">rect</a>, <a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">Uint8</a> *<a class="el" href="classSDL_1_1OptionalRef.html">Yplane</a>, <a class="el" href="classSDL_1_1OptionalRef.html">int</a> <a class="el" href="classSDL_1_1OptionalRef.html">Ypitch</a>, <a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">Uint8</a> *<a class="el" href="classSDL_1_1OptionalRef.html">UVplane</a>, <a class="el" href="classSDL_1_1OptionalRef.html">int</a> <a class="el" href="classSDL_1_1OptionalRef.html">UVpitch</a>)</td></tr>
 <tr class="memdesc:a03be377c1b2770c7b2d610d280b8ba87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a rectangle within a planar NV12 or NV21 texture with new pixels.  <br /></td></tr>
 <tr class="separator:a03be377c1b2770c7b2d610d280b8ba87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64977c5b509bb54fc412ec577c7db2e5" id="r_a64977c5b509bb54fc412ec577c7db2e5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a64977c5b509bb54fc412ec577c7db2e5">Destroy</a> ()</td></tr>
+<tr class="memdesc:a64977c5b509bb54fc412ec577c7db2e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the texture.  <br /></td></tr>
+<tr class="separator:a64977c5b509bb54fc412ec577c7db2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Texture</a> * &gt; T&gt;<br />
 struct SDL::TextureBase&lt; T &gt;</div><p>An efficient driver-specific representation of pixel data. </p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01659">1659</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01673">1673</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a26b12859b23ad925ae7bed0c81ab0f46" name="a26b12859b23ad925ae7bed0c81ab0f46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a26b12859b23ad925ae7bed0c81ab0f46">&#9670;&#160;</a></span>TextureBase() <span class="overload">[1/3]</span></h2>
@@ -284,7 +287,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf" title="Update the given texture rectangle with new pixel data.">Update()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01683">1683</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01697">1697</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +345,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 <a class="el" href="structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf" title="Update the given texture rectangle with new pixel data.">Update()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01717">1717</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01731">1731</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -450,11 +453,48 @@ SDL_GetTextureSize </dd>
 <dd>
 SDL_UpdateTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01832">1832</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01846">1846</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a64977c5b509bb54fc412ec577c7db2e5" name="a64977c5b509bb54fc412ec577c7db2e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64977c5b509bb54fc412ec577c7db2e5">&#9670;&#160;</a></span>Destroy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Texture</a> * &gt; T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">void</a> <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::Destroy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destroy the texture. </p>
+<p>This object becomes empty after the call.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_CreateTexture </dd>
+<dd>
+SDL_CreateTextureFromSurface </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02422">2422</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+
+</div>
+</div>
 <a id="acc7d66e8309fcf784ffae07c85decae5" name="acc7d66e8309fcf784ffae07c85decae5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc7d66e8309fcf784ffae07c85decae5">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[1/3]</span></h2>
 
@@ -480,7 +520,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02163">2163</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02177">2177</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -521,7 +561,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02196">2196</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02210">2210</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -562,7 +602,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02180">2180</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02194">2194</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -597,7 +637,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SetTextureBlendMode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02234">2234</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02248">2248</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -626,7 +666,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01983">1983</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01997">1997</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -656,7 +696,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01989">1989</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02003">2003</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -686,7 +726,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01995">1995</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02009">2009</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -750,7 +790,7 @@ SDL_GetTextureColorMod </dd>
 <dd>
 SDL_SetTextureColorModFloat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02102">2102</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02116">2116</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -814,7 +854,7 @@ SDL_GetTextureColorModFloat </dd>
 <dd>
 SDL_SetTextureColorMod </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02080">2080</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02094">2094</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -892,7 +932,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01922">1922</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01936">1936</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -926,7 +966,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01937">1937</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01951">1951</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -961,7 +1001,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SetTextureScaleMode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02276">2276</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02290">2290</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -990,7 +1030,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01942">1942</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01956">1956</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1042,7 +1082,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01968">1968</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01982">1982</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1112,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01948">1948</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01962">1962</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1121,7 +1161,7 @@ SDL_SetTextureAlphaMod </dd>
 <dd>
 SDL_SetTextureColorModFloat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02158">2158</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02172">2172</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1170,7 +1210,7 @@ SDL_SetTextureAlphaModFloat </dd>
 <dd>
 SDL_SetTextureColorMod </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02130">2130</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02144">2144</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1213,7 +1253,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetTextureBlendMode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02217">2217</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02231">2231</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1243,7 +1283,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01973">1973</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01987">1987</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1273,7 +1313,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01978">1978</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01992">1992</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1340,7 +1380,7 @@ SDL_SetTextureAlphaModFloat </dd>
 <dd>
 SDL_SetTextureColorMod </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02058">2058</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02072">2072</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1407,7 +1447,7 @@ SDL_SetTextureAlphaMod </dd>
 <dd>
 SDL_SetTextureColorModFloat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02027">2027</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02041">2041</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1451,7 +1491,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetTextureScaleMode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02259">2259</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02273">2273</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1520,7 +1560,7 @@ SDL_UpdateNVTexture </dd>
 <dd>
 SDL_UpdateYUVTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02315">2315</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02329">2329</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1597,7 +1637,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 SDL_UpdateYUVTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02386">2386</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02400">2400</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1688,7 +1728,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dd>
 SDL_UpdateTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02349">2349</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02363">2363</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>

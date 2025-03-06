@@ -1,6 +1,7 @@
 var structSDL_1_1PaletteBase =
 [
     [ "PaletteBase", "structSDL_1_1PaletteBase.html#af7a8456013b5d87afaf714783f98f891", null ],
+    [ "Destroy", "structSDL_1_1PaletteBase.html#ab538b0d8ff6a60477d1bb4c14d21ae98", null ],
     [ "GetSize", "structSDL_1_1PaletteBase.html#ac89c5d4d1d2f9712e633e90113d2090e", null ],
     [ "operator[]", "structSDL_1_1PaletteBase.html#a8ea21122bc06522344aee70aecdf90de", null ],
     [ "SetColors", "structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831", null ],

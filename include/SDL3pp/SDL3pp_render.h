@@ -54,7 +54,7 @@ using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
 template<>
 struct ObjectDeleter<SDL_Renderer>
 {
-  void operator()(SDL_Renderer* renderer) const;
+  void operator()(RendererRef renderer) const;
 };
 
 /// @brief Handle to an owned renderer
@@ -69,7 +69,7 @@ using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
 template<>
 struct ObjectDeleter<SDL_Texture>
 {
-  void operator()(SDL_Texture* texture) const;
+  void operator()(TextureRef texture) const;
 };
 
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
@@ -1529,6 +1529,20 @@ struct RendererBase : T
   bool Present() { return SDL_RenderPresent(T::get()); }
 
   /**
+   * Destroy the rendering context for a window and free all associated
+   * textures.
+   *
+   * This object becomes empty after the call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreateRenderer
+   */
+  void Destroy() { return SDL_DestroyRenderer(T::release()); }
+
+  /**
    * Force the rendering context to flush any pending commands and state.
    *
    * You do not need to (and in fact, shouldn't) call this function unless you
@@ -2392,6 +2406,20 @@ struct TextureBase : T
     return SDL_UpdateNVTexture(
       T::get(), rect, Yplane, Ypitch, UVplane, UVpitch);
   }
+
+  /**
+   * Destroy the texture.
+   *
+   * This object becomes empty after the call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreateTexture
+   * @sa SDL_CreateTextureFromSurface
+   */
+  void Destroy() { return SDL_DestroyTexture(T::release()); }
 };
 
 /**
@@ -2487,47 +2515,6 @@ inline bool CreateWindowAndRenderer(StringParam title,
 inline RendererRef GetRenderer(WindowRef window)
 {
   return {SDL_GetRenderer(window.get())};
-}
-
-/**
- * Destroy the specified texture.
- *
- * Passing NULL or an otherwise invalid texture will set the SDL error message
- * to "Invalid texture".
- *
- * @param texture the texture to destroy.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_CreateTexture
- * @sa SDL_CreateTextureFromSurface
- */
-template<ObjectBox<SDL_Texture*> T>
-inline void DestroyTexture(T&& texture)
-{
-  return SDL_DestroyTexture(texture.release());
-}
-
-/**
- * Destroy the rendering context for a window and free all associated
- * textures.
- *
- * This should be called before destroying the associated window.
- *
- * @param renderer the rendering context.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_CreateRenderer
- */
-template<ObjectBox<SDL_Renderer*> T>
-inline void DestroyRenderer(T&& renderer)
-{
-  return SDL_DestroyRenderer(renderer.release());
 }
 
 /**
@@ -2735,14 +2722,14 @@ bool RendererBase<T>::RenderGeometryRaw(TextureRef texture,
                                size_indices);
 }
 
-void ObjectDeleter<SDL_Renderer>::operator()(SDL_Renderer* renderer) const
+void ObjectDeleter<SDL_Renderer>::operator()(RendererRef renderer) const
 {
-  DestroyRenderer(RendererRef(renderer));
+  renderer.Destroy();
 }
 
-void ObjectDeleter<SDL_Texture>::operator()(SDL_Texture* texture) const
+void ObjectDeleter<SDL_Texture>::operator()(TextureRef texture) const
 {
-  DestroyTexture(TextureRef(texture));
+  texture.Destroy();
 }
 #pragma endregion impl
 

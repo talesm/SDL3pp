@@ -19,7 +19,6 @@ var SDL3pp__pixels_8h =
     [ "PixelFormatDetails", "SDL3pp__pixels_8h.html#a87ff9a33ccc542e0888dd408ba08bfbc", null ],
     [ "PixelType", "SDL3pp__pixels_8h.html#aedfdadf087ddd7d55c732a8f05d2bde2", null ],
     [ "TransferCharacteristics", "SDL3pp__pixels_8h.html#a593e88793075184f8b332a9b893fa6b5", null ],
-    [ "DestroyPalette", "SDL3pp__pixels_8h.html#a205ff607fdde9280b720e4220a307f9f", null ],
     [ "Get", "SDL3pp__pixels_8h.html#a11147d0648379ea87f22e39e0079aff2", null ],
     [ "GetRGB", "SDL3pp__pixels_8h.html#aac2cf4390b1c8066bce35c15c1ccb934", null ],
     [ "GetRGBA", "SDL3pp__pixels_8h.html#a49d732d7c5ee9b90b1e9634d0716456b", null ],

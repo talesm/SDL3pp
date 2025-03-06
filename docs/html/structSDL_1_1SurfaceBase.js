@@ -19,6 +19,7 @@ var structSDL_1_1SurfaceBase =
     [ "Convert", "structSDL_1_1SurfaceBase.html#a6a6b84f8c84046fe8fa4f0c498fd76db", null ],
     [ "Convert", "structSDL_1_1SurfaceBase.html#a9ccf82503e809a7bc890b1662ede3d5c", null ],
     [ "CreatePalette", "structSDL_1_1SurfaceBase.html#aaa82afa72b93cc2d04f005775c667415", null ],
+    [ "Destroy", "structSDL_1_1SurfaceBase.html#ae35a2d03e5429009c55289a504d49ecb", null ],
     [ "Duplicate", "structSDL_1_1SurfaceBase.html#a2b8d60357059a34ea1724fcacdc23c42", null ],
     [ "Fill", "structSDL_1_1SurfaceBase.html#ac21134197559fbe37e58a0bb6151ea65", null ],
     [ "Fill", "structSDL_1_1SurfaceBase.html#a0bafdc08ac13d4a6842990f9350d1b78", null ],

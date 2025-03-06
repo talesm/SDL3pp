@@ -24,6 +24,7 @@
  *
  * Properties can be removed from a group by using PropertiesBase.Clear().
  */
+
 #ifndef SDL3PP_PROPERTIES_H_
 #define SDL3PP_PROPERTIES_H_
 
@@ -48,7 +49,7 @@ using PropertiesRef =
 struct PropertiesDeleter
 {
   using pointer = FancyPointer<SDL_PropertiesID>;
-  inline void operator()(pointer props) const;
+  inline void operator()(PropertiesRef props) const;
 };
 
 /**
@@ -544,6 +545,24 @@ struct PropertiesBase : T
   }
 
   /**
+   * Destroy a group of properties.
+   *
+   * All properties are deleted and their cleanup functions will be called, if
+   * any.
+   *
+   * This object becomes empty after the call.
+   *
+   * @threadsafety This function should not be called while these properties are
+   *               locked or other threads might be setting or getting values
+   *               from these properties.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreateProperties
+   */
+  void Destroy() { return SDL_DestroyProperties(T::release()); }
+
+  /**
    * Returns the number of properties this has
    *
    * This uses Enumerate() internally, so might not be so fast
@@ -569,34 +588,11 @@ inline PropertiesRef GetGlobalProperties()
   return FancyPointer{SDL_GetGlobalProperties()};
 }
 
-/**
- * Destroy a group of properties.
- *
- * All properties are deleted and their cleanup functions will be called, if
- * any.
- *
- * @param props the properties to destroy.
- *
- * @threadsafety This function should not be called while these properties are
- *               locked or other threads might be setting or getting values
- *               from these properties.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_CreateProperties
- */
-template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-inline void DestroyProperties(T&& props)
-{
-  SDL_DestroyProperties(props.release());
-}
-
 #pragma region impl
 
-inline void PropertiesDeleter::operator()(
-  PropertiesDeleter::pointer props) const
+inline void PropertiesDeleter::operator()(PropertiesRef props) const
 {
-  DestroyProperties(PropertiesRef(props));
+  props.Destroy();
 }
 
 #pragma endregion impl
