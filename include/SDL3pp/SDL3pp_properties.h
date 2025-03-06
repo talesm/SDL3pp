@@ -1,6 +1,8 @@
 /**
  * @file SDL3pp_properties.h
  *
+ * # CategoryProperties
+ *
  * A property is a variable that can be created and retrieved by name at
  * runtime.
  *
@@ -11,18 +13,17 @@
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
- * `void*` pointer types.
- * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
- * types.
- * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
- * 64-bit integer types.
- * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
- * point types.
- * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
- * boolean types.
+ * - SDL_SetPointerProperty and SDL_GetPointerProperty operate on `void*`
+ *   pointer types.
+ * - SDL_SetStringProperty and SDL_GetStringProperty operate on string types.
+ * - SDL_SetNumberProperty and SDL_GetNumberProperty operate on signed 64-bit
+ *   integer types.
+ * - SDL_SetFloatProperty and SDL_GetFloatProperty operate on floating point
+ *   types.
+ * - SDL_SetBooleanProperty and SDL_GetBooleanProperty operate on boolean
+ *   types.
  *
- * Properties can be removed from a group by using PropertiesBase.Clear().
+ * Properties can be removed from a group by using SDL_ClearProperty.
  */
 
 #ifndef SDL3PP_PROPERTIES_H_
@@ -37,7 +38,7 @@
 namespace SDL {
 
 // Forward decl
-template<class T>
+template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 struct PropertiesBase;
 
 /**
@@ -65,6 +66,9 @@ using Properties =
  */
 using PropertyType = SDL_PropertyType;
 
+// Forward decl
+struct PropertiesLock;
+
 /**
  * @brief Wrap properties id
  *
@@ -90,9 +94,11 @@ using PropertyType = SDL_PropertyType;
  *
  * Properties can be removed from a group by using SDL_ClearProperty.
  *
+ * @since This datatype is available since SDL 3.2.0.
+ *
  * @ingroup resource
  */
-template<class T>
+template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 struct PropertiesBase : T
 {
   using T::T;
@@ -113,12 +119,12 @@ struct PropertiesBase : T
    * @sa SDL_DestroyProperties
    */
   PropertiesBase()
-    : T(FancyPointer{SDL_CreateProperties()})
+    : T(SDL_CreateProperties())
   {
   }
 
   /**
-   * @brief Copy a group of properties.
+   * Copy a group of properties.
    *
    * Copy all the properties from one group of properties to another, with the
    * exception of properties requiring cleanup (set using
@@ -130,11 +136,36 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
   bool CopyPropertiesTo(PropertiesRef dst) const
   {
     return SDL_CopyProperties(T::get(), dst.get());
   }
+
+  /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @returns PropertiesLock on success or false on failure; call GetError() for
+   * more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_UnlockProperties
+   */
+  PropertiesLock Lock() &;
 
   /**
    * A callback used to free resources when a property is deleted.
@@ -165,8 +196,6 @@ struct PropertiesBase : T
    */
   using CleanupFunction = std::function<void(void*)>;
 
-  // TODO SDL_LockProperties & SDL_UnlockProperties
-
   /**
    * Set a pointer property in a group of properties with a cleanup function
    * that is called when the property is deleted.
@@ -195,10 +224,10 @@ struct PropertiesBase : T
    * @sa PropertiesRef.SetPointer
    * @sa PropertiesRef.CleanupCallback
    */
-  inline bool SetPointerWithCleanup(StringParam name,
-                                    void* value,
-                                    CleanupCallback cleanup,
-                                    void* userdata)
+  bool SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupCallback cleanup,
+                             void* userdata)
   {
     return SDL_SetPointerPropertyWithCleanup(
       T::get(), name, value, cleanup, userdata);
@@ -237,7 +266,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Set a pointer property in a group of properties.
+   * Set a pointer property in a group of properties.
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property, or NULL to delete the property.
@@ -245,6 +274,16 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPointer()
+   * @sa Has()
+   * @sa SetBoolean()
+   * @sa SetFloat()
+   * @sa SetNumber()
+   * @sa SetPointerWithCleanup()
+   * @sa SetString()
    */
   bool SetPointer(StringParam name, void* value)
   {
@@ -252,7 +291,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Set a string property in a group of properties.
+   * Set a string property in a group of properties.
    *
    * This function makes a copy of the string; the caller does not have to
    * preserve the data after this call completes.
@@ -263,6 +302,10 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetString()
    */
   bool SetString(StringParam name, StringParam value)
   {
@@ -270,7 +313,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Set an integer property in a group of properties.
+   * Set an integer property in a group of properties.
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
@@ -278,6 +321,10 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetNumber()
    */
   bool SetNumber(StringParam name, Sint64 value)
   {
@@ -285,7 +332,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Set an floating point property in a group of properties.
+   * Set a floating point property in a group of properties.
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
@@ -293,6 +340,10 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetFloat()
    */
   bool SetFloat(StringParam name, float value)
   {
@@ -300,7 +351,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Set an boolean property in a group of properties.
+   * Set a boolean property in a group of properties.
    *
    * @param name the name of the property to modify.
    * @param value the new value of the property.
@@ -308,23 +359,50 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetBoolean()
    */
   bool SetBoolean(StringParam name, bool value)
   {
     return SDL_SetBooleanProperty(T::get(), name, value);
   }
 
-  /// @brief Return whether a property exists
+  /**
+   * Return whether a property exists.
+   *
+   * @param name the name of the property to query.
+   * @returns true if the property exists, or false if it doesn't.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   */
   bool Has(StringParam name) const { return SDL_HasProperty(T::get(), name); }
 
-  /// @brief Get the type of a property in a group of properties.
+  /**
+   * Get the type of a property.
+   *
+   * @param name the name of the property to query.
+   * @returns the type of the property, or SDL_PROPERTY_TYPE_INVALID if it is
+   *          not set.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Has()
+   */
   PropertyType GetType(StringParam name) const
   {
     return SDL_GetPropertyType(T::get(), name);
   }
 
   /**
-   * @brief Get a pointer property from a group of properties.
+   * Get a pointer property from a group of properties.
    *
    * You can use SDL_GetPropertyType() to query whether the property exists and
    * is a pointer property.
@@ -346,6 +424,15 @@ struct PropertiesBase : T
    *               If you need to avoid this, use SDL_LockProperties() and
    *               SDL_UnlockProperties().
    *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetBoolean()
+   * @sa GetFloat()
+   * @sa GetNumber()
+   * @sa GetType()
+   * @sa GetString()
+   * @sa Has()
+   * @sa SetPointer()
    */
   void* GetPointer(StringParam name, void* default_value) const
   {
@@ -387,7 +474,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Get a number property from a group of properties.
+   * Get a number property from a group of properties.
    *
    * You can use SDL_GetPropertyType() to query whether the property exists and
    * is a number property.
@@ -403,6 +490,12 @@ struct PropertiesBase : T
    *          not a number property.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   * @sa Has()
+   * @sa SetNumber()
    */
   Sint64 GetNumber(StringParam name, Sint64 default_value) const
   {
@@ -410,7 +503,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Get a floating point property from a group of properties.
+   * Get a floating point property from a group of properties.
    *
    * You can use SDL_GetPropertyType() to query whether the property exists and
    * is a floating point property.
@@ -426,6 +519,12 @@ struct PropertiesBase : T
    *          not a float property.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   * @sa Has()
+   * @sa SetFloat()
    */
   float GetFloat(StringParam name, float default_value) const
   {
@@ -433,7 +532,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Get a boolean property from a group of properties.
+   * Get a boolean property from a group of properties.
    *
    * You can use SDL_GetPropertyType() to query whether the property exists and
    * is a boolean property.
@@ -449,6 +548,12 @@ struct PropertiesBase : T
    *          not a boolean property.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   * @sa Has()
+   * @sa SetBoolean()
    */
   bool GetBoolean(StringParam name, bool default_value) const
   {
@@ -456,13 +561,15 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Clear a property from a group of properties.
+   * Clear a property from a group of properties.
    *
    * @param name the name of the property to clear.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
   bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
 
@@ -502,6 +609,8 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
   bool Enumerate(EnumerateCallback callback, void* userdata) const
   {
@@ -550,7 +659,7 @@ struct PropertiesBase : T
    * All properties are deleted and their cleanup functions will be called, if
    * any.
    *
-   * This object becomes empty after the call.
+   * @post This object becomes empty after the call.
    *
    * @threadsafety This function should not be called while these properties are
    *               locked or other threads might be setting or getting values
@@ -578,6 +687,68 @@ struct PropertiesBase : T
 };
 
 /**
+ * @brief Wrap the lock state for PropertiesBase
+ *
+ */
+class PropertiesLock
+{
+  PropertiesRef properties;
+
+  /**
+   * @sa PropertiesBase.Lock()
+   */
+  explicit PropertiesLock(PropertiesRef properties)
+    : properties(properties)
+  {
+  }
+
+public:
+  /// Default ctor
+  PropertiesLock()
+    : properties(nullptr)
+  {
+  }
+
+  PropertiesLock(const PropertiesLock& other) = delete;
+
+  /// Move ctor
+  PropertiesLock(PropertiesLock&& other)
+    : properties(std::move(other.properties))
+  {
+  }
+
+  /**
+   * @sa Unlock()
+   */
+  ~PropertiesLock() { SDL_UnlockProperties(properties.get()); }
+
+  PropertiesLock& operator=(PropertiesLock other)
+  {
+    std::swap(properties, other.properties);
+    return *this;
+  }
+
+  /**
+   * @brief Returns true if lock is active
+   */
+  constexpr operator bool() const { return bool(properties); }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.Lock()
+   */
+  void Unlock() { return SDL_UnlockProperties(properties.release()); }
+
+  template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
+  friend class PropertiesBase;
+};
+
+/**
  * Get the global SDL properties.
  *
  * @returns a valid property ID on success or 0 on failure; call
@@ -593,6 +764,13 @@ inline PropertiesRef GetGlobalProperties()
 inline void PropertiesDeleter::operator()(PropertiesRef props) const
 {
   props.Destroy();
+}
+
+template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
+PropertiesLock PropertiesBase<T>::Lock() &
+{
+  if (SDL_LockProperties(T::get())) return {*this};
+  return {nullptr};
 }
 
 #pragma endregion impl

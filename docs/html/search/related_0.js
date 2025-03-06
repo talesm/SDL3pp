@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['surfacebase_0',['SurfaceBase',['../classSDL_1_1SurfaceLock.html#a90b31094efd41b0018a2719df3e3ac54',1,'SDL::SurfaceLock']]]
+  ['propertiesbase_0',['PropertiesBase',['../classSDL_1_1PropertiesLock.html#a38073a958a1e30edd007e62f1627316f',1,'SDL::PropertiesLock']]]
 ];

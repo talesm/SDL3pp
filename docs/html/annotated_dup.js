@@ -29,6 +29,7 @@ var annotated_dup =
       [ "Point", "structSDL_1_1Point.html", "structSDL_1_1Point" ],
       [ "PropertiesBase", "structSDL_1_1PropertiesBase.html", "structSDL_1_1PropertiesBase" ],
       [ "PropertiesDeleter", "structSDL_1_1PropertiesDeleter.html", "structSDL_1_1PropertiesDeleter" ],
+      [ "PropertiesLock", "classSDL_1_1PropertiesLock.html", "classSDL_1_1PropertiesLock" ],
       [ "Rect", "structSDL_1_1Rect.html", "structSDL_1_1Rect" ],
       [ "RendererBase", "structSDL_1_1RendererBase.html", "structSDL_1_1RendererBase" ],
       [ "SDL", "structSDL_1_1SDL.html", "structSDL_1_1SDL" ],

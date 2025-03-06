@@ -28,6 +28,7 @@ var group__resource =
       [ "GetString", "structSDL_1_1PropertiesBase.html#a39972e4c1a747dacef112036482c37fc", null ],
       [ "GetType", "structSDL_1_1PropertiesBase.html#a54840945564bad4d728db1024266916c", null ],
       [ "Has", "structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5", null ],
+      [ "Lock", "structSDL_1_1PropertiesBase.html#afc47d93746c03ebc6465e57ef8cc0e65", null ],
       [ "SetBoolean", "structSDL_1_1PropertiesBase.html#ae3ef622691ec79576bd91c4c27740a4a", null ],
       [ "SetFloat", "structSDL_1_1PropertiesBase.html#a9f7f305b141076af2b410e245ad935dd", null ],
       [ "SetNumber", "structSDL_1_1PropertiesBase.html#ac291ed0dd774d2ce5747f5cba87fbf30", null ],

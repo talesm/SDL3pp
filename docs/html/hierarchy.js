@@ -19,6 +19,7 @@ var hierarchy =
     [ "SDL::OptionalRef< T >", "classSDL_1_1OptionalRef.html", null ],
     [ "SDL::PixelFormat", "structSDL_1_1PixelFormat.html", null ],
     [ "SDL::PropertiesDeleter", "structSDL_1_1PropertiesDeleter.html", null ],
+    [ "SDL::PropertiesLock", "classSDL_1_1PropertiesLock.html", null ],
     [ "SDL::SDL", "structSDL_1_1SDL.html", null ],
     [ "SDL_Color", null, [
       [ "SDL::Color", "structSDL_1_1Color.html", null ]
@@ -42,6 +43,7 @@ var hierarchy =
     [ "SDL::StringParamImpl", "classSDL_1_1StringParamImpl.html", null ],
     [ "SDL::SurfaceLock", "classSDL_1_1SurfaceLock.html", null ],
     [ "T", null, [
+      [ "SDL::PropertiesBase< ObjectRef< SDL_PropertiesID, FancyPointer< SDL_PropertiesID > > >", "structSDL_1_1PropertiesBase.html", null ],
       [ "SDL::SurfaceBase< ObjectRef< SDL_Surface > >", "structSDL_1_1SurfaceBase.html", null ],
       [ "SDL::EnvironmentBase< T >", "structSDL_1_1EnvironmentBase.html", null ],
       [ "SDL::IConvBase< T >", "structSDL_1_1IConvBase.html", null ],

@@ -1,0 +1,23 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,287,44,313"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1PropertiesBase.html" title=" " alt="" coords="92,5,332,75"/>
+<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="24,273,29,233,40,183,59,131,73,107,90,85,104,73,107,77,94,88,77,110,64,133,45,184,34,233,30,274"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1SurfaceBase.html" title=" " alt="" coords="115,99,309,139"/>
+<area shape="poly" id="edge8_Node000000_Node000002" title=" " alt="" coords="28,273,47,211,65,177,90,149,113,134,116,138,94,153,70,180,52,213,33,275"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1EnvironmentBase.html" title="A thread&#45;safe set of environment variables." alt="" coords="108,163,316,189"/>
+<area shape="poly" id="edge9_Node000000_Node000003" title=" " alt="" coords="34,273,56,234,71,214,91,198,112,186,115,191,93,202,75,218,60,237,38,276"/>
+<area shape="rect" id="Node000004" href="$structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state." alt="" coords="131,213,293,238"/>
+<area shape="poly" id="edge10_Node000000_Node000004" title=" " alt="" coords="47,276,68,260,91,247,130,234,131,239,93,252,71,265,51,280"/>
+<area shape="rect" id="Node000005" href="$structSDL_1_1PaletteBase.html" title="A set of indexed colors representing a palette." alt="" coords="127,262,297,287"/>
+<area shape="poly" id="edge11_Node000000_Node000005" title=" " alt="" coords="57,293,126,284,127,289,58,298"/>
+<area shape="rect" id="Node000006" href="$structSDL_1_1PropertiesBase.html" title="Wrap properties id." alt="" coords="117,311,307,337"/>
+<area shape="poly" id="edge12_Node000000_Node000006" title=" " alt="" coords="58,301,117,309,116,314,57,307"/>
+<area shape="rect" id="Node000007" href="$structSDL_1_1RendererBase.html" title="A structure representing rendering state." alt="" coords="120,361,304,386"/>
+<area shape="poly" id="edge13_Node000000_Node000007" title=" " alt="" coords="52,319,93,346,130,358,128,363,91,350,49,324"/>
+<area shape="rect" id="Node000008" href="$structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting." alt="" coords="125,410,299,435"/>
+<area shape="poly" id="edge14_Node000000_Node000008" title=" " alt="" coords="39,324,61,362,76,380,93,395,126,410,123,415,91,400,72,384,56,365,34,327"/>
+<area shape="rect" id="Node000009" href="$structSDL_1_1TextureBase.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="125,459,299,485"/>
+<area shape="poly" id="edge15_Node000000_Node000009" title=" " alt="" coords="33,326,40,354,52,387,70,418,94,445,126,462,124,466,90,449,65,421,47,389,35,356,28,327"/>
+<area shape="rect" id="Node000010" href="$structSDL_1_1WindowBase.html" title="Represents a handle to a window." alt="" coords="123,509,301,534"/>
+<area shape="poly" id="edge16_Node000000_Node000010" title=" " alt="" coords="30,326,34,364,45,410,64,456,77,476,94,494,125,511,122,516,90,498,73,479,59,458,39,411,29,365,24,327"/>
+</map>

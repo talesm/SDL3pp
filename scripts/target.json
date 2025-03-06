@@ -3895,7 +3895,7 @@
           "template": [
             {
               "name": "T",
-              "type": "class"
+              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>"
             }
           ],
           "doc": ""
@@ -3945,6 +3945,11 @@
           "sourceName": "SDL_PropertyType",
           "type": "SDL_PropertyType"
         },
+        "PropertiesLock-forward": {
+          "name": "PropertiesLock",
+          "kind": "forward",
+          "doc": ""
+        },
         "PropertiesBase": {
           "doc": "SDL properties ID\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "PropertiesBase",
@@ -3953,7 +3958,7 @@
           "sourceName": "SDL_PropertiesID",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>",
               "name": "T"
             }
           ],
@@ -3983,7 +3988,17 @@
                   "type": "PropertiesRef"
                 }
               ],
-              "sourceName": "SDL_CopyProperties"
+              "sourceName": "SDL_CopyProperties",
+              "immutable": true
+            },
+            "Lock": {
+              "doc": "Lock a group of properties.\n\nObtain a multi-threaded lock for these properties. Other threads will wait\nwhile trying to lock these properties until they are unlocked. Properties\nmust be unlocked before they are destroyed.\n\nThe lock is automatically taken when setting individual properties, this\nfunction is only needed when you want to set several properties atomically\nor want to guarantee that properties being queried aren't freed in another\nthread.\n\n@param props the properties to lock.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_UnlockProperties",
+              "name": "Lock",
+              "kind": "function",
+              "type": "PropertiesLock",
+              "parameters": [],
+              "sourceName": "SDL_LockProperties",
+              "reference": 1
             },
             "CleanupCallback": {
               "doc": "A callback used to free resources when a property is deleted.\n\nThis should release any resources associated with `value` that are no\nlonger needed.\n\nThis callback is set per-property. Different properties in the same group\ncan have different cleanup callbacks.\n\nThis callback will be called _during_ SDL_SetPointerPropertyWithCleanup if\nthe function fails for any reason.\n\n@param userdata an app-defined pointer passed to the callback.\n@param value the pointer assigned to the property to clean up.\n\n@threadsafety This callback may fire without any locks held; if this is a\n              concern, the app should provide its own locking.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_SetPointerPropertyWithCleanup",
@@ -4338,6 +4353,100 @@
               "sourceName": "SDL_DestroyProperties"
             }
           }
+        },
+        "PropertiesLock": {
+          "name": "PropertiesLock",
+          "kind": "struct",
+          "entries": {
+            "properties": {
+              "kind": "var",
+              "type": "PropertiesRef",
+              "name": "properties",
+              "doc": ""
+            },
+            "PropertiesLock": [
+              {
+                "doc": "@sa PropertiesBase.Lock()",
+                "kind": "function",
+                "type": "explicit",
+                "parameters": [
+                  {
+                    "name": "properties",
+                    "type": "PropertiesRef"
+                  }
+                ],
+                "name": "PropertiesLock"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [],
+                "name": "PropertiesLock",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const PropertiesLock &",
+                    "name": "other"
+                  }
+                ],
+                "name": "PropertiesLock",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "PropertiesLock &&",
+                    "name": "other"
+                  }
+                ],
+                "name": "PropertiesLock",
+                "doc": ""
+              }
+            ],
+            "~PropertiesLock": {
+              "kind": "function",
+              "doc": "@sa Unlock()",
+              "type": "",
+              "parameters": [],
+              "name": "~PropertiesLock"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "PropertiesLock &",
+              "parameters": [
+                {
+                  "type": "PropertiesLock",
+                  "name": "other"
+                }
+              ],
+              "name": "operator=",
+              "doc": ""
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "operator bool",
+              "doc": ""
+            },
+            "Unlock": {
+              "doc": "Unlock a group of properties.\n\n@param props the properties to unlock.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LockProperties",
+              "name": "Unlock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_UnlockProperties"
+            }
+          },
+          "doc": ""
         },
         "GetGlobalProperties": {
           "doc": "Get the global SDL properties.\n\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
@@ -6464,6 +6573,15 @@
                 }
               ],
               "name": "operator=",
+              "doc": ""
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "operator bool",
               "doc": ""
             },
             "Unlock": {

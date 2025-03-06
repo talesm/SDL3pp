@@ -4,7 +4,7 @@ var searchData=
   ['uitoa_1',['uitoa',['../namespaceSDL.html#a6ca0851c2d9980695748c979e2d15608',1,'SDL']]],
   ['ulltoa_2',['ulltoa',['../namespaceSDL.html#ac72cec45a7c35aeb116880203c1b03d9',1,'SDL']]],
   ['ultoa_3',['ultoa',['../namespaceSDL.html#a2450290efea2bebff1f164a6c4a04d38',1,'SDL']]],
-  ['unlock_4',['Unlock',['../classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807',1,'SDL::SurfaceLock']]],
+  ['unlock_4',['unlock',['../classSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19',1,'SDL::PropertiesLock::Unlock()'],['../classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807',1,'SDL::SurfaceLock::Unlock()']]],
   ['unsetenv_5funsafe_5',['unsetenv_unsafe',['../namespaceSDL.html#a7dc726179e2ae431d7db8164099e333a',1,'SDL']]],
   ['unsetvariable_6',['UnsetVariable',['../structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f',1,'SDL::EnvironmentBase']]],
   ['update_7',['Update',['../structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf',1,'SDL::TextureBase']]],

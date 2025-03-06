@@ -795,10 +795,6 @@
       }
     },
     "SDL_properties.h": {
-      "ignoreEntries": [
-        "SDL_LockProperties",
-        "SDL_UnlockProperties"
-      ],
       "includeAfter": {
         "__begin": [
           {
@@ -807,7 +803,7 @@
             "template": [
               {
                 "name": "T",
-                "type": "class"
+                "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>"
               }
             ]
           },
@@ -846,8 +842,87 @@
           {
             "name": "PropertyType",
             "kind": "placeholder"
+          },
+          {
+            "name": "PropertiesLock",
+            "kind": "forward"
           }
         ],
+        "SDL_PropertiesID": {
+          "name": "PropertiesLock",
+          "kind": "struct",
+          "entries": {
+            "properties": {
+              "kind": "var",
+              "type": "PropertiesRef"
+            },
+            "PropertiesLock": [
+              {
+                "doc": "@sa PropertiesBase.Lock()",
+                "kind": "function",
+                "type": "explicit",
+                "parameters": [
+                  {
+                    "name": "properties",
+                    "type": "PropertiesRef"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const PropertiesLock &",
+                    "name": "other"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "PropertiesLock &&",
+                    "name": "other"
+                  }
+                ]
+              }
+            ],
+            "~PropertiesLock": {
+              "kind": "function",
+              "doc": "@sa Unlock()",
+              "type": "",
+              "parameters": []
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "PropertiesLock &",
+              "parameters": [
+                {
+                  "type": "PropertiesLock",
+                  "name": "other"
+                }
+              ]
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "SDL_UnlockProperties": {
+              "name": "Unlock",
+              "parameters": []
+            }
+          }
+        },
         "__end": [
           {
             "kind": "function",
@@ -909,7 +984,7 @@
           "name": "PropertiesBase",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<FancyPointer<SDL_PropertiesID>>",
               "name": "T"
             }
           ],
@@ -921,7 +996,12 @@
             "SDL_CreateProperties": "ctor",
             "SDL_CopyProperties": {
               "kind": "function",
-              "name": "CopyPropertiesTo"
+              "name": "CopyPropertiesTo",
+              "immutable": true
+            },
+            "SDL_LockProperties": {
+              "type": "PropertiesLock",
+              "reference": 1
             },
             "SDL_CleanupPropertyCallback": {
               "name": "CleanupCallback"
@@ -1561,6 +1641,13 @@
                 }
               ]
             },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
             "SDL_UnlockSurface": {
               "name": "Unlock",
               "parameters": []
@@ -1642,7 +1729,6 @@
               "parameters": []
             },
             "SDL_LockSurface": {
-              "name": "Lock",
               "type": "SurfaceLock",
               "reference": 1
             },

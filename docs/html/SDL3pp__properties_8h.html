@@ -98,9 +98,6 @@ $(document).ready(function(){initNavTree('SDL3pp__properties_8h.html',''); initR
   <div class="headertitle"><div class="title">SDL3pp_properties.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>A property is a variable that can be created and retrieved by name at runtime.  
-<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;SDL3/SDL_properties.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__callbackWrapper_8h_source.html">SDL3pp_callbackWrapper.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>&quot;</code><br />
@@ -111,7 +108,7 @@ Include dependency graph for SDL3pp_properties.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="SDL3pp__properties_8h__incl.png" border="0" usemap="#aSDL3pp_2SDL3pp__properties_8h" alt=""/></div>
 <map name="aSDL3pp_2SDL3pp__properties_8h" id="aSDL3pp_2SDL3pp__properties_8h">
-<area shape="rect" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="377,5,587,31"/>
+<area shape="rect" title=" " alt="" coords="377,5,587,31"/>
 <area shape="rect" title=" " alt="" coords="5,79,175,104"/>
 <area shape="poly" title=" " alt="" coords="419,33,167,79,166,74,419,28"/>
 <area shape="rect" href="SDL3pp__callbackWrapper_8h.html" title=" " alt="" coords="199,79,397,104"/>
@@ -147,7 +144,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="SDL3pp__properties_8h__dep__incl.png" border="0" usemap="#aSDL3pp_2SDL3pp__properties_8hdep" alt=""/></div>
 <map name="aSDL3pp_2SDL3pp__properties_8hdep" id="aSDL3pp_2SDL3pp__properties_8hdep">
-<area shape="rect" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="34,5,243,31"/>
+<area shape="rect" title=" " alt="" coords="34,5,243,31"/>
 <area shape="rect" href="SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="5,225,189,251"/>
 <area shape="poly" title=" " alt="" coords="86,38,56,55,33,80,26,99,25,119,30,140,39,160,63,196,87,223,83,227,59,200,34,162,25,141,20,120,21,98,28,77,53,51,83,34"/>
 <area shape="rect" href="SDL3pp__surface_8h.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="43,79,234,104"/>
@@ -168,6 +165,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesBase.html">SDL::PropertiesBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap properties id.  <a href="structSDL_1_1PropertiesBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PropertiesLock.html">SDL::PropertiesLock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1PropertiesBase.html" title="Wrap properties id.">PropertiesBase</a>.  <a href="classSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -195,17 +195,19 @@ Functions</h2></td></tr>
 <tr class="separator:aff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A property is a variable that can be created and retrieved by name at runtime. </p>
+<div class="textblock"><h1><a class="anchor" id="categoryproperties"></a>
+CategoryProperties</h1>
+<p>A property is a variable that can be created and retrieved by name at runtime.</p>
 <p>All properties are part of a property group (SDL_PropertiesID). A property group can be created with the SDL_CreateProperties function and destroyed with the SDL_DestroyProperties function.</p>
 <p>Properties can be added to and retrieved from a property group through the following functions:</p>
 <ul>
-<li>PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on <code>void*</code> pointer types.</li>
-<li>PropertiesBase.SetString() and PropertiesBase.GetString() operate on string types.</li>
-<li>PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed 64-bit integer types.</li>
-<li>PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating point types.</li>
-<li>PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on boolean types.</li>
+<li>SDL_SetPointerProperty and SDL_GetPointerProperty operate on <code>void*</code> pointer types.</li>
+<li>SDL_SetStringProperty and SDL_GetStringProperty operate on string types.</li>
+<li>SDL_SetNumberProperty and SDL_GetNumberProperty operate on signed 64-bit integer types.</li>
+<li>SDL_SetFloatProperty and SDL_GetFloatProperty operate on floating point types.</li>
+<li>SDL_SetBooleanProperty and SDL_GetBooleanProperty operate on boolean types.</li>
 </ul>
-<p>Properties can be removed from a group by using PropertiesBase.Clear(). </p>
+<p>Properties can be removed from a group by using SDL_ClearProperty. </p>
 
 <p class="definition">Definition in file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 </div></div><!-- contents -->

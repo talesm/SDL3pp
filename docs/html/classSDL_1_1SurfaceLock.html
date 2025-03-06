@@ -116,6 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a143fd9ac7ed58d25c97ed44d375d8813"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e19fe611da5825589927071722b5651" id="r_a7e19fe611da5825589927071722b5651"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceLock.html#a7e19fe611da5825589927071722b5651">operator=</a> (<a class="el" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a> <a class="el" href="classSDL_1_1OptionalRef.html">other</a>)</td></tr>
 <tr class="separator:a7e19fe611da5825589927071722b5651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ddc8c91a5254d1167e4c19e4bf0477e" id="r_a0ddc8c91a5254d1167e4c19e4bf0477e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">constexpr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceLock.html#a0ddc8c91a5254d1167e4c19e4bf0477e">operator bool</a> () <a class="el" href="classSDL_1_1OptionalRef.html">const</a></td></tr>
+<tr class="memdesc:a0ddc8c91a5254d1167e4c19e4bf0477e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if lock is active.  <br /></td></tr>
+<tr class="separator:a0ddc8c91a5254d1167e4c19e4bf0477e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf32cd016f3943738f27c6641a7b4807" id="r_acf32cd016f3943738f27c6641a7b4807"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807">Unlock</a> ()</td></tr>
 <tr class="memdesc:acf32cd016f3943738f27c6641a7b4807"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release the locked surface after directly accessing the pixels.  <br /></td></tr>
 <tr class="separator:acf32cd016f3943738f27c6641a7b4807"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,7 +281,7 @@ Friends</h2></td></tr>
 
 <p>Get the pixel format. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01774">1774</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01779">1779</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -307,7 +310,7 @@ Friends</h2></td></tr>
 
 <p>Get pitch (the number of bytes between the start of one row the next) </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01769">1769</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01774">1774</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -336,7 +339,36 @@ Friends</h2></td></tr>
 
 <p>Get the pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01764">1764</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01769">1769</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+
+</div>
+</div>
+<a id="a0ddc8c91a5254d1167e4c19e4bf0477e" name="a0ddc8c91a5254d1167e4c19e4bf0477e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ddc8c91a5254d1167e4c19e4bf0477e">&#9670;&#160;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">constexpr</a> SDL::SurfaceLock::operator <a class="el" href="classSDL_1_1OptionalRef.html">bool</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if lock is active. </p>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01755">1755</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -395,7 +427,7 @@ Friends</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SurfaceLock </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01759">1759</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01764">1764</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -422,7 +454,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01777">1777</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01782">1782</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>

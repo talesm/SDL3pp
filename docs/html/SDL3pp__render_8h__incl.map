@@ -18,7 +18,7 @@
 <area shape="poly" id="edge49_Node000001_Node000020" title=" " alt="" coords="1439,29,1477,67,1520,122,1536,154,1546,187,1546,220,1534,252,1510,278,1478,296,1476,291,1506,274,1530,249,1541,219,1540,188,1531,156,1515,125,1473,70,1435,33"/>
 <area shape="rect" id="Node000021" href="$SDL3pp__stringParam_8h.html" title=" " alt="" coords="2615,372,2783,397"/>
 <area shape="poly" id="edge50_Node000001_Node000021" title=" " alt="" coords="1517,17,1831,24,2029,32,2232,44,2421,63,2578,87,2639,103,2685,120,2716,140,2724,151,2727,163,2727,239,2720,305,2708,360,2703,358,2715,304,2721,239,2721,164,2719,153,2712,144,2683,125,2637,108,2577,93,2420,68,2231,50,2029,37,1830,29,1516,23"/>
-<area shape="rect" id="Node000025" href="$SDL3pp__properties_8h.html" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="1937,225,2093,251"/>
+<area shape="rect" id="Node000025" href="$SDL3pp__properties_8h.html" title=" " alt="" coords="1937,225,2093,251"/>
 <area shape="poly" id="edge31_Node000001_Node000025" title=" " alt="" coords="1516,21,1765,36,2075,63,2224,80,2351,100,2447,123,2478,136,2498,150,2505,162,2503,174,2494,184,2480,192,2437,206,2379,217,2240,231,2107,237,2106,232,2239,226,2378,212,2436,201,2478,187,2491,180,2498,172,2499,163,2494,154,2476,141,2445,128,2350,105,2223,85,2075,68,1765,42,1516,26"/>
 <area shape="rect" id="Node000030" href="$SDL3pp__rect_8h.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="1108,225,1223,251"/>
 <area shape="poly" id="edge40_Node000001_Node000030" title=" " alt="" coords="1345,33,1291,51,1266,64,1243,81,1216,111,1196,147,1173,213,1168,211,1192,145,1212,108,1240,77,1263,60,1289,46,1343,28"/>

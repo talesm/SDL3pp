@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="406,5,579,31"/>
 <area shape="rect" id="Node000002" href="$SDL3pp__init_8h.html" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="5,79,169,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="415,36,153,81,152,76,414,30"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__properties_8h.html" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="245,79,455,104"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__properties_8h.html" title=" " alt="" coords="245,79,455,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="459,39,375,81,372,76,456,34"/>
 <area shape="rect" id="Node000004" href="$SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="277,299,461,324"/>
 <area shape="poly" id="edge13_Node000001_Node000004" title=" " alt="" coords="393,32,297,51,259,64,236,81,227,95,222,109,223,140,234,172,254,203,280,232,307,258,354,296,351,300,303,262,276,236,250,206,230,174,217,141,217,108,222,92,232,77,257,59,296,45,392,27"/>

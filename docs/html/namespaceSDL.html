@@ -174,6 +174,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesDeleter.html">PropertiesDeleter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PropertiesLock.html">PropertiesLock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1PropertiesBase.html" title="Wrap properties id.">PropertiesBase</a>.  <a href="classSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Rect.html">Rect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A rectangle, with the origin at the upper left (using integers).  <a href="structSDL_1_1Rect.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2260,7 +2263,7 @@ SDL_SetMemoryFunctions </dd></dl>
 
 <p>Handle to an owned surface. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00058">58</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00059">59</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -2278,7 +2281,7 @@ SDL_SetMemoryFunctions </dd></dl>
 
 <p>Handle to a non owned properties. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00046">46</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00047">47</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -2297,7 +2300,7 @@ SDL_SetMemoryFunctions </dd></dl>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> property type. </p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00066">66</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00067">67</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -4012,7 +4015,7 @@ dst)</code> can return one of the following:</p>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_ConvertPixelsAndColorspace </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01879">1879</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01884">1884</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -4132,7 +4135,7 @@ dst)</code> can return one of the following:</p>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_ConvertPixels </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01919">1919</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01924">1924</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -5775,7 +5778,7 @@ UnsetVariable() </dd></dl>
 <p>Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties. </p>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00586">586</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00757">757</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -8221,7 +8224,7 @@ SDL_ltoa </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceSDL.html#a63ffd07298652015b4c886bd56467389" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01793">1793</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01798">1798</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -8260,7 +8263,7 @@ SDL_ltoa </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceSDL.html#a63ffd07298652015b4c886bd56467389" title="Save a surface to a seekable SDL data stream in BMP format.">SaveBMP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01809">1809</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01814">1814</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -9631,7 +9634,7 @@ SDL_logf </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01966">1966</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01971">1971</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -10515,7 +10518,7 @@ SDL_truncf </dd></dl>
 <dd>
 SDL_SaveBMP </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01832">1832</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01837">1837</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>
@@ -10568,7 +10571,7 @@ SDL_SaveBMP </dd></dl>
 <dd>
 SDL_SaveBMP_IO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01856">1856</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__surface_8h_source.html#l01861">1861</a> of file <a class="el" href="SDL3pp__surface_8h_source.html">SDL3pp_surface.h</a>.</p>
 
 </div>
 </div>

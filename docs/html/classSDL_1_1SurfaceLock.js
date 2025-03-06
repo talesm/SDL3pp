@@ -7,6 +7,7 @@ var classSDL_1_1SurfaceLock =
     [ "GetFormat", "classSDL_1_1SurfaceLock.html#ad45c70cb1482f64ebe35023214a8627f", null ],
     [ "GetPitch", "classSDL_1_1SurfaceLock.html#a53690abcd928853f313d2cef8ca121af", null ],
     [ "GetPixels", "classSDL_1_1SurfaceLock.html#a0a4b5aad974a8bdbe142e5c5ae21529e", null ],
+    [ "operator bool", "classSDL_1_1SurfaceLock.html#a0ddc8c91a5254d1167e4c19e4bf0477e", null ],
     [ "operator=", "classSDL_1_1SurfaceLock.html#a7e19fe611da5825589927071722b5651", null ],
     [ "Unlock", "classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807", null ],
     [ "SurfaceBase", "classSDL_1_1SurfaceLock.html#a90b31094efd41b0018a2719df3e3ac54", null ]

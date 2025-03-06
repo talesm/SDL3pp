@@ -1750,6 +1750,11 @@ public:
   }
 
   /**
+   * @brief Returns true if lock is active
+   */
+  constexpr operator bool() const { return bool(surface); }
+
+  /**
    * Release the locked surface after directly accessing the pixels.
    *
    * @since This function is available since SDL 3.2.0.
