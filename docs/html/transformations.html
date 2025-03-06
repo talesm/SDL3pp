@@ -111,8 +111,14 @@ Function rules</h1>
 <li>Forward declarations are permitted whenever is convenient;</li>
 </ul>
 </li>
-<li>Non method-like functions are represented by simply wrapping them into free functions.</li>
+<li>Non method-like functions are represented by simply wrapping them into free functions:<ul>
+<li>They are always inside the namespace <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>;</li>
+<li>The name thus have the "SDL_" prefix removed;</li>
+<li>Example: SDL_GetCurrentVideoDriver becomes <a class="el" href="namespaceSDL.html#a8185c0d05c5b6793f09c3c01e07c034f" title="Get the name of the currently initialized video driver.">SDL::GetCurrentVideoDriver()</a>;</li>
+</ul>
+</li>
 <li>Method-like functions become class/struct methods accordingly to <a class="el" href="transformations.html#type-rules">Type rules</a>;<ul>
+<li>The Type name is removed, eg SDL_GetTextureProperties becomes <a class="el" href="structSDL_1_1TextureBase.html#a42c6cd85f4d05f3dba98306fc44c031a" title="Get the properties associated with a texture.">SDL::Texture::GetProperties()</a>;</li>
 <li>Functions that involve I/O, like <code>SDL_LoadBMP()</code>, are considered non-method like and thus stay as free functions like: SDL::LoadBMP();</li>
 </ul>
 </li>
@@ -125,14 +131,25 @@ Function rules</h1>
 </ul>
 </li>
 <li>If the parameter is used as const pointer, it is allowed to be transformed to:<ul>
-<li>const reference;</li>
-<li>std::optional value;</li>
-<li>direct value;</li>
-<li>Stay as const pointer;</li>
-<li>Have a combination of any of those as different overloads;</li>
+<li>const reference if mandatory;</li>
+<li><a class="el" href="classSDL_1_1OptionalRef.html" title="Shim to get optional-like interface for references.">SDL::OptionalRef</a> value if parameter is optional;</li>
+<li>The non owning <em>Type</em>Ref, if the type is a <a class="el" href="group__resource.html">Resource</a>.</li>
+</ul>
+</li>
+<li>If the parameter is the only out parameter, and the return type is the regular boolean for success or failure:<ul>
+<li>Remove the parameter;</li>
+<li>If the result is a reference type, return one of the wrapped types;</li>
+<li>Otherwise, wrap the pointed type in a std::optional;</li>
+<li>Do this only if won't cause ambiguity;</li>
 </ul>
 </li>
 <li>If the parameter is a C callback function, the function should have an overload accepting Callback type accordingly to <a class="el" href="transformations.html#callback-rules">Callback rules</a>;</li>
+</ul>
+</li>
+<li>When there are 4 parameters representing a RGBA value:<ul>
+<li>If they are input parameters, replace them by <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">SDL::Color</a> or <a class="el" href="structSDL_1_1FColor.html" title="The bits of this structure can be directly reinterpreted as a float-packed color which uses the SDL_P...">SDL::FColor</a>;</li>
+<li>If they are out parameters, add an overload to return std::optional wrapping the <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">SDL::Color</a> or <a class="el" href="structSDL_1_1FColor.html" title="The bits of this structure can be directly reinterpreted as a float-packed color which uses the SDL_P...">SDL::FColor</a>;</li>
+<li>If there is both a Uint8 e and float versions, also add an overload taking the <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">SDL::Color</a>* and another one taking <a class="el" href="structSDL_1_1FColor.html" title="The bits of this structure can be directly reinterpreted as a float-packed color which uses the SDL_P...">SDL::FColor</a>*;</li>
 </ul>
 </li>
 </ul>
@@ -140,35 +157,44 @@ Function rules</h1>
 Type rules</h1>
 <ul>
 <li>Type that aren't opaque and nor have method-like functions are just typedef'd into the namespace. Eg: <code>using InitFlags = SDL_InitFlags</code>;</li>
-<li>Typedef that aren't opaque nor are created and destroyed by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> functions, but have method-like functions are defined as follows:<ul>
-<li>We define a struct extending the original type for it, eg <code>struct Rect: SDL_Rect{...};</code>;</li>
+<li>Data types that aren't opaque nor are created and destroyed by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> functions, but have method-like functions are defined as follows:<ul>
+<li>If the type is a struct, we define a struct extending it, eg <code>struct Rect: SDL_Rect{...};</code>:<ul>
+<li>A constructor accepting the original type by value or const reference must be provided;</li>
+<li>A constructor with all base class variables should be provided, if there are two or more of them;</li>
+<li>A default constructor should be provided, probably zeroing everything;</li>
+<li>Example: <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">SDL::Rect</a>;</li>
+</ul>
+</li>
+<li>If the type is not a struct (like an enum or an alias for Uint32), then we define a struct containing a single member variable of the original type:<ul>
+<li>A constructor accepting the original type by value or const reference must be provided;</li>
+<li>A conversion operator to the original type must be provided;</li>
+<li>If there is a default invalid state, this should be the default value of the constructor parameter and there must be converting operator to bool;</li>
+<li>Example <a class="el" href="structSDL_1_1PixelFormat.html" title="Pixel format.">SDL::PixelFormat</a>;</li>
+</ul>
+</li>
 <li>No further instance variable is added to it;</li>
 <li>The appropriated method-like functions are wrapped inside its body;</li>
-<li>A default constructor should be provided;</li>
-<li>A constructor with all base class variables should be provided, if there are two or more of them;</li>
-<li>A constructor accepting a base class instance by value or const reference must be provided;</li>
+<li>A constructor accepting a original type by value or const reference must be provided;</li>
 <li>No destructor, copy constructor, move constructor or assignment operator should be defined;</li>
 </ul>
 </li>
-<li>Typedef that create and destroyed by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> functions (such <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>) are represented as follows:<ul>
-<li>A struct called "*Type*Base", defined as a <a href="https://en.cppreference.com/w/cpp/language/crtp">CRTP</a> is defined, expecting the template parameter to have Get() function;<ul>
+<li><a class="el" href="group__resource.html">Resource</a> types that are created and destroyed by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> functions (such <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>) are represented as follows:<ul>
+<li>A struct called <em>Type</em>Base, defined as a <a href="https://en.cppreference.com/w/cpp/language/crtp">CRTP</a> is defined, expecting the template parameter to fulfill the <a class="el" href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a> concept;<ul>
 <li>This struct will have all wrappers for method-like functions defined in its body;</li>
-<li>If the underlining type is not opaque, we should also define <code>operator*()</code> and <code>operator-&gt;()</code> to access its fields;<ul>
-<li>We might define methods to manipulate the most common access patterns directly, when convenient to do so;</li>
+<li>If the original type is a non opaque struct we can define methods to manipulate the most common access patterns directly, when convenient to do so;</li>
+<li>There must be a constructor for each <code>SDL_Create*</code> there;</li>
+<li>It also uses all its parent's constructor.</li>
 </ul>
 </li>
-<li>protected static functions implement its <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code> functions;</li>
+<li>The class <em>Type</em> extends <em>Type</em>Base with a <a class="el" href="classSDL_1_1ObjectUnique.html">SDL::ObjectUnique</a>;<ul>
+<li>This represents an owning reference to the resource and destroy it when it goes out of scope, unless we call <a class="el" href="classSDL_1_1ObjectUnique.html#a9e8fc8c418e3029e9e3f32a1027f0e97">SDL::ObjectUnique.release()</a> before it;</li>
 </ul>
 </li>
-<li>The class *Type*Unique extends *Type*Base and defines it as a std::unique_ptr to the underling type;<ul>
-<li>Inheritance is public;</li>
-<li>The constructors use the *Type*Base's <code>Create*()</code> methods;</li>
-<li>It sets the unique_ptr's deleter to call SDL_Destroy(), so we don't need to deal with the C++ rule of five;</li>
-<li>A typedef to its type without the "Unique" suffix is also provided;</li>
+<li>The class <em>Type</em>Ref extends <em>Type</em>Base with a <a class="el" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef</a>;<ul>
+<li>This represents a non owning reference to the resource. Use this on parameters and as a sort of weak reference to the previous type;</li>
+<li>We can still destroy it manually by calling the right <code>Destroy()</code> on it;</li>
 </ul>
 </li>
-<li>The classes *Type*Shared and *Type*SharedWeak do the equivalent of *Unique but using std::shared_ptr and std::weak_ptr;</li>
-<li>The classes *Type*Wrapper uses a raw pointer internally. It does not provide any way to destroy it and is intended to use by function parameters or some sort of very weak reference;</li>
 </ul>
 </li>
 </ul>
