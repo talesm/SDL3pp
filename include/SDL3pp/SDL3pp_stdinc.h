@@ -424,13 +424,7 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SDL_GetEnvironment
- * @sa SDL_CreateEnvironment
- * @sa SDL_GetEnvironmentVariable
- * @sa SDL_GetEnvironmentVariables
- * @sa SDL_SetEnvironmentVariable
- * @sa SDL_UnsetEnvironmentVariable
- * @sa SDL_DestroyEnvironment
+ * @ingroup resource
  **/
 template<class T>
 struct EnvironmentBase : T
@@ -4392,7 +4386,7 @@ inline float tanf(float x) { return SDL_tanf(x); }
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_iconv_open
+ * @ingroup resource
  **/
 template<class T>
 struct IConvBase : T
@@ -4449,9 +4443,7 @@ struct IConvBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_iconv_open
-   * @sa SDL_iconv_close
-   * @sa SDL_iconv_string
+   * @sa iconv_string
    **/
   inline size_t iconv(const char** inbuf,
                       size_t* inbytesleft,

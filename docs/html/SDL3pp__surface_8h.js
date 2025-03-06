@@ -1,7 +1,6 @@
 var SDL3pp__surface_8h =
 [
     [ "SDL::ObjectDeleter< SDL_Surface >", "structSDL_1_1ObjectDeleter_3_01SDL__Surface_01_4.html", "structSDL_1_1ObjectDeleter_3_01SDL__Surface_01_4" ],
-    [ "SDL::SurfaceBase< T >", "structSDL_1_1SurfaceBase.html", "structSDL_1_1SurfaceBase" ],
     [ "SDL::SurfaceLock", "classSDL_1_1SurfaceLock.html", "classSDL_1_1SurfaceLock" ],
     [ "FlipMode", "SDL3pp__surface_8h.html#aa139652f1cfad9672e6e9898f965812b", null ],
     [ "ScaleMode", "SDL3pp__surface_8h.html#aed7f0fa288a530b226389e23c38e843d", null ],

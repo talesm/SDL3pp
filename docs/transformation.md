@@ -15,7 +15,7 @@ its prefix.
   - An exception is to some support files that we use for ease the abstraction
   and have no C header equivalent.
 - All definitions are inside the `SDL` namespace, definition names lose their
-prefix. Eg `SDL_Surface` becomes `SDL::Surface`;
+prefix. Eg `SDL_Surface` becomes SDL::Surface;
 
 Function rules
 -------------
@@ -27,13 +27,15 @@ functions.
 - Method-like functions become class/struct methods accordingly to 
 [Type rules](#type-rules);
   - Functions that involve I/O, like `SDL_LoadBMP()`, are considered non-method
-  like and thus stay as free functions (`LoadBMP()`);
+  like and thus stay as free functions like: SDL::LoadBMP();
 - The parameters of the function have the same meaning and same order than 
 SDL's C API, transformed as the following:
   - If it is a instance function, the first parameter become the `this` pointer
   and thus is omitted.
   - If the parameter was a `const char*`, its becomes a StringWrapper;
-  - If the parameter is a SDL type, use the type defined in [Type rules](#type-rules);
+  - If the parameter is a SDL type, use the type defined in [Type rules](#type-rules):
+    - If it is an [Resource](#resource), use the non owned version, Eg SDL::SurfaceRef;
+    - Otherwise use the converted name like SDL::Color;
   - If the parameter is used as const pointer, it is allowed to be transformed to:
     - const reference;
     - std::optional value;

@@ -100,6 +100,8 @@ using FlipMode = SDL_FlipMode;
  * @since This struct is available since SDL 3.2.0.
  *
  * @sa SurfaceBase::SurfaceBase()
+ *
+ * @ingroup resource
  */
 template<ObjectBox<SDL_Surface*> T>
 struct SurfaceBase : T

@@ -479,6 +479,7 @@ using SystemTheme = SDL_SystemTheme;
 
 /**
  * @brief Represents a handle to a window
+ * @ingroup resource
  */
 template<class T>
 struct WindowBase : T

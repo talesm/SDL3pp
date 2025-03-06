@@ -114,6 +114,7 @@ struct RendererBase : T
    * @param window the window where rendering is displayed.
    *
    * @threadsafety This function should only be called on the main thread.
+   * @ingroup resource
    */
   RendererBase(WindowRef window)
     : T(SDL_CreateRenderer(window.get(), nullptr))
@@ -1652,10 +1653,7 @@ struct RendererBase : T
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SDL_CreateTexture
- * @sa SDL_CreateTextureFromSurface
- * @sa SDL_CreateTextureWithProperties
- * @sa SDL_DestroyTexture
+ * @ingroup resource
  */
 template<ObjectBox<SDL_Texture*> T>
 struct TextureBase : T

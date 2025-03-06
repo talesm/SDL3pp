@@ -2,7 +2,6 @@ var SDL3pp__video_8h =
 [
     [ "SDL::ObjectDeleter< SDL_Window >", "structSDL_1_1ObjectDeleter_3_01SDL__Window_01_4.html", "structSDL_1_1ObjectDeleter_3_01SDL__Window_01_4" ],
     [ "SDL::Display", "structSDL_1_1Display.html", "structSDL_1_1Display" ],
-    [ "SDL::WindowBase< T >", "structSDL_1_1WindowBase.html", "structSDL_1_1WindowBase" ],
     [ "DisplayMode", "SDL3pp__video_8h.html#a65322ad2ac8ca3b685a8696dc5dc713a", null ],
     [ "DisplayModeData", "SDL3pp__video_8h.html#a767d0eff87f8af9d61ac0624d582c78c", null ],
     [ "DisplayOrientation", "SDL3pp__video_8h.html#a0576b193a1d4adcb648fc1242fbc5cb8", null ],

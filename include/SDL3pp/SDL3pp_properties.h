@@ -89,6 +89,7 @@ using PropertyType = SDL_PropertyType;
  *
  * Properties can be removed from a group by using SDL_ClearProperty.
  *
+ * @ingroup resource
  */
 template<class T>
 struct PropertiesBase : T

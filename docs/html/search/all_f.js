@@ -19,7 +19,7 @@ var searchData=
   ['rendercoordinatestowindow_16',['RenderCoordinatesToWindow',['../structSDL_1_1RendererBase.html#a4ee953b66b42c5d7672db78aa5a7e735',1,'SDL::RendererBase']]],
   ['renderdebugtext_17',['RenderDebugText',['../structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc',1,'SDL::RendererBase']]],
   ['renderer_18',['Renderer',['../namespaceSDL.html#af76226a4b7cbb3af8578bdbd93f6b068',1,'SDL']]],
-  ['rendererbase_19',['rendererbase',['../structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc',1,'SDL::RendererBase::RendererBase(PropertiesRef props)'],['../structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92',1,'SDL::RendererBase::RendererBase(SurfaceRef surface)'],['../structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413',1,'SDL::RendererBase::RendererBase(WindowRef window, StringParam name)'],['../structSDL_1_1RendererBase.html#a6cd596ee84afc3ead3c26a6c429a797c',1,'SDL::RendererBase::RendererBase(WindowRef window)'],['../structSDL_1_1RendererBase.html',1,'SDL::RendererBase&lt; T &gt;']]],
+  ['rendererbase_19',['rendererbase',['../structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413',1,'SDL::RendererBase::RendererBase(WindowRef window, StringParam name)'],['../structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92',1,'SDL::RendererBase::RendererBase(SurfaceRef surface)'],['../structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc',1,'SDL::RendererBase::RendererBase(PropertiesRef props)'],['../group__resource.html#ga6cd596ee84afc3ead3c26a6c429a797c',1,'SDL::RendererBase::RendererBase(WindowRef window)'],['../structSDL_1_1RendererBase.html',1,'SDL::RendererBase&lt; T &gt;']]],
   ['rendererlogicalpresentation_20',['RendererLogicalPresentation',['../namespaceSDL.html#a91be24b12fa4efe591c43f2ece44e32d',1,'SDL']]],
   ['rendererref_21',['RendererRef',['../namespaceSDL.html#a3c15747c0c3091d37a2f14511aba1c7d',1,'SDL']]],
   ['renderfillrect_22',['RenderFillRect',['../structSDL_1_1RendererBase.html#a18cf4e2266ac4aebb2cbe9578f019aa8',1,'SDL::RendererBase']]],
@@ -42,9 +42,11 @@ var searchData=
   ['resetcliprect_39',['resetcliprect',['../structSDL_1_1SurfaceBase.html#ab56e2c8d5eafb9f36fbe8e33cc98144e',1,'SDL::SurfaceBase::ResetClipRect()'],['../structSDL_1_1RendererBase.html#aadf093d5d6a7423dab461367031cffbd',1,'SDL::RendererBase::ResetClipRect()']]],
   ['resettarget_40',['ResetTarget',['../structSDL_1_1RendererBase.html#a4ca57a9d138be624fa363a40cb887718',1,'SDL::RendererBase']]],
   ['resetviewport_41',['ResetViewport',['../structSDL_1_1RendererBase.html#aa44e212c72e672a441ec729a18c26ecb',1,'SDL::RendererBase']]],
-  ['restore_42',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
-  ['round_43',['round',['../namespaceSDL.html#a58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
-  ['roundf_44',['roundf',['../namespaceSDL.html#a9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
-  ['rules_45',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
-  ['runonmainthread_46',['runonmainthread',['../namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../namespaceSDL.html#a02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
+  ['resource_42',['Resource',['../group__resource.html',1,'']]],
+  ['resource_2eh_43',['Resource.h',['../Resource_8h.html',1,'']]],
+  ['restore_44',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
+  ['round_45',['round',['../namespaceSDL.html#a58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
+  ['roundf_46',['roundf',['../namespaceSDL.html#a9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
+  ['rules_47',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
+  ['runonmainthread_48',['runonmainthread',['../namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../namespaceSDL.html#a02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
 ];

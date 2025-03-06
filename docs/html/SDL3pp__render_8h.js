@@ -3,7 +3,6 @@ var SDL3pp__render_8h =
     [ "SDL::ObjectDeleter< SDL_Renderer >", "structSDL_1_1ObjectDeleter_3_01SDL__Renderer_01_4.html", "structSDL_1_1ObjectDeleter_3_01SDL__Renderer_01_4" ],
     [ "SDL::ObjectDeleter< SDL_Texture >", "structSDL_1_1ObjectDeleter_3_01SDL__Texture_01_4.html", "structSDL_1_1ObjectDeleter_3_01SDL__Texture_01_4" ],
     [ "SDL::RendererBase< T >", "structSDL_1_1RendererBase.html", "structSDL_1_1RendererBase" ],
-    [ "SDL::TextureBase< T >", "structSDL_1_1TextureBase.html", "structSDL_1_1TextureBase" ],
     [ "Renderer", "SDL3pp__render_8h.html#af76226a4b7cbb3af8578bdbd93f6b068", null ],
     [ "RendererLogicalPresentation", "SDL3pp__render_8h.html#a91be24b12fa4efe591c43f2ece44e32d", null ],
     [ "RendererRef", "SDL3pp__render_8h.html#a3c15747c0c3091d37a2f14511aba1c7d", null ],

@@ -1,6 +1,6 @@
 var structSDL_1_1RendererBase =
 [
-    [ "RendererBase", "structSDL_1_1RendererBase.html#a6cd596ee84afc3ead3c26a6c429a797c", null ],
+    [ "RendererBase", "group__resource.html#ga6cd596ee84afc3ead3c26a6c429a797c", null ],
     [ "RendererBase", "structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413", null ],
     [ "RendererBase", "structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc", null ],
     [ "RendererBase", "structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92", null ],

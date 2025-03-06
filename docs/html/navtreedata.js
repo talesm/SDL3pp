@@ -35,6 +35,7 @@ var NAVTREE =
       [ "Type rules", "transformations.html#type-rules", null ],
       [ "Callback rules", "transformations.html#callback-rules", null ]
     ] ],
+    [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -68,15 +69,14 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"SDL3pp__blendmode_8h.html",
-"SDL3pp__stdinc_8h.html#af1be31240212288c0d7556cf80340b93",
-"conceptSDL_1_1ObjectBox.html",
-"namespaceSDL.html#aa0b23ee28081be6c3bc984e1e676383b",
-"structSDL_1_1Display.html#ae60fa581de6bf108440cb5da32b92fcb",
-"structSDL_1_1PixelFormat.html#a9d286b21e68b8ff14ea0e9cb031a9c52",
-"structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932",
-"structSDL_1_1SurfaceBase.html#a9a2e7e032cf3cf204fa916c1aa8bc210",
-"structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3"
+"Resource_8h.html",
+"SDL3pp__stdinc_8h.html#aeecdd7ec80c303a7474d59b641a892f7",
+"conceptSDL_1_1DerivedWrapper.html",
+"namespaceSDL.html#a9d6ced48f8f7fb71dff04aff0364adcd",
+"structSDL_1_1Display.html#acfbf256e101a9a1350b35e9230406381",
+"structSDL_1_1PixelFormat.html#ad0c4e69ed9005e0a17bb4295a54c5a7c",
+"structSDL_1_1RendererBase.html#a755bccca740076de95e4a4a889a54b48",
+"structSDL_1_1WindowBase.html#a9b9e8a8be7b7b8777804ea0c45cc6e91"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

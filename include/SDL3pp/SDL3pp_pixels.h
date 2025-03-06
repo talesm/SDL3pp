@@ -1061,6 +1061,8 @@ struct FColor : SDL_FColor
 
 /**
  * @brief A set of indexed colors representing a palette.
+ *
+ * @ingroup resource
  */
 template<class T>
 struct PaletteBase : T

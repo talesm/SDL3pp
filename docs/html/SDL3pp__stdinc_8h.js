@@ -2,8 +2,6 @@ var SDL3pp__stdinc_8h =
 [
     [ "SDL::ObjectDeleter< SDL_Environment >", "structSDL_1_1ObjectDeleter_3_01SDL__Environment_01_4.html", "structSDL_1_1ObjectDeleter_3_01SDL__Environment_01_4" ],
     [ "SDL::ObjectDeleter< SDL_iconv_data_t >", "structSDL_1_1ObjectDeleter_3_01SDL__iconv__data__t_01_4.html", "structSDL_1_1ObjectDeleter_3_01SDL__iconv__data__t_01_4" ],
-    [ "SDL::EnvironmentBase< T >", "structSDL_1_1EnvironmentBase.html", "structSDL_1_1EnvironmentBase" ],
-    [ "SDL::IConvBase< T >", "structSDL_1_1IConvBase.html", "structSDL_1_1IConvBase" ],
     [ "calloc_func", "SDL3pp__stdinc_8h.html#a4f2714c0d9540b5e1e85ed5503c59215", null ],
     [ "CompareCallback", "SDL3pp__stdinc_8h.html#abc94be94823c25031d6dd9210ef3e81a", null ],
     [ "CompareCallback_r", "SDL3pp__stdinc_8h.html#ab5c634ea2ae9a102fa58cd7beac9f478", null ],

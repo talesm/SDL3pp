@@ -5,7 +5,6 @@ var SDL3pp__pixels_8h =
     [ "SDL::Colorspace", "structSDL_1_1Colorspace.html", "structSDL_1_1Colorspace" ],
     [ "SDL::Color", "structSDL_1_1Color.html", "structSDL_1_1Color" ],
     [ "SDL::FColor", "structSDL_1_1FColor.html", "structSDL_1_1FColor" ],
-    [ "SDL::PaletteBase< T >", "structSDL_1_1PaletteBase.html", "structSDL_1_1PaletteBase" ],
     [ "ArrayOrder", "SDL3pp__pixels_8h.html#a1dbdac1bb77c06fb6212f18507722247", null ],
     [ "BitmapOrder", "SDL3pp__pixels_8h.html#ae9b29b1df0025781f2edb0ff695f8586", null ],
     [ "ChromaLocation", "SDL3pp__pixels_8h.html#a2e12fe1c4b173b97e915cd7e8963bdca", null ],
