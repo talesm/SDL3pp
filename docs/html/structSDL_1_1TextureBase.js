@@ -19,6 +19,7 @@ var structSDL_1_1TextureBase =
     [ "GetSize", "structSDL_1_1TextureBase.html#ae8c2276d3c39fc28b1d185f14f23828b", null ],
     [ "GetSize", "structSDL_1_1TextureBase.html#a849768b5342e6bb1f6948f6e2c7b4e0a", null ],
     [ "GetSize", "structSDL_1_1TextureBase.html#aaa19f25b26c06046bc117f7813a43f75", null ],
+    [ "Lock", "structSDL_1_1TextureBase.html#ae22af7ea5864e54b16641a14ee17f6fc", null ],
     [ "SetAlphaMod", "structSDL_1_1TextureBase.html#a6e406273bf30873feabb11c2de6b567a", null ],
     [ "SetAlphaMod", "structSDL_1_1TextureBase.html#a5e546ebfbdceb484ae174e142e5bf886", null ],
     [ "SetBlendMode", "structSDL_1_1TextureBase.html#a4025ebbafd04fb89e57163fb8b3c8a9a", null ],

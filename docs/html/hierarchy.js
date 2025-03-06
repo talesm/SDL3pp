@@ -45,6 +45,7 @@ var hierarchy =
     [ "T", null, [
       [ "SDL::PropertiesBase< ObjectRef< SDL_PropertiesID, FancyPointer< SDL_PropertiesID > > >", "structSDL_1_1PropertiesBase.html", null ],
       [ "SDL::SurfaceBase< ObjectRef< SDL_Surface > >", "structSDL_1_1SurfaceBase.html", null ],
+      [ "SDL::TextureBase< ObjectRef< SDL_Texture > >", "structSDL_1_1TextureBase.html", null ],
       [ "SDL::EnvironmentBase< T >", "structSDL_1_1EnvironmentBase.html", null ],
       [ "SDL::IConvBase< T >", "structSDL_1_1IConvBase.html", null ],
       [ "SDL::PaletteBase< T >", "structSDL_1_1PaletteBase.html", null ],
@@ -53,5 +54,6 @@ var hierarchy =
       [ "SDL::SurfaceBase< T >", "structSDL_1_1SurfaceBase.html", null ],
       [ "SDL::TextureBase< T >", "structSDL_1_1TextureBase.html", null ],
       [ "SDL::WindowBase< T >", "structSDL_1_1WindowBase.html", null ]
-    ] ]
+    ] ],
+    [ "SDL::TextureLock", "classSDL_1_1TextureLock.html", null ]
 ];

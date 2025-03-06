@@ -74,6 +74,9 @@ struct ObjectDeleter<SDL_Texture>
 
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
 
+// Forward decl
+struct TextureLock;
+
 /**
  * @brief Vertex structure.
  *
@@ -2411,6 +2414,31 @@ struct TextureBase : T
   }
 
   /**
+   * Lock a portion of the texture for **write-only** pixel access.
+   *
+   * As an optimization, the pixels made available for editing don't necessarily
+   * contain the old texture data. This is a write-only operation, and if you
+   * need to keep a copy of the texture data you should do that at the
+   * application level.
+   *
+   * You must use SDL_UnlockTexture() to unlock the pixels and apply any
+   * changes.
+   *
+   * @param rect an SDL_Rect structure representing the area to lock for access;
+   *             NULL to lock the entire texture.
+   * @returns TextureLock on success or false if the texture is not valid or was
+   * not created with `SDL_TEXTUREACCESS_STREAMING`; call GetError() for more
+   * information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa TextureLock.UnlockTexture
+   */
+  TextureLock Lock(OptionalRef<const SDL_Rect> rect) &;
+
+  /**
    * Destroy the texture.
    *
    * This object becomes empty after the call.
@@ -2423,6 +2451,108 @@ struct TextureBase : T
    * @sa SDL_CreateTextureFromSurface
    */
   void Destroy() { return SDL_DestroyTexture(T::release()); }
+};
+
+/**
+ * @brief Locks a Texture for access to its pixels
+ */
+class TextureLock
+{
+  TextureRef texture;
+  SurfaceRef surface;
+
+  /**
+   * @sa TextureBase.Lock()
+   */
+  explicit TextureLock(TextureRef texture, OptionalRef<const Rect> rect)
+    : texture(std::move(texture))
+    , surface(nullptr)
+  {
+    SDL_Surface* maybeLock;
+    if (SDL_LockTextureToSurface(this->texture.get(), rect, &maybeLock)) {
+      surface = maybeLock;
+    } else {
+      texture.release();
+    }
+  }
+
+public:
+  // default ctor
+  TextureLock()
+    : texture(nullptr)
+    , surface(nullptr)
+  {
+  }
+
+  // Copy ctor
+  TextureLock(const TextureLock& other) = delete;
+
+  // Move ctor
+  TextureLock(TextureLock&& other)
+    : texture(other.texture.release())
+    , surface(other.surface.release())
+  {
+  }
+
+  /**
+   * destructor
+   * @sa Unlock()
+   */
+  ~TextureLock() { Unlock(); }
+
+  // Assignment operator
+  TextureLock& operator=(TextureLock other)
+  {
+    std::swap(texture, other.texture);
+    std::swap(surface, other.surface);
+    return *this;
+  }
+
+  /**
+   * @brief Returns true if lock is active
+   */
+  constexpr operator bool() const { return bool(texture); }
+
+  /**
+   * Unlock a texture, uploading the changes to video memory, if needed.
+   *
+   * **Warning**: Please note that SDL_LockTexture() is intended to be
+   * write-only; it will not guarantee the previous contents of the texture will
+   * be provided. You must fully initialize any area of a texture that you lock
+   * before unlocking it, as the pixels might otherwise be uninitialized memory.
+   *
+   * Which is to say: locking and immediately unlocking a texture can result in
+   * corrupted textures, depending on the renderer in use.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_LockTexture
+   */
+  void Unlock()
+  {
+    surface.release();
+    return SDL_UnlockTexture(texture.release());
+  }
+
+  /**
+   * Get the pixels
+   */
+  void* GetPixels() const { return surface->pixels; }
+
+  /**
+   * Get pitch (the number of bytes between the start of one row the next)
+   */
+  int GetPitch() const { return surface->pitch; }
+
+  /**
+   * @brief Get the pixel format
+   */
+  PixelFormat GetFormat() const { return surface->format; }
+
+  template<ObjectBox<SDL_Texture*> T>
+  friend class TextureBase;
 };
 
 /**
@@ -2766,6 +2896,13 @@ void ObjectDeleter<SDL_Texture>::operator()(TextureRef texture) const
 {
   texture.Destroy();
 }
+
+template<ObjectBox<SDL_Texture*> T>
+TextureLock TextureBase<T>::Lock(OptionalRef<const SDL_Rect> rect) &
+{
+  return TextureLock{*this, rect};
+}
+
 #pragma endregion impl
 
 } // namespace SDL

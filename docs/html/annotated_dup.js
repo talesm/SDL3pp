@@ -38,6 +38,7 @@ var annotated_dup =
       [ "SurfaceBase", "structSDL_1_1SurfaceBase.html", "structSDL_1_1SurfaceBase" ],
       [ "SurfaceLock", "classSDL_1_1SurfaceLock.html", "classSDL_1_1SurfaceLock" ],
       [ "TextureBase", "structSDL_1_1TextureBase.html", "structSDL_1_1TextureBase" ],
+      [ "TextureLock", "classSDL_1_1TextureLock.html", "classSDL_1_1TextureLock" ],
       [ "WindowBase", "structSDL_1_1WindowBase.html", "structSDL_1_1WindowBase" ]
     ] ]
 ];

@@ -8572,6 +8572,11 @@
           "type": "TextureBase<ObjectUnique<SDL_Texture>>",
           "doc": ""
         },
+        "TextureLock-forward": {
+          "name": "TextureLock",
+          "kind": "forward",
+          "doc": ""
+        },
         "Vertex": {
           "doc": "Vertex structure.\n\n@since This struct is available since SDL 3.2.0.",
           "name": "Vertex",
@@ -10153,6 +10158,20 @@
               ],
               "sourceName": "SDL_UpdateNVTexture"
             },
+            "Lock": {
+              "doc": "Lock a portion of the texture for **write-only** pixel access.\n\nAs an optimization, the pixels made available for editing don't necessarily\ncontain the old texture data. This is a write-only operation, and if you\nneed to keep a copy of the texture data you should do that at the\napplication level.\n\nYou must use SDL_UnlockTexture() to unlock the pixels and apply any\nchanges.\n\n@param texture the texture to lock for access, which was created with\n               `SDL_TEXTUREACCESS_STREAMING`.\n@param rect an SDL_Rect structure representing the area to lock for access;\n            NULL to lock the entire texture.\n@param pixels this is filled in with a pointer to the locked pixels,\n              appropriately offset by the locked area.\n@param pitch this is filled in with the pitch of the locked pixels; the\n             pitch is the length of one row in bytes.\n@returns true on success or false if the texture is not valid or was not\n         created with `SDL_TEXTUREACCESS_STREAMING`; call SDL_GetError()\n         for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LockTextureToSurface\n@sa SDL_UnlockTexture",
+              "name": "Lock",
+              "kind": "function",
+              "type": "TextureLock",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "OptionalRef<const SDL_Rect>"
+                }
+              ],
+              "sourceName": "SDL_LockTexture",
+              "static": false
+            },
             "Destroy": {
               "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",
               "name": "Destroy",
@@ -10162,6 +10181,124 @@
               "sourceName": "SDL_DestroyTexture"
             }
           }
+        },
+        "TextureLock": {
+          "name": "TextureLock",
+          "kind": "struct",
+          "entries": {
+            "surface": {
+              "kind": "var",
+              "type": "SurfaceRef",
+              "name": "surface",
+              "doc": ""
+            },
+            "TextureLock": [
+              {
+                "doc": "@sa TextureBase.Lock()",
+                "kind": "function",
+                "type": "explicit",
+                "parameters": [
+                  {
+                    "name": "surface",
+                    "type": "SurfaceRef"
+                  }
+                ],
+                "name": "TextureLock"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [],
+                "name": "TextureLock",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const TextureLock &",
+                    "name": "other"
+                  }
+                ],
+                "name": "TextureLock",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "TextureLock &&",
+                    "name": "other"
+                  }
+                ],
+                "name": "TextureLock",
+                "doc": ""
+              }
+            ],
+            "~TextureLock": {
+              "kind": "function",
+              "doc": "@sa Unlock()",
+              "type": "",
+              "parameters": [],
+              "name": "~TextureLock"
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "TextureLock &",
+              "parameters": [
+                {
+                  "type": "TextureLock",
+                  "name": "other"
+                }
+              ],
+              "name": "operator=",
+              "doc": ""
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "operator bool",
+              "doc": ""
+            },
+            "Unlock": {
+              "doc": "Unlock a texture, uploading the changes to video memory, if needed.\n\n**Warning**: Please note that SDL_LockTexture() is intended to be\nwrite-only; it will not guarantee the previous contents of the texture will\nbe provided. You must fully initialize any area of a texture that you lock\nbefore unlocking it, as the pixels might otherwise be uninitialized memory.\n\nWhich is to say: locking and immediately unlocking a texture can result in\ncorrupted textures, depending on the renderer in use.\n\n@param texture a texture locked by SDL_LockTexture().\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LockTexture",
+              "name": "Unlock",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_UnlockTexture"
+            },
+            "GetPixels": {
+              "kind": "function",
+              "type": "void *",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetPixels",
+              "doc": ""
+            },
+            "GetPitch": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetPitch",
+              "doc": ""
+            },
+            "GetFormat": {
+              "kind": "function",
+              "type": "PixelFormat",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetFormat",
+              "doc": ""
+            }
+          },
+          "doc": ""
         },
         "GetNumRenderDrivers": {
           "doc": "Get the number of 2D rendering drivers available for the current display.\n\nA render driver is a set of code that handles rendering and texture\nmanagement on a particular display. Normally there is only one, but some\ndrivers may have several available with different capabilities.\n\nThere may be none if SDL was compiled without render support.\n\n@returns the number of built in render drivers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer\n@sa SDL_GetRenderDriver",

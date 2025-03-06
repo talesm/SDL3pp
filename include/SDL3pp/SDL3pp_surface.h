@@ -1740,7 +1740,7 @@ public:
    * destructor
    * @sa Unlock()
    */
-  ~SurfaceLock() { SDL_UnlockSurface(surface.get()); }
+  ~SurfaceLock() { Unlock(); }
 
   // Assignment operator
   SurfaceLock& operator=(SurfaceLock other)

@@ -2757,9 +2757,7 @@
     },
     "SDL_render.h": {
       "ignoreEntries": [
-        "SDL_LockTexture",
         "SDL_LockTextureToSurface",
-        "SDL_UnlockTexture",
         "SDL_RenderDebugTextFormat"
       ],
       "includeAfter": {
@@ -2841,8 +2839,113 @@
             "name": "Texture",
             "kind": "alias",
             "type": "TextureBase<ObjectUnique<SDL_Texture>>"
+          },
+          {
+            "name": "TextureLock",
+            "kind": "forward"
           }
-        ]
+        ],
+        "SDL_Texture": {
+          "name": "TextureLock",
+          "kind": "struct",
+          "entries": {
+            "texture": {
+              "kind": "var",
+              "type": "TextureRef"
+            },
+            "surface": {
+              "kind": "var",
+              "type": "SurfaceRef"
+            },
+            "TextureLock": [
+              {
+                "doc": "@sa TextureBase.Lock()",
+                "kind": "function",
+                "type": "explicit",
+                "parameters": [
+                  {
+                    "name": "texture",
+                    "type": "TextureRef"
+                  },
+                  {
+                    "name": "rect",
+                    "type": "OptionalRef<const SDL_Rect>"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "const TextureLock &",
+                    "name": "other"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "TextureLock &&",
+                    "name": "other"
+                  }
+                ]
+              }
+            ],
+            "~TextureLock": {
+              "kind": "function",
+              "doc": "@sa Unlock()",
+              "type": "",
+              "parameters": []
+            },
+            "operator=": {
+              "kind": "function",
+              "type": "TextureLock &",
+              "parameters": [
+                {
+                  "type": "TextureLock",
+                  "name": "other"
+                }
+              ]
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "SDL_UnlockTexture": {
+              "name": "Unlock",
+              "parameters": []
+            },
+            "GetPixels": {
+              "kind": "function",
+              "type": "void *",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetPitch": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetFormat": {
+              "kind": "function",
+              "type": "PixelFormat",
+              "immutable": true,
+              "parameters": []
+            }
+          }
+        }
       },
       "transform": {
         "SDL_Renderer": {
@@ -3590,6 +3693,17 @@
                 {},
                 {},
                 {}
+              ]
+            },
+            "SDL_LockTexture": {
+              "type": "TextureLock",
+              "static": false,
+              "reference": 1,
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "OptionalRef<const SDL_Rect>"
+                }
               ]
             },
             "SDL_DestroyTexture": "function"
