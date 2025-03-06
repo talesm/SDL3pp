@@ -64,7 +64,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('transformations.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -93,9 +93,9 @@ $(document).ready(function(){initNavTree('md__2home_2talesm_2dev_2SDL3_2SDL3pp_2
   <div class="headertitle"><div class="title">Transformations</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md4"></a> We try make the binding as objective as possible, in order to minimize any semantic deviation from the C interface.</p>
+<div class="textblock"><p>We try make the binding as objective as possible, in order to minimize any semantic deviation from the C interface.</p>
 <p>To do so we define the some rules so each C type or function is almost mechanically transformed into a C++ type or function.</p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<h1><a class="anchor" id="general-rules"></a>
 General rules</h1>
 <ul>
 <li>The C++ header files should have the same name than <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s C headers, minus its prefix.<ul>
@@ -104,7 +104,7 @@ General rules</h1>
 </li>
 <li>All definitions are inside the <code><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a></code> namespace, definition names lose their prefix. Eg <code>SDL_Surface</code> becomes <code><a class="el" href="namespaceSDL.html#a5128f762b815ce424b759043e06fd646" title="Handle to an owned surface.">SDL::Surface</a></code>;</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="function-rules"></a>
 Function rules</h1>
 <ul>
 <li>All method definitions are inline. We have a header only library here;<ul>
@@ -112,14 +112,14 @@ Function rules</h1>
 </ul>
 </li>
 <li>Non method-like functions are represented by simply wrapping them into free functions.</li>
-<li>Method-like functions become class/struct methods accordingly to Type rules;<ul>
+<li>Method-like functions become class/struct methods accordingly to <a class="el" href="transformations.html#type-rules">Type rules</a>;<ul>
 <li>Functions that involve I/O, like <code>SDL_LoadBMP()</code>, are considered non-method like and thus stay as free functions (<code>LoadBMP()</code>);</li>
 </ul>
 </li>
 <li>The parameters of the function have the same meaning and same order than <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s C API, transformed as the following:<ul>
 <li>If it is a instance function, the first parameter become the <code>this</code> pointer and thus is omitted.</li>
 <li>If the parameter was a <code>const char*</code>, its becomes a StringWrapper;</li>
-<li>If the parameter is a <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> type, use the type defined in Type rules;</li>
+<li>If the parameter is a <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> type, use the type defined in <a class="el" href="transformations.html#type-rules">Type rules</a>;</li>
 <li>If the parameter is used as const pointer, it is allowed to be transformed to:<ul>
 <li>const reference;</li>
 <li>std::optional value;</li>
@@ -128,11 +128,11 @@ Function rules</h1>
 <li>Have a combination of any of those as different overloads;</li>
 </ul>
 </li>
-<li>If the parameter is a C callback function, the function should have an overload accepting Callback type accordingly to Callback rules;</li>
+<li>If the parameter is a C callback function, the function should have an overload accepting Callback type accordingly to <a class="el" href="transformations.html#callback-rules">Callback rules</a>;</li>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="type-rules"></a>
 Type rules</h1>
 <ul>
 <li>Type that aren't opaque and nor have method-like functions are just typedef'd into the namespace. Eg: <code>using InitFlags = SDL_InitFlags</code>;</li>
@@ -168,7 +168,7 @@ Type rules</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="callback-rules"></a>
 Callback rules</h1>
 <ul>
 <li>todo </li>

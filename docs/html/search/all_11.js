@@ -11,8 +11,8 @@ var searchData=
   ['toupper_8',['toupper',['../namespaceSDL.html#aa66528bfccd7f5a86ed7554d049d1930',1,'SDL']]],
   ['transfercharacteristics_9',['TransferCharacteristics',['../namespaceSDL.html#a593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
   ['transformation_2emd_10',['transformation.md',['../transformation_8md.html',1,'']]],
-  ['transformations_11',['Transformations',['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html',1,'']]],
+  ['transformations_11',['Transformations',['../transformations.html',1,'']]],
   ['trunc_12',['trunc',['../namespaceSDL.html#aeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
   ['truncf_13',['truncf',['../namespaceSDL.html#ae6b046a5844394a19061a8544376ffac',1,'SDL']]],
-  ['type_20rules_14',['Type rules',['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md7',1,'']]]
+  ['type_20rules_14',['Type rules',['../transformations.html#type-rules',1,'']]]
 ];

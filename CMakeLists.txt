@@ -34,7 +34,7 @@ if (BUILD_DOC)
     doxygen_add_docs(doxygen_docs
         ALL
         COMMENT "Generate API docs for SDL3pp"
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/include
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
     )
 endif (BUILD_DOC)

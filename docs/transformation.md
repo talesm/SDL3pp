@@ -1,4 +1,5 @@
-# Transformations
+Transformations
+===============
 
 We try make the binding as objective as possible, in order to minimize any
 semantic deviation from the C interface. 
@@ -6,7 +7,8 @@ semantic deviation from the C interface.
 To do so we define the some rules so each C type or function is almost
 mechanically transformed into a C++ type or function.
 
-## General rules
+General rules
+-------------
 
 - The C++ header files should have the same name than SDL's C headers, minus 
 its prefix.
@@ -15,7 +17,9 @@ its prefix.
 - All definitions are inside the `SDL` namespace, definition names lose their
 prefix. Eg `SDL_Surface` becomes `SDL::Surface`;
 
-## Function rules
+Function rules
+-------------
+
 - All method definitions are inline. We have a header only library here;
   - Forward declarations are permitted whenever is convenient;
 - Non method-like functions are represented by simply wrapping them into free
@@ -39,7 +43,9 @@ SDL's C API, transformed as the following:
   - If the parameter is a C callback function, the function should have an 
   overload accepting Callback type accordingly to [Callback rules](#callback-rules);
 
-## Type rules
+Type rules
+----------
+
 - Type that aren't opaque and nor have method-like functions are just 
 typedef'd into the namespace. Eg: `using InitFlags = SDL_InitFlags`;
 - Typedef that aren't opaque nor are created and destroyed by SDL functions, 
@@ -78,5 +84,7 @@ but have method-like functions are defined as follows:
   provide any way to destroy it and is intended to use by function parameters or
   some sort of very weak reference;
 
-## Callback rules
+Callback rules
+--------------
+
 - todo

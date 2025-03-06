@@ -1,4 +1,5 @@
 var files_dup =
 [
-    [ "SDL3pp", "dir_5f5877b6b1ff8d0114688b232f018ec5.html", "dir_5f5877b6b1ff8d0114688b232f018ec5" ]
+    [ "docs", "dir_49e56c817e5e54854c35e136979f97ca.html", null ],
+    [ "SDL3pp", "dir_97ce39b7d3b637544d6563dae0aa493a.html", "dir_97ce39b7d3b637544d6563dae0aa493a" ]
 ];

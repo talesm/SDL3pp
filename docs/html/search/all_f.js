@@ -45,6 +45,6 @@ var searchData=
   ['restore_42',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
   ['round_43',['round',['../namespaceSDL.html#a58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
   ['roundf_44',['roundf',['../namespaceSDL.html#a9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
-  ['rules_45',['rules',['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md8',1,'Callback rules'],['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md6',1,'Function rules'],['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md5',1,'General rules'],['../md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md7',1,'Type rules']]],
+  ['rules_45',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
   ['runonmainthread_46',['runonmainthread',['../namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../namespaceSDL.html#a02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
 ];

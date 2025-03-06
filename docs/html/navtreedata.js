@@ -25,15 +25,15 @@
 var NAVTREE =
 [
   [ "SDL3pp", "index.html", [
-    [ "Goals", "index.html#autotoc_md0", null ],
-    [ "Examples", "index.html#autotoc_md1", null ],
-    [ "Documentation", "index.html#autotoc_md2", null ],
-    [ "Building", "index.html#autotoc_md3", null ],
-    [ "Transformations", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html", [
-      [ "General rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md5", null ],
-      [ "Function rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md6", null ],
-      [ "Type rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md7", null ],
-      [ "Callback rules", "md__2home_2talesm_2dev_2SDL3_2SDL3pp_2transformation.html#autotoc_md8", null ]
+    [ "Goals", "index.html#goals", null ],
+    [ "Examples", "index.html#examples", null ],
+    [ "Documentation", "index.html#documentation", null ],
+    [ "Building", "index.html#building", null ],
+    [ "Transformations", "transformations.html", [
+      [ "General rules", "transformations.html#general-rules", null ],
+      [ "Function rules", "transformations.html#function-rules", null ],
+      [ "Type rules", "transformations.html#type-rules", null ],
+      [ "Callback rules", "transformations.html#callback-rules", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -71,12 +71,12 @@ var NAVTREEINDEX =
 "SDL3pp__blendmode_8h.html",
 "SDL3pp__stdinc_8h.html#af1be31240212288c0d7556cf80340b93",
 "conceptSDL_1_1ObjectBox.html",
-"namespaceSDL.html#a9d6ced48f8f7fb71dff04aff0364adcd",
-"structSDL_1_1Display.html#acfbf256e101a9a1350b35e9230406381",
-"structSDL_1_1PixelFormat.html#a8ac60139e746de17f891713edcea24a4",
-"structSDL_1_1RendererBase.html#a157ad97e3ed83a6c87b21cb5094c57b4",
-"structSDL_1_1SurfaceBase.html#a9175d7e19c831c65e125ce07498ba15c",
-"structSDL_1_1WindowBase.html#af70ac0821bbe1105e9421e4eabd8610b"
+"namespaceSDL.html#aa0b23ee28081be6c3bc984e1e676383b",
+"structSDL_1_1Display.html#ae60fa581de6bf108440cb5da32b92fcb",
+"structSDL_1_1PixelFormat.html#a9d286b21e68b8ff14ea0e9cb031a9c52",
+"structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932",
+"structSDL_1_1SurfaceBase.html#a9a2e7e032cf3cf204fa916c1aa8bc210",
+"structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
