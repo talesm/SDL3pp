@@ -502,7 +502,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <p>If the window is created with any of the SDL_WINDOW_OPENGL or SDL_WINDOW_VULKAN flags, then the corresponding LoadLibrary function (SDL_GL_LoadLibrary or SDL_Vulkan_LoadLibrary) is called and the corresponding UnloadLibrary function is called by SDL_DestroyWindow().</p>
 <p>If SDL_WINDOW_VULKAN is specified and there isn't a working Vulkan driver, this will fail, because SDL_Vulkan_LoadLibrary() will fail.</p>
 <p>If SDL_WINDOW_METAL is specified on an OS that does not support Metal, this will fail.</p>
-<p>If you intend to use this window with an SDL_Renderer, you should use <a class="el" href="namespaceSDL.html#a69cb7b5159652873f437004a60e8901b" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> instead of this function, to avoid window flicker.</p>
+<p>If you intend to use this window with an SDL_Renderer, you should use <a class="el" href="namespaceSDL.html#a46a4e94c9436427b1e58a045f9ac177d" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> instead of this function, to avoid window flicker.</p>
 <p>On non-Apple devices, <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> requires you to either not link to the Vulkan loader or link to a dynamic library version. This limitation may be removed in a future version of <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -515,7 +515,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section post"><dt>Postcondition</dt><dd>the window that was created, convertible to true on success or convertible to false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceSDL.html#a69cb7b5159652873f437004a60e8901b" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceSDL.html#a46a4e94c9436427b1e58a045f9ac177d" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00569">569</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 

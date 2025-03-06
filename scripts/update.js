@@ -327,15 +327,19 @@ function generateEntry(entry, prefix) {
 
 /**
  * @param {ApiEntry} entry 
- * @param {boolean}  addThis
+ * @param {string}   prefix
  */
-function generateCall(entry, addThis) {
-  if (!entry.sourceName) return 'static_assert(false, "Not implemented");';
+function generateBody(entry, prefix) {
+  if (!entry.sourceName) return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
   const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
-  if (addThis && !paramStr) return `return ${entry.sourceName}(T::get());`;
-  return `return ${entry.sourceName}(${addThis ? "T::get(), " : ""}${paramStr});`;
+  if (!prefix || entry.static) {
+    return `{\n${prefix}  return ${entry.sourceName}(${paramStr});\n${prefix}}`;
+  }
+  if (!entry.type) return `  : T(${entry.sourceName}(${paramStr}))\n${prefix}{}`;
+  if (!paramStr) return `{\n${prefix}  return ${entry.sourceName}(T::get());\n${prefix}}`;
+  return `{\n${prefix}  return ${entry.sourceName}(T::get(), ${paramStr});\n${prefix}}`;
 }
 
 /**
@@ -346,8 +350,8 @@ function generateFunction(entry, prefix) {
   const reference = entry.reference ? "&".repeat(entry.reference) : "";
   const specifier = entry.immutable ? ` const${reference}` : (reference ? " " + reference : "");
   const parameters = generateParameters(entry.parameters);
-  const body = generateCall(entry, !!prefix && !entry.static);
-  return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}\n${prefix}{\n${prefix}  ${body}\n${prefix}}`;
+  const body = generateBody(entry, prefix);
+  return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}\n${prefix}${body}`;
 }
 
 /**

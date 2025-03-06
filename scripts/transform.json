@@ -3510,26 +3510,17 @@
           }
         },
         "SDL_CreateWindowAndRenderer": {
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "W"
-            },
-            {
-              "type": "ObjectBox<SDL_Renderer *>",
-              "name": "R"
-            }
-          ],
+          "type": "std::pair<Window, Renderer>",
           "parameters": [
             {},
-            {},
-            {},
-            {},
             {
-              "type": "W *"
+              "type": "SDL_Point",
+              "name": "size"
             },
             {
-              "type": "R *"
+              "type": "WindowFlags",
+              "name": "window_flags",
+              "default": "0"
             }
           ]
         }

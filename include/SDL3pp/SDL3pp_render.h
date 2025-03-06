@@ -886,7 +886,10 @@ struct RendererBase : T
    * @sa SDL_GetRenderDrawColor
    * @sa SDL_SetRenderDrawColorFloat
    */
-  bool SetDrawColor(SDL_Color c) { return SDL_SetRenderDrawColor(T::get(), c); }
+  bool SetDrawColor(SDL_Color c)
+  {
+    return SDL_SetRenderDrawColor(T::get(), c.r, c.g, c.b, c.a);
+  }
 
   /**
    * Set the color used for drawing operations (Rect, Line and Clear).
@@ -907,7 +910,7 @@ struct RendererBase : T
    */
   bool SetDrawColor(SDL_FColor c)
   {
-    return SDL_SetRenderDrawColorFloat(T::get(), c);
+    return SDL_SetRenderDrawColorFloat(T::get(), c.r, c.g, c.b, c.a);
   }
 
   std::optional<FColor> GetDrawColor() const
@@ -2473,32 +2476,29 @@ inline const char* GetRenderDriver(int index)
  * Create a window and default renderer.
  *
  * @param title the title of the window, in UTF-8 encoding.
- * @param width the width of the window.
- * @param height the height of the window.
+ * @param size the width and height of the window.
  * @param window_flags the flags used to create the window (see
- *                     SDL_CreateWindow()).
- * @param window a pointer filled with the window, or NULL on error.
- * @param renderer a pointer filled with the renderer, or NULL on error.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
+ *                     Window::Window()).
+ * @returns a pair with Window and Renderer on success or a pair of std::nullptr
+ * on failure; call GetError() for more information.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_CreateRenderer
- * @sa SDL_CreateWindow
+ * @sa Renderer
+ * @sa Window
  */
-template<ObjectBox<SDL_Window*> W, ObjectBox<SDL_Renderer*> R>
-inline bool CreateWindowAndRenderer(StringParam title,
-                                    int width,
-                                    int height,
-                                    WindowFlags window_flags,
-                                    W* window,
-                                    R* renderer)
+inline std::pair<Window, Renderer> CreateWindowAndRenderer(
+  StringParam title,
+  SDL_Point size,
+  WindowFlags window_flags = 0)
 {
-  return SDL_CreateWindowAndRenderer(
-    title, width, height, window_flags, window, renderer);
+  SDL_Window* window;
+  SDL_Renderer* renderer;
+  SDL_CreateWindowAndRenderer(
+    title, size.x, size.y, window_flags, &window, &renderer);
+  return {Window{window}, Renderer{renderer}};
 }
 
 /**

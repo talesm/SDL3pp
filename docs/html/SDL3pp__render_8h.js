@@ -11,7 +11,7 @@ var SDL3pp__render_8h =
     [ "TextureRef", "SDL3pp__render_8h.html#a4b68df1674a8dea4fabd4e9ab9e745d7", null ],
     [ "Vertex", "SDL3pp__render_8h.html#a4b86011ede078f9ba75274ed30df602b", null ],
     [ "AddVulkanRenderSemaphores", "SDL3pp__render_8h.html#ac4528e04e28d93b190e651508b82ac18", null ],
-    [ "CreateWindowAndRenderer", "SDL3pp__render_8h.html#a69cb7b5159652873f437004a60e8901b", null ],
+    [ "CreateWindowAndRenderer", "SDL3pp__render_8h.html#a46a4e94c9436427b1e58a045f9ac177d", null ],
     [ "GetNumRenderDrivers", "SDL3pp__render_8h.html#aeb8dc812e83b8aee07c7bc37d233d599", null ],
     [ "GetRenderDriver", "SDL3pp__render_8h.html#aec060bae8c84c9565bf316e335b36c5a", null ],
     [ "GetRenderer", "SDL3pp__render_8h.html#a83bc648939f48998f781363fc485dd58", null ],

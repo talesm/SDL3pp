@@ -40,5 +40,5 @@ var searchData=
   ['crc16_37',['crc16',['../namespaceSDL.html#a31ee6fbdefd2ca34bbde4c8652069e66',1,'SDL']]],
   ['crc32_38',['crc32',['../namespaceSDL.html#acc8b8bc6d26dd888c3fed721ddb1cd2e',1,'SDL']]],
   ['createpalette_39',['CreatePalette',['../structSDL_1_1SurfaceBase.html#aaa82afa72b93cc2d04f005775c667415',1,'SDL::SurfaceBase']]],
-  ['createwindowandrenderer_40',['CreateWindowAndRenderer',['../namespaceSDL.html#a69cb7b5159652873f437004a60e8901b',1,'SDL']]]
+  ['createwindowandrenderer_40',['CreateWindowAndRenderer',['../namespaceSDL.html#a46a4e94c9436427b1e58a045f9ac177d',1,'SDL']]]
 ];

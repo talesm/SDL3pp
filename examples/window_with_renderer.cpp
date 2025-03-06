@@ -15,21 +15,23 @@ int main(int argc, char** argv)
     SDL_Log("%s", SDL::GetError());
     return 1;
   }
-  SDL::Window window{"Test", {400, 400}};
+  auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", {400, 400});
   if (!window) {
     SDL_Log("%s", SDL::GetError());
     return 1;
   }
-  SDL::SurfaceRef screen = window.GetSurface();
-
   bool running = true;
   while (running) {
     SDL_Event ev;
     while (SDL_PollEvent(&ev)) {
       if (ev.type == SDL_EVENT_QUIT) { running = false; }
     }
-    screen.Fill(0);
-    window.UpdateSurface();
+    renderer.SetDrawColor(SDL::FColor{.5f, .5f, .5f, 1.f});
+    renderer.RenderClear();
+    renderer.SetDrawColor(SDL::FColor{0.f, 1.f, 0.f, 1.f});
+    renderer.RenderFillRect(SDL::FRect{10, 10, 128, 128});
+
+    renderer.Present();
     SDL::Delay(1ns);
   }
 

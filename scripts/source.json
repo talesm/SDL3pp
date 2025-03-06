@@ -4723,17 +4723,17 @@
           "name": "SDL_Rect",
           "kind": "struct",
           "entries": {
-            "x": {
+            "y": {
               "doc": "",
-              "name": "x",
+              "name": "y",
               "kind": "var",
-              "type": "int"
+              "type": "int x,"
             },
-            "w": {
+            "h": {
               "doc": "",
-              "name": "w",
+              "name": "h",
               "kind": "var",
-              "type": "int"
+              "type": "int w,"
             }
           }
         },

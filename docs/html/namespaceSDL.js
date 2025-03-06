@@ -144,7 +144,7 @@ var namespaceSDL =
     [ "cosf", "namespaceSDL.html#a343b62c85d5c6bc9627fdad943860921", null ],
     [ "crc16", "namespaceSDL.html#a31ee6fbdefd2ca34bbde4c8652069e66", null ],
     [ "crc32", "namespaceSDL.html#acc8b8bc6d26dd888c3fed721ddb1cd2e", null ],
-    [ "CreateWindowAndRenderer", "namespaceSDL.html#a69cb7b5159652873f437004a60e8901b", null ],
+    [ "CreateWindowAndRenderer", "namespaceSDL.html#a46a4e94c9436427b1e58a045f9ac177d", null ],
     [ "Delay", "namespaceSDL.html#a29135876921c3060e1c60a9e839d57b4", null ],
     [ "Delay", "namespaceSDL.html#ac11691c32e10463117a7f351e02c02f9", null ],
     [ "DelayNS", "namespaceSDL.html#a7d9f10575494aa8e1292bb529c40f1f6", null ],

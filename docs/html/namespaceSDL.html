@@ -504,10 +504,9 @@ Functions</h2></td></tr>
 <tr class="memitem:aec060bae8c84c9565bf316e335b36c5a" id="r_aec060bae8c84c9565bf316e335b36c5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSDL.html#aec060bae8c84c9565bf316e335b36c5a">GetRenderDriver</a> (<a class="el" href="classSDL_1_1OptionalRef.html">int</a> index)</td></tr>
 <tr class="memdesc:aec060bae8c84c9565bf316e335b36c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to get the name of a built in 2D rendering driver.  <br /></td></tr>
 <tr class="separator:aec060bae8c84c9565bf316e335b36c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69cb7b5159652873f437004a60e8901b" id="r_a69cb7b5159652873f437004a60e8901b"><td class="memTemplParams" colspan="2">template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Window</a> * &gt; W, ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Renderer</a> * &gt; R&gt; </td></tr>
-<tr class="memitem:a69cb7b5159652873f437004a60e8901b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceSDL.html#a69cb7b5159652873f437004a60e8901b">CreateWindowAndRenderer</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">title</a>, <a class="el" href="classSDL_1_1OptionalRef.html">int</a> <a class="el" href="classSDL_1_1OptionalRef.html">width</a>, <a class="el" href="classSDL_1_1OptionalRef.html">int</a> <a class="el" href="classSDL_1_1OptionalRef.html">height</a>, <a class="el" href="namespaceSDL.html#a0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> <a class="el" href="classSDL_1_1OptionalRef.html">window_flags</a>, <a class="el" href="classSDL_1_1OptionalRef.html">W</a> *<a class="el" href="classSDL_1_1OptionalRef.html">window</a>, <a class="el" href="classSDL_1_1OptionalRef.html">R</a> *<a class="el" href="classSDL_1_1OptionalRef.html">renderer</a>)</td></tr>
-<tr class="memdesc:a69cb7b5159652873f437004a60e8901b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window and default renderer.  <br /></td></tr>
-<tr class="separator:a69cb7b5159652873f437004a60e8901b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46a4e94c9436427b1e58a045f9ac177d" id="r_a46a4e94c9436427b1e58a045f9ac177d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="namespaceSDL.html#adc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="namespaceSDL.html#af76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSDL.html#a46a4e94c9436427b1e58a045f9ac177d">CreateWindowAndRenderer</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">title</a>, SDL_Point size, <a class="el" href="namespaceSDL.html#a0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> <a class="el" href="classSDL_1_1OptionalRef.html">window_flags</a>=0)</td></tr>
+<tr class="memdesc:a46a4e94c9436427b1e58a045f9ac177d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window and default renderer.  <br /></td></tr>
+<tr class="separator:a46a4e94c9436427b1e58a045f9ac177d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83bc648939f48998f781363fc485dd58" id="r_a83bc648939f48998f781363fc485dd58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceSDL.html#a3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSDL.html#a83bc648939f48998f781363fc485dd58">GetRenderer</a> (<a class="el" href="namespaceSDL.html#a42069207012bd44674fe1677bd5a1066">WindowRef</a> <a class="el" href="classSDL_1_1OptionalRef.html">window</a>)</td></tr>
 <tr class="memdesc:a83bc648939f48998f781363fc485dd58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer associated with a window.  <br /></td></tr>
 <tr class="separator:a83bc648939f48998f781363fc485dd58"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4465,19 +4464,17 @@ SDL_sinf </dd></dl>
 
 </div>
 </div>
-<a id="a69cb7b5159652873f437004a60e8901b" name="a69cb7b5159652873f437004a60e8901b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69cb7b5159652873f437004a60e8901b">&#9670;&#160;</a></span>CreateWindowAndRenderer()</h2>
+<a id="a46a4e94c9436427b1e58a045f9ac177d" name="a46a4e94c9436427b1e58a045f9ac177d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46a4e94c9436427b1e58a045f9ac177d">&#9670;&#160;</a></span>CreateWindowAndRenderer()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Window</a> * &gt; W, ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Renderer</a> * &gt; R&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::CreateWindowAndRenderer </td>
+          <td class="memname">std::pair&lt; <a class="el" href="namespaceSDL.html#adc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="namespaceSDL.html#af76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt; SDL::CreateWindowAndRenderer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
           <td class="paramname"><em>title</em>, </td>
@@ -4485,32 +4482,14 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td>
-          <td class="paramname"><em>width</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td>
-          <td class="paramname"><em>height</em>, </td>
+          <td class="paramtype">SDL_Point&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceSDL.html#a0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a>&#160;</td>
-          <td class="paramname"><em>window_flags</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">W</a> *&#160;</td>
-          <td class="paramname"><em>window</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">R</a> *&#160;</td>
-          <td class="paramname"><em>renderer</em>&#160;</td>
+          <td class="paramname"><em>window_flags</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -4529,22 +4508,19 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">title</td><td>the title of the window, in UTF-8 encoding. </td></tr>
-    <tr><td class="paramname">width</td><td>the width of the window. </td></tr>
-    <tr><td class="paramname">height</td><td>the height of the window. </td></tr>
-    <tr><td class="paramname">window_flags</td><td>the flags used to create the window (see SDL_CreateWindow()). </td></tr>
-    <tr><td class="paramname">window</td><td>a pointer filled with the window, or NULL on error. </td></tr>
-    <tr><td class="paramname">renderer</td><td>a pointer filled with the renderer, or NULL on error. </td></tr>
+    <tr><td class="paramname">size</td><td>the width and height of the window. </td></tr>
+    <tr><td class="paramname">window_flags</td><td>the flags used to create the window (see Window::Window()). </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a pair with Window and Renderer on success or a pair of std::nullptr on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_CreateRenderer </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespaceSDL.html#af76226a4b7cbb3af8578bdbd93f6b068" title="Handle to an owned renderer.">Renderer</a> </dd>
 <dd>
-SDL_CreateWindow </dd></dl>
+<a class="el" href="namespaceSDL.html#adc7408c6cf3381faad6fc9ec0ef39847" title="Handle to an owned window.">Window</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02493">2493</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02492">2492</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -5969,7 +5945,7 @@ SDL_GetOriginalMemoryFunctions </dd></dl>
 <dd>
 SDL_GetRenderDriver </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02443">2443</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02446">2446</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -6108,7 +6084,7 @@ SDL_GetRenderDriver </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetNumRenderDrivers </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02467">2467</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02470">2470</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
