@@ -8,7 +8,7 @@
  * provides a reasonable toolbox for transforming the data, including copying
  * between surfaces, filling rectangles in the image data, etc.
  *
- * There is also a simple .bmp loader, SDL_LoadBMP(). SDL itself does not
+ * There is also a simple .bmp loader, SDL::LoadBMP(). SDL itself does not
  * provide loaders for various other file formats, but there are several
  * excellent external libraries that do, including its own satellite library,
  * SDL_image:
@@ -157,44 +157,6 @@ struct SurfaceBase : T
               void* pixels,
               int pitch)
     : T(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
-  {
-  }
-
-  /**
-   * Load a BMP image from a seekable SDL data stream.
-   *
-   * The new surface should be freed with SDL_DestroySurface(). Not doing so
-   * will result in a memory leak.
-   *
-   * @param src the data stream for the surface.
-   * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
-   *                in the case of an error.
-   * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  SurfaceBase(SDL_IOStream* src, bool closeio)
-    : T(SDL_LoadBMP_IO(src, closeio))
-  {
-  }
-
-  /**
-   * Load a BMP image from a file.
-   *
-   * The new surface should be freed with SDL_DestroySurface(). Not doing so
-   * will result in a memory leak.
-   *
-   * @param file the BMP file to load.
-   * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  SurfaceBase(StringParam file)
-    : T(SDL_LoadBMP(file))
   {
   }
 
@@ -438,53 +400,6 @@ struct SurfaceBase : T
    * @sa SurfaceLock.Unlock()
    */
   SurfaceLock Lock() &;
-
-  /**
-   * Save a surface to a seekable SDL data stream in BMP format.
-   *
-   * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
-   * BMP directly. Other RGB formats with 8-bit or higher get converted to a
-   * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
-   * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
-   * not supported.
-   *
-   * @param dst a data stream to save to.
-   * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
-   *                in the case of an error.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_LoadBMP_IO
-   * @sa SDL_SaveBMP
-   */
-  bool Save(SDL_IOStream* dst, bool closeio) const
-  {
-    return SDL_SaveBMP_IO(T::get(), dst, closeio);
-  }
-
-  /**
-   * Save a surface to a file.
-   *
-   * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
-   * BMP directly. Other RGB formats with 8-bit or higher get converted to a
-   * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
-   * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
-   * not supported.
-   *
-   * @param file a file to save to.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_LoadBMP
-   * @sa SDL_SaveBMP_IO
-   */
-  bool Save(StringParam file) const { return SDL_SaveBMP(T::get(), file); }
-
-  // SDL_AddSurfaceAlternateImage
 
   /**
    * @brief Set the RLE acceleration hint for a surface.
@@ -1861,6 +1776,87 @@ public:
   template<ObjectBox<SDL_Surface*> T>
   friend class SurfaceBase;
 };
+
+/**
+ * Load a BMP image from a seekable SDL data stream.
+ *
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
+ *                in the case of an error.
+ * @returns a Surface with the loaded content or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SaveBMP()
+ */
+inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
+{
+  return Surface{SDL_LoadBMP_IO(src, closeio)};
+}
+
+/**
+ * Load a BMP image from a file.
+ *
+ * @param file the BMP file to load.
+ * @returns a Surface with the loaded content or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SaveBMP()
+ */
+inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
+
+/**
+ * Save a surface to a seekable SDL data stream in BMP format.
+ *
+ * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
+ * BMP directly. Other RGB formats with 8-bit or higher get converted to a
+ * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
+ * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
+ * not supported.
+ *
+ * @param surface the SDL_Surface structure containing the image to be saved.
+ * @param dst a data stream to save to.
+ * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
+ *                in the case of an error.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_LoadBMP_IO
+ * @sa SDL_SaveBMP
+ */
+inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
+{
+  return SDL_SaveBMP_IO(surface.get(), dst, closeio);
+}
+
+/**
+ * Save a surface to a file.
+ *
+ * Surfaces with a 24-bit, 32-bit and paletted 8-bit format get saved in the
+ * BMP directly. Other RGB formats with 8-bit or higher get converted to a
+ * 24-bit surface or, if they have an alpha mask or a colorkey, to a 32-bit
+ * surface before they are saved. YUV and paletted 1-bit and 4-bit formats are
+ * not supported.
+ *
+ * @param surface the SDL_Surface structure containing the image to be saved.
+ * @param file a file to save to.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_LoadBMP
+ * @sa SDL_SaveBMP_IO
+ */
+inline bool SaveBMP(SurfaceRef surface, StringParam file)
+{
+  return SDL_SaveBMP(surface.get(), file);
+}
 
 /**
  * Copy a block of pixels of one format to another format.

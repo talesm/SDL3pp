@@ -1646,18 +1646,6 @@
               "type": "SurfaceLock",
               "reference": 1
             },
-            "SDL_LoadBMP_IO": "ctor",
-            "SDL_LoadBMP": "ctor",
-            "SDL_SaveBMP_IO": {
-              "kind": "function",
-              "name": "Save",
-              "immutable": true
-            },
-            "SDL_SaveBMP": {
-              "kind": "function",
-              "name": "Save",
-              "immutable": true
-            },
             "SDL_SetSurfaceRLE": "function",
             "SDL_SurfaceHasRLE": "immutable",
             "SetColorKey": {
@@ -2248,6 +2236,16 @@
               "name": "WritePixel"
             }
           }
+        },
+        "SDL_LoadBMP_IO": {
+          "name": "LoadBMP",
+          "type": "Surface"
+        },
+        "SDL_LoadBMP": {
+          "type": "Surface"
+        },
+        "SDL_SaveBMP_IO": {
+          "name": "SaveBMP"
         }
       }
     },

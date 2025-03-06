@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     return 1;
   }
   SDL::SurfaceRef screen = window.GetSurface();
-  SDL::Surface smileyImg{"assets/smiley.bmp"};
+  SDL::Surface smileyImg = SDL::LoadBMP("assets/smiley.bmp");
   if (!smileyImg) {
     SDL_Log("%s", SDL::GetError());
     return 1;

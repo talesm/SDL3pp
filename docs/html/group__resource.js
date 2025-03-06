@@ -85,8 +85,6 @@ var group__resource =
     [ "SDL::SurfaceBase< T >", "structSDL_1_1SurfaceBase.html", [
       [ "SurfaceBase", "structSDL_1_1SurfaceBase.html#a2bcd68e82fb03ca260196e4a8a2f9596", null ],
       [ "SurfaceBase", "structSDL_1_1SurfaceBase.html#ad380fbca29727790d7c67cda2da2f411", null ],
-      [ "SurfaceBase", "structSDL_1_1SurfaceBase.html#a2f5528c2425029259e29b487b97d4de2", null ],
-      [ "SurfaceBase", "structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23", null ],
       [ "AddAlternateImage", "structSDL_1_1SurfaceBase.html#a5489278a992e1c5255f7aff9de6b003d", null ],
       [ "Blit", "structSDL_1_1SurfaceBase.html#a55250326edd31885a182c6d2efd96a70", null ],
       [ "Blit", "structSDL_1_1SurfaceBase.html#a7bb77d57c2519f592fa08f210437bf2b", null ],
@@ -143,8 +141,6 @@ var group__resource =
       [ "ReadPixel", "structSDL_1_1SurfaceBase.html#af1c045d28701effcf4b61e1594abee8e", null ],
       [ "RemoveAlternateImages", "structSDL_1_1SurfaceBase.html#a30e0264fc8334e57770b1307d25b5371", null ],
       [ "ResetClipRect", "structSDL_1_1SurfaceBase.html#ab56e2c8d5eafb9f36fbe8e33cc98144e", null ],
-      [ "Save", "structSDL_1_1SurfaceBase.html#a929fdc4622e9b73dd06995e6d9329140", null ],
-      [ "Save", "structSDL_1_1SurfaceBase.html#a050298d0eec27433250af1ccd8c4da15", null ],
       [ "Scale", "structSDL_1_1SurfaceBase.html#a53e40ed84412c2bdcc790571150cb65f", null ],
       [ "SetAlphaMod", "structSDL_1_1SurfaceBase.html#af4e20b61ef147a09e525e679b417aa13", null ],
       [ "SetBlendMode", "structSDL_1_1SurfaceBase.html#a0f9754c71f9cc000b692c60d851d153f", null ],

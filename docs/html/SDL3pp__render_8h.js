@@ -16,5 +16,7 @@ var SDL3pp__render_8h =
     [ "GetRenderDriver", "SDL3pp__render_8h.html#aec060bae8c84c9565bf316e335b36c5a", null ],
     [ "GetRenderer", "SDL3pp__render_8h.html#a83bc648939f48998f781363fc485dd58", null ],
     [ "GetRenderMetalCommandEncoder", "SDL3pp__render_8h.html#a84052dce4147959aeaeefd6bf36c8424", null ],
-    [ "GetRenderMetalLayer", "SDL3pp__render_8h.html#a1ebebe2c47d899c12deaf9131867080a", null ]
+    [ "GetRenderMetalLayer", "SDL3pp__render_8h.html#a1ebebe2c47d899c12deaf9131867080a", null ],
+    [ "LoadTextureBMP", "SDL3pp__render_8h.html#a5fef1389da94988b75cb72bd19162ae1", null ],
+    [ "LoadTextureBMP", "SDL3pp__render_8h.html#ad2866da5ac1fa8e6fc88967d3d37ab8a", null ]
 ];

@@ -1699,7 +1699,7 @@ struct TextureBase : T
               TextureAccess access,
               int w,
               int h)
-    : T(SDL_CreateTexture(T::get(), renderer, format, access, w, h))
+    : T(SDL_CreateTexture(renderer.get(), format, access, w, h))
   {
   }
 
@@ -1729,7 +1729,7 @@ struct TextureBase : T
    * @sa Update()
    */
   TextureBase(RendererRef renderer, SurfaceRef surface)
-    : T(SDL_CreateTextureFromSurface(T::get(), renderer, surface))
+    : T(SDL_CreateTextureFromSurface(renderer.get(), surface.get()))
   {
   }
 
@@ -1844,7 +1844,7 @@ struct TextureBase : T
    * @sa SDL_UpdateTexture
    */
   TextureBase(RendererRef renderer, PropertiesRef props)
-    : T(SDL_CreateTextureWithProperties(T::get(), renderer, props))
+    : T(SDL_CreateTextureWithProperties(renderer.get(), props))
   {
   }
 
@@ -2601,8 +2601,43 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
     renderer.get(), wait_stage_mask, wait_semaphore, signal_semaphore);
 }
 
-// TODO Renderer
-// TODO Texture
+/**
+ * Load a BMP texture from a seekable SDL data stream.
+ *
+ * @param renderer the renderer to create texture
+ * @param src the data stream for the surface.
+ * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
+ *                in the case of an error.
+ * @returns a Texture with loaded content or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ */
+inline Texture LoadTextureBMP(RendererRef renderer,
+                              SDL_IOStream* src,
+                              bool closeio)
+{
+  Surface surface{LoadBMP(src, closeio)};
+  return Texture(renderer, surface);
+}
+
+/**
+ * Load a BMP texture from a file.
+ *
+ * @param renderer the renderer to create texture
+ * @param file the BMP file to load.
+ * @returns a Texture with loaded content or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline Texture LoadTextureBMP(RendererRef renderer, StringParam file)
+{
+  Surface surface{SDL_LoadBMP(file)};
+  return Texture(renderer, surface);
+}
+
 #pragma region impl
 
 template<ObjectBox<SDL_Renderer*> T>

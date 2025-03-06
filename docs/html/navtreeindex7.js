@@ -1,5 +1,13 @@
 var NAVTREEINDEX7 =
 {
+"structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf":[5,0,6,70],
+"structSDL_1_1WindowBase.html#a9b9e8a8be7b7b8777804ea0c45cc6e91":[5,0,6,63],
+"structSDL_1_1WindowBase.html#a9c7cdebba6f3911ed72e1bfbae7747e6":[5,0,6,31],
+"structSDL_1_1WindowBase.html#aa0765b664547d3d048d8fc9dace25082":[5,0,6,55],
+"structSDL_1_1WindowBase.html#aa1cb9c2d3a972cedbdb4add55f256546":[5,0,6,45],
+"structSDL_1_1WindowBase.html#aa53f308f46a1c76ec83d6f1e204def89":[5,0,6,5],
+"structSDL_1_1WindowBase.html#aa89aeab4b9966165a28017025986d28a":[5,0,6,37],
+"structSDL_1_1WindowBase.html#aaa2a9bfec6b4314f80f03cc45255a00a":[5,0,6,40],
 "structSDL_1_1WindowBase.html#aacfd463171baa3b337fb09c29b613de2":[5,0,6,39],
 "structSDL_1_1WindowBase.html#ab236f258e24873123729491a7e11fc58":[5,0,6,33],
 "structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73":[5,0,6,41],
