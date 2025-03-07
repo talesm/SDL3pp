@@ -1084,9 +1084,8 @@ struct PaletteBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_DestroyPalette
-   * @sa SDL_SetPaletteColors
-   * @sa SDL_SetSurfacePalette
+   * @sa SetColors()
+   * @sa Surface.SetPalette()
    */
   inline PaletteBase(int ncolors)
     : T(SDL_CreatePalette(ncolors))
@@ -1142,8 +1141,6 @@ struct PaletteBase : T
    *               the palette is not modified or destroyed in another thread.
    *
    * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CreatePalette
    */
   void Destroy() { return SDL_DestroyPalette(T::release()); }
 };

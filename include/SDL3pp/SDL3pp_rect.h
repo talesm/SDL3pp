@@ -1159,7 +1159,7 @@ struct Rect : SDL_Rect
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRectIntersection
+   * @sa GetIntersection()
    */
   bool HasIntersection(const Rect& other) const
   {
@@ -1698,7 +1698,7 @@ struct FRect : SDL_FRect
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_RectsEqualFloat
+   * @sa Equal()
    */
   constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
   {
@@ -1769,7 +1769,7 @@ struct FRect : SDL_FRect
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRectIntersection
+   * @sa GetIntersection()
    */
   bool HasIntersection(const FRect& other) const
   {

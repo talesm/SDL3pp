@@ -259,8 +259,6 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateRenderer
-   * @sa SDL_CreateRendererWithProperties
    */
   const char* GetName() const { return SDL_GetRendererName(T::get()); }
 
@@ -291,7 +289,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetCurrentRenderOutputSize
+   * @sa GetCurrentOutputSize()
    */
   bool GetOutputSize(int* w, int* h) const
   {
@@ -327,7 +325,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderOutputSize
+   * @sa GetOutputSize()
    */
   bool GetCurrentOutputSize(int* w, int* h) const
   {
@@ -441,7 +439,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderTarget
+   * @sa GetTarget()
    */
   bool SetTarget(TextureRef texture);
 
@@ -457,7 +455,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderTarget
+   * @sa SetTarget()
    */
   TextureRef GetTarget() const;
 
@@ -494,9 +492,9 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_ConvertEventToRenderCoordinates
-   * @sa SDL_GetRenderLogicalPresentation
-   * @sa SDL_GetRenderLogicalPresentationRect
+   * @sa ConvertEventToRenderCoordinates()
+   * @sa GetLogicalPresentation()
+   * @sa GetLogicalPresentationRect()
    */
   bool SetLogicalPresentation(SDL_Point size, RendererLogicalPresentation mode)
   {
@@ -567,7 +565,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderLogicalPresentation
+   * @sa SetLogicalPresentation()
    */
   std::optional<FRect> GetLogicalPresentationRect() const
   {
@@ -595,8 +593,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderLogicalPresentation
-   * @sa SDL_SetRenderScale
+   * @sa SetLogicalPresentation()
+   * @sa SetScale()
    */
   std::optional<FPoint> RenderCoordinatesFromWindow(
     const SDL_FPoint& window_coord) const
@@ -622,9 +620,9 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderLogicalPresentation
-   * @sa SDL_SetRenderScale
-   * @sa SDL_SetRenderViewport
+   * @sa SetLogicalPresentation()
+   * @sa SetScale()
+   * @sa SetViewport()
    */
   std::optional<FPoint> RenderCoordinatesToWindow(const SDL_FPoint& coord) const
   {
@@ -689,8 +687,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderViewport
-   * @sa SDL_RenderViewportSet
+   * @sa GetViewport()
+   * @sa ViewportSet()
    */
   bool SetViewport(OptionalRef<const SDL_Rect> rect)
   {
@@ -772,8 +770,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderClipRect
-   * @sa SDL_RenderClipEnabled
+   * @sa GetClipRect()
+   * @sa ClipEnabled()
    */
   bool SetClipRect(OptionalRef<const SDL_Rect> rect)
   {
@@ -791,8 +789,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_RenderClipEnabled
-   * @sa SDL_SetRenderClipRect
+   * @sa ClipEnabled()
+   * @sa SetClipRect()
    */
   std::optional<Rect> GetClipRect() const
   {
@@ -810,8 +808,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderClipRect
-   * @sa SDL_SetRenderClipRect
+   * @sa GetClipRect()
+   * @sa SetClipRect()
    */
   bool IsClipEnabled() const { return SDL_RenderClipEnabled(T::get()); }
 
@@ -834,7 +832,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderScale
+   * @sa GetScale()
    */
   bool SetScale(SDL_FPoint scale)
   {
@@ -865,7 +863,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderScale
+   * @sa SetScale()
    */
   bool GetScale(float* scaleX, float* scaleY) const
   {
@@ -886,8 +884,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderDrawColor
-   * @sa SDL_SetRenderDrawColorFloat
+   * @sa GetDrawColor()
+   * @sa SetDrawColorFloat()
    */
   bool SetDrawColor(SDL_Color c)
   {
@@ -908,8 +906,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderDrawColorFloat
-   * @sa SDL_SetRenderDrawColor
+   * @sa GetDrawColorFloat()
+   * @sa SetDrawColor()
    */
   bool SetDrawColor(SDL_FColor c)
   {
@@ -958,8 +956,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderDrawColorFloat
-   * @sa SDL_SetRenderDrawColor
+   * @sa GetDrawColorFloat()
+   * @sa SetDrawColor()
    */
   bool GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
   {
@@ -984,8 +982,8 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderDrawColorFloat
-   * @sa SDL_GetRenderDrawColor
+   * @sa SetDrawColorFloat()
+   * @sa GetDrawColor()
    */
   bool GetDrawColor(float* r, float* g, float* b, float* a) const
   {
@@ -1011,7 +1009,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderColorScale
+   * @sa GetColorScale()
    */
   bool SetColorScale(float scale)
   {
@@ -1028,7 +1026,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderColorScale
+   * @sa SetColorScale()
    */
   std::optional<float> GetColorScale() const
   {
@@ -1049,7 +1047,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderDrawBlendMode
+   * @sa GetDrawBlendMode()
    */
   bool SetDrawBlendMode(BlendMode blendMode)
   {
@@ -1066,7 +1064,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderDrawBlendMode
+   * @sa SetDrawBlendMode()
    */
   std::optional<BlendMode> GetDrawBlendMode() const
   {
@@ -1091,7 +1089,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderDrawColor
+   * @sa SetDrawColor()
    */
   bool RenderClear() { return SDL_RenderClear(T::get()); }
 
@@ -1519,18 +1517,17 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_CreateRenderer
-   * @sa SDL_RenderClear
-   * @sa SDL_RenderFillRect
-   * @sa SDL_RenderFillRects
-   * @sa SDL_RenderLine
-   * @sa SDL_RenderLines
-   * @sa SDL_RenderPoint
-   * @sa SDL_RenderPoints
-   * @sa SDL_RenderRect
-   * @sa SDL_RenderRects
-   * @sa SDL_SetRenderDrawBlendMode
-   * @sa SDL_SetRenderDrawColor
+   * @sa RenderClear()
+   * @sa RenderFillRect()
+   * @sa RenderFillRects()
+   * @sa RenderLine()
+   * @sa RenderLines()
+   * @sa RenderPoint()
+   * @sa RenderPoints()
+   * @sa RenderRect()
+   * @sa RenderRects()
+   * @sa SetDrawBlendMode()
+   * @sa SetDrawColor()
    */
   bool Present() { return SDL_RenderPresent(T::get()); }
 
@@ -1600,7 +1597,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetRenderVSync
+   * @sa GetVSync()
    */
   bool SetVSync(int vsync) { return SDL_SetRenderVSync(T::get(), vsync); }
 
@@ -1614,7 +1611,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SetRenderVSync
+   * @sa SetVSync()
    */
   std::optional<int> GetVSync() const
   {
@@ -1657,7 +1654,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_RenderDebugTextFormat
+   * @sa DebugTextFormat()
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   bool RenderDebugText(FPoint p, StringParam str)
@@ -2570,8 +2567,7 @@ public:
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_CreateRenderer
- * @sa SDL_GetRenderDriver
+ * @sa GetDriver()
  */
 inline int GetNumRenderDrivers() { return SDL_GetNumRenderDrivers(); }
 

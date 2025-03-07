@@ -115,8 +115,6 @@ struct PropertiesBase : T
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_DestroyProperties
    */
   PropertiesBase()
     : T(SDL_CreateProperties())
@@ -163,7 +161,7 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_UnlockProperties
+   * @sa PropertiesLock.UnlockProperties()
    */
   PropertiesLock Lock() &;
 
@@ -588,12 +586,12 @@ struct PropertiesBase : T
    *
    * @since This datatype is available since SDL 3.2.0.
    *
-   * @sa SDL_EnumerateProperties
+   * @sa Enumerate()
    */
   using EnumerateCallback = SDL_EnumeratePropertiesCallback;
 
   /**
-   * @sa PropertiesRef.EnumerateCallback
+   * @sa EnumerateCallback()
    */
   using EnumerateFunction = std::function<void(SDL_PropertiesID, const char*)>;
 
@@ -666,8 +664,6 @@ struct PropertiesBase : T
    *               from these properties.
    *
    * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CreateProperties
    */
   void Destroy() { return SDL_DestroyProperties(T::release()); }
 
@@ -720,7 +716,7 @@ public:
   /**
    * @sa Unlock()
    */
-  ~PropertiesLock() { SDL_UnlockProperties(properties.get()); }
+  ~PropertiesLock() { Unlock(); }
 
   PropertiesLock& operator=(PropertiesLock other)
   {

@@ -76,7 +76,7 @@ using DisplayOrientation = SDL_DisplayOrientation;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @sa SDL_DisplayMode
+ * @sa DisplayMode()
  */
 using DisplayModeData = SDL_DisplayModeData;
 
@@ -163,7 +163,7 @@ struct Display
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetDisplays
+   * @sa GetDisplays()
    */
   static Display GetPrimary() { return {SDL_GetPrimaryDisplay()}; }
 
@@ -2265,7 +2265,7 @@ struct WindowBase : T
    *
    * @since This enum is available since SDL 3.2.0.
    *
-   * @sa SDL_HitTest
+   * @sa HitTest
    */
   using HitTestResult = SDL_HitTestResult;
 
@@ -2440,10 +2440,6 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CreatePopupWindow
-   * @sa SDL_CreateWindow
-   * @sa SDL_CreateWindowWithProperties
    */
   void Destroy() { return SDL_DestroyWindow(T::release()); }
 };
@@ -2453,7 +2449,7 @@ struct WindowBase : T
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_GL_CreateContext
+ * @sa GL_CreateContext()
  */
 using GLContext = SDL_GLContext;
 
@@ -2513,7 +2509,7 @@ using EGLint = SDL_EGLint;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_EGL_SetAttributeCallbacks
+ * @sa EGL_SetAttributeCallbacks()
  */
 using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
 
@@ -2544,7 +2540,7 @@ using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa SDL_EGL_SetAttributeCallbacks
+ * @sa EGL_SetAttributeCallbacks()
  */
 using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
 
@@ -2605,7 +2601,7 @@ using GLContextResetNotification = SDL_GLContextResetNotification;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetVideoDriver
+ * @sa GetVideoDriver()
  */
 inline int GetNumVideoDrivers() { return SDL_GetNumVideoDrivers(); }
 
@@ -2626,7 +2622,7 @@ inline int GetNumVideoDrivers() { return SDL_GetNumVideoDrivers(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetNumVideoDrivers
+ * @sa GetNumVideoDrivers()
  */
 inline const char* GetVideoDriver(int index)
 {
@@ -2647,8 +2643,8 @@ inline const char* GetVideoDriver(int index)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GetNumVideoDrivers
- * @sa SDL_GetVideoDriver
+ * @sa GetNumVideoDrivers()
+ * @sa GetVideoDriver()
  */
 inline const char* GetCurrentVideoDriver()
 {
@@ -2787,8 +2783,8 @@ inline bool DisableScreenSaver() { return SDL_DisableScreenSaver(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_GetProcAddress
- * @sa SDL_GL_UnloadLibrary
+ * @sa GL_GetProcAddress()
+ * @sa GL_UnloadLibrary()
  */
 inline bool GL_LoadLibrary(StringParam path)
 {
@@ -2844,9 +2840,9 @@ inline bool GL_LoadLibrary(StringParam path)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_ExtensionSupported
- * @sa SDL_GL_LoadLibrary
- * @sa SDL_GL_UnloadLibrary
+ * @sa GL_ExtensionSupported()
+ * @sa GL_LoadLibrary()
+ * @sa GL_UnloadLibrary()
  */
 inline FunctionPointer GL_GetProcAddress(StringParam proc)
 {
@@ -2868,7 +2864,7 @@ inline FunctionPointer GL_GetProcAddress(StringParam proc)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_EGL_GetCurrentDisplay
+ * @sa EGL_GetCurrentDisplay()
  */
 inline FunctionPointer EGL_GetProcAddress(StringParam proc)
 {
@@ -2882,7 +2878,7 @@ inline FunctionPointer EGL_GetProcAddress(StringParam proc)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_LoadLibrary
+ * @sa GL_LoadLibrary()
  */
 inline void GL_UnloadLibrary() { SDL_GL_UnloadLibrary(); }
 
@@ -2919,8 +2915,8 @@ inline bool GL_ExtensionSupported(StringParam extension)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_GetAttribute
- * @sa SDL_GL_SetAttribute
+ * @sa GL_GetAttribute()
+ * @sa GL_SetAttribute()
  */
 inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
 
@@ -2942,8 +2938,8 @@ inline void GL_ResetAttributes() { SDL_GL_ResetAttributes(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_GetAttribute
- * @sa SDL_GL_ResetAttributes
+ * @sa GL_GetAttribute()
+ * @sa GL_ResetAttributes()
  */
 inline bool GL_SetAttribute(GLAttr attr, int value)
 {
@@ -2963,8 +2959,8 @@ inline bool GL_SetAttribute(GLAttr attr, int value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_ResetAttributes
- * @sa SDL_GL_SetAttribute
+ * @sa GL_ResetAttributes()
+ * @sa GL_SetAttribute()
  */
 inline bool GL_GetAttribute(GLAttr attr, int* value)
 {
@@ -2990,8 +2986,8 @@ inline bool GL_GetAttribute(GLAttr attr, int* value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_DestroyContext
- * @sa SDL_GL_MakeCurrent
+ * @sa GL_DestroyContext()
+ * @sa GL_MakeCurrent()
  */
 inline GLContext GL_CreateContext(WindowRef window)
 {
@@ -3012,7 +3008,7 @@ inline GLContext GL_CreateContext(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_CreateContext
+ * @sa GL_CreateContext()
  */
 inline bool GL_MakeCurrent(WindowRef window, GLContext context)
 {
@@ -3041,7 +3037,7 @@ inline WindowRef GL_GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_MakeCurrent
+ * @sa GL_MakeCurrent()
  */
 inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
 
@@ -3147,7 +3143,7 @@ inline void EGL_SetAttributeCallbacks(
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_GetSwapInterval
+ * @sa GL_GetSwapInterval()
  */
 inline bool GL_SetSwapInterval(int interval)
 {
@@ -3171,7 +3167,7 @@ inline bool GL_SetSwapInterval(int interval)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_SetSwapInterval
+ * @sa GL_SetSwapInterval()
  */
 inline bool GL_GetSwapInterval(int* interval)
 {
@@ -3212,7 +3208,7 @@ inline bool GL_SwapWindow(WindowRef window)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_GL_CreateContext
+ * @sa GL_CreateContext()
  */
 inline bool GL_DestroyContext(GLContext context)
 {

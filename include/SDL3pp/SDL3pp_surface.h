@@ -211,7 +211,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetSurfaceColorspace
+   * @sa GetColorspace()
    */
   bool SetColorspace(Colorspace colorspace)
   {
@@ -305,9 +305,9 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_RemoveSurfaceAlternateImages
-   * @sa SDL_GetSurfaceImages
-   * @sa SDL_SurfaceHasAlternateImages
+   * @sa RemoveAlternateImages()
+   * @sa GetImages()
+   * @sa HasAlternateImages()
    */
   bool AddAlternateImage(SurfaceRef image)
   {
@@ -321,9 +321,9 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_AddSurfaceAlternateImage
-   * @sa SDL_RemoveSurfaceAlternateImages
-   * @sa SDL_GetSurfaceImages
+   * @sa AddAlternateImage()
+   * @sa RemoveAlternateImages()
+   * @sa GetImages()
    */
   bool HasAlternateImages() const
   {
@@ -668,7 +668,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetSurfaceBlendMode
+   * @sa GetBlendMode()
    */
   bool SetBlendMode(BlendMode blendMode)
   {
@@ -1070,7 +1070,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_BlitSurfaceScaled
+   * @sa BlitScaled()
    */
   bool Blit(SurfaceRef src,
             OptionalRef<const SDL_Rect> srcrect,
@@ -1151,7 +1151,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_BlitSurfaceScaled
+   * @sa BlitScaled()
    */
   bool Blit(SurfaceRef src,
             OptionalRef<const SDL_Rect> srcrect,
@@ -1180,7 +1180,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_BlitSurface
+   * @sa Blit()
    */
   bool BlitUnchecked(SurfaceRef src,
                      const SDL_Rect& srcrect,
@@ -1209,7 +1209,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_BlitSurface
+   * @sa Blit()
    */
   bool BlitScaled(SurfaceRef src,
                   OptionalRef<const SDL_Rect> srcrect,
@@ -1241,7 +1241,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_BlitSurfaceScaled
+   * @sa BlitScaled()
    */
   bool BlitUncheckedScaled(SurfaceRef src,
                            const SDL_Rect& srcrect,
@@ -1273,7 +1273,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_BlitSurface
+   * @sa Blit()
    */
   bool BlitTiled(SurfaceRef src,
                  OptionalRef<const SDL_Rect> srcrect,
@@ -1307,7 +1307,7 @@ struct SurfaceBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_BlitSurface
+   * @sa Blit()
    */
   bool BlitTiledWithScale(SurfaceRef src,
                           OptionalRef<const SDL_Rect> srcrect,
@@ -1759,7 +1759,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_SurfaceLock
+   * @sa Surface.Lock()
    */
   void Unlock() { return SDL_UnlockSurface(surface.release()); }
 
@@ -1831,8 +1831,7 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_LoadBMP_IO
- * @sa SDL_SaveBMP
+ * @sa SaveBMP()
  */
 inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
 {
@@ -1855,8 +1854,7 @@ inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_LoadBMP
- * @sa SDL_SaveBMP_IO
+ * @sa LoadBMP()
  */
 inline bool SaveBMP(SurfaceRef surface, StringParam file)
 {
@@ -1879,7 +1877,7 @@ inline bool SaveBMP(SurfaceRef surface, StringParam file)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ConvertPixelsAndColorspace
+ * @sa ConvertPixelsAndColorspace()
  */
 inline bool ConvertPixels(int width,
                           int height,
@@ -1919,7 +1917,7 @@ inline bool ConvertPixels(int width,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_ConvertPixels
+ * @sa ConvertPixels()
  */
 inline bool ConvertPixelsAndColorspace(int width,
                                        int height,

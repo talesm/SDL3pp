@@ -184,13 +184,11 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section post"><dt>Postcondition</dt><dd>this represents a new Palette structure convertible to true on success or converts to false on failure (e.g. if there wasn't enough memory); call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_DestroyPalette </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831" title="Set a range of colors in a palette.">SetColors()</a> </dd>
 <dd>
-SDL_SetPaletteColors </dd>
-<dd>
-SDL_SetSurfacePalette </dd></dl>
+Surface.SetPalette() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01091">1091</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01090">1090</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -223,10 +221,9 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <p>Free a palette. </p>
 <p>After calling, this object becomes empty.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_CreatePalette </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01148">1148</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01145">1145</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -255,7 +252,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01096">1096</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01095">1095</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -285,7 +282,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01098">1098</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01097">1097</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -344,7 +341,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01114">1114</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01113">1113</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -395,7 +392,7 @@ template&lt;<a class="el" href="classSDL_1_1OptionalRef.html">class</a> T &gt; <
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01130">1130</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01129">1129</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
