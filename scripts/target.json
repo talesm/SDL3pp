@@ -10170,7 +10170,8 @@
                 }
               ],
               "sourceName": "SDL_LockTexture",
-              "static": false
+              "static": false,
+              "reference": 1
             },
             "Destroy": {
               "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",
@@ -10186,6 +10187,12 @@
           "name": "TextureLock",
           "kind": "struct",
           "entries": {
+            "texture": {
+              "kind": "var",
+              "type": "TextureRef",
+              "name": "texture",
+              "doc": ""
+            },
             "surface": {
               "kind": "var",
               "type": "SurfaceRef",
@@ -10199,8 +10206,12 @@
                 "type": "explicit",
                 "parameters": [
                   {
-                    "name": "surface",
-                    "type": "SurfaceRef"
+                    "name": "texture",
+                    "type": "TextureRef"
+                  },
+                  {
+                    "name": "rect",
+                    "type": "OptionalRef<const SDL_Rect>"
                   }
                 ],
                 "name": "TextureLock"

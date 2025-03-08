@@ -2461,7 +2461,7 @@ class TextureLock
   /**
    * @sa TextureBase.Lock()
    */
-  explicit TextureLock(TextureRef texture, OptionalRef<const Rect> rect)
+  explicit TextureLock(TextureRef texture, OptionalRef<const SDL_Rect> rect)
     : texture(std::move(texture))
     , surface(nullptr)
   {
