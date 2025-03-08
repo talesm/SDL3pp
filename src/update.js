@@ -40,7 +40,7 @@ function updateContent(content, targetFile) {
     system.log(`No changes for ${name}`);
     return 0;
   }
-  if (targetFile.doc) {
+  if (targetFile.doc && !sourceFile.doc) {
     changes.push({
       begin: docBegin,
       end: docEnd,
@@ -240,6 +240,7 @@ function checkEntryChanged(sourceEntry, targetEntry) {
   for (const key of keys) {
     if (checkValueChanged(sourceEntry[key], targetEntry[key])) return key;
   }
+  if (!sourceEntry.doc && targetEntry.doc) return "doc";
   return null;
 }
 
