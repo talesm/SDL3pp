@@ -11,7 +11,7 @@ var searchData=
   ['time_8',['Time',['../namespaceSDL.html#a4cdca510cc08a5569b9e76462e19242f',1,'SDL']]],
   ['tolower_9',['tolower',['../namespaceSDL.html#a77f89764775d85be34bed2bc447d543a',1,'SDL']]],
   ['toupper_10',['toupper',['../namespaceSDL.html#aa66528bfccd7f5a86ed7554d049d1930',1,'SDL']]],
-  ['transfercharacteristics_11',['TransferCharacteristics',['../namespaceSDL.html#a593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
+  ['transfercharacteristics_11',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
   ['transformation_2emd_12',['transformation.md',['../transformation_8md.html',1,'']]],
   ['transformations_13',['Transformations',['../transformations.html',1,'']]],
   ['trunc_14',['trunc',['../namespaceSDL.html#aeb64b2b465e001720dce40bacec1b937',1,'SDL']]],

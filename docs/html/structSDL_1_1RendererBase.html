@@ -247,10 +247,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa3455f1ed5c9673fb3560f769fcfdca1" id="r_aa3455f1ed5c9673fb3560f769fcfdca1"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classSDL_1_1OptionalRef.html">float</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#aa3455f1ed5c9673fb3560f769fcfdca1">GetColorScale</a> () <a class="el" href="classSDL_1_1OptionalRef.html">const</a></td></tr>
 <tr class="memdesc:aa3455f1ed5c9673fb3560f769fcfdca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the color scale used for render operations.  <br /></td></tr>
 <tr class="separator:aa3455f1ed5c9673fb3560f769fcfdca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d16732d32a1527f38860ee1cb424953" id="r_a9d16732d32a1527f38860ee1cb424953"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a9d16732d32a1527f38860ee1cb424953">SetDrawBlendMode</a> (<a class="el" href="namespaceSDL.html#ad02afeb206989ff841629dca2c93e694">BlendMode</a> <a class="el" href="classSDL_1_1OptionalRef.html">blendMode</a>)</td></tr>
+<tr class="memitem:a9d16732d32a1527f38860ee1cb424953" id="r_a9d16732d32a1527f38860ee1cb424953"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a9d16732d32a1527f38860ee1cb424953">SetDrawBlendMode</a> (<a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> <a class="el" href="classSDL_1_1OptionalRef.html">blendMode</a>)</td></tr>
 <tr class="memdesc:a9d16732d32a1527f38860ee1cb424953"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the blend mode used for drawing operations (Fill and Line).  <br /></td></tr>
 <tr class="separator:a9d16732d32a1527f38860ee1cb424953"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a157ad97e3ed83a6c87b21cb5094c57b4" id="r_a157ad97e3ed83a6c87b21cb5094c57b4"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="namespaceSDL.html#ad02afeb206989ff841629dca2c93e694">BlendMode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a157ad97e3ed83a6c87b21cb5094c57b4">GetDrawBlendMode</a> () <a class="el" href="classSDL_1_1OptionalRef.html">const</a></td></tr>
+<tr class="memitem:a157ad97e3ed83a6c87b21cb5094c57b4" id="r_a157ad97e3ed83a6c87b21cb5094c57b4"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a157ad97e3ed83a6c87b21cb5094c57b4">GetDrawBlendMode</a> () <a class="el" href="classSDL_1_1OptionalRef.html">const</a></td></tr>
 <tr class="memdesc:a157ad97e3ed83a6c87b21cb5094c57b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the blend mode used for drawing operations.  <br /></td></tr>
 <tr class="separator:a157ad97e3ed83a6c87b21cb5094c57b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb6edc12d14e357905ec3b408f1eaf3b" id="r_aeb6edc12d14e357905ec3b408f1eaf3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#aeb6edc12d14e357905ec3b408f1eaf3b">RenderClear</a> ()</td></tr>
@@ -369,7 +369,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>If you want a specific renderer, you can specify its name here. A list of available renderers can be obtained by calling SDL_GetRenderDriver() multiple times, with indices from 0 to SDL_GetNumRenderDrivers()-1. If you don't need a specific renderer, specify NULL and <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will attempt to choose the best option for you, based on what is available on the user's system.</p>
 <p>If <code>name</code> is a comma-separated list, <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will try each name, in the order listed, until one succeeds or all of them fail.</p>
 <p>By default the rendering size matches the window size in pixels, but you can call SDL_SetRenderLogicalPresentation() to change the content size and scaling options.</p>
-<p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
+<p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">window</td><td>the window where rendering is displayed. </td></tr>
@@ -433,7 +433,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <li><code>SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER</code>: the queue family index used for rendering.</li>
 <li><code>SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER</code>: the queue family index used for presentation.</li>
 </ul>
-<p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
+<p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">props</td><td>the properties to use.</td></tr>
@@ -479,7 +479,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 <p>Create a 2D software rendering context for a surface. </p>
 <p>Two other API which can be used to create Renderer: <a class="el" href="group__resource.html#ga6cd596ee84afc3ead3c26a6c429a797c" title="Create a 2D rendering context for a window.">RendererBase(WindowRef)</a> and SDL_CreateWindowAndRenderer(WindowRef,
 StringParam). These can <em>also</em> create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.</p>
-<p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
+<p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">surface</td><td>the SDL_Surface structure representing the surface where rendering is done.</td></tr>
@@ -647,7 +647,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </div><div class="memdoc">
 
 <p>Get the clip rectangle for the current target. </p>
-<dl class="section return"><dt>Returns</dt><dd>the rect filled in with the current clipping area or an empty rectangle if clipping is disabled on success; std::nullopt on failure, call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the rect filled in with the current clipping area or an empty rectangle if clipping is disabled on success; std::nullopt on failure, call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>ClipEnabled() </dd>
@@ -818,7 +818,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="namespaceSDL.html#ad02afeb206989ff841629dca2c93e694">BlendMode</a> &gt; <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetDrawBlendMode </td>
+          <td class="memname">std::optional&lt; <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> &gt; <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetDrawBlendMode </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1210,7 +1210,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 
 <p>Get the final presentation rectangle for rendering. </p>
 <p>This function returns the calculated rectangle used for logical presentation, based on the presentation mode and output size. If logical presentation is disabled, it will fill the rectangle with the output size, in pixels.</p>
-<dl class="section return"><dt>Returns</dt><dd>the rect with the final presentation rectangle on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the rect with the final presentation rectangle on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd></dl>
@@ -1469,7 +1469,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 
 <p>Get the safe area for rendering within the current viewport. </p>
 <p>Some devices have portions of the screen which are partially obscured or not interactive, possibly due to on-screen controls, curved edges, camera notches, TV overscan, etc. This function provides the area of the current viewport which is safe to have interactible content. You should continue rendering into the rest of the render target, but it should not contain visually important or interactible content.</p>
-<dl class="section return"><dt>Returns</dt><dd>the rect filled the area that is safe for interactive content on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the rect filled the area that is safe for interactive content on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -1680,7 +1680,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
 </div><div class="memdoc">
 
 <p>Get VSync of the given renderer. </p>
-<dl class="section return"><dt>Returns</dt><dd>the current vertical refresh sync interval on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the current vertical refresh sync interval on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a7f956ae897c56fe35213f70e3d548790" title="Toggle VSync of the given renderer.">SetVSync()</a> </dd></dl>
@@ -1933,7 +1933,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FPoint.html" title="The structure that defines a point (using floating point values).">FPoint</a> containing ther render coordinates on success or std::nullopt on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FPoint.html" title="The structure that defines a point (using floating point values).">FPoint</a> containing ther render coordinates on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd>
@@ -2520,7 +2520,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a new SDL_Surface on success or NULL on failure; call <a class="el" href="namespaceSDL.html#a6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a new SDL_Surface on success or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -3142,7 +3142,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::SetDrawBlendMode </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#ad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td>
           <td class="paramname"><em>blendMode</em></td><td>)</td>
           <td></td>
         </tr>

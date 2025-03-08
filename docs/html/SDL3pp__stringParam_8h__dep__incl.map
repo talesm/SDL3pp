@@ -1,6 +1,6 @@
 <map id="SDL3pp/SDL3pp_stringParam.h" name="SDL3pp/SDL3pp_stringParam.h">
 <area shape="rect" id="Node000001" title=" " alt="" coords="195,5,416,31"/>
-<area shape="rect" id="Node000002" href="$SDL3pp__init_8h.html" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="379,152,543,177"/>
+<area shape="rect" id="Node000002" href="$SDL3pp__init_8h.html" title=" " alt="" coords="379,152,543,177"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="330,39,451,150,447,154,326,42"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__properties_8h.html" title=" " alt="" coords="94,152,303,177"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="291,44,209,153,205,150,286,41"/>
@@ -21,7 +21,7 @@
 <area shape="poly" id="edge11_Node000007_Node000002" title=" " alt="" coords="651,110,501,154,500,149,650,105"/>
 <area shape="poly" id="edge19_Node000007_Node000004" title=" " alt="" coords="808,91,946,96,1086,109,1145,120,1189,134,1203,143,1212,154,1215,166,1209,179,1193,197,1171,214,1112,246,1039,275,956,302,785,346,646,375,645,369,784,341,954,297,1037,270,1110,241,1168,209,1189,193,1204,176,1209,165,1208,156,1200,147,1186,139,1144,125,1086,114,945,101,808,96"/>
 <area shape="poly" id="edge20_Node000007_Node000005" title=" " alt="" coords="671,113,608,154,565,193,531,227,527,223,561,189,605,150,668,109"/>
-<area shape="rect" id="Node000008" href="$SDL3pp__pixels_8h.html" title="SDL offers facilities for pixel management." alt="" coords="811,152,992,177"/>
+<area shape="rect" id="Node000008" href="$SDL3pp__pixels_8h.html" title=" " alt="" coords="811,152,992,177"/>
 <area shape="poly" id="edge12_Node000007_Node000008" title=" " alt="" coords="748,106,870,149,868,154,747,111"/>
 <area shape="rect" id="Node000009" href="$SDL3pp__rect_8h.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="619,152,787,177"/>
 <area shape="poly" id="edge15_Node000007_Node000009" title=" " alt="" coords="705,118,705,152,700,152,700,118"/>

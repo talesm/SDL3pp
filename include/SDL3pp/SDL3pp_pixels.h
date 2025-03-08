@@ -1,5 +1,17 @@
+#ifndef SDL3PP_PIXELS_H_
+#define SDL3PP_PIXELS_H_
+
+#include <span>
+#include <SDL3/SDL_assert.h>
+#include <SDL3/SDL_pixels.h>
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_spanRef.h"
+#include "SDL3pp_stdinc.h"
+
+namespace SDL {
+
 /**
- * @file SDL3pp_pixels.h
+ * @defgroup CategoryPixels Category Pixels
  *
  * SDL offers facilities for pixel management.
  *
@@ -54,19 +66,9 @@
  * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
  *
  * The matrix coefficients are used to convert between YCbCr and RGB colors.
+ *
+ * @{
  */
-
-#ifndef SDL3PP_PIXELS_H_
-#define SDL3PP_PIXELS_H_
-
-#include <span>
-#include <SDL3/SDL_assert.h>
-#include <SDL3/SDL_pixels.h>
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_spanRef.h"
-#include "SDL3pp_stdinc.h"
-
-namespace SDL {
 
 // Forward decl
 template<class T>
@@ -1313,6 +1315,8 @@ inline void GetRGBA(Uint32 pixel,
 {
   SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
 }
+
+/** @} */
 
 #pragma region impl
 

@@ -1,5 +1,20 @@
+#ifndef SDL3PP_INIT_H_
+#define SDL3PP_INIT_H_
+
+#include <SDL3/SDL_init.h>
+#include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_stdinc.h"
+#include "SDL3pp_stringParam.h"
+
 /**
- * @file SDL3pp_init.h
+ * @namespace SDL
+ * @brief the main namespace where all SDL3pp public functions and types live
+ */
+namespace SDL {
+
+/**
+ * @defgroup CategoryInit Category Init
  *
  * All SDL programs need to initialize the library before starting to work
  * with it.
@@ -23,22 +38,9 @@
  * we can name the app in the system's audio mixer, etc). Those that want to
  * provide a _lot_ of information should look at the more-detailed
  * SDL_SetAppMetadataProperty().
+ *
+ * @{
  */
-
-#ifndef SDL3PP_INIT_H_
-#define SDL3PP_INIT_H_
-
-#include <SDL3/SDL_init.h>
-#include "SDL3pp_callbackWrapper.h"
-#include "SDL3pp_error.h"
-#include "SDL3pp_stdinc.h"
-#include "SDL3pp_stringParam.h"
-
-/**
- * @namespace SDL
- * @brief the main namespace where all SDL3pp public functions and types live
- */
-namespace SDL {
 
 /**
  * @brief Initialization flags for SDL
@@ -579,6 +581,8 @@ inline const char* GetAppMetadataProperty(StringParam name)
 {
   return SDL_GetAppMetadataProperty(name);
 }
+
+/** @} */
 
 #pragma region impl
 

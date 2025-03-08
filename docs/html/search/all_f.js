@@ -48,5 +48,5 @@ var searchData=
   ['round_45',['round',['../namespaceSDL.html#a58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
   ['roundf_46',['roundf',['../namespaceSDL.html#a9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
   ['rules_47',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
-  ['runonmainthread_48',['runonmainthread',['../namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../namespaceSDL.html#a02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
+  ['runonmainthread_48',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
 ];

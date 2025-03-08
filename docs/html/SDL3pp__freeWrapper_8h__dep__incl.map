@@ -9,9 +9,9 @@
 <area shape="rect" id="Node000007" href="$SDL3pp__video_8h.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="349,299,528,324"/>
 <area shape="poly" id="edge18_Node000001_Node000007" title=" " alt="" coords="501,27,633,42,774,67,839,83,896,102,942,124,973,150,980,165,978,179,968,193,951,205,901,227,834,248,676,280,528,302,528,297,675,275,833,242,899,222,948,200,964,189,973,177,975,166,969,154,939,129,894,107,837,88,772,72,632,47,501,32"/>
 <area shape="poly" id="edge14_Node000003_Node000002" title=" " alt="" coords="336,98,261,104,186,114,122,130,99,141,83,154,74,168,69,183,70,214,84,245,107,276,135,306,166,332,219,370,216,374,163,336,132,309,103,280,79,248,65,215,63,182,69,166,79,150,96,137,121,125,185,109,261,98,336,93"/>
-<area shape="rect" id="Node000004" href="$SDL3pp__init_8h.html" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="593,152,757,177"/>
+<area shape="rect" id="Node000004" href="$SDL3pp__init_8h.html" title=" " alt="" coords="593,152,757,177"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="492,105,638,149,636,154,491,110"/>
-<area shape="rect" id="Node000005" href="$SDL3pp__pixels_8h.html" title="SDL offers facilities for pixel management." alt="" coords="93,152,275,177"/>
+<area shape="rect" id="Node000005" href="$SDL3pp__pixels_8h.html" title=" " alt="" coords="93,152,275,177"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="388,110,226,154,225,149,386,105"/>
 <area shape="poly" id="edge15_Node000003_Node000006" title=" " alt="" coords="423,116,390,154,337,226,332,223,386,150,419,112"/>
 <area shape="rect" id="Node000008" href="$SDL3pp__rect_8h.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="400,152,568,177"/>

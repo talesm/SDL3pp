@@ -1,8 +1,8 @@
 <map id="SDL3pp/SDL3pp_stdinc.h" name="SDL3pp/SDL3pp_stdinc.h">
 <area shape="rect" id="Node000001" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="308,5,491,31"/>
-<area shape="rect" id="Node000002" href="$SDL3pp__init_8h.html" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="5,79,169,104"/>
+<area shape="rect" id="Node000002" href="$SDL3pp__init_8h.html" title=" " alt="" coords="5,79,169,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="337,36,138,81,137,76,335,31"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__pixels_8h.html" title="SDL offers facilities for pixel management." alt="" coords="245,79,426,104"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__pixels_8h.html" title=" " alt="" coords="245,79,426,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="382,43,348,80,344,77,378,39"/>
 <area shape="rect" id="Node000004" href="$SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="283,299,467,324"/>
 <area shape="poly" id="edge12_Node000001_Node000004" title=" " alt="" coords="297,37,262,54,235,80,227,95,222,110,224,142,237,174,258,205,284,234,312,259,360,296,357,301,308,263,280,237,254,208,232,176,219,143,217,110,222,93,231,77,259,50,294,33"/>

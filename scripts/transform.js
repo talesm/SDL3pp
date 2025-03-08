@@ -356,7 +356,7 @@ function transformType(type, typeMap) {
  */
 function transformFileDoc(docStr, context, filename) {
   if (!docStr) return "";
-  docStr = docStr.replace(/^(([@\\]file [^\n]*\s*)?)/, `@file ${filename}\n\n`);
+  docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
   return transformDoc(docStr, context);
 }
 

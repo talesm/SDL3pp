@@ -1,0 +1,4 @@
+<map id="Resource" name="Resource">
+<area shape="rect" id="Node000002" href="$group__CategoryPixels.html" title="SDL offers facilities for pixel management." alt="" coords="247,7,369,33"/>
+<area shape="rect" id="Node000001" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="5,7,88,33"/>
+</map>

@@ -1,5 +1,5 @@
 <map id="SDL3pp/SDL3pp_init.h" name="SDL3pp/SDL3pp_init.h">
-<area shape="rect" id="Node000001" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="355,5,519,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="355,5,519,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,129,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="378,33,141,79,140,73,377,28"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__callbackWrapper_8h.html" title=" " alt="" coords="153,79,352,104"/>

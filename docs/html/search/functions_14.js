@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['wasinit_0',['wasinit',['../structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e',1,'SDL::SDL::WasInit()'],['../namespaceSDL.html#a2d9c710ec219aa2818bfdc55e4115f44',1,'SDL::WasInit(InitFlags flags)']]],
+  ['wasinit_0',['wasinit',['../structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e',1,'SDL::SDL::WasInit()'],['../group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44',1,'SDL::WasInit(InitFlags flags)']]],
   ['wcscasecmp_1',['wcscasecmp',['../namespaceSDL.html#ae24c494fab206e9aa27dfd9c04b35e81',1,'SDL']]],
   ['wcscmp_2',['wcscmp',['../namespaceSDL.html#a9edc1299fb56e51101501e09aaaa5b1f',1,'SDL']]],
   ['wcsdup_3',['wcsdup',['../namespaceSDL.html#a26f89af82ddb65cb934e2c3dc6abb807',1,'SDL']]],

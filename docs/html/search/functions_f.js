@@ -40,5 +40,5 @@ var searchData=
   ['restore_37',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
   ['round_38',['round',['../namespaceSDL.html#a58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
   ['roundf_39',['roundf',['../namespaceSDL.html#a9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
-  ['runonmainthread_40',['runonmainthread',['../namespaceSDL.html#af819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../namespaceSDL.html#a02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
+  ['runonmainthread_40',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
 ];

@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="Header file for SDL 2D rendering functions." alt="" coords="1332,5,1516,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,149,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1332,24,835,40,504,57,168,81,163,82,163,76,168,76,504,52,835,35,1332,19"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__blendmode_8h.html" title="Blend modes decide how two colors will mix together." alt="" coords="237,225,400,251"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__blendmode_8h.html" title=" " alt="" coords="237,225,400,251"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1332,27,1121,43,856,69,723,86,600,106,497,129,420,154,396,167,374,183,339,217,336,213,371,179,393,163,418,150,495,124,599,101,722,81,855,64,1121,38,1332,22"/>
 <area shape="rect" id="Node000005" href="$SDL3pp__error_8h.html" title=" " alt="" coords="1695,299,1815,324"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1413,33,1375,72,1333,129,1318,161,1310,192,1312,222,1327,249,1354,267,1393,279,1441,287,1494,290,1600,292,1682,296,1682,296,1681,301,1681,301,1600,297,1493,296,1440,292,1391,285,1351,272,1323,252,1307,223,1305,192,1313,159,1329,127,1371,69,1409,29"/>
@@ -12,7 +12,7 @@
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1332,23,1032,31,843,40,652,53,474,71,326,96,269,110,225,127,198,145,192,154,189,164,189,239,191,286,198,304,214,322,239,337,276,350,371,367,479,377,581,381,581,386,479,382,370,372,275,355,237,342,210,326,193,307,185,287,184,239,184,163,187,152,195,141,223,122,267,105,325,90,473,66,651,48,843,35,1031,26,1331,18"/>
 <area shape="rect" id="Node000012" href="$SDL3pp__optionalRef_8h.html" title=" " alt="" coords="1506,299,1670,324"/>
 <area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="1448,28,1482,49,1515,77,1534,101,1550,128,1572,185,1584,240,1589,284,1584,285,1579,241,1567,187,1545,130,1530,104,1511,81,1479,53,1446,33"/>
-<area shape="rect" id="Node000014" href="$SDL3pp__pixels_8h.html" title="SDL offers facilities for pixel management." alt="" coords="827,225,955,251"/>
+<area shape="rect" id="Node000014" href="$SDL3pp__pixels_8h.html" title=" " alt="" coords="827,225,955,251"/>
 <area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="1374,33,1298,54,1214,81,1131,116,1049,155,924,221,921,216,1047,150,1128,111,1212,76,1297,48,1373,28"/>
 <area shape="rect" id="Node000020" href="$SDL3pp__stdinc_8h.html" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="1353,299,1482,324"/>
 <area shape="poly" id="edge49_Node000001_Node000020" title=" " alt="" coords="1439,29,1477,67,1520,122,1536,154,1546,187,1546,220,1534,252,1510,278,1478,296,1476,291,1506,274,1530,249,1541,219,1540,188,1531,156,1515,125,1473,70,1435,33"/>
