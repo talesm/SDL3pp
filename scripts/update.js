@@ -36,16 +36,16 @@ function updateContent(content, targetFile) {
   const sourceFile = parseContent(name, content, { storeLineNumbers: true });
   const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
   const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd, "").reverse();
-  if (!changes.length) {
-    system.log(`No changes for ${name}`);
-    return 0;
-  }
-  if (targetFile.doc) {
+  if (targetFile.doc && !sourceFile.doc) {
     changes.push({
       begin: docBegin,
       end: docEnd,
       replacement: generateDocString(targetFile.doc),
     });
+  }
+  if (!changes.length) {
+    system.log(`No changes for ${name}`);
+    return 0;
   }
   updateChanges(content, changes);
   return changes.length;
@@ -240,6 +240,7 @@ function checkEntryChanged(sourceEntry, targetEntry) {
   for (const key of keys) {
     if (checkValueChanged(sourceEntry[key], targetEntry[key])) return key;
   }
+  if (!sourceEntry.doc && targetEntry.doc) return "doc";
   return null;
 }
 
