@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pixels_0',['Category Pixels',['../group__CategoryPixels.html',1,'']]]
+  ['initialization_20and_20shutdown_0',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]]
 ];

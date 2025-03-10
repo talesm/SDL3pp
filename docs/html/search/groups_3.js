@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['error_0',['Category Error',['../group__CategoryError.html',1,'']]]
+  ['error_20handling_0',['Error Handling',['../group__CategoryError.html',1,'']]]
 ];

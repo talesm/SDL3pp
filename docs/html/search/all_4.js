@@ -23,7 +23,7 @@ var searchData=
   ['equal_20',['equal',['../structSDL_1_1Rect.html#a09f05c066213374274e055034aa3b28b',1,'SDL::Rect::Equal()'],['../structSDL_1_1FRect.html#a196110eaa3957ab44f9ec977fbbae3fd',1,'SDL::FRect::Equal(const FRect &amp;other) const']]],
   ['equalepsilon_21',['EqualEpsilon',['../structSDL_1_1FRect.html#a0dddedcee6c59d91fef1defa8aa0ae17',1,'SDL::FRect']]],
   ['erase_22',['Erase',['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#a7c111f11288f7879efbdc8bef1c9efe7',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;']]],
-  ['error_23',['Category Error',['../group__CategoryError.html',1,'']]],
+  ['error_20handling_23',['Error Handling',['../group__CategoryError.html',1,'']]],
   ['examples_24',['Examples',['../index.html#examples',1,'']]],
   ['exp_25',['exp',['../namespaceSDL.html#a3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
   ['expf_26',['expf',['../namespaceSDL.html#a5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],

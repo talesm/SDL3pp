@@ -1,7 +1,16 @@
+#ifndef SDL3PP_PROPERTIES_H_
+#define SDL3PP_PROPERTIES_H_
+
+#include <SDL3/SDL_properties.h>
+#include "SDL3pp_callbackWrapper.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_stringParam.h"
+
+namespace SDL {
+
 /**
- * @file SDL3pp_properties.h
- *
- * # CategoryProperties
+ * @defgroup CategoryProperties Object Properties
  *
  * A property is a variable that can be created and retrieved by name at
  * runtime.
@@ -13,29 +22,20 @@
  * Properties can be added to and retrieved from a property group through the
  * following functions:
  *
- * - SDL_SetPointerProperty and SDL_GetPointerProperty operate on `void*`
- *   pointer types.
- * - SDL_SetStringProperty and SDL_GetStringProperty operate on string types.
- * - SDL_SetNumberProperty and SDL_GetNumberProperty operate on signed 64-bit
- *   integer types.
- * - SDL_SetFloatProperty and SDL_GetFloatProperty operate on floating point
- *   types.
- * - SDL_SetBooleanProperty and SDL_GetBooleanProperty operate on boolean
- *   types.
+ * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
+ * `void*` pointer types.
+ * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
+ * types.
+ * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
+ * 64-bit integer types.
+ * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
+ * point types.
+ * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
+ * boolean types.
  *
- * Properties can be removed from a group by using SDL_ClearProperty.
+ * Properties can be removed from a group by using PropertiesBase.Clear().
+ * @{
  */
-
-#ifndef SDL3PP_PROPERTIES_H_
-#define SDL3PP_PROPERTIES_H_
-
-#include <SDL3/SDL_properties.h>
-#include "SDL3pp_callbackWrapper.h"
-#include "SDL3pp_error.h"
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_stringParam.h"
-
-namespace SDL {
 
 // Forward decl
 template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
@@ -756,6 +756,7 @@ inline PropertiesRef GetGlobalProperties()
 }
 
 #pragma region impl
+/// @}
 
 inline void PropertiesDeleter::operator()(PropertiesRef props) const
 {

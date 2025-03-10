@@ -14,7 +14,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryInit Category Init
+ * @defgroup CategoryInit Initialization and Shutdown
  *
  * All SDL programs need to initialize the library before starting to work
  * with it.

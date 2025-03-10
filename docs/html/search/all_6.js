@@ -53,7 +53,7 @@ var searchData=
   ['getforwindow_50',['GetForWindow',['../structSDL_1_1Display.html#a6dc370142a78c053232562f79aa53265',1,'SDL::Display']]],
   ['getfullscreenmode_51',['GetFullscreenMode',['../structSDL_1_1WindowBase.html#affd6b08b65f17c3dfff0205fcc64d4a8',1,'SDL::WindowBase']]],
   ['getfullscreenmodes_52',['GetFullscreenModes',['../structSDL_1_1Display.html#a8d224fd400f019b8ff6da17a68980ff0',1,'SDL::Display']]],
-  ['getglobalproperties_53',['GetGlobalProperties',['../namespaceSDL.html#aff19b3a34bf82cdd3bd6e32d47e1481a',1,'SDL']]],
+  ['getglobalproperties_53',['GetGlobalProperties',['../group__CategoryProperties.html#gaff19b3a34bf82cdd3bd6e32d47e1481a',1,'SDL']]],
   ['getgrabbedwindow_54',['GetGrabbedWindow',['../namespaceSDL.html#aab2e373aa382c40c347e56582ba85201',1,'SDL']]],
   ['getgreen_55',['getgreen',['../structSDL_1_1Color.html#a89174ab42351cb3c4d86c4c6d4a55495',1,'SDL::Color::GetGreen()'],['../structSDL_1_1FColor.html#a0097d9f1767c1e65951c5cee931a88cd',1,'SDL::FColor::GetGreen()']]],
   ['geth_56',['geth',['../structSDL_1_1Rect.html#aa1a0f3c016b43b8fc42b0e5e00adaf80',1,'SDL::Rect::GetH()'],['../structSDL_1_1FRect.html#a0557e48281117b6164fa0f92a261518d',1,'SDL::FRect::GetH()']]],

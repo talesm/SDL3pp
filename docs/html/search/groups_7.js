@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resource_0',['Resource',['../group__resource.html',1,'']]]
+  ['object_20properties_0',['Object Properties',['../group__CategoryProperties.html',1,'']]]
 ];

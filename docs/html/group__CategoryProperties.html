@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SDL3pp: CategoryProperties</title>
+<title>SDL3pp: Object Properties</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,17 +90,154 @@ $(document).ready(function(){initNavTree('group__CategoryProperties.html',''); i
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">CategoryProperties<div class="ingroups"><a class="el" href="group__ApiByCategory.html">API by Category</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">Object Properties<div class="ingroups"><a class="el" href="group__ApiByCategory.html">API by Category</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>A property is a variable that can be created and retrieved by name at runtime.  
+<a href="#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for CategoryProperties:</div>
+Collaboration diagram for Object Properties:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__CategoryProperties.png" border="0" usemap="#agroup____CategoryProperties" alt=""/></div>
 <map name="agroup____CategoryProperties" id="agroup____CategoryProperties">
-<area shape="rect" href="group__CategoriesBasics.html" title=" " alt="" coords="5,5,69,31"/>
-<area shape="rect" title=" " alt="" coords="117,5,264,31"/>
+<area shape="rect" href="group__CategoriesBasics.html" title=" " alt="" coords="5,7,69,33"/>
+<area shape="rect" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="119,7,253,33"/>
+<area shape="rect" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="433,7,516,33"/>
 </map>
+</div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesBase.html">SDL::PropertiesBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap properties id.  <a href="structSDL_1_1PropertiesBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesDeleter.html">SDL::PropertiesDeleter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PropertiesLock.html">SDL::PropertiesLock</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1PropertiesBase.html" title="Wrap properties id.">PropertiesBase</a>.  <a href="classSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:gaa5faab1a5ca99f759b68b5800ab0697f" id="r_gaa5faab1a5ca99f759b68b5800ab0697f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">SDL::PropertiesRef</a> = <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertiesID</a>, <a class="el" href="classSDL_1_1FancyPointer.html">FancyPointer</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertiesID</a> &gt; &gt; &gt;</td></tr>
+<tr class="memdesc:gaa5faab1a5ca99f759b68b5800ab0697f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned properties.  <br /></td></tr>
+<tr class="separator:gaa5faab1a5ca99f759b68b5800ab0697f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8cd8bf33aa8133a2babb593ad1cae7c3" id="r_ga8cd8bf33aa8133a2babb593ad1cae7c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3">SDL::Properties</a> = <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertiesID</a>, <a class="el" href="structSDL_1_1PropertiesDeleter.html">PropertiesDeleter</a> &gt; &gt;</td></tr>
+<tr class="memdesc:ga8cd8bf33aa8133a2babb593ad1cae7c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned surface.  <br /></td></tr>
+<tr class="separator:ga8cd8bf33aa8133a2babb593ad1cae7c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga150010e97d120b9ebadf796038d8c07f" id="r_ga150010e97d120b9ebadf796038d8c07f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f">SDL::PropertyType</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertyType</a></td></tr>
+<tr class="memdesc:ga150010e97d120b9ebadf796038d8c07f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> property type.  <br /></td></tr>
+<tr class="separator:ga150010e97d120b9ebadf796038d8c07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gaff19b3a34bf82cdd3bd6e32d47e1481a" id="r_gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaff19b3a34bf82cdd3bd6e32d47e1481a">SDL::GetGlobalProperties</a> ()</td></tr>
+<tr class="memdesc:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties.  <br /></td></tr>
+<tr class="separator:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p>A property is a variable that can be created and retrieved by name at runtime. </p>
+<p>All properties are part of a property group (SDL_PropertiesID). A property group can be created with the SDL_CreateProperties function and destroyed with the SDL_DestroyProperties function.</p>
+<p>Properties can be added to and retrieved from a property group through the following functions:</p>
+<ul>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#aa9d212a911f4b0127f01192a28e1a4a2" title="Set a pointer property in a group of properties.">PropertiesBase.SetPointer()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#acb96e7a51b367caef8e2c3b338383335" title="Get a pointer property from a group of properties.">PropertiesBase.GetPointer()</a> operate on <code>void*</code> pointer types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#a6d0127edfa671c7c02b0890dd923e41d" title="Set a string property in a group of properties.">PropertiesBase.SetString()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a39972e4c1a747dacef112036482c37fc" title="Get a string property from a group of properties.">PropertiesBase.GetString()</a> operate on string types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#ac291ed0dd774d2ce5747f5cba87fbf30" title="Set an integer property in a group of properties.">PropertiesBase.SetNumber()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a51383b28226c124793649d51aec6740d" title="Get a number property from a group of properties.">PropertiesBase.GetNumber()</a> operate on signed 64-bit integer types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#a9f7f305b141076af2b410e245ad935dd" title="Set a floating point property in a group of properties.">PropertiesBase.SetFloat()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a8b948910f53266d5e482ca8e150dd9ec" title="Get a floating point property from a group of properties.">PropertiesBase.GetFloat()</a> operate on floating point types.</li>
+<li><a class="el" href="structSDL_1_1PropertiesBase.html#ae3ef622691ec79576bd91c4c27740a4a" title="Set a boolean property in a group of properties.">PropertiesBase.SetBoolean()</a> and <a class="el" href="structSDL_1_1PropertiesBase.html#a7eacd357cd3eb486b340c26e1b41ff27" title="Get a boolean property from a group of properties.">PropertiesBase.GetBoolean()</a> operate on boolean types.</li>
+</ul>
+<p>Properties can be removed from a group by using <a class="el" href="structSDL_1_1PropertiesBase.html#a51304743586ee1c78c49f5be5f665743" title="Clear a property from a group of properties.">PropertiesBase.Clear()</a>. </p>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga8cd8bf33aa8133a2babb593ad1cae7c3" name="ga8cd8bf33aa8133a2babb593ad1cae7c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8cd8bf33aa8133a2babb593ad1cae7c3">&#9670;&#160;</a></span>Properties</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3">SDL::Properties</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;<a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertiesID</a>, <a class="el" href="structSDL_1_1PropertiesDeleter.html">PropertiesDeleter</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to an owned surface. </p>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00059">59</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+
+</div>
+</div>
+<a id="gaa5faab1a5ca99f759b68b5800ab0697f" name="gaa5faab1a5ca99f759b68b5800ab0697f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa5faab1a5ca99f759b68b5800ab0697f">&#9670;&#160;</a></span>PropertiesRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">SDL::PropertiesRef</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;<a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertiesID</a>, <a class="el" href="classSDL_1_1FancyPointer.html">FancyPointer</a>&lt;<a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertiesID</a>&gt; &gt;&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to a non owned properties. </p>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00047">47</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+
+</div>
+</div>
+<a id="ga150010e97d120b9ebadf796038d8c07f" name="ga150010e97d120b9ebadf796038d8c07f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga150010e97d120b9ebadf796038d8c07f">&#9670;&#160;</a></span>PropertyType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f">SDL::PropertyType</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_PropertyType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> property type. </p>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00067">67</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gaff19b3a34bf82cdd3bd6e32d47e1481a" name="gaff19b3a34bf82cdd3bd6e32d47e1481a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaff19b3a34bf82cdd3bd6e32d47e1481a">&#9670;&#160;</a></span>GetGlobalProperties()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> SDL::GetGlobalProperties </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties. </p>
+<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00753">753</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+
+</div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->

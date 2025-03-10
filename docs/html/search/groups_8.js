@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['support_0',['C++ Support',['../group__CategoriesCppSupport.html',1,'']]]
+  ['pixels_0',['Category Pixels',['../group__CategoryPixels.html',1,'']]],
+  ['properties_1',['Object Properties',['../group__CategoryProperties.html',1,'']]]
 ];
