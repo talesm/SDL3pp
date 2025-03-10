@@ -2022,7 +2022,7 @@ inline bool PremultiplyAlpha(int width,
 #pragma region impl
 /// @}
 
-void ObjectDeleter<SDL_Surface>::operator()(SurfaceRef surface) const
+inline void ObjectDeleter<SDL_Surface>::operator()(SurfaceRef surface) const
 {
   surface.Destroy();
 }

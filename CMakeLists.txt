@@ -39,14 +39,7 @@ target_link_libraries(example_environment_list PRIVATE SDL3pp)
 add_library(test_main OBJECT test/doctest.cpp)
 enable_testing()
 
-add_executable(SDL3pp_unitTests 
-    test/SDL3pp_callbackWrapper.cpp
-    test/SDL3pp_freeWrapper.cpp
-    test/SDL3pp_objectWrapper.cpp
-    test/SDL3pp_properties.cpp
-    test/SDL3pp_spanRef.cpp
-    test/SDL3pp_stringParam.cpp
-    test/SDL3pp_surface.cpp
-)
+file(GLOB unitTestSources CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
+add_executable(SDL3pp_unitTests ${unitTestSources})
 target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)
 add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)

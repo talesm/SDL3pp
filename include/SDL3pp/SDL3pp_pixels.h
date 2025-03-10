@@ -1331,9 +1331,9 @@ inline Uint32 Color::Map(const PixelFormatDetails* format,
   return MapRGBA(format, palette.get(), r, g, b, a);
 }
 
-Color Get(Uint32 pixel,
-          const PixelFormatDetails* format,
-          PaletteRef palette = nullptr)
+inline Color Get(Uint32 pixel,
+                 const PixelFormatDetails* format,
+                 PaletteRef palette = nullptr)
 {
   Color c;
   GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
