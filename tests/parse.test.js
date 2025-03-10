@@ -6,6 +6,8 @@ const structsApi = require("./samples/structs.json");
 const structsAliasesApi = require("./samples/structs_aliases.json");
 const structsExtendsApi = require("./samples/structs_extends.json");
 const structsResourcesApi = require("./samples/structs_resources.json");
+const enumsApi = require("./samples/enums.json");
+const enumsAliasesApi = require("./samples/enums_aliases.json");
 
 test("parse empty.h", () => {
   expect(parseApi({
@@ -77,4 +79,18 @@ test("parse ends on trailing }", () => {
     entriesBegin: 3,
     entriesEnd: 4,
   });
+});
+
+test("parse enums.h", () => {
+  expect(parseApi({
+    baseDir: "tests/samples/",
+    sources: ["enums.h"]
+  })).toEqual(enumsApi);
+});
+
+test("parse enums_aliases.h", () => {
+  expect(parseApi({
+    baseDir: "tests/samples/",
+    sources: ["enums_aliases.h"]
+  })).toEqual(enumsAliasesApi);
 });

@@ -5,6 +5,8 @@ const structsApi = require("./samples/structs.json");
 const structsAliasesApi = require("./samples/structs_aliases.json");
 const structsExtendsApi = require("./samples/structs_extends.json");
 const structsResourcesApi = require("./samples/structs_resources.json");
+const enumsApi = require("./samples/enums.json");
+const enumsAliasesApi = require("./samples/enums_aliases.json");
 
 test("empty transform loopback", () => {
   const modifiedApi = transformApi({
@@ -141,4 +143,20 @@ test("structs transform resources", () => {
     },
   });
   expect(modifiedApi).toMatchObject(structsResourcesApi);
+});
+
+test("enum transform basic", () => {
+  const modifiedApi = transformApi({
+    sourceApi: /** @type {Api} */(enumsApi),
+    transform: {
+      prefixes: "My",
+      renameRules: [
+        {
+          pattern: /^([^.]*)/,
+          replacement: "$1_aliases"
+        }
+      ]
+    },
+  });
+  expect(modifiedApi).toMatchObject(enumsAliasesApi);
 });

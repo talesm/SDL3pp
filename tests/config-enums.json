@@ -1,0 +1,7 @@
+{
+  "sources": [
+    "enums.h"
+  ],
+  "api": "tests/samples/enums.json",
+  "baseDir": "tests/samples/"
+}

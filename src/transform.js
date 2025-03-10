@@ -79,6 +79,7 @@ function transformEntries(sourceEntries, context, transform) {
   const blacklist = new Set(transform.ignoreEntries ?? []);
   const transformMap = transform.transform ?? {};
   if (!transform.transform) transform.transform = transformMap;
+  if (!transform.includeAfter) transform.includeAfter = {};
 
   insertEntryAndCheck(targetEntries, transform.includeAfter?.__begin ?? [], context, transform);
 
@@ -118,6 +119,18 @@ function transformEntries(sourceEntries, context, transform) {
         }
       }
       insertEntryAndCheck(targetEntries, targetEntry, context, transform, targetName);
+      if (sourceEntry.kind === "enum") {
+        insertEntry(targetEntries, Object.values(sourceEntry.entries).map(e => {
+          if (Array.isArray(e)) throw new Error("Unimplemented");
+          return {
+            ...e,
+            sourceName: e.name,
+            name: transformName(e.name, context),
+            constexpr: true,
+            type: targetName,
+          };
+        }));
+      }
     }
     insertEntryAndCheck(targetEntries, transform.includeAfter?.[sourceName] ?? [], context, transform);
   }
@@ -356,7 +369,7 @@ function transformType(type, typeMap) {
  */
 function transformFileDoc(docStr, context, filename) {
   if (!docStr) return "";
-  docStr = docStr.replace(/^(([@\\]file [^\n]*\s*)?)/, `@file ${filename}\n\n`);
+  docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
   return transformDoc(docStr, context);
 }
 
