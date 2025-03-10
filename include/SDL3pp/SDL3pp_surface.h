@@ -1270,7 +1270,7 @@ struct SurfaceBase : T
    * @threadsafety Only one thread should be using the `src` and `dst` surfaces
    *               at any given time.
    *
-   * @since This function is available since SDL 3.4.0.
+   * @since This function is available since SDL 3.2.4.
    *
    * @sa BlitScaled()
    */
