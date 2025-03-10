@@ -93,15 +93,12 @@ $(document).ready(function(){initNavTree('conceptSDL_1_1ObjectBox.html',''); ini
   <div class="headertitle"><div class="title">SDL::ObjectBox Concept Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p><code>#include &lt;<a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>&gt;</code></p>
 <h2 class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> T, <span class="keyword">class</span> POINTER&gt;</div>
 <div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a> =  <span class="keyword">requires</span>(<span class="keyword">const</span> T a, T b) {</div>
 <div class="line">  { a.get() } -&gt; std::convertible_to&lt;POINTER&gt;;</div>
-<div class="line">  { <a class="code hl_class" href="classSDL_1_1OptionalRef.html">b</a>.release() } -&gt; std::convertible_to&lt;POINTER&gt;;</div>
+<div class="line">  { b.release() } -&gt; std::convertible_to&lt;POINTER&gt;;</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassSDL_1_1OptionalRef_html"><div class="ttname"><a href="classSDL_1_1OptionalRef.html">SDL::OptionalRef</a></div><div class="ttdoc">Shim to get optional-like interface for references.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__optionalRef_8h_source.html#l00014">SDL3pp_optionalRef.h:15</a></div></div>
 <div class="ttc" id="aconceptSDL_1_1ObjectBox_html"><div class="ttname"><a href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00010">SDL3pp_objectWrapper.h:10</a></div></div>
 </div><!-- fragment --><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">

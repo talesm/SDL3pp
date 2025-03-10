@@ -99,8 +99,6 @@ $(document).ready(function(){initNavTree('structSDL_1_1IConvBase.html',''); init
 
 <p>An opaque handle representing string encoding conversion state.  
  <a href="structSDL_1_1IConvBase.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SDL::IConvBase&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -124,18 +122,18 @@ Collaboration diagram for SDL::IConvBase&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abf7d2e32c4df9eb6529c9d1631eb25cc" id="r_abf7d2e32c4df9eb6529c9d1631eb25cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#abf7d2e32c4df9eb6529c9d1631eb25cc">IConvBase</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">tocode</a>, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">fromcode</a>)</td></tr>
+<tr class="memitem:abf7d2e32c4df9eb6529c9d1631eb25cc" id="r_abf7d2e32c4df9eb6529c9d1631eb25cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#abf7d2e32c4df9eb6529c9d1631eb25cc">IConvBase</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> tocode, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> fromcode)</td></tr>
 <tr class="memdesc:abf7d2e32c4df9eb6529c9d1631eb25cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allocates a context for the specified character set conversion.  <br /></td></tr>
 <tr class="separator:abf7d2e32c4df9eb6529c9d1631eb25cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf6d92aadf3ee0b63e487d5ee2bce12e" id="r_aaf6d92aadf3ee0b63e487d5ee2bce12e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#aaf6d92aadf3ee0b63e487d5ee2bce12e">iconv</a> (<a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> **<a class="el" href="classSDL_1_1OptionalRef.html">inbuf</a>, <a class="el" href="classSDL_1_1OptionalRef.html">size_t</a> *<a class="el" href="classSDL_1_1OptionalRef.html">inbytesleft</a>, <a class="el" href="classSDL_1_1OptionalRef.html">char</a> **<a class="el" href="classSDL_1_1OptionalRef.html">outbuf</a>, <a class="el" href="classSDL_1_1OptionalRef.html">size_t</a> *<a class="el" href="classSDL_1_1OptionalRef.html">outbytesleft</a>)</td></tr>
+<tr class="memitem:aaf6d92aadf3ee0b63e487d5ee2bce12e" id="r_aaf6d92aadf3ee0b63e487d5ee2bce12e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#aaf6d92aadf3ee0b63e487d5ee2bce12e">iconv</a> (const char **inbuf, size_t *inbytesleft, char **outbuf, size_t *outbytesleft)</td></tr>
 <tr class="memdesc:aaf6d92aadf3ee0b63e487d5ee2bce12e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function converts text between encodings, reading from and writing to a buffer.  <br /></td></tr>
 <tr class="separator:aaf6d92aadf3ee0b63e487d5ee2bce12e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae99c167b7ae250819364ec59b56f2d66" id="r_ae99c167b7ae250819364ec59b56f2d66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66">close</a> ()</td></tr>
+<tr class="memitem:ae99c167b7ae250819364ec59b56f2d66" id="r_ae99c167b7ae250819364ec59b56f2d66"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66">close</a> ()</td></tr>
 <tr class="memdesc:ae99c167b7ae250819364ec59b56f2d66"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function frees a context used for character set conversion.  <br /></td></tr>
 <tr class="separator:ae99c167b7ae250819364ec59b56f2d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt;<br />
 struct SDL::IConvBase&lt; T &gt;</div><p>An opaque handle representing string encoding conversion state. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
@@ -147,7 +145,7 @@ struct SDL::IConvBase&lt; T &gt;</div><p>An opaque handle representing string en
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt; </div>
+template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -204,13 +202,13 @@ iconv_close() </dd>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt; </div>
+template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">int</a> <a class="el" href="structSDL_1_1IConvBase.html">SDL::IConvBase</a>&lt; T &gt;::close </td>
+          <td class="memname">int <a class="el" href="structSDL_1_1IConvBase.html">SDL::IConvBase</a>&lt; T &gt;::close </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -242,33 +240,33 @@ SDL_iconv_string </dd></dl>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_iconv_t</a> &gt; T&gt; </div>
+template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">size_t</a> <a class="el" href="structSDL_1_1IConvBase.html">SDL::IConvBase</a>&lt; T &gt;::iconv </td>
+          <td class="memname">size_t <a class="el" href="structSDL_1_1IConvBase.html">SDL::IConvBase</a>&lt; T &gt;::iconv </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> **&#160;</td>
+          <td class="paramtype">const char **&#160;</td>
           <td class="paramname"><em>inbuf</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">size_t</a> *&#160;</td>
+          <td class="paramtype">size_t *&#160;</td>
           <td class="paramname"><em>inbytesleft</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">char</a> **&#160;</td>
+          <td class="paramtype">char **&#160;</td>
           <td class="paramname"><em>outbuf</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">size_t</a> *&#160;</td>
+          <td class="paramtype">size_t *&#160;</td>
           <td class="paramname"><em>outbytesleft</em>&#160;</td>
         </tr>
         <tr>

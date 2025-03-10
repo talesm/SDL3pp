@@ -390,7 +390,7 @@ AUTOLINK_SUPPORT       = YES
 # diagrams that involve STL classes more complete and accurate.
 # The default value is: NO.
 
-BUILTIN_STL_SUPPORT    = NO
+BUILTIN_STL_SUPPORT    = YES
 
 # If you use Microsoft's C++/CLI language, you should set this option to YES to
 # enable parsing support.
@@ -649,7 +649,7 @@ HIDE_COMPOUND_REFERENCE= NO
 # will show which file needs to be included to use the class.
 # The default value is: YES.
 
-SHOW_HEADERFILE        = YES
+SHOW_HEADERFILE        = NO
 
 # If the SHOW_INCLUDE_FILES tag is set to YES then doxygen will put a list of
 # the files that are included by a file in the documentation of that file.
