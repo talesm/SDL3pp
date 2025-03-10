@@ -26,9 +26,9 @@ TODO
 
 ## Documentation
 
-- Todo file (TODO)
-- See [Doxygen](https://talesm.github.io/SDL3pp/)
-- See [Transformations](./docs/transformation.md) to understand the design approach.
+- See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
+- See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html)
+- See [Transformations](https://talesm.github.io/SDL3pp/transformations.html) to understand the design approach.
 
 ## Building
 

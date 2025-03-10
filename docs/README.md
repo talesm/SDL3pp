@@ -20,15 +20,16 @@ you deem necessary.
 - Flexible, while we use RAII and such idioms, you have
 the choice to not use them and, for example, manage memory yourself.
 
-## Examples
-
-TODO
 
 ## Documentation
 
-- Todo file (TODO)
-- See [Doxygen](https://talesm.github.io/SDL3pp/)
-- See [Transformations](./docs/transformation.md) to understand the design approach.
+- See @ref ApiByCategory
+- See @ref transformations to understand the design approach.
+- See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
+
+## Examples
+
+TODO
 
 ## Building
 

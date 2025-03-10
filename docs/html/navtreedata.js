@@ -26,8 +26,8 @@ var NAVTREE =
 [
   [ "SDL3pp", "index.html", [
     [ "Goals", "index.html#goals", null ],
-    [ "Examples", "index.html#examples", null ],
     [ "Documentation", "index.html#documentation", null ],
+    [ "Examples", "index.html#examples", null ],
     [ "Building", "index.html#building", null ],
     [ "API by Category", "ApiByCategory.html", null ],
     [ "Transformations", "transformations.html", [
