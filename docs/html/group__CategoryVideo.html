@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SDL3pp: CategoryVideo</title>
+<title>SDL3pp: Display and Window Management</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -90,17 +90,1876 @@ $(document).ready(function(){initNavTree('group__CategoryVideo.html',''); initRe
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">CategoryVideo<div class="ingroups"><a class="el" href="group__ApiByCategory.html">API by Category</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a></div></div></div>
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">Display and Window Management<div class="ingroups"><a class="el" href="group__ApiByCategory.html">API by Category</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a></div></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s video subsystem is largely interested in abstracting window management from the underlying operating system.  
+<a href="#details">More...</a></p>
 <div class="dynheader">
-Collaboration diagram for CategoryVideo:</div>
+Collaboration diagram for Display and Window Management:</div>
 <div class="dyncontent">
 <div class="center"><img src="group__CategoryVideo.png" border="0" usemap="#agroup____CategoryVideo" alt=""/></div>
 <map name="agroup____CategoryVideo" id="agroup____CategoryVideo">
-<area shape="rect" href="group__CategoriesVideo.html" title=" " alt="" coords="5,5,64,31"/>
-<area shape="rect" title=" " alt="" coords="112,5,231,31"/>
+<area shape="rect" href="group__CategoriesVideo.html" title=" " alt="" coords="5,13,64,38"/>
+<area shape="rect" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="113,5,268,45"/>
+<area shape="rect" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="433,13,516,38"/>
 </map>
+</div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a handle to a window.  <a href="structSDL_1_1WindowBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ObjectDeleter_3_01SDL__Window_01_4.html">SDL::ObjectDeleter&lt; SDL_Window &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Display.html">SDL::Display</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a display for the time it is connected to the system, and is never reused for the lifetime of the application.  <a href="structSDL_1_1Display.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:ga42069207012bd44674fe1677bd5a1066" id="r_ga42069207012bd44674fe1677bd5a1066"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">SDL::WindowRef</a> = <a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Window</a> &gt; &gt;</td></tr>
+<tr class="memdesc:ga42069207012bd44674fe1677bd5a1066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned window.  <br /></td></tr>
+<tr class="separator:ga42069207012bd44674fe1677bd5a1066"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadc7408c6cf3381faad6fc9ec0ef39847" id="r_gadc7408c6cf3381faad6fc9ec0ef39847"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847">SDL::Window</a> = <a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; <a class="el" href="classSDL_1_1OptionalRef.html">SDL_Window</a> &gt; &gt;</td></tr>
+<tr class="memdesc:gadc7408c6cf3381faad6fc9ec0ef39847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned window.  <br /></td></tr>
+<tr class="separator:gadc7408c6cf3381faad6fc9ec0ef39847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0576b193a1d4adcb648fc1242fbc5cb8" id="r_ga0576b193a1d4adcb648fc1242fbc5cb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga0576b193a1d4adcb648fc1242fbc5cb8">SDL::DisplayOrientation</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_DisplayOrientation</a></td></tr>
+<tr class="memdesc:ga0576b193a1d4adcb648fc1242fbc5cb8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a> orientation values; the way a display is rotated.  <br /></td></tr>
+<tr class="separator:ga0576b193a1d4adcb648fc1242fbc5cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga767d0eff87f8af9d61ac0624d582c78c" id="r_ga767d0eff87f8af9d61ac0624d582c78c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga767d0eff87f8af9d61ac0624d582c78c">SDL::DisplayModeData</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_DisplayModeData</a></td></tr>
+<tr class="memdesc:ga767d0eff87f8af9d61ac0624d582c78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal display mode data.  <br /></td></tr>
+<tr class="separator:ga767d0eff87f8af9d61ac0624d582c78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65322ad2ac8ca3b685a8696dc5dc713a" id="r_ga65322ad2ac8ca3b685a8696dc5dc713a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a">SDL::DisplayMode</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_DisplayMode</a></td></tr>
+<tr class="memdesc:ga65322ad2ac8ca3b685a8696dc5dc713a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The structure that defines a display mode.  <br /></td></tr>
+<tr class="separator:ga65322ad2ac8ca3b685a8696dc5dc713a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0e89cce67b0f90eb3a4b57249f949f67" id="r_ga0e89cce67b0f90eb3a4b57249f949f67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">SDL::WindowFlags</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_WindowFlags</a></td></tr>
+<tr class="memdesc:ga0e89cce67b0f90eb3a4b57249f949f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">The flags on a window.  <br /></td></tr>
+<tr class="separator:ga0e89cce67b0f90eb3a4b57249f949f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9d43efa44ae8a04c595ca7018e8ff813" id="r_ga9d43efa44ae8a04c595ca7018e8ff813"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga9d43efa44ae8a04c595ca7018e8ff813">SDL::FlashOperation</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_FlashOperation</a></td></tr>
+<tr class="memdesc:ga9d43efa44ae8a04c595ca7018e8ff813"><td class="mdescLeft">&#160;</td><td class="mdescRight">Window flash operation.  <br /></td></tr>
+<tr class="separator:ga9d43efa44ae8a04c595ca7018e8ff813"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8ea0dc352d3237a35b3e2bf4c6ebe7e3" id="r_ga8ea0dc352d3237a35b3e2bf4c6ebe7e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">SDL::WindowID</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_WindowID</a></td></tr>
+<tr class="memdesc:ga8ea0dc352d3237a35b3e2bf4c6ebe7e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a window.  <br /></td></tr>
+<tr class="separator:ga8ea0dc352d3237a35b3e2bf4c6ebe7e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6d46b1179134bbd5203db0a7a74b89ed" id="r_ga6d46b1179134bbd5203db0a7a74b89ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed">SDL::SystemTheme</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_SystemTheme</a></td></tr>
+<tr class="memdesc:ga6d46b1179134bbd5203db0a7a74b89ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">System theme.  <br /></td></tr>
+<tr class="separator:ga6d46b1179134bbd5203db0a7a74b89ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad50ad467b53fb76f67ee1b64d6df44bd" id="r_gad50ad467b53fb76f67ee1b64d6df44bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">SDL::GLContext</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContext</a></td></tr>
+<tr class="memdesc:gad50ad467b53fb76f67ee1b64d6df44bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle to an OpenGL context.  <br /></td></tr>
+<tr class="separator:gad50ad467b53fb76f67ee1b64d6df44bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6734aa07cf0f9cf89fae6f9adb803dd" id="r_gaa6734aa07cf0f9cf89fae6f9adb803dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaa6734aa07cf0f9cf89fae6f9adb803dd">SDL::EGLDisplay</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLDisplay</a></td></tr>
+<tr class="memdesc:gaa6734aa07cf0f9cf89fae6f9adb803dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opaque type for an EGL display.  <br /></td></tr>
+<tr class="separator:gaa6734aa07cf0f9cf89fae6f9adb803dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa0b23ee28081be6c3bc984e1e676383b" id="r_gaa0b23ee28081be6c3bc984e1e676383b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaa0b23ee28081be6c3bc984e1e676383b">SDL::EGLConfig</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLConfig</a></td></tr>
+<tr class="memdesc:gaa0b23ee28081be6c3bc984e1e676383b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opaque type for an EGL config.  <br /></td></tr>
+<tr class="separator:gaa0b23ee28081be6c3bc984e1e676383b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9ae1cbfc15bbe39de9d99d383c7e2eb8" id="r_ga9ae1cbfc15bbe39de9d99d383c7e2eb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8">SDL::EGLSurface</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLSurface</a></td></tr>
+<tr class="memdesc:ga9ae1cbfc15bbe39de9d99d383c7e2eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opaque type for an EGL surface.  <br /></td></tr>
+<tr class="separator:ga9ae1cbfc15bbe39de9d99d383c7e2eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaef19fa88561b082e2c2c2c4a36b5c343" id="r_gaef19fa88561b082e2c2c2c4a36b5c343"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaef19fa88561b082e2c2c2c4a36b5c343">SDL::EGLAttrib</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLAttrib</a></td></tr>
+<tr class="memdesc:gaef19fa88561b082e2c2c2c4a36b5c343"><td class="mdescLeft">&#160;</td><td class="mdescRight">An EGL attribute, used when creating an EGL context.  <br /></td></tr>
+<tr class="separator:gaef19fa88561b082e2c2c2c4a36b5c343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab343f5587432ce5d36726a1ee5cf5bee" id="r_gab343f5587432ce5d36726a1ee5cf5bee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gab343f5587432ce5d36726a1ee5cf5bee">SDL::EGLint</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLint</a></td></tr>
+<tr class="memdesc:gab343f5587432ce5d36726a1ee5cf5bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">An EGL integer attribute, used when creating an EGL surface.  <br /></td></tr>
+<tr class="separator:gab343f5587432ce5d36726a1ee5cf5bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e604d7daaf7ba4fa463a487bbaf4bdd" id="r_ga5e604d7daaf7ba4fa463a487bbaf4bdd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga5e604d7daaf7ba4fa463a487bbaf4bdd">SDL::EGLAttribArrayCallback</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLAttribArrayCallback</a></td></tr>
+<tr class="memdesc:ga5e604d7daaf7ba4fa463a487bbaf4bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">EGL platform attribute initialization callback.  <br /></td></tr>
+<tr class="separator:ga5e604d7daaf7ba4fa463a487bbaf4bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaff230867e34e519fce23045e208f158c" id="r_gaff230867e34e519fce23045e208f158c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c">SDL::EGLIntArrayCallback</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLIntArrayCallback</a></td></tr>
+<tr class="memdesc:gaff230867e34e519fce23045e208f158c"><td class="mdescLeft">&#160;</td><td class="mdescRight">EGL surface/context attribute initialization callback types.  <br /></td></tr>
+<tr class="separator:gaff230867e34e519fce23045e208f158c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0d0be084fde91e69e872fed589df6985" id="r_ga0d0be084fde91e69e872fed589df6985"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fed589df6985">SDL::GLAttr</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLAttr</a></td></tr>
+<tr class="memdesc:ga0d0be084fde91e69e872fed589df6985"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enumeration of OpenGL configuration attributes.  <br /></td></tr>
+<tr class="separator:ga0d0be084fde91e69e872fed589df6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadefdc979b086832fc622f980c11c02c1" id="r_gadefdc979b086832fc622f980c11c02c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gadefdc979b086832fc622f980c11c02c1">SDL::GLProfile</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLProfile</a></td></tr>
+<tr class="memdesc:gadefdc979b086832fc622f980c11c02c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.  <br /></td></tr>
+<tr class="separator:gadefdc979b086832fc622f980c11c02c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0913eaa6f1756fb256c8050705de33c5" id="r_ga0913eaa6f1756fb256c8050705de33c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga0913eaa6f1756fb256c8050705de33c5">SDL::GLContextFlag</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContextFlag</a></td></tr>
+<tr class="memdesc:ga0913eaa6f1756fb256c8050705de33c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute.  <br /></td></tr>
+<tr class="separator:ga0913eaa6f1756fb256c8050705de33c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33c8016456aeb990424fd973dd6ca833" id="r_ga33c8016456aeb990424fd973dd6ca833"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga33c8016456aeb990424fd973dd6ca833">SDL::GLContextReleaseFlag</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContextReleaseFlag</a></td></tr>
+<tr class="memdesc:ga33c8016456aeb990424fd973dd6ca833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR attribute.  <br /></td></tr>
+<tr class="separator:ga33c8016456aeb990424fd973dd6ca833"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga26ce7467913703fa1f7828bec5aa264d" id="r_ga26ce7467913703fa1f7828bec5aa264d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga26ce7467913703fa1f7828bec5aa264d">SDL::GLContextResetNotification</a> = <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContextResetNotification</a></td></tr>
+<tr class="memdesc:ga26ce7467913703fa1f7828bec5aa264d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute.  <br /></td></tr>
+<tr class="separator:ga26ce7467913703fa1f7828bec5aa264d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ga8658ccfa53a23c29d5b8a2401495f83a" id="r_ga8658ccfa53a23c29d5b8a2401495f83a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga8658ccfa53a23c29d5b8a2401495f83a">SDL::GetNumVideoDrivers</a> ()</td></tr>
+<tr class="memdesc:ga8658ccfa53a23c29d5b8a2401495f83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of video drivers compiled into <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.  <br /></td></tr>
+<tr class="separator:ga8658ccfa53a23c29d5b8a2401495f83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga985da34084f8a457e819f2ecd4ea0ecd" id="r_ga985da34084f8a457e819f2ecd4ea0ecd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga985da34084f8a457e819f2ecd4ea0ecd">SDL::GetVideoDriver</a> (<a class="el" href="classSDL_1_1OptionalRef.html">int</a> index)</td></tr>
+<tr class="memdesc:ga985da34084f8a457e819f2ecd4ea0ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of a built in video driver.  <br /></td></tr>
+<tr class="separator:ga985da34084f8a457e819f2ecd4ea0ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8185c0d05c5b6793f09c3c01e07c034f" id="r_ga8185c0d05c5b6793f09c3c01e07c034f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga8185c0d05c5b6793f09c3c01e07c034f">SDL::GetCurrentVideoDriver</a> ()</td></tr>
+<tr class="memdesc:ga8185c0d05c5b6793f09c3c01e07c034f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of the currently initialized video driver.  <br /></td></tr>
+<tr class="separator:ga8185c0d05c5b6793f09c3c01e07c034f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac2c823c19389694d3d8684100da6a4a0" id="r_gac2c823c19389694d3d8684100da6a4a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed">SystemTheme</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gac2c823c19389694d3d8684100da6a4a0">SDL::GetSystemTheme</a> ()</td></tr>
+<tr class="memdesc:gac2c823c19389694d3d8684100da6a4a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current system theme.  <br /></td></tr>
+<tr class="separator:gac2c823c19389694d3d8684100da6a4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac59e11eb8e0e68d7192b69bc0f21c71a" id="r_gac59e11eb8e0e68d7192b69bc0f21c71a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceSDL.html#a0fb0f1d7796542b1924cb2662a63694d">FreeWrapper</a>&lt; <a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>[]&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gac59e11eb8e0e68d7192b69bc0f21c71a">SDL::GetWindows</a> (<a class="el" href="classSDL_1_1OptionalRef.html">int</a> *<a class="el" href="classSDL_1_1OptionalRef.html">count</a>)</td></tr>
+<tr class="memdesc:gac59e11eb8e0e68d7192b69bc0f21c71a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a list of valid windows.  <br /></td></tr>
+<tr class="separator:gac59e11eb8e0e68d7192b69bc0f21c71a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeb08163d2c6d9702231891691111f694" id="r_gaeb08163d2c6d9702231891691111f694"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaeb08163d2c6d9702231891691111f694">SDL::GetWindowFromID</a> (<a class="el" href="group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">WindowID</a> <a class="el" href="classSDL_1_1OptionalRef.html">id</a>)</td></tr>
+<tr class="memdesc:gaeb08163d2c6d9702231891691111f694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a window from a stored ID.  <br /></td></tr>
+<tr class="separator:gaeb08163d2c6d9702231891691111f694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaab2e373aa382c40c347e56582ba85201" id="r_gaab2e373aa382c40c347e56582ba85201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaab2e373aa382c40c347e56582ba85201">SDL::GetGrabbedWindow</a> ()</td></tr>
+<tr class="memdesc:gaab2e373aa382c40c347e56582ba85201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the window that currently has an input grab enabled.  <br /></td></tr>
+<tr class="separator:gaab2e373aa382c40c347e56582ba85201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b189494af97eef6bd5e65ecb6724f0a" id="r_ga5b189494af97eef6bd5e65ecb6724f0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga5b189494af97eef6bd5e65ecb6724f0a">SDL::ScreenSaverEnabled</a> ()</td></tr>
+<tr class="memdesc:ga5b189494af97eef6bd5e65ecb6724f0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the screensaver is currently enabled.  <br /></td></tr>
+<tr class="separator:ga5b189494af97eef6bd5e65ecb6724f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga881c12afac49a4ab69332d736885dfc2" id="r_ga881c12afac49a4ab69332d736885dfc2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga881c12afac49a4ab69332d736885dfc2">SDL::EnableScreenSaver</a> ()</td></tr>
+<tr class="memdesc:ga881c12afac49a4ab69332d736885dfc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allow the screen to be blanked by a screen saver.  <br /></td></tr>
+<tr class="separator:ga881c12afac49a4ab69332d736885dfc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga13f5c7a04ece8b15a167476f84cd8975" id="r_ga13f5c7a04ece8b15a167476f84cd8975"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga13f5c7a04ece8b15a167476f84cd8975">SDL::DisableScreenSaver</a> ()</td></tr>
+<tr class="memdesc:ga13f5c7a04ece8b15a167476f84cd8975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevent the screen from being blanked by a screen saver.  <br /></td></tr>
+<tr class="separator:ga13f5c7a04ece8b15a167476f84cd8975"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae056a6a66a12ae4bfc7ae53273273e51" id="r_gae056a6a66a12ae4bfc7ae53273273e51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gae056a6a66a12ae4bfc7ae53273273e51">SDL::GL_LoadLibrary</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">path</a>)</td></tr>
+<tr class="memdesc:gae056a6a66a12ae4bfc7ae53273273e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamically load an OpenGL library.  <br /></td></tr>
+<tr class="separator:gae056a6a66a12ae4bfc7ae53273273e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d7565ba20ed7ab90e2799a55185ca0d" id="r_ga5d7565ba20ed7ab90e2799a55185ca0d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga5d7565ba20ed7ab90e2799a55185ca0d">SDL::GL_GetProcAddress</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">proc</a>)</td></tr>
+<tr class="memdesc:ga5d7565ba20ed7ab90e2799a55185ca0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an OpenGL function by name.  <br /></td></tr>
+<tr class="separator:ga5d7565ba20ed7ab90e2799a55185ca0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga37eb8e6a189cd293223a7cb1d0a2a32f" id="r_ga37eb8e6a189cd293223a7cb1d0a2a32f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga37eb8e6a189cd293223a7cb1d0a2a32f">SDL::EGL_GetProcAddress</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">proc</a>)</td></tr>
+<tr class="memdesc:ga37eb8e6a189cd293223a7cb1d0a2a32f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an EGL library function by name.  <br /></td></tr>
+<tr class="separator:ga37eb8e6a189cd293223a7cb1d0a2a32f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga56627e0f78cccbee26396ab2a8cb25bf" id="r_ga56627e0f78cccbee26396ab2a8cb25bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga56627e0f78cccbee26396ab2a8cb25bf">SDL::GL_UnloadLibrary</a> ()</td></tr>
+<tr class="memdesc:ga56627e0f78cccbee26396ab2a8cb25bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().  <br /></td></tr>
+<tr class="separator:ga56627e0f78cccbee26396ab2a8cb25bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga89baf4969952f86edfb4d439419657f6" id="r_ga89baf4969952f86edfb4d439419657f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga89baf4969952f86edfb4d439419657f6">SDL::GL_ExtensionSupported</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> <a class="el" href="classSDL_1_1OptionalRef.html">extension</a>)</td></tr>
+<tr class="memdesc:ga89baf4969952f86edfb4d439419657f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if an OpenGL extension is supported for the current context.  <br /></td></tr>
+<tr class="separator:ga89baf4969952f86edfb4d439419657f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad70dbbf26da876c869b6af3cefc2dde7" id="r_gad70dbbf26da876c869b6af3cefc2dde7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gad70dbbf26da876c869b6af3cefc2dde7">SDL::GL_ResetAttributes</a> ()</td></tr>
+<tr class="memdesc:gad70dbbf26da876c869b6af3cefc2dde7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset all previously set OpenGL context attributes to their default values.  <br /></td></tr>
+<tr class="separator:gad70dbbf26da876c869b6af3cefc2dde7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga340dd324c6cab8966f1b17252bfe459e" id="r_ga340dd324c6cab8966f1b17252bfe459e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga340dd324c6cab8966f1b17252bfe459e">SDL::GL_SetAttribute</a> (<a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fed589df6985">GLAttr</a> <a class="el" href="classSDL_1_1OptionalRef.html">attr</a>, <a class="el" href="classSDL_1_1OptionalRef.html">int</a> value)</td></tr>
+<tr class="memdesc:ga340dd324c6cab8966f1b17252bfe459e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an OpenGL window attribute before window creation.  <br /></td></tr>
+<tr class="separator:ga340dd324c6cab8966f1b17252bfe459e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad2029dd2ccc426f487626d173b620d42" id="r_gad2029dd2ccc426f487626d173b620d42"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gad2029dd2ccc426f487626d173b620d42">SDL::GL_GetAttribute</a> (<a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fed589df6985">GLAttr</a> <a class="el" href="classSDL_1_1OptionalRef.html">attr</a>, <a class="el" href="classSDL_1_1OptionalRef.html">int</a> *value)</td></tr>
+<tr class="memdesc:gad2029dd2ccc426f487626d173b620d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the actual value for an attribute from the current context.  <br /></td></tr>
+<tr class="separator:gad2029dd2ccc426f487626d173b620d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafea461a2637f3b290bdc3c7bc2d2ae1f" id="r_gafea461a2637f3b290bdc3c7bc2d2ae1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f">SDL::GL_CreateContext</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> <a class="el" href="classSDL_1_1OptionalRef.html">window</a>)</td></tr>
+<tr class="memdesc:gafea461a2637f3b290bdc3c7bc2d2ae1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
+<tr class="separator:gafea461a2637f3b290bdc3c7bc2d2ae1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade711297cbb015a4e6a132fc3b5170ca" id="r_gade711297cbb015a4e6a132fc3b5170ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gade711297cbb015a4e6a132fc3b5170ca">SDL::GL_MakeCurrent</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> <a class="el" href="classSDL_1_1OptionalRef.html">window</a>, <a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> <a class="el" href="classSDL_1_1OptionalRef.html">context</a>)</td></tr>
+<tr class="memdesc:gade711297cbb015a4e6a132fc3b5170ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up an OpenGL context for rendering into an OpenGL window.  <br /></td></tr>
+<tr class="separator:gade711297cbb015a4e6a132fc3b5170ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4e2d4a2ad628eef60c793a8485b1e8ee" id="r_ga4e2d4a2ad628eef60c793a8485b1e8ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga4e2d4a2ad628eef60c793a8485b1e8ee">SDL::GL_GetCurrentWindow</a> ()</td></tr>
+<tr class="memdesc:ga4e2d4a2ad628eef60c793a8485b1e8ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active OpenGL window.  <br /></td></tr>
+<tr class="separator:ga4e2d4a2ad628eef60c793a8485b1e8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace8e279d9cc20d1ee8cbe219b2067a3b" id="r_gace8e279d9cc20d1ee8cbe219b2067a3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gace8e279d9cc20d1ee8cbe219b2067a3b">SDL::GL_GetCurrentContext</a> ()</td></tr>
+<tr class="memdesc:gace8e279d9cc20d1ee8cbe219b2067a3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active OpenGL context.  <br /></td></tr>
+<tr class="separator:gace8e279d9cc20d1ee8cbe219b2067a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7a215247d95db258fcef5ea80e54fe2" id="r_gaf7a215247d95db258fcef5ea80e54fe2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gaa6734aa07cf0f9cf89fae6f9adb803dd">EGLDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaf7a215247d95db258fcef5ea80e54fe2">SDL::EGL_GetCurrentDisplay</a> ()</td></tr>
+<tr class="memdesc:gaf7a215247d95db258fcef5ea80e54fe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active EGL display.  <br /></td></tr>
+<tr class="separator:gaf7a215247d95db258fcef5ea80e54fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae68ab6ffb4d3cf2ba086f783e8b1e20c" id="r_gae68ab6ffb4d3cf2ba086f783e8b1e20c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gaa0b23ee28081be6c3bc984e1e676383b">EGLConfig</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gae68ab6ffb4d3cf2ba086f783e8b1e20c">SDL::EGL_GetCurrentConfig</a> ()</td></tr>
+<tr class="memdesc:gae68ab6ffb4d3cf2ba086f783e8b1e20c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active EGL config.  <br /></td></tr>
+<tr class="separator:gae68ab6ffb4d3cf2ba086f783e8b1e20c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c3eba82b74f0a3ba746a97420c0963f" id="r_ga3c3eba82b74f0a3ba746a97420c0963f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8">EGLSurface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga3c3eba82b74f0a3ba746a97420c0963f">SDL::EGL_GetWindowSurface</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> <a class="el" href="classSDL_1_1OptionalRef.html">window</a>)</td></tr>
+<tr class="memdesc:ga3c3eba82b74f0a3ba746a97420c0963f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the EGL surface associated with the window.  <br /></td></tr>
+<tr class="separator:ga3c3eba82b74f0a3ba746a97420c0963f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65f2527b910460aa479e4b1d4b372683" id="r_ga65f2527b910460aa479e4b1d4b372683"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683">SDL::EGL_SetAttributeCallbacks</a> (<a class="el" href="group__CategoryVideo.html#ga5e604d7daaf7ba4fa463a487bbaf4bdd">EGLAttribArrayCallback</a> <a class="el" href="classSDL_1_1OptionalRef.html">platformAttribCallback</a>, <a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c">EGLIntArrayCallback</a> <a class="el" href="classSDL_1_1OptionalRef.html">surfaceAttribCallback</a>, <a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c">EGLIntArrayCallback</a> <a class="el" href="classSDL_1_1OptionalRef.html">contextAttribCallback</a>, <a class="el" href="classSDL_1_1OptionalRef.html">void</a> *<a class="el" href="classSDL_1_1OptionalRef.html">userdata</a>)</td></tr>
+<tr class="memdesc:ga65f2527b910460aa479e4b1d4b372683"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.  <br /></td></tr>
+<tr class="separator:ga65f2527b910460aa479e4b1d4b372683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1c5bebf0f995860615026664c2731ccd" id="r_ga1c5bebf0f995860615026664c2731ccd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga1c5bebf0f995860615026664c2731ccd">SDL::GL_SetSwapInterval</a> (<a class="el" href="classSDL_1_1OptionalRef.html">int</a> <a class="el" href="classSDL_1_1OptionalRef.html">interval</a>)</td></tr>
+<tr class="memdesc:ga1c5bebf0f995860615026664c2731ccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the swap interval for the current OpenGL context.  <br /></td></tr>
+<tr class="separator:ga1c5bebf0f995860615026664c2731ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9eb54b44b7749c792e0bf01ee3289aa0" id="r_ga9eb54b44b7749c792e0bf01ee3289aa0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga9eb54b44b7749c792e0bf01ee3289aa0">SDL::GL_GetSwapInterval</a> (<a class="el" href="classSDL_1_1OptionalRef.html">int</a> *<a class="el" href="classSDL_1_1OptionalRef.html">interval</a>)</td></tr>
+<tr class="memdesc:ga9eb54b44b7749c792e0bf01ee3289aa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the swap interval for the current OpenGL context.  <br /></td></tr>
+<tr class="separator:ga9eb54b44b7749c792e0bf01ee3289aa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaae2523c0aac87c096f778d2b8fec8dd6" id="r_gaae2523c0aac87c096f778d2b8fec8dd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaae2523c0aac87c096f778d2b8fec8dd6">SDL::GL_SwapWindow</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> <a class="el" href="classSDL_1_1OptionalRef.html">window</a>)</td></tr>
+<tr class="memdesc:gaae2523c0aac87c096f778d2b8fec8dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a window with OpenGL rendering.  <br /></td></tr>
+<tr class="separator:gaae2523c0aac87c096f778d2b8fec8dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf833bd4032dd8bf56d22ea4651de0e7b" id="r_gaf833bd4032dd8bf56d22ea4651de0e7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaf833bd4032dd8bf56d22ea4651de0e7b">SDL::GL_DestroyContext</a> (<a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> <a class="el" href="classSDL_1_1OptionalRef.html">context</a>)</td></tr>
+<tr class="memdesc:gaf833bd4032dd8bf56d22ea4651de0e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
+<tr class="separator:gaf833bd4032dd8bf56d22ea4651de0e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s video subsystem is largely interested in abstracting window management from the underlying operating system. </p>
+<p>You can create windows, manage them in various ways, set them fullscreen, and get events when interesting things happen with them, such as the mouse or keyboard interacting with a window.</p>
+<p>The video subsystem is also interested in abstracting away some platform-specific differences in OpenGL: context creation, swapping buffers, etc. This may be crucial to your app, but also you are not required to use OpenGL at all. In fact, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> can provide rendering to those windows as well, either with an easy-to-use <a href="https://wiki.libsdl.org/SDL3/CategoryRender">2D API</a> or with a more-powerful <a href="https://wiki.libsdl.org/SDL3/CategoryGPU">GPU API</a> . Of course, it can simply get out of your way and give you the window handles you need to use Vulkan, Direct3D, Metal, or whatever else you like directly, too.</p>
+<p>The video subsystem covers a lot of functionality, out of necessity, so it is worth perusing the list of functions just to see what's available, but most apps can get by with simply creating a window and listening for events, so start with SDL_CreateWindow() and SDL_PollEvent(). </p>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="ga65322ad2ac8ca3b685a8696dc5dc713a" name="ga65322ad2ac8ca3b685a8696dc5dc713a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga65322ad2ac8ca3b685a8696dc5dc713a">&#9670;&#160;</a></span>DisplayMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a">SDL::DisplayMode</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_DisplayMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The structure that defines a display mode. </p>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a8d224fd400f019b8ff6da17a68980ff0" title="Get a list of fullscreen display modes available on a display.">Display.GetFullscreenModes()</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Display.html#a06fc8005d9275739d915d59088ae59b0" title="Get information about the desktop&#39;s display mode.">Display.GetDesktopMode()</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1Display.html#ae60fa581de6bf108440cb5da32b92fcb" title="Get information about the current display mode.">Display.GetCurrentMode()</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1WindowBase.html#a250d0a52a35036c577173ff3a60a138f" title="Set the display mode to use when a window is visible and fullscreen.">WindowBase.SetFullscreenMode()</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1WindowBase.html#affd6b08b65f17c3dfff0205fcc64d4a8" title="Query the display mode to use when a window is visible at fullscreen.">WindowBase.GetFullscreenMode()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00094">94</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga767d0eff87f8af9d61ac0624d582c78c" name="ga767d0eff87f8af9d61ac0624d582c78c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga767d0eff87f8af9d61ac0624d582c78c">&#9670;&#160;</a></span>DisplayModeData</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga767d0eff87f8af9d61ac0624d582c78c">SDL::DisplayModeData</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_DisplayModeData</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Internal display mode data. </p>
+<p>This lives as a field in SDL_DisplayMode, as opaque data.</p>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a" title="The structure that defines a display mode.">DisplayMode()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00081">81</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga0576b193a1d4adcb648fc1242fbc5cb8" name="ga0576b193a1d4adcb648fc1242fbc5cb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0576b193a1d4adcb648fc1242fbc5cb8">&#9670;&#160;</a></span>DisplayOrientation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga0576b193a1d4adcb648fc1242fbc5cb8">SDL::DisplayOrientation</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_DisplayOrientation</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p><a class="el" href="structSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a> orientation values; the way a display is rotated. </p>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00070">70</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaef19fa88561b082e2c2c2c4a36b5c343" name="gaef19fa88561b082e2c2c2c4a36b5c343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaef19fa88561b082e2c2c2c4a36b5c343">&#9670;&#160;</a></span>EGLAttrib</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gaef19fa88561b082e2c2c2c4a36b5c343">SDL::EGLAttrib</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLAttrib</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An EGL attribute, used when creating an EGL context. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02482">2482</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga5e604d7daaf7ba4fa463a487bbaf4bdd" name="ga5e604d7daaf7ba4fa463a487bbaf4bdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5e604d7daaf7ba4fa463a487bbaf4bdd">&#9670;&#160;</a></span>EGLAttribArrayCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga5e604d7daaf7ba4fa463a487bbaf4bdd">SDL::EGLAttribArrayCallback</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLAttribArrayCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>EGL platform attribute initialization callback. </p>
+<p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL context, to let the app add extra attributes to its eglGetPlatformDisplay() call.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns NULL, the SDL_CreateWindow process will fail gracefully.</p>
+<p>The returned pointer should be allocated with SDL_malloc() and will be passed to SDL_free().</p>
+<p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">userdata</td><td>an app-controlled pointer that is passed to the callback. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a newly-allocated array of attributes, terminated with <code>EGL_NONE</code>.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683" title="Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.">EGL_SetAttributeCallbacks()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02514">2514</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaa0b23ee28081be6c3bc984e1e676383b" name="gaa0b23ee28081be6c3bc984e1e676383b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa0b23ee28081be6c3bc984e1e676383b">&#9670;&#160;</a></span>EGLConfig</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gaa0b23ee28081be6c3bc984e1e676383b">SDL::EGLConfig</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLConfig</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opaque type for an EGL config. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02468">2468</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaa6734aa07cf0f9cf89fae6f9adb803dd" name="gaa6734aa07cf0f9cf89fae6f9adb803dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa6734aa07cf0f9cf89fae6f9adb803dd">&#9670;&#160;</a></span>EGLDisplay</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gaa6734aa07cf0f9cf89fae6f9adb803dd">SDL::EGLDisplay</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLDisplay</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opaque type for an EGL display. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02461">2461</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gab343f5587432ce5d36726a1ee5cf5bee" name="gab343f5587432ce5d36726a1ee5cf5bee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab343f5587432ce5d36726a1ee5cf5bee">&#9670;&#160;</a></span>EGLint</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gab343f5587432ce5d36726a1ee5cf5bee">SDL::EGLint</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLint</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An EGL integer attribute, used when creating an EGL surface. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02489">2489</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaff230867e34e519fce23045e208f158c" name="gaff230867e34e519fce23045e208f158c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaff230867e34e519fce23045e208f158c">&#9670;&#160;</a></span>EGLIntArrayCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c">SDL::EGLIntArrayCallback</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLIntArrayCallback</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>EGL surface/context attribute initialization callback types. </p>
+<p>This is called when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is attempting to create an EGL surface, to let the app add extra attributes to its eglCreateWindowSurface() or eglCreateContext calls.</p>
+<p>For convenience, the EGLDisplay and EGLConfig to use are provided to the callback.</p>
+<p>The callback should return a pointer to an EGL attribute array terminated with <code>EGL_NONE</code>. If this function returns NULL, the SDL_CreateWindow process will fail gracefully.</p>
+<p>The returned pointer should be allocated with SDL_malloc() and will be passed to SDL_free().</p>
+<p>The arrays returned by each callback will be appended to the existing attribute arrays defined by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">userdata</td><td>an app-controlled pointer that is passed to the callback. </td></tr>
+    <tr><td class="paramname">display</td><td>the EGL display to be used. </td></tr>
+    <tr><td class="paramname">config</td><td>the EGL config to be used. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a newly-allocated array of attributes, terminated with <code>EGL_NONE</code>.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683" title="Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.">EGL_SetAttributeCallbacks()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02545">2545</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga9ae1cbfc15bbe39de9d99d383c7e2eb8" name="ga9ae1cbfc15bbe39de9d99d383c7e2eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9ae1cbfc15bbe39de9d99d383c7e2eb8">&#9670;&#160;</a></span>EGLSurface</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8">SDL::EGLSurface</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_EGLSurface</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Opaque type for an EGL surface. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02475">2475</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga9d43efa44ae8a04c595ca7018e8ff813" name="ga9d43efa44ae8a04c595ca7018e8ff813"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9d43efa44ae8a04c595ca7018e8ff813">&#9670;&#160;</a></span>FlashOperation</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga9d43efa44ae8a04c595ca7018e8ff813">SDL::FlashOperation</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_FlashOperation</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Window flash operation. </p>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00115">115</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga0d0be084fde91e69e872fed589df6985" name="ga0d0be084fde91e69e872fed589df6985"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0d0be084fde91e69e872fed589df6985">&#9670;&#160;</a></span>GLAttr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fed589df6985">SDL::GLAttr</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLAttr</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An enumeration of OpenGL configuration attributes. </p>
+<p>While you can set most OpenGL attributes normally, the attributes listed above must be known before <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> creates the window that will be used with the OpenGL context. These attributes are set and read with SDL_GL_SetAttribute() and SDL_GL_GetAttribute().</p>
+<p>In some cases, these attributes are minimum requests; the GL does not promise to give you exactly what you asked for. It's possible to ask for a 16-bit depth buffer and get a 24-bit one instead, for example, or to ask for no stencil buffer and still have one available. Context creation should fail if the GL can't provide your requested attributes at a minimum, but you should check to see exactly what you got.</p>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02564">2564</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gad50ad467b53fb76f67ee1b64d6df44bd" name="gad50ad467b53fb76f67ee1b64d6df44bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad50ad467b53fb76f67ee1b64d6df44bd">&#9670;&#160;</a></span>GLContext</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">SDL::GLContext</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContext</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>An opaque handle to an OpenGL context. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f" title="Create an OpenGL context for an OpenGL window, and make it current.">GL_CreateContext()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02454">2454</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga0913eaa6f1756fb256c8050705de33c5" name="ga0913eaa6f1756fb256c8050705de33c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0913eaa6f1756fb256c8050705de33c5">&#9670;&#160;</a></span>GLContextFlag</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga0913eaa6f1756fb256c8050705de33c5">SDL::GLContextFlag</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContextFlag</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02578">2578</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga33c8016456aeb990424fd973dd6ca833" name="ga33c8016456aeb990424fd973dd6ca833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga33c8016456aeb990424fd973dd6ca833">&#9670;&#160;</a></span>GLContextReleaseFlag</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga33c8016456aeb990424fd973dd6ca833">SDL::GLContextReleaseFlag</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContextReleaseFlag</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR attribute. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02586">2586</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga26ce7467913703fa1f7828bec5aa264d" name="ga26ce7467913703fa1f7828bec5aa264d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga26ce7467913703fa1f7828bec5aa264d">&#9670;&#160;</a></span>GLContextResetNotification</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga26ce7467913703fa1f7828bec5aa264d">SDL::GLContextResetNotification</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLContextResetNotification</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02593">2593</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gadefdc979b086832fc622f980c11c02c1" name="gadefdc979b086832fc622f980c11c02c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadefdc979b086832fc622f980c11c02c1">&#9670;&#160;</a></span>GLProfile</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gadefdc979b086832fc622f980c11c02c1">SDL::GLProfile</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_GLProfile</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute. </p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02571">2571</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga6d46b1179134bbd5203db0a7a74b89ed" name="ga6d46b1179134bbd5203db0a7a74b89ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6d46b1179134bbd5203db0a7a74b89ed">&#9670;&#160;</a></span>SystemTheme</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed">SDL::SystemTheme</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_SystemTheme</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>System theme. </p>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00478">478</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gadc7408c6cf3381faad6fc9ec0ef39847" name="gadc7408c6cf3381faad6fc9ec0ef39847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadc7408c6cf3381faad6fc9ec0ef39847">&#9670;&#160;</a></span>Window</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847">SDL::Window</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;<a class="el" href="classSDL_1_1OptionalRef.html">SDL_Window</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to an owned window. </p>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00063">63</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga0e89cce67b0f90eb3a4b57249f949f67" name="ga0e89cce67b0f90eb3a4b57249f949f67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0e89cce67b0f90eb3a4b57249f949f67">&#9670;&#160;</a></span>WindowFlags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">SDL::WindowFlags</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_WindowFlags</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The flags on a window. </p>
+<p>These cover a lot of true/false, or on/off, window state. Some of it is immutable after being set through Window::Window(), some of it can be changed on existing windows by the app, and some of it might be altered by the user or system outside of the app's control.</p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a25a4b4b4781403ab4422e0d408783b05" title="Get the window flags.">WindowBase.GetFlags()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00108">108</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga8ea0dc352d3237a35b3e2bf4c6ebe7e3" name="ga8ea0dc352d3237a35b3e2bf4c6ebe7e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">&#9670;&#160;</a></span>WindowID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">SDL::WindowID</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="classSDL_1_1OptionalRef.html">SDL_WindowID</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This is a unique ID for a window. </p>
+<p>The value 0 is an invalid ID.</p>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00471">471</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga42069207012bd44674fe1677bd5a1066" name="ga42069207012bd44674fe1677bd5a1066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga42069207012bd44674fe1677bd5a1066">&#9670;&#160;</a></span>WindowRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">using</a> <a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">SDL::WindowRef</a> = <a class="el" href="classSDL_1_1OptionalRef.html">typedef</a> <a class="el" href="structSDL_1_1WindowBase.html">WindowBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;<a class="el" href="classSDL_1_1OptionalRef.html">SDL_Window</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to a non owned window. </p>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00052">52</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ga13f5c7a04ece8b15a167476f84cd8975" name="ga13f5c7a04ece8b15a167476f84cd8975"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga13f5c7a04ece8b15a167476f84cd8975">&#9670;&#160;</a></span>DisableScreenSaver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::DisableScreenSaver </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prevent the screen from being blanked by a screen saver. </p>
+<p>If you disable the screensaver, it is automatically re-enabled when <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> quits.</p>
+<p>The screensaver is disabled by default, but this may by changed by SDL_HINT_VIDEO_ALLOW_SCREENSAVER.</p>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga881c12afac49a4ab69332d736885dfc2" title="Allow the screen to be blanked by a screen saver.">EnableScreenSaver()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga5b189494af97eef6bd5e65ecb6724f0a" title="Check whether the screensaver is currently enabled.">ScreenSaverEnabled()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02765">2765</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gae68ab6ffb4d3cf2ba086f783e8b1e20c" name="gae68ab6ffb4d3cf2ba086f783e8b1e20c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae68ab6ffb4d3cf2ba086f783e8b1e20c">&#9670;&#160;</a></span>EGL_GetCurrentConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#gaa0b23ee28081be6c3bc984e1e676383b">EGLConfig</a> SDL::EGL_GetCurrentConfig </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the currently active EGL config. </p>
+<dl class="section return"><dt>Returns</dt><dd>the currently active EGL config or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03069">3069</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaf7a215247d95db258fcef5ea80e54fe2" name="gaf7a215247d95db258fcef5ea80e54fe2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf7a215247d95db258fcef5ea80e54fe2">&#9670;&#160;</a></span>EGL_GetCurrentDisplay()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#gaa6734aa07cf0f9cf89fae6f9adb803dd">EGLDisplay</a> SDL::EGL_GetCurrentDisplay </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the currently active EGL display. </p>
+<dl class="section return"><dt>Returns</dt><dd>the currently active EGL display or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03054">3054</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga37eb8e6a189cd293223a7cb1d0a2a32f" name="ga37eb8e6a189cd293223a7cb1d0a2a32f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga37eb8e6a189cd293223a7cb1d0a2a32f">&#9670;&#160;</a></span>EGL_GetProcAddress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a> SDL::EGL_GetProcAddress </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>proc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get an EGL library function by name. </p>
+<p>If an EGL library is loaded, this function allows applications to get entry points for EGL functions. This is useful to provide to an EGL API and extension loader.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proc</td><td>the name of an EGL function. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the named EGL function. The returned pointer should be cast to the appropriate function signature.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gaf7a215247d95db258fcef5ea80e54fe2" title="Get the currently active EGL display.">EGL_GetCurrentDisplay()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02869">2869</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga3c3eba82b74f0a3ba746a97420c0963f" name="ga3c3eba82b74f0a3ba746a97420c0963f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3c3eba82b74f0a3ba746a97420c0963f">&#9670;&#160;</a></span>EGL_GetWindowSurface()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8">EGLSurface</a> SDL::EGL_GetWindowSurface </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td>
+          <td class="paramname"><em>window</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the EGL surface associated with the window. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>the window to query. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the EGLSurface pointer associated with the window, or NULL on failure.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03082">3082</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga65f2527b910460aa479e4b1d4b372683" name="ga65f2527b910460aa479e4b1d4b372683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga65f2527b910460aa479e4b1d4b372683">&#9670;&#160;</a></span>EGL_SetAttributeCallbacks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">void</a> SDL::EGL_SetAttributeCallbacks </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga5e604d7daaf7ba4fa463a487bbaf4bdd">EGLAttribArrayCallback</a>&#160;</td>
+          <td class="paramname"><em>platformAttribCallback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c">EGLIntArrayCallback</a>&#160;</td>
+          <td class="paramname"><em>surfaceAttribCallback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c">EGLIntArrayCallback</a>&#160;</td>
+          <td class="paramname"><em>contextAttribCallback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">void</a> *&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization. </p>
+<p>Callbacks that aren't needed can be set to NULL.</p>
+<p>NOTE: These callback pointers will be reset after SDL_GL_ResetAttributes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">platformAttribCallback</td><td>callback for attributes to pass to eglGetPlatformDisplay. May be NULL. </td></tr>
+    <tr><td class="paramname">surfaceAttribCallback</td><td>callback for attributes to pass to eglCreateSurface. May be NULL. </td></tr>
+    <tr><td class="paramname">contextAttribCallback</td><td>callback for attributes to pass to eglCreateContext. May be NULL. </td></tr>
+    <tr><td class="paramname">userdata</td><td>a pointer that is passed to the callbacks.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03107">3107</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga881c12afac49a4ab69332d736885dfc2" name="ga881c12afac49a4ab69332d736885dfc2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga881c12afac49a4ab69332d736885dfc2">&#9670;&#160;</a></span>EnableScreenSaver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::EnableScreenSaver </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allow the screen to be blanked by a screen saver. </p>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga13f5c7a04ece8b15a167476f84cd8975" title="Prevent the screen from being blanked by a screen saver.">DisableScreenSaver()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga5b189494af97eef6bd5e65ecb6724f0a" title="Check whether the screensaver is currently enabled.">ScreenSaverEnabled()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02746">2746</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga8185c0d05c5b6793f09c3c01e07c034f" name="ga8185c0d05c5b6793f09c3c01e07c034f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8185c0d05c5b6793f09c3c01e07c034f">&#9670;&#160;</a></span>GetCurrentVideoDriver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> * SDL::GetCurrentVideoDriver </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the name of the currently initialized video driver. </p>
+<p>The names of drivers are all simple, low-ASCII identifiers, like "cocoa", "x11" or "windows". These never have Unicode characters, and are not meant to be proper names.</p>
+<dl class="section return"><dt>Returns</dt><dd>the name of the current video driver or NULL if no driver has been initialized.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga8658ccfa53a23c29d5b8a2401495f83a" title="Get the number of video drivers compiled into SDL.">GetNumVideoDrivers()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga985da34084f8a457e819f2ecd4ea0ecd" title="Get the name of a built in video driver.">GetVideoDriver()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02649">2649</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaab2e373aa382c40c347e56582ba85201" name="gaab2e373aa382c40c347e56582ba85201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaab2e373aa382c40c347e56582ba85201">&#9670;&#160;</a></span>GetGrabbedWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> SDL::GetGrabbedWindow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the window that currently has an input grab enabled. </p>
+<dl class="section return"><dt>Returns</dt><dd>the window if input is grabbed or NULL otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SetMouseGrab() </dd>
+<dd>
+SetKeyboardGrab() </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02717">2717</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga8658ccfa53a23c29d5b8a2401495f83a" name="ga8658ccfa53a23c29d5b8a2401495f83a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8658ccfa53a23c29d5b8a2401495f83a">&#9670;&#160;</a></span>GetNumVideoDrivers()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">int</a> SDL::GetNumVideoDrivers </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the number of video drivers compiled into <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>the number of built in video drivers.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga985da34084f8a457e819f2ecd4ea0ecd" title="Get the name of a built in video driver.">GetVideoDriver()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02606">2606</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gac2c823c19389694d3d8684100da6a4a0" name="gac2c823c19389694d3d8684100da6a4a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac2c823c19389694d3d8684100da6a4a0">&#9670;&#160;</a></span>GetSystemTheme()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed">SystemTheme</a> SDL::GetSystemTheme </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the current system theme. </p>
+<dl class="section return"><dt>Returns</dt><dd>the current system theme, light, dark, or unknown.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02663">2663</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga985da34084f8a457e819f2ecd4ea0ecd" name="ga985da34084f8a457e819f2ecd4ea0ecd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga985da34084f8a457e819f2ecd4ea0ecd">&#9670;&#160;</a></span>GetVideoDriver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">const</a> <a class="el" href="classSDL_1_1OptionalRef.html">char</a> * SDL::GetVideoDriver </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the name of a built in video driver. </p>
+<p>The video drivers are presented in the order in which they are normally checked during initialization.</p>
+<p>The names of drivers are all simple, low-ASCII identifiers, like "cocoa", "x11" or "windows". These never have Unicode characters, and are not meant to be proper names.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">index</td><td>the index of a video driver. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the name of the video driver with the given <b>index</b>.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga8658ccfa53a23c29d5b8a2401495f83a" title="Get the number of video drivers compiled into SDL.">GetNumVideoDrivers()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02627">2627</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaeb08163d2c6d9702231891691111f694" name="gaeb08163d2c6d9702231891691111f694"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeb08163d2c6d9702231891691111f694">&#9670;&#160;</a></span>GetWindowFromID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> SDL::GetWindowFromID </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">WindowID</a>&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a window from a stored ID. </p>
+<p>The numeric ID is what SDL_WindowEvent references, and is necessary to map these events to specific SDL_Window objects.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>the ID of the window. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the window associated with <code>id</code> or NULL if it doesn't exist; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>GetID() </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02700">2700</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gac59e11eb8e0e68d7192b69bc0f21c71a" name="gac59e11eb8e0e68d7192b69bc0f21c71a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac59e11eb8e0e68d7192b69bc0f21c71a">&#9670;&#160;</a></span>GetWindows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceSDL.html#a0fb0f1d7796542b1924cb2662a63694d">FreeWrapper</a>&lt; <a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>[]&gt; SDL::GetWindows </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a> *&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get a list of valid windows. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">count</td><td>a pointer filled in with the number of windows returned, may be NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a NULL terminated array of SDL_Window pointers or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. This is a single allocation that should be freed with SDL_free() when it is no longer needed.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02679">2679</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gafea461a2637f3b290bdc3c7bc2d2ae1f" name="gafea461a2637f3b290bdc3c7bc2d2ae1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafea461a2637f3b290bdc3c7bc2d2ae1f">&#9670;&#160;</a></span>GL_CreateContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> SDL::GL_CreateContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td>
+          <td class="paramname"><em>window</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create an OpenGL context for an OpenGL window, and make it current. </p>
+<p>Windows users new to OpenGL should note that, for historical reasons, GL functions added after OpenGL version 1.1 are not available by default. Those functions must be loaded at run-time, either with an OpenGL extension-handling library or with SDL_GL_GetProcAddress() and its related functions.</p>
+<p>SDL_GLContext is opaque to the application.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>the window to associate with the context. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the OpenGL context associated with <code>window</code> or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gaf833bd4032dd8bf56d22ea4651de0e7b" title="Delete an OpenGL context.">GL_DestroyContext()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#gade711297cbb015a4e6a132fc3b5170ca" title="Set up an OpenGL context for rendering into an OpenGL window.">GL_MakeCurrent()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02992">2992</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaf833bd4032dd8bf56d22ea4651de0e7b" name="gaf833bd4032dd8bf56d22ea4651de0e7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf833bd4032dd8bf56d22ea4651de0e7b">&#9670;&#160;</a></span>GL_DestroyContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_DestroyContext </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Delete an OpenGL context. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">context</td><td>the OpenGL context to be deleted. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f" title="Create an OpenGL context for an OpenGL window, and make it current.">GL_CreateContext()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03213">3213</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga89baf4969952f86edfb4d439419657f6" name="ga89baf4969952f86edfb4d439419657f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga89baf4969952f86edfb4d439419657f6">&#9670;&#160;</a></span>GL_ExtensionSupported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_ExtensionSupported </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>extension</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if an OpenGL extension is supported for the current context. </p>
+<p>This function operates on the current GL context; you must have created a context and it must be current before calling this function. Do not assume that all contexts you create will have the same set of extensions available, or that recreating an existing context will offer the same extensions again.</p>
+<p>While it's probably not a massive overhead, this function is not an O(1) operation. Check the extensions you care about after creating the GL context and save that information somewhere instead of calling the function every time you need to know.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">extension</td><td>the name of the extension to check. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the extension is supported, false otherwise.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02906">2906</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gad2029dd2ccc426f487626d173b620d42" name="gad2029dd2ccc426f487626d173b620d42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad2029dd2ccc426f487626d173b620d42">&#9670;&#160;</a></span>GL_GetAttribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_GetAttribute </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fed589df6985">GLAttr</a>&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a> *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the actual value for an attribute from the current context. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attr</td><td>an SDL_GLAttr enum value specifying the OpenGL attribute to get. </td></tr>
+    <tr><td class="paramname">value</td><td>a pointer filled in with the current value of <code>attr</code>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gad70dbbf26da876c869b6af3cefc2dde7" title="Reset all previously set OpenGL context attributes to their default values.">GL_ResetAttributes()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga340dd324c6cab8966f1b17252bfe459e" title="Set an OpenGL window attribute before window creation.">GL_SetAttribute()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02965">2965</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gace8e279d9cc20d1ee8cbe219b2067a3b" name="gace8e279d9cc20d1ee8cbe219b2067a3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace8e279d9cc20d1ee8cbe219b2067a3b">&#9670;&#160;</a></span>GL_GetCurrentContext()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> SDL::GL_GetCurrentContext </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the currently active OpenGL context. </p>
+<dl class="section return"><dt>Returns</dt><dd>the currently active OpenGL context or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gade711297cbb015a4e6a132fc3b5170ca" title="Set up an OpenGL context for rendering into an OpenGL window.">GL_MakeCurrent()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03042">3042</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4e2d4a2ad628eef60c793a8485b1e8ee" name="ga4e2d4a2ad628eef60c793a8485b1e8ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4e2d4a2ad628eef60c793a8485b1e8ee">&#9670;&#160;</a></span>GL_GetCurrentWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> SDL::GL_GetCurrentWindow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the currently active OpenGL window. </p>
+<dl class="section return"><dt>Returns</dt><dd>the currently active OpenGL window on success or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03028">3028</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga5d7565ba20ed7ab90e2799a55185ca0d" name="ga5d7565ba20ed7ab90e2799a55185ca0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d7565ba20ed7ab90e2799a55185ca0d">&#9670;&#160;</a></span>GL_GetProcAddress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7">FunctionPointer</a> SDL::GL_GetProcAddress </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>proc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get an OpenGL function by name. </p>
+<p>If the GL library is loaded at runtime with SDL_GL_LoadLibrary(), then all GL functions must be retrieved this way. Usually this is used to retrieve function pointers to OpenGL extensions.</p>
+<p>There are some quirks to looking up OpenGL functions that require some extra care from the application. If you code carefully, you can handle these quirks without any platform-specific code, though:</p>
+<ul>
+<li>On Windows, function pointers are specific to the current GL context; this means you need to have created a GL context and made it current before calling SDL_GL_GetProcAddress(). If you recreate your context or create a second context, you should assume that any existing function pointers aren't valid to use with it. This is (currently) a Windows-specific limitation, and in practice lots of drivers don't suffer this limitation, but it is still the way the wgl API is documented to work and you should expect crashes if you don't respect it. Store a copy of the function pointers that comes and goes with context lifespan.</li>
+<li>On X11, function pointers returned by this function are valid for any context, and can even be looked up before a context is created at all. This means that, for at least some common OpenGL implementations, if you look up a function that doesn't exist, you'll get a non-NULL result that is <em>NOT</em> safe to call. You must always make sure the function is actually available for a given GL context before calling it, by checking for the existence of the appropriate extension with SDL_GL_ExtensionSupported(), or verifying that the version of OpenGL you're using offers the function as core functionality.</li>
+<li>Some OpenGL drivers, on all platforms, <em>will</em> return NULL if a function isn't supported, but you can't count on this behavior. Check for extensions you use, and if you get a NULL anyway, act as if that extension wasn't available. This is probably a bug in the driver, but you can code defensively for this scenario anyhow.</li>
+<li>Just because you're on Linux/Unix, don't assume you'll be using X11. Next-gen display servers are waiting to replace it, and may or may not make the same promises about function pointers.</li>
+<li>OpenGL function pointers must be declared <code>APIENTRY</code> as in the example code. This will ensure the proper calling convention is followed on platforms where this matters (Win32) thereby avoiding stack corruption.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">proc</td><td>the name of an OpenGL function. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a pointer to the named OpenGL function. The returned pointer should be cast to the appropriate function signature.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga89baf4969952f86edfb4d439419657f6" title="Check if an OpenGL extension is supported for the current context.">GL_ExtensionSupported()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#gae056a6a66a12ae4bfc7ae53273273e51" title="Dynamically load an OpenGL library.">GL_LoadLibrary()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga56627e0f78cccbee26396ab2a8cb25bf" title="Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().">GL_UnloadLibrary()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02847">2847</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga9eb54b44b7749c792e0bf01ee3289aa0" name="ga9eb54b44b7749c792e0bf01ee3289aa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9eb54b44b7749c792e0bf01ee3289aa0">&#9670;&#160;</a></span>GL_GetSwapInterval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_GetSwapInterval </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a> *&#160;</td>
+          <td class="paramname"><em>interval</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the swap interval for the current OpenGL context. </p>
+<p>If the system can't determine the swap interval, or there isn't a valid current context, this function will set *interval to 0 as a safe default.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interval</td><td>output interval value. 0 if there is no vertical retrace synchronization, 1 if the buffer swap is synchronized with the vertical retrace, and -1 if late swaps happen immediately instead of waiting for the next retrace. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga1c5bebf0f995860615026664c2731ccd" title="Set the swap interval for the current OpenGL context.">GL_SetSwapInterval()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03172">3172</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gae056a6a66a12ae4bfc7ae53273273e51" name="gae056a6a66a12ae4bfc7ae53273273e51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae056a6a66a12ae4bfc7ae53273273e51">&#9670;&#160;</a></span>GL_LoadLibrary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_LoadLibrary </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dynamically load an OpenGL library. </p>
+<p>This should be done after initializing the video driver, but before creating any OpenGL windows. If no OpenGL library is loaded, the default library will be loaded upon creation of the first OpenGL window.</p>
+<p>If you do this, you need to retrieve all of the GL functions used in your program from the dynamic library using SDL_GL_GetProcAddress().</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td>the platform dependent OpenGL library name, or NULL to open the default OpenGL library. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga5d7565ba20ed7ab90e2799a55185ca0d" title="Get an OpenGL function by name.">GL_GetProcAddress()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga56627e0f78cccbee26396ab2a8cb25bf" title="Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().">GL_UnloadLibrary()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02789">2789</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gade711297cbb015a4e6a132fc3b5170ca" name="gade711297cbb015a4e6a132fc3b5170ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gade711297cbb015a4e6a132fc3b5170ca">&#9670;&#160;</a></span>GL_MakeCurrent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_MakeCurrent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td>
+          <td class="paramname"><em>window</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set up an OpenGL context for rendering into an OpenGL window. </p>
+<p>The context must have been created with a compatible window.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>the window to associate with the context. </td></tr>
+    <tr><td class="paramname">context</td><td>the OpenGL context to associate with the window. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f" title="Create an OpenGL context for an OpenGL window, and make it current.">GL_CreateContext()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03013">3013</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gad70dbbf26da876c869b6af3cefc2dde7" name="gad70dbbf26da876c869b6af3cefc2dde7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad70dbbf26da876c869b6af3cefc2dde7">&#9670;&#160;</a></span>GL_ResetAttributes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">void</a> SDL::GL_ResetAttributes </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reset all previously set OpenGL context attributes to their default values. </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gad2029dd2ccc426f487626d173b620d42" title="Get the actual value for an attribute from the current context.">GL_GetAttribute()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga340dd324c6cab8966f1b17252bfe459e" title="Set an OpenGL window attribute before window creation.">GL_SetAttribute()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02921">2921</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga340dd324c6cab8966f1b17252bfe459e" name="ga340dd324c6cab8966f1b17252bfe459e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga340dd324c6cab8966f1b17252bfe459e">&#9670;&#160;</a></span>GL_SetAttribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_SetAttribute </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fed589df6985">GLAttr</a>&#160;</td>
+          <td class="paramname"><em>attr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set an OpenGL window attribute before window creation. </p>
+<p>This function sets the OpenGL attribute <code>attr</code> to <code>value</code>. The requested attributes should be set before creating an OpenGL window. You should use SDL_GL_GetAttribute() to check the values after creating the OpenGL context, since the values obtained can differ from the requested ones.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attr</td><td>an SDL_GLAttr enum value specifying the OpenGL attribute to set. </td></tr>
+    <tr><td class="paramname">value</td><td>the desired value for the attribute. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gad2029dd2ccc426f487626d173b620d42" title="Get the actual value for an attribute from the current context.">GL_GetAttribute()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#gad70dbbf26da876c869b6af3cefc2dde7" title="Reset all previously set OpenGL context attributes to their default values.">GL_ResetAttributes()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02944">2944</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga1c5bebf0f995860615026664c2731ccd" name="ga1c5bebf0f995860615026664c2731ccd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1c5bebf0f995860615026664c2731ccd">&#9670;&#160;</a></span>GL_SetSwapInterval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_SetSwapInterval </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1OptionalRef.html">int</a>&#160;</td>
+          <td class="paramname"><em>interval</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the swap interval for the current OpenGL context. </p>
+<p>Some systems allow specifying -1 for the interval, to enable adaptive vsync. Adaptive vsync works the same as vsync, but if you've already missed the vertical retrace for a given frame, it swaps buffers immediately, which might be less jarring for the user during occasional framerate drops. If an application requests adaptive vsync and the system does not support it, this function will fail and return false. In such a case, you should probably retry the call with 1 for the interval.</p>
+<p>Adaptive vsync is implemented for some glX drivers with GLX_EXT_swap_control_tear, and for some Windows drivers with WGL_EXT_swap_control_tear.</p>
+<p>Read more on the Khronos wiki: <a href="https://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync">https://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync</a></p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">interval</td><td>0 for immediate updates, 1 for updates synchronized with the vertical retrace, -1 for adaptive vsync. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga9eb54b44b7749c792e0bf01ee3289aa0" title="Get the swap interval for the current OpenGL context.">GL_GetSwapInterval()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03148">3148</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaae2523c0aac87c096f778d2b8fec8dd6" name="gaae2523c0aac87c096f778d2b8fec8dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaae2523c0aac87c096f778d2b8fec8dd6">&#9670;&#160;</a></span>GL_SwapWindow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::GL_SwapWindow </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td>
+          <td class="paramname"><em>window</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update a window with OpenGL rendering. </p>
+<p>This is used with double-buffered OpenGL contexts, which are the default.</p>
+<p>On macOS, make sure you bind 0 to the draw framebuffer before swapping the window, otherwise nothing will happen. If you aren't using glBindFramebuffer(), this is the default and you won't have to do anything extra.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">window</td><td>the window to change. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03195">3195</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga56627e0f78cccbee26396ab2a8cb25bf" name="ga56627e0f78cccbee26396ab2a8cb25bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga56627e0f78cccbee26396ab2a8cb25bf">&#9670;&#160;</a></span>GL_UnloadLibrary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">void</a> SDL::GL_UnloadLibrary </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary(). </p>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gae056a6a66a12ae4bfc7ae53273273e51" title="Dynamically load an OpenGL library.">GL_LoadLibrary()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02883">2883</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="ga5b189494af97eef6bd5e65ecb6724f0a" name="ga5b189494af97eef6bd5e65ecb6724f0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5b189494af97eef6bd5e65ecb6724f0a">&#9670;&#160;</a></span>ScreenSaverEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classSDL_1_1OptionalRef.html">bool</a> SDL::ScreenSaverEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the screensaver is currently enabled. </p>
+<p>The screensaver is disabled by default.</p>
+<p>The default can also be changed using <code>SDL_HINT_VIDEO_ALLOW_SCREENSAVER</code>.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the screensaver is enabled, false if it is disabled.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga13f5c7a04ece8b15a167476f84cd8975" title="Prevent the screen from being blanked by a screen saver.">DisableScreenSaver()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga881c12afac49a4ab69332d736885dfc2" title="Allow the screen to be blanked by a screen saver.">EnableScreenSaver()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02733">2733</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['pixel_20formats_20and_20conversion_20routines_0',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
-  ['properties_1',['Object Properties',['../group__CategoryProperties.html',1,'']]]
+  ['management_0',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
+  ['modes_1',['Blend modes',['../group__CategoryBlendmode.html',1,'']]]
 ];

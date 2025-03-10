@@ -1,10 +1,3 @@
-/**
- * @file SDL3pp_rect.h
- *
- * Some helper functions for managing rectangles and 2D points, in both
- * integer and floating point versions.
- */
-
 #ifndef SDL3PP_RECT_H_
 #define SDL3PP_RECT_H_
 
@@ -18,6 +11,14 @@
 #include "SDL3pp_stdinc.h"
 
 namespace SDL {
+
+/**
+ * @defgroup CategoryRect Rectangle Functions
+ *
+ * Some helper functions for managing rectangles and 2D points, in both
+ * integer and floating point versions.
+ * @{
+ */
 
 // Forward decl
 struct FPoint;
@@ -1933,6 +1934,7 @@ struct FRect : SDL_FRect
 };
 
 #pragma region impl
+/// @}
 
 constexpr bool Point::IsInRect(const Rect& r) const
 {

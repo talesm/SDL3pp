@@ -1,8 +1,8 @@
 <map id="SDL3pp/SDL3pp_surface.h" name="SDL3pp/SDL3pp_surface.h">
-<area shape="rect" id="Node000001" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="5,5,196,31"/>
-<area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="9,152,193,177"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,196,31"/>
+<area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title=" " alt="" coords="9,152,193,177"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,43,74,60,66,79,65,99,71,118,92,150,87,153,66,120,60,100,61,78,69,58,80,40"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__video_8h.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="75,79,254,104"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__video_8h.html" title=" " alt="" coords="75,79,254,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="122,39,156,77,152,80,118,43"/>
 <area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="147,116,113,154,109,150,143,113"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['library_20functionality_0',['Standard Library Functionality',['../group__CategoryStdinc.html',1,'']]]
+  ['handling_0',['Error Handling',['../group__CategoryError.html',1,'']]]
 ];

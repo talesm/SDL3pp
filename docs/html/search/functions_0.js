@@ -4,7 +4,7 @@ var searchData=
   ['acos_1',['acos',['../group__CategoryStdinc.html#ga9f6543d319422a6044570b59cc6377b4',1,'SDL']]],
   ['acosf_2',['acosf',['../group__CategoryStdinc.html#ga8e3b6760100280cb4cb51fcee4b3a2ff',1,'SDL']]],
   ['addalternateimage_3',['AddAlternateImage',['../structSDL_1_1SurfaceBase.html#a5489278a992e1c5255f7aff9de6b003d',1,'SDL::SurfaceBase']]],
-  ['addvulkanrendersemaphores_4',['AddVulkanRenderSemaphores',['../namespaceSDL.html#ac4528e04e28d93b190e651508b82ac18',1,'SDL']]],
+  ['addvulkanrendersemaphores_4',['AddVulkanRenderSemaphores',['../group__CategoryRender.html#gac4528e04e28d93b190e651508b82ac18',1,'SDL']]],
   ['aligned_5falloc_5',['aligned_alloc',['../group__CategoryStdinc.html#gae3c9f70ddeadaecb2afeee2b3be34733',1,'SDL']]],
   ['aligned_5ffree_6',['aligned_free',['../group__CategoryStdinc.html#gaaf1efed697d82742be084a1871c95aa2',1,'SDL']]],
   ['asin_7',['asin',['../group__CategoryStdinc.html#ga316a2eed1e595c002830ee628c1b4963',1,'SDL']]],

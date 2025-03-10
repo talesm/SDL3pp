@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['formats_20and_20conversion_20routines_0',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
-  ['functionality_1',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]]
+  ['display_20and_20window_20management_0',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
+  ['drawing_1',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]]
 ];

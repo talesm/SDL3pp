@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['modes_0',['Blend modes',['../group__CategoryBlendmode.html',1,'']]]
+  ['initialization_20and_20shutdown_0',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]]
 ];

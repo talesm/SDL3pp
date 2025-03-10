@@ -9,7 +9,7 @@ var dir_97ce39b7d3b637544d6563dae0aa493a =
     [ "SDL3pp_optionalRef.h", "SDL3pp__optionalRef_8h.html", "SDL3pp__optionalRef_8h" ],
     [ "SDL3pp_pixels.h", "SDL3pp__pixels_8h.html", "SDL3pp__pixels_8h" ],
     [ "SDL3pp_properties.h", "SDL3pp__properties_8h.html", "SDL3pp__properties_8h" ],
-    [ "SDL3pp_rect.h", "SDL3pp__rect_8h.html", "SDL3pp__rect_8h" ],
+    [ "SDL3pp_rect.h", "SDL3pp__rect_8h.html", null ],
     [ "SDL3pp_render.h", "SDL3pp__render_8h.html", "SDL3pp__render_8h" ],
     [ "SDL3pp_spanRef.h", "SDL3pp__spanRef_8h.html", "SDL3pp__spanRef_8h" ],
     [ "SDL3pp_stdinc.h", "SDL3pp__stdinc_8h.html", "SDL3pp__stdinc_8h" ],

@@ -1,5 +1,24 @@
+#ifndef SDL3PP_RENDER_H_
+#define SDL3PP_RENDER_H_
+
+#include <SDL3/SDL_render.h>
+#include "SDL3pp_blendmode.h"
+#include "SDL3pp_error.h"
+#include "SDL3pp_freeWrapper.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_optionalRef.h"
+#include "SDL3pp_pixels.h"
+#include "SDL3pp_properties.h"
+#include "SDL3pp_rect.h"
+#include "SDL3pp_stdinc.h"
+#include "SDL3pp_stringParam.h"
+#include "SDL3pp_surface.h"
+#include "SDL3pp_video.h"
+
+namespace SDL {
+
 /**
- * @file SDL3pp_render.h
+ * @defgroup CategoryRender 2D Accelerated Rendering
  *
  * Header file for SDL 2D rendering functions.
  *
@@ -24,27 +43,11 @@
  *
  * These functions must be called from the main thread. See this bug for
  * details: https://github.com/libsdl-org/SDL/issues/986
+ *
+ * @{
  */
 
-#ifndef SDL3PP_RENDER_H_
-#define SDL3PP_RENDER_H_
-
-#include <SDL3/SDL_render.h>
-#include "SDL3pp_blendmode.h"
-#include "SDL3pp_error.h"
-#include "SDL3pp_freeWrapper.h"
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_optionalRef.h"
-#include "SDL3pp_pixels.h"
-#include "SDL3pp_properties.h"
-#include "SDL3pp_rect.h"
-#include "SDL3pp_stdinc.h"
-#include "SDL3pp_stringParam.h"
-#include "SDL3pp_surface.h"
-#include "SDL3pp_video.h"
-
-namespace SDL {
-
+// Forward decl
 template<ObjectBox<SDL_Renderer*> T>
 struct RendererBase;
 
@@ -2765,6 +2768,7 @@ inline Texture LoadTextureBMP(RendererRef renderer, StringParam file)
 }
 
 #pragma region impl
+/// @}
 
 template<ObjectBox<SDL_Renderer*> T>
 bool RendererBase<T>::SetTarget(TextureRef texture)

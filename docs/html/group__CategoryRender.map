@@ -1,4 +1,5 @@
-<map id="CategoryRender" name="CategoryRender">
-<area shape="rect" id="Node000002" href="$group__CategoriesVideo.html" title=" " alt="" coords="5,5,64,31"/>
-<area shape="rect" id="Node000001" title=" " alt="" coords="112,5,239,31"/>
+<map id="2D Accelerated Rendering" name="2D Accelerated Rendering">
+<area shape="rect" id="Node000002" href="$group__CategoriesVideo.html" title=" " alt="" coords="5,7,64,33"/>
+<area shape="rect" id="Node000001" title="Header file for SDL 2D rendering functions." alt="" coords="113,7,304,33"/>
+<area shape="rect" id="Node000003" href="$group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="465,7,548,33"/>
 </map>

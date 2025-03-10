@@ -1,5 +1,5 @@
 <map id="SDL3pp/SDL3pp_surface.h" name="SDL3pp/SDL3pp_surface.h">
-<area shape="rect" id="Node000001" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="710,5,901,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="710,5,901,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="11,79,162,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="710,30,472,51,176,81,175,76,471,46,709,25"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__blendmode_8h.html" title=" " alt="" coords="187,79,349,104"/>
@@ -22,7 +22,7 @@
 <area shape="poly" id="edge51_Node000001_Node000021" title=" " alt="" coords="828,28,903,76,947,111,987,150,1008,181,1023,211,1018,214,1003,184,983,154,944,114,900,80,825,33"/>
 <area shape="rect" id="Node000025" href="$SDL3pp__properties_8h.html" title=" " alt="" coords="1163,79,1319,104"/>
 <area shape="poly" id="edge31_Node000001_Node000025" title=" " alt="" coords="876,28,1158,74,1157,79,875,33"/>
-<area shape="rect" id="Node000030" href="$SDL3pp__rect_8h.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="1569,79,1684,104"/>
+<area shape="rect" id="Node000030" href="$SDL3pp__rect_8h.html" title=" " alt="" coords="1569,79,1684,104"/>
 <area shape="poly" id="edge40_Node000001_Node000030" title=" " alt="" coords="901,25,1556,81,1555,87,901,30"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="5,152,181,177"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="241,106,136,149,134,144,239,102"/>

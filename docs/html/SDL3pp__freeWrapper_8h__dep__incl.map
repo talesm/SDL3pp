@@ -1,12 +1,12 @@
 <map id="SDL3pp/SDL3pp_freeWrapper.h" name="SDL3pp/SDL3pp_freeWrapper.h">
 <area shape="rect" id="Node000001" title=" " alt="" coords="265,5,487,31"/>
-<area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="144,372,328,397"/>
+<area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title=" " alt="" coords="144,372,328,397"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="299,36,207,57,112,86,70,103,37,122,16,142,8,164,8,239,12,266,24,290,42,310,65,327,118,353,173,369,172,375,116,358,62,331,38,314,20,293,7,268,3,240,3,163,11,139,34,118,68,98,110,81,206,52,297,31"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="350,79,533,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="398,39,433,77,429,80,394,43"/>
-<area shape="rect" id="Node000006" href="$SDL3pp__surface_8h.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="231,225,422,251"/>
+<area shape="rect" id="Node000006" href="$SDL3pp__surface_8h.html" title=" " alt="" coords="231,225,422,251"/>
 <area shape="poly" id="edge17_Node000001_Node000006" title=" " alt="" coords="361,43,341,80,332,120,328,162,328,225,323,225,322,162,326,120,336,78,356,40"/>
-<area shape="rect" id="Node000007" href="$SDL3pp__video_8h.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="349,299,528,324"/>
+<area shape="rect" id="Node000007" href="$SDL3pp__video_8h.html" title=" " alt="" coords="349,299,528,324"/>
 <area shape="poly" id="edge18_Node000001_Node000007" title=" " alt="" coords="501,27,633,42,774,67,839,83,896,102,942,124,973,150,980,165,978,179,968,193,951,205,901,227,834,248,676,280,528,302,528,297,675,275,833,242,899,222,948,200,964,189,973,177,975,166,969,154,939,129,894,107,837,88,772,72,632,47,501,32"/>
 <area shape="poly" id="edge14_Node000003_Node000002" title=" " alt="" coords="336,98,261,104,186,114,122,130,99,141,83,154,74,168,69,183,70,214,84,245,107,276,135,306,166,332,219,370,216,374,163,336,132,309,103,280,79,248,65,215,63,182,69,166,79,150,96,137,121,125,185,109,261,98,336,93"/>
 <area shape="rect" id="Node000004" href="$SDL3pp__init_8h.html" title=" " alt="" coords="593,152,757,177"/>
@@ -14,7 +14,7 @@
 <area shape="rect" id="Node000005" href="$SDL3pp__pixels_8h.html" title=" " alt="" coords="93,152,275,177"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="388,110,226,154,225,149,386,105"/>
 <area shape="poly" id="edge15_Node000003_Node000006" title=" " alt="" coords="423,116,390,154,337,226,332,223,386,150,419,112"/>
-<area shape="rect" id="Node000008" href="$SDL3pp__rect_8h.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="400,152,568,177"/>
+<area shape="rect" id="Node000008" href="$SDL3pp__rect_8h.html" title=" " alt="" coords="400,152,568,177"/>
 <area shape="poly" id="edge10_Node000003_Node000008" title=" " alt="" coords="458,114,479,151,475,153,453,117"/>
 <area shape="rect" id="Node000009" href="$SDL3pp__timer_8h.html" title=" " alt="" coords="781,152,958,177"/>
 <area shape="poly" id="edge16_Node000003_Node000009" title=" " alt="" coords="524,104,801,149,800,155,523,109"/>

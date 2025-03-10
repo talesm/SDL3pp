@@ -4,11 +4,11 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,41,106,81,103,76,163,36"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__properties_8h.html" title=" " alt="" coords="193,79,403,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,36,282,76,279,81,220,41"/>
-<area shape="rect" id="Node000004" href="$SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="165,299,349,324"/>
+<area shape="rect" id="Node000004" href="$SDL3pp__render_8h.html" title=" " alt="" coords="165,299,349,324"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="245,111,215,129,192,153,185,172,185,193,189,213,198,233,223,270,247,297,243,300,218,273,194,236,184,215,179,193,180,171,188,151,212,124,242,107"/>
-<area shape="rect" id="Node000005" href="$SDL3pp__surface_8h.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="203,152,393,177"/>
+<area shape="rect" id="Node000005" href="$SDL3pp__surface_8h.html" title=" " alt="" coords="203,152,393,177"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="301,118,301,152,295,152,295,118"/>
-<area shape="rect" id="Node000006" href="$SDL3pp__video_8h.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="294,225,473,251"/>
+<area shape="rect" id="Node000006" href="$SDL3pp__video_8h.html" title=" " alt="" coords="294,225,473,251"/>
 <area shape="poly" id="edge8_Node000003_Node000006" title=" " alt="" coords="354,107,384,124,408,151,414,171,411,192,394,226,389,224,406,190,409,171,404,153,381,129,351,111"/>
 <area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="293,192,263,299,257,298,288,190"/>
 <area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="324,184,371,223,368,227,320,188"/>

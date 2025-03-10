@@ -1,7 +1,25 @@
 var searchData=
 [
-  ['qsort_0',['qsort',['../group__CategoryStdinc.html#gab52a0ec3d96fb4c04972b1b322f75857',1,'SDL']]],
-  ['qsort_5fr_1',['qsort_r',['../group__CategoryStdinc.html#gaa3b0083aa5cb6236224048d437834dd2',1,'SDL']]],
-  ['quit_2',['Quit',['../group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c',1,'SDL']]],
-  ['quitsubsystem_3',['QuitSubSystem',['../group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5',1,'SDL']]]
+  ['packedlayout_0',['PackedLayout',['../group__CategoryPixels.html#ga1d8f3ada47542a9147a2e86889ec692f',1,'SDL']]],
+  ['packedorder_1',['PackedOrder',['../group__CategoryPixels.html#gab3b8920284b25041c230b9a4000efa38',1,'SDL']]],
+  ['palette_2',['Palette',['../group__CategoryPixels.html#ga82736cd9bdf83b4850b54726f51e9644',1,'SDL']]],
+  ['palettebase_3',['palettebase',['../structSDL_1_1PaletteBase.html',1,'SDL::PaletteBase&lt; T &gt;'],['../structSDL_1_1PaletteBase.html#af7a8456013b5d87afaf714783f98f891',1,'SDL::PaletteBase::PaletteBase()']]],
+  ['paletteref_4',['PaletteRef',['../group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991',1,'SDL']]],
+  ['pixel_20formats_20and_20conversion_20routines_5',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
+  ['pixelformat_6',['pixelformat',['../structSDL_1_1PixelFormat.html',1,'SDL::PixelFormat'],['../structSDL_1_1PixelFormat.html#a0ed48d982f8036424718bf69dbc3036d',1,'SDL::PixelFormat::PixelFormat(SDL_PixelType type, int order, SDL_PackedLayout layout, int bits, int bytes)'],['../structSDL_1_1PixelFormat.html#afef2681f7208ab5f1b7d401c1c507070',1,'SDL::PixelFormat::PixelFormat(SDL_PixelFormat format=SDL_PIXELFORMAT_UNKNOWN)']]],
+  ['pixelformatdetails_7',['PixelFormatDetails',['../group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc',1,'SDL']]],
+  ['pixeltype_8',['PixelType',['../group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2',1,'SDL']]],
+  ['point_9',['point',['../structSDL_1_1Point.html#a4d552b29ff24f5baa3e80426dc0aa21f',1,'SDL::Point::Point(const SDL_Point &amp;point)'],['../structSDL_1_1Point.html#a3cdbe11429c5519cb494547b82524bce',1,'SDL::Point::Point()'],['../structSDL_1_1Point.html#ad470c898ade45930e6ab3c91befa8aff',1,'SDL::Point::Point(int x, int y)'],['../structSDL_1_1Point.html',1,'SDL::Point']]],
+  ['pointer_10',['pointer',['../classSDL_1_1ObjectRef.html#aef8c06e39fcbedd4e34bfee19863e763',1,'SDL::ObjectRef::pointer'],['../classSDL_1_1ObjectUnique.html#a1c89429cb2cb299135194c60f1f44805',1,'SDL::ObjectUnique::pointer'],['../structSDL_1_1PropertiesDeleter.html#a90df45dc414e86e4bab0294d50b0b2c9',1,'SDL::PropertiesDeleter::pointer']]],
+  ['pow_11',['pow',['../group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce',1,'SDL']]],
+  ['powf_12',['powf',['../group__CategoryStdinc.html#ga652fc1da140490bb87abbbf05ccfe8fa',1,'SDL']]],
+  ['premultiplyalpha_13',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#a4da1c83b0dabe2838c3219c043f59343',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5',1,'SDL::PremultiplyAlpha()']]],
+  ['present_14',['Present',['../structSDL_1_1RendererBase.html#a3c0b5783b55fc7542f4d3784430c77d0',1,'SDL::RendererBase']]],
+  ['properties_15',['properties',['../group__CategoryProperties.html',1,'Object Properties'],['../group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3',1,'SDL::Properties']]],
+  ['propertiesbase_16',['propertiesbase',['../structSDL_1_1PropertiesBase.html#a579657df53c773d33a5588e0f03f58b0',1,'SDL::PropertiesBase::PropertiesBase()'],['../classSDL_1_1PropertiesLock.html#a38073a958a1e30edd007e62f1627316f',1,'SDL::PropertiesLock::PropertiesBase'],['../structSDL_1_1PropertiesBase.html',1,'SDL::PropertiesBase&lt; T &gt;']]],
+  ['propertiesbase_3c_20objectref_3c_20sdl_5fpropertiesid_2c_20fancypointer_3c_20sdl_5fpropertiesid_20_3e_20_3e_20_3e_17',['PropertiesBase&lt; ObjectRef&lt; SDL_PropertiesID, FancyPointer&lt; SDL_PropertiesID &gt; &gt; &gt;',['../structSDL_1_1PropertiesBase.html',1,'SDL']]],
+  ['propertiesdeleter_18',['PropertiesDeleter',['../structSDL_1_1PropertiesDeleter.html',1,'SDL']]],
+  ['propertieslock_19',['propertieslock',['../classSDL_1_1PropertiesLock.html#adacdec5b1374935554b6a70640abb69b',1,'SDL::PropertiesLock::PropertiesLock(PropertiesLock &amp;&amp;other)'],['../classSDL_1_1PropertiesLock.html#a40c7a189eae4490328dd5ed8d5345147',1,'SDL::PropertiesLock::PropertiesLock(const PropertiesLock &amp;other)=delete'],['../classSDL_1_1PropertiesLock.html#a04852e4684c91ad9ebbd7dc56c24c3cd',1,'SDL::PropertiesLock::PropertiesLock()'],['../classSDL_1_1PropertiesLock.html',1,'SDL::PropertiesLock']]],
+  ['propertiesref_20',['PropertiesRef',['../group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f',1,'SDL']]],
+  ['propertytype_21',['PropertyType',['../group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f',1,'SDL']]]
 ];

@@ -1,5 +1,21 @@
+#ifndef SDL3PP_VIDEO_H_
+#define SDL3PP_VIDEO_H_
+
+#include <memory>
+#include <optional>
+#include <vector>
+#include <SDL3/SDL_video.h>
+#include "SDL3pp_error.h"
+#include "SDL3pp_freeWrapper.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_properties.h"
+#include "SDL3pp_rect.h"
+#include "SDL3pp_stringParam.h"
+#include "SDL3pp_surface.h"
+
+namespace SDL {
 /**
- * @file SDL3pp_video.h
+ * @defgroup CategoryVideo Display and Window Management
  *
  * SDL's video subsystem is largely interested in abstracting window
  * management from the underlying operating system. You can create windows,
@@ -23,24 +39,8 @@
  * is worth perusing the list of functions just to see what's available, but
  * most apps can get by with simply creating a window and listening for
  * events, so start with SDL_CreateWindow() and SDL_PollEvent().
+ * @{
  */
-
-#ifndef SDL3PP_VIDEO_H_
-#define SDL3PP_VIDEO_H_
-
-#include <memory>
-#include <optional>
-#include <vector>
-#include <SDL3/SDL_video.h>
-#include "SDL3pp_error.h"
-#include "SDL3pp_freeWrapper.h"
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_properties.h"
-#include "SDL3pp_rect.h"
-#include "SDL3pp_stringParam.h"
-#include "SDL3pp_surface.h"
-
-namespace SDL {
 
 // Forward decl
 template<class T>
@@ -3216,6 +3216,8 @@ inline bool GL_DestroyContext(GLContext context)
 }
 
 #pragma region impl
+
+/// @}
 
 inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
 {

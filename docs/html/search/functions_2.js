@@ -19,8 +19,8 @@ var searchData=
   ['contains_16',['contains',['../structSDL_1_1FRect.html#afb2a1bbe6172ee65f209d7186318aafb',1,'SDL::FRect::Contains()'],['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#a5790c9e5d53a968a1fced54de96b867c',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;::contains()'],['../structSDL_1_1FRect.html#a916c052d6857e19fabf8e8fc00202502',1,'SDL::FRect::Contains()'],['../structSDL_1_1Rect.html#aef01b24cedf0b5e33316359330d0b501',1,'SDL::Rect::Contains(const Rect &amp;other) const'],['../structSDL_1_1Rect.html#ab6d590f6f3123bea2e3de50cdf7fbeac',1,'SDL::Rect::Contains(const Point &amp;point) const']]],
   ['convert_17',['convert',['../structSDL_1_1SurfaceBase.html#a9ccf82503e809a7bc890b1662ede3d5c',1,'SDL::SurfaceBase::Convert(PixelFormat format, PaletteRef palette, Colorspace colorspace, PropertiesRef props) const'],['../structSDL_1_1SurfaceBase.html#a6a6b84f8c84046fe8fa4f0c498fd76db',1,'SDL::SurfaceBase::Convert(PixelFormat format) const']]],
   ['converteventtorendercoordinates_18',['ConvertEventToRenderCoordinates',['../structSDL_1_1RendererBase.html#a8883859100726a7c7f08134ee0fc0229',1,'SDL::RendererBase']]],
-  ['convertpixels_19',['ConvertPixels',['../namespaceSDL.html#a7da7ef5a1a25db72469c18bd37fbb299',1,'SDL']]],
-  ['convertpixelsandcolorspace_20',['ConvertPixelsAndColorspace',['../namespaceSDL.html#a9d6ced48f8f7fb71dff04aff0364adcd',1,'SDL']]],
+  ['convertpixels_19',['ConvertPixels',['../group__CategorySurface.html#ga7da7ef5a1a25db72469c18bd37fbb299',1,'SDL']]],
+  ['convertpixelsandcolorspace_20',['ConvertPixelsAndColorspace',['../group__CategorySurface.html#ga9d6ced48f8f7fb71dff04aff0364adcd',1,'SDL']]],
   ['copypropertiesto_21',['CopyPropertiesTo',['../structSDL_1_1PropertiesBase.html#a1296853289d558578a7e9efdc5d9b977',1,'SDL::PropertiesBase']]],
   ['copysign_22',['copysign',['../group__CategoryStdinc.html#ga476595ece87ed3441c672348366f0adb',1,'SDL']]],
   ['copysignf_23',['copysignf',['../group__CategoryStdinc.html#ga0b8d2ae3c91e681437f9b8bad0d332dd',1,'SDL']]],
@@ -29,5 +29,5 @@ var searchData=
   ['crc16_26',['crc16',['../group__CategoryStdinc.html#ga31ee6fbdefd2ca34bbde4c8652069e66',1,'SDL']]],
   ['crc32_27',['crc32',['../group__CategoryStdinc.html#gacc8b8bc6d26dd888c3fed721ddb1cd2e',1,'SDL']]],
   ['createpalette_28',['CreatePalette',['../structSDL_1_1SurfaceBase.html#aaa82afa72b93cc2d04f005775c667415',1,'SDL::SurfaceBase']]],
-  ['createwindowandrenderer_29',['CreateWindowAndRenderer',['../namespaceSDL.html#a46a4e94c9436427b1e58a045f9ac177d',1,'SDL']]]
+  ['createwindowandrenderer_29',['CreateWindowAndRenderer',['../group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d',1,'SDL']]]
 ];

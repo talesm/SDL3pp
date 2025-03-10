@@ -3,8 +3,8 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="180,145,239,171"/>
 <area shape="rect" id="Node000006" href="$group__CategoryBlendmode.html" title="Blend modes decide how two colors will mix together." alt="" coords="341,5,447,31"/>
 <area shape="rect" id="Node000005" href="$group__CategoryPixels.html" title="SDL offers facilities for pixel management." alt="" coords="287,55,501,95"/>
-<area shape="rect" id="Node000007" href="$group__CategoryRect.html" title=" " alt="" coords="339,120,449,145"/>
-<area shape="rect" id="Node000004" href="$group__CategoryRender.html" title=" " alt="" coords="331,169,457,195"/>
-<area shape="rect" id="Node000008" href="$group__CategorySurface.html" title=" " alt="" coords="329,219,459,244"/>
-<area shape="rect" id="Node000003" href="$group__CategoryVideo.html" title=" " alt="" coords="335,268,453,293"/>
+<area shape="rect" id="Node000007" href="$group__CategoryRect.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="317,120,471,145"/>
+<area shape="rect" id="Node000004" href="$group__CategoryRender.html" title="Header file for SDL 2D rendering functions." alt="" coords="299,169,489,195"/>
+<area shape="rect" id="Node000008" href="$group__CategorySurface.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="315,219,473,259"/>
+<area shape="rect" id="Node000003" href="$group__CategoryVideo.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="317,283,471,323"/>
 </map>

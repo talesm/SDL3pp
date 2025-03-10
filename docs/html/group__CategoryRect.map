@@ -1,4 +1,4 @@
-<map id="CategoryRect" name="CategoryRect">
+<map id="Rectangle Functions" name="Rectangle Functions">
 <area shape="rect" id="Node000002" href="$group__CategoriesVideo.html" title=" " alt="" coords="5,5,64,31"/>
-<area shape="rect" id="Node000001" title=" " alt="" coords="112,5,223,31"/>
+<area shape="rect" id="Node000001" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="112,5,265,31"/>
 </map>

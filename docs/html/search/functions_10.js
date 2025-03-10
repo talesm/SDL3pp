@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['savebmp_0',['savebmp',['../namespaceSDL.html#a63ffd07298652015b4c886bd56467389',1,'SDL::SaveBMP(SurfaceRef surface, SDL_IOStream *dst, bool closeio)'],['../namespaceSDL.html#afde7120c276cc45bf7cc439889e89967',1,'SDL::SaveBMP(SurfaceRef surface, StringParam file)']]],
+  ['savebmp_0',['savebmp',['../group__CategorySurface.html#ga63ffd07298652015b4c886bd56467389',1,'SDL::SaveBMP(SurfaceRef surface, SDL_IOStream *dst, bool closeio)'],['../group__CategorySurface.html#gafde7120c276cc45bf7cc439889e89967',1,'SDL::SaveBMP(SurfaceRef surface, StringParam file)']]],
   ['scalbn_1',['scalbn',['../group__CategoryStdinc.html#ga2438009a4b8a2f4a9155a168f6cd8303',1,'SDL']]],
   ['scalbnf_2',['scalbnf',['../group__CategoryStdinc.html#ga52e712f14d91d7ecf74bd687a5458a6d',1,'SDL']]],
   ['scale_3',['Scale',['../structSDL_1_1SurfaceBase.html#a53e40ed84412c2bdcc790571150cb65f',1,'SDL::SurfaceBase']]],
-  ['screensaverenabled_4',['ScreenSaverEnabled',['../namespaceSDL.html#a5b189494af97eef6bd5e65ecb6724f0a',1,'SDL']]],
+  ['screensaverenabled_4',['ScreenSaverEnabled',['../group__CategoryVideo.html#ga5b189494af97eef6bd5e65ecb6724f0a',1,'SDL']]],
   ['sdl_5',['sdl',['../structSDL_1_1SDL.html#a0e72541758d27f3e99122049947f7d9c',1,'SDL::SDL::SDL(InitFlags flags)'],['../structSDL_1_1SDL.html#a31ab33b0b5695716f9318b2da47421fd',1,'SDL::SDL::SDL(SDL &amp;&amp;other)'],['../structSDL_1_1SDL.html#a62b2f28c06870f67981e38b4900a2f6c',1,'SDL::SDL::SDL(const SDL &amp;other)']]],
   ['setalpha_6',['setalpha',['../structSDL_1_1FColor.html#a10cecab03d0e95989c375f3e6a5663bd',1,'SDL::FColor::SetAlpha()'],['../structSDL_1_1Color.html#a85bec06eecc57749b7a230d6bd3e5881',1,'SDL::Color::SetAlpha()']]],
   ['setalphamod_7',['setalphamod',['../structSDL_1_1SurfaceBase.html#af4e20b61ef147a09e525e679b417aa13',1,'SDL::SurfaceBase::SetAlphaMod()'],['../structSDL_1_1TextureBase.html#a5e546ebfbdceb484ae174e142e5bf886',1,'SDL::TextureBase::SetAlphaMod(Uint8 alpha)'],['../structSDL_1_1TextureBase.html#a6e406273bf30873feabb11c2de6b567a',1,'SDL::TextureBase::SetAlphaMod(float alpha)']]],
