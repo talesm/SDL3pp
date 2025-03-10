@@ -1,0 +1,10 @@
+<map id="Video" name="Video">
+<area shape="rect" id="Node000002" href="$group__ApiByCategory.html" title="Api by category." alt="" coords="5,129,132,155"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="180,129,239,155"/>
+<area shape="rect" id="Node000006" href="$group__CategoryBlendmode.html" title="Blend modes decide how two colors will mix together." alt="" coords="287,5,445,31"/>
+<area shape="rect" id="Node000005" href="$group__CategoryPixels.html" title="SDL offers facilities for pixel management." alt="" coords="305,55,427,80"/>
+<area shape="rect" id="Node000007" href="$group__CategoryRect.html" title=" " alt="" coords="311,104,421,129"/>
+<area shape="rect" id="Node000004" href="$group__CategoryRender.html" title=" " alt="" coords="303,153,429,179"/>
+<area shape="rect" id="Node000008" href="$group__CategorySurface.html" title=" " alt="" coords="301,203,431,228"/>
+<area shape="rect" id="Node000003" href="$group__CategoryVideo.html" title=" " alt="" coords="307,252,425,277"/>
+</map>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['blendmode_0',['Category Blendmode',['../group__CategoryBlendmode.html',1,'']]]
+  ['additional_20functionality_0',['Additional Functionality',['../group__CategoriesAdditionalFunctionality.html',1,'']]],
+  ['api_20by_20category_1',['API by Category',['../group__ApiByCategory.html',1,'']]]
 ];

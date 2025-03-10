@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['init_0',['Category Init',['../group__CategoryInit.html',1,'']]]
+  ['error_0',['Category Error',['../group__CategoryError.html',1,'']]]
 ];

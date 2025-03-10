@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['resource_0',['Resource',['../group__resource.html',1,'']]]
+  ['init_0',['Category Init',['../group__CategoryInit.html',1,'']]]
 ];
