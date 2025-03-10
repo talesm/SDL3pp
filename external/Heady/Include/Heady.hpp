@@ -43,6 +43,7 @@ THE SOFTWARE.
 #pragma once
 
 #include <string>
+#include <cstdint>
 
 #define inline_t
 
