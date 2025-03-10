@@ -18,5 +18,8 @@ var SDL3pp__init_8h =
     [ "RunOnMainThread", "SDL3pp__init_8h.html#ga02cae05cce6b7468a89fa31cc991c2de", null ],
     [ "SetAppMetadata", "SDL3pp__init_8h.html#ga9cb24cc6035ea3ba1c152347e2114e6b", null ],
     [ "SetAppMetadataProperty", "SDL3pp__init_8h.html#ga46def1efc7856e6d4842d4d7cd05aa78", null ],
-    [ "WasInit", "SDL3pp__init_8h.html#ga2d9c710ec219aa2818bfdc55e4115f44", null ]
+    [ "WasInit", "SDL3pp__init_8h.html#ga2d9c710ec219aa2818bfdc55e4115f44", null ],
+    [ "APP_CONTINUE", "SDL3pp__init_8h.html#ga646434c58bdb24bc49d377a4603d5b6b", null ],
+    [ "APP_FAILURE", "SDL3pp__init_8h.html#ga5cf321856f8f4b0c79457f7fc4465ab8", null ],
+    [ "APP_SUCCESS", "SDL3pp__init_8h.html#gae810a530a8a0feac423157287eef3616", null ]
 ];

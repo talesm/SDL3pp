@@ -1,4 +1,21 @@
 var searchData=
 [
-  ['displayid_0',['displayID',['../structSDL_1_1Display.html#ae33f0c38ea9edc3f56b0b956316fea20',1,'SDL::Display']]]
+  ['bitmaporder_5f1234_0',['BITMAPORDER_1234',['../group__CategoryPixels.html#ga40cab43b60c093a3a3c2b2d4204e4359',1,'SDL']]],
+  ['bitmaporder_5f4321_1',['BITMAPORDER_4321',['../group__CategoryPixels.html#ga89e354b87f8588169ecd534ed71fcb73',1,'SDL']]],
+  ['bitmaporder_5fnone_2',['BITMAPORDER_NONE',['../group__CategoryPixels.html#ga85adfeb0c1ebbea0d5f8216807c7e990',1,'SDL']]],
+  ['blendfactor_5fdst_5falpha_3',['BLENDFACTOR_DST_ALPHA',['../group__CategoryBlendmode.html#gad72530d010285655ce8ee3861400cea7',1,'SDL']]],
+  ['blendfactor_5fdst_5fcolor_4',['BLENDFACTOR_DST_COLOR',['../group__CategoryBlendmode.html#ga3bbea26172825e06fdcddc14eab53ac2',1,'SDL']]],
+  ['blendfactor_5fone_5',['BLENDFACTOR_ONE',['../group__CategoryBlendmode.html#gae4c5231a065353acbbbfbe3e583727d1',1,'SDL']]],
+  ['blendfactor_5fone_5fminus_5fdst_5falpha_6',['BLENDFACTOR_ONE_MINUS_DST_ALPHA',['../group__CategoryBlendmode.html#gae44cd6ea76e4bd6d50710897c2f082a4',1,'SDL']]],
+  ['blendfactor_5fone_5fminus_5fdst_5fcolor_7',['BLENDFACTOR_ONE_MINUS_DST_COLOR',['../group__CategoryBlendmode.html#gaa476a5c22a895f386f423a0228eb6978',1,'SDL']]],
+  ['blendfactor_5fone_5fminus_5fsrc_5falpha_8',['BLENDFACTOR_ONE_MINUS_SRC_ALPHA',['../group__CategoryBlendmode.html#gaacef860a9a26a6c65059154234810982',1,'SDL']]],
+  ['blendfactor_5fone_5fminus_5fsrc_5fcolor_9',['BLENDFACTOR_ONE_MINUS_SRC_COLOR',['../group__CategoryBlendmode.html#ga51380bbb461a14fefdc77bc8a6d6ed75',1,'SDL']]],
+  ['blendfactor_5fsrc_5falpha_10',['BLENDFACTOR_SRC_ALPHA',['../group__CategoryBlendmode.html#ga76d933845e0aed08c6243630bdcf2286',1,'SDL']]],
+  ['blendfactor_5fsrc_5fcolor_11',['BLENDFACTOR_SRC_COLOR',['../group__CategoryBlendmode.html#ga66486fa599a85f258fd93b0f36e379ed',1,'SDL']]],
+  ['blendfactor_5fzero_12',['BLENDFACTOR_ZERO',['../group__CategoryBlendmode.html#ga00143e5f9f2940f2550cc752688287b3',1,'SDL']]],
+  ['blendoperation_5fadd_13',['BLENDOPERATION_ADD',['../group__CategoryBlendmode.html#gac62524aab0f74e96701bbaa1d9994841',1,'SDL']]],
+  ['blendoperation_5fmaximum_14',['BLENDOPERATION_MAXIMUM',['../group__CategoryBlendmode.html#gaf51cb748edf63cf4fceb809c35bd7762',1,'SDL']]],
+  ['blendoperation_5fminimum_15',['BLENDOPERATION_MINIMUM',['../group__CategoryBlendmode.html#ga56e6f773c923182ebaabd691ddce79d4',1,'SDL']]],
+  ['blendoperation_5frev_5fsubtract_16',['BLENDOPERATION_REV_SUBTRACT',['../group__CategoryBlendmode.html#gae480c0c4aa3710d058b64a44f22a4cc1',1,'SDL']]],
+  ['blendoperation_5fsubtract_17',['BLENDOPERATION_SUBTRACT',['../group__CategoryBlendmode.html#gad4a3fceb0474aa624e5c274185271868',1,'SDL']]]
 ];

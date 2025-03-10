@@ -139,5 +139,13 @@ var group__CategoryRender =
     [ "SDL::GetRenderMetalCommandEncoder", "group__CategoryRender.html#ga84052dce4147959aeaeefd6bf36c8424", null ],
     [ "SDL::GetRenderMetalLayer", "group__CategoryRender.html#ga1ebebe2c47d899c12deaf9131867080a", null ],
     [ "SDL::LoadTextureBMP", "group__CategoryRender.html#ga5fef1389da94988b75cb72bd19162ae1", null ],
-    [ "SDL::LoadTextureBMP", "group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a", null ]
+    [ "SDL::LoadTextureBMP", "group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a", null ],
+    [ "SDL::LOGICAL_PRESENTATION_DISABLED", "group__CategoryRender.html#ga857ef502206ed4d471eaafc4d94fbfbc", null ],
+    [ "SDL::LOGICAL_PRESENTATION_INTEGER_SCALE", "group__CategoryRender.html#gaa5a7f54d89b55392a4a6d7b3b2d2e75c", null ],
+    [ "SDL::LOGICAL_PRESENTATION_LETTERBOX", "group__CategoryRender.html#gacffbdeec3fd289de7e7d59b729a16f24", null ],
+    [ "SDL::LOGICAL_PRESENTATION_OVERSCAN", "group__CategoryRender.html#ga7f0e3420783494b5fc8dc0ee3df95832", null ],
+    [ "SDL::LOGICAL_PRESENTATION_STRETCH", "group__CategoryRender.html#gae6f4034a992ba9fac0ffd4fcd7490ed4", null ],
+    [ "SDL::TEXTUREACCESS_STATIC", "group__CategoryRender.html#gaa279e3194ca1c39c29ba228dfbaf1a11", null ],
+    [ "SDL::TEXTUREACCESS_STREAMING", "group__CategoryRender.html#gaa7a17f596678e5bb9c8b67844a1024c9", null ],
+    [ "SDL::TEXTUREACCESS_TARGET", "group__CategoryRender.html#ga9229ccd5925e315f1375f422a64c3f57", null ]
 ];

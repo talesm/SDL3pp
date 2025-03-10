@@ -29,5 +29,8 @@ var group__CategoryInit =
     [ "SDL::RunOnMainThread", "group__CategoryInit.html#ga02cae05cce6b7468a89fa31cc991c2de", null ],
     [ "SDL::SetAppMetadata", "group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b", null ],
     [ "SDL::SetAppMetadataProperty", "group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78", null ],
-    [ "SDL::WasInit", "group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44", null ]
+    [ "SDL::WasInit", "group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44", null ],
+    [ "SDL::APP_CONTINUE", "group__CategoryInit.html#ga646434c58bdb24bc49d377a4603d5b6b", null ],
+    [ "SDL::APP_FAILURE", "group__CategoryInit.html#ga5cf321856f8f4b0c79457f7fc4465ab8", null ],
+    [ "SDL::APP_SUCCESS", "group__CategoryInit.html#gae810a530a8a0feac423157287eef3616", null ]
 ];

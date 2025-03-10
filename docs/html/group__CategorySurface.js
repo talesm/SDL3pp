@@ -102,5 +102,11 @@ var group__CategorySurface =
     [ "SDL::LoadBMP", "group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076", null ],
     [ "SDL::PremultiplyAlpha", "group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5", null ],
     [ "SDL::SaveBMP", "group__CategorySurface.html#ga63ffd07298652015b4c886bd56467389", null ],
-    [ "SDL::SaveBMP", "group__CategorySurface.html#gafde7120c276cc45bf7cc439889e89967", null ]
+    [ "SDL::SaveBMP", "group__CategorySurface.html#gafde7120c276cc45bf7cc439889e89967", null ],
+    [ "SDL::FLIP_HORIZONTAL", "group__CategorySurface.html#gac0771f3c7f68c513c444fa255fbc7d44", null ],
+    [ "SDL::FLIP_NONE", "group__CategorySurface.html#ga3e81f3df151b51bf38d6b348491b8b76", null ],
+    [ "SDL::FLIP_VERTICAL", "group__CategorySurface.html#ga12eade56d263c052589ed58c274021f2", null ],
+    [ "SDL::SCALEMODE_INVALID", "group__CategorySurface.html#gaa6cc4b06d3842efd9aa23a4fbb61f148", null ],
+    [ "SDL::SCALEMODE_LINEAR", "group__CategorySurface.html#ga54bde4af0a6606edd0ef6356592d122e", null ],
+    [ "SDL::SCALEMODE_NEAREST", "group__CategorySurface.html#ga66f4bba63ed46834695fa4bc8c915bf3", null ]
 ];

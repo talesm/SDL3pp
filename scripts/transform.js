@@ -118,8 +118,9 @@ function transformEntries(sourceEntries, context, transform) {
           context.typeMap[`const ${sourceType} *`] = `const ${targetType} *`;
         }
       }
+      insertEntryAndCheck(targetEntries, targetEntry, context, transform, targetName);
       if (sourceEntry.kind === "enum") {
-        transform.includeAfter[sourceName] = Object.values(sourceEntry.entries).map(e => {
+        insertEntry(targetEntries, Object.values(sourceEntry.entries).map(e => {
           if (Array.isArray(e)) throw new Error("Unimplemented");
           return {
             ...e,
@@ -128,9 +129,8 @@ function transformEntries(sourceEntries, context, transform) {
             constexpr: true,
             type: targetName,
           };
-        });
+        }));
       }
-      insertEntryAndCheck(targetEntries, targetEntry, context, transform, targetName);
     }
     insertEntryAndCheck(targetEntries, transform.includeAfter?.[sourceName] ?? [], context, transform);
   }
