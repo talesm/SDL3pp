@@ -11,7 +11,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryPixels Category Pixels
+ * @defgroup CategoryPixels Pixel Formats and Conversion Routines
  *
  * SDL offers facilities for pixel management.
  *

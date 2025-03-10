@@ -6,7 +6,7 @@
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="408,33,297,76,295,71,406,28"/>
 <area shape="rect" id="Node000007" href="$SDL3pp__error_8h.html" title=" " alt="" coords="377,79,497,104"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="439,31,439,65,434,65,434,31"/>
-<area shape="rect" id="Node000009" href="$SDL3pp__stdinc_8h.html" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="588,79,717,104"/>
+<area shape="rect" id="Node000009" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="588,79,717,104"/>
 <area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="472,28,606,72,604,77,471,33"/>
 <area shape="rect" id="Node000015" href="$SDL3pp__stringParam_8h.html" title=" " alt="" coords="970,152,1138,177"/>
 <area shape="poly" id="edge20_Node000001_Node000015" title=" " alt="" coords="498,28,729,76,1001,146,999,151,728,81,497,33"/>

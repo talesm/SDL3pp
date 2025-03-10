@@ -10,7 +10,7 @@
 <area shape="poly" id="edge22_Node000001_Node000005" title=" " alt="" coords="311,44,329,109,346,144,370,175,390,192,413,205,460,223,459,228,410,210,387,196,366,179,342,147,324,111,306,45"/>
 <area shape="rect" id="Node000006" href="$SDL3pp__video_8h.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="365,299,544,324"/>
 <area shape="poly" id="edge23_Node000001_Node000006" title=" " alt="" coords="246,37,179,59,115,91,92,109,77,130,73,152,84,176,110,207,142,232,177,253,215,270,293,292,365,303,365,309,292,297,213,275,175,258,139,237,106,210,79,179,68,152,72,128,88,106,112,86,177,54,244,32"/>
-<area shape="rect" id="Node000007" href="$SDL3pp__stdinc_8h.html" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="611,79,794,104"/>
+<area shape="rect" id="Node000007" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="611,79,794,104"/>
 <area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="383,30,639,76,638,81,382,36"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="217,187,273,254,311,291,355,322,388,338,424,352,494,369,493,375,422,357,386,343,352,326,308,295,269,258,213,191"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="264,178,467,223,466,228,263,183"/>

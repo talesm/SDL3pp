@@ -1,16 +1,16 @@
 var searchData=
 [
   ['raise_0',['Raise',['../structSDL_1_1WindowBase.html#ad2e6a8e788af1805e9c6afafffdb9b38',1,'SDL::WindowBase']]],
-  ['rand_1',['rand',['../namespaceSDL.html#aa0d119f7b42130eb3a652f7e243c8cf7',1,'SDL']]],
-  ['rand_5fbits_2',['rand_bits',['../namespaceSDL.html#ae6517052066ab937273e6a89c7d1eca8',1,'SDL']]],
-  ['rand_5fbits_5fr_3',['rand_bits_r',['../namespaceSDL.html#a5fa067963ccb1728fb4e81abe36c46c6',1,'SDL']]],
-  ['rand_5fr_4',['rand_r',['../namespaceSDL.html#a88a7882cb74660c593be8127ed18fb3b',1,'SDL']]],
-  ['randf_5',['randf',['../namespaceSDL.html#aab0a933463eebe63f34b3acec7e96c6e',1,'SDL']]],
-  ['randf_5fr_6',['randf_r',['../namespaceSDL.html#a6bc84a2bf06f414f7d3f9bbbe9ee6bf9',1,'SDL']]],
+  ['rand_1',['rand',['../group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7',1,'SDL']]],
+  ['rand_5fbits_2',['rand_bits',['../group__CategoryStdinc.html#gae6517052066ab937273e6a89c7d1eca8',1,'SDL']]],
+  ['rand_5fbits_5fr_3',['rand_bits_r',['../group__CategoryStdinc.html#ga5fa067963ccb1728fb4e81abe36c46c6',1,'SDL']]],
+  ['rand_5fr_4',['rand_r',['../group__CategoryStdinc.html#ga88a7882cb74660c593be8127ed18fb3b',1,'SDL']]],
+  ['randf_5',['randf',['../group__CategoryStdinc.html#gaab0a933463eebe63f34b3acec7e96c6e',1,'SDL']]],
+  ['randf_5fr_6',['randf_r',['../group__CategoryStdinc.html#ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9',1,'SDL']]],
   ['readme_2emd_7',['README.md',['../README_8md.html',1,'']]],
   ['readpixel_8',['readpixel',['../structSDL_1_1SurfaceBase.html#ada52380ba6c8bb46bb48d1557a616786',1,'SDL::SurfaceBase::ReadPixel(int x, int y) const'],['../structSDL_1_1SurfaceBase.html#a69fcfbfc5a244434b9746d60b298c9f2',1,'SDL::SurfaceBase::ReadPixel(int x, int y, SDL_Color *c) const'],['../structSDL_1_1SurfaceBase.html#aa68ff0a7264990334ac97a9f64574410',1,'SDL::SurfaceBase::ReadPixel(int x, int y, SDL_FColor *c) const'],['../structSDL_1_1SurfaceBase.html#af1c045d28701effcf4b61e1594abee8e',1,'SDL::SurfaceBase::ReadPixel(int x, int y, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a) const'],['../structSDL_1_1SurfaceBase.html#abf4430cda2edf1a22683aac96abc34da',1,'SDL::SurfaceBase::ReadPixel(int x, int y, float *r, float *g, float *b, float *a) const']]],
-  ['realloc_9',['realloc',['../namespaceSDL.html#ab8208c1b381e6a96b07b5facff79c27b',1,'SDL']]],
-  ['realloc_5ffunc_10',['realloc_func',['../namespaceSDL.html#aa0d42a4ebfbbe5ab7908f55ba0560ecb',1,'SDL']]],
+  ['realloc_9',['realloc',['../group__CategoryStdinc.html#gab8208c1b381e6a96b07b5facff79c27b',1,'SDL']]],
+  ['realloc_5ffunc_10',['realloc_func',['../group__CategoryStdinc.html#gaa0d42a4ebfbbe5ab7908f55ba0560ecb',1,'SDL']]],
   ['rect_11',['rect',['../structSDL_1_1Rect.html',1,'SDL::Rect'],['../structSDL_1_1Rect.html#a726d8a0fa48d0549d461a6affea65b0f',1,'SDL::Rect::Rect(const SDL_Point &amp;corner, const SDL_Point &amp;size)'],['../structSDL_1_1Rect.html#a4311d76fb2b6bae1efa99cb0a3f45980',1,'SDL::Rect::Rect(int x, int y, int w, int h)'],['../structSDL_1_1Rect.html#ab6d6289a48156f5dca1aa93f85aa15f8',1,'SDL::Rect::Rect(const SDL_Rect &amp;rect={0})']]],
   ['release_12',['release',['../classSDL_1_1ObjectUnique.html#a9e8fc8c418e3029e9e3f32a1027f0e97',1,'SDL::ObjectUnique::release()'],['../classSDL_1_1ObjectRef.html#aa4f6d08cb929ceb5f08bd9356a0104b1',1,'SDL::ObjectRef::release()'],['../structSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546',1,'SDL::SDL::release()'],['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#ac8641cbe11ffac46996660078bee922f',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;::release()']]],
   ['removealternateimages_13',['RemoveAlternateImages',['../structSDL_1_1SurfaceBase.html#a30e0264fc8334e57770b1307d25b5371',1,'SDL::SurfaceBase']]],
@@ -45,8 +45,9 @@ var searchData=
   ['resource_42',['Resource',['../group__resource.html',1,'']]],
   ['resource_2eh_43',['Resource.h',['../Resource_8h.html',1,'']]],
   ['restore_44',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
-  ['round_45',['round',['../namespaceSDL.html#a58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
-  ['roundf_46',['roundf',['../namespaceSDL.html#a9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
-  ['rules_47',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
-  ['runonmainthread_48',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
+  ['round_45',['round',['../group__CategoryStdinc.html#ga58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
+  ['roundf_46',['roundf',['../group__CategoryStdinc.html#ga9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
+  ['routines_47',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
+  ['rules_48',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
+  ['runonmainthread_49',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga02cae05cce6b7468a89fa31cc991c2de',1,'SDL::RunOnMainThread(MainThreadFunction callback, bool wait_complete)']]]
 ];

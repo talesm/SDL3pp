@@ -1,4 +1,5 @@
-<map id="CategoryStdinc" name="CategoryStdinc">
-<area shape="rect" id="Node000002" href="$group__CategoriesAdditionalFunctionality.html" title=" " alt="" coords="5,5,181,31"/>
-<area shape="rect" id="Node000001" title=" " alt="" coords="229,5,351,31"/>
+<map id="Standard Library Functionality" name="Standard Library Functionality">
+<area shape="rect" id="Node000002" href="$group__CategoriesAdditionalFunctionality.html" title=" " alt="" coords="5,22,181,47"/>
+<area shape="rect" id="Node000001" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="231,22,448,47"/>
+<area shape="rect" id="Node000003" href="$group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="645,22,728,47"/>
 </map>

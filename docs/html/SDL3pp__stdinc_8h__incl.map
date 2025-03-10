@@ -1,5 +1,5 @@
 <map id="SDL3pp/SDL3pp_stdinc.h" name="SDL3pp/SDL3pp_stdinc.h">
-<area shape="rect" id="Node000001" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="185,5,368,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="185,5,368,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,152,148,177"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,27,157,33,128,44,103,59,81,80,75,93,71,108,73,138,68,139,66,108,70,92,77,77,99,55,126,39,155,28,185,21"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__freeWrapper_8h.html" title=" " alt="" coords="91,79,262,104"/>

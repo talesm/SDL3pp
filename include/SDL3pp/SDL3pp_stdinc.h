@@ -1,5 +1,15 @@
+#ifndef SDL3PP_STDINC_H_
+#define SDL3PP_STDINC_H_
+
+#include <SDL3/SDL_stdinc.h>
+#include "SDL3pp_freeWrapper.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_stringParam.h"
+
+namespace SDL {
+
 /**
- * @file SDL3pp_stdinc.h
+ * @defgroup CategoryStdinc Standard Library Functionality
  *
  * SDL provides its own implementation of some of the most important C runtime
  * functions.
@@ -20,17 +30,9 @@
  * either isn't, strictly speaking, part of any C runtime standards, like
  * SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better
  * options, like SDL_strlcpy(), which functions as a safer form of strcpy().
+ *
+ * @{
  */
-
-#ifndef SDL3PP_STDINC_H_
-#define SDL3PP_STDINC_H_
-
-#include <SDL3/SDL_stdinc.h>
-#include "SDL3pp_freeWrapper.h"
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_stringParam.h"
-
-namespace SDL {
 
 // Forward decl
 template<ObjectBox<SDL_Environment*> T>
@@ -4560,6 +4562,7 @@ inline bool size_add_check_overflow(size_t a, size_t b, size_t* ret)
 using FunctionPointer = SDL_FunctionPointer;
 
 #pragma region impl
+/// @}
 
 inline void ObjectDeleter<SDL_Environment>::operator()(
   EnvironmentRef environment) const

@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="265,5,487,31"/>
 <area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title="Header file for SDL 2D rendering functions." alt="" coords="144,372,328,397"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="299,36,207,57,112,86,70,103,37,122,16,142,8,164,8,239,12,266,24,290,42,310,65,327,118,353,173,369,172,375,116,358,62,331,38,314,20,293,7,268,3,240,3,163,11,139,34,118,68,98,110,81,206,52,297,31"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__stdinc_8h.html" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="350,79,533,104"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="350,79,533,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="398,39,433,77,429,80,394,43"/>
 <area shape="rect" id="Node000006" href="$SDL3pp__surface_8h.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="231,225,422,251"/>
 <area shape="poly" id="edge17_Node000001_Node000006" title=" " alt="" coords="361,43,341,80,332,120,328,162,328,225,323,225,322,162,326,120,336,78,356,40"/>

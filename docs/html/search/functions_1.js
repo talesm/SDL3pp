@@ -8,6 +8,6 @@ var searchData=
   ['blittiledwithscale_5',['BlitTiledWithScale',['../structSDL_1_1SurfaceBase.html#afb9f1b4da9aa119c2ce85c1131998a60',1,'SDL::SurfaceBase']]],
   ['blitunchecked_6',['BlitUnchecked',['../structSDL_1_1SurfaceBase.html#a7cc2f9636c7f7a27e8ab781dfb6a2e1a',1,'SDL::SurfaceBase']]],
   ['blituncheckedscaled_7',['BlitUncheckedScaled',['../structSDL_1_1SurfaceBase.html#a07887c9a2276b5042974ee71db9f1938',1,'SDL::SurfaceBase']]],
-  ['bsearch_8',['bsearch',['../namespaceSDL.html#ada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
-  ['bsearch_5fr_9',['bsearch_r',['../namespaceSDL.html#af22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]]
+  ['bsearch_8',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
+  ['bsearch_5fr_9',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]]
 ];

@@ -1,5 +1,5 @@
-<map id="Category Pixels" name="Category Pixels">
-<area shape="rect" id="Node000002" href="$group__CategoriesVideo.html" title=" " alt="" coords="5,7,64,33"/>
-<area shape="rect" id="Node000001" title="SDL offers facilities for pixel management." alt="" coords="113,7,236,33"/>
-<area shape="rect" id="Node000003" href="$group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="395,7,477,33"/>
+<map id="Pixel Formats and Conversion Routines" name="Pixel Formats and Conversion Routines">
+<area shape="rect" id="Node000002" href="$group__CategoriesVideo.html" title=" " alt="" coords="5,13,64,38"/>
+<area shape="rect" id="Node000001" title="SDL offers facilities for pixel management." alt="" coords="113,5,328,45"/>
+<area shape="rect" id="Node000003" href="$group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="487,13,569,38"/>
 </map>

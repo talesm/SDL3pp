@@ -1,4 +1,4 @@
 var group__CategoriesAdditionalFunctionality =
 [
-    [ "CategoryStdinc", "group__CategoryStdinc.html", null ]
+    [ "Standard Library Functionality", "group__CategoryStdinc.html", "group__CategoryStdinc" ]
 ];

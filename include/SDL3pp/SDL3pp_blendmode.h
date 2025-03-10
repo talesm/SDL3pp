@@ -5,7 +5,7 @@
 
 namespace SDL {
 /**
- * @defgroup CategoryBlendmode Category Blendmode
+ * @defgroup CategoryBlendmode Blend modes
  *
  * Blend modes decide how two colors will mix together. There are both
  * standard modes for basic needs and a means to create custom modes,
