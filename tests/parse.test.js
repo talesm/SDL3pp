@@ -1,5 +1,6 @@
 const { parseApi, parseContent } = require("../src/parse.js");
 const emptyApi = require("./samples/empty.json");
+const varsApi = require("./samples/vars.json");
 const functionsApi = require("./samples/functions.json");
 const structsApi = require("./samples/structs.json");
 const structsAliasesApi = require("./samples/structs_aliases.json");
@@ -11,6 +12,13 @@ test("parse empty.h", () => {
     baseDir: "tests/samples/",
     sources: ["empty.h"]
   })).toEqual(emptyApi);
+});
+
+test("parse vars.h", () => {
+  expect(parseApi({
+    baseDir: "tests/samples/",
+    sources: ["vars.h"]
+  })).toEqual(varsApi);
 });
 
 test("parse functions.h", () => {

@@ -18,6 +18,25 @@ test("empty.h loopback", () => {
   expect(changes).toBe(0);
 });
 
+test("vars.h loopback", () => {
+  const originalContent = readLinesSync("tests/samples/vars.h");
+  const originalApi = parseContent("vars.h", originalContent);
+  const modifiedContent = [...originalContent];
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(modifiedContent).toEqual(originalContent);
+  expect(changes).toBe(0);
+});
+
+test("vars.h over empty file", () => {
+  const originalContent = readLinesSync("tests/samples/vars.h");
+  const originalApi = parseContent("vars.h", originalContent);
+  const modifiedContent = readLinesSync("tests/samples/empty.h");
+  const changes = updateContent(modifiedContent, originalApi);
+  expect(changes).not.toBe(0);
+  const modifiedApi = parseContent("vars.h", reSplit(modifiedContent));
+  expect(modifiedApi).toEqual(originalApi);
+});
+
 test("functions.h loopback", () => {
   const originalContent = readLinesSync("tests/samples/functions.h");
   const originalApi = parseContent("functions.h", originalContent);

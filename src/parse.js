@@ -243,6 +243,8 @@ class ContentParser {
         break;
       case "var":
         entry.type = normalizeType(token.type);
+        if (token.constexpr) entry.constexpr = token.constexpr;
+        if (token.static) entry.static = token.static;
         break;
       case "forward":
         break;
