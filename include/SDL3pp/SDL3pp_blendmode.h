@@ -31,6 +31,32 @@ using BlendMode = SDL_BlendMode;
 using BlendOperation = SDL_BlendOperation;
 
 /**
+ * dst + src: supported by all renderers
+ */
+constexpr BlendOperation BLENDOPERATION_ADD = SDL_BLENDOPERATION_ADD;
+
+/**
+ * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
+
+/**
+ * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
+  SDL_BLENDOPERATION_REV_SUBTRACT;
+
+/**
+ * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
+
+/**
+ * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
+
+/**
  * @brief The normalized factor used to multiply pixel components.
  *
  * The blend factors are multiplied with the pixels from a drawing operation
@@ -40,6 +66,60 @@ using BlendOperation = SDL_BlendOperation;
  *
  */
 using BlendFactor = SDL_BlendFactor;
+
+/**
+ * 0, 0, 0, 0
+ */
+constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO;
+
+/**
+ * 1, 1, 1, 1
+ */
+constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE;
+
+/**
+ * srcR, srcG, srcB, srcA
+ */
+constexpr BlendFactor BLENDFACTOR_SRC_COLOR = SDL_BLENDFACTOR_SRC_COLOR;
+
+/**
+ * 1-srcR, 1-srcG, 1-srcB, 1-srcA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_COLOR =
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR;
+
+/**
+ * srcA, srcA, srcA, srcA
+ */
+constexpr BlendFactor BLENDFACTOR_SRC_ALPHA = SDL_BLENDFACTOR_SRC_ALPHA;
+
+/**
+ * 1-srcA, 1-srcA, 1-srcA, 1-srcA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_ALPHA =
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+
+/**
+ * dstR, dstG, dstB, dstA
+ */
+constexpr BlendFactor BLENDFACTOR_DST_COLOR = SDL_BLENDFACTOR_DST_COLOR;
+
+/**
+ * 1-dstR, 1-dstG, 1-dstB, 1-dstA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_COLOR =
+  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR;
+
+/**
+ * dstA, dstA, dstA, dstA
+ */
+constexpr BlendFactor BLENDFACTOR_DST_ALPHA = SDL_BLENDFACTOR_DST_ALPHA;
+
+/**
+ * 1-dstA, 1-dstA, 1-dstA, 1-dstA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
+  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA;
 
 /**
  * @brief Compose a custom blend mode for renderers.

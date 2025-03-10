@@ -36,16 +36,16 @@ function updateContent(content, targetFile) {
   const sourceFile = parseContent(name, content, { storeLineNumbers: true });
   const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
   const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd, "").reverse();
+  if (!changes.length) {
+    system.log(`No changes for ${name}`);
+    return 0;
+  }
   if (targetFile.doc && !sourceFile.doc) {
     changes.push({
       begin: docBegin,
       end: docEnd,
       replacement: generateDocString(targetFile.doc),
     });
-  }
-  if (!changes.length) {
-    system.log(`No changes for ${name}`);
-    return 0;
   }
   updateChanges(content, changes);
   return changes.length;
@@ -319,7 +319,7 @@ function generateEntry(entry, prefix) {
     case "struct":
       return doc + template + generateStruct(entry, prefix);
     case "var":
-      return doc + template + generateDeclPrefix(entry, prefix) + ';';
+      return doc + template + generateDeclPrefix(entry, prefix) + (entry.sourceName ? ` = ${entry.sourceName}` : "") + ';';
     default:
       system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;

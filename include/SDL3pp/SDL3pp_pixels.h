@@ -100,12 +100,44 @@ struct Color;
  */
 using PixelType = SDL_PixelType;
 
+constexpr PixelType PIXELTYPE_UNKNOWN = SDL_PIXELTYPE_UNKNOWN;
+
+constexpr PixelType PIXELTYPE_INDEX1 = SDL_PIXELTYPE_INDEX1;
+
+constexpr PixelType PIXELTYPE_INDEX4 = SDL_PIXELTYPE_INDEX4;
+
+constexpr PixelType PIXELTYPE_INDEX8 = SDL_PIXELTYPE_INDEX8;
+
+constexpr PixelType PIXELTYPE_PACKED8 = SDL_PIXELTYPE_PACKED8;
+
+constexpr PixelType PIXELTYPE_PACKED16 = SDL_PIXELTYPE_PACKED16;
+
+constexpr PixelType PIXELTYPE_PACKED32 = SDL_PIXELTYPE_PACKED32;
+
+constexpr PixelType PIXELTYPE_ARRAYU8 = SDL_PIXELTYPE_ARRAYU8;
+
+constexpr PixelType PIXELTYPE_ARRAYU16 = SDL_PIXELTYPE_ARRAYU16;
+
+constexpr PixelType PIXELTYPE_ARRAYU32 = SDL_PIXELTYPE_ARRAYU32;
+
+constexpr PixelType PIXELTYPE_ARRAYF16 = SDL_PIXELTYPE_ARRAYF16;
+
+constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32;
+
+constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2;
+
 /**
  * Bitmap pixel order, high bit -> low bit.
  *
  * @since This enum is available since SDL 3.2.0.
  */
 using BitmapOrder = SDL_BitmapOrder;
+
+constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE;
+
+constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321;
+
+constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234;
 
 /**
  * Packed component order, high bit -> low bit.
@@ -114,6 +146,24 @@ using BitmapOrder = SDL_BitmapOrder;
  */
 using PackedOrder = SDL_PackedOrder;
 
+constexpr PackedOrder PACKEDORDER_NONE = SDL_PACKEDORDER_NONE;
+
+constexpr PackedOrder PACKEDORDER_XRGB = SDL_PACKEDORDER_XRGB;
+
+constexpr PackedOrder PACKEDORDER_RGBX = SDL_PACKEDORDER_RGBX;
+
+constexpr PackedOrder PACKEDORDER_ARGB = SDL_PACKEDORDER_ARGB;
+
+constexpr PackedOrder PACKEDORDER_RGBA = SDL_PACKEDORDER_RGBA;
+
+constexpr PackedOrder PACKEDORDER_XBGR = SDL_PACKEDORDER_XBGR;
+
+constexpr PackedOrder PACKEDORDER_BGRX = SDL_PACKEDORDER_BGRX;
+
+constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR;
+
+constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA;
+
 /**
  * Array component order, low byte -> high byte.
  *
@@ -121,12 +171,44 @@ using PackedOrder = SDL_PackedOrder;
  */
 using ArrayOrder = SDL_ArrayOrder;
 
+constexpr ArrayOrder ARRAYORDER_NONE = SDL_ARRAYORDER_NONE;
+
+constexpr ArrayOrder ARRAYORDER_RGB = SDL_ARRAYORDER_RGB;
+
+constexpr ArrayOrder ARRAYORDER_RGBA = SDL_ARRAYORDER_RGBA;
+
+constexpr ArrayOrder ARRAYORDER_ARGB = SDL_ARRAYORDER_ARGB;
+
+constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR;
+
+constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA;
+
+constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR;
+
 /**
  * Packed component layout.
  *
  * @since This enum is available since SDL 3.2.0.
  */
 using PackedLayout = SDL_PackedLayout;
+
+constexpr PackedLayout PACKEDLAYOUT_NONE = SDL_PACKEDLAYOUT_NONE;
+
+constexpr PackedLayout PACKEDLAYOUT_332 = SDL_PACKEDLAYOUT_332;
+
+constexpr PackedLayout PACKEDLAYOUT_4444 = SDL_PACKEDLAYOUT_4444;
+
+constexpr PackedLayout PACKEDLAYOUT_1555 = SDL_PACKEDLAYOUT_1555;
+
+constexpr PackedLayout PACKEDLAYOUT_5551 = SDL_PACKEDLAYOUT_5551;
+
+constexpr PackedLayout PACKEDLAYOUT_565 = SDL_PACKEDLAYOUT_565;
+
+constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888;
+
+constexpr PackedLayout PACKEDLAYOUT_2101010 = SDL_PACKEDLAYOUT_2101010;
+
+constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
 
 /**
  * Details about the format of a pixel.
@@ -497,12 +579,194 @@ struct PixelFormat
   inline Color Get(Uint32 pixel, PaletteRef palette) const;
 };
 
+constexpr PixelFormat PIXELFORMAT_UNKNOWN = SDL_PIXELFORMAT_UNKNOWN;
+
+constexpr PixelFormat PIXELFORMAT_INDEX1LSB = SDL_PIXELFORMAT_INDEX1LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX1MSB = SDL_PIXELFORMAT_INDEX1MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX2LSB = SDL_PIXELFORMAT_INDEX2LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX2MSB = SDL_PIXELFORMAT_INDEX2MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX4LSB = SDL_PIXELFORMAT_INDEX4LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX4MSB = SDL_PIXELFORMAT_INDEX4MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8;
+
+constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332;
+
+constexpr PixelFormat PIXELFORMAT_XRGB4444 = SDL_PIXELFORMAT_XRGB4444;
+
+constexpr PixelFormat PIXELFORMAT_XBGR4444 = SDL_PIXELFORMAT_XBGR4444;
+
+constexpr PixelFormat PIXELFORMAT_XRGB1555 = SDL_PIXELFORMAT_XRGB1555;
+
+constexpr PixelFormat PIXELFORMAT_XBGR1555 = SDL_PIXELFORMAT_XBGR1555;
+
+constexpr PixelFormat PIXELFORMAT_ARGB4444 = SDL_PIXELFORMAT_ARGB4444;
+
+constexpr PixelFormat PIXELFORMAT_RGBA4444 = SDL_PIXELFORMAT_RGBA4444;
+
+constexpr PixelFormat PIXELFORMAT_ABGR4444 = SDL_PIXELFORMAT_ABGR4444;
+
+constexpr PixelFormat PIXELFORMAT_BGRA4444 = SDL_PIXELFORMAT_BGRA4444;
+
+constexpr PixelFormat PIXELFORMAT_ARGB1555 = SDL_PIXELFORMAT_ARGB1555;
+
+constexpr PixelFormat PIXELFORMAT_RGBA5551 = SDL_PIXELFORMAT_RGBA5551;
+
+constexpr PixelFormat PIXELFORMAT_ABGR1555 = SDL_PIXELFORMAT_ABGR1555;
+
+constexpr PixelFormat PIXELFORMAT_BGRA5551 = SDL_PIXELFORMAT_BGRA5551;
+
+constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565;
+
+constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565;
+
+constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24;
+
+constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24;
+
+constexpr PixelFormat PIXELFORMAT_XRGB8888 = SDL_PIXELFORMAT_XRGB8888;
+
+constexpr PixelFormat PIXELFORMAT_RGBX8888 = SDL_PIXELFORMAT_RGBX8888;
+
+constexpr PixelFormat PIXELFORMAT_XBGR8888 = SDL_PIXELFORMAT_XBGR8888;
+
+constexpr PixelFormat PIXELFORMAT_BGRX8888 = SDL_PIXELFORMAT_BGRX8888;
+
+constexpr PixelFormat PIXELFORMAT_ARGB8888 = SDL_PIXELFORMAT_ARGB8888;
+
+constexpr PixelFormat PIXELFORMAT_RGBA8888 = SDL_PIXELFORMAT_RGBA8888;
+
+constexpr PixelFormat PIXELFORMAT_ABGR8888 = SDL_PIXELFORMAT_ABGR8888;
+
+constexpr PixelFormat PIXELFORMAT_BGRA8888 = SDL_PIXELFORMAT_BGRA8888;
+
+constexpr PixelFormat PIXELFORMAT_XRGB2101010 = SDL_PIXELFORMAT_XRGB2101010;
+
+constexpr PixelFormat PIXELFORMAT_XBGR2101010 = SDL_PIXELFORMAT_XBGR2101010;
+
+constexpr PixelFormat PIXELFORMAT_ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010;
+
+constexpr PixelFormat PIXELFORMAT_ABGR2101010 = SDL_PIXELFORMAT_ABGR2101010;
+
+constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48;
+
+constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48;
+
+constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64;
+
+constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64;
+
+constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64;
+
+constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64;
+
+constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT = SDL_PIXELFORMAT_RGB48_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT = SDL_PIXELFORMAT_BGR48_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT = SDL_PIXELFORMAT_RGBA64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT = SDL_PIXELFORMAT_ARGB64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT = SDL_PIXELFORMAT_BGRA64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT = SDL_PIXELFORMAT_ABGR64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT = SDL_PIXELFORMAT_RGB96_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT = SDL_PIXELFORMAT_BGR96_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT = SDL_PIXELFORMAT_RGBA128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT = SDL_PIXELFORMAT_ARGB128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT = SDL_PIXELFORMAT_BGRA128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT = SDL_PIXELFORMAT_ABGR128_FLOAT;
+
+/**
+ * Planar mode: Y + V + U  (3 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_YV12 = SDL_PIXELFORMAT_YV12;
+
+/**
+ * Planar mode: Y + U + V  (3 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_IYUV = SDL_PIXELFORMAT_IYUV;
+
+/**
+ * Packed mode: Y0+U0+Y1+V0 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_YUY2 = SDL_PIXELFORMAT_YUY2;
+
+/**
+ * Packed mode: U0+Y0+V0+Y1 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_UYVY = SDL_PIXELFORMAT_UYVY;
+
+/**
+ * Packed mode: Y0+V0+Y1+U0 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_YVYU = SDL_PIXELFORMAT_YVYU;
+
+/**
+ * Planar mode: Y + U/V interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_NV12 = SDL_PIXELFORMAT_NV12;
+
+/**
+ * Planar mode: Y + V/U interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_NV21 = SDL_PIXELFORMAT_NV21;
+
+/**
+ * Planar mode: Y + U/V interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_P010 = SDL_PIXELFORMAT_P010;
+
+/**
+ * Android video texture format
+ */
+constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
+
+/**
+ * Motion JPEG
+ */
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
+
+constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32;
+
+constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32;
+
+constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32;
+
+constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32;
+
+constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32;
+
+constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32;
+
+constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32;
+
+constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
+
 /**
  * @brief Colorspace color type.
  *
  * @since This enum is available since SDL 3.2.0.
  */
 using ColorType = SDL_ColorType;
+
+constexpr ColorType COLOR_TYPE_UNKNOWN = SDL_COLOR_TYPE_UNKNOWN;
+
+constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB;
+
+constexpr ColorType COLOR_TYPE_YCBCR = SDL_COLOR_TYPE_YCBCR;
 
 /**
  * Colorspace color range, as described by
@@ -512,6 +776,18 @@ using ColorType = SDL_ColorType;
  */
 using ColorRange = SDL_ColorRange;
 
+constexpr ColorRange COLOR_RANGE_UNKNOWN = SDL_COLOR_RANGE_UNKNOWN;
+
+/**
+ * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
+ */
+constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
+
+/**
+ * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+ */
+constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
+
 /**
  * Colorspace color primaries, as described by
  * https://www.itu.int/rec/T-REC-H.273-201612-S/en
@@ -519,6 +795,72 @@ using ColorRange = SDL_ColorRange;
  * @since This enum is available since SDL 3.2.0.
  */
 using ColorPrimaries = SDL_ColorPrimaries;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN = SDL_COLOR_PRIMARIES_UNKNOWN;
+
+/**
+ * ITU-R BT.709-6
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT709 = SDL_COLOR_PRIMARIES_BT709;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
+  SDL_COLOR_PRIMARIES_UNSPECIFIED;
+
+/**
+ * ITU-R BT.470-6 System M
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470M = SDL_COLOR_PRIMARIES_BT470M;
+
+/**
+ * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG = SDL_COLOR_PRIMARIES_BT470BG;
+
+/**
+ * ITU-R BT.601-7 525, SMPTE 170M
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT601 = SDL_COLOR_PRIMARIES_BT601;
+
+/**
+ * SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
+  SDL_COLOR_PRIMARIES_SMPTE240;
+
+/**
+ * Generic film (color filters using Illuminant C)
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
+  SDL_COLOR_PRIMARIES_GENERIC_FILM;
+
+/**
+ * ITU-R BT.2020-2 / ITU-R BT.2100-0
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 = SDL_COLOR_PRIMARIES_BT2020;
+
+/**
+ * SMPTE ST 428-1
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_XYZ = SDL_COLOR_PRIMARIES_XYZ;
+
+/**
+ * SMPTE RP 431-2
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
+  SDL_COLOR_PRIMARIES_SMPTE431;
+
+/**
+ * SMPTE EG 432-1 / DCI P3
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
+  SDL_COLOR_PRIMARIES_SMPTE432;
+
+/**
+ * EBU Tech. 3213-E
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 = SDL_COLOR_PRIMARIES_EBU3213;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM = SDL_COLOR_PRIMARIES_CUSTOM;
 
 /**
  * Colorspace transfer characteristics.
@@ -529,6 +871,102 @@ using ColorPrimaries = SDL_ColorPrimaries;
  */
 using TransferCharacteristics = SDL_TransferCharacteristics;
 
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
+  SDL_TRANSFER_CHARACTERISTICS_UNKNOWN;
+
+/**
+ * Rec. ITU-R BT.709-6 / ITU-R BT1361
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
+  SDL_TRANSFER_CHARACTERISTICS_BT709;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
+  SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED;
+
+/**
+ * ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
+
+/**
+ * ITU-R BT.470-6 System B, G
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA28;
+
+/**
+ * SMPTE ST 170M / ITU-R BT.601-7 525 or 625
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
+  SDL_TRANSFER_CHARACTERISTICS_BT601;
+
+/**
+ * SMPTE ST 240M
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE240;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
+  SDL_TRANSFER_CHARACTERISTICS_LINEAR;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10;
+
+/**
+ * IEC 61966-2-4
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
+  SDL_TRANSFER_CHARACTERISTICS_IEC61966;
+
+/**
+ * ITU-R BT1361 Extended Colour Gamut
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
+  SDL_TRANSFER_CHARACTERISTICS_BT1361;
+
+/**
+ * IEC 61966-2-1 (sRGB or sYCC)
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
+  SDL_TRANSFER_CHARACTERISTICS_SRGB;
+
+/**
+ * ITU-R BT2020 for 10-bit system
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT;
+
+/**
+ * ITU-R BT2020 for 12-bit system
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT;
+
+/**
+ * SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
+  SDL_TRANSFER_CHARACTERISTICS_PQ;
+
+/**
+ * SMPTE ST 428-1
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE428;
+
+/**
+ * ARIB STD-B67, known as "hybrid log-gamma" (HLG)
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
+  SDL_TRANSFER_CHARACTERISTICS_HLG;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
+  SDL_TRANSFER_CHARACTERISTICS_CUSTOM;
+
 /**
  * Colorspace matrix coefficients.
  *
@@ -538,12 +976,111 @@ using TransferCharacteristics = SDL_TransferCharacteristics;
  */
 using MatrixCoefficients = SDL_MatrixCoefficients;
 
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
+  SDL_MATRIX_COEFFICIENTS_IDENTITY;
+
+/**
+ * ITU-R BT.709-6
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
+  SDL_MATRIX_COEFFICIENTS_BT709;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
+  SDL_MATRIX_COEFFICIENTS_UNSPECIFIED;
+
+/**
+ * US FCC Title 47
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
+  SDL_MATRIX_COEFFICIENTS_FCC;
+
+/**
+ * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
+ * SDL_MATRIX_COEFFICIENTS_BT601
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
+  SDL_MATRIX_COEFFICIENTS_BT470BG;
+
+/**
+ * ITU-R BT.601-7 525
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
+  SDL_MATRIX_COEFFICIENTS_BT601;
+
+/**
+ * SMPTE 240M
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE240;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
+  SDL_MATRIX_COEFFICIENTS_YCGCO;
+
+/**
+ * ITU-R BT.2020-2 non-constant luminance
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_NCL;
+
+/**
+ * ITU-R BT.2020-2 constant luminance
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_CL;
+
+/**
+ * SMPTE ST 2085
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE2085;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL;
+
+/**
+ * ITU-R BT.2100-0 ICTCP
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
+  SDL_MATRIX_COEFFICIENTS_ICTCP;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
+  SDL_MATRIX_COEFFICIENTS_CUSTOM;
+
 /**
  * Colorspace chroma sample location.
  *
  * @since This enum is available since SDL 3.2.0.
  */
 using ChromaLocation = SDL_ChromaLocation;
+
+/**
+ * RGB, no chroma sampling
+ */
+constexpr ChromaLocation CHROMA_LOCATION_NONE = SDL_CHROMA_LOCATION_NONE;
+
+/**
+ * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
+ * of the 2x2 square. In other words, they have the same horizontal location as
+ * the top-left pixel, but is shifted one-half pixel down vertically.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
+
+/**
+ * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
+ * square. In other words, they are offset one-half pixel to the right and
+ * one-half pixel down compared to the top-left pixel.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
+
+/**
+ * In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and
+ * Cr are sampled at the same location as the group's top-left Y pixel
+ * ("co-sited", "co-located").
+ */
+constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
 
 /**
  * Colorspace definitions.
@@ -779,6 +1316,69 @@ struct Colorspace
     return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
   }
 };
+
+constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
+ */
+constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
+ */
+constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
+ */
+constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
+ */
+constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+ */
+constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+ */
+constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+ */
+constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+ */
+constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
+ */
+constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
+ */
+constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
+
+/**
+ * The default colorspace for RGB surfaces if no colorspace is specified
+ */
+constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
+
+/**
+ * The default colorspace for YUV surfaces if no colorspace is specified
+ */
+constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
+
 /**
  * A structure that represents a color as RGBA components.
  *

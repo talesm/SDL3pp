@@ -128,7 +128,7 @@ function tokenize(lines) {
       // @ts-ignore
       token.kind = m[1];
       token.value = m[2];
-      if (token.kind != "struct") {
+      if (token.kind == "union") {
         i = ignoreBody(lines, i, token.spaces);
       } else if (!line.endsWith("{")) i++;
     } else if (m = /^(?:struct|class)\s+([\w<>]+);/.exec(line)) {
@@ -222,6 +222,8 @@ function tokenize(lines) {
         }
       } else {
         token.kind = "var";
+        const m = member.match(/\/\*\*<(.*)\*\//);
+        if (m) token.doc = m[1].trim();
       }
       if (m = /^((?:[*&]\s*)+)(\w+)\s*$/.exec(token.value)) {
         token.type += " " + m[1];

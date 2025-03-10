@@ -73,11 +73,38 @@ using SurfaceFlags = SDL_SurfaceFlags;
  */
 using ScaleMode = SDL_ScaleMode;
 
+constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
+
+/**
+ * nearest pixel sampling
+ */
+constexpr ScaleMode SCALEMODE_NEAREST = SDL_SCALEMODE_NEAREST;
+
+/**
+ * linear filtering
+ */
+constexpr ScaleMode SCALEMODE_LINEAR = SDL_SCALEMODE_LINEAR;
+
 /**
  * @brief The flip mode.
  *
  */
 using FlipMode = SDL_FlipMode;
+
+/**
+ * Do not flip
+ */
+constexpr FlipMode FLIP_NONE = SDL_FLIP_NONE;
+
+/**
+ * flip horizontally
+ */
+constexpr FlipMode FLIP_HORIZONTAL = SDL_FLIP_HORIZONTAL;
+
+/**
+ * flip vertically
+ */
+constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL;
 
 /**
  * A collection of pixels used in software blitting.

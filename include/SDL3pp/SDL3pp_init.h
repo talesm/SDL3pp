@@ -71,6 +71,21 @@ using InitFlags = SDL_InitFlags;
 using AppResult = SDL_AppResult;
 
 /**
+ * Value that requests that the app continue from the main callbacks.
+ */
+constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
+
+/**
+ * Value that requests termination with success from the main callbacks.
+ */
+constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
+
+/**
+ * Value that requests termination with error from the main callbacks.
+ */
+constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/**
  * Function pointer typedef for SDL_AppInit.
  *
  * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind

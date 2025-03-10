@@ -460,7 +460,15 @@
         "SDL_DUMMY_ENUM": {
           "doc": "",
           "name": "SDL_DUMMY_ENUM",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "DUMMY_ENUM_VALUE": {
+              "doc": "",
+              "name": "DUMMY_ENUM_VALUE",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_INIT_INTERFACE": {
           "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nSDL_IOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = SDL_OpenIO(&iface, NULL);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nSDL_IOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = SDL_OpenIO(&iface, NULL);\n```\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_IOStreamInterface\n\\sa SDL_StorageInterface\n\\sa SDL_VirtualJoystickDesc",
@@ -3419,27 +3427,283 @@
         "SDL_PixelType": {
           "doc": "Pixel type.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_PixelType",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_PIXELTYPE_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_INDEX1": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_INDEX1",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_INDEX4": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_INDEX4",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_INDEX8": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_INDEX8",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_PACKED8": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_PACKED8",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_PACKED16": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_PACKED16",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_PACKED32": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_PACKED32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_ARRAYU8": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_ARRAYU8",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_ARRAYU16": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_ARRAYU16",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_ARRAYU32": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_ARRAYU32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_ARRAYF16": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_ARRAYF16",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_ARRAYF32": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_ARRAYF32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELTYPE_INDEX2": {
+              "doc": "",
+              "name": "SDL_PIXELTYPE_INDEX2",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_BitmapOrder": {
           "doc": "Bitmap pixel order, high bit -> low bit.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_BitmapOrder",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_BITMAPORDER_NONE": {
+              "doc": "",
+              "name": "SDL_BITMAPORDER_NONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BITMAPORDER_4321": {
+              "doc": "",
+              "name": "SDL_BITMAPORDER_4321",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BITMAPORDER_1234": {
+              "doc": "",
+              "name": "SDL_BITMAPORDER_1234",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_PackedOrder": {
           "doc": "Packed component order, high bit -> low bit.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_PackedOrder",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_PACKEDORDER_NONE": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_NONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_XRGB": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_XRGB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_RGBX": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_RGBX",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_ARGB": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_ARGB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_RGBA": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_RGBA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_XBGR": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_XBGR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_BGRX": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_BGRX",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_ABGR": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_ABGR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDORDER_BGRA": {
+              "doc": "",
+              "name": "SDL_PACKEDORDER_BGRA",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_ArrayOrder": {
           "doc": "Array component order, low byte -> high byte.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_ArrayOrder",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_ARRAYORDER_NONE": {
+              "doc": "",
+              "name": "SDL_ARRAYORDER_NONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ARRAYORDER_RGB": {
+              "doc": "",
+              "name": "SDL_ARRAYORDER_RGB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ARRAYORDER_RGBA": {
+              "doc": "",
+              "name": "SDL_ARRAYORDER_RGBA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ARRAYORDER_ARGB": {
+              "doc": "",
+              "name": "SDL_ARRAYORDER_ARGB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ARRAYORDER_BGR": {
+              "doc": "",
+              "name": "SDL_ARRAYORDER_BGR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ARRAYORDER_BGRA": {
+              "doc": "",
+              "name": "SDL_ARRAYORDER_BGRA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ARRAYORDER_ABGR": {
+              "doc": "",
+              "name": "SDL_ARRAYORDER_ABGR",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_PackedLayout": {
           "doc": "Packed component layout.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_PackedLayout",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_PACKEDLAYOUT_NONE": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_NONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_332": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_332",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_4444": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_4444",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_1555": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_1555",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_5551": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_5551",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_565": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_565",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_8888": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_2101010": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_2101010",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PACKEDLAYOUT_1010102": {
+              "doc": "",
+              "name": "SDL_PACKEDLAYOUT_1010102",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_DEFINE_PIXELFOURCC": {
           "doc": "A macro for defining custom FourCC pixel formats.\n\nFor example, defining SDL_PIXELFORMAT_YV12 looks like this:\n\n```c\nSDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2')\n```\n\n\\param A the first character of the FourCC code.\n\\param B the second character of the FourCC code.\n\\param C the third character of the FourCC code.\n\\param D the fourth character of the FourCC code.\n\\returns a format value in the style of SDL_PixelFormat.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -3571,37 +3835,837 @@
         "SDL_PixelFormat": {
           "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_PixelFormat",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_PIXELFORMAT_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_INDEX1LSB": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_INDEX1LSB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_INDEX1MSB": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_INDEX1MSB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_INDEX2LSB": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_INDEX2LSB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_INDEX2MSB": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_INDEX2MSB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_INDEX4LSB": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_INDEX4LSB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_INDEX4MSB": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_INDEX4MSB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_INDEX8": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_INDEX8",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGB332": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGB332",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XRGB4444": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XRGB4444",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XBGR4444": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XBGR4444",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XRGB1555": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XRGB1555",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XBGR1555": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XBGR1555",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB4444": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB4444",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBA4444": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBA4444",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR4444": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR4444",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRA4444": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRA4444",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB1555": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB1555",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBA5551": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBA5551",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR1555": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR1555",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRA5551": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRA5551",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGB565": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGB565",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGR565": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGR565",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGB24": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGB24",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGR24": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGR24",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XRGB8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XRGB8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBX8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBX8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XBGR8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XBGR8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRX8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRX8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBA8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBA8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRA8888": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRA8888",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XRGB2101010": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XRGB2101010",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XBGR2101010": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XBGR2101010",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB2101010": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB2101010",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR2101010": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR2101010",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGB48": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGB48",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGR48": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGR48",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBA64": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBA64",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB64": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB64",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRA64": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRA64",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR64": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR64",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGB48_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGB48_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGR48_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGR48_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBA64_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBA64_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB64_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB64_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRA64_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRA64_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR64_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR64_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGB96_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGB96_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGR96_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGR96_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBA128_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBA128_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB128_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB128_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRA128_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRA128_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR128_FLOAT": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR128_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_YV12": {
+              "doc": "Planar mode: Y + V + U  (3 planes)",
+              "name": "SDL_PIXELFORMAT_YV12",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_IYUV": {
+              "doc": "Planar mode: Y + U + V  (3 planes)",
+              "name": "SDL_PIXELFORMAT_IYUV",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_YUY2": {
+              "doc": "Packed mode: Y0+U0+Y1+V0 (1 plane)",
+              "name": "SDL_PIXELFORMAT_YUY2",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_UYVY": {
+              "doc": "Packed mode: U0+Y0+V0+Y1 (1 plane)",
+              "name": "SDL_PIXELFORMAT_UYVY",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_YVYU": {
+              "doc": "Packed mode: Y0+V0+Y1+U0 (1 plane)",
+              "name": "SDL_PIXELFORMAT_YVYU",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_NV12": {
+              "doc": "Planar mode: Y + U/V interleaved  (2 planes)",
+              "name": "SDL_PIXELFORMAT_NV12",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_NV21": {
+              "doc": "Planar mode: Y + V/U interleaved  (2 planes)",
+              "name": "SDL_PIXELFORMAT_NV21",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_P010": {
+              "doc": "Planar mode: Y + U/V interleaved  (2 planes)",
+              "name": "SDL_PIXELFORMAT_P010",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_EXTERNAL_OES": {
+              "doc": "Android video texture format",
+              "name": "SDL_PIXELFORMAT_EXTERNAL_OES",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_MJPG": {
+              "doc": "Motion JPEG",
+              "name": "SDL_PIXELFORMAT_MJPG",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBA32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBA32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ARGB32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ARGB32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRA32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRA32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_ABGR32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_ABGR32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_RGBX32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_RGBX32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XRGB32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XRGB32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_BGRX32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_BGRX32",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PIXELFORMAT_XBGR32": {
+              "doc": "",
+              "name": "SDL_PIXELFORMAT_XBGR32",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_ColorType": {
           "doc": "Colorspace color type.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_ColorType",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_COLOR_TYPE_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_COLOR_TYPE_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_TYPE_RGB": {
+              "doc": "",
+              "name": "SDL_COLOR_TYPE_RGB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_TYPE_YCBCR": {
+              "doc": "",
+              "name": "SDL_COLOR_TYPE_YCBCR",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_ColorRange": {
           "doc": "Colorspace color range, as described by\nhttps://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_ColorRange",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_COLOR_RANGE_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_COLOR_RANGE_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_RANGE_LIMITED": {
+              "doc": "Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma",
+              "name": "SDL_COLOR_RANGE_LIMITED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_RANGE_FULL": {
+              "doc": "Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma",
+              "name": "SDL_COLOR_RANGE_FULL",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_ColorPrimaries": {
           "doc": "Colorspace color primaries, as described by\nhttps://www.itu.int/rec/T-REC-H.273-201612-S/en\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_ColorPrimaries",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_COLOR_PRIMARIES_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_COLOR_PRIMARIES_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_BT709": {
+              "doc": "ITU-R BT.709-6",
+              "name": "SDL_COLOR_PRIMARIES_BT709",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_UNSPECIFIED": {
+              "doc": "",
+              "name": "SDL_COLOR_PRIMARIES_UNSPECIFIED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_BT470M": {
+              "doc": "ITU-R BT.470-6 System M",
+              "name": "SDL_COLOR_PRIMARIES_BT470M",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_BT470BG": {
+              "doc": "ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625",
+              "name": "SDL_COLOR_PRIMARIES_BT470BG",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_BT601": {
+              "doc": "ITU-R BT.601-7 525, SMPTE 170M",
+              "name": "SDL_COLOR_PRIMARIES_BT601",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_SMPTE240": {
+              "doc": "SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601",
+              "name": "SDL_COLOR_PRIMARIES_SMPTE240",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_GENERIC_FILM": {
+              "doc": "Generic film (color filters using Illuminant C)",
+              "name": "SDL_COLOR_PRIMARIES_GENERIC_FILM",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_BT2020": {
+              "doc": "ITU-R BT.2020-2 / ITU-R BT.2100-0",
+              "name": "SDL_COLOR_PRIMARIES_BT2020",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_XYZ": {
+              "doc": "SMPTE ST 428-1",
+              "name": "SDL_COLOR_PRIMARIES_XYZ",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_SMPTE431": {
+              "doc": "SMPTE RP 431-2",
+              "name": "SDL_COLOR_PRIMARIES_SMPTE431",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_SMPTE432": {
+              "doc": "SMPTE EG 432-1 / DCI P3",
+              "name": "SDL_COLOR_PRIMARIES_SMPTE432",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_EBU3213": {
+              "doc": "EBU Tech. 3213-E",
+              "name": "SDL_COLOR_PRIMARIES_EBU3213",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLOR_PRIMARIES_CUSTOM": {
+              "doc": "",
+              "name": "SDL_COLOR_PRIMARIES_CUSTOM",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_TransferCharacteristics": {
           "doc": "Colorspace transfer characteristics.\n\nThese are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_TransferCharacteristics",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_TRANSFER_CHARACTERISTICS_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_BT709": {
+              "doc": "Rec. ITU-R BT.709-6 / ITU-R BT1361",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_BT709",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED": {
+              "doc": "",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_GAMMA22": {
+              "doc": "ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_GAMMA22",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_GAMMA28": {
+              "doc": "ITU-R BT.470-6 System B, G",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_GAMMA28",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_BT601": {
+              "doc": "SMPTE ST 170M / ITU-R BT.601-7 525 or 625",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_BT601",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_SMPTE240": {
+              "doc": "SMPTE ST 240M",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_SMPTE240",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_LINEAR": {
+              "doc": "",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_LINEAR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_LOG100": {
+              "doc": "",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_LOG100",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10": {
+              "doc": "",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_IEC61966": {
+              "doc": "IEC 61966-2-4",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_IEC61966",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_BT1361": {
+              "doc": "ITU-R BT1361 Extended Colour Gamut",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_BT1361",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_SRGB": {
+              "doc": "IEC 61966-2-1 (sRGB or sYCC)",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_SRGB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT": {
+              "doc": "ITU-R BT2020 for 10-bit system",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT": {
+              "doc": "ITU-R BT2020 for 12-bit system",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_PQ": {
+              "doc": "SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_PQ",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_SMPTE428": {
+              "doc": "SMPTE ST 428-1",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_SMPTE428",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_HLG": {
+              "doc": "ARIB STD-B67, known as \"hybrid log-gamma\" (HLG)",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_HLG",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TRANSFER_CHARACTERISTICS_CUSTOM": {
+              "doc": "",
+              "name": "SDL_TRANSFER_CHARACTERISTICS_CUSTOM",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_MatrixCoefficients": {
           "doc": "Colorspace matrix coefficients.\n\nThese are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_MatrixCoefficients",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_MATRIX_COEFFICIENTS_IDENTITY": {
+              "doc": "",
+              "name": "SDL_MATRIX_COEFFICIENTS_IDENTITY",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_BT709": {
+              "doc": "ITU-R BT.709-6",
+              "name": "SDL_MATRIX_COEFFICIENTS_BT709",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_UNSPECIFIED": {
+              "doc": "",
+              "name": "SDL_MATRIX_COEFFICIENTS_UNSPECIFIED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_FCC": {
+              "doc": "US FCC Title 47",
+              "name": "SDL_MATRIX_COEFFICIENTS_FCC",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_BT470BG": {
+              "doc": "ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as SDL_MATRIX_COEFFICIENTS_BT601",
+              "name": "SDL_MATRIX_COEFFICIENTS_BT470BG",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_BT601": {
+              "doc": "ITU-R BT.601-7 525",
+              "name": "SDL_MATRIX_COEFFICIENTS_BT601",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_SMPTE240": {
+              "doc": "SMPTE 240M",
+              "name": "SDL_MATRIX_COEFFICIENTS_SMPTE240",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_YCGCO": {
+              "doc": "",
+              "name": "SDL_MATRIX_COEFFICIENTS_YCGCO",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_BT2020_NCL": {
+              "doc": "ITU-R BT.2020-2 non-constant luminance",
+              "name": "SDL_MATRIX_COEFFICIENTS_BT2020_NCL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_BT2020_CL": {
+              "doc": "ITU-R BT.2020-2 constant luminance",
+              "name": "SDL_MATRIX_COEFFICIENTS_BT2020_CL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_SMPTE2085": {
+              "doc": "SMPTE ST 2085",
+              "name": "SDL_MATRIX_COEFFICIENTS_SMPTE2085",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL": {
+              "doc": "",
+              "name": "SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL": {
+              "doc": "",
+              "name": "SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_ICTCP": {
+              "doc": "ITU-R BT.2100-0 ICTCP",
+              "name": "SDL_MATRIX_COEFFICIENTS_ICTCP",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_MATRIX_COEFFICIENTS_CUSTOM": {
+              "doc": "",
+              "name": "SDL_MATRIX_COEFFICIENTS_CUSTOM",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_ChromaLocation": {
           "doc": "Colorspace chroma sample location.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_ChromaLocation",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_CHROMA_LOCATION_NONE": {
+              "doc": "RGB, no chroma sampling",
+              "name": "SDL_CHROMA_LOCATION_NONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_CHROMA_LOCATION_LEFT": {
+              "doc": "In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge of the 2x2 square. In other words, they have the same horizontal location as the top-left pixel, but is shifted one-half pixel down vertically.",
+              "name": "SDL_CHROMA_LOCATION_LEFT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_CHROMA_LOCATION_CENTER": {
+              "doc": "In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2 square. In other words, they are offset one-half pixel to the right and one-half pixel down compared to the top-left pixel.",
+              "name": "SDL_CHROMA_LOCATION_CENTER",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_CHROMA_LOCATION_TOPLEFT": {
+              "doc": "In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and Cr are sampled at the same location as the group's top-left Y pixel (\"co-sited\", \"co-located\").",
+              "name": "SDL_CHROMA_LOCATION_TOPLEFT",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_DEFINE_COLORSPACE": {
           "doc": "A macro for defining custom SDL_Colorspace formats.\n\nFor example, defining SDL_COLORSPACE_SRGB looks like this:\n\n```c\nSDL_DEFINE_COLORSPACE(SDL_COLOR_TYPE_RGB,\n                      SDL_COLOR_RANGE_FULL,\n                      SDL_COLOR_PRIMARIES_BT709,\n                      SDL_TRANSFER_CHARACTERISTICS_SRGB,\n                      SDL_MATRIX_COEFFICIENTS_IDENTITY,\n                      SDL_CHROMA_LOCATION_NONE)\n```\n\n\\param type the type of the new format, probably an SDL_ColorType value.\n\\param range the range of the new format, probably a SDL_ColorRange value.\n\\param primaries the primaries of the new format, probably an\n                 SDL_ColorPrimaries value.\n\\param transfer the transfer characteristics of the new format, probably an\n                SDL_TransferCharacteristics value.\n\\param matrix the matrix coefficients of the new format, probably an\n              SDL_MatrixCoefficients value.\n\\param chroma the chroma sample location of the new format, probably an\n              SDL_ChromaLocation value.\n\\returns a format value in the style of SDL_Colorspace.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -3707,7 +4771,87 @@
         "SDL_Colorspace": {
           "doc": "Colorspace definitions.\n\nSince similar colorspaces may vary in their details (matrix, transfer\nfunction, etc.), this is not an exhaustive list, but rather a\nrepresentative sample of the kinds of colorspaces supported in SDL.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_ColorPrimaries\n\\sa SDL_ColorRange\n\\sa SDL_ColorType\n\\sa SDL_MatrixCoefficients\n\\sa SDL_TransferCharacteristics",
           "name": "SDL_Colorspace",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_COLORSPACE_UNKNOWN": {
+              "doc": "",
+              "name": "SDL_COLORSPACE_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_SRGB": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709",
+              "name": "SDL_COLORSPACE_SRGB",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_SRGB_LINEAR": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709",
+              "name": "SDL_COLORSPACE_SRGB_LINEAR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_HDR10": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020",
+              "name": "SDL_COLORSPACE_HDR10",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_JPEG": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601",
+              "name": "SDL_COLORSPACE_JPEG",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_BT601_LIMITED": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601",
+              "name": "SDL_COLORSPACE_BT601_LIMITED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_BT601_FULL": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601",
+              "name": "SDL_COLORSPACE_BT601_FULL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_BT709_LIMITED": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709",
+              "name": "SDL_COLORSPACE_BT709_LIMITED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_BT709_FULL": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709",
+              "name": "SDL_COLORSPACE_BT709_FULL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_BT2020_LIMITED": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020",
+              "name": "SDL_COLORSPACE_BT2020_LIMITED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_BT2020_FULL": {
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020",
+              "name": "SDL_COLORSPACE_BT2020_FULL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_RGB_DEFAULT": {
+              "doc": "The default colorspace for RGB surfaces if no colorspace is specified",
+              "name": "SDL_COLORSPACE_RGB_DEFAULT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_COLORSPACE_YUV_DEFAULT": {
+              "doc": "The default colorspace for YUV surfaces if no colorspace is specified",
+              "name": "SDL_COLORSPACE_YUV_DEFAULT",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_Color": {
           "doc": "A structure that represents a color as RGBA components.\n\nThe bits of this structure can be directly reinterpreted as an\ninteger-packed color which uses the SDL_PIXELFORMAT_RGBA32 format\n(SDL_PIXELFORMAT_ABGR8888 on little-endian systems and\nSDL_PIXELFORMAT_RGBA8888 on big-endian systems).\n\n\\since This struct is available since SDL 3.2.0.",
@@ -3777,25 +4921,25 @@
           "kind": "struct",
           "entries": {
             "ncolors": {
-              "doc": "",
+              "doc": "number of elements in `colors`.",
               "name": "ncolors",
               "kind": "var",
               "type": "int"
             },
             "colors": {
-              "doc": "",
+              "doc": "an array of colors, `ncolors` long.",
               "name": "colors",
               "kind": "var",
               "type": "SDL_Color *"
             },
             "version": {
-              "doc": "",
+              "doc": "internal use only, do not touch.",
               "name": "version",
               "kind": "var",
               "type": "Uint32"
             },
             "refcount": {
-              "doc": "",
+              "doc": "internal use only, do not touch.",
               "name": "refcount",
               "kind": "var",
               "type": "int"
@@ -4220,12 +5364,106 @@
         "SDL_BlendOperation": {
           "doc": "The blend operation used when combining source and destination pixel\ncomponents.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_BlendOperation",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_BLENDOPERATION_ADD": {
+              "doc": "dst + src: supported by all renderers",
+              "name": "SDL_BLENDOPERATION_ADD",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_SUBTRACT": {
+              "doc": "src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_SUBTRACT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_REV_SUBTRACT": {
+              "doc": "dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_REV_SUBTRACT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_MINIMUM": {
+              "doc": "min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_MINIMUM",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDOPERATION_MAXIMUM": {
+              "doc": "max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan",
+              "name": "SDL_BLENDOPERATION_MAXIMUM",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_BlendFactor": {
           "doc": "The normalized factor used to multiply pixel components.\n\nThe blend factors are multiplied with the pixels from a drawing operation\n(src) and the pixels from the render target (dst) before the blend\noperation. The comma-separated factors listed above are always applied in\nthe component order red, green, blue, and alpha.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_BlendFactor",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_BLENDFACTOR_ZERO": {
+              "doc": "0, 0, 0, 0",
+              "name": "SDL_BLENDFACTOR_ZERO",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE": {
+              "doc": "1, 1, 1, 1",
+              "name": "SDL_BLENDFACTOR_ONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_SRC_COLOR": {
+              "doc": "srcR, srcG, srcB, srcA",
+              "name": "SDL_BLENDFACTOR_SRC_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR": {
+              "doc": "1-srcR, 1-srcG, 1-srcB, 1-srcA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_SRC_ALPHA": {
+              "doc": "srcA, srcA, srcA, srcA",
+              "name": "SDL_BLENDFACTOR_SRC_ALPHA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA": {
+              "doc": "1-srcA, 1-srcA, 1-srcA, 1-srcA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_DST_COLOR": {
+              "doc": "dstR, dstG, dstB, dstA",
+              "name": "SDL_BLENDFACTOR_DST_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR": {
+              "doc": "1-dstR, 1-dstG, 1-dstB, 1-dstA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_DST_ALPHA": {
+              "doc": "dstA, dstA, dstA, dstA",
+              "name": "SDL_BLENDFACTOR_DST_ALPHA",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA": {
+              "doc": "1-dstA, 1-dstA, 1-dstA, 1-dstA",
+              "name": "SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_ComposeCustomBlendMode": {
           "doc": "Compose a custom blend mode for renderers.\n\nThe functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept\nthe SDL_BlendMode returned by this function if the renderer supports it.\n\nA blend mode controls how the pixels from a drawing operation (source) get\ncombined with the pixels from the render target (destination). First, the\ncomponents of the source and destination pixels get multiplied with their\nblend factors. Then, the blend operation takes the two products and\ncalculates the result that will get stored in the render target.\n\nExpressed in pseudocode, it would look like this:\n\n```c\ndstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);\ndstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);\n```\n\nWhere the functions `colorOperation(src, dst)` and `alphaOperation(src,\ndst)` can return one of the following:\n\n- `src + dst`\n- `src - dst`\n- `dst - src`\n- `min(src, dst)`\n- `max(src, dst)`\n\nThe red, green, and blue components are always multiplied with the first,\nsecond, and third components of the SDL_BlendFactor, respectively. The\nfourth component is not used.\n\nThe alpha component is always multiplied with the fourth component of the\nSDL_BlendFactor. The other components are not used in the alpha\ncalculation.\n\nSupport for these blend modes varies for each renderer. To check if a\nspecific SDL_BlendMode is supported, create a renderer and pass it to\neither SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will\nreturn with an error if the blend mode is not supported.\n\nThis list describes the support of custom blend modes for each renderer.\nAll renderers support the four blend modes listed in the SDL_BlendMode\nenumeration.\n\n- **direct3d**: Supports all operations with all factors. However, some\n  factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and\n  `SDL_BLENDOPERATION_MAXIMUM`.\n- **direct3d11**: Same as Direct3D 9.\n- **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all\n  factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.\n- **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,\n  `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`\n  operations with all factors.\n- **psp**: No custom blend mode support.\n- **software**: No custom blend mode support.\n\nSome renderers do not provide an alpha component for the default render\ntarget. The `SDL_BLENDFACTOR_DST_ALPHA` and\n`SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this\ncase.\n\n\\param srcColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the source pixels.\n\\param dstColorFactor the SDL_BlendFactor applied to the red, green, and\n                      blue components of the destination pixels.\n\\param colorOperation the SDL_BlendOperation used to combine the red,\n                      green, and blue components of the source and\n                      destination pixels.\n\\param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the source pixels.\n\\param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of\n                      the destination pixels.\n\\param alphaOperation the SDL_BlendOperation used to combine the alpha\n                      component of the source and destination pixels.\n\\returns an SDL_BlendMode that represents the chosen factors and\n         operations.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_SetRenderDrawBlendMode\n\\sa SDL_GetRenderDrawBlendMode\n\\sa SDL_SetTextureBlendMode\n\\sa SDL_GetTextureBlendMode",
@@ -4274,7 +5512,45 @@
         "SDL_PropertyType": {
           "doc": "SDL property type\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_PropertyType",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_PROPERTY_TYPE_INVALID": {
+              "doc": "",
+              "name": "SDL_PROPERTY_TYPE_INVALID",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROPERTY_TYPE_POINTER": {
+              "doc": "",
+              "name": "SDL_PROPERTY_TYPE_POINTER",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROPERTY_TYPE_STRING": {
+              "doc": "",
+              "name": "SDL_PROPERTY_TYPE_STRING",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROPERTY_TYPE_NUMBER": {
+              "doc": "",
+              "name": "SDL_PROPERTY_TYPE_NUMBER",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROPERTY_TYPE_FLOAT": {
+              "doc": "",
+              "name": "SDL_PROPERTY_TYPE_FLOAT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_PROPERTY_TYPE_BOOLEAN": {
+              "doc": "",
+              "name": "SDL_PROPERTY_TYPE_BOOLEAN",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_GetGlobalProperties": {
           "doc": "Get the global SDL properties.\n\n\\returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n\\since This function is available since SDL 3.2.0.",
@@ -5151,12 +6427,52 @@
         "SDL_ScaleMode": {
           "doc": "The scaling mode.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_ScaleMode",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_SCALEMODE_INVALID": {
+              "doc": "",
+              "name": "SDL_SCALEMODE_INVALID",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SCALEMODE_NEAREST": {
+              "doc": "nearest pixel sampling",
+              "name": "SDL_SCALEMODE_NEAREST",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SCALEMODE_LINEAR": {
+              "doc": "linear filtering",
+              "name": "SDL_SCALEMODE_LINEAR",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_FlipMode": {
           "doc": "The flip mode.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_FlipMode",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_FLIP_NONE": {
+              "doc": "Do not flip",
+              "name": "SDL_FLIP_NONE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_FLIP_HORIZONTAL": {
+              "doc": "flip horizontally",
+              "name": "SDL_FLIP_HORIZONTAL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_FLIP_VERTICAL": {
+              "doc": "flip vertically",
+              "name": "SDL_FLIP_VERTICAL",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_Surface": {
           "doc": "A collection of pixels used in software blitting.\n\nPixels are arranged in memory in rows, with the top row first. Each row\noccupies an amount of memory given by the pitch (sometimes known as the row\nstride in non-SDL APIs).\n\nWithin each row, pixels are arranged from left to right until the width is\nreached. Each pixel occupies a number of bits appropriate for its format,\nwith most formats representing each pixel as one or more whole bytes (in\nsome indexed formats, instead multiple pixels are packed into each byte),\nand a byte order given by the format. After encoding all pixels, any\nremaining bytes to reach the pitch are used as padding to reach a desired\nalignment, and have undefined contents.\n\nWhen a surface holds YUV format data, the planes are assumed to be\ncontiguous without padding between them, e.g. a 32x32 surface in NV12\nformat with a pitch of 32 would consist of 32x32 bytes of Y plane followed\nby 32x16 bytes of UV plane.\n\nWhen a surface holds MJPG format data, pixels points at the compressed JPEG\nimage and pitch is the length of that data.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CreateSurface\n\\sa SDL_DestroySurface",
@@ -5164,49 +6480,49 @@
           "kind": "struct",
           "entries": {
             "flags": {
-              "doc": "",
+              "doc": "The flags of the surface, read-only",
               "name": "flags",
               "kind": "var",
               "type": "SDL_SurfaceFlags"
             },
             "format": {
-              "doc": "",
+              "doc": "The format of the surface, read-only",
               "name": "format",
               "kind": "var",
               "type": "SDL_PixelFormat"
             },
             "w": {
-              "doc": "",
+              "doc": "The width of the surface, read-only.",
               "name": "w",
               "kind": "var",
               "type": "int"
             },
             "h": {
-              "doc": "",
+              "doc": "The height of the surface, read-only.",
               "name": "h",
               "kind": "var",
               "type": "int"
             },
             "pitch": {
-              "doc": "",
+              "doc": "The distance in bytes between rows of pixels, read-only",
               "name": "pitch",
               "kind": "var",
               "type": "int"
             },
             "pixels": {
-              "doc": "",
+              "doc": "A pointer to the pixels of the surface, the pixels are writeable if non-NULL",
               "name": "pixels",
               "kind": "var",
               "type": "void *"
             },
             "refcount": {
-              "doc": "",
+              "doc": "Application reference count, used when freeing surface",
               "name": "refcount",
               "kind": "var",
               "type": "int"
             },
             "reserved": {
-              "doc": "",
+              "doc": "Reserved for internal use",
               "name": "reserved",
               "kind": "var",
               "type": "void *"
@@ -6524,7 +7840,27 @@
         "SDL_SystemTheme": {
           "doc": "System theme.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_SystemTheme",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_SYSTEM_THEME_UNKNOWN": {
+              "doc": "Unknown system theme",
+              "name": "SDL_SYSTEM_THEME_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SYSTEM_THEME_LIGHT": {
+              "doc": "Light colored system theme",
+              "name": "SDL_SYSTEM_THEME_LIGHT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_SYSTEM_THEME_DARK": {
+              "doc": "Dark colored system theme",
+              "name": "SDL_SYSTEM_THEME_DARK",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_DisplayModeData": {
           "doc": "Internal display mode data.\n\nThis lives as a field in SDL_DisplayMode, as opaque data.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_DisplayMode",
@@ -6538,55 +7874,55 @@
           "kind": "struct",
           "entries": {
             "displayID": {
-              "doc": "",
+              "doc": "the display this mode is associated with",
               "name": "displayID",
               "kind": "var",
               "type": "SDL_DisplayID"
             },
             "format": {
-              "doc": "",
+              "doc": "pixel format",
               "name": "format",
               "kind": "var",
               "type": "SDL_PixelFormat"
             },
             "w": {
-              "doc": "",
+              "doc": "width",
               "name": "w",
               "kind": "var",
               "type": "int"
             },
             "h": {
-              "doc": "",
+              "doc": "height",
               "name": "h",
               "kind": "var",
               "type": "int"
             },
             "pixel_density": {
-              "doc": "",
+              "doc": "scale converting size to pixels (e.g. a 1920x1080 mode with 2.0 scale would have 3840x2160 pixels)",
               "name": "pixel_density",
               "kind": "var",
               "type": "float"
             },
             "refresh_rate": {
-              "doc": "",
+              "doc": "refresh rate (or 0.0f for unspecified)",
               "name": "refresh_rate",
               "kind": "var",
               "type": "float"
             },
             "refresh_rate_numerator": {
-              "doc": "",
+              "doc": "precise refresh rate numerator (or 0 for unspecified)",
               "name": "refresh_rate_numerator",
               "kind": "var",
               "type": "int"
             },
             "refresh_rate_denominator": {
-              "doc": "",
+              "doc": "precise refresh rate denominator",
               "name": "refresh_rate_denominator",
               "kind": "var",
               "type": "int"
             },
             "internal": {
-              "doc": "",
+              "doc": "Private",
               "name": "internal",
               "kind": "var",
               "type": "SDL_DisplayModeData *"
@@ -6596,7 +7932,39 @@
         "SDL_DisplayOrientation": {
           "doc": "Display orientation values; the way a display is rotated.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_DisplayOrientation",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_ORIENTATION_UNKNOWN": {
+              "doc": "The display orientation can't be determined",
+              "name": "SDL_ORIENTATION_UNKNOWN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ORIENTATION_LANDSCAPE": {
+              "doc": "The display is in landscape mode, with the right side up, relative to portrait mode",
+              "name": "SDL_ORIENTATION_LANDSCAPE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ORIENTATION_LANDSCAPE_FLIPPED": {
+              "doc": "The display is in landscape mode, with the left side up, relative to portrait mode",
+              "name": "SDL_ORIENTATION_LANDSCAPE_FLIPPED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ORIENTATION_PORTRAIT": {
+              "doc": "The display is in portrait mode",
+              "name": "SDL_ORIENTATION_PORTRAIT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_ORIENTATION_PORTRAIT_FLIPPED": {
+              "doc": "The display is in portrait mode, upside down",
+              "name": "SDL_ORIENTATION_PORTRAIT_FLIPPED",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_Window": {
           "doc": "The struct used as an opaque handle to a window.\n\n\\since This struct is available since SDL 3.2.0.\n\n\\sa SDL_CreateWindow",
@@ -6790,7 +8158,27 @@
         "SDL_FlashOperation": {
           "doc": "Window flash operation.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_FlashOperation",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_FLASH_CANCEL": {
+              "doc": "Cancel any window flash state",
+              "name": "SDL_FLASH_CANCEL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_FLASH_BRIEFLY": {
+              "doc": "Flash the window briefly to get attention",
+              "name": "SDL_FLASH_BRIEFLY",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_FLASH_UNTIL_FOCUSED": {
+              "doc": "Flash the window until it gets focus",
+              "name": "SDL_FLASH_UNTIL_FOCUSED",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_GLContext": {
           "doc": "An opaque handle to an OpenGL context.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_GL_CreateContext",
@@ -6863,7 +8251,177 @@
         "SDL_GLAttr": {
           "doc": "An enumeration of OpenGL configuration attributes.\n\nWhile you can set most OpenGL attributes normally, the attributes listed\nabove must be known before SDL creates the window that will be used with\nthe OpenGL context. These attributes are set and read with\nSDL_GL_SetAttribute() and SDL_GL_GetAttribute().\n\nIn some cases, these attributes are minimum requests; the GL does not\npromise to give you exactly what you asked for. It's possible to ask for a\n16-bit depth buffer and get a 24-bit one instead, for example, or to ask\nfor no stencil buffer and still have one available. Context creation should\nfail if the GL can't provide your requested attributes at a minimum, but\nyou should check to see exactly what you got.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_GLAttr",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_GL_RED_SIZE": {
+              "doc": "the minimum number of bits for the red channel of the color buffer; defaults to 3.",
+              "name": "SDL_GL_RED_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_GREEN_SIZE": {
+              "doc": "the minimum number of bits for the green channel of the color buffer; defaults to 3.",
+              "name": "SDL_GL_GREEN_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_BLUE_SIZE": {
+              "doc": "the minimum number of bits for the blue channel of the color buffer; defaults to 2.",
+              "name": "SDL_GL_BLUE_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_ALPHA_SIZE": {
+              "doc": "the minimum number of bits for the alpha channel of the color buffer; defaults to 0.",
+              "name": "SDL_GL_ALPHA_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_BUFFER_SIZE": {
+              "doc": "the minimum number of bits for frame buffer size; defaults to 0.",
+              "name": "SDL_GL_BUFFER_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_DOUBLEBUFFER": {
+              "doc": "whether the output is single or double buffered; defaults to double buffering on.",
+              "name": "SDL_GL_DOUBLEBUFFER",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_DEPTH_SIZE": {
+              "doc": "the minimum number of bits in the depth buffer; defaults to 16.",
+              "name": "SDL_GL_DEPTH_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_STENCIL_SIZE": {
+              "doc": "the minimum number of bits in the stencil buffer; defaults to 0.",
+              "name": "SDL_GL_STENCIL_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_ACCUM_RED_SIZE": {
+              "doc": "the minimum number of bits for the red channel of the accumulation buffer; defaults to 0.",
+              "name": "SDL_GL_ACCUM_RED_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_ACCUM_GREEN_SIZE": {
+              "doc": "the minimum number of bits for the green channel of the accumulation buffer; defaults to 0.",
+              "name": "SDL_GL_ACCUM_GREEN_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_ACCUM_BLUE_SIZE": {
+              "doc": "the minimum number of bits for the blue channel of the accumulation buffer; defaults to 0.",
+              "name": "SDL_GL_ACCUM_BLUE_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_ACCUM_ALPHA_SIZE": {
+              "doc": "the minimum number of bits for the alpha channel of the accumulation buffer; defaults to 0.",
+              "name": "SDL_GL_ACCUM_ALPHA_SIZE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_STEREO": {
+              "doc": "whether the output is stereo 3D; defaults to off.",
+              "name": "SDL_GL_STEREO",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_MULTISAMPLEBUFFERS": {
+              "doc": "the number of buffers used for multisample anti-aliasing; defaults to 0.",
+              "name": "SDL_GL_MULTISAMPLEBUFFERS",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_MULTISAMPLESAMPLES": {
+              "doc": "the number of samples used around the current pixel used for multisample anti-aliasing.",
+              "name": "SDL_GL_MULTISAMPLESAMPLES",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_ACCELERATED_VISUAL": {
+              "doc": "set to 1 to require hardware acceleration, set to 0 to force software rendering; defaults to allow either.",
+              "name": "SDL_GL_ACCELERATED_VISUAL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_RETAINED_BACKING": {
+              "doc": "not used (deprecated).",
+              "name": "SDL_GL_RETAINED_BACKING",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_CONTEXT_MAJOR_VERSION": {
+              "doc": "OpenGL context major version.",
+              "name": "SDL_GL_CONTEXT_MAJOR_VERSION",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_CONTEXT_MINOR_VERSION": {
+              "doc": "OpenGL context minor version.",
+              "name": "SDL_GL_CONTEXT_MINOR_VERSION",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_CONTEXT_FLAGS": {
+              "doc": "some combination of 0 or more of elements of the SDL_GLContextFlag enumeration; defaults to 0.",
+              "name": "SDL_GL_CONTEXT_FLAGS",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_CONTEXT_PROFILE_MASK": {
+              "doc": "type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform.",
+              "name": "SDL_GL_CONTEXT_PROFILE_MASK",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_SHARE_WITH_CURRENT_CONTEXT": {
+              "doc": "OpenGL context sharing; defaults to 0.",
+              "name": "SDL_GL_SHARE_WITH_CURRENT_CONTEXT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_FRAMEBUFFER_SRGB_CAPABLE": {
+              "doc": "requests sRGB capable visual; defaults to 0.",
+              "name": "SDL_GL_FRAMEBUFFER_SRGB_CAPABLE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_CONTEXT_RELEASE_BEHAVIOR": {
+              "doc": "sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to FLUSH.",
+              "name": "SDL_GL_CONTEXT_RELEASE_BEHAVIOR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_CONTEXT_RESET_NOTIFICATION": {
+              "doc": "set context reset notification. See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.",
+              "name": "SDL_GL_CONTEXT_RESET_NOTIFICATION",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_CONTEXT_NO_ERROR": {
+              "doc": "",
+              "name": "SDL_GL_CONTEXT_NO_ERROR",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_FLOATBUFFERS": {
+              "doc": "",
+              "name": "SDL_GL_FLOATBUFFERS",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_GL_EGL_PLATFORM": {
+              "doc": "",
+              "name": "SDL_GL_EGL_PLATFORM",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_GLProfile": {
           "doc": "Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.\n\n\\since This datatype is available since SDL 3.2.0.",
@@ -8527,7 +10085,69 @@
         "SDL_HitTestResult": {
           "doc": "Possible return values from the SDL_HitTest callback.\n\n\\threadsafety This function should only be called on the main thread.\n\n\\since This enum is available since SDL 3.2.0.\n\n\\sa SDL_HitTest",
           "name": "SDL_HitTestResult",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_HITTEST_NORMAL": {
+              "doc": "Region is normal. No special properties.",
+              "name": "SDL_HITTEST_NORMAL",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_DRAGGABLE": {
+              "doc": "Region can drag entire window.",
+              "name": "SDL_HITTEST_DRAGGABLE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_TOPLEFT": {
+              "doc": "Region is the resizable top-left corner border.",
+              "name": "SDL_HITTEST_RESIZE_TOPLEFT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_TOP": {
+              "doc": "Region is the resizable top border.",
+              "name": "SDL_HITTEST_RESIZE_TOP",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_TOPRIGHT": {
+              "doc": "Region is the resizable top-right corner border.",
+              "name": "SDL_HITTEST_RESIZE_TOPRIGHT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_RIGHT": {
+              "doc": "Region is the resizable right border.",
+              "name": "SDL_HITTEST_RESIZE_RIGHT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_BOTTOMRIGHT": {
+              "doc": "Region is the resizable bottom-right corner border.",
+              "name": "SDL_HITTEST_RESIZE_BOTTOMRIGHT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_BOTTOM": {
+              "doc": "Region is the resizable bottom border.",
+              "name": "SDL_HITTEST_RESIZE_BOTTOM",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_BOTTOMLEFT": {
+              "doc": "Region is the resizable bottom-left corner border.",
+              "name": "SDL_HITTEST_RESIZE_BOTTOMLEFT",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_HITTEST_RESIZE_LEFT": {
+              "doc": "Region is the resizable left border.",
+              "name": "SDL_HITTEST_RESIZE_LEFT",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_HitTest": {
           "doc": "Callback used for hit-testing.\n\n\\param win the SDL_Window where hit-testing was set on.\n\\param area an SDL_Point which should be hit-tested.\n\\param data what was passed as `callback_data` to SDL_SetWindowHitTest().\n\\returns an SDL_HitTestResult value.\n\n\\sa SDL_SetWindowHitTest",
@@ -8882,19 +10502,19 @@
           "kind": "struct",
           "entries": {
             "position": {
-              "doc": "",
+              "doc": "Vertex position, in SDL_Renderer coordinates",
               "name": "position",
               "kind": "var",
               "type": "SDL_FPoint"
             },
             "color": {
-              "doc": "",
+              "doc": "Vertex color",
               "name": "color",
               "kind": "var",
               "type": "SDL_FColor"
             },
             "tex_coord": {
-              "doc": "",
+              "doc": "Normalized texture coordinates, if needed",
               "name": "tex_coord",
               "kind": "var",
               "type": "SDL_FPoint"
@@ -8904,12 +10524,64 @@
         "SDL_TextureAccess": {
           "doc": "The access pattern allowed for a texture.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_TextureAccess",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_TEXTUREACCESS_STATIC": {
+              "doc": "Changes rarely, not lockable",
+              "name": "SDL_TEXTUREACCESS_STATIC",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TEXTUREACCESS_STREAMING": {
+              "doc": "Changes frequently, lockable",
+              "name": "SDL_TEXTUREACCESS_STREAMING",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_TEXTUREACCESS_TARGET": {
+              "doc": "Texture can be used as a render target",
+              "name": "SDL_TEXTUREACCESS_TARGET",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_RendererLogicalPresentation": {
           "doc": "How the logical size is mapped to the output.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_RendererLogicalPresentation",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_LOGICAL_PRESENTATION_DISABLED": {
+              "doc": "There is no logical size in effect",
+              "name": "SDL_LOGICAL_PRESENTATION_DISABLED",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_LOGICAL_PRESENTATION_STRETCH": {
+              "doc": "The rendered content is stretched to the output resolution",
+              "name": "SDL_LOGICAL_PRESENTATION_STRETCH",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_LOGICAL_PRESENTATION_LETTERBOX": {
+              "doc": "The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars",
+              "name": "SDL_LOGICAL_PRESENTATION_LETTERBOX",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_LOGICAL_PRESENTATION_OVERSCAN": {
+              "doc": "The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds",
+              "name": "SDL_LOGICAL_PRESENTATION_OVERSCAN",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE": {
+              "doc": "The rendered content is scaled up by integer multiples to fit the output resolution",
+              "name": "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_Renderer": {
           "doc": "A structure representing rendering state\n\n\\since This struct is available since SDL 3.2.0.",
@@ -8923,25 +10595,25 @@
           "kind": "struct",
           "entries": {
             "format": {
-              "doc": "",
+              "doc": "The format of the texture, read-only",
               "name": "format",
               "kind": "var",
               "type": "SDL_PixelFormat"
             },
             "w": {
-              "doc": "",
+              "doc": "The width of the texture, read-only.",
               "name": "w",
               "kind": "var",
               "type": "int"
             },
             "h": {
-              "doc": "",
+              "doc": "The height of the texture, read-only.",
               "name": "h",
               "kind": "var",
               "type": "int"
             },
             "refcount": {
-              "doc": "",
+              "doc": "Application reference count, used when freeing texture",
               "name": "refcount",
               "kind": "var",
               "type": "int"
@@ -11198,7 +12870,27 @@
         "SDL_AppResult": {
           "doc": "Return values for optional main callbacks.\n\nReturning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,\nSDL_AppEvent, or SDL_AppIterate will terminate the program and report\nsuccess/failure to the operating system. What that means is\nplatform-dependent. On Unix, for example, on success, the process error\ncode will be zero, and on failure it will be 1. This interface doesn't\nallow you to return specific exit codes, just whether there was an error\ngenerally or not.\n\nReturning SDL_APP_CONTINUE from these functions will let the app continue\nto run.\n\nSee\n[Main callbacks in SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)\nfor complete details.\n\n\\since This enum is available since SDL 3.2.0.",
           "name": "SDL_AppResult",
-          "kind": "enum"
+          "kind": "enum",
+          "entries": {
+            "SDL_APP_CONTINUE": {
+              "doc": "Value that requests that the app continue from the main callbacks.",
+              "name": "SDL_APP_CONTINUE",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_APP_SUCCESS": {
+              "doc": "Value that requests termination with success from the main callbacks.",
+              "name": "SDL_APP_SUCCESS",
+              "kind": "var",
+              "type": ""
+            },
+            "SDL_APP_FAILURE": {
+              "doc": "Value that requests termination with error from the main callbacks.",
+              "name": "SDL_APP_FAILURE",
+              "kind": "var",
+              "type": ""
+            }
+          }
         },
         "SDL_AppInit_func": {
           "doc": "Function pointer typedef for SDL_AppInit.\n\nThese are used by SDL_EnterAppMainCallbacks. This mechanism operates behind\nthe scenes for apps using the optional main callbacks. Apps that want to\nuse this should just implement SDL_AppInit directly.\n\n\\param appstate a place where the app can optionally store a pointer for\n                future use.\n\\param argc the standard ANSI C main's argc; number of elements in `argv`.\n\\param argv the standard ANSI C main's argv; array of command line\n            arguments.\n\\returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to\n         terminate with success, SDL_APP_CONTINUE to continue.\n\n\\since This datatype is available since SDL 3.2.0.",

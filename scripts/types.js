@@ -110,4 +110,5 @@
  * @property {number}         begin
  * @property {number}         end
  * @property {number}         spaces
+ * @property {string=}        doc
  */

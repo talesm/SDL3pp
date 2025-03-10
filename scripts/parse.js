@@ -210,7 +210,7 @@ class ContentParser {
 
     /** @type {ApiEntry} */
     const entry = {
-      doc: '',
+      doc: token.doc ?? '',
       name: token.value,
       kind: /** @type {ApiEntryKind}*/(token.kind),
     };
@@ -226,6 +226,9 @@ class ContentParser {
         if (token.parameters) entry.parameters = parseParams(token.parameters);
         break;
       case "enum":
+        if (!lastDecl) lastDecl = token.begin;
+        entry.entries = insertEntry({}, this.parseEntries(token.spaces + 1));
+        entryEnd = this.expect("endStruct").end;
         break;
       case "function":
         entry.type = normalizeType(token.type);
@@ -243,6 +246,8 @@ class ContentParser {
         break;
       case "var":
         entry.type = normalizeType(token.type);
+        if (token.constexpr) entry.constexpr = token.constexpr;
+        if (token.static) entry.static = token.static;
         break;
       case "forward":
         break;

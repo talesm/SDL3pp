@@ -93,10 +93,58 @@ using Vertex = SDL_Vertex;
 using TextureAccess = SDL_TextureAccess;
 
 /**
+ * Changes rarely, not lockable
+ */
+constexpr TextureAccess TEXTUREACCESS_STATIC = SDL_TEXTUREACCESS_STATIC;
+
+/**
+ * Changes frequently, lockable
+ */
+constexpr TextureAccess TEXTUREACCESS_STREAMING = SDL_TEXTUREACCESS_STREAMING;
+
+/**
+ * Texture can be used as a render target
+ */
+constexpr TextureAccess TEXTUREACCESS_TARGET = SDL_TEXTUREACCESS_TARGET;
+
+/**
  * @brief How the logical size is mapped to the output.
  *
  */
 using RendererLogicalPresentation = SDL_RendererLogicalPresentation;
+
+/**
+ * There is no logical size in effect
+ */
+constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_DISABLED =
+  SDL_LOGICAL_PRESENTATION_DISABLED;
+
+/**
+ * The rendered content is stretched to the output resolution
+ */
+constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_STRETCH =
+  SDL_LOGICAL_PRESENTATION_STRETCH;
+
+/**
+ * The rendered content is fit to the largest dimension and the other dimension
+ * is letterboxed with black bars
+ */
+constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_LETTERBOX =
+  SDL_LOGICAL_PRESENTATION_LETTERBOX;
+
+/**
+ * The rendered content is fit to the smallest dimension and the other dimension
+ * extends beyond the output bounds
+ */
+constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_OVERSCAN =
+  SDL_LOGICAL_PRESENTATION_OVERSCAN;
+
+/**
+ * The rendered content is scaled up by integer multiples to fit the output
+ * resolution
+ */
+constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
+  SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
 
 /**
  * @brief A structure representing rendering state

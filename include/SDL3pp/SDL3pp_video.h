@@ -478,6 +478,50 @@ using WindowID = SDL_WindowID;
 using SystemTheme = SDL_SystemTheme;
 
 /**
+ * Unknown system theme
+ */
+constexpr SystemTheme SYSTEM_THEME_UNKNOWN = SDL_SYSTEM_THEME_UNKNOWN;
+
+/**
+ * Light colored system theme
+ */
+constexpr SystemTheme SYSTEM_THEME_LIGHT = SDL_SYSTEM_THEME_LIGHT;
+
+/**
+ * Dark colored system theme
+ */
+constexpr SystemTheme SYSTEM_THEME_DARK = SDL_SYSTEM_THEME_DARK;
+
+/**
+ * The display orientation can't be determined
+ */
+constexpr DisplayOrientation ORIENTATION_UNKNOWN = SDL_ORIENTATION_UNKNOWN;
+
+/**
+ * The display is in landscape mode, with the right side up, relative to
+ * portrait mode
+ */
+constexpr DisplayOrientation ORIENTATION_LANDSCAPE = SDL_ORIENTATION_LANDSCAPE;
+
+/**
+ * The display is in landscape mode, with the left side up, relative to portrait
+ * mode
+ */
+constexpr DisplayOrientation ORIENTATION_LANDSCAPE_FLIPPED =
+  SDL_ORIENTATION_LANDSCAPE_FLIPPED;
+
+/**
+ * The display is in portrait mode
+ */
+constexpr DisplayOrientation ORIENTATION_PORTRAIT = SDL_ORIENTATION_PORTRAIT;
+
+/**
+ * The display is in portrait mode, upside down
+ */
+constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
+  SDL_ORIENTATION_PORTRAIT_FLIPPED;
+
+/**
  * @brief Represents a handle to a window
  * @ingroup resource
  */
@@ -2445,6 +2489,21 @@ struct WindowBase : T
 };
 
 /**
+ * Cancel any window flash state
+ */
+constexpr FlashOperation FLASH_CANCEL = SDL_FLASH_CANCEL;
+
+/**
+ * Flash the window briefly to get attention
+ */
+constexpr FlashOperation FLASH_BRIEFLY = SDL_FLASH_BRIEFLY;
+
+/**
+ * Flash the window until it gets focus
+ */
+constexpr FlashOperation FLASH_UNTIL_FOCUSED = SDL_FLASH_UNTIL_FOCUSED;
+
+/**
  * An opaque handle to an OpenGL context.
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -2562,6 +2621,154 @@ using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
  * @since This enum is available since SDL 3.2.0.
  */
 using GLAttr = SDL_GLAttr;
+
+/**
+ * the minimum number of bits for the red channel of the color buffer; defaults
+ * to 3.
+ */
+constexpr GLAttr GL_RED_SIZE = SDL_GL_RED_SIZE;
+
+/**
+ * the minimum number of bits for the green channel of the color buffer;
+ * defaults to 3.
+ */
+constexpr GLAttr GL_GREEN_SIZE = SDL_GL_GREEN_SIZE;
+
+/**
+ * the minimum number of bits for the blue channel of the color buffer; defaults
+ * to 2.
+ */
+constexpr GLAttr GL_BLUE_SIZE = SDL_GL_BLUE_SIZE;
+
+/**
+ * the minimum number of bits for the alpha channel of the color buffer;
+ * defaults to 0.
+ */
+constexpr GLAttr GL_ALPHA_SIZE = SDL_GL_ALPHA_SIZE;
+
+/**
+ * the minimum number of bits for frame buffer size; defaults to 0.
+ */
+constexpr GLAttr GL_BUFFER_SIZE = SDL_GL_BUFFER_SIZE;
+
+/**
+ * whether the output is single or double buffered; defaults to double buffering
+ * on.
+ */
+constexpr GLAttr GL_DOUBLEBUFFER = SDL_GL_DOUBLEBUFFER;
+
+/**
+ * the minimum number of bits in the depth buffer; defaults to 16.
+ */
+constexpr GLAttr GL_DEPTH_SIZE = SDL_GL_DEPTH_SIZE;
+
+/**
+ * the minimum number of bits in the stencil buffer; defaults to 0.
+ */
+constexpr GLAttr GL_STENCIL_SIZE = SDL_GL_STENCIL_SIZE;
+
+/**
+ * the minimum number of bits for the red channel of the accumulation buffer;
+ * defaults to 0.
+ */
+constexpr GLAttr GL_ACCUM_RED_SIZE = SDL_GL_ACCUM_RED_SIZE;
+
+/**
+ * the minimum number of bits for the green channel of the accumulation buffer;
+ * defaults to 0.
+ */
+constexpr GLAttr GL_ACCUM_GREEN_SIZE = SDL_GL_ACCUM_GREEN_SIZE;
+
+/**
+ * the minimum number of bits for the blue channel of the accumulation buffer;
+ * defaults to 0.
+ */
+constexpr GLAttr GL_ACCUM_BLUE_SIZE = SDL_GL_ACCUM_BLUE_SIZE;
+
+/**
+ * the minimum number of bits for the alpha channel of the accumulation buffer;
+ * defaults to 0.
+ */
+constexpr GLAttr GL_ACCUM_ALPHA_SIZE = SDL_GL_ACCUM_ALPHA_SIZE;
+
+/**
+ * whether the output is stereo 3D; defaults to off.
+ */
+constexpr GLAttr GL_STEREO = SDL_GL_STEREO;
+
+/**
+ * the number of buffers used for multisample anti-aliasing; defaults to 0.
+ */
+constexpr GLAttr GL_MULTISAMPLEBUFFERS = SDL_GL_MULTISAMPLEBUFFERS;
+
+/**
+ * the number of samples used around the current pixel used for multisample
+ * anti-aliasing.
+ */
+constexpr GLAttr GL_MULTISAMPLESAMPLES = SDL_GL_MULTISAMPLESAMPLES;
+
+/**
+ * set to 1 to require hardware acceleration, set to 0 to force software
+ * rendering; defaults to allow either.
+ */
+constexpr GLAttr GL_ACCELERATED_VISUAL = SDL_GL_ACCELERATED_VISUAL;
+
+/**
+ * not used (deprecated).
+ */
+constexpr GLAttr GL_RETAINED_BACKING = SDL_GL_RETAINED_BACKING;
+
+/**
+ * OpenGL context major version.
+ */
+constexpr GLAttr GL_CONTEXT_MAJOR_VERSION = SDL_GL_CONTEXT_MAJOR_VERSION;
+
+/**
+ * OpenGL context minor version.
+ */
+constexpr GLAttr GL_CONTEXT_MINOR_VERSION = SDL_GL_CONTEXT_MINOR_VERSION;
+
+/**
+ * some combination of 0 or more of elements of the SDL_GLContextFlag
+ * enumeration; defaults to 0.
+ */
+constexpr GLAttr GL_CONTEXT_FLAGS = SDL_GL_CONTEXT_FLAGS;
+
+/**
+ * type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default
+ * value depends on platform.
+ */
+constexpr GLAttr GL_CONTEXT_PROFILE_MASK = SDL_GL_CONTEXT_PROFILE_MASK;
+
+/**
+ * OpenGL context sharing; defaults to 0.
+ */
+constexpr GLAttr GL_SHARE_WITH_CURRENT_CONTEXT =
+  SDL_GL_SHARE_WITH_CURRENT_CONTEXT;
+
+/**
+ * requests sRGB capable visual; defaults to 0.
+ */
+constexpr GLAttr GL_FRAMEBUFFER_SRGB_CAPABLE = SDL_GL_FRAMEBUFFER_SRGB_CAPABLE;
+
+/**
+ * sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to
+ * FLUSH.
+ */
+constexpr GLAttr GL_CONTEXT_RELEASE_BEHAVIOR = SDL_GL_CONTEXT_RELEASE_BEHAVIOR;
+
+/**
+ * set context reset notification. See SDL_GLContextResetNotification; defaults
+ * to NO_NOTIFICATION.
+ */
+constexpr GLAttr GL_CONTEXT_RESET_NOTIFICATION =
+  SDL_GL_CONTEXT_RESET_NOTIFICATION;
+
+constexpr GLAttr GL_CONTEXT_NO_ERROR = SDL_GL_CONTEXT_NO_ERROR;
+
+constexpr GLAttr GL_FLOATBUFFERS = SDL_GL_FLOATBUFFERS;
+
+constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
 
 /**
  * Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.
