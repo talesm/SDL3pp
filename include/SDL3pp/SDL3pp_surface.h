@@ -2,6 +2,7 @@
 #define SDL3PP_SURFACE_H_
 
 #include <SDL3/SDL_surface.h>
+#include <SDL3/SDL_version.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_freeWrapper.h"
@@ -1215,7 +1216,7 @@ struct SurfaceBase : T
   bool BlitScaled(SurfaceRef src,
                   OptionalRef<const SDL_Rect> srcrect,
                   OptionalRef<const SDL_Rect> dstrect,
-                  SDL_ScaleMode scaleMode)
+                  ScaleMode scaleMode)
   {
     return SDL_BlitSurfaceScaled(
       src.get(), srcrect, T::get(), dstrect, scaleMode);
@@ -1247,11 +1248,41 @@ struct SurfaceBase : T
   bool BlitUncheckedScaled(SurfaceRef src,
                            const SDL_Rect& srcrect,
                            const SDL_Rect& dstrect,
-                           SDL_ScaleMode scaleMode)
+                           ScaleMode scaleMode)
   {
     return SDL_BlitSurfaceScaled(
       src.get(), srcrect, T::get(), dstrect, scaleMode);
   }
+
+#if SDL_VERSION_ATLEAST(3, 2, 4)
+  /**
+   * Perform a stretched pixel copy from one surface to another.
+   *
+   * @param src the Surface structure to be copied from.
+   * @param srcrect the Rect structure representing the rectangle to be
+   *                copied.
+   * @param dstrect the Rect structure representing the target rectangle in
+   *                the destination surface.
+   * @param scaleMode the ScaleMode to be used.
+   * @returns true on success or false on failure; GetError() for more
+   *          information.
+   *
+   * @threadsafety Only one thread should be using the `src` and `dst` surfaces
+   *               at any given time.
+   *
+   * @since This function is available since SDL 3.4.0.
+   *
+   * @sa BlitScaled()
+   */
+  bool Stretch(SurfaceRef src,
+               const SDL_Rect& srcrect,
+               const SDL_Rect& dstrect,
+               ScaleMode scaleMode)
+  {
+    return SDL_StretchSurface(
+      src.get(), &srcrect, T::get(), &dstrect, scaleMode);
+  }
+#endif
 
   /**
    * Perform a tiled blit to a destination surface, which may be of a different

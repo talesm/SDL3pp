@@ -681,6 +681,9 @@ struct RendererBase : T
    *
    * The area's width and height must be >= 0.
    *
+   * Each render target has its own viewport. This function sets the viewport
+   * for the current render target.
+   *
    * @param rect the SDL_Rect structure representing the drawing area, or
    *             std::nullopt to set the viewport to the entire target.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -700,6 +703,9 @@ struct RendererBase : T
 
   /**
    * Get the drawing area for the current target.
+   *
+   * Each render target has its own viewport. This function gets the viewport
+   * for the current render target.
    *
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -723,6 +729,9 @@ struct RendererBase : T
    * This is useful if you're saving and restoring the viewport and want to know
    * whether you should restore a specific rectangle or NULL. Note that the
    * viewport is always reset when changing rendering targets.
+   *
+   * Each render target has its own viewport. This function checks the viewport
+   * for the current render target.
    *
    * @returns true if the viewport was set to a specific rectangle, or false if
    *          it was set to NULL (the entire target).

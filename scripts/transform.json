@@ -2026,7 +2026,7 @@
                   "name": "dstrect"
                 },
                 {
-                  "type": "SDL_ScaleMode",
+                  "type": "ScaleMode",
                   "name": "scaleMode"
                 }
               ]
@@ -2051,7 +2051,31 @@
                   "name": "dstrect"
                 },
                 {
-                  "type": "SDL_ScaleMode",
+                  "type": "ScaleMode",
+                  "name": "scaleMode"
+                }
+              ]
+            },
+            "SDL_StretchSurface": {
+              "kind": "function",
+              "parameters": [
+                {
+                  "name": "this"
+                },
+                {
+                  "type": "SurfaceRef",
+                  "name": "src"
+                },
+                {
+                  "type": "const SDL_Rect &",
+                  "name": "srcrect"
+                },
+                {
+                  "type": "const SDL_Rect &",
+                  "name": "dstrect"
+                },
+                {
+                  "type": "ScaleMode",
                   "name": "scaleMode"
                 }
               ]
