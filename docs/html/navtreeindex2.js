@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6":[6,0,2,0,49],
+"group__CategoryStdinc.html#gae0884b892c70d428cf50522d9791eb61":[6,0,2,0,24],
 "group__CategoryStdinc.html#gae24c494fab206e9aa27dfd9c04b35e81":[6,0,2,0,156],
 "group__CategoryStdinc.html#gae3838c531e1c9bbee29cdf5f4ccb60b4":[6,0,2,0,131],
 "group__CategoryStdinc.html#gae3c9f70ddeadaecb2afeee2b3be34733":[6,0,2,0,19],
@@ -202,16 +204,16 @@ var NAVTREEINDEX2 =
 "structSDL_1_1Display.html#ae60fa581de6bf108440cb5da32b92fcb":[6,0,1,0,2,4],
 "structSDL_1_1EnvironmentBase.html":[6,0,2,0,0],
 "structSDL_1_1EnvironmentBase.html":[6,1,3],
-"structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f":[6,0,2,0,0,6],
 "structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f":[6,1,3,6],
+"structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f":[6,0,2,0,0,6],
 "structSDL_1_1EnvironmentBase.html#a4b6abcb1989c00fbf4d2dcb9444ccfc1":[6,1,3,2],
 "structSDL_1_1EnvironmentBase.html#a4b6abcb1989c00fbf4d2dcb9444ccfc1":[6,0,2,0,0,2],
 "structSDL_1_1EnvironmentBase.html#a600ac76d2975e3b14a1ebd1fa6620f51":[6,1,3,5],
 "structSDL_1_1EnvironmentBase.html#a600ac76d2975e3b14a1ebd1fa6620f51":[6,0,2,0,0,5],
 "structSDL_1_1EnvironmentBase.html#a7e0446c1a17d40d70904bf1a616df74a":[6,1,3,4],
 "structSDL_1_1EnvironmentBase.html#a7e0446c1a17d40d70904bf1a616df74a":[6,0,2,0,0,4],
-"structSDL_1_1EnvironmentBase.html#a880debc9b624b80f3879ff6946b9cb7b":[6,1,3,0],
 "structSDL_1_1EnvironmentBase.html#a880debc9b624b80f3879ff6946b9cb7b":[6,0,2,0,0,0],
+"structSDL_1_1EnvironmentBase.html#a880debc9b624b80f3879ff6946b9cb7b":[6,1,3,0],
 "structSDL_1_1EnvironmentBase.html#ac76d82950ec49f67bb71ff7ff7a8e770":[6,1,3,3],
 "structSDL_1_1EnvironmentBase.html#ac76d82950ec49f67bb71ff7ff7a8e770":[6,0,2,0,0,3],
 "structSDL_1_1EnvironmentBase.html#af4869b8834a581757030a9b7c311eab2":[6,1,3,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "structSDL_1_1FPoint.html#a920cc00cf61be9a2f238699a2c78f6d6":[6,0,1,4,1,5],
 "structSDL_1_1FPoint.html#aa47f15482d8bcae0973fea61b361f245":[6,0,1,4,1,13],
 "structSDL_1_1FPoint.html#aab425aaf0c31f945991729d0c60707a7":[6,0,1,4,1,3],
-"structSDL_1_1FPoint.html#aac3539b066a429228709f90c29aa18e8":[6,0,1,4,1,14],
-"structSDL_1_1FPoint.html#aac8dcfcae4b90525b29c6767a716de70":[6,0,1,4,1,20],
-"structSDL_1_1FPoint.html#ab0e461594a5c804b03840c18f685e954":[6,0,1,4,1,12]
+"structSDL_1_1FPoint.html#aac3539b066a429228709f90c29aa18e8":[6,0,1,4,1,14]
 };

@@ -1,5 +1,6 @@
 var dir_97ce39b7d3b637544d6563dae0aa493a =
 [
+    [ "SDL3pp.h", "SDL3pp_8h.html", null ],
     [ "SDL3pp_blendmode.h", "SDL3pp__blendmode_8h.html", "SDL3pp__blendmode_8h" ],
     [ "SDL3pp_callbackWrapper.h", "SDL3pp__callbackWrapper_8h.html", "SDL3pp__callbackWrapper_8h" ],
     [ "SDL3pp_error.h", "SDL3pp__error_8h.html", "SDL3pp__error_8h" ],

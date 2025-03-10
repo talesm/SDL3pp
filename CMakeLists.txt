@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp)
 
-set(CMAKE_CXX_STANDARD 23)
-
 add_subdirectory(external/SDL)
+
+set(CMAKE_CXX_STANDARD 23)
 
 # The SDL3pp library
 add_library(SDL3pp INTERFACE)
@@ -11,21 +11,6 @@ target_include_directories(SDL3pp INTERFACE include/)
 target_link_libraries(SDL3pp INTERFACE SDL3::SDL3)
 
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
-
-# The documentation
-option(BUILD_DOC "Build documentation" OFF)
-
-if (BUILD_DOC)
-    # check if Doxygen is installed
-    find_package(Doxygen REQUIRED dot)
-
-    doxygen_add_docs(doxygen_docs
-        ALL
-        COMMENT "Generate API docs for SDL3pp"
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
-    )
-endif (BUILD_DOC)
 
 # Manual tests
 add_executable(example_window_with_surface WIN32 examples/window_with_surface.cpp)
@@ -43,3 +28,27 @@ file(GLOB unitTestSources CONFIGURE_DEPENDS test/SDL3pp_*.cpp)
 add_executable(SDL3pp_unitTests ${unitTestSources})
 target_link_libraries(SDL3pp_unitTests PRIVATE SDL3pp test_main)
 add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
+
+# The documentation
+option(BUILD_DOC "Build documentation" OFF)
+
+if (BUILD_DOC)
+    # check if Doxygen is installed
+    find_package(Doxygen REQUIRED dot)
+
+    doxygen_add_docs(doxygen_docs
+        ALL
+        COMMENT "Generate API docs for SDL3pp"
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+        CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+    )
+endif (BUILD_DOC)
+
+
+# The amalgamation header
+option(BUILD_AMALGAMATION "Build amalgamation" ON)
+if (BUILD_AMALGAMATION)
+    add_subdirectory(external/Heady)
+    # add_custom_command(OUTPUT)
+
+endif (BUILD_AMALGAMATION)

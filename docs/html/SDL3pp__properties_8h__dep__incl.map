@@ -1,12 +1,17 @@
 <map id="SDL3pp/SDL3pp_properties.h" name="SDL3pp/SDL3pp_properties.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="34,5,243,31"/>
-<area shape="rect" id="Node000002" href="$SDL3pp__render_8h.html" title=" " alt="" coords="5,225,189,251"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,38,56,55,33,80,26,99,25,119,30,140,39,160,63,196,87,223,83,227,59,200,34,162,25,141,20,120,21,98,28,77,53,51,83,34"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__surface_8h.html" title=" " alt="" coords="43,79,234,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,44,141,79,136,79,136,44"/>
-<area shape="rect" id="Node000004" href="$SDL3pp__video_8h.html" title=" " alt="" coords="135,152,313,177"/>
-<area shape="poly" id="edge6_Node000001_Node000004" title=" " alt="" coords="194,34,225,51,249,77,255,97,252,118,235,153,230,150,246,117,249,98,244,80,221,55,192,38"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="134,118,103,226,98,224,129,117"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="164,110,212,150,208,154,161,115"/>
-<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="193,186,119,227,117,223,190,182"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="90,5,300,31"/>
+<area shape="rect" id="Node000002" href="$SDL3pp_8h.html" title=" " alt="" coords="124,299,260,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,37,50,54,22,80,14,96,9,111,13,144,28,176,53,206,84,235,117,260,173,296,170,301,114,264,81,239,49,210,24,178,7,145,4,111,9,94,18,77,47,50,82,33"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__render_8h.html" title=" " alt="" coords="166,225,350,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,40,239,78,251,119,257,161,261,225,255,225,252,162,246,120,234,80,212,43"/>
+<area shape="rect" id="Node000004" href="$SDL3pp__surface_8h.html" title=" " alt="" coords="33,79,224,104"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="176,43,141,80,137,77,173,39"/>
+<area shape="rect" id="Node000005" href="$SDL3pp__video_8h.html" title=" " alt="" coords="298,152,476,177"/>
+<area shape="poly" id="edge10_Node000001_Node000005" title=" " alt="" coords="225,36,282,77,375,150,371,154,279,81,222,41"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="240,263,205,300,201,297,236,259"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="132,117,138,179,145,215,156,250,170,276,185,297,181,300,165,279,151,252,140,216,133,180,126,118"/>
+<area shape="poly" id="edge6_Node000004_Node000003" title=" " alt="" coords="150,113,249,223,245,227,146,116"/>
+<area shape="poly" id="edge7_Node000004_Node000005" title=" " alt="" coords="184,105,346,149,344,154,182,110"/>
+<area shape="poly" id="edge8_Node000005_Node000002" title=" " alt="" coords="388,191,381,223,364,252,341,271,315,286,261,304,260,299,313,281,338,267,360,249,376,221,383,190"/>
+<area shape="poly" id="edge9_Node000005_Node000003" title=" " alt="" coords="355,186,280,227,277,223,353,182"/>
 </map>
