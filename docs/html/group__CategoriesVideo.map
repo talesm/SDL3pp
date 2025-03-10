@@ -1,10 +1,10 @@
 <map id="Video" name="Video">
-<area shape="rect" id="Node000002" href="$group__ApiByCategory.html" title="Api by category." alt="" coords="5,145,132,171"/>
-<area shape="rect" id="Node000001" title=" " alt="" coords="180,145,239,171"/>
-<area shape="rect" id="Node000006" href="$group__CategoryBlendmode.html" title="Blend modes decide how two colors will mix together." alt="" coords="341,5,447,31"/>
-<area shape="rect" id="Node000005" href="$group__CategoryPixels.html" title="SDL offers facilities for pixel management." alt="" coords="287,55,501,95"/>
-<area shape="rect" id="Node000007" href="$group__CategoryRect.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="317,120,471,145"/>
-<area shape="rect" id="Node000004" href="$group__CategoryRender.html" title="Header file for SDL 2D rendering functions." alt="" coords="299,169,489,195"/>
-<area shape="rect" id="Node000008" href="$group__CategorySurface.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="315,219,473,259"/>
-<area shape="rect" id="Node000003" href="$group__CategoryVideo.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="317,283,471,323"/>
+<area shape="rect" id="Node000002" href="$group__Categories.html" title="You probably want to see API by Category." alt="" coords="5,145,97,171"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="145,145,204,171"/>
+<area shape="rect" id="Node000006" href="$group__CategoryBlendmode.html" title="Blend modes decide how two colors will mix together." alt="" coords="306,5,413,31"/>
+<area shape="rect" id="Node000005" href="$group__CategoryPixels.html" title="SDL offers facilities for pixel management." alt="" coords="252,55,467,95"/>
+<area shape="rect" id="Node000007" href="$group__CategoryRect.html" title="Some helper functions for managing rectangles and 2D points, in both integer and floating point versi..." alt="" coords="283,120,436,145"/>
+<area shape="rect" id="Node000004" href="$group__CategoryRender.html" title="Header file for SDL 2D rendering functions." alt="" coords="264,169,455,195"/>
+<area shape="rect" id="Node000008" href="$group__CategorySurface.html" title="SDL surfaces are buffers of pixels in system RAM." alt="" coords="280,219,439,259"/>
+<area shape="rect" id="Node000003" href="$group__CategoryVideo.html" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="282,283,437,323"/>
 </map>

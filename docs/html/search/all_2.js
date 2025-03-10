@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['basics_0',['Basics',['../group__CategoriesBasics.html',1,'']]],
+  ['basics_0',['basics',['../ApiByCategory.html#basics',1,'Basics'],['../group__CategoriesBasics.html',1,'Basics']]],
   ['bitmaporder_1',['BitmapOrder',['../group__CategoryPixels.html#gae9b29b1df0025781f2edb0ff695f8586',1,'SDL']]],
   ['blend_20modes_2',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
   ['blendfactor_3',['BlendFactor',['../group__CategoryBlendmode.html#ga34d032507f571bcbdc683ad23d55176b',1,'SDL']]],
@@ -17,5 +17,5 @@ var searchData=
   ['bsearch_14',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
   ['bsearch_5fr_15',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
   ['building_16',['Building',['../index.html#building',1,'']]],
-  ['by_20category_17',['API by Category',['../group__ApiByCategory.html',1,'']]]
+  ['by_20category_17',['API by Category',['../ApiByCategory.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sdl3pp_0',['SDL3pp',['../index.html',1,'']]]
+  ['api_20by_20category_0',['API by Category',['../ApiByCategory.html',1,'']]]
 ];

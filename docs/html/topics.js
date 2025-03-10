@@ -1,5 +1,5 @@
 var topics =
 [
-    [ "API by Category", "group__ApiByCategory.html", "group__ApiByCategory" ],
+    [ "Categories", "group__Categories.html", "group__Categories" ],
     [ "Resource", "group__resource.html", "group__resource" ]
 ];

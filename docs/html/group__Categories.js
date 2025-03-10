@@ -1,4 +1,4 @@
-var group__ApiByCategory =
+var group__Categories =
 [
     [ "Basics", "group__CategoriesBasics.html", "group__CategoriesBasics" ],
     [ "Video", "group__CategoriesVideo.html", "group__CategoriesVideo" ],

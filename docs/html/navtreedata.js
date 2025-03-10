@@ -29,6 +29,7 @@ var NAVTREE =
     [ "Examples", "index.html#examples", null ],
     [ "Documentation", "index.html#documentation", null ],
     [ "Building", "index.html#building", null ],
+    [ "API by Category", "ApiByCategory.html", null ],
     [ "Transformations", "transformations.html", [
       [ "General rules", "transformations.html#general-rules", null ],
       [ "Function rules", "transformations.html#function-rules", null ],
@@ -69,11 +70,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"ApiByCategory_8h.html",
-"functions_func_r.html",
-"group__CategoryStdinc.html#gae3838c531e1c9bbee29cdf5f4ccb60b4",
-"structSDL_1_1FPoint.html#acdec9354bdd953e155892b7208bc3dbb",
-"structSDL_1_1RendererBase.html#a0e9eaca37c44ae44584ec0b69f37d2ca",
+"ApiByCategory.html",
+"functions_func_p.html",
+"group__CategoryStdinc.html#gae24c494fab206e9aa27dfd9c04b35e81",
+"structSDL_1_1FPoint.html#abb4480e3d16a9fa8db20d2f631955748",
+"structSDL_1_1RendererBase.html#a0a65569ed1cc97116848e1bf97ab9b87",
 "structSDL_1_1TextureBase.html#a6d2dd56797426f63d7ff9de7db0113c7"
 ];
 

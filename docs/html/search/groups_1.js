@@ -5,6 +5,5 @@ var searchData=
   ['and_20conversion_20routines_2',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
   ['and_20shutdown_3',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]],
   ['and_20simple_20drawing_4',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
-  ['and_20window_20management_5',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
-  ['api_20by_20category_6',['API by Category',['../group__ApiByCategory.html',1,'']]]
+  ['and_20window_20management_5',['Display and Window Management',['../group__CategoryVideo.html',1,'']]]
 ];

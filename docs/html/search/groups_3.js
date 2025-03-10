@@ -1,7 +1,7 @@
 var searchData=
 [
   ['c_20support_0',['C++ Support',['../group__CategoriesCppSupport.html',1,'']]],
-  ['category_1',['API by Category',['../group__ApiByCategory.html',1,'']]],
+  ['categories_1',['Categories',['../group__Categories.html',1,'']]],
   ['categorycallbackwrapper_2',['CategoryCallbackWrapper',['../group__CategoryCallbackWrapper.html',1,'']]],
   ['categoryfreewrapper_3',['CategoryFreeWrapper',['../group__CategoryFreeWrapper.html',1,'']]],
   ['categoryobjectwrapper_4',['CategoryObjectWrapper',['../group__CategoryObjectWrapper.html',1,'']]],

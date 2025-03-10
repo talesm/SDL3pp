@@ -1,28 +1,49 @@
 /**
- * @defgroup ApiByCategory API by Category
+ * @page ApiByCategory API by Category
  *
  * @brief Api by category
  *
- * - @ref CategoriesBasics
- *    - @ref CategoryInit
- *    - @ref CategoryProperties
- *    - @ref CategoryError
- * - @ref CategoriesVideo
- *    - @ref CategoryVideo
- *    - @ref CategoryRender
- *    - @ref CategoryPixels
- *    - @ref CategoryBlendmode
- *    - @ref CategoryRect
- *    - @ref CategorySurface
- * - @ref CategoriesAdditionalFunctionality
- *    - @ref CategoryStdinc
- * - @ref CategoriesCppSupport
- *    - @ref CategoryObjectWrapper
- *    - @ref CategoryOptionalRef
- *    - @ref CategoryStringParam
- *    - @ref CategorySpanRef
- *    - @ref CategoryFreeWrapper
- *    - @ref CategoryCallbackWrapper
+ * ## Basics
+ *
+ * Category                 | Header
+ * ------------------------ | --------------------
+ * @ref CategoryInit        | SDL3pp_init.h
+ * @ref CategoryProperties  | SDL3pp_properties.h
+ * @ref CategoryError       | SDL3pp_error.h
+ *
+ * ## Video
+ *
+ *
+ * Category                 | Header
+ * ------------------------ | --------------------
+ * @ref CategoryVideo       | SDL3pp_video.h
+ * @ref CategoryRender      | SDL3pp_render.h
+ * @ref CategoryPixels      | SDL3pp_pixels.h
+ * @ref CategoryBlendmode   | SDL3pp_blendmode.h
+ * @ref CategoryRect        | SDL3pp_rect.h
+ * @ref CategorySurface     | SDL3pp_surface.h
+ *
+ * ## Additional Functionality
+ *
+ * Category             | Header
+ * -------------------- | --------------------
+ * @ref CategoryStdinc  | SDL3pp_stdinc.h
+ *
+ *
+ * ## C++ Support
+ *
+ * Category                     | Header
+ * ---------------------------- | ------------------------
+ * @ref CategoryObjectWrapper   | SDL3pp_objectWrapper.h
+ * @ref CategoryOptionalRef     | SDL3pp_optionalRef.h
+ * @ref CategoryStringParam     | SDL3pp_stringParam.h
+ * @ref CategorySpanRef         | SDL3pp_spanRef.h
+ * @ref CategoryFreeWrapper     | SDL3pp_freeWrapper.h
+ * @ref CategoryCallbackWrapper | SDL3pp_callbackWrapper.h
+ *
+ * @defgroup Categories Categories
+ *
+ * You probably want to see @ref ApiByCategory
  *
  * @{
  *
