@@ -1,12 +1,6 @@
 #include <iostream>
 #include <SDL3/SDL_main.h>
-#include "SDL3/SDL_error.h"
-#include "SDL3/SDL_log.h"
-#include "SDL3/SDL_surface.h"
-#include "SDL3/SDL_timer.h"
-#include "SDL3pp/SDL3pp_init.h"
-#include "SDL3pp/SDL3pp_timer.h"
-#include "SDL3pp/SDL3pp_video.h"
+#include "SDL3pp/SDL3pp.h"
 
 using namespace std::chrono_literals;
 
