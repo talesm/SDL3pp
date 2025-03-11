@@ -138,7 +138,7 @@ var searchData=
   ['strtoul_135',['strtoul',['../group__CategoryStdinc.html#ga3869ab21242a2a6fb41be41b382d2af2',1,'SDL']]],
   ['strtoull_136',['strtoull',['../group__CategoryStdinc.html#gaca9ab3ab2d4ecbb7002814ae587227af',1,'SDL']]],
   ['strupr_137',['strupr',['../group__CategoryStdinc.html#ga7fe290f18ce6025c454f0b62729c0662',1,'SDL']]],
-  ['support_138',['support',['../ApiByCategory.html#c-support',1,'C++ Support'],['../group__CategoriesCppSupport.html',1,'C++ Support']]],
+  ['support_138',['support',['../ApiByCategory.html#c-support',1,'C++ Support'],['../group__CategoriesCppSupport.html',1,'C++ Support'],['../group__CategoryTimer.html',1,'Timer Support']]],
   ['surface_139',['Surface',['../group__CategorySurface.html#ga5128f762b815ce424b759043e06fd646',1,'SDL']]],
   ['surface_20creation_20and_20simple_20drawing_140',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['surfacebase_141',['surfacebase',['../classSDL_1_1SurfaceLock.html#a90b31094efd41b0018a2719df3e3ac54',1,'SDL::SurfaceLock::SurfaceBase'],['../structSDL_1_1SurfaceBase.html#a2bcd68e82fb03ca260196e4a8a2f9596',1,'SDL::SurfaceBase::SurfaceBase(int width, int height, PixelFormat format)'],['../structSDL_1_1SurfaceBase.html#ad380fbca29727790d7c67cda2da2f411',1,'SDL::SurfaceBase::SurfaceBase(int width, int height, PixelFormat format, void *pixels, int pitch)'],['../structSDL_1_1SurfaceBase.html',1,'SDL::SurfaceBase&lt; T &gt;']]],

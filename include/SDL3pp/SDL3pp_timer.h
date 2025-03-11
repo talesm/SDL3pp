@@ -9,6 +9,24 @@
 namespace SDL {
 
 /**
+ * @defgroup CategoryTimer Timer Support
+ *
+ * SDL provides time management functionality. It is useful for dealing with
+ * (usually) small durations of time.
+ *
+ * This is not to be confused with _calendar time_ management, which is
+ * provided by [CategoryTime](#CategoryTime).
+ *
+ * This category covers measuring time elapsed (GetTicks(),
+ * GetPerformanceCounter()), putting a thread to sleep for a certain
+ * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
+ * a callback function after a certain amount of time has elapsed
+ * (AddTimer(), etc).
+ *
+ * @{
+ */
+
+/**
  * @brief  Wait a specified number of milliseconds before returning.
  *
  * This function waits a specified number of milliseconds before returning. It
@@ -53,6 +71,8 @@ inline void Delay(Uint32 ms) { SDL_Delay(ms); }
 inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
 
 // TODO TimerID
+
+/// @}
 
 } // namespace SDL
 

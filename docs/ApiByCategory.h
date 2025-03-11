@@ -13,7 +13,6 @@
  *
  * ## Video
  *
- *
  * Category                 | Header
  * ------------------------ | --------------------
  * @ref CategoryVideo       | SDL3pp_video.h
@@ -22,6 +21,12 @@
  * @ref CategoryBlendmode   | SDL3pp_blendmode.h
  * @ref CategoryRect        | SDL3pp_rect.h
  * @ref CategorySurface     | SDL3pp_surface.h
+ *
+ * ## Time
+ *
+ * Category                 | Header
+ * ------------------------ | --------------------
+ * @ref CategoryTimer       | SDL3pp_timer.h
  *
  * ## Additional Functionality
  *
@@ -62,6 +67,11 @@
  * @addtogroup CategoryBlendmode
  * @addtogroup CategoryRect
  * @addtogroup CategorySurface
+ * @}
+ *
+ * @defgroup CategoriesTime Time
+ * @{
+ * @addtogroup CategoryTimer
  * @}
  *
  * @defgroup CategoriesAdditionalFunctionality Additional Functionality

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['window_20management_0',['Display and Window Management',['../group__CategoryVideo.html',1,'']]]
+  ['video_0',['Video',['../group__CategoriesVideo.html',1,'']]]
 ];
