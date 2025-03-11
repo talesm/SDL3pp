@@ -21,5 +21,13 @@ var SDL3pp__init_8h =
     [ "WasInit", "SDL3pp__init_8h.html#ga2d9c710ec219aa2818bfdc55e4115f44", null ],
     [ "APP_CONTINUE", "SDL3pp__init_8h.html#ga646434c58bdb24bc49d377a4603d5b6b", null ],
     [ "APP_FAILURE", "SDL3pp__init_8h.html#ga5cf321856f8f4b0c79457f7fc4465ab8", null ],
-    [ "APP_SUCCESS", "SDL3pp__init_8h.html#gae810a530a8a0feac423157287eef3616", null ]
+    [ "APP_SUCCESS", "SDL3pp__init_8h.html#gae810a530a8a0feac423157287eef3616", null ],
+    [ "INIT_AUDIO", "SDL3pp__init_8h.html#ga65bdd3a913bd08eea41fd70fb49e5079", null ],
+    [ "INIT_CAMERA", "SDL3pp__init_8h.html#gaecde345a1ce196a269e1f25c70b9878a", null ],
+    [ "INIT_EVENTS", "SDL3pp__init_8h.html#ga9a65ec9e9aeee92fbd1928335d689ef5", null ],
+    [ "INIT_GAMEPAD", "SDL3pp__init_8h.html#gad27cfffc691d96fe45bcca2daf80a83b", null ],
+    [ "INIT_HAPTIC", "SDL3pp__init_8h.html#gadaddabe3fa4d4f145f4b50ffd8baaac1", null ],
+    [ "INIT_JOYSTICK", "SDL3pp__init_8h.html#ga5eee8ab4cd2f485ee9fa63baa8c1bc3e", null ],
+    [ "INIT_SENSOR", "SDL3pp__init_8h.html#ga075264ef70aa0e1e7832a07477f1246c", null ],
+    [ "INIT_VIDEO", "SDL3pp__init_8h.html#ga63ca590321877744a1050ab71ff4e3c5", null ]
 ];

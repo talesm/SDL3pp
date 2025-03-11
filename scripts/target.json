@@ -3230,6 +3230,13 @@
           "sourceName": "SDL_PACKEDLAYOUT_1010102",
           "constexpr": true
         },
+        "PixelFormatDetails": {
+          "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PixelFormatDetails",
+          "kind": "alias",
+          "sourceName": "SDL_PixelFormatDetails",
+          "type": "SDL_PixelFormatDetails"
+        },
         "PixelFormat": {
           "doc": "Pixel format.\n\nSDL's pixel formats have the following naming convention:\n\n- Names with a list of components and a single bit count, such as RGB24 and\n  ABGR32, define a platform-independent encoding into bytes in the order\n  specified. For example, in RGB24 data, each pixel is encoded in 3 bytes\n  (red, green, blue) in that order, and in ABGR32 data, each pixel is\n  encoded in 4 bytes alpha, blue, green, red) in that order. Use these\n  names if the property of a format that is important to you is the order\n  of the bytes in memory or on disk.\n- Names with a bit count per component, such as ARGB8888 and XRGB1555, are\n  \"packed\" into an appropriately-sized integer in the platform's native\n  endianness. For example, ARGB8888 is a sequence of 32-bit integers; in\n  each integer, the most significant bits are alpha, and the least\n  significant bits are blue. On a little-endian CPU such as x86, the least\n  significant bits of each integer are arranged first in memory, but on a\n  big-endian CPU such as s390x, the most significant bits are arranged\n  first. Use these names if the property of a format that is important to\n  you is the meaning of each bit position within a native-endianness\n  integer.\n- In indexed formats such as INDEX4LSB, each pixel is represented by\n  encoding an index into the palette into the indicated number of bits,\n  with multiple pixels packed into each byte if appropriate. In LSB\n  formats, the first (leftmost) pixel is stored in the least-significant\n  bits of the byte; in MSB formats, it's stored in the most-significant\n  bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly\n  fills one byte.\n\nThe 32-bit byte-array encodings such as RGBA32 are aliases for the\nappropriate 8888 encoding for the current platform. For example, RGBA32 is\nan alias for ABGR8888 on little-endian CPUs like x86, or an alias for\nRGBA8888 on big-endian CPUs.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "PixelFormat",
@@ -5163,13 +5170,6 @@
               "sourceName": "SDL_DestroyPalette"
             }
           }
-        },
-        "PixelFormatDetails": {
-          "doc": "Details about the format of a pixel.\n\n@since This struct is available since SDL 3.2.0.",
-          "name": "PixelFormatDetails",
-          "kind": "alias",
-          "sourceName": "SDL_PixelFormatDetails",
-          "type": "SDL_PixelFormatDetails"
         },
         "MapRGB": {
           "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGB\n@sa SDL_MapRGBA\n@sa SDL_MapSurfaceRGB",
@@ -12607,6 +12607,70 @@
           "kind": "alias",
           "type": "SDL_InitFlags",
           "sourceName": "SDL_InitFlags"
+        },
+        "INIT_AUDIO": {
+          "doc": "`SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`",
+          "name": "INIT_AUDIO",
+          "kind": "var",
+          "sourceName": "SDL_INIT_AUDIO",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_VIDEO": {
+          "doc": "`SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main thread",
+          "name": "INIT_VIDEO",
+          "kind": "var",
+          "sourceName": "SDL_INIT_VIDEO",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_JOYSTICK": {
+          "doc": "`SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the same thread as SDL_INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD",
+          "name": "INIT_JOYSTICK",
+          "kind": "var",
+          "sourceName": "SDL_INIT_JOYSTICK",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_HAPTIC": {
+          "doc": "",
+          "name": "INIT_HAPTIC",
+          "kind": "var",
+          "sourceName": "SDL_INIT_HAPTIC",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_GAMEPAD": {
+          "doc": "`SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`",
+          "name": "INIT_GAMEPAD",
+          "kind": "var",
+          "sourceName": "SDL_INIT_GAMEPAD",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_EVENTS": {
+          "doc": "",
+          "name": "INIT_EVENTS",
+          "kind": "var",
+          "sourceName": "SDL_INIT_EVENTS",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_SENSOR": {
+          "doc": "`SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`",
+          "name": "INIT_SENSOR",
+          "kind": "var",
+          "sourceName": "SDL_INIT_SENSOR",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "INIT_CAMERA": {
+          "doc": "`SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`",
+          "name": "INIT_CAMERA",
+          "kind": "var",
+          "sourceName": "SDL_INIT_CAMERA",
+          "constexpr": true,
+          "type": "InitFlags"
         },
         "AppResult": {
           "doc": "Return values for optional main callbacks.\n\nReturning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,\nSDL_AppEvent, or SDL_AppIterate will terminate the program and report\nsuccess/failure to the operating system. What that means is\nplatform-dependent. On Unix, for example, on success, the process error\ncode will be zero, and on failure it will be 1. This interface doesn't\nallow you to return specific exit codes, just whether there was an error\ngenerally or not.\n\nReturning SDL_APP_CONTINUE from these functions will let the app continue\nto run.\n\nSee\n[Main callbacks in SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)\nfor complete details.\n\n@since This enum is available since SDL 3.2.0.",

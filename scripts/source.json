@@ -3236,22 +3236,22 @@
           ]
         },
         "SDL_ICONV_ERROR": {
-          "doc": "",
+          "doc": "Generic error. Check SDL_GetError()?",
           "name": "SDL_ICONV_ERROR",
           "kind": "def"
         },
         "SDL_ICONV_E2BIG": {
-          "doc": "",
+          "doc": "Output buffer was too small.",
           "name": "SDL_ICONV_E2BIG",
           "kind": "def"
         },
         "SDL_ICONV_EILSEQ": {
-          "doc": "",
+          "doc": "Invalid input sequence was encountered.",
           "name": "SDL_ICONV_EILSEQ",
           "kind": "def"
         },
         "SDL_ICONV_EINVAL": {
-          "doc": "",
+          "doc": "Incomplete input sequence was encountered.",
           "name": "SDL_ICONV_EINVAL",
           "kind": "def"
         },
@@ -5322,37 +5322,37 @@
           "type": "Uint32"
         },
         "SDL_BLENDMODE_NONE": {
-          "doc": "",
+          "doc": "no blending: dstRGBA = srcRGBA",
           "name": "SDL_BLENDMODE_NONE",
           "kind": "def"
         },
         "SDL_BLENDMODE_BLEND": {
-          "doc": "",
+          "doc": "alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA))",
           "name": "SDL_BLENDMODE_BLEND",
           "kind": "def"
         },
         "SDL_BLENDMODE_BLEND_PREMULTIPLIED": {
-          "doc": "",
+          "doc": "pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))",
           "name": "SDL_BLENDMODE_BLEND_PREMULTIPLIED",
           "kind": "def"
         },
         "SDL_BLENDMODE_ADD": {
-          "doc": "",
+          "doc": "additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA",
           "name": "SDL_BLENDMODE_ADD",
           "kind": "def"
         },
         "SDL_BLENDMODE_ADD_PREMULTIPLIED": {
-          "doc": "",
+          "doc": "pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA",
           "name": "SDL_BLENDMODE_ADD_PREMULTIPLIED",
           "kind": "def"
         },
         "SDL_BLENDMODE_MOD": {
-          "doc": "",
+          "doc": "color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA",
           "name": "SDL_BLENDMODE_MOD",
           "kind": "def"
         },
         "SDL_BLENDMODE_MUL": {
-          "doc": "",
+          "doc": "color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA",
           "name": "SDL_BLENDMODE_MUL",
           "kind": "def"
         },
@@ -6397,22 +6397,22 @@
           "type": "Uint32"
         },
         "SDL_SURFACE_PREALLOCATED": {
-          "doc": "",
+          "doc": "Surface uses preallocated pixel memory",
           "name": "SDL_SURFACE_PREALLOCATED",
           "kind": "def"
         },
         "SDL_SURFACE_LOCK_NEEDED": {
-          "doc": "",
+          "doc": "Surface needs to be locked to access pixels",
           "name": "SDL_SURFACE_LOCK_NEEDED",
           "kind": "def"
         },
         "SDL_SURFACE_LOCKED": {
-          "doc": "",
+          "doc": "Surface is currently locked",
           "name": "SDL_SURFACE_LOCKED",
           "kind": "def"
         },
         "SDL_SURFACE_SIMD_ALIGNED": {
-          "doc": "",
+          "doc": "Surface uses pixel memory allocated with SDL_aligned_alloc()",
           "name": "SDL_SURFACE_SIMD_ALIGNED",
           "kind": "def"
         },
@@ -7979,127 +7979,127 @@
           "type": "Uint64"
         },
         "SDL_WINDOW_FULLSCREEN": {
-          "doc": "",
+          "doc": "window is in fullscreen mode",
           "name": "SDL_WINDOW_FULLSCREEN",
           "kind": "def"
         },
         "SDL_WINDOW_OPENGL": {
-          "doc": "",
+          "doc": "window usable with OpenGL context",
           "name": "SDL_WINDOW_OPENGL",
           "kind": "def"
         },
         "SDL_WINDOW_OCCLUDED": {
-          "doc": "",
+          "doc": "window is occluded",
           "name": "SDL_WINDOW_OCCLUDED",
           "kind": "def"
         },
         "SDL_WINDOW_HIDDEN": {
-          "doc": "",
+          "doc": "window is neither mapped onto the desktop nor shown in the taskbar/dock/window list; SDL_ShowWindow() is required for it to become visible",
           "name": "SDL_WINDOW_HIDDEN",
           "kind": "def"
         },
         "SDL_WINDOW_BORDERLESS": {
-          "doc": "",
+          "doc": "no window decoration",
           "name": "SDL_WINDOW_BORDERLESS",
           "kind": "def"
         },
         "SDL_WINDOW_RESIZABLE": {
-          "doc": "",
+          "doc": "window can be resized",
           "name": "SDL_WINDOW_RESIZABLE",
           "kind": "def"
         },
         "SDL_WINDOW_MINIMIZED": {
-          "doc": "",
+          "doc": "window is minimized",
           "name": "SDL_WINDOW_MINIMIZED",
           "kind": "def"
         },
         "SDL_WINDOW_MAXIMIZED": {
-          "doc": "",
+          "doc": "window is maximized",
           "name": "SDL_WINDOW_MAXIMIZED",
           "kind": "def"
         },
         "SDL_WINDOW_MOUSE_GRABBED": {
-          "doc": "",
+          "doc": "window has grabbed mouse input",
           "name": "SDL_WINDOW_MOUSE_GRABBED",
           "kind": "def"
         },
         "SDL_WINDOW_INPUT_FOCUS": {
-          "doc": "",
+          "doc": "window has input focus",
           "name": "SDL_WINDOW_INPUT_FOCUS",
           "kind": "def"
         },
         "SDL_WINDOW_MOUSE_FOCUS": {
-          "doc": "",
+          "doc": "window has mouse focus",
           "name": "SDL_WINDOW_MOUSE_FOCUS",
           "kind": "def"
         },
         "SDL_WINDOW_EXTERNAL": {
-          "doc": "",
+          "doc": "window not created by SDL",
           "name": "SDL_WINDOW_EXTERNAL",
           "kind": "def"
         },
         "SDL_WINDOW_MODAL": {
-          "doc": "",
+          "doc": "window is modal",
           "name": "SDL_WINDOW_MODAL",
           "kind": "def"
         },
         "SDL_WINDOW_HIGH_PIXEL_DENSITY": {
-          "doc": "",
+          "doc": "window uses high pixel density back buffer if possible",
           "name": "SDL_WINDOW_HIGH_PIXEL_DENSITY",
           "kind": "def"
         },
         "SDL_WINDOW_MOUSE_CAPTURE": {
-          "doc": "",
+          "doc": "window has mouse captured (unrelated to MOUSE_GRABBED)",
           "name": "SDL_WINDOW_MOUSE_CAPTURE",
           "kind": "def"
         },
         "SDL_WINDOW_MOUSE_RELATIVE_MODE": {
-          "doc": "",
+          "doc": "window has relative mode enabled",
           "name": "SDL_WINDOW_MOUSE_RELATIVE_MODE",
           "kind": "def"
         },
         "SDL_WINDOW_ALWAYS_ON_TOP": {
-          "doc": "",
+          "doc": "window should always be above others",
           "name": "SDL_WINDOW_ALWAYS_ON_TOP",
           "kind": "def"
         },
         "SDL_WINDOW_UTILITY": {
-          "doc": "",
+          "doc": "window should be treated as a utility window, not showing in the task bar and window list",
           "name": "SDL_WINDOW_UTILITY",
           "kind": "def"
         },
         "SDL_WINDOW_TOOLTIP": {
-          "doc": "",
+          "doc": "window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window",
           "name": "SDL_WINDOW_TOOLTIP",
           "kind": "def"
         },
         "SDL_WINDOW_POPUP_MENU": {
-          "doc": "",
+          "doc": "window should be treated as a popup menu, requires a parent window",
           "name": "SDL_WINDOW_POPUP_MENU",
           "kind": "def"
         },
         "SDL_WINDOW_KEYBOARD_GRABBED": {
-          "doc": "",
+          "doc": "window has grabbed keyboard input",
           "name": "SDL_WINDOW_KEYBOARD_GRABBED",
           "kind": "def"
         },
         "SDL_WINDOW_VULKAN": {
-          "doc": "",
+          "doc": "window usable for Vulkan surface",
           "name": "SDL_WINDOW_VULKAN",
           "kind": "def"
         },
         "SDL_WINDOW_METAL": {
-          "doc": "",
+          "doc": "window usable for Metal view",
           "name": "SDL_WINDOW_METAL",
           "kind": "def"
         },
         "SDL_WINDOW_TRANSPARENT": {
-          "doc": "",
+          "doc": "window with transparent buffer",
           "name": "SDL_WINDOW_TRANSPARENT",
           "kind": "def"
         },
         "SDL_WINDOW_NOT_FOCUSABLE": {
-          "doc": "",
+          "doc": "window should not be focusable",
           "name": "SDL_WINDOW_NOT_FOCUSABLE",
           "kind": "def"
         },
@@ -8430,17 +8430,17 @@
           "type": "Uint32"
         },
         "SDL_GL_CONTEXT_PROFILE_CORE": {
-          "doc": "",
+          "doc": "OpenGL Core Profile context",
           "name": "SDL_GL_CONTEXT_PROFILE_CORE",
           "kind": "def"
         },
         "SDL_GL_CONTEXT_PROFILE_COMPATIBILITY": {
-          "doc": "",
+          "doc": "OpenGL Compatibility Profile context",
           "name": "SDL_GL_CONTEXT_PROFILE_COMPATIBILITY",
           "kind": "def"
         },
         "SDL_GL_CONTEXT_PROFILE_ES": {
-          "doc": "",
+          "doc": "GLX_CONTEXT_ES2_PROFILE_BIT_EXT",
           "name": "SDL_GL_CONTEXT_PROFILE_ES",
           "kind": "def"
         },
@@ -12828,17 +12828,17 @@
           "type": "Uint32"
         },
         "SDL_INIT_AUDIO": {
-          "doc": "",
+          "doc": "`SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`",
           "name": "SDL_INIT_AUDIO",
           "kind": "def"
         },
         "SDL_INIT_VIDEO": {
-          "doc": "",
+          "doc": "`SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main thread",
           "name": "SDL_INIT_VIDEO",
           "kind": "def"
         },
         "SDL_INIT_JOYSTICK": {
-          "doc": "",
+          "doc": "`SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the same thread as SDL_INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD",
           "name": "SDL_INIT_JOYSTICK",
           "kind": "def"
         },
@@ -12848,7 +12848,7 @@
           "kind": "def"
         },
         "SDL_INIT_GAMEPAD": {
-          "doc": "",
+          "doc": "`SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`",
           "name": "SDL_INIT_GAMEPAD",
           "kind": "def"
         },
@@ -12858,12 +12858,12 @@
           "kind": "def"
         },
         "SDL_INIT_SENSOR": {
-          "doc": "",
+          "doc": "`SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`",
           "name": "SDL_INIT_SENSOR",
           "kind": "def"
         },
         "SDL_INIT_CAMERA": {
-          "doc": "",
+          "doc": "`SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`",
           "name": "SDL_INIT_CAMERA",
           "kind": "def"
         },

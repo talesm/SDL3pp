@@ -3810,6 +3810,48 @@
             }
           ]
         }
+      },
+      "transform": {
+        "SDL_INIT_AUDIO": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "SDL_INIT_VIDEO": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "SDL_INIT_JOYSTICK": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "SDL_INIT_HAPTIC": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "SDL_INIT_GAMEPAD": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "SDL_INIT_EVENTS": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "SDL_INIT_SENSOR": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        },
+        "SDL_INIT_CAMERA": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "InitFlags"
+        }
       }
     }
   }

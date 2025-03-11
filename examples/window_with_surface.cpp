@@ -15,7 +15,7 @@ static SDL::Point makeRandomPoint()
 
 int main(int argc, char** argv)
 {
-  SDL::SDL init(SDL_INIT_VIDEO);
+  SDL::SDL init(SDL::INIT_VIDEO);
   if (!init) {
     SDL_Log("%s", SDL::GetError());
     return 1;

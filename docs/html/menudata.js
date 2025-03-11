@@ -73,6 +73,7 @@ var menudata={children:[
 {text:"c",url:"namespacemembers_vars_c.html#index_c"},
 {text:"f",url:"namespacemembers_vars_f.html#index_f"},
 {text:"g",url:"namespacemembers_vars_g.html#index_g"},
+{text:"i",url:"namespacemembers_vars_i.html#index_i"},
 {text:"l",url:"namespacemembers_vars_l.html#index_l"},
 {text:"m",url:"namespacemembers_vars_m.html#index_m"},
 {text:"o",url:"namespacemembers_vars_o.html#index_o"},

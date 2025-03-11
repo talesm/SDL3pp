@@ -175,9 +175,6 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:gafd0701244620c6298147fe6cc25a4771" id="r_gafd0701244620c6298147fe6cc25a4771"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">SDL::InitFlags</a> = SDL_InitFlags</td></tr>
-<tr class="memdesc:gafd0701244620c6298147fe6cc25a4771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.  <br /></td></tr>
-<tr class="separator:gafd0701244620c6298147fe6cc25a4771"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa769d313fe619516b0b4e621de494b1c" id="r_gaa769d313fe619516b0b4e621de494b1c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa769d313fe619516b0b4e621de494b1c">SDL::AppInit_func</a> = SDL_AppInit_func</td></tr>
 <tr class="memdesc:gaa769d313fe619516b0b4e621de494b1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppInit.  <br /></td></tr>
 <tr class="separator:gaa769d313fe619516b0b4e621de494b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,6 +228,35 @@ Functions</h2></td></tr>
 <tr class="memitem:ga7ae0a016d954f3a072c0a49d9dd9caf2" id="r_ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> name)</td></tr>
 <tr class="memdesc:ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get metadata about your app.  <br /></td></tr>
 <tr class="separator:ga7ae0a016d954f3a072c0a49d9dd9caf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">InitFlags</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>Initialization flags </p>
+</td></tr>
+<tr class="memitem:gafd0701244620c6298147fe6cc25a4771" id="r_gafd0701244620c6298147fe6cc25a4771"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">SDL::InitFlags</a> = SDL_InitFlags</td></tr>
+<tr class="memdesc:gafd0701244620c6298147fe6cc25a4771"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.  <br /></td></tr>
+<tr class="separator:gafd0701244620c6298147fe6cc25a4771"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65bdd3a913bd08eea41fd70fb49e5079" id="r_ga65bdd3a913bd08eea41fd70fb49e5079"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga65bdd3a913bd08eea41fd70fb49e5079">SDL::INIT_AUDIO</a> = SDL_INIT_AUDIO</td></tr>
+<tr class="memdesc:ga65bdd3a913bd08eea41fd70fb49e5079"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_AUDIO</code> implies <code>SDL_INIT_EVENTS</code>  <br /></td></tr>
+<tr class="separator:ga65bdd3a913bd08eea41fd70fb49e5079"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63ca590321877744a1050ab71ff4e3c5" id="r_ga63ca590321877744a1050ab71ff4e3c5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga63ca590321877744a1050ab71ff4e3c5">SDL::INIT_VIDEO</a> = SDL_INIT_VIDEO</td></tr>
+<tr class="memdesc:ga63ca590321877744a1050ab71ff4e3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_VIDEO</code> implies <code>SDL_INIT_EVENTS</code>, should be initialized on the main thread  <br /></td></tr>
+<tr class="separator:ga63ca590321877744a1050ab71ff4e3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5eee8ab4cd2f485ee9fa63baa8c1bc3e" id="r_ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga5eee8ab4cd2f485ee9fa63baa8c1bc3e">SDL::INIT_JOYSTICK</a> = SDL_INIT_JOYSTICK</td></tr>
+<tr class="memdesc:ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_JOYSTICK</code> implies <code>SDL_INIT_EVENTS</code>, should be initialized on the same thread as SDL_INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD  <br /></td></tr>
+<tr class="separator:ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadaddabe3fa4d4f145f4b50ffd8baaac1" id="r_gadaddabe3fa4d4f145f4b50ffd8baaac1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gadaddabe3fa4d4f145f4b50ffd8baaac1">SDL::INIT_HAPTIC</a> = SDL_INIT_HAPTIC</td></tr>
+<tr class="separator:gadaddabe3fa4d4f145f4b50ffd8baaac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad27cfffc691d96fe45bcca2daf80a83b" id="r_gad27cfffc691d96fe45bcca2daf80a83b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gad27cfffc691d96fe45bcca2daf80a83b">SDL::INIT_GAMEPAD</a> = SDL_INIT_GAMEPAD</td></tr>
+<tr class="memdesc:gad27cfffc691d96fe45bcca2daf80a83b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_GAMEPAD</code> implies <code>SDL_INIT_JOYSTICK</code>  <br /></td></tr>
+<tr class="separator:gad27cfffc691d96fe45bcca2daf80a83b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9a65ec9e9aeee92fbd1928335d689ef5" id="r_ga9a65ec9e9aeee92fbd1928335d689ef5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga9a65ec9e9aeee92fbd1928335d689ef5">SDL::INIT_EVENTS</a> = SDL_INIT_EVENTS</td></tr>
+<tr class="separator:ga9a65ec9e9aeee92fbd1928335d689ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga075264ef70aa0e1e7832a07477f1246c" id="r_ga075264ef70aa0e1e7832a07477f1246c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga075264ef70aa0e1e7832a07477f1246c">SDL::INIT_SENSOR</a> = SDL_INIT_SENSOR</td></tr>
+<tr class="memdesc:ga075264ef70aa0e1e7832a07477f1246c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_SENSOR</code> implies <code>SDL_INIT_EVENTS</code>  <br /></td></tr>
+<tr class="separator:ga075264ef70aa0e1e7832a07477f1246c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaecde345a1ce196a269e1f25c70b9878a" id="r_gaecde345a1ce196a269e1f25c70b9878a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaecde345a1ce196a269e1f25c70b9878a">SDL::INIT_CAMERA</a> = SDL_INIT_CAMERA</td></tr>
+<tr class="memdesc:gaecde345a1ce196a269e1f25c70b9878a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>SDL_INIT_CAMERA</code> implies <code>SDL_INIT_EVENTS</code>  <br /></td></tr>
+<tr class="separator:gaecde345a1ce196a269e1f25c70b9878a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">AppResult</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>App result for Main callback </p>
