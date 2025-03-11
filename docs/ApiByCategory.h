@@ -42,6 +42,11 @@
  * @ref CategoryStdinc  | SDL3pp_stdinc.h
  * @ref CategoryMisc    | SDL3pp_misc.h
  *
+ * ## Satellite libraries
+ *
+ * Category               | Header
+ * ---------------------- | --------------------
+ * @ref CategorySDLImage  | SDL3pp_image.h
  *
  * ## C++ Support
  *
@@ -92,6 +97,11 @@
  * @{
  * @addtogroup CategoryStdinc
  * @addtogroup CategoryMisc
+ * @}
+ *
+ * @defgroup CategoriesLibs Satellite Libraries
+ * @{
+ * @addtogroup CategorySDLImage
  * @}
  *
  * @defgroup CategoriesCppSupport C++ Support

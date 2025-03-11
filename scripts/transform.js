@@ -137,7 +137,7 @@ function transformEntries(sourceEntries, context, transform) {
   insertEntryAndCheck(targetEntries, transform.includeAfter?.__end ?? [], context, transform);
   transformHierarchy(targetEntries);
   for (const obj of Object.values(targetEntries)) {
-    if (!Array.isArray(obj) && obj.kind == "def" && !defWhitelist.has(obj.sourceName)) {
+    if (!Array.isArray(obj) && obj.kind == "def" && !!obj.sourceName && !defWhitelist.has(obj.sourceName)) {
       delete targetEntries[obj.name];
     }
   }

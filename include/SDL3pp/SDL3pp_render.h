@@ -2928,12 +2928,12 @@ bool RendererBase<T>::RenderGeometryRaw(TextureRef texture,
                                size_indices);
 }
 
-void ObjectDeleter<SDL_Renderer>::operator()(RendererRef renderer) const
+inline void ObjectDeleter<SDL_Renderer>::operator()(RendererRef renderer) const
 {
   renderer.Destroy();
 }
 
-void ObjectDeleter<SDL_Texture>::operator()(TextureRef texture) const
+inline void ObjectDeleter<SDL_Texture>::operator()(TextureRef texture) const
 {
   texture.Destroy();
 }

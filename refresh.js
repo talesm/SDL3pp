@@ -8,8 +8,9 @@ const config = require("./scripts/config.json");
  */
 async function main(args) {
   process.chdir(__dirname);
-  var { status } = spawnSync("node", ["scripts/", "parse", "scripts/config.json", "-d", "./external/SDL/include/SDL3/"], { stdio: 'inherit' });
+  var { status } = spawnSync("node", ["scripts/", "parse", "scripts/config.json", "-d", "./external/SDL/include/SDL3/", "-d", "./external/SDL_image/include/SDL3_image/"], { stdio: 'inherit' });
   if (status === null) process.exit(1);
+
   var { status } = spawnSync("node", ["scripts/", "transform", "scripts/config.json"], { stdio: 'inherit' });
   if (status === null) process.exit(2);
 

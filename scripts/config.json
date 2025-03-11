@@ -12,7 +12,8 @@
     "SDL_render.h",
     "SDL_timer.h",
     "SDL_events.h",
-    "SDL_init.h"
+    "SDL_init.h",
+    "SDL_image.h"
   ],
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",

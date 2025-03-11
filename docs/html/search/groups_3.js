@@ -7,8 +7,9 @@ var searchData=
   ['categoryfreewrapper_4',['CategoryFreeWrapper',['../group__CategoryFreeWrapper.html',1,'']]],
   ['categoryobjectwrapper_5',['CategoryObjectWrapper',['../group__CategoryObjectWrapper.html',1,'']]],
   ['categoryoptionalref_6',['CategoryOptionalRef',['../group__CategoryOptionalRef.html',1,'']]],
-  ['categoryspanref_7',['CategorySpanRef',['../group__CategorySpanRef.html',1,'']]],
-  ['categorystringparam_8',['CategoryStringParam',['../group__CategoryStringParam.html',1,'']]],
-  ['conversion_20routines_9',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
-  ['creation_20and_20simple_20drawing_10',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]]
+  ['categorysdlimage_7',['CategorySDLImage',['../group__CategorySDLImage.html',1,'']]],
+  ['categoryspanref_8',['CategorySpanRef',['../group__CategorySpanRef.html',1,'']]],
+  ['categorystringparam_9',['CategoryStringParam',['../group__CategoryStringParam.html',1,'']]],
+  ['conversion_20routines_10',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
+  ['creation_20and_20simple_20drawing_11',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]]
 ];

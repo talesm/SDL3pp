@@ -1,5 +1,8 @@
 {
-  "prefixes": "SDL_",
+  "prefixes": [
+    "SDL_",
+    "IMG_"
+  ],
   "renameRules": [
     {
       "pattern": "^SDL_(.*)\\.h$",
@@ -4030,6 +4033,139 @@
           "kind": "var",
           "constexpr": true,
           "type": "InitFlags"
+        }
+      }
+    },
+    "SDL_image.h": {
+      "includeAfter": {
+        "__begin": [
+          {
+            "kind": "def",
+            "name": "SDL3PP_HAS_IMAGE"
+          }
+        ]
+      },
+      "transform": {
+        "IMG_LoadTyped_IO": {
+          "type": "Surface",
+          "name": "Load"
+        },
+        "IMG_Load": {
+          "type": "Surface",
+          "name": "Load"
+        },
+        "IMG_Load_IO": {
+          "type": "Surface",
+          "name": "Load"
+        },
+        "IMG_LoadTexture": {
+          "type": "Texture",
+          "name": "LoadTexture"
+        },
+        "IMG_LoadTexture_IO": {
+          "type": "Texture",
+          "name": "LoadTexture"
+        },
+        "IMG_LoadTextureTyped_IO": {
+          "type": "Texture",
+          "name": "LoadTexture"
+        },
+        "IMG_LoadAVIF_IO": {
+          "type": "Surface",
+          "name": "LoadAVIF"
+        },
+        "IMG_LoadICO_IO": {
+          "type": "Surface",
+          "name": "LoadICO"
+        },
+        "IMG_LoadCUR_IO": {
+          "type": "Surface",
+          "name": "LoadCUR"
+        },
+        "IMG_LoadBMP_IO": {
+          "type": "Surface",
+          "name": "LoadBMP"
+        },
+        "IMG_LoadGIF_IO": {
+          "type": "Surface",
+          "name": "LoadGIF"
+        },
+        "IMG_LoadJPG_IO": {
+          "type": "Surface",
+          "name": "LoadJPG"
+        },
+        "IMG_LoadJXL_IO": {
+          "type": "Surface",
+          "name": "LoadJXL"
+        },
+        "IMG_LoadLBM_IO": {
+          "type": "Surface",
+          "name": "LoadLBM"
+        },
+        "IMG_LoadPCX_IO": {
+          "type": "Surface",
+          "name": "LoadPCX"
+        },
+        "IMG_LoadPNG_IO": {
+          "type": "Surface",
+          "name": "LoadPNG"
+        },
+        "IMG_LoadPNM_IO": {
+          "type": "Surface",
+          "name": "LoadPNM"
+        },
+        "IMG_LoadSVG_IO": {
+          "type": "Surface",
+          "name": "LoadSVG"
+        },
+        "IMG_LoadQOI_IO": {
+          "type": "Surface",
+          "name": "LoadQOI"
+        },
+        "IMG_LoadTGA_IO": {
+          "type": "Surface",
+          "name": "LoadTGA"
+        },
+        "IMG_LoadTIF_IO": {
+          "type": "Surface",
+          "name": "LoadTIF"
+        },
+        "IMG_LoadXCF_IO": {
+          "type": "Surface",
+          "name": "LoadXCF"
+        },
+        "IMG_LoadXPM_IO": {
+          "type": "Surface",
+          "name": "LoadXPM"
+        },
+        "IMG_LoadXV_IO": {
+          "type": "Surface",
+          "name": "LoadXV"
+        },
+        "IMG_LoadWEBP_IO": {
+          "type": "Surface",
+          "name": "LoadWEBP"
+        },
+        "IMG_LoadSizedSVG_IO": {
+          "type": "Surface",
+          "name": "LoadSizedSVG"
+        },
+        "IMG_ReadXPMFromArray": {
+          "type": "Surface",
+          "name": "ReadXPMFromArray"
+        },
+        "IMG_ReadXPMFromArrayToRGB888": {
+          "type": "Surface",
+          "name": "ReadXPMFromArrayToRGB888"
+        },
+        "IMG_SaveAVIF_IO": {
+          "name": "SaveAVIF"
+        },
+        "IMG_SavePNG_IO": {
+          "name": "SavePNG"
+        },
+        "IMG_SaveJPG_IO": {
+          "name": "SaveJPG"
         }
       }
     }
