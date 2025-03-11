@@ -9,7 +9,7 @@ It was inspired on [SDL2pp](https://github.com/libSDL2pp/libSDL2pp),
 with the addition of flexible memory management and wrappers for 
 string and callbacks.
 
-See API reference [here](https://talesm.github.io/SDL3pp/).
+See [API reference here](#ApiByCategory).
 
 ## Goals
 
