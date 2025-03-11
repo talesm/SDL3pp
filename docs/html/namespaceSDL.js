@@ -148,6 +148,7 @@ var namespaceSDL =
     [ "cosf", "group__CategoryStdinc.html#ga343b62c85d5c6bc9627fdad943860921", null ],
     [ "crc16", "group__CategoryStdinc.html#ga31ee6fbdefd2ca34bbde4c8652069e66", null ],
     [ "crc32", "group__CategoryStdinc.html#gacc8b8bc6d26dd888c3fed721ddb1cd2e", null ],
+    [ "CreateProperties", "group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce", null ],
     [ "CreateWindowAndRenderer", "group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d", null ],
     [ "Delay", "namespaceSDL.html#a29135876921c3060e1c60a9e839d57b4", null ],
     [ "Delay", "namespaceSDL.html#ac11691c32e10463117a7f351e02c02f9", null ],

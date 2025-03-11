@@ -4,7 +4,6 @@ var structSDL_1_1PropertiesBase =
     [ "CleanupFunction", "structSDL_1_1PropertiesBase.html#ac71c76bca25cf90c8bc5db473b65b22c", null ],
     [ "EnumerateCallback", "structSDL_1_1PropertiesBase.html#aa5ea04792dd6fde23ffadf9c52e7d454", null ],
     [ "EnumerateFunction", "structSDL_1_1PropertiesBase.html#a4b4ff6515d9463e4f170ce700a2814f5", null ],
-    [ "PropertiesBase", "structSDL_1_1PropertiesBase.html#a579657df53c773d33a5588e0f03f58b0", null ],
     [ "Clear", "structSDL_1_1PropertiesBase.html#a51304743586ee1c78c49f5be5f665743", null ],
     [ "CopyPropertiesTo", "structSDL_1_1PropertiesBase.html#a1296853289d558578a7e9efdc5d9b977", null ],
     [ "Destroy", "structSDL_1_1PropertiesBase.html#afd46fcab027c88f135202d11a5780e2f", null ],

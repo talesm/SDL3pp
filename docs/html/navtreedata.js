@@ -74,9 +74,9 @@ var NAVTREEINDEX =
 "ApiByCategory.html",
 "functions_func_n.html",
 "group__CategoryPixels.html#gaca8b6001cb74a30bdef81ad134d684b5",
-"group__CategoryStringParam.html",
-"structSDL_1_1EnvironmentBase.html",
-"structSDL_1_1PropertiesDeleter.html",
+"group__CategoryStdinc.html#gafe27508f0dcd3fb7902725b46f1c7e15",
+"structSDL_1_1Display.html#ae60fa581de6bf108440cb5da32b92fcb",
+"structSDL_1_1PropertiesDeleter.html#a90df45dc414e86e4bab0294d50b0b2c9",
 "structSDL_1_1SurfaceBase.html#ad380fbca29727790d7c67cda2da2f411"
 ];
 

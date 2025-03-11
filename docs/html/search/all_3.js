@@ -73,7 +73,7 @@ var searchData=
   ['comparecallback_70',['CompareCallback',['../group__CategoryStdinc.html#gabc94be94823c25031d6dd9210ef3e81a',1,'SDL']]],
   ['comparecallback_5fr_71',['CompareCallback_r',['../group__CategoryStdinc.html#gab5c634ea2ae9a102fa58cd7beac9f478',1,'SDL']]],
   ['composecustomblendmode_72',['ComposeCustomBlendMode',['../group__CategoryBlendmode.html#gaec8c6ddb8b4963d1597c2ccfbb451839',1,'SDL']]],
-  ['contains_73',['contains',['../structSDL_1_1FRect.html#afb2a1bbe6172ee65f209d7186318aafb',1,'SDL::FRect::Contains()'],['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#a5790c9e5d53a968a1fced54de96b867c',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;::contains()'],['../structSDL_1_1FRect.html#a916c052d6857e19fabf8e8fc00202502',1,'SDL::FRect::Contains()'],['../structSDL_1_1Rect.html#aef01b24cedf0b5e33316359330d0b501',1,'SDL::Rect::Contains(const Rect &amp;other) const'],['../structSDL_1_1Rect.html#ab6d590f6f3123bea2e3de50cdf7fbeac',1,'SDL::Rect::Contains(const Point &amp;point) const']]],
+  ['contains_73',['contains',['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#a5790c9e5d53a968a1fced54de96b867c',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;::contains()'],['../structSDL_1_1FRect.html#afb2a1bbe6172ee65f209d7186318aafb',1,'SDL::FRect::Contains(const FRect &amp;other) const'],['../structSDL_1_1FRect.html#a916c052d6857e19fabf8e8fc00202502',1,'SDL::FRect::Contains(const FPoint &amp;point) const'],['../structSDL_1_1Rect.html#aef01b24cedf0b5e33316359330d0b501',1,'SDL::Rect::Contains(const Rect &amp;other) const'],['../structSDL_1_1Rect.html#ab6d590f6f3123bea2e3de50cdf7fbeac',1,'SDL::Rect::Contains(const Point &amp;point) const']]],
   ['conversion_20routines_74',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
   ['convert_75',['convert',['../structSDL_1_1SurfaceBase.html#a6a6b84f8c84046fe8fa4f0c498fd76db',1,'SDL::SurfaceBase::Convert(PixelFormat format) const'],['../structSDL_1_1SurfaceBase.html#a9ccf82503e809a7bc890b1662ede3d5c',1,'SDL::SurfaceBase::Convert(PixelFormat format, PaletteRef palette, Colorspace colorspace, PropertiesRef props) const']]],
   ['converteventtorendercoordinates_76',['ConvertEventToRenderCoordinates',['../structSDL_1_1RendererBase.html#a8883859100726a7c7f08134ee0fc0229',1,'SDL::RendererBase']]],
@@ -87,6 +87,7 @@ var searchData=
   ['crc16_84',['crc16',['../group__CategoryStdinc.html#ga31ee6fbdefd2ca34bbde4c8652069e66',1,'SDL']]],
   ['crc32_85',['crc32',['../group__CategoryStdinc.html#gacc8b8bc6d26dd888c3fed721ddb1cd2e',1,'SDL']]],
   ['createpalette_86',['CreatePalette',['../structSDL_1_1SurfaceBase.html#aaa82afa72b93cc2d04f005775c667415',1,'SDL::SurfaceBase']]],
-  ['createwindowandrenderer_87',['CreateWindowAndRenderer',['../group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d',1,'SDL']]],
-  ['creation_20and_20simple_20drawing_88',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]]
+  ['createproperties_87',['CreateProperties',['../group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce',1,'SDL']]],
+  ['createwindowandrenderer_88',['CreateWindowAndRenderer',['../group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d',1,'SDL']]],
+  ['creation_20and_20simple_20drawing_89',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]]
 ];

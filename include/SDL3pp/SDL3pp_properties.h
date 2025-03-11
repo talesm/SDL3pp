@@ -96,30 +96,14 @@ struct PropertiesLock;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
+ * @sa CreateProperties()
+ *
  * @ingroup resource
  */
 template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 struct PropertiesBase : T
 {
   using T::T;
-
-  /**
-   * Create a group of properties.
-   *
-   * All properties are automatically destroyed when SDL_Quit() is called.
-   *
-   * @post a valid Properties ready to be manipulated and convertible to true on
-   * success, or convertible to false on failure; call GetError() for more
-   * information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  PropertiesBase()
-    : T(SDL_CreateProperties())
-  {
-  }
 
   /**
    * Copy a group of properties.
@@ -765,6 +749,25 @@ constexpr PropertyType PROPERTY_TYPE_BOOLEAN = SDL_PROPERTY_TYPE_BOOLEAN;
 inline PropertiesRef GetGlobalProperties()
 {
   return FancyPointer{SDL_GetGlobalProperties()};
+}
+
+/**
+ * Create a group of properties.
+ *
+ * All properties are automatically destroyed when Quit() is called.
+ *
+ * @returns a valid Properties for a new group of properties, or false on
+ * failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Properties
+ */
+inline Properties CreateProperties()
+{
+  return Properties{SDL_CreateProperties()};
 }
 
 #pragma region impl
