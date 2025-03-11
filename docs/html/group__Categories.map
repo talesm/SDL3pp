@@ -1,8 +1,9 @@
 <map id="Categories" name="Categories">
-<area shape="rect" id="Node000001" title="You probably want to see API by Category." alt="" coords="5,104,97,129"/>
-<area shape="rect" id="Node000005" href="$group__CategoriesAdditionalFunctionality.html" title=" " alt="" coords="145,5,321,31"/>
+<area shape="rect" id="Node000001" title="You probably want to see API by Category." alt="" coords="5,129,97,155"/>
+<area shape="rect" id="Node000006" href="$group__CategoriesAdditionalFunctionality.html" title=" " alt="" coords="145,5,321,31"/>
 <area shape="rect" id="Node000002" href="$group__CategoriesBasics.html" title=" " alt="" coords="201,55,265,80"/>
-<area shape="rect" id="Node000006" href="$group__CategoriesCppSupport.html" title=" " alt="" coords="180,104,287,129"/>
-<area shape="rect" id="Node000004" href="$group__CategoriesTime.html" title=" " alt="" coords="206,153,261,179"/>
-<area shape="rect" id="Node000003" href="$group__CategoriesVideo.html" title=" " alt="" coords="204,203,263,228"/>
+<area shape="rect" id="Node000007" href="$group__CategoriesCppSupport.html" title=" " alt="" coords="180,104,287,129"/>
+<area shape="rect" id="Node000004" href="$group__CategoriesEvents.html" title=" " alt="" coords="182,153,285,179"/>
+<area shape="rect" id="Node000005" href="$group__CategoriesTime.html" title=" " alt="" coords="206,203,261,228"/>
+<area shape="rect" id="Node000003" href="$group__CategoriesVideo.html" title=" " alt="" coords="204,252,263,277"/>
 </map>

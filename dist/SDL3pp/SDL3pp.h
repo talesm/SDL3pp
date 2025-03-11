@@ -349,20 +349,14 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 
 //
-//
-//
-//
-//
-//
-//
-//
 
-// begin --- SDL3pp_init.h --- 
+// begin --- SDL3pp_events.h --- 
 
-#ifndef SDL3PP_INIT_H_
-#define SDL3PP_INIT_H_
+#ifndef SDL3PP_EVENTS_H_
+#define SDL3PP_EVENTS_H_
 
-#include <SDL3/SDL_init.h>
+#include <chrono>
+#include <SDL3/SDL_events.h>
 
 // begin --- SDL3pp_callbackWrapper.h --- 
 
@@ -5305,2799 +5299,15 @@ inline void ObjectDeleter<SDL_iconv_data_t>::operator()(IConvRef iconv) const
 
 
 
-/**
- * @namespace SDL
- * @brief the main namespace where all SDL3pp public functions and types live
- */
-namespace SDL {
-
-/**
- * @defgroup CategoryInit Initialization and Shutdown
- *
- * All SDL programs need to initialize the library before starting to work
- * with it.
- *
- * Almost everything can simply call SDL_Init() near startup, with a handful
- * of flags to specify subsystems to touch. These are here to make sure SDL
- * does not even attempt to touch low-level pieces of the operating system
- * that you don't intend to use. For example, you might be using SDL for video
- * and input but chose an external library for audio, and in this case you
- * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
- * external library has complete control.
- *
- * Most apps, when terminating, should call SDL_Quit(). This will clean up
- * (nearly) everything that SDL might have allocated, and crucially, it'll
- * make sure that the display's resolution is back to what the user expects if
- * you had previously changed it for your game.
- *
- * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
- * to fill in details about the program. This is completely optional, but it
- * helps in small ways (we can provide an About dialog box for the macOS menu,
- * we can name the app in the system's audio mixer, etc). Those that want to
- * provide a _lot_ of information should look at the more-detailed
- * SDL_SetAppMetadataProperty().
- *
- * @{
- */
-
-/**
- * @name InitFlags
- *
- * Initialization flags
- */
-
-/**
- * @brief Initialization flags for SDL
- */
-using InitFlags = SDL_InitFlags;
-
-/**
- * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
-
-/**
- * `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main
- * thread
- */
-constexpr inline InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
-
-/**
- * `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the
- * same thread as SDL_INIT_VIDEO on Windows if you don't set
- * SDL_HINT_JOYSTICK_THREAD
- */
-constexpr inline InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
-
-constexpr inline InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC;
-
-/**
- * `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`
- */
-constexpr inline InitFlags INIT_GAMEPAD = SDL_INIT_GAMEPAD;
-
-constexpr inline InitFlags INIT_EVENTS = SDL_INIT_EVENTS;
-
-/**
- * `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_SENSOR = SDL_INIT_SENSOR;
-
-/**
- * `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_CAMERA = SDL_INIT_CAMERA;
-
-/// @}
-
-/**
- * @name AppResult
- * App result for Main callback
- * @{
- */
-
-/**
- * Return values for optional main callbacks.
- *
- * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
- * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
- * success/failure to the operating system. What that means is
- * platform-dependent. On Unix, for example, on success, the process error
- * code will be zero, and on failure it will be 1. This interface doesn't
- * allow you to return specific exit codes, just whether there was an error
- * generally or not.
- *
- * Returning SDL_APP_CONTINUE from these functions will let the app continue
- * to run.
- *
- * See
- * [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
- * for complete details.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AppResult = SDL_AppResult;
-
-/**
- * Value that requests that the app continue from the main callbacks.
- */
-constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
-
-/**
- * Value that requests termination with success from the main callbacks.
- */
-constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
-
-/**
- * Value that requests termination with error from the main callbacks.
- */
-constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
-
-/// @}
-
-/**
- * Function pointer typedef for SDL_AppInit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppInit directly.
- *
- * @param appstate a place where the app can optionally store a pointer for
- *                 future use.
- * @param argc the standard ANSI C main's argc; number of elements in `argv`.
- * @param argv the standard ANSI C main's argv; array of command line
- *             arguments.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppInit_func = SDL_AppInit_func;
-
-/**
- * Function pointer typedef for SDL_AppIterate.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppIterate directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppIterate_func = SDL_AppIterate_func;
-
-/**
- * Function pointer typedef for SDL_AppEvent.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param event the new event for the app to examine.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppEvent_func = SDL_AppEvent_func;
-
-/**
- * Function pointer typedef for SDL_AppQuit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param result the result code that terminated the app (success or failure).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppQuit_func = SDL_AppQuit_func;
-
-/**
- * Initialize the SDL library.
- *
- * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
- * two may be used interchangeably. Though for readability of your code
- * SDL_InitSubSystem() might be preferred.
- *
- * The file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)
- * subsystems are initialized by default. Message boxes
- * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * SDL_Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
- *
- * Logging (such as SDL_Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
- *   events subsystem
- * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
- *   joystick subsystem
- * - `SDL_INIT_EVENTS`: events subsystem
- * - `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- *
- * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
- * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
- * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
- * this call will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before
- * calling SDL_Init, using either SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty().
- *
- * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
- */
-inline bool Init(InitFlags flags) { return SDL_Init(flags); }
-
-/**
- * Compatibility function to initialize the SDL library.
- *
- * This function and SDL_Init() are interchangeable.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa Quit()
- * @sa QuitSubSystem()
- */
-inline bool InitSubSystem(InitFlags flags) { return SDL_InitSubSystem(flags); }
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call SDL_Quit() even if you close all open subsystems
- * with SDL_QuitSubSystem().
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa InitSubSystem()
- * @sa Quit()
- */
-inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
-
-/**
- * Get a mask of the specified subsystems which are currently initialized.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
- *          returns the initialization status of the specified subsystems.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa InitSubSystem()
- */
-inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
-
-/**
- * Clean up all initialized subsystems.
- *
- * You should call this function even if you have already shutdown each
- * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
- * function even in the case of errors in initialization.
- *
- * You can use this function with atexit() to ensure that it is run when your
- * application is shutdown, but it is not wise to do this from a library or
- * other dynamically loaded code.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa QuitSubSystem()
- */
-inline void Quit() { return SDL_Quit(); }
-
-/**
- * @brief Initialize the SDL library.
- *
- * Also init any subsystem passed as InitFlags
- *
- * This might be called multiple times, it keeps a ref count and calls SDL_Quit
- * only on the last one.
- *
- * The SubSystems are out of the refCount, as SDL itself already keep track
- * internally.
- */
-struct SDL
-{
-
-  /**
-   * @brief Init given subsystems
-   * @param flags
-   *
-   * This uses a refCount internally, so it is safe to call
-   * this multiple times, the quit will be called only on the last call.
-   */
-  SDL(InitFlags flags)
-    : flags(flags)
-  {
-    refCount(+1, true);
-  }
-
-  // Copy ctor
-  SDL(const SDL& other)
-    : flags(other.flags)
-    , active(other.active)
-  {
-    if (active) refCount(+1);
-  }
-
-  // Move ctor
-  SDL(SDL&& other)
-    : flags(other.flags)
-    , active(other.active)
-  {
-    other.active = false;
-  }
-
-  // Dtor
-  ~SDL()
-  {
-    if (active) refCount(-1);
-  }
-
-  SDL& operator=(SDL rhs)
-  {
-    std::swap(active, rhs.active);
-    std::swap(flags, rhs.flags);
-    return *this;
-  }
-
-  /**
-   * @brief Check if given subSystems are initialized
-   * @param flags the flags to test or 0 to test all
-   * @return Which subsystem are active
-   */
-  static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
-
-  /**
-   * @brief release locking such as reset() does, but never calls SDL_Quit() or
-   * SDL_QuitSubSystem()
-   * @return false if there are still other locks, true if this was last one
-   *
-   * When this returns true it is safe to call SDL_Quit()
-   */
-  bool release()
-  {
-    flags = 0;
-    return refCount(-1, false) == 0;
-  }
-
-  /**
-   * @brief reset the value of this instance, acts like it was destroyed and
-   * then newly instantiated
-   * @return false if there are still other locks, true if this was last one
-   */
-  bool reset() { return refCount(-1) == 0; }
-
-  /// @brief returns true if active and has no errors
-  operator bool() const { return active; }
-
-  InitFlags GetCurrentFlags() const { return flags; }
-
-private:
-  InitFlags flags = 0;
-  bool active = true;
-
-  int refCount(int delta, bool autoQuit = true);
-};
-
-/**
- * Return whether this is the main thread.
- *
- * On Apple platforms, the main thread is the thread that runs your program's
- * main() entry point. On other platforms, the main thread is the one that
- * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
- * your program's main() entry point. If you are using the main callbacks,
- * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
- * main thread.
- *
- * @returns true if this thread is the main thread, or false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-inline bool IsMainThread() { return SDL_IsMainThread(); }
-
-/**
- * Callback run on the main thread.
- *
- * @param userdata an app-controlled pointer that is passed to the callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-using MainThreadCallback = SDL_MainThreadCallback;
-
-/**
- * @sa PropertiesRef.MainThreadCallback
- */
-using MainThreadFunction = std::function<void()>;
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param userdata a pointer that is passed to `callback`.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- */
-inline bool RunOnMainThread(MainThreadCallback callback,
-                            void* userdata,
-                            bool wait_complete)
-{
-  return SDL_RunOnMainThread(callback, userdata, wait_complete);
-}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- */
-inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
-{
-  using Wrapper = CallbackWrapper<void()>;
-  return RunOnMainThread(
-    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
-}
-
-/**
- * Specify basic metadata about your app.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left as NULL, if a specific
- * detail doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Passing a NULL removes any previous metadata.
- *
- * This is a simplified interface for the most important information. You can
- * supply significantly more detailed metadata with
- * SDL_SetAppMetadataProperty().
- *
- * @param appname The name of the application ("My Game 2: Bad Guy's
- *                Revenge!").
- * @param appversion The version of the application ("1.0.0beta5" or a git
- *                   hash, or whatever makes sense).
- * @param appidentifier A unique string in reverse-domain format that
- *                      identifies this app ("com.example.mygame2").
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadataProperty()
- */
-inline bool SetAppMetadata(StringParam appname,
-                           StringParam appversion,
-                           StringParam appidentifier)
-{
-  return SDL_SetAppMetadata(appname, appversion, appidentifier);
-}
-
-/**
- * Specify metadata about your app through a set of properties.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left out, if a specific detail
- * doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
- *
- * These are the supported properties:
- *
- * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
- *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
- *   anywhere the OS shows the name of the application separately from window
- *   titles, such as volume control applets, etc. This defaults to "SDL
- *   Application".
- * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
- *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
- *   2024" and a git hash are all valid options. This has no default.
- * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
- *   identifies this app. This must be in reverse-domain format, like
- *   "com.example.mygame2". This string is used by desktop compositors to
- *   identify and group windows together, as well as match applications with
- *   associated desktop settings and icons. If you plan to package your
- *   application in a container such as Flatpak, the app ID should match the
- *   name of your Flatpak container as well. This has no default.
- * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
- *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
- *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
- *   to one line, don't paste a copy of a whole software license in here. This
- *   has no default.
- * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
- *   product page, or a storefront, or even a GitHub repository, for user's
- *   further information This has no default.
- * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
- *   Currently this string can be "game" for a video game, "mediaplayer" for a
- *   media player, or generically "application" if nothing else applies.
- *   Future versions of SDL might add new types. This defaults to
- *   "application".
- *
- * @param name the name of the metadata property to set.
- * @param value the value of the property, or NULL to remove that property.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetAppMetadataProperty()
- * @sa SetAppMetadata()
- */
-inline bool SetAppMetadataProperty(StringParam name, StringParam value)
-{
-  return SDL_SetAppMetadataProperty(name, value);
-}
-
-/**
- * Get metadata about your app.
- *
- * This returns metadata previously set using SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
- * of available properties and their meanings.
- *
- * @param name the name of the metadata property to get.
- * @returns the current value of the metadata property, or the default if it
- *          is not set, NULL for properties with no default.
- *
- * @threadsafety It is safe to call this function from any thread, although
- *               the string returned is not protected and could potentially be
- *               freed if you call SDL_SetAppMetadataProperty() to set that
- *               property from another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- */
-inline const char* GetAppMetadataProperty(StringParam name)
-{
-  return SDL_GetAppMetadataProperty(name);
-}
-
-/** @} */
-
-#pragma region impl
-
-inline int SDL::refCount(int delta, bool autoQuit)
-{
-  // TODO Locking these?
-  static int refCount = 0;
-  if (delta && active) {
-    if (delta > 0) {
-      refCount += 1;
-      if (flags) active = SDL_InitSubSystem(flags);
-    } else {
-      SDL_assert_always(refCount > 0);
-      active = false;
-      refCount -= 1;
-
-      if (autoQuit) {
-        if (refCount <= 0) {
-          // TODO Make this under FLAG
-          SDL_Quit();
-        } else if (flags) {
-          SDL_QuitSubSystem(flags);
-        }
-      }
-    }
-  }
-  return refCount;
-}
-
-#pragma endregion
-
-} // namespace SDL
-
-#endif /* SDL3PP_INIT_H_ */
-
-
-// end --- SDL3pp_init.h --- 
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_misc.h --- 
-
-
-#ifndef SDL3PP_MISC_H_
-#define SDL3PP_MISC_H_
-
-namespace SDL {
-
-/**
- * @defgroup CategoryMisc Miscellaneous
- *
- * SDL API functions that don't fit elsewhere.
- *
- * @{
- */
-
-/**
- * Open a URL/URI in the browser or other appropriate external application.
- *
- * Open a URL in a separate, system-provided application. How this works will
- * vary wildly depending on the platform. This will likely launch what makes
- * sense to handle a specific URL's protocol (a web browser for `http://`,
- * etc), but it might also be able to launch file managers for directories and
- * other things.
- *
- * What happens when you open a URL varies wildly as well: your game window
- * may lose focus (and may or may not lose focus if your game was fullscreen
- * or grabbing input at the time). On mobile devices, your app will likely
- * move to the background or your process might be paused. Any given platform
- * may or may not handle a given URL.
- *
- * If this is unimplemented (or simply unavailable) for a platform, this will
- * fail with an error. A successful result does not mean the URL loaded, just
- * that we launched _something_ to handle it (or at least believe we did).
- *
- * All this to say: this function can be useful, but you should definitely
- * test it on every platform you target.
- *
- * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
- *            local files, if supported.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_MISC_H_ */
-
-
-// end --- SDL3pp_misc.h --- 
-
-
-//
-//
-//
-
-// begin --- SDL3pp_pixels.h --- 
-
-#ifndef SDL3PP_PIXELS_H_
-#define SDL3PP_PIXELS_H_
-
-#include <span>
-#include <SDL3/SDL_assert.h>
-#include <SDL3/SDL_pixels.h>
-
-// begin --- SDL3pp_spanRef.h --- 
-
-#ifndef SDL3PP_SPAN_REF_H_
-#define SDL3PP_SPAN_REF_H_
-
-#include <concepts>
-#include <ranges>
-#include <span>
-
-namespace SDL {
-
-template<class T, class BASE>
-concept DerivedWrapper =
-  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
-
-/**
- * A wrapper around span that works for out derived-wrapper pattern
- * (eg, Rect, Color)
- *
- */
-template<class T>
-class SpanRef
-{
-  std::span<T> value;
-
-public:
-  constexpr SpanRef() = default;
-
-  template<DerivedWrapper<T> U, size_t N>
-  constexpr SpanRef(U (&other)[N])
-    : value(static_cast<T*>(other), N)
-  {
-  }
-
-  template<DerivedWrapper<T> U>
-  constexpr SpanRef(const std::span<U>& other)
-    : value(other.data(), other.size())
-  {
-  }
-
-  template<std::contiguous_iterator It>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, size_t count)
-    : value((T*)(&*first), count)
-  {
-  }
-
-  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, End last)
-    : value((T*)(&*first), size_t(last - first))
-  {
-  }
-  template<std::ranges::contiguous_range R>
-    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
-  constexpr SpanRef(R&& range)
-    : SpanRef(std::begin(range), std::end(range))
-  {
-  }
-
-  constexpr size_t size() const { return value.size(); }
-
-  constexpr T* data() const { return value.data(); }
-};
-
-} // namespace SDL
-
-#endif /* SDL3PP_SPAN_REF_H_ */
-
-
-// end --- SDL3pp_spanRef.h --- 
-
-
-
-namespace SDL {
-
-/**
- * @defgroup CategoryPixels Pixel Formats and Conversion Routines
- *
- * SDL offers facilities for pixel management.
- *
- * Largely these facilities deal with pixel _format_: what does this set of
- * bits represent?
- *
- * If you mostly want to think of a pixel as some combination of red, green,
- * blue, and maybe alpha intensities, this is all pretty straightforward, and
- * in many cases, is enough information to build a perfectly fine game.
- *
- * However, the actual definition of a pixel is more complex than that:
- *
- * Pixels are a representation of a color in a particular color space.
- *
- * The first characteristic of a color space is the color type. SDL
- * understands two different color types, RGB and YCbCr, or in SDL also
- * referred to as YUV.
- *
- * RGB colors consist of red, green, and blue channels of color that are added
- * together to represent the colors we see on the screen.
- *
- * https://en.wikipedia.org/wiki/RGB_color_model
- *
- * YCbCr colors represent colors as a Y luma brightness component and red and
- * blue chroma color offsets. This color representation takes advantage of the
- * fact that the human eye is more sensitive to brightness than the color in
- * an image. The Cb and Cr components are often compressed and have lower
- * resolution than the luma component.
- *
- * https://en.wikipedia.org/wiki/YCbCr
- *
- * When the color information in YCbCr is compressed, the Y pixels are left at
- * full resolution and each Cr and Cb pixel represents an average of the color
- * information in a block of Y pixels. The chroma location determines where in
- * that block of pixels the color information is coming from.
- *
- * The color range defines how much of the pixel to use when converting a
- * pixel into a color on the display. When the full color range is used, the
- * entire numeric range of the pixel bits is significant. When narrow color
- * range is used, for historical reasons, the pixel uses only a portion of the
- * numeric range to represent colors.
- *
- * The color primaries and white point are a definition of the colors in the
- * color space relative to the standard XYZ color space.
- *
- * https://en.wikipedia.org/wiki/CIE_1931_color_space
- *
- * The transfer characteristic, or opto-electrical transfer function (OETF),
- * is the way a color is converted from mathematically linear space into a
- * non-linear output signals.
- *
- * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
- *
- * The matrix coefficients are used to convert between YCbCr and RGB colors.
- *
- * @{
- */
-
-// Forward decl
-template<class T>
-struct PaletteBase;
-
-/**
- * @brief Handle to a non owned surface
- */
-using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
-
-template<>
-struct ObjectDeleter<SDL_Palette>
-{
-  void operator()(PaletteRef palette) const;
-};
-
-/**
- * @brief Handle to an owned surface
- */
-using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
-
-// Forward decl
-struct Color;
-
-/**
- * Pixel type.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PixelType = SDL_PixelType;
-
-constexpr PixelType PIXELTYPE_UNKNOWN = SDL_PIXELTYPE_UNKNOWN;
-
-constexpr PixelType PIXELTYPE_INDEX1 = SDL_PIXELTYPE_INDEX1;
-
-constexpr PixelType PIXELTYPE_INDEX4 = SDL_PIXELTYPE_INDEX4;
-
-constexpr PixelType PIXELTYPE_INDEX8 = SDL_PIXELTYPE_INDEX8;
-
-constexpr PixelType PIXELTYPE_PACKED8 = SDL_PIXELTYPE_PACKED8;
-
-constexpr PixelType PIXELTYPE_PACKED16 = SDL_PIXELTYPE_PACKED16;
-
-constexpr PixelType PIXELTYPE_PACKED32 = SDL_PIXELTYPE_PACKED32;
-
-constexpr PixelType PIXELTYPE_ARRAYU8 = SDL_PIXELTYPE_ARRAYU8;
-
-constexpr PixelType PIXELTYPE_ARRAYU16 = SDL_PIXELTYPE_ARRAYU16;
-
-constexpr PixelType PIXELTYPE_ARRAYU32 = SDL_PIXELTYPE_ARRAYU32;
-
-constexpr PixelType PIXELTYPE_ARRAYF16 = SDL_PIXELTYPE_ARRAYF16;
-
-constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32;
-
-constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2;
-
-/**
- * Bitmap pixel order, high bit -> low bit.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using BitmapOrder = SDL_BitmapOrder;
-
-constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE;
-
-constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321;
-
-constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234;
-
-/**
- * Packed component order, high bit -> low bit.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PackedOrder = SDL_PackedOrder;
-
-constexpr PackedOrder PACKEDORDER_NONE = SDL_PACKEDORDER_NONE;
-
-constexpr PackedOrder PACKEDORDER_XRGB = SDL_PACKEDORDER_XRGB;
-
-constexpr PackedOrder PACKEDORDER_RGBX = SDL_PACKEDORDER_RGBX;
-
-constexpr PackedOrder PACKEDORDER_ARGB = SDL_PACKEDORDER_ARGB;
-
-constexpr PackedOrder PACKEDORDER_RGBA = SDL_PACKEDORDER_RGBA;
-
-constexpr PackedOrder PACKEDORDER_XBGR = SDL_PACKEDORDER_XBGR;
-
-constexpr PackedOrder PACKEDORDER_BGRX = SDL_PACKEDORDER_BGRX;
-
-constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR;
-
-constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA;
-
-/**
- * Array component order, low byte -> high byte.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ArrayOrder = SDL_ArrayOrder;
-
-constexpr ArrayOrder ARRAYORDER_NONE = SDL_ARRAYORDER_NONE;
-
-constexpr ArrayOrder ARRAYORDER_RGB = SDL_ARRAYORDER_RGB;
-
-constexpr ArrayOrder ARRAYORDER_RGBA = SDL_ARRAYORDER_RGBA;
-
-constexpr ArrayOrder ARRAYORDER_ARGB = SDL_ARRAYORDER_ARGB;
-
-constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR;
-
-constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA;
-
-constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR;
-
-/**
- * Packed component layout.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PackedLayout = SDL_PackedLayout;
-
-constexpr PackedLayout PACKEDLAYOUT_NONE = SDL_PACKEDLAYOUT_NONE;
-
-constexpr PackedLayout PACKEDLAYOUT_332 = SDL_PACKEDLAYOUT_332;
-
-constexpr PackedLayout PACKEDLAYOUT_4444 = SDL_PACKEDLAYOUT_4444;
-
-constexpr PackedLayout PACKEDLAYOUT_1555 = SDL_PACKEDLAYOUT_1555;
-
-constexpr PackedLayout PACKEDLAYOUT_5551 = SDL_PACKEDLAYOUT_5551;
-
-constexpr PackedLayout PACKEDLAYOUT_565 = SDL_PACKEDLAYOUT_565;
-
-constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888;
-
-constexpr PackedLayout PACKEDLAYOUT_2101010 = SDL_PACKEDLAYOUT_2101010;
-
-constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
-
-/**
- * Details about the format of a pixel.
- */
-using PixelFormatDetails = SDL_PixelFormatDetails;
-
-/**
- * Pixel format.
- *
- * SDL's pixel formats have the following naming convention:
- *
- * - Names with a list of components and a single bit count, such as RGB24 and
- *   ABGR32, define a platform-independent encoding into bytes in the order
- *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
- *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
- *   encoded in 4 bytes alpha, blue, green, red) in that order. Use these
- *   names if the property of a format that is important to you is the order
- *   of the bytes in memory or on disk.
- * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
- *   "packed" into an appropriately-sized integer in the platform's native
- *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in
- *   each integer, the most significant bits are alpha, and the least
- *   significant bits are blue. On a little-endian CPU such as x86, the least
- *   significant bits of each integer are arranged first in memory, but on a
- *   big-endian CPU such as s390x, the most significant bits are arranged
- *   first. Use these names if the property of a format that is important to
- *   you is the meaning of each bit position within a native-endianness
- *   integer.
- * - In indexed formats such as INDEX4LSB, each pixel is represented by
- *   encoding an index into the palette into the indicated number of bits,
- *   with multiple pixels packed into each byte if appropriate. In LSB
- *   formats, the first (leftmost) pixel is stored in the least-significant
- *   bits of the byte; in MSB formats, it's stored in the most-significant
- *   bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly
- *   fills one byte.
- *
- * The 32-bit byte-array encodings such as RGBA32 are aliases for the
- * appropriate 8888 encoding for the current platform. For example, RGBA32 is
- * an alias for ABGR8888 on little-endian CPUs like x86, or an alias for
- * RGBA8888 on big-endian CPUs.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-struct PixelFormat
-{
-  SDL_PixelFormat format;
-
-  constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
-    : format(format)
-  {
-  }
-
-  /**
-   * Defining custom non-FourCC pixel formats.
-   *
-   * For example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:
-   *
-   * ```c
-   * PixelFormat format(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA,
-   *   SDL_PACKEDLAYOUT_8888, 32, 4);
-   * ```
-   *
-   * @param type the type of the new format, probably a SDL_PixelType value.
-   * @param order the order of the new format, probably a SDL_BitmapOrder,
-   *              SDL_PackedOrder, or SDL_ArrayOrder value.
-   * @param layout the layout of the new format, probably an SDL_PackedLayout
-   *               value or zero.
-   * @param bits the number of bits per pixel of the new format.
-   * @param bytes the number of bytes per pixel of the new format.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr PixelFormat(SDL_PixelType type,
-                        int order,
-                        SDL_PackedLayout layout,
-                        int bits,
-                        int bytes)
-    : format(SDL_PixelFormat(
-        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
-  {
-  }
-
-  constexpr operator bool() const { return format != SDL_PIXELFORMAT_UNKNOWN; }
-
-  constexpr operator SDL_PixelFormat() const { return format; }
-
-  /**
-   * Retrieve the type.
-   *
-   * @returns the type as PixelType.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr PixelType GetType() const
-  {
-    return PixelType(SDL_PIXELTYPE(format));
-  }
-
-  /**
-   * Retrieve the order.
-   *
-   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
-   * enumerations, depending on the format type.
-   *
-   * @returns the order.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr int GetOrder() const { return SDL_PIXELORDER(format); }
-
-  /**
-   * Retrieve the layout.
-   *
-   * This is usually a value from the SDL_PackedLayout enumeration, or zero if a
-   * layout doesn't make sense for the format type.
-   *
-   * @returns the layout
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr PackedLayout GetLayout() const
-  {
-    return PackedLayout(SDL_PIXELLAYOUT(format));
-  }
-
-  /**
-   * Determine this's bits per pixel.
-   *
-   * FourCC formats will report zero here, as it rarely makes sense to measure
-   * them per-pixel.
-   *
-   * @returns the bits-per-pixel.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @sa PixelFormat.GetBytesPerPixel
-   */
-  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(format); }
-
-  /**
-   * Determine this's bytes per pixel.
-   *
-   * Note that this macro double-evaluates its parameter, so do not use
-   * expressions with side-effects here.
-   *
-   * FourCC formats do their best here, but many of them don't have a meaningful
-   * measurement of bytes per pixel.
-   *
-   * @return the bytes-per-pixel.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @sa PixelFormat.GetBitsPerPixel
-   */
-  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(format); }
-
-  /**
-   * Determine if this is an indexed format.
-   *
-   * @returns true if the format is indexed, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsIndexed() const { return SDL_ISPIXELFORMAT_INDEXED(format); }
-
-  /**
-   * Determine if this is a packed format.
-   *
-   * @returns true if the format is packed, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(format); }
-
-  /**
-   * @brief Determine if this is an array format.
-   *
-   * @returns true if the format is an array, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(format); }
-
-  /**
-   * Determine if this is a 10-bit format.
-   *
-   * @returns true if the format is 10-bit, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(format); }
-
-  /**
-   * Determine if this is a floating point format.
-   *
-   * @returns true if the format is 10-bit, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(format); }
-
-  /**
-   * Determine if this has an alpha channel.
-   *
-   * @returns true if the format has alpha, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(format); }
-
-  /**
-   * Determine if this is a "FourCC" format.
-   *
-   * This covers custom and other unusual formats.
-   *
-   * @returns true if the format has alpha, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(format); }
-
-  /**
-   * Get the human readable name of a pixel format.
-   *
-   * @returns the human readable name of the specified pixel format or
-   *          "SDL_PIXELFORMAT_UNKNOWN" if the format isn't recognized.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  inline const char* GetName() const { return SDL_GetPixelFormatName(format); }
-
-  /**
-   * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
-   *
-   * @param bpp a bits per pixel value; usually 15, 16, or 32.
-   * @param Rmask a pointer filled in with the red mask for the format.
-   * @param Gmask a pointer filled in with the green mask for the format.
-   * @param Bmask a pointer filled in with the blue mask for the format.
-   * @param Amask a pointer filled in with the alpha mask for the format.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ForMasks()
-   */
-  inline bool GetMasks(int* bpp,
-                       Uint32* Rmask,
-                       Uint32* Gmask,
-                       Uint32* Bmask,
-                       Uint32* Amask) const
-  {
-    return SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask);
-  }
-
-  /**
-   * Convert a bpp value and RGBA masks to an enumerated pixel format.
-   *
-   * This will return `SDL_PIXELFORMAT_UNKNOWN` if the conversion wasn't
-   * possible.
-   *
-   * @param bpp a bits per pixel value; usually 15, 16, or 32.
-   * @param Rmask the red mask for the format.
-   * @param Gmask the green mask for the format.
-   * @param Bmask the blue mask for the format.
-   * @param Amask the alpha mask for the format.
-   * @returns the SDL_PixelFormat value corresponding to the format masks, or
-   *          SDL_PIXELFORMAT_UNKNOWN if there isn't a match.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetMasks()
-   */
-  static inline PixelFormat ForMasks(int bpp,
-                                     Uint32 Rmask,
-                                     Uint32 Gmask,
-                                     Uint32 Bmask,
-                                     Uint32 Amask)
-  {
-    return {SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask)};
-  }
-
-  /**
-   * Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
-   *
-   * Returned structure may come from a shared global cache (i.e. not newly
-   * allocated), and hence should not be modified, especially the palette. Weird
-   * errors such as `Blit combination not supported` may occur.
-   *
-   * @returns a pointer to a SDL_PixelFormatDetails structure or NULL on
-   *          failure; call SDL_GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  inline const PixelFormatDetails* GetDetails() const
-  {
-    return SDL_GetPixelFormatDetails(format);
-  }
-
-  /**
-   * Map an RGBA quadruple to a pixel value for a given pixel format.
-   *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
-   *
-   * If the specified pixel format has no alpha component the alpha value will
-   * be ignored (as it will be in formats with a palette).
-   *
-   * If the format has a palette (8-bit) the index of the closest matching color
-   * in the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param color the color components of the pixel in the range 0-255.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a pixel value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetPixelFormatDetails()
-   * @sa Get()
-   * @sa MapRGBA()
-   * @sa Surface.MapColor()
-   */
-  inline Uint32 Map(Color color, PaletteRef palette) const;
-
-  /**
-   * Get RGBA values from a pixel in the specified format.
-   *
-   * This function uses the entire 8-bit [0..255] range when converting color
-   * components from pixel formats with less than 8-bits per RGB component
-   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-   *
-   * If the surface has no alpha component, the alpha will be returned as 0xff
-   * (100% opaque).
-   *
-   * @param pixel a pixel value.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a color value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetPixelFormatDetails()
-   * @sa GetRGBA()
-   * @sa Map()
-   */
-  inline Color Get(Uint32 pixel, PaletteRef palette) const;
-};
-
-constexpr PixelFormat PIXELFORMAT_UNKNOWN = SDL_PIXELFORMAT_UNKNOWN;
-
-constexpr PixelFormat PIXELFORMAT_INDEX1LSB = SDL_PIXELFORMAT_INDEX1LSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX1MSB = SDL_PIXELFORMAT_INDEX1MSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX2LSB = SDL_PIXELFORMAT_INDEX2LSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX2MSB = SDL_PIXELFORMAT_INDEX2MSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX4LSB = SDL_PIXELFORMAT_INDEX4LSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX4MSB = SDL_PIXELFORMAT_INDEX4MSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8;
-
-constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332;
-
-constexpr PixelFormat PIXELFORMAT_XRGB4444 = SDL_PIXELFORMAT_XRGB4444;
-
-constexpr PixelFormat PIXELFORMAT_XBGR4444 = SDL_PIXELFORMAT_XBGR4444;
-
-constexpr PixelFormat PIXELFORMAT_XRGB1555 = SDL_PIXELFORMAT_XRGB1555;
-
-constexpr PixelFormat PIXELFORMAT_XBGR1555 = SDL_PIXELFORMAT_XBGR1555;
-
-constexpr PixelFormat PIXELFORMAT_ARGB4444 = SDL_PIXELFORMAT_ARGB4444;
-
-constexpr PixelFormat PIXELFORMAT_RGBA4444 = SDL_PIXELFORMAT_RGBA4444;
-
-constexpr PixelFormat PIXELFORMAT_ABGR4444 = SDL_PIXELFORMAT_ABGR4444;
-
-constexpr PixelFormat PIXELFORMAT_BGRA4444 = SDL_PIXELFORMAT_BGRA4444;
-
-constexpr PixelFormat PIXELFORMAT_ARGB1555 = SDL_PIXELFORMAT_ARGB1555;
-
-constexpr PixelFormat PIXELFORMAT_RGBA5551 = SDL_PIXELFORMAT_RGBA5551;
-
-constexpr PixelFormat PIXELFORMAT_ABGR1555 = SDL_PIXELFORMAT_ABGR1555;
-
-constexpr PixelFormat PIXELFORMAT_BGRA5551 = SDL_PIXELFORMAT_BGRA5551;
-
-constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565;
-
-constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565;
-
-constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24;
-
-constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24;
-
-constexpr PixelFormat PIXELFORMAT_XRGB8888 = SDL_PIXELFORMAT_XRGB8888;
-
-constexpr PixelFormat PIXELFORMAT_RGBX8888 = SDL_PIXELFORMAT_RGBX8888;
-
-constexpr PixelFormat PIXELFORMAT_XBGR8888 = SDL_PIXELFORMAT_XBGR8888;
-
-constexpr PixelFormat PIXELFORMAT_BGRX8888 = SDL_PIXELFORMAT_BGRX8888;
-
-constexpr PixelFormat PIXELFORMAT_ARGB8888 = SDL_PIXELFORMAT_ARGB8888;
-
-constexpr PixelFormat PIXELFORMAT_RGBA8888 = SDL_PIXELFORMAT_RGBA8888;
-
-constexpr PixelFormat PIXELFORMAT_ABGR8888 = SDL_PIXELFORMAT_ABGR8888;
-
-constexpr PixelFormat PIXELFORMAT_BGRA8888 = SDL_PIXELFORMAT_BGRA8888;
-
-constexpr PixelFormat PIXELFORMAT_XRGB2101010 = SDL_PIXELFORMAT_XRGB2101010;
-
-constexpr PixelFormat PIXELFORMAT_XBGR2101010 = SDL_PIXELFORMAT_XBGR2101010;
-
-constexpr PixelFormat PIXELFORMAT_ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010;
-
-constexpr PixelFormat PIXELFORMAT_ABGR2101010 = SDL_PIXELFORMAT_ABGR2101010;
-
-constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48;
-
-constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48;
-
-constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64;
-
-constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64;
-
-constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64;
-
-constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64;
-
-constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT = SDL_PIXELFORMAT_RGB48_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT = SDL_PIXELFORMAT_BGR48_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT = SDL_PIXELFORMAT_RGBA64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT = SDL_PIXELFORMAT_ARGB64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT = SDL_PIXELFORMAT_BGRA64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT = SDL_PIXELFORMAT_ABGR64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT = SDL_PIXELFORMAT_RGB96_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT = SDL_PIXELFORMAT_BGR96_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT = SDL_PIXELFORMAT_RGBA128_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT = SDL_PIXELFORMAT_ARGB128_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT = SDL_PIXELFORMAT_BGRA128_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT = SDL_PIXELFORMAT_ABGR128_FLOAT;
-
-/**
- * Planar mode: Y + V + U  (3 planes)
- */
-constexpr PixelFormat PIXELFORMAT_YV12 = SDL_PIXELFORMAT_YV12;
-
-/**
- * Planar mode: Y + U + V  (3 planes)
- */
-constexpr PixelFormat PIXELFORMAT_IYUV = SDL_PIXELFORMAT_IYUV;
-
-/**
- * Packed mode: Y0+U0+Y1+V0 (1 plane)
- */
-constexpr PixelFormat PIXELFORMAT_YUY2 = SDL_PIXELFORMAT_YUY2;
-
-/**
- * Packed mode: U0+Y0+V0+Y1 (1 plane)
- */
-constexpr PixelFormat PIXELFORMAT_UYVY = SDL_PIXELFORMAT_UYVY;
-
-/**
- * Packed mode: Y0+V0+Y1+U0 (1 plane)
- */
-constexpr PixelFormat PIXELFORMAT_YVYU = SDL_PIXELFORMAT_YVYU;
-
-/**
- * Planar mode: Y + U/V interleaved  (2 planes)
- */
-constexpr PixelFormat PIXELFORMAT_NV12 = SDL_PIXELFORMAT_NV12;
-
-/**
- * Planar mode: Y + V/U interleaved  (2 planes)
- */
-constexpr PixelFormat PIXELFORMAT_NV21 = SDL_PIXELFORMAT_NV21;
-
-/**
- * Planar mode: Y + U/V interleaved  (2 planes)
- */
-constexpr PixelFormat PIXELFORMAT_P010 = SDL_PIXELFORMAT_P010;
-
-/**
- * Android video texture format
- */
-constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
-
-/**
- * Motion JPEG
- */
-constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
-
-constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32;
-
-constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32;
-
-constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32;
-
-constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32;
-
-constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32;
-
-constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32;
-
-constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32;
-
-constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
-
-/**
- * @brief Colorspace color type.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ColorType = SDL_ColorType;
-
-constexpr ColorType COLOR_TYPE_UNKNOWN = SDL_COLOR_TYPE_UNKNOWN;
-
-constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB;
-
-constexpr ColorType COLOR_TYPE_YCBCR = SDL_COLOR_TYPE_YCBCR;
-
-/**
- * Colorspace color range, as described by
- * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ColorRange = SDL_ColorRange;
-
-constexpr ColorRange COLOR_RANGE_UNKNOWN = SDL_COLOR_RANGE_UNKNOWN;
-
-/**
- * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
- */
-constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
-
-/**
- * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
- */
-constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
-
-/**
- * Colorspace color primaries, as described by
- * https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ColorPrimaries = SDL_ColorPrimaries;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN = SDL_COLOR_PRIMARIES_UNKNOWN;
-
-/**
- * ITU-R BT.709-6
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT709 = SDL_COLOR_PRIMARIES_BT709;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
-  SDL_COLOR_PRIMARIES_UNSPECIFIED;
-
-/**
- * ITU-R BT.470-6 System M
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT470M = SDL_COLOR_PRIMARIES_BT470M;
-
-/**
- * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG = SDL_COLOR_PRIMARIES_BT470BG;
-
-/**
- * ITU-R BT.601-7 525, SMPTE 170M
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT601 = SDL_COLOR_PRIMARIES_BT601;
-
-/**
- * SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
-  SDL_COLOR_PRIMARIES_SMPTE240;
-
-/**
- * Generic film (color filters using Illuminant C)
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
-  SDL_COLOR_PRIMARIES_GENERIC_FILM;
-
-/**
- * ITU-R BT.2020-2 / ITU-R BT.2100-0
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 = SDL_COLOR_PRIMARIES_BT2020;
-
-/**
- * SMPTE ST 428-1
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_XYZ = SDL_COLOR_PRIMARIES_XYZ;
-
-/**
- * SMPTE RP 431-2
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
-  SDL_COLOR_PRIMARIES_SMPTE431;
-
-/**
- * SMPTE EG 432-1 / DCI P3
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
-  SDL_COLOR_PRIMARIES_SMPTE432;
-
-/**
- * EBU Tech. 3213-E
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 = SDL_COLOR_PRIMARIES_EBU3213;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM = SDL_COLOR_PRIMARIES_CUSTOM;
-
-/**
- * Colorspace transfer characteristics.
- *
- * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using TransferCharacteristics = SDL_TransferCharacteristics;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
-  SDL_TRANSFER_CHARACTERISTICS_UNKNOWN;
-
-/**
- * Rec. ITU-R BT.709-6 / ITU-R BT1361
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
-  SDL_TRANSFER_CHARACTERISTICS_BT709;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
-  SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED;
-
-/**
- * ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
-
-/**
- * ITU-R BT.470-6 System B, G
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA28;
-
-/**
- * SMPTE ST 170M / ITU-R BT.601-7 525 or 625
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
-  SDL_TRANSFER_CHARACTERISTICS_BT601;
-
-/**
- * SMPTE ST 240M
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE240;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
-  SDL_TRANSFER_CHARACTERISTICS_LINEAR;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100 =
-  SDL_TRANSFER_CHARACTERISTICS_LOG100;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
-  SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10;
-
-/**
- * IEC 61966-2-4
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
-  SDL_TRANSFER_CHARACTERISTICS_IEC61966;
-
-/**
- * ITU-R BT1361 Extended Colour Gamut
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
-  SDL_TRANSFER_CHARACTERISTICS_BT1361;
-
-/**
- * IEC 61966-2-1 (sRGB or sYCC)
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
-  SDL_TRANSFER_CHARACTERISTICS_SRGB;
-
-/**
- * ITU-R BT2020 for 10-bit system
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT;
-
-/**
- * ITU-R BT2020 for 12-bit system
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT;
-
-/**
- * SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
-  SDL_TRANSFER_CHARACTERISTICS_PQ;
-
-/**
- * SMPTE ST 428-1
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE428;
-
-/**
- * ARIB STD-B67, known as "hybrid log-gamma" (HLG)
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
-  SDL_TRANSFER_CHARACTERISTICS_HLG;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
-  SDL_TRANSFER_CHARACTERISTICS_CUSTOM;
-
-/**
- * Colorspace matrix coefficients.
- *
- * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using MatrixCoefficients = SDL_MatrixCoefficients;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
-  SDL_MATRIX_COEFFICIENTS_IDENTITY;
-
-/**
- * ITU-R BT.709-6
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
-  SDL_MATRIX_COEFFICIENTS_BT709;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
-  SDL_MATRIX_COEFFICIENTS_UNSPECIFIED;
-
-/**
- * US FCC Title 47
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
-  SDL_MATRIX_COEFFICIENTS_FCC;
-
-/**
- * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
- * SDL_MATRIX_COEFFICIENTS_BT601
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
-  SDL_MATRIX_COEFFICIENTS_BT470BG;
-
-/**
- * ITU-R BT.601-7 525
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
-  SDL_MATRIX_COEFFICIENTS_BT601;
-
-/**
- * SMPTE 240M
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE240;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
-  SDL_MATRIX_COEFFICIENTS_YCGCO;
-
-/**
- * ITU-R BT.2020-2 non-constant luminance
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_NCL;
-
-/**
- * ITU-R BT.2020-2 constant luminance
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_CL;
-
-/**
- * SMPTE ST 2085
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE2085;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
-  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
-  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL;
-
-/**
- * ITU-R BT.2100-0 ICTCP
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
-  SDL_MATRIX_COEFFICIENTS_ICTCP;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
-  SDL_MATRIX_COEFFICIENTS_CUSTOM;
-
-/**
- * Colorspace chroma sample location.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ChromaLocation = SDL_ChromaLocation;
-
-/**
- * RGB, no chroma sampling
- */
-constexpr ChromaLocation CHROMA_LOCATION_NONE = SDL_CHROMA_LOCATION_NONE;
-
-/**
- * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
- * of the 2x2 square. In other words, they have the same horizontal location as
- * the top-left pixel, but is shifted one-half pixel down vertically.
- */
-constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
-
-/**
- * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
- * square. In other words, they are offset one-half pixel to the right and
- * one-half pixel down compared to the top-left pixel.
- */
-constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
-
-/**
- * In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and
- * Cr are sampled at the same location as the group's top-left Y pixel
- * ("co-sited", "co-located").
- */
-constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
-
-/**
- * Colorspace definitions.
- *
- * Since similar colorspaces may vary in their details (matrix, transfer
- * function, etc.), this is not an exhaustive list, but rather a
- * representative sample of the kinds of colorspaces supported in SDL.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @sa ColorPrimaries
- * @sa ColorRange
- * @sa ColorType
- * @sa MatrixCoefficients
- * @sa TransferCharacteristics
- */
-struct Colorspace
-{
-  SDL_Colorspace colorspace;
-
-  /**
-   * Wrap a SDL_Colorspace
-   *
-   */
-  constexpr Colorspace(SDL_Colorspace colorspace = SDL_COLORSPACE_UNKNOWN)
-    : colorspace(colorspace)
-  {
-  }
-
-  /**
-   * Define custom Colorspace formats.
-   *
-   * For example, defining SDL_COLORSPACE_SRGB looks like this:
-   *
-   * ```cpp
-   * Colorspace colorspace(SDL_COLOR_TYPE_RGB,
-   *                       SDL_COLOR_RANGE_FULL,
-   *                       SDL_COLOR_PRIMARIES_BT709,
-   *                       SDL_TRANSFER_CHARACTERISTICS_SRGB,
-   *                       SDL_MATRIX_COEFFICIENTS_IDENTITY,
-   *                       SDL_CHROMA_LOCATION_NONE)
-   * ```
-   *
-   * @param type the type of the new format, probably an ColorType value.
-   * @param range the range of the new format, probably a ColorRange value.
-   * @param primaries the primaries of the new format, probably an
-   *                  ColorPrimaries value.
-   * @param transfer the transfer characteristics of the new format, probably an
-   *                 TransferCharacteristics value.
-   * @param matrix the matrix coefficients of the new format, probably an
-   *               MatrixCoefficients value.
-   * @param chroma the chroma sample location of the new format, probably an
-   *               ChromaLocation value.
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr Colorspace(ColorType type,
-                       ColorRange range,
-                       ColorPrimaries primaries,
-                       TransferCharacteristics transfer,
-                       MatrixCoefficients matrix,
-                       ChromaLocation chroma)
-    : colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
-                                                      range,
-                                                      primaries,
-                                                      transfer,
-                                                      matrix,
-                                                      chroma)))
-  {
-  }
-
-  constexpr operator bool() const
-  {
-    return colorspace != SDL_COLORSPACE_UNKNOWN;
-  }
-
-  constexpr operator SDL_Colorspace() const { return colorspace; }
-
-  /**
-   * A macro to retrieve the type of a Colorspace.
-   *
-   * @returns the ColorType for `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(colorspace); }
-
-  /**
-   * A macro to retrieve the range of a Colorspace.
-   *
-   * @returns the ColorRange of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ColorRange GetRange() const
-  {
-    return SDL_COLORSPACERANGE(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the chroma sample location of a Colorspace.
-   *
-   * @returns the ChromaLocation of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ChromaLocation GetChroma() const
-  {
-    return SDL_COLORSPACECHROMA(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the primaries of a Colorspace.
-   *
-   * @returns the ColorPrimaries of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ColorPrimaries GetPrimaries() const
-  {
-    return SDL_COLORSPACEPRIMARIES(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the transfer characteristics of a Colorspace.
-   *
-   * @returns the TransferCharacteristics of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr TransferCharacteristics GetTransfer() const
-  {
-    return SDL_COLORSPACETRANSFER(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the matrix coefficients of a Colorspace.
-   *
-   * @returns the MatrixCoefficients of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr MatrixCoefficients GetMatrix() const
-  {
-    return SDL_COLORSPACEMATRIX(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace uses BT601 (or BT470BG) matrix
-   * coefficients.
-   *
-   * Note that this macro double-evaluates its parameter, so do not use
-   * expressions with side-effects here.
-   *
-   * @returns true if BT601 or BT470BG, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT601() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT601(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace uses BT709 matrix coefficients.
-   *
-   * @returns true if BT709, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT709() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT709(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace uses BT2020_NCL matrix
-   * coefficients.
-   *
-   * @returns true if BT2020_NCL, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT2020_NCL() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace has a limited range.
-   *
-   * @returns true if limited range, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsLimitedRange() const
-  {
-    return SDL_ISCOLORSPACE_LIMITED_RANGE(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace has a full range.
-   *
-   * @returns true if full range, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsFullRange() const
-  {
-    return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
-  }
-};
-
-constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
- */
-constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
- */
-constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
- */
-constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
- */
-constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
- */
-constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
- */
-constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
- */
-constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
- */
-constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
- */
-constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
- */
-constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
-
-/**
- * The default colorspace for RGB surfaces if no colorspace is specified
- */
-constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
-
-/**
- * The default colorspace for YUV surfaces if no colorspace is specified
- */
-constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
-
-/**
- * A structure that represents a color as RGBA components.
- *
- * The bits of this structure can be directly reinterpreted as an
- * integer-packed color which uses the SDL_PIXELFORMAT_RGBA32 format
- * (SDL_PIXELFORMAT_ABGR8888 on little-endian systems and
- * SDL_PIXELFORMAT_RGBA8888 on big-endian systems).
- *
- * @since This struct is available since SDL 3.2.0.
- */
-struct Color : SDL_Color
-{
-  constexpr Color(SDL_Color color = {0})
-    : SDL_Color(color)
-  {
-  }
-
-  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
-    : SDL_Color{r, g, b, a}
-  {
-  }
-
-  // Auto comparison operator
-  auto operator<=>(const Color& other) const = default;
-
-  /**
-   * @brief Get the red component from the color
-   *
-   * @returns The red component from the color
-   *
-   */
-  constexpr Uint8 GetRed() const { return r; }
-
-  /**
-   * @brief Set the red component from the color
-   *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetRed(Uint8 nr)
-  {
-    r = nr;
-    return *this;
-  }
-
-  /**
-   * @brief Get the green component from the color
-   *
-   * @returns The green component from the color
-   *
-   */
-  constexpr Uint8 GetGreen() const { return g; }
-
-  /**
-   * @brief Set the green component from the color
-   *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetGreen(Uint8 ng)
-  {
-    g = ng;
-    return *this;
-  }
-
-  /**
-   * @brief Get the blue component from the color
-   *
-   * @returns The blue component from the color
-   *
-   */
-  constexpr Uint8 GetBlue() const { return b; }
-
-  /**
-   * @brief Set the blue component from the color
-   *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetBlue(Uint8 nb)
-  {
-    b = nb;
-    return *this;
-  }
-
-  /**
-   * @brief Get the alpha component from the color
-   *
-   * @returns The alpha component from the color
-   *
-   */
-  constexpr Uint8 GetAlpha() const { return a; }
-
-  /**
-   * @brief Set the alpha component from the color
-   *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetAlpha(Uint8 na)
-  {
-    a = na;
-    return *this;
-  }
-
-  /**
-   * @brief Map an RGBA quadruple to a pixel value for a given pixel format.
-   *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
-   *
-   * If the specified pixel format has no alpha component the alpha value will
-   * be ignored (as it will be in formats with a palette).
-   *
-   * If the format has a palette (8-bit) the index of the closest matching color
-   * in the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param format a pointer to PixelFormatDetails describing the pixel
-   *               format.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a pixel value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   */
-  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
-
-  /**
-   * Get RGBA values from a pixel in the specified format.
-   *
-   * This function uses the entire 8-bit [0..255] range when converting color
-   * components from pixel formats with less than 8-bits per RGB component
-   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-   *
-   * If the surface has no alpha component, the alpha will be returned as 0xff
-   * (100% opaque).
-   *
-   * @param pixel a pixel value.
-   * @param format a pointer to SDL_PixelFormatDetails describing the pixel
-   *               format.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a color value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PixelFormat.GetDetails()
-   * @sa GetRGBA()
-   * @sa Map()
-   */
-  static Color Get(Uint32 pixel,
-                   const PixelFormatDetails* format,
-                   PaletteRef palette);
-};
-
-/**
- * The bits of this structure can be directly reinterpreted as a float-packed
- * color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format
- *
- * @since This struct is available since SDL 3.2.0.
- */
-struct FColor : SDL_FColor
-{
-  constexpr FColor(SDL_FColor color = {0})
-    : SDL_FColor(color)
-  {
-  }
-
-  constexpr FColor(float r, float g, float b, float a = 1)
-    : SDL_FColor{r, g, b, a}
-  {
-  }
-
-  // Auto comparison operator
-  auto operator<=>(const FColor& other) const = default;
-
-  /**
-   * @brief Get the red component from the color
-   *
-   * @returns The red component from the color
-   *
-   */
-  constexpr float GetRed() const { return r; }
-
-  /**
-   * @brief Set the red component from the color
-   *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetRed(float nr)
-  {
-    r = nr;
-    return *this;
-  }
-
-  /**
-   * @brief Get the green component from the color
-   *
-   * @returns The green component from the color
-   *
-   */
-  constexpr float GetGreen() const { return g; }
-
-  /**
-   * @brief Set the green component from the color
-   *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetGreen(float ng)
-  {
-    g = ng;
-    return *this;
-  }
-
-  /**
-   * @brief Get the blue component from the color
-   *
-   * @returns The blue component from the color
-   *
-   */
-  constexpr float GetBlue() const { return b; }
-
-  /**
-   * @brief Set the blue component from the color
-   *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetBlue(float nb)
-  {
-    b = nb;
-    return *this;
-  }
-
-  /**
-   * @brief Get the alpha component from the color
-   *
-   * @returns The alpha component from the color
-   *
-   */
-  constexpr float GetAlpha() const { return a; }
-
-  /**
-   * @brief Set the alpha component from the color
-   *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetAlpha(float na)
-  {
-    a = na;
-    return *this;
-  }
-};
-
-/**
- * @brief A set of indexed colors representing a palette.
- *
- * @ingroup resource
- */
-template<class T>
-struct PaletteBase : T
-{
-  // Make default ctors available
-  using T::T;
-
-  /**
-   * Create a palette structure with the specified number of color entries.
-   *
-   * The palette entries are initialized to white.
-   *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @post this represents a new Palette structure convertible to true on
-   * success or converts to false on failure (e.g. if there wasn't enough
-   * memory); call GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SetColors()
-   * @sa Surface.SetPalette()
-   */
-  inline PaletteBase(int ncolors)
-    : T(SDL_CreatePalette(ncolors))
-  {
-  }
-
-  constexpr int GetSize() const { return this->ncolors; }
-
-  constexpr Color operator[](int index) const { return this->colors[index]; }
-
-  /**
-   * Set a range of colors in a palette.
-   *
-   * @param colors an array of SDL_Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @param ncolors the number of entries to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
-  {
-    return SDL_SetPaletteColors(T::get(), colors, firstcolor, ncolors);
-  }
-
-  /**
-   * Set a range of colors in a palette.
-   *
-   * @param colors a span of SDL_Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   */
-  bool SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
-  {
-    SDL_assert_paranoid(colors.size() < SDL_MAX_SINT32);
-    return SetColors(colors.data(), firstcolor, colors.size());
-  }
-
-  /**
-   * Free a palette
-   *
-   * After calling, this object becomes empty.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Destroy() { return SDL_DestroyPalette(T::release()); }
-};
-
-/**
- * Map an RGB triple to an opaque pixel value for a given pixel format.
- *
- * This function maps the RGB color value to the specified pixel format and
- * returns the pixel value best approximating the given RGB color value for
- * the given pixel format.
- *
- * If the format has a palette (8-bit) the index of the closest matching color
- * in the palette will be returned.
- *
- * If the specified pixel format has an alpha component it will be returned as
- * all 1 bits (fully opaque).
- *
- * If the pixel format bpp (color depth) is less than 32-bpp then the unused
- * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
- * format the return value can be assigned to a Uint16, and similarly a Uint8
- * for an 8-bpp format).
- *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @returns a pixel value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPixelFormatDetails()
- * @sa GetRGB()
- * @sa MapRGBA()
- * @sa Surface.MapColor()
- */
-inline Uint32 MapRGB(const PixelFormatDetails* format,
-                     PaletteRef palette,
-                     Uint8 r,
-                     Uint8 g,
-                     Uint8 b)
-{
-  return SDL_MapRGB(format, palette.get(), r, g, b);
-}
-
-/**
- * Map an RGBA quadruple to a pixel value for a given pixel format.
- *
- * This function maps the RGBA color value to the specified pixel format and
- * returns the pixel value best approximating the given RGBA color value for
- * the given pixel format.
- *
- * If the specified pixel format has no alpha component the alpha value will
- * be ignored (as it will be in formats with a palette).
- *
- * If the format has a palette (8-bit) the index of the closest matching color
- * in the palette will be returned.
- *
- * If the pixel format bpp (color depth) is less than 32-bpp then the unused
- * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
- * format the return value can be assigned to a Uint16, and similarly a Uint8
- * for an 8-bpp format).
- *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @param a the alpha component of the pixel in the range 0-255.
- * @returns a pixel value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa Surface.MapColor()
- */
-inline Uint32 MapRGBA(const PixelFormatDetails* format,
-                      PaletteRef palette,
-                      Uint8 r,
-                      Uint8 g,
-                      Uint8 b,
-                      Uint8 a)
-{
-  return SDL_MapRGBA(format, palette.get(), r, g, b, a);
-}
-
-/**
- * Get RGB values from a pixel in the specified format.
- *
- * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
- *
- * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa MapRGBA()
- */
-inline void GetRGB(Uint32 pixel,
-                   const PixelFormatDetails* format,
-                   PaletteRef palette,
-                   Uint8* r,
-                   Uint8* g,
-                   Uint8* b)
-{
-  SDL_GetRGB(pixel, format, palette.get(), r, g, b);
-}
-
-/**
- * Get RGBA values from a pixel in the specified format.
- *
- * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
- *
- * If the surface has no alpha component, the alpha will be returned as 0xff
- * (100% opaque).
- *
- * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
- * @param a a pointer filled in with the alpha component, may be NULL.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGB()
- * @sa MapRGB()
- * @sa MapRGBA()
- */
-inline void GetRGBA(Uint32 pixel,
-                    const PixelFormatDetails* format,
-                    PaletteRef palette,
-                    Uint8* r,
-                    Uint8* g,
-                    Uint8* b,
-                    Uint8* a)
-{
-  SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
-}
-
-/** @} */
-
-#pragma region impl
-
-inline void ObjectDeleter<SDL_Palette>::operator()(PaletteRef palette) const
-{
-  palette.Destroy();
-}
-
-inline Uint32 Color::Map(const PixelFormatDetails* format,
-                         PaletteRef palette = nullptr) const
-{
-  return MapRGBA(format, palette.get(), r, g, b, a);
-}
-
-inline Color Get(Uint32 pixel,
-                 const PixelFormatDetails* format,
-                 PaletteRef palette = nullptr)
-{
-  Color c;
-  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
-  return c;
-}
-
-inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
-{
-  return color.Map(GetDetails(), palette);
-}
-
-inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
-{
-  return Color::Get(pixel, GetDetails(), palette);
-}
-
-#pragma endregion impl
-
-} // namespace SDL
-
-#endif /* SDL3PP_PIXELS_H_ */
-
-
-// end --- SDL3pp_pixels.h --- 
-
-
-//
-//
-//
+// begin --- SDL3pp_video.h --- 
+
+#ifndef SDL3PP_VIDEO_H_
+#define SDL3PP_VIDEO_H_
+
+#include <memory>
+#include <optional>
+#include <vector>
+#include <SDL3/SDL_video.h>
 
 // begin --- SDL3pp_properties.h --- 
 
@@ -8965,6 +6175,80 @@ constexpr OptionalRef<T> fromNullable(T* ptr)
 
 
 // end --- SDL3pp_optionalRef.h --- 
+
+
+
+// begin --- SDL3pp_spanRef.h --- 
+
+#ifndef SDL3PP_SPAN_REF_H_
+#define SDL3PP_SPAN_REF_H_
+
+#include <concepts>
+#include <ranges>
+#include <span>
+
+namespace SDL {
+
+template<class T, class BASE>
+concept DerivedWrapper =
+  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
+
+/**
+ * A wrapper around span that works for out derived-wrapper pattern
+ * (eg, Rect, Color)
+ *
+ */
+template<class T>
+class SpanRef
+{
+  std::span<T> value;
+
+public:
+  constexpr SpanRef() = default;
+
+  template<DerivedWrapper<T> U, size_t N>
+  constexpr SpanRef(U (&other)[N])
+    : value(static_cast<T*>(other), N)
+  {
+  }
+
+  template<DerivedWrapper<T> U>
+  constexpr SpanRef(const std::span<U>& other)
+    : value(other.data(), other.size())
+  {
+  }
+
+  template<std::contiguous_iterator It>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, size_t count)
+    : value((T*)(&*first), count)
+  {
+  }
+
+  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, End last)
+    : value((T*)(&*first), size_t(last - first))
+  {
+  }
+  template<std::ranges::contiguous_range R>
+    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
+  constexpr SpanRef(R&& range)
+    : SpanRef(std::begin(range), std::end(range))
+  {
+  }
+
+  constexpr size_t size() const { return value.size(); }
+
+  constexpr T* data() const { return value.data(); }
+};
+
+} // namespace SDL
+
+#endif /* SDL3PP_SPAN_REF_H_ */
+
+
+// end --- SDL3pp_spanRef.h --- 
 
 
 
@@ -10998,13 +8282,6 @@ constexpr Rect::operator FRect() const
 
 
 
-// begin --- SDL3pp_render.h --- 
-
-#ifndef SDL3PP_RENDER_H_
-#define SDL3PP_RENDER_H_
-
-#include <SDL3/SDL_render.h>
-
 // begin --- SDL3pp_surface.h --- 
 
 #ifndef SDL3PP_SURFACE_H_
@@ -11012,6 +8289,1968 @@ constexpr Rect::operator FRect() const
 
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_version.h>
+
+// begin --- SDL3pp_pixels.h --- 
+
+#ifndef SDL3PP_PIXELS_H_
+#define SDL3PP_PIXELS_H_
+
+#include <span>
+#include <SDL3/SDL_assert.h>
+#include <SDL3/SDL_pixels.h>
+
+namespace SDL {
+
+/**
+ * @defgroup CategoryPixels Pixel Formats and Conversion Routines
+ *
+ * SDL offers facilities for pixel management.
+ *
+ * Largely these facilities deal with pixel _format_: what does this set of
+ * bits represent?
+ *
+ * If you mostly want to think of a pixel as some combination of red, green,
+ * blue, and maybe alpha intensities, this is all pretty straightforward, and
+ * in many cases, is enough information to build a perfectly fine game.
+ *
+ * However, the actual definition of a pixel is more complex than that:
+ *
+ * Pixels are a representation of a color in a particular color space.
+ *
+ * The first characteristic of a color space is the color type. SDL
+ * understands two different color types, RGB and YCbCr, or in SDL also
+ * referred to as YUV.
+ *
+ * RGB colors consist of red, green, and blue channels of color that are added
+ * together to represent the colors we see on the screen.
+ *
+ * https://en.wikipedia.org/wiki/RGB_color_model
+ *
+ * YCbCr colors represent colors as a Y luma brightness component and red and
+ * blue chroma color offsets. This color representation takes advantage of the
+ * fact that the human eye is more sensitive to brightness than the color in
+ * an image. The Cb and Cr components are often compressed and have lower
+ * resolution than the luma component.
+ *
+ * https://en.wikipedia.org/wiki/YCbCr
+ *
+ * When the color information in YCbCr is compressed, the Y pixels are left at
+ * full resolution and each Cr and Cb pixel represents an average of the color
+ * information in a block of Y pixels. The chroma location determines where in
+ * that block of pixels the color information is coming from.
+ *
+ * The color range defines how much of the pixel to use when converting a
+ * pixel into a color on the display. When the full color range is used, the
+ * entire numeric range of the pixel bits is significant. When narrow color
+ * range is used, for historical reasons, the pixel uses only a portion of the
+ * numeric range to represent colors.
+ *
+ * The color primaries and white point are a definition of the colors in the
+ * color space relative to the standard XYZ color space.
+ *
+ * https://en.wikipedia.org/wiki/CIE_1931_color_space
+ *
+ * The transfer characteristic, or opto-electrical transfer function (OETF),
+ * is the way a color is converted from mathematically linear space into a
+ * non-linear output signals.
+ *
+ * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
+ *
+ * The matrix coefficients are used to convert between YCbCr and RGB colors.
+ *
+ * @{
+ */
+
+// Forward decl
+template<class T>
+struct PaletteBase;
+
+/**
+ * @brief Handle to a non owned surface
+ */
+using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
+
+template<>
+struct ObjectDeleter<SDL_Palette>
+{
+  void operator()(PaletteRef palette) const;
+};
+
+/**
+ * @brief Handle to an owned surface
+ */
+using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
+
+// Forward decl
+struct Color;
+
+/**
+ * Pixel type.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PixelType = SDL_PixelType;
+
+constexpr PixelType PIXELTYPE_UNKNOWN = SDL_PIXELTYPE_UNKNOWN;
+
+constexpr PixelType PIXELTYPE_INDEX1 = SDL_PIXELTYPE_INDEX1;
+
+constexpr PixelType PIXELTYPE_INDEX4 = SDL_PIXELTYPE_INDEX4;
+
+constexpr PixelType PIXELTYPE_INDEX8 = SDL_PIXELTYPE_INDEX8;
+
+constexpr PixelType PIXELTYPE_PACKED8 = SDL_PIXELTYPE_PACKED8;
+
+constexpr PixelType PIXELTYPE_PACKED16 = SDL_PIXELTYPE_PACKED16;
+
+constexpr PixelType PIXELTYPE_PACKED32 = SDL_PIXELTYPE_PACKED32;
+
+constexpr PixelType PIXELTYPE_ARRAYU8 = SDL_PIXELTYPE_ARRAYU8;
+
+constexpr PixelType PIXELTYPE_ARRAYU16 = SDL_PIXELTYPE_ARRAYU16;
+
+constexpr PixelType PIXELTYPE_ARRAYU32 = SDL_PIXELTYPE_ARRAYU32;
+
+constexpr PixelType PIXELTYPE_ARRAYF16 = SDL_PIXELTYPE_ARRAYF16;
+
+constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32;
+
+constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2;
+
+/**
+ * Bitmap pixel order, high bit -> low bit.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using BitmapOrder = SDL_BitmapOrder;
+
+constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE;
+
+constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321;
+
+constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234;
+
+/**
+ * Packed component order, high bit -> low bit.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PackedOrder = SDL_PackedOrder;
+
+constexpr PackedOrder PACKEDORDER_NONE = SDL_PACKEDORDER_NONE;
+
+constexpr PackedOrder PACKEDORDER_XRGB = SDL_PACKEDORDER_XRGB;
+
+constexpr PackedOrder PACKEDORDER_RGBX = SDL_PACKEDORDER_RGBX;
+
+constexpr PackedOrder PACKEDORDER_ARGB = SDL_PACKEDORDER_ARGB;
+
+constexpr PackedOrder PACKEDORDER_RGBA = SDL_PACKEDORDER_RGBA;
+
+constexpr PackedOrder PACKEDORDER_XBGR = SDL_PACKEDORDER_XBGR;
+
+constexpr PackedOrder PACKEDORDER_BGRX = SDL_PACKEDORDER_BGRX;
+
+constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR;
+
+constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA;
+
+/**
+ * Array component order, low byte -> high byte.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ArrayOrder = SDL_ArrayOrder;
+
+constexpr ArrayOrder ARRAYORDER_NONE = SDL_ARRAYORDER_NONE;
+
+constexpr ArrayOrder ARRAYORDER_RGB = SDL_ARRAYORDER_RGB;
+
+constexpr ArrayOrder ARRAYORDER_RGBA = SDL_ARRAYORDER_RGBA;
+
+constexpr ArrayOrder ARRAYORDER_ARGB = SDL_ARRAYORDER_ARGB;
+
+constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR;
+
+constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA;
+
+constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR;
+
+/**
+ * Packed component layout.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PackedLayout = SDL_PackedLayout;
+
+constexpr PackedLayout PACKEDLAYOUT_NONE = SDL_PACKEDLAYOUT_NONE;
+
+constexpr PackedLayout PACKEDLAYOUT_332 = SDL_PACKEDLAYOUT_332;
+
+constexpr PackedLayout PACKEDLAYOUT_4444 = SDL_PACKEDLAYOUT_4444;
+
+constexpr PackedLayout PACKEDLAYOUT_1555 = SDL_PACKEDLAYOUT_1555;
+
+constexpr PackedLayout PACKEDLAYOUT_5551 = SDL_PACKEDLAYOUT_5551;
+
+constexpr PackedLayout PACKEDLAYOUT_565 = SDL_PACKEDLAYOUT_565;
+
+constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888;
+
+constexpr PackedLayout PACKEDLAYOUT_2101010 = SDL_PACKEDLAYOUT_2101010;
+
+constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
+
+/**
+ * Details about the format of a pixel.
+ */
+using PixelFormatDetails = SDL_PixelFormatDetails;
+
+/**
+ * Pixel format.
+ *
+ * SDL's pixel formats have the following naming convention:
+ *
+ * - Names with a list of components and a single bit count, such as RGB24 and
+ *   ABGR32, define a platform-independent encoding into bytes in the order
+ *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
+ *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
+ *   encoded in 4 bytes alpha, blue, green, red) in that order. Use these
+ *   names if the property of a format that is important to you is the order
+ *   of the bytes in memory or on disk.
+ * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
+ *   "packed" into an appropriately-sized integer in the platform's native
+ *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in
+ *   each integer, the most significant bits are alpha, and the least
+ *   significant bits are blue. On a little-endian CPU such as x86, the least
+ *   significant bits of each integer are arranged first in memory, but on a
+ *   big-endian CPU such as s390x, the most significant bits are arranged
+ *   first. Use these names if the property of a format that is important to
+ *   you is the meaning of each bit position within a native-endianness
+ *   integer.
+ * - In indexed formats such as INDEX4LSB, each pixel is represented by
+ *   encoding an index into the palette into the indicated number of bits,
+ *   with multiple pixels packed into each byte if appropriate. In LSB
+ *   formats, the first (leftmost) pixel is stored in the least-significant
+ *   bits of the byte; in MSB formats, it's stored in the most-significant
+ *   bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly
+ *   fills one byte.
+ *
+ * The 32-bit byte-array encodings such as RGBA32 are aliases for the
+ * appropriate 8888 encoding for the current platform. For example, RGBA32 is
+ * an alias for ABGR8888 on little-endian CPUs like x86, or an alias for
+ * RGBA8888 on big-endian CPUs.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+struct PixelFormat
+{
+  SDL_PixelFormat format;
+
+  constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
+    : format(format)
+  {
+  }
+
+  /**
+   * Defining custom non-FourCC pixel formats.
+   *
+   * For example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:
+   *
+   * ```c
+   * PixelFormat format(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA,
+   *   SDL_PACKEDLAYOUT_8888, 32, 4);
+   * ```
+   *
+   * @param type the type of the new format, probably a SDL_PixelType value.
+   * @param order the order of the new format, probably a SDL_BitmapOrder,
+   *              SDL_PackedOrder, or SDL_ArrayOrder value.
+   * @param layout the layout of the new format, probably an SDL_PackedLayout
+   *               value or zero.
+   * @param bits the number of bits per pixel of the new format.
+   * @param bytes the number of bytes per pixel of the new format.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr PixelFormat(SDL_PixelType type,
+                        int order,
+                        SDL_PackedLayout layout,
+                        int bits,
+                        int bytes)
+    : format(SDL_PixelFormat(
+        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
+  {
+  }
+
+  constexpr operator bool() const { return format != SDL_PIXELFORMAT_UNKNOWN; }
+
+  constexpr operator SDL_PixelFormat() const { return format; }
+
+  /**
+   * Retrieve the type.
+   *
+   * @returns the type as PixelType.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr PixelType GetType() const
+  {
+    return PixelType(SDL_PIXELTYPE(format));
+  }
+
+  /**
+   * Retrieve the order.
+   *
+   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+   * enumerations, depending on the format type.
+   *
+   * @returns the order.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr int GetOrder() const { return SDL_PIXELORDER(format); }
+
+  /**
+   * Retrieve the layout.
+   *
+   * This is usually a value from the SDL_PackedLayout enumeration, or zero if a
+   * layout doesn't make sense for the format type.
+   *
+   * @returns the layout
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr PackedLayout GetLayout() const
+  {
+    return PackedLayout(SDL_PIXELLAYOUT(format));
+  }
+
+  /**
+   * Determine this's bits per pixel.
+   *
+   * FourCC formats will report zero here, as it rarely makes sense to measure
+   * them per-pixel.
+   *
+   * @returns the bits-per-pixel.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @sa PixelFormat.GetBytesPerPixel
+   */
+  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(format); }
+
+  /**
+   * Determine this's bytes per pixel.
+   *
+   * Note that this macro double-evaluates its parameter, so do not use
+   * expressions with side-effects here.
+   *
+   * FourCC formats do their best here, but many of them don't have a meaningful
+   * measurement of bytes per pixel.
+   *
+   * @return the bytes-per-pixel.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @sa PixelFormat.GetBitsPerPixel
+   */
+  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(format); }
+
+  /**
+   * Determine if this is an indexed format.
+   *
+   * @returns true if the format is indexed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsIndexed() const { return SDL_ISPIXELFORMAT_INDEXED(format); }
+
+  /**
+   * Determine if this is a packed format.
+   *
+   * @returns true if the format is packed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(format); }
+
+  /**
+   * @brief Determine if this is an array format.
+   *
+   * @returns true if the format is an array, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(format); }
+
+  /**
+   * Determine if this is a 10-bit format.
+   *
+   * @returns true if the format is 10-bit, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(format); }
+
+  /**
+   * Determine if this is a floating point format.
+   *
+   * @returns true if the format is 10-bit, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(format); }
+
+  /**
+   * Determine if this has an alpha channel.
+   *
+   * @returns true if the format has alpha, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(format); }
+
+  /**
+   * Determine if this is a "FourCC" format.
+   *
+   * This covers custom and other unusual formats.
+   *
+   * @returns true if the format has alpha, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(format); }
+
+  /**
+   * Get the human readable name of a pixel format.
+   *
+   * @returns the human readable name of the specified pixel format or
+   *          "SDL_PIXELFORMAT_UNKNOWN" if the format isn't recognized.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  inline const char* GetName() const { return SDL_GetPixelFormatName(format); }
+
+  /**
+   * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
+   *
+   * @param bpp a bits per pixel value; usually 15, 16, or 32.
+   * @param Rmask a pointer filled in with the red mask for the format.
+   * @param Gmask a pointer filled in with the green mask for the format.
+   * @param Bmask a pointer filled in with the blue mask for the format.
+   * @param Amask a pointer filled in with the alpha mask for the format.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ForMasks()
+   */
+  inline bool GetMasks(int* bpp,
+                       Uint32* Rmask,
+                       Uint32* Gmask,
+                       Uint32* Bmask,
+                       Uint32* Amask) const
+  {
+    return SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask);
+  }
+
+  /**
+   * Convert a bpp value and RGBA masks to an enumerated pixel format.
+   *
+   * This will return `SDL_PIXELFORMAT_UNKNOWN` if the conversion wasn't
+   * possible.
+   *
+   * @param bpp a bits per pixel value; usually 15, 16, or 32.
+   * @param Rmask the red mask for the format.
+   * @param Gmask the green mask for the format.
+   * @param Bmask the blue mask for the format.
+   * @param Amask the alpha mask for the format.
+   * @returns the SDL_PixelFormat value corresponding to the format masks, or
+   *          SDL_PIXELFORMAT_UNKNOWN if there isn't a match.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetMasks()
+   */
+  static inline PixelFormat ForMasks(int bpp,
+                                     Uint32 Rmask,
+                                     Uint32 Gmask,
+                                     Uint32 Bmask,
+                                     Uint32 Amask)
+  {
+    return {SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask)};
+  }
+
+  /**
+   * Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
+   *
+   * Returned structure may come from a shared global cache (i.e. not newly
+   * allocated), and hence should not be modified, especially the palette. Weird
+   * errors such as `Blit combination not supported` may occur.
+   *
+   * @returns a pointer to a SDL_PixelFormatDetails structure or NULL on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  inline const PixelFormatDetails* GetDetails() const
+  {
+    return SDL_GetPixelFormatDetails(format);
+  }
+
+  /**
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param color the color components of the pixel in the range 0-255.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa Get()
+   * @sa MapRGBA()
+   * @sa Surface.MapColor()
+   */
+  inline Uint32 Map(Color color, PaletteRef palette) const;
+
+  /**
+   * Get RGBA values from a pixel in the specified format.
+   *
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+   *
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
+   *
+   * @param pixel a pixel value.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa GetRGBA()
+   * @sa Map()
+   */
+  inline Color Get(Uint32 pixel, PaletteRef palette) const;
+};
+
+constexpr PixelFormat PIXELFORMAT_UNKNOWN = SDL_PIXELFORMAT_UNKNOWN;
+
+constexpr PixelFormat PIXELFORMAT_INDEX1LSB = SDL_PIXELFORMAT_INDEX1LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX1MSB = SDL_PIXELFORMAT_INDEX1MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX2LSB = SDL_PIXELFORMAT_INDEX2LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX2MSB = SDL_PIXELFORMAT_INDEX2MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX4LSB = SDL_PIXELFORMAT_INDEX4LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX4MSB = SDL_PIXELFORMAT_INDEX4MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8;
+
+constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332;
+
+constexpr PixelFormat PIXELFORMAT_XRGB4444 = SDL_PIXELFORMAT_XRGB4444;
+
+constexpr PixelFormat PIXELFORMAT_XBGR4444 = SDL_PIXELFORMAT_XBGR4444;
+
+constexpr PixelFormat PIXELFORMAT_XRGB1555 = SDL_PIXELFORMAT_XRGB1555;
+
+constexpr PixelFormat PIXELFORMAT_XBGR1555 = SDL_PIXELFORMAT_XBGR1555;
+
+constexpr PixelFormat PIXELFORMAT_ARGB4444 = SDL_PIXELFORMAT_ARGB4444;
+
+constexpr PixelFormat PIXELFORMAT_RGBA4444 = SDL_PIXELFORMAT_RGBA4444;
+
+constexpr PixelFormat PIXELFORMAT_ABGR4444 = SDL_PIXELFORMAT_ABGR4444;
+
+constexpr PixelFormat PIXELFORMAT_BGRA4444 = SDL_PIXELFORMAT_BGRA4444;
+
+constexpr PixelFormat PIXELFORMAT_ARGB1555 = SDL_PIXELFORMAT_ARGB1555;
+
+constexpr PixelFormat PIXELFORMAT_RGBA5551 = SDL_PIXELFORMAT_RGBA5551;
+
+constexpr PixelFormat PIXELFORMAT_ABGR1555 = SDL_PIXELFORMAT_ABGR1555;
+
+constexpr PixelFormat PIXELFORMAT_BGRA5551 = SDL_PIXELFORMAT_BGRA5551;
+
+constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565;
+
+constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565;
+
+constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24;
+
+constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24;
+
+constexpr PixelFormat PIXELFORMAT_XRGB8888 = SDL_PIXELFORMAT_XRGB8888;
+
+constexpr PixelFormat PIXELFORMAT_RGBX8888 = SDL_PIXELFORMAT_RGBX8888;
+
+constexpr PixelFormat PIXELFORMAT_XBGR8888 = SDL_PIXELFORMAT_XBGR8888;
+
+constexpr PixelFormat PIXELFORMAT_BGRX8888 = SDL_PIXELFORMAT_BGRX8888;
+
+constexpr PixelFormat PIXELFORMAT_ARGB8888 = SDL_PIXELFORMAT_ARGB8888;
+
+constexpr PixelFormat PIXELFORMAT_RGBA8888 = SDL_PIXELFORMAT_RGBA8888;
+
+constexpr PixelFormat PIXELFORMAT_ABGR8888 = SDL_PIXELFORMAT_ABGR8888;
+
+constexpr PixelFormat PIXELFORMAT_BGRA8888 = SDL_PIXELFORMAT_BGRA8888;
+
+constexpr PixelFormat PIXELFORMAT_XRGB2101010 = SDL_PIXELFORMAT_XRGB2101010;
+
+constexpr PixelFormat PIXELFORMAT_XBGR2101010 = SDL_PIXELFORMAT_XBGR2101010;
+
+constexpr PixelFormat PIXELFORMAT_ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010;
+
+constexpr PixelFormat PIXELFORMAT_ABGR2101010 = SDL_PIXELFORMAT_ABGR2101010;
+
+constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48;
+
+constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48;
+
+constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64;
+
+constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64;
+
+constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64;
+
+constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64;
+
+constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT = SDL_PIXELFORMAT_RGB48_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT = SDL_PIXELFORMAT_BGR48_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT = SDL_PIXELFORMAT_RGBA64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT = SDL_PIXELFORMAT_ARGB64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT = SDL_PIXELFORMAT_BGRA64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT = SDL_PIXELFORMAT_ABGR64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT = SDL_PIXELFORMAT_RGB96_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT = SDL_PIXELFORMAT_BGR96_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT = SDL_PIXELFORMAT_RGBA128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT = SDL_PIXELFORMAT_ARGB128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT = SDL_PIXELFORMAT_BGRA128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT = SDL_PIXELFORMAT_ABGR128_FLOAT;
+
+/**
+ * Planar mode: Y + V + U  (3 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_YV12 = SDL_PIXELFORMAT_YV12;
+
+/**
+ * Planar mode: Y + U + V  (3 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_IYUV = SDL_PIXELFORMAT_IYUV;
+
+/**
+ * Packed mode: Y0+U0+Y1+V0 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_YUY2 = SDL_PIXELFORMAT_YUY2;
+
+/**
+ * Packed mode: U0+Y0+V0+Y1 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_UYVY = SDL_PIXELFORMAT_UYVY;
+
+/**
+ * Packed mode: Y0+V0+Y1+U0 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_YVYU = SDL_PIXELFORMAT_YVYU;
+
+/**
+ * Planar mode: Y + U/V interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_NV12 = SDL_PIXELFORMAT_NV12;
+
+/**
+ * Planar mode: Y + V/U interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_NV21 = SDL_PIXELFORMAT_NV21;
+
+/**
+ * Planar mode: Y + U/V interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_P010 = SDL_PIXELFORMAT_P010;
+
+/**
+ * Android video texture format
+ */
+constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
+
+/**
+ * Motion JPEG
+ */
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
+
+constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32;
+
+constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32;
+
+constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32;
+
+constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32;
+
+constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32;
+
+constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32;
+
+constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32;
+
+constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
+
+/**
+ * @brief Colorspace color type.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorType = SDL_ColorType;
+
+constexpr ColorType COLOR_TYPE_UNKNOWN = SDL_COLOR_TYPE_UNKNOWN;
+
+constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB;
+
+constexpr ColorType COLOR_TYPE_YCBCR = SDL_COLOR_TYPE_YCBCR;
+
+/**
+ * Colorspace color range, as described by
+ * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorRange = SDL_ColorRange;
+
+constexpr ColorRange COLOR_RANGE_UNKNOWN = SDL_COLOR_RANGE_UNKNOWN;
+
+/**
+ * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
+ */
+constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
+
+/**
+ * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+ */
+constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
+
+/**
+ * Colorspace color primaries, as described by
+ * https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorPrimaries = SDL_ColorPrimaries;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN = SDL_COLOR_PRIMARIES_UNKNOWN;
+
+/**
+ * ITU-R BT.709-6
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT709 = SDL_COLOR_PRIMARIES_BT709;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
+  SDL_COLOR_PRIMARIES_UNSPECIFIED;
+
+/**
+ * ITU-R BT.470-6 System M
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470M = SDL_COLOR_PRIMARIES_BT470M;
+
+/**
+ * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG = SDL_COLOR_PRIMARIES_BT470BG;
+
+/**
+ * ITU-R BT.601-7 525, SMPTE 170M
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT601 = SDL_COLOR_PRIMARIES_BT601;
+
+/**
+ * SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
+  SDL_COLOR_PRIMARIES_SMPTE240;
+
+/**
+ * Generic film (color filters using Illuminant C)
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
+  SDL_COLOR_PRIMARIES_GENERIC_FILM;
+
+/**
+ * ITU-R BT.2020-2 / ITU-R BT.2100-0
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 = SDL_COLOR_PRIMARIES_BT2020;
+
+/**
+ * SMPTE ST 428-1
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_XYZ = SDL_COLOR_PRIMARIES_XYZ;
+
+/**
+ * SMPTE RP 431-2
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
+  SDL_COLOR_PRIMARIES_SMPTE431;
+
+/**
+ * SMPTE EG 432-1 / DCI P3
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
+  SDL_COLOR_PRIMARIES_SMPTE432;
+
+/**
+ * EBU Tech. 3213-E
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 = SDL_COLOR_PRIMARIES_EBU3213;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM = SDL_COLOR_PRIMARIES_CUSTOM;
+
+/**
+ * Colorspace transfer characteristics.
+ *
+ * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using TransferCharacteristics = SDL_TransferCharacteristics;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
+  SDL_TRANSFER_CHARACTERISTICS_UNKNOWN;
+
+/**
+ * Rec. ITU-R BT.709-6 / ITU-R BT1361
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
+  SDL_TRANSFER_CHARACTERISTICS_BT709;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
+  SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED;
+
+/**
+ * ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
+
+/**
+ * ITU-R BT.470-6 System B, G
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA28;
+
+/**
+ * SMPTE ST 170M / ITU-R BT.601-7 525 or 625
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
+  SDL_TRANSFER_CHARACTERISTICS_BT601;
+
+/**
+ * SMPTE ST 240M
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE240;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
+  SDL_TRANSFER_CHARACTERISTICS_LINEAR;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10;
+
+/**
+ * IEC 61966-2-4
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
+  SDL_TRANSFER_CHARACTERISTICS_IEC61966;
+
+/**
+ * ITU-R BT1361 Extended Colour Gamut
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
+  SDL_TRANSFER_CHARACTERISTICS_BT1361;
+
+/**
+ * IEC 61966-2-1 (sRGB or sYCC)
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
+  SDL_TRANSFER_CHARACTERISTICS_SRGB;
+
+/**
+ * ITU-R BT2020 for 10-bit system
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT;
+
+/**
+ * ITU-R BT2020 for 12-bit system
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT;
+
+/**
+ * SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
+  SDL_TRANSFER_CHARACTERISTICS_PQ;
+
+/**
+ * SMPTE ST 428-1
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE428;
+
+/**
+ * ARIB STD-B67, known as "hybrid log-gamma" (HLG)
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
+  SDL_TRANSFER_CHARACTERISTICS_HLG;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
+  SDL_TRANSFER_CHARACTERISTICS_CUSTOM;
+
+/**
+ * Colorspace matrix coefficients.
+ *
+ * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using MatrixCoefficients = SDL_MatrixCoefficients;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
+  SDL_MATRIX_COEFFICIENTS_IDENTITY;
+
+/**
+ * ITU-R BT.709-6
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
+  SDL_MATRIX_COEFFICIENTS_BT709;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
+  SDL_MATRIX_COEFFICIENTS_UNSPECIFIED;
+
+/**
+ * US FCC Title 47
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
+  SDL_MATRIX_COEFFICIENTS_FCC;
+
+/**
+ * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
+ * SDL_MATRIX_COEFFICIENTS_BT601
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
+  SDL_MATRIX_COEFFICIENTS_BT470BG;
+
+/**
+ * ITU-R BT.601-7 525
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
+  SDL_MATRIX_COEFFICIENTS_BT601;
+
+/**
+ * SMPTE 240M
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE240;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
+  SDL_MATRIX_COEFFICIENTS_YCGCO;
+
+/**
+ * ITU-R BT.2020-2 non-constant luminance
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_NCL;
+
+/**
+ * ITU-R BT.2020-2 constant luminance
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_CL;
+
+/**
+ * SMPTE ST 2085
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE2085;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL;
+
+/**
+ * ITU-R BT.2100-0 ICTCP
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
+  SDL_MATRIX_COEFFICIENTS_ICTCP;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
+  SDL_MATRIX_COEFFICIENTS_CUSTOM;
+
+/**
+ * Colorspace chroma sample location.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ChromaLocation = SDL_ChromaLocation;
+
+/**
+ * RGB, no chroma sampling
+ */
+constexpr ChromaLocation CHROMA_LOCATION_NONE = SDL_CHROMA_LOCATION_NONE;
+
+/**
+ * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
+ * of the 2x2 square. In other words, they have the same horizontal location as
+ * the top-left pixel, but is shifted one-half pixel down vertically.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
+
+/**
+ * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
+ * square. In other words, they are offset one-half pixel to the right and
+ * one-half pixel down compared to the top-left pixel.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
+
+/**
+ * In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and
+ * Cr are sampled at the same location as the group's top-left Y pixel
+ * ("co-sited", "co-located").
+ */
+constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
+
+/**
+ * Colorspace definitions.
+ *
+ * Since similar colorspaces may vary in their details (matrix, transfer
+ * function, etc.), this is not an exhaustive list, but rather a
+ * representative sample of the kinds of colorspaces supported in SDL.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa ColorPrimaries
+ * @sa ColorRange
+ * @sa ColorType
+ * @sa MatrixCoefficients
+ * @sa TransferCharacteristics
+ */
+struct Colorspace
+{
+  SDL_Colorspace colorspace;
+
+  /**
+   * Wrap a SDL_Colorspace
+   *
+   */
+  constexpr Colorspace(SDL_Colorspace colorspace = SDL_COLORSPACE_UNKNOWN)
+    : colorspace(colorspace)
+  {
+  }
+
+  /**
+   * Define custom Colorspace formats.
+   *
+   * For example, defining SDL_COLORSPACE_SRGB looks like this:
+   *
+   * ```cpp
+   * Colorspace colorspace(SDL_COLOR_TYPE_RGB,
+   *                       SDL_COLOR_RANGE_FULL,
+   *                       SDL_COLOR_PRIMARIES_BT709,
+   *                       SDL_TRANSFER_CHARACTERISTICS_SRGB,
+   *                       SDL_MATRIX_COEFFICIENTS_IDENTITY,
+   *                       SDL_CHROMA_LOCATION_NONE)
+   * ```
+   *
+   * @param type the type of the new format, probably an ColorType value.
+   * @param range the range of the new format, probably a ColorRange value.
+   * @param primaries the primaries of the new format, probably an
+   *                  ColorPrimaries value.
+   * @param transfer the transfer characteristics of the new format, probably an
+   *                 TransferCharacteristics value.
+   * @param matrix the matrix coefficients of the new format, probably an
+   *               MatrixCoefficients value.
+   * @param chroma the chroma sample location of the new format, probably an
+   *               ChromaLocation value.
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr Colorspace(ColorType type,
+                       ColorRange range,
+                       ColorPrimaries primaries,
+                       TransferCharacteristics transfer,
+                       MatrixCoefficients matrix,
+                       ChromaLocation chroma)
+    : colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
+                                                      range,
+                                                      primaries,
+                                                      transfer,
+                                                      matrix,
+                                                      chroma)))
+  {
+  }
+
+  constexpr operator bool() const
+  {
+    return colorspace != SDL_COLORSPACE_UNKNOWN;
+  }
+
+  constexpr operator SDL_Colorspace() const { return colorspace; }
+
+  /**
+   * A macro to retrieve the type of a Colorspace.
+   *
+   * @returns the ColorType for `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(colorspace); }
+
+  /**
+   * A macro to retrieve the range of a Colorspace.
+   *
+   * @returns the ColorRange of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorRange GetRange() const
+  {
+    return SDL_COLORSPACERANGE(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the chroma sample location of a Colorspace.
+   *
+   * @returns the ChromaLocation of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ChromaLocation GetChroma() const
+  {
+    return SDL_COLORSPACECHROMA(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the primaries of a Colorspace.
+   *
+   * @returns the ColorPrimaries of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorPrimaries GetPrimaries() const
+  {
+    return SDL_COLORSPACEPRIMARIES(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the transfer characteristics of a Colorspace.
+   *
+   * @returns the TransferCharacteristics of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr TransferCharacteristics GetTransfer() const
+  {
+    return SDL_COLORSPACETRANSFER(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the matrix coefficients of a Colorspace.
+   *
+   * @returns the MatrixCoefficients of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr MatrixCoefficients GetMatrix() const
+  {
+    return SDL_COLORSPACEMATRIX(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT601 (or BT470BG) matrix
+   * coefficients.
+   *
+   * Note that this macro double-evaluates its parameter, so do not use
+   * expressions with side-effects here.
+   *
+   * @returns true if BT601 or BT470BG, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT601() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT601(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT709 matrix coefficients.
+   *
+   * @returns true if BT709, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT709() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT709(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT2020_NCL matrix
+   * coefficients.
+   *
+   * @returns true if BT2020_NCL, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT2020_NCL() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace has a limited range.
+   *
+   * @returns true if limited range, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsLimitedRange() const
+  {
+    return SDL_ISCOLORSPACE_LIMITED_RANGE(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace has a full range.
+   *
+   * @returns true if full range, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsFullRange() const
+  {
+    return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
+  }
+};
+
+constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
+ */
+constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
+ */
+constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
+ */
+constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
+ */
+constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+ */
+constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+ */
+constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+ */
+constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+ */
+constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
+ */
+constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
+ */
+constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
+
+/**
+ * The default colorspace for RGB surfaces if no colorspace is specified
+ */
+constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
+
+/**
+ * The default colorspace for YUV surfaces if no colorspace is specified
+ */
+constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
+
+/**
+ * A structure that represents a color as RGBA components.
+ *
+ * The bits of this structure can be directly reinterpreted as an
+ * integer-packed color which uses the SDL_PIXELFORMAT_RGBA32 format
+ * (SDL_PIXELFORMAT_ABGR8888 on little-endian systems and
+ * SDL_PIXELFORMAT_RGBA8888 on big-endian systems).
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+struct Color : SDL_Color
+{
+  constexpr Color(SDL_Color color = {0})
+    : SDL_Color(color)
+  {
+  }
+
+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
+    : SDL_Color{r, g, b, a}
+  {
+  }
+
+  // Auto comparison operator
+  auto operator<=>(const Color& other) const = default;
+
+  /**
+   * @brief Get the red component from the color
+   *
+   * @returns The red component from the color
+   *
+   */
+  constexpr Uint8 GetRed() const { return r; }
+
+  /**
+   * @brief Set the red component from the color
+   *
+   * @param[in] nr New red component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetRed(Uint8 nr)
+  {
+    r = nr;
+    return *this;
+  }
+
+  /**
+   * @brief Get the green component from the color
+   *
+   * @returns The green component from the color
+   *
+   */
+  constexpr Uint8 GetGreen() const { return g; }
+
+  /**
+   * @brief Set the green component from the color
+   *
+   * @param[in] ng New green component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetGreen(Uint8 ng)
+  {
+    g = ng;
+    return *this;
+  }
+
+  /**
+   * @brief Get the blue component from the color
+   *
+   * @returns The blue component from the color
+   *
+   */
+  constexpr Uint8 GetBlue() const { return b; }
+
+  /**
+   * @brief Set the blue component from the color
+   *
+   * @param[in] nb New blue component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetBlue(Uint8 nb)
+  {
+    b = nb;
+    return *this;
+  }
+
+  /**
+   * @brief Get the alpha component from the color
+   *
+   * @returns The alpha component from the color
+   *
+   */
+  constexpr Uint8 GetAlpha() const { return a; }
+
+  /**
+   * @brief Set the alpha component from the color
+   *
+   * @param[in] na New alpha component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetAlpha(Uint8 na)
+  {
+    a = na;
+    return *this;
+  }
+
+  /**
+   * @brief Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param format a pointer to PixelFormatDetails describing the pixel
+   *               format.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   */
+  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
+
+  /**
+   * Get RGBA values from a pixel in the specified format.
+   *
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+   *
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
+   *
+   * @param pixel a pixel value.
+   * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+   *               format.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PixelFormat.GetDetails()
+   * @sa GetRGBA()
+   * @sa Map()
+   */
+  static Color Get(Uint32 pixel,
+                   const PixelFormatDetails* format,
+                   PaletteRef palette);
+};
+
+/**
+ * The bits of this structure can be directly reinterpreted as a float-packed
+ * color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+struct FColor : SDL_FColor
+{
+  constexpr FColor(SDL_FColor color = {0})
+    : SDL_FColor(color)
+  {
+  }
+
+  constexpr FColor(float r, float g, float b, float a = 1)
+    : SDL_FColor{r, g, b, a}
+  {
+  }
+
+  // Auto comparison operator
+  auto operator<=>(const FColor& other) const = default;
+
+  /**
+   * @brief Get the red component from the color
+   *
+   * @returns The red component from the color
+   *
+   */
+  constexpr float GetRed() const { return r; }
+
+  /**
+   * @brief Set the red component from the color
+   *
+   * @param[in] nr New red component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetRed(float nr)
+  {
+    r = nr;
+    return *this;
+  }
+
+  /**
+   * @brief Get the green component from the color
+   *
+   * @returns The green component from the color
+   *
+   */
+  constexpr float GetGreen() const { return g; }
+
+  /**
+   * @brief Set the green component from the color
+   *
+   * @param[in] ng New green component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetGreen(float ng)
+  {
+    g = ng;
+    return *this;
+  }
+
+  /**
+   * @brief Get the blue component from the color
+   *
+   * @returns The blue component from the color
+   *
+   */
+  constexpr float GetBlue() const { return b; }
+
+  /**
+   * @brief Set the blue component from the color
+   *
+   * @param[in] nb New blue component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetBlue(float nb)
+  {
+    b = nb;
+    return *this;
+  }
+
+  /**
+   * @brief Get the alpha component from the color
+   *
+   * @returns The alpha component from the color
+   *
+   */
+  constexpr float GetAlpha() const { return a; }
+
+  /**
+   * @brief Set the alpha component from the color
+   *
+   * @param[in] na New alpha component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetAlpha(float na)
+  {
+    a = na;
+    return *this;
+  }
+};
+
+/**
+ * @brief A set of indexed colors representing a palette.
+ *
+ * @ingroup resource
+ */
+template<class T>
+struct PaletteBase : T
+{
+  // Make default ctors available
+  using T::T;
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @post this represents a new Palette structure convertible to true on
+   * success or converts to false on failure (e.g. if there wasn't enough
+   * memory); call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetColors()
+   * @sa Surface.SetPalette()
+   */
+  inline PaletteBase(int ncolors)
+    : T(SDL_CreatePalette(ncolors))
+  {
+  }
+
+  constexpr int GetSize() const { return this->ncolors; }
+
+  constexpr Color operator[](int index) const { return this->colors[index]; }
+
+  /**
+   * Set a range of colors in a palette.
+   *
+   * @param colors an array of SDL_Color structures to copy into the palette.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @param ncolors the number of entries to modify.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
+  {
+    return SDL_SetPaletteColors(T::get(), colors, firstcolor, ncolors);
+  }
+
+  /**
+   * Set a range of colors in a palette.
+   *
+   * @param colors a span of SDL_Color structures to copy into the palette.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   */
+  bool SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
+  {
+    SDL_assert_paranoid(colors.size() < SDL_MAX_SINT32);
+    return SetColors(colors.data(), firstcolor, colors.size());
+  }
+
+  /**
+   * Free a palette
+   *
+   * After calling, this object becomes empty.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { return SDL_DestroyPalette(T::release()); }
+};
+
+/**
+ * Map an RGB triple to an opaque pixel value for a given pixel format.
+ *
+ * This function maps the RGB color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGB color value for
+ * the given pixel format.
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the specified pixel format has an alpha component it will be returned as
+ * all 1 bits (fully opaque).
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r the red component of the pixel in the range 0-255.
+ * @param g the green component of the pixel in the range 0-255.
+ * @param b the blue component of the pixel in the range 0-255.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPixelFormatDetails()
+ * @sa GetRGB()
+ * @sa MapRGBA()
+ * @sa Surface.MapColor()
+ */
+inline Uint32 MapRGB(const PixelFormatDetails* format,
+                     PaletteRef palette,
+                     Uint8 r,
+                     Uint8 g,
+                     Uint8 b)
+{
+  return SDL_MapRGB(format, palette.get(), r, g, b);
+}
+
+/**
+ * Map an RGBA quadruple to a pixel value for a given pixel format.
+ *
+ * This function maps the RGBA color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGBA color value for
+ * the given pixel format.
+ *
+ * If the specified pixel format has no alpha component the alpha value will
+ * be ignored (as it will be in formats with a palette).
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r the red component of the pixel in the range 0-255.
+ * @param g the green component of the pixel in the range 0-255.
+ * @param b the blue component of the pixel in the range 0-255.
+ * @param a the alpha component of the pixel in the range 0-255.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGBA()
+ * @sa MapRGB()
+ * @sa Surface.MapColor()
+ */
+inline Uint32 MapRGBA(const PixelFormatDetails* format,
+                      PaletteRef palette,
+                      Uint8 r,
+                      Uint8 g,
+                      Uint8 b,
+                      Uint8 a)
+{
+  return SDL_MapRGBA(format, palette.get(), r, g, b, a);
+}
+
+/**
+ * Get RGB values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component
+ * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+ * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * @param pixel a pixel value.
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r a pointer filled in with the red component, may be NULL.
+ * @param g a pointer filled in with the green component, may be NULL.
+ * @param b a pointer filled in with the blue component, may be NULL.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGBA()
+ * @sa MapRGB()
+ * @sa MapRGBA()
+ */
+inline void GetRGB(Uint32 pixel,
+                   const PixelFormatDetails* format,
+                   PaletteRef palette,
+                   Uint8* r,
+                   Uint8* g,
+                   Uint8* b)
+{
+  SDL_GetRGB(pixel, format, palette.get(), r, g, b);
+}
+
+/**
+ * Get RGBA values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component
+ * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+ * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * If the surface has no alpha component, the alpha will be returned as 0xff
+ * (100% opaque).
+ *
+ * @param pixel a pixel value.
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r a pointer filled in with the red component, may be NULL.
+ * @param g a pointer filled in with the green component, may be NULL.
+ * @param b a pointer filled in with the blue component, may be NULL.
+ * @param a a pointer filled in with the alpha component, may be NULL.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGB()
+ * @sa MapRGB()
+ * @sa MapRGBA()
+ */
+inline void GetRGBA(Uint32 pixel,
+                    const PixelFormatDetails* format,
+                    PaletteRef palette,
+                    Uint8* r,
+                    Uint8* g,
+                    Uint8* b,
+                    Uint8* a)
+{
+  SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
+}
+
+/** @} */
+
+#pragma region impl
+
+inline void ObjectDeleter<SDL_Palette>::operator()(PaletteRef palette) const
+{
+  palette.Destroy();
+}
+
+inline Uint32 Color::Map(const PixelFormatDetails* format,
+                         PaletteRef palette = nullptr) const
+{
+  return MapRGBA(format, palette.get(), r, g, b, a);
+}
+
+inline Color Get(Uint32 pixel,
+                 const PixelFormatDetails* format,
+                 PaletteRef palette = nullptr)
+{
+  Color c;
+  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
+inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
+{
+  return color.Map(GetDetails(), palette);
+}
+
+inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
+{
+  return Color::Get(pixel, GetDetails(), palette);
+}
+
+#pragma endregion impl
+
+} // namespace SDL
+
+#endif /* SDL3PP_PIXELS_H_ */
+
+
+// end --- SDL3pp_pixels.h --- 
+
+
 
 namespace SDL {
 
@@ -13068,16 +12307,6 @@ SurfaceLock SurfaceBase<T>::Lock() &
 // end --- SDL3pp_surface.h --- 
 
 
-
-// begin --- SDL3pp_video.h --- 
-
-#ifndef SDL3PP_VIDEO_H_
-#define SDL3PP_VIDEO_H_
-
-#include <memory>
-#include <optional>
-#include <vector>
-#include <SDL3/SDL_video.h>
 
 namespace SDL {
 /**
@@ -16603,6 +15832,2492 @@ inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
 // end --- SDL3pp_video.h --- 
 
 
+
+namespace SDL {
+
+/**
+ * @defgroup CategoryEvents Category Events
+ *
+ * Event queue management.
+ *
+ * It's extremely common--often required--that an app deal with SDL's event
+ * queue. Almost all useful information about interactions with the real world
+ * flow through here: the user interacting with the computer and app, hardware
+ * coming and going, the system changing in some way, etc.
+ *
+ * An app generally takes a moment, perhaps at the start of a new frame, to
+ * examine any events that have occurred since the last time and process or
+ * ignore them. This is generally done by calling SDL_PollEvent() in a loop
+ * until it returns false (or, if using the main callbacks, events are
+ * provided one at a time in calls to SDL_AppEvent() before the next call to
+ * SDL_AppIterate(); in this scenario, the app does not call PollEvent()
+ * at all).
+ *
+ * There is other forms of control, too: PeepEvents() has more
+ * functionality at the cost of more complexity, and WaitEvent() can block
+ * the process until something interesting happens, which might be beneficial
+ * for certain types of programs on low-power hardware. One may also call
+ * AddEventWatch() to set a callback when new events arrive.
+ *
+ * The app is free to generate their own events, too: PushEvent() allows the
+ * app to put events onto the queue for later retrieval; RegisterEvents()
+ * can guarantee that these events have a type that isn't in use by other
+ * parts of the system.
+ *
+ * @{
+ */
+
+/**
+ * The types of events that can be delivered.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ * @sa EventTypes
+ */
+using EventType = SDL_EventType;
+
+/**
+ * @defgroup EventTypes Event Types
+ *
+ * Event types for Event.
+ * @{
+ */
+
+/**
+ * Unused (do not remove)
+ */
+constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST;
+
+/**
+ * User-requested quit
+ */
+constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT;
+
+constexpr EventType EVENT_TERMINATING = SDL_EVENT_TERMINATING;
+
+constexpr EventType EVENT_LOW_MEMORY = SDL_EVENT_LOW_MEMORY;
+
+constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
+  SDL_EVENT_WILL_ENTER_BACKGROUND;
+
+constexpr EventType EVENT_DID_ENTER_BACKGROUND = SDL_EVENT_DID_ENTER_BACKGROUND;
+
+constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
+  SDL_EVENT_WILL_ENTER_FOREGROUND;
+
+constexpr EventType EVENT_DID_ENTER_FOREGROUND = SDL_EVENT_DID_ENTER_FOREGROUND;
+
+/**
+ * The user's locale preferences have changed.
+ */
+constexpr EventType EVENT_LOCALE_CHANGED = SDL_EVENT_LOCALE_CHANGED;
+
+/**
+ * The system theme changed
+ */
+constexpr EventType EVENT_SYSTEM_THEME_CHANGED = SDL_EVENT_SYSTEM_THEME_CHANGED;
+
+/**
+ * Display orientation has changed to data1
+ */
+constexpr EventType EVENT_DISPLAY_ORIENTATION = SDL_EVENT_DISPLAY_ORIENTATION;
+
+/**
+ * Display has been added to the system
+ */
+constexpr EventType EVENT_DISPLAY_ADDED = SDL_EVENT_DISPLAY_ADDED;
+
+/**
+ * Display has been removed from the system
+ */
+constexpr EventType EVENT_DISPLAY_REMOVED = SDL_EVENT_DISPLAY_REMOVED;
+
+/**
+ * Display has changed position
+ */
+constexpr EventType EVENT_DISPLAY_MOVED = SDL_EVENT_DISPLAY_MOVED;
+
+/**
+ * Display has changed desktop mode
+ */
+constexpr EventType EVENT_DISPLAY_DESKTOP_MODE_CHANGED =
+  SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED;
+
+/**
+ * Display has changed current mode
+ */
+constexpr EventType EVENT_DISPLAY_CURRENT_MODE_CHANGED =
+  SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED;
+
+/**
+ * Display has changed content scale
+ */
+constexpr EventType EVENT_DISPLAY_CONTENT_SCALE_CHANGED =
+  SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED;
+
+constexpr EventType EVENT_DISPLAY_FIRST = SDL_EVENT_DISPLAY_FIRST;
+
+constexpr EventType EVENT_DISPLAY_LAST = SDL_EVENT_DISPLAY_LAST;
+
+/**
+ * Window has been shown
+ */
+constexpr EventType EVENT_WINDOW_SHOWN = SDL_EVENT_WINDOW_SHOWN;
+
+/**
+ * Window has been hidden
+ */
+constexpr EventType EVENT_WINDOW_HIDDEN = SDL_EVENT_WINDOW_HIDDEN;
+
+/**
+ * Window has been exposed and should be redrawn, and can be redrawn directly
+ * from event watchers for this event
+ */
+constexpr EventType EVENT_WINDOW_EXPOSED = SDL_EVENT_WINDOW_EXPOSED;
+
+/**
+ * Window has been moved to data1, data2
+ */
+constexpr EventType EVENT_WINDOW_MOVED = SDL_EVENT_WINDOW_MOVED;
+
+/**
+ * Window has been resized to data1xdata2
+ */
+constexpr EventType EVENT_WINDOW_RESIZED = SDL_EVENT_WINDOW_RESIZED;
+
+/**
+ * The pixel size of the window has changed to data1xdata2
+ */
+constexpr EventType EVENT_WINDOW_PIXEL_SIZE_CHANGED =
+  SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED;
+
+/**
+ * The pixel size of a Metal view associated with the window has changed
+ */
+constexpr EventType EVENT_WINDOW_METAL_VIEW_RESIZED =
+  SDL_EVENT_WINDOW_METAL_VIEW_RESIZED;
+
+/**
+ * Window has been minimized
+ */
+constexpr EventType EVENT_WINDOW_MINIMIZED = SDL_EVENT_WINDOW_MINIMIZED;
+
+/**
+ * Window has been maximized
+ */
+constexpr EventType EVENT_WINDOW_MAXIMIZED = SDL_EVENT_WINDOW_MAXIMIZED;
+
+/**
+ * Window has been restored to normal size and position
+ */
+constexpr EventType EVENT_WINDOW_RESTORED = SDL_EVENT_WINDOW_RESTORED;
+
+/**
+ * Window has gained mouse focus
+ */
+constexpr EventType EVENT_WINDOW_MOUSE_ENTER = SDL_EVENT_WINDOW_MOUSE_ENTER;
+
+/**
+ * Window has lost mouse focus
+ */
+constexpr EventType EVENT_WINDOW_MOUSE_LEAVE = SDL_EVENT_WINDOW_MOUSE_LEAVE;
+
+/**
+ * Window has gained keyboard focus
+ */
+constexpr EventType EVENT_WINDOW_FOCUS_GAINED = SDL_EVENT_WINDOW_FOCUS_GAINED;
+
+/**
+ * Window has lost keyboard focus
+ */
+constexpr EventType EVENT_WINDOW_FOCUS_LOST = SDL_EVENT_WINDOW_FOCUS_LOST;
+
+/**
+ * The window manager requests that the window be closed
+ */
+constexpr EventType EVENT_WINDOW_CLOSE_REQUESTED =
+  SDL_EVENT_WINDOW_CLOSE_REQUESTED;
+
+/**
+ * Window had a hit test that wasn't SDL_HITTEST_NORMAL
+ */
+constexpr EventType EVENT_WINDOW_HIT_TEST = SDL_EVENT_WINDOW_HIT_TEST;
+
+/**
+ * The ICC profile of the window's display has changed
+ */
+constexpr EventType EVENT_WINDOW_ICCPROF_CHANGED =
+  SDL_EVENT_WINDOW_ICCPROF_CHANGED;
+
+/**
+ * Window has been moved to display data1
+ */
+constexpr EventType EVENT_WINDOW_DISPLAY_CHANGED =
+  SDL_EVENT_WINDOW_DISPLAY_CHANGED;
+
+/**
+ * Window display scale has been changed
+ */
+constexpr EventType EVENT_WINDOW_DISPLAY_SCALE_CHANGED =
+  SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED;
+
+/**
+ * The window safe area has been changed
+ */
+constexpr EventType EVENT_WINDOW_SAFE_AREA_CHANGED =
+  SDL_EVENT_WINDOW_SAFE_AREA_CHANGED;
+
+/**
+ * The window has been occluded
+ */
+constexpr EventType EVENT_WINDOW_OCCLUDED = SDL_EVENT_WINDOW_OCCLUDED;
+
+/**
+ * The window has entered fullscreen mode
+ */
+constexpr EventType EVENT_WINDOW_ENTER_FULLSCREEN =
+  SDL_EVENT_WINDOW_ENTER_FULLSCREEN;
+
+/**
+ * The window has left fullscreen mode
+ */
+constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
+  SDL_EVENT_WINDOW_LEAVE_FULLSCREEN;
+
+constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
+
+/**
+ * Window HDR properties have changed
+ */
+constexpr EventType EVENT_WINDOW_HDR_STATE_CHANGED =
+  SDL_EVENT_WINDOW_HDR_STATE_CHANGED;
+
+constexpr EventType EVENT_WINDOW_FIRST = SDL_EVENT_WINDOW_FIRST;
+
+constexpr EventType EVENT_WINDOW_LAST = SDL_EVENT_WINDOW_LAST;
+
+/**
+ * Key pressed
+ */
+constexpr EventType EVENT_KEY_DOWN = SDL_EVENT_KEY_DOWN;
+
+/**
+ * Key released
+ */
+constexpr EventType EVENT_KEY_UP = SDL_EVENT_KEY_UP;
+
+/**
+ * Keyboard text editing (composition)
+ */
+constexpr EventType EVENT_TEXT_EDITING = SDL_EVENT_TEXT_EDITING;
+
+/**
+ * Keyboard text input
+ */
+constexpr EventType EVENT_TEXT_INPUT = SDL_EVENT_TEXT_INPUT;
+
+constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
+
+/**
+ * A new keyboard has been inserted into the system
+ */
+constexpr EventType EVENT_KEYBOARD_ADDED = SDL_EVENT_KEYBOARD_ADDED;
+
+/**
+ * A keyboard has been removed
+ */
+constexpr EventType EVENT_KEYBOARD_REMOVED = SDL_EVENT_KEYBOARD_REMOVED;
+
+/**
+ * Keyboard text editing candidates
+ */
+constexpr EventType EVENT_TEXT_EDITING_CANDIDATES =
+  SDL_EVENT_TEXT_EDITING_CANDIDATES;
+
+/**
+ * Mouse moved
+ */
+constexpr EventType EVENT_MOUSE_MOTION = SDL_EVENT_MOUSE_MOTION;
+
+/**
+ * Mouse button pressed
+ */
+constexpr EventType EVENT_MOUSE_BUTTON_DOWN = SDL_EVENT_MOUSE_BUTTON_DOWN;
+
+/**
+ * Mouse button released
+ */
+constexpr EventType EVENT_MOUSE_BUTTON_UP = SDL_EVENT_MOUSE_BUTTON_UP;
+
+/**
+ * Mouse wheel motion
+ */
+constexpr EventType EVENT_MOUSE_WHEEL = SDL_EVENT_MOUSE_WHEEL;
+
+/**
+ * A new mouse has been inserted into the system
+ */
+constexpr EventType EVENT_MOUSE_ADDED = SDL_EVENT_MOUSE_ADDED;
+
+/**
+ * A mouse has been removed
+ */
+constexpr EventType EVENT_MOUSE_REMOVED = SDL_EVENT_MOUSE_REMOVED;
+
+/**
+ * Joystick axis motion
+ */
+constexpr EventType EVENT_JOYSTICK_AXIS_MOTION = SDL_EVENT_JOYSTICK_AXIS_MOTION;
+
+/**
+ * Joystick trackball motion
+ */
+constexpr EventType EVENT_JOYSTICK_BALL_MOTION = SDL_EVENT_JOYSTICK_BALL_MOTION;
+
+/**
+ * Joystick hat position change
+ */
+constexpr EventType EVENT_JOYSTICK_HAT_MOTION = SDL_EVENT_JOYSTICK_HAT_MOTION;
+
+/**
+ * Joystick button pressed
+ */
+constexpr EventType EVENT_JOYSTICK_BUTTON_DOWN = SDL_EVENT_JOYSTICK_BUTTON_DOWN;
+
+/**
+ * Joystick button released
+ */
+constexpr EventType EVENT_JOYSTICK_BUTTON_UP = SDL_EVENT_JOYSTICK_BUTTON_UP;
+
+/**
+ * A new joystick has been inserted into the system
+ */
+constexpr EventType EVENT_JOYSTICK_ADDED = SDL_EVENT_JOYSTICK_ADDED;
+
+/**
+ * An opened joystick has been removed
+ */
+constexpr EventType EVENT_JOYSTICK_REMOVED = SDL_EVENT_JOYSTICK_REMOVED;
+
+/**
+ * Joystick battery level change
+ */
+constexpr EventType EVENT_JOYSTICK_BATTERY_UPDATED =
+  SDL_EVENT_JOYSTICK_BATTERY_UPDATED;
+
+/**
+ * Joystick update is complete
+ */
+constexpr EventType EVENT_JOYSTICK_UPDATE_COMPLETE =
+  SDL_EVENT_JOYSTICK_UPDATE_COMPLETE;
+
+/**
+ * Gamepad axis motion
+ */
+constexpr EventType EVENT_GAMEPAD_AXIS_MOTION = SDL_EVENT_GAMEPAD_AXIS_MOTION;
+
+/**
+ * Gamepad button pressed
+ */
+constexpr EventType EVENT_GAMEPAD_BUTTON_DOWN = SDL_EVENT_GAMEPAD_BUTTON_DOWN;
+
+/**
+ * Gamepad button released
+ */
+constexpr EventType EVENT_GAMEPAD_BUTTON_UP = SDL_EVENT_GAMEPAD_BUTTON_UP;
+
+/**
+ * A new gamepad has been inserted into the system
+ */
+constexpr EventType EVENT_GAMEPAD_ADDED = SDL_EVENT_GAMEPAD_ADDED;
+
+/**
+ * A gamepad has been removed
+ */
+constexpr EventType EVENT_GAMEPAD_REMOVED = SDL_EVENT_GAMEPAD_REMOVED;
+
+/**
+ * The gamepad mapping was updated
+ */
+constexpr EventType EVENT_GAMEPAD_REMAPPED = SDL_EVENT_GAMEPAD_REMAPPED;
+
+/**
+ * Gamepad touchpad was touched
+ */
+constexpr EventType EVENT_GAMEPAD_TOUCHPAD_DOWN =
+  SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN;
+
+/**
+ * Gamepad touchpad finger was moved
+ */
+constexpr EventType EVENT_GAMEPAD_TOUCHPAD_MOTION =
+  SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION;
+
+/**
+ * Gamepad touchpad finger was lifted
+ */
+constexpr EventType EVENT_GAMEPAD_TOUCHPAD_UP = SDL_EVENT_GAMEPAD_TOUCHPAD_UP;
+
+/**
+ * Gamepad sensor was updated
+ */
+constexpr EventType EVENT_GAMEPAD_SENSOR_UPDATE =
+  SDL_EVENT_GAMEPAD_SENSOR_UPDATE;
+
+/**
+ * Gamepad update is complete
+ */
+constexpr EventType EVENT_GAMEPAD_UPDATE_COMPLETE =
+  SDL_EVENT_GAMEPAD_UPDATE_COMPLETE;
+
+/**
+ * Gamepad Steam handle has changed
+ */
+constexpr EventType EVENT_GAMEPAD_STEAM_HANDLE_UPDATED =
+  SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED;
+
+constexpr EventType EVENT_FINGER_DOWN = SDL_EVENT_FINGER_DOWN;
+
+constexpr EventType EVENT_FINGER_UP = SDL_EVENT_FINGER_UP;
+
+constexpr EventType EVENT_FINGER_MOTION = SDL_EVENT_FINGER_MOTION;
+
+constexpr EventType EVENT_FINGER_CANCELED = SDL_EVENT_FINGER_CANCELED;
+
+/**
+ * The clipboard or primary selection changed
+ */
+constexpr EventType EVENT_CLIPBOARD_UPDATE = SDL_EVENT_CLIPBOARD_UPDATE;
+
+/**
+ * The system requests a file open
+ */
+constexpr EventType EVENT_DROP_FILE = SDL_EVENT_DROP_FILE;
+
+/**
+ * text/plain drag-and-drop event
+ */
+constexpr EventType EVENT_DROP_TEXT = SDL_EVENT_DROP_TEXT;
+
+/**
+ * A new set of drops is beginning (NULL filename)
+ */
+constexpr EventType EVENT_DROP_BEGIN = SDL_EVENT_DROP_BEGIN;
+
+/**
+ * Current set of drops is now complete (NULL filename)
+ */
+constexpr EventType EVENT_DROP_COMPLETE = SDL_EVENT_DROP_COMPLETE;
+
+/**
+ * Position while moving over the window
+ */
+constexpr EventType EVENT_DROP_POSITION = SDL_EVENT_DROP_POSITION;
+
+/**
+ * A new audio device is available
+ */
+constexpr EventType EVENT_AUDIO_DEVICE_ADDED = SDL_EVENT_AUDIO_DEVICE_ADDED;
+
+/**
+ * An audio device has been removed.
+ */
+constexpr EventType EVENT_AUDIO_DEVICE_REMOVED = SDL_EVENT_AUDIO_DEVICE_REMOVED;
+
+/**
+ * An audio device's format has been changed by the system.
+ */
+constexpr EventType EVENT_AUDIO_DEVICE_FORMAT_CHANGED =
+  SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED;
+
+/**
+ * A sensor was updated
+ */
+constexpr EventType EVENT_SENSOR_UPDATE = SDL_EVENT_SENSOR_UPDATE;
+
+/**
+ * Pressure-sensitive pen has become available
+ */
+constexpr EventType EVENT_PEN_PROXIMITY_IN = SDL_EVENT_PEN_PROXIMITY_IN;
+
+/**
+ * Pressure-sensitive pen has become unavailable
+ */
+constexpr EventType EVENT_PEN_PROXIMITY_OUT = SDL_EVENT_PEN_PROXIMITY_OUT;
+
+/**
+ * Pressure-sensitive pen touched drawing surface
+ */
+constexpr EventType EVENT_PEN_DOWN = SDL_EVENT_PEN_DOWN;
+
+/**
+ * Pressure-sensitive pen stopped touching drawing surface
+ */
+constexpr EventType EVENT_PEN_UP = SDL_EVENT_PEN_UP;
+
+/**
+ * Pressure-sensitive pen button pressed
+ */
+constexpr EventType EVENT_PEN_BUTTON_DOWN = SDL_EVENT_PEN_BUTTON_DOWN;
+
+/**
+ * Pressure-sensitive pen button released
+ */
+constexpr EventType EVENT_PEN_BUTTON_UP = SDL_EVENT_PEN_BUTTON_UP;
+
+/**
+ * Pressure-sensitive pen is moving on the tablet
+ */
+constexpr EventType EVENT_PEN_MOTION = SDL_EVENT_PEN_MOTION;
+
+/**
+ * Pressure-sensitive pen angle/pressure/etc changed
+ */
+constexpr EventType EVENT_PEN_AXIS = SDL_EVENT_PEN_AXIS;
+
+/**
+ * A new camera device is available
+ */
+constexpr EventType EVENT_CAMERA_DEVICE_ADDED = SDL_EVENT_CAMERA_DEVICE_ADDED;
+
+/**
+ * A camera device has been removed.
+ */
+constexpr EventType EVENT_CAMERA_DEVICE_REMOVED =
+  SDL_EVENT_CAMERA_DEVICE_REMOVED;
+
+/**
+ * A camera device has been approved for use by the user.
+ */
+constexpr EventType EVENT_CAMERA_DEVICE_APPROVED =
+  SDL_EVENT_CAMERA_DEVICE_APPROVED;
+
+/**
+ * A camera device has been denied for use by the user.
+ */
+constexpr EventType EVENT_CAMERA_DEVICE_DENIED = SDL_EVENT_CAMERA_DEVICE_DENIED;
+
+/**
+ * The render targets have been reset and their contents need to be updated
+ */
+constexpr EventType EVENT_RENDER_TARGETS_RESET = SDL_EVENT_RENDER_TARGETS_RESET;
+
+/**
+ * The device has been reset and all textures need to be recreated
+ */
+constexpr EventType EVENT_RENDER_DEVICE_RESET = SDL_EVENT_RENDER_DEVICE_RESET;
+
+/**
+ * The device has been lost and can't be recovered.
+ */
+constexpr EventType EVENT_RENDER_DEVICE_LOST = SDL_EVENT_RENDER_DEVICE_LOST;
+
+constexpr EventType EVENT_PRIVATE0 = SDL_EVENT_PRIVATE0;
+
+constexpr EventType EVENT_PRIVATE1 = SDL_EVENT_PRIVATE1;
+
+constexpr EventType EVENT_PRIVATE2 = SDL_EVENT_PRIVATE2;
+
+constexpr EventType EVENT_PRIVATE3 = SDL_EVENT_PRIVATE3;
+
+/**
+ * Signals the end of an event poll cycle
+ */
+constexpr EventType EVENT_POLL_SENTINEL = SDL_EVENT_POLL_SENTINEL;
+
+/**
+ * Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use,
+ *  and should be allocated with SDL_RegisterEvents()
+ */
+constexpr EventType EVENT_USER = SDL_EVENT_USER;
+
+/**
+ * This last event is only for bounding internal arrays
+ */
+constexpr EventType EVENT_LAST = SDL_EVENT_LAST;
+
+constexpr EventType EVENT_ENUM_PADDING = SDL_EVENT_ENUM_PADDING;
+
+/// @}
+
+/**
+ * Fields shared by every event
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using CommonEvent = SDL_CommonEvent;
+
+/**
+ * Display state change event data (event.display.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using DisplayEvent = SDL_DisplayEvent;
+
+/**
+ * Window state change event data (event.window.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using WindowEvent = SDL_WindowEvent;
+
+/**
+ * Keyboard device event structure (event.kdevice.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using KeyboardDeviceEvent = SDL_KeyboardDeviceEvent;
+
+/**
+ * Keyboard button event structure (event.key.*)
+ *
+ * The `key` is the base SDL_Keycode generated by pressing the `scancode`
+ * using the current keyboard layout, applying any options specified in
+ * SDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the
+ * event scancode and modifiers directly from the keyboard layout, bypassing
+ * SDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GetKeyFromScancode()
+ * @sa HINT_KEYCODE_OPTIONS
+ */
+using KeyboardEvent = SDL_KeyboardEvent;
+
+/**
+ * Keyboard text editing event structure (event.edit.*)
+ *
+ * The start cursor is the position, in UTF-8 characters, where new typing
+ * will be inserted into the editing text. The length is the number of UTF-8
+ * characters that will be replaced by new typing.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using TextEditingEvent = SDL_TextEditingEvent;
+
+/**
+ * Keyboard IME candidates event structure (event.edit_candidates.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using TextEditingCandidatesEvent = SDL_TextEditingCandidatesEvent;
+
+/**
+ * Keyboard text input event structure (event.text.*)
+ *
+ * This event will never be delivered unless text input is enabled by calling
+ * SDL_StartTextInput(). Text input is disabled by default!
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa StartTextInput()
+ * @sa StopTextInput()
+ */
+using TextInputEvent = SDL_TextInputEvent;
+
+/**
+ * Mouse device event structure (event.mdevice.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using MouseDeviceEvent = SDL_MouseDeviceEvent;
+
+/**
+ * Mouse motion event structure (event.motion.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using MouseMotionEvent = SDL_MouseMotionEvent;
+
+/**
+ * Mouse button event structure (event.button.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using MouseButtonEvent = SDL_MouseButtonEvent;
+
+/**
+ * Mouse wheel event structure (event.wheel.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using MouseWheelEvent = SDL_MouseWheelEvent;
+
+/**
+ * Joystick axis motion event structure (event.jaxis.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using JoyAxisEvent = SDL_JoyAxisEvent;
+
+/**
+ * Joystick trackball motion event structure (event.jball.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using JoyBallEvent = SDL_JoyBallEvent;
+
+/**
+ * Joystick hat position change event structure (event.jhat.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using JoyHatEvent = SDL_JoyHatEvent;
+
+/**
+ * Joystick button event structure (event.jbutton.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using JoyButtonEvent = SDL_JoyButtonEvent;
+
+/**
+ * Joystick device event structure (event.jdevice.*)
+ *
+ * SDL will send JOYSTICK_ADDED events for devices that are already plugged in
+ * during SDL_Init.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa GamepadDeviceEvent
+ */
+using JoyDeviceEvent = SDL_JoyDeviceEvent;
+
+/**
+ * Joystick battery level change event structure (event.jbattery.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using JoyBatteryEvent = SDL_JoyBatteryEvent;
+
+/**
+ * Gamepad axis motion event structure (event.gaxis.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using GamepadAxisEvent = SDL_GamepadAxisEvent;
+
+/**
+ * Gamepad button event structure (event.gbutton.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using GamepadButtonEvent = SDL_GamepadButtonEvent;
+
+/**
+ * Gamepad device event structure (event.gdevice.*)
+ *
+ * Joysticks that are supported gamepads receive both an SDL_JoyDeviceEvent
+ * and an SDL_GamepadDeviceEvent.
+ *
+ * SDL will send GAMEPAD_ADDED events for joysticks that are already plugged
+ * in during SDL_Init() and are recognized as gamepads. It will also send
+ * events for joysticks that get gamepad mappings at runtime.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa JoyDeviceEvent
+ */
+using GamepadDeviceEvent = SDL_GamepadDeviceEvent;
+
+/**
+ * Gamepad touchpad event structure (event.gtouchpad.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using GamepadTouchpadEvent = SDL_GamepadTouchpadEvent;
+
+/**
+ * Gamepad sensor event structure (event.gsensor.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using GamepadSensorEvent = SDL_GamepadSensorEvent;
+
+/**
+ * Audio device event structure (event.adevice.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using AudioDeviceEvent = SDL_AudioDeviceEvent;
+
+/**
+ * Camera device event structure (event.cdevice.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using CameraDeviceEvent = SDL_CameraDeviceEvent;
+
+/**
+ * Renderer event structure (event.render.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using RenderEvent = SDL_RenderEvent;
+
+/**
+ * Touch finger event structure (event.tfinger.*)
+ *
+ * Coordinates in this event are normalized. `x` and `y` are normalized to a
+ * range between 0.0f and 1.0f, relative to the window, so (0,0) is the top
+ * left and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are
+ * normalized in the ranges of -1.0f (traversed all the way from the bottom or
+ * right to all the way up or left) to 1.0f (traversed all the way from the
+ * top or left to all the way down or right).
+ *
+ * Note that while the coordinates are _normalized_, they are not _clamped_,
+ * which means in some circumstances you can get a value outside of this
+ * range. For example, a renderer using logical presentation might give a
+ * negative value when the touch is in the letterboxing. Some platforms might
+ * report a touch outside of the window, which will also be outside of the
+ * range.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using TouchFingerEvent = SDL_TouchFingerEvent;
+
+/**
+ * Pressure-sensitive pen proximity event structure (event.pmotion.*)
+ *
+ * When a pen becomes visible to the system (it is close enough to a tablet,
+ * etc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's
+ * ID. This ID is valid until the pen leaves proximity again (has been removed
+ * from the tablet's area, the tablet has been unplugged, etc). If the same
+ * pen reenters proximity again, it will be given a new ID.
+ *
+ * Note that "proximity" means "close enough for the tablet to know the tool
+ * is there." The pen touching and lifting off from the tablet while not
+ * leaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using PenProximityEvent = SDL_PenProximityEvent;
+
+/**
+ * Pressure-sensitive pen motion event structure (event.pmotion.*)
+ *
+ * Depending on the hardware, you may get motion events when the pen is not
+ * touching a tablet, for tracking a pen even when it isn't drawing. You
+ * should listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check
+ * `pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is "drawing" when
+ * dealing with pen motion.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using PenMotionEvent = SDL_PenMotionEvent;
+
+/**
+ * Pressure-sensitive pen touched event structure (event.ptouch.*)
+ *
+ * These events come when a pen touches a surface (a tablet, etc), or lifts
+ * off from one.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using PenTouchEvent = SDL_PenTouchEvent;
+
+/**
+ * Pressure-sensitive pen button event structure (event.pbutton.*)
+ *
+ * This is for buttons on the pen itself that the user might click. The pen
+ * itself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using PenButtonEvent = SDL_PenButtonEvent;
+
+/**
+ * Pressure-sensitive pen pressure / angle event structure (event.paxis.*)
+ *
+ * You might get some of these events even if the pen isn't touching the
+ * tablet.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using PenAxisEvent = SDL_PenAxisEvent;
+
+/**
+ * An event used to drop text or request a file open by the system
+ * (event.drop.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using DropEvent = SDL_DropEvent;
+
+/**
+ * An event triggered when the clipboard contents have changed
+ * (event.clipboard.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using ClipboardEvent = SDL_ClipboardEvent;
+
+/**
+ * Sensor event structure (event.sensor.*)
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using SensorEvent = SDL_SensorEvent;
+
+/**
+ * The "quit requested" event
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using QuitEvent = SDL_QuitEvent;
+
+/**
+ * A user-defined event type (event.user.*)
+ *
+ * This event is unique; it is never created by SDL, but only by the
+ * application. The event can be pushed onto the event queue using
+ * SDL_PushEvent(). The contents of the structure members are completely up to
+ * the programmer; the only requirement is that '''type''' is a value obtained
+ * from SDL_RegisterEvents().
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using UserEvent = SDL_UserEvent;
+
+/**
+ * The structure for all events in SDL.
+ *
+ * The SDL_Event structure is the core of all event handling in SDL. SDL_Event
+ * is a union of all event structures used in SDL.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using Event = SDL_Event;
+
+/**
+ * Pump the event loop, gathering events from the input devices.
+ *
+ * This function updates the event queue and internal input device state.
+ *
+ * SDL_PumpEvents() gathers all the pending input information from devices and
+ * places it in the event queue. Without calls to SDL_PumpEvents() no events
+ * would ever be placed on the queue. Often the need for calls to
+ * SDL_PumpEvents() is hidden from the user since SDL_PollEvent() and
+ * SDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not
+ * polling or waiting for events (e.g. you are filtering them), then you must
+ * call SDL_PumpEvents() to force an event queue update.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa WaitEvent()
+ */
+inline void PumpEvents() { return SDL_PumpEvents(); }
+
+/**
+ * @name EventActions
+ * The type of action to request from PeepEvents().
+ * @{
+ */
+
+/**
+ * The type of action to request from PeepEvents().
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using EventAction = SDL_EventAction;
+
+/**
+ * Add events to the back of the queue.
+ */
+constexpr EventAction ADDEVENT = SDL_ADDEVENT;
+
+/**
+ * Check but don't remove events from the queue front.
+ */
+constexpr EventAction PEEKEVENT = SDL_PEEKEVENT;
+
+/**
+ * Retrieve/remove events from the front of the queue.
+ */
+constexpr EventAction GETEVENT = SDL_GETEVENT;
+
+/// @}
+
+/**
+ * Check the event queue for messages and optionally return them.
+ *
+ * `action` may be any of the following:
+ *
+ * ## remarks
+ *
+ * - `SDL_ADDEVENT`: up to `numevents` events will be added to the back of the
+ *   event queue.
+ * - `SDL_PEEKEVENT`: `numevents` events at the front of the event queue,
+ *   within the specified minimum and maximum type, will be returned to the
+ *   caller and will _not_ be removed from the queue. If you pass NULL for
+ *   `events`, then `numevents` is ignored and the total number of matching
+ *   events will be returned.
+ * - `SDL_GETEVENT`: up to `numevents` events at the front of the event queue,
+ *   within the specified minimum and maximum type, will be returned to the
+ *   caller and will be removed from the queue.
+ *
+ * You may have to call SDL_PumpEvents() before calling this function.
+ * Otherwise, the events may not be ready to be filtered when you call
+ * SDL_PeepEvents().
+ *
+ * @param events destination buffer for the retrieved events, may be NULL to
+ *               leave the events in the queue and return the number of events
+ *               that would have been stored.
+ * @param numevents if action is SDL_ADDEVENT, the number of events to add
+ *                  back to the event queue; if action is SDL_PEEKEVENT or
+ *                  SDL_GETEVENT, the maximum number of events to retrieve.
+ * @param action action to take; see [Remarks](#remarks) for details.
+ * @param minType minimum value of the event type to be considered;
+ *                SDL_EVENT_FIRST is a safe choice.
+ * @param maxType maximum value of the event type to be considered;
+ *                SDL_EVENT_LAST is a safe choice.
+ * @returns the number of events actually stored or -1 on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa PumpEvents()
+ * @sa PushEvent()
+ */
+inline int PeepEvents(Event* events,
+                      int numevents,
+                      EventAction action,
+                      Uint32 minType = EVENT_FIRST,
+                      Uint32 maxType = EVENT_LAST)
+{
+  return SDL_PeepEvents(events, numevents, action, minType, maxType);
+}
+
+/**
+ * Check for the existence of a certain event type in the event queue.
+ *
+ * If you need to check for a range of event types, use SDL_HasEvents()
+ * instead.
+ *
+ * @param type the type of event to be queried; see @ref EventTypes for
+ * details.
+ * @returns true if events matching `type` are present, or false if events
+ *          matching `type` are not present.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasEvents()
+ */
+inline bool HasEvent(Uint32 type) { return SDL_HasEvent(type); }
+
+/**
+ * Check for the existence of certain event types in the event queue.
+ *
+ * If you need to check for a single event type, use SDL_HasEvent() instead.
+ *
+ * @param minType the low end of event type to be queried, inclusive; see
+ *                SDL_EventType for details.
+ * @param maxType the high end of event type to be queried, inclusive; see
+ *                SDL_EventType for details.
+ * @returns true if events with type >= `minType` and <= `maxType` are
+ *          present, or false if not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasEvent()
+ */
+inline bool HasEvents(Uint32 minType = EVENT_FIRST, Uint32 maxType = EVENT_LAST)
+{
+  return SDL_HasEvents(minType, maxType);
+}
+
+/**
+ * Clear events of a specific type from the event queue.
+ *
+ * This will unconditionally remove any events from the queue that match
+ * `type`. If you need to remove a range of event types, use SDL_FlushEvents()
+ * instead.
+ *
+ * It's also normal to just ignore events you don't care about in your event
+ * loop without calling this function.
+ *
+ * This function only affects currently queued events. If you want to make
+ * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
+ * on the main thread immediately before the flush call.
+ *
+ * If you have user events with custom data that needs to be freed, you should
+ * use SDL_PeepEvents() to remove and clean up those events before calling
+ * this function.
+ *
+ * @param type the type of event to be cleared; see SDL_EventType for details.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa FlushEvents()
+ */
+inline void FlushEvent(Uint32 type) { return SDL_FlushEvent(type); }
+
+/**
+ * Clear events of a range of types from the event queue.
+ *
+ * This will unconditionally remove any events from the queue that are in the
+ * range of `minType` to `maxType`, inclusive. If you need to remove a single
+ * event type, use SDL_FlushEvent() instead.
+ *
+ * It's also normal to just ignore events you don't care about in your event
+ * loop without calling this function.
+ *
+ * This function only affects currently queued events. If you want to make
+ * sure that all pending OS events are flushed, you can call SDL_PumpEvents()
+ * on the main thread immediately before the flush call.
+ *
+ * @param minType the low end of event type to be cleared, inclusive; see
+ *                SDL_EventType for details.
+ * @param maxType the high end of event type to be cleared, inclusive; see
+ *                SDL_EventType for details.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa FlushEvent()
+ */
+inline void FlushEvents(Uint32 minType = EVENT_FIRST,
+                        Uint32 maxType = EVENT_LAST)
+{
+  return SDL_FlushEvents(minType, maxType);
+}
+
+/**
+ * Poll for currently pending events.
+ *
+ * If `event` is not nullptr, the next event is removed from the queue and
+ * stored in the Event structure pointed to by `event`. The true returned
+ * refers to this event, immediately stored in the SDL Event structure -- not an
+ * event to follow.
+ *
+ * If `event` is nullptr, it simply returns true if there is an event in the
+ * queue, but will not remove it from the queue.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that set the video mode.
+ *
+ * PollEvent() is the favored way of receiving system events since it can
+ * be done from the main loop and does not suspend the main loop while waiting
+ * on an event to be posted.
+ *
+ * The common practice is to fully process the event queue once every frame,
+ * usually as a first step before updating the game's state:
+ *
+ * ```c
+ * while (game_is_still_running) {
+ *     SDL::Event event;
+ *     while (SDL::PollEvent(&event)) {  // poll until all events are handled!
+ *         // decide what to do with this event.
+ *     }
+ *
+ *     // update game state, draw the current frame
+ * }
+ * ```
+ *
+ * @param event the SDL_Event structure to be filled with the next event from
+ *              the queue, or nullptr.
+ * @returns true if this got an event or false if there are none available.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PushEvent()
+ * @sa WaitEvent()
+ * @sa WaitEventTimeout()
+ */
+inline bool PollEvent(Event* event) { return SDL_PollEvent(event); }
+
+/**
+ * Poll for currently pending events.
+ *
+ * The next event is removed from the queue and returned.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that set the video mode.
+ *
+ * PollEvent() is the favored way of receiving system events since it can
+ * be done from the main loop and does not suspend the main loop while waiting
+ * on an event to be posted.
+ *
+ * The common practice is to fully process the event queue once every frame,
+ * usually as a first step before updating the game's state:
+ *
+ * ```c
+ * while (game_is_still_running) {
+ *     while (auto event = SDL::PollEvent()) {  // poll until all events are
+ * handled!
+ *         // decide what to do with this event.
+ *     }
+ *
+ *     // update game state, draw the current frame
+ * }
+ * ```
+ *
+ * @returns Event if this got an event or std::nullopt if there are none
+ * available.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PushEvent()
+ * @sa WaitEvent()
+ * @sa WaitEventTimeout()
+ */
+inline std::optional<Event> PollEvent()
+{
+  if (Event event; PollEvent(&event)) return event;
+  return std::nullopt;
+}
+
+/**
+ * Wait indefinitely for the next available event.
+ *
+ * If `event` is not nullptr, the next event is removed from the queue and
+ * stored in the Event structure pointed to by `event`.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that initialized the video subsystem.
+ *
+ * @param event the Event structure to be filled in with the next event
+ *              from the queue, or nullptr.
+ * @returns true on success or false if there was an error while waiting for
+ *          events; call GetError() for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa PushEvent()
+ * @sa WaitEventTimeout()
+ */
+inline bool WaitEvent(Event* event) { return SDL_WaitEvent(event); }
+
+/**
+ * Wait indefinitely for the next available event.
+ *
+ * The next event is removed from the queue and returned.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call
+ * this function in the thread that initialized the video subsystem.
+ *
+ * @returns Event on success or std::nullopt if there was an error while waiting
+ * for events; call GetError() for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa PushEvent()
+ * @sa WaitEventTimeout()
+ */
+inline std::optional<Event> WaitEvent()
+{
+  if (Event event; WaitEvent(&event)) return event;
+  return std::nullopt;
+}
+
+/**
+ * Wait until the specified timeout (in milliseconds) for the next available
+ * event.
+ *
+ * If `event` is not nullptr, the next event is removed from the queue and
+ * stored in the Event structure pointed to by `event`.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
+ *
+ * The timeout is not guaranteed, the actual wait time could be longer due to
+ * system scheduling.
+ *
+ * @param event the Event structure to be filled in with the next event from the
+ * queue, or nullptr.
+ * @param timeoutMS the maximum number of milliseconds to wait for the next
+ *                  available event.
+ * @returns true if this got an event or false if the timeout elapsed without
+ *          any events available.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa PushEvent()
+ * @sa WaitEvent()
+ */
+inline bool WaitEventTimeout(Event* event, Sint32 timeoutMS)
+{
+  return SDL_WaitEventTimeout(event, timeoutMS);
+}
+
+/**
+ * Wait until the specified timeout (in milliseconds) for the next available
+ * event.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
+ *
+ * The timeout is not guaranteed, the actual wait time could be longer due to
+ * system scheduling.
+ *
+ * @param timeoutMS the maximum number of milliseconds to wait for the next
+ *                  available event.
+ * @returns the Event if this got an event or std::nullopt if the timeout
+ * elapsed without any events available.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa PushEvent()
+ * @sa WaitEvent()
+ */
+inline std::optional<Event> WaitEventTimeout(Sint32 timeoutMS)
+{
+  if (Event event; WaitEventTimeout(&event, timeoutMS)) return event;
+  return std::nullopt;
+}
+
+/**
+ * Wait until the specified timeout (with milliseconds precision) for the next
+ * available event.
+ *
+ * If `event` is not nullptr, the next event is removed from the queue and
+ * stored in the Event structure pointed to by `event`.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
+ *
+ * The timeout is not guaranteed, the actual wait time could be longer due to
+ * system scheduling.
+ *
+ * @param event the Event structure to be filled in with the next event from the
+ * queue, or nullptr.
+ * @param timeoutDuration the duration to wait for the next available event,
+ * with millisecond precision
+ * @returns true if this got an event or false if the timeout elapsed without
+ *          any events available.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa PushEvent()
+ * @sa WaitEvent()
+ */
+inline bool WaitEventTimeout(Event* event,
+                             std::chrono::milliseconds timeoutDuration)
+{
+  return WaitEventTimeout(event, std::max(timeoutDuration.count(), 1l));
+}
+/**
+ * Wait until the specified timeout (with milliseconds precision) for the next
+ * available event.
+ *
+ * As this function may implicitly call PumpEvents(), you can only call this
+ * function in the thread that initialized the video subsystem.
+ *
+ * The timeout is not guaranteed, the actual wait time could be longer due to
+ * system scheduling.
+ *
+ * @param timeoutDuration the duration to wait for the next available event,
+ * with millisecond precision.
+ * @returns the Event if this got an event or std::nullopt if the timeout
+ * elapsed without any events available.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa PushEvent()
+ * @sa WaitEvent()
+ */
+inline std::optional<Event> WaitEventTimeout(
+  std::chrono::milliseconds timeoutDuration)
+{
+  if (Event event; WaitEventTimeout(&event, timeoutDuration)) return event;
+  return std::nullopt;
+}
+/**
+ * Add an event to the event queue.
+ *
+ * The event queue can actually be used as a two way communication channel.
+ * Not only can events be read from the queue, but the user can also push
+ * their own events onto it. `event` is a pointer to the event structure you
+ * wish to push onto the queue. The event is copied into the queue, and the
+ * caller may dispose of the memory pointed to after SDL_PushEvent() returns.
+ *
+ * Note: Pushing device input events onto the queue doesn't modify the state
+ * of the device within SDL.
+ *
+ * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
+ * the event filter but events added with SDL_PeepEvents() do not.
+ *
+ * For pushing application-specific events, please use SDL_RegisterEvents() to
+ * get an event type that does not conflict with other code that also wants
+ * its own custom event types.
+ *
+ * @param event the SDL_Event to be added to the queue.
+ * @returns true on success, false if the event was filtered or on failure;
+ *          call GetError() for more information. A common reason for
+ *          error is the event queue being full.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PeepEvents()
+ * @sa PollEvent()
+ * @sa RegisterEvents()
+ */
+inline bool PushEvent(Event* event) { return SDL_PushEvent(event); }
+
+inline bool PushEvent(const Event& event)
+{
+  return PushEvent(const_cast<Event*>(&event));
+}
+
+/**
+ * A function pointer used for callbacks that watch the event queue.
+ *
+ * @param userdata what was passed as `userdata` to SetEventFilter() or
+ *                 AddEventWatch(), etc.
+ * @param event the event that triggered the callback.
+ * @returns true to permit event to be added to the queue, and false to
+ *          disallow it. When used with AddEventWatch(), the return value is
+ *          ignored.
+ *
+ * @threadsafety SDL may call this callback at any time from any thread; the
+ *               application is responsible for locking resources the callback
+ *               touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SetEventFilter()
+ * @sa AddEventWatch()
+ */
+using EventFilter = SDL_EventFilter;
+
+/**
+ * Set up a filter to process all events before they are added to the internal
+ * event queue.
+ *
+ * If you just want to see events without modifying them or preventing them
+ * from being queued, you should use SDL_AddEventWatch() instead.
+ *
+ * If the filter function returns true when called, then the event will be
+ * added to the internal queue. If it returns false, then the event will be
+ * dropped from the queue, but the internal state will still be updated. This
+ * allows selective filtering of dynamically arriving events.
+ *
+ * **WARNING**: Be very careful of what you do in the event filter function,
+ * as it may run in a different thread!
+ *
+ * On platforms that support it, if the quit event is generated by an
+ * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
+ * application at the next event poll.
+ *
+ * Note: Disabled events never make it to the event filter function; see
+ * SDL_SetEventEnabled().
+ *
+ * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
+ * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
+ * not.
+ *
+ * @param filter an SDL_EventFilter function to call when an event happens.
+ * @param userdata a pointer that is passed to `filter`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddEventWatch()
+ * @sa SetEventEnabled()
+ * @sa GetEventFilter()
+ * @sa PeepEvents()
+ * @sa PushEvent()
+ */
+inline void SetEventFilter(EventFilter filter, void* userdata)
+{
+  return SDL_SetEventFilter(filter, userdata);
+}
+
+/**
+ * Query the current event filter.
+ *
+ * This function can be used to "chain" filters, by saving the existing filter
+ * before replacing it with a function that will call that saved filter.
+ *
+ * @param filter the current callback function will be stored here.
+ * @param userdata the pointer that is passed to the current event filter will
+ *                 be stored here.
+ * @returns true on success or false if there is no event filter set.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetEventFilter()
+ */
+inline bool GetEventFilter(EventFilter* filter, void** userdata)
+{
+  return SDL_GetEventFilter(filter, userdata);
+}
+
+/**
+ * Add a callback to be triggered when an event is added to the event queue.
+ *
+ * `filter` will be called when an event happens, and its return value is
+ * ignored.
+ *
+ * **WARNING**: Be very careful of what you do in the event filter function,
+ * as it may run in a different thread!
+ *
+ * If the quit event is generated by a signal (e.g. SIGINT), it will bypass
+ * the internal queue and be delivered to the watch callback immediately, and
+ * arrive at the next event poll.
+ *
+ * Note: the callback is called for events posted by the user through
+ * SDL_PushEvent(), but not for disabled events, nor for events by a filter
+ * callback set with SDL_SetEventFilter(), nor for events posted by the user
+ * through SDL_PeepEvents().
+ *
+ * @param filter an SDL_EventFilter function to call when an event happens.
+ * @param userdata a pointer that is passed to `filter`.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveEventWatch()
+ * @sa SetEventFilter()
+ */
+inline bool AddEventWatch(EventFilter filter, void* userdata)
+{
+  return SDL_AddEventWatch(filter, userdata);
+}
+
+/**
+ * Remove an event watch callback added with SDL_AddEventWatch().
+ *
+ * This function takes the same input as SDL_AddEventWatch() to identify and
+ * delete the corresponding callback.
+ *
+ * @param filter the function originally passed to SDL_AddEventWatch().
+ * @param userdata the pointer originally passed to SDL_AddEventWatch().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddEventWatch()
+ */
+inline void RemoveEventWatch(EventFilter filter, void* userdata)
+{
+  return SDL_RemoveEventWatch(filter, userdata);
+}
+
+/**
+ * Run a specific filter function on the current event queue, removing any
+ * events for which the filter returns false.
+ *
+ * See SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),
+ * this function does not change the filter permanently, it only uses the
+ * supplied filter until this function returns.
+ *
+ * @param filter the SDL_EventFilter function to call when an event happens.
+ * @param userdata a pointer that is passed to `filter`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetEventFilter()
+ * @sa SetEventFilter()
+ */
+inline void FilterEvents(EventFilter filter, void* userdata)
+{
+  return SDL_FilterEvents(filter, userdata);
+}
+
+/**
+ * Set the state of processing events by type.
+ *
+ * @param type the type of event; see SDL_EventType for details.
+ * @param enabled whether to process the event or not.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa EventEnabled()
+ */
+inline void SetEventEnabled(Uint32 type, bool enabled)
+{
+  return SDL_SetEventEnabled(type, enabled);
+}
+
+/**
+ * Query the state of processing events by type.
+ *
+ * @param type the type of event; see SDL_EventType for details.
+ * @returns true if the event is being processed, false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetEventEnabled()
+ */
+inline bool EventEnabled(Uint32 type) { return SDL_EventEnabled(type); }
+
+/**
+ * Allocate a set of user-defined events, and return the beginning event
+ * number for that set of events.
+ *
+ * @param numevents the number of events to be allocated.
+ * @returns the beginning event number, or 0 if numevents is invalid or if
+ *          there are not enough user-defined events left.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PushEvent()
+ */
+inline Uint32 RegisterEvents(int numevents)
+{
+  return SDL_RegisterEvents(numevents);
+}
+
+/**
+ * Get window associated with an event.
+ *
+ * @param event an event containing a `windowID`.
+ * @returns the associated window on success or NULL if there is none.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PollEvent()
+ * @sa WaitEvent()
+ * @sa WaitEventTimeout()
+ */
+inline WindowRef GetWindowFromEvent(const Event* event)
+{
+  return SDL_GetWindowFromEvent(event);
+}
+
+/// @}
+
+} // namespace SDL
+
+#endif /* SDL3PP_EVENTS_H_ */
+
+
+// end --- SDL3pp_events.h --- 
+
+
+//
+//
+//
+//
+//
+//
+//
+
+// begin --- SDL3pp_init.h --- 
+
+#ifndef SDL3PP_INIT_H_
+#define SDL3PP_INIT_H_
+
+#include <SDL3/SDL_init.h>
+
+/**
+ * @namespace SDL
+ * @brief the main namespace where all SDL3pp public functions and types live
+ */
+namespace SDL {
+
+/**
+ * @defgroup CategoryInit Initialization and Shutdown
+ *
+ * All SDL programs need to initialize the library before starting to work
+ * with it.
+ *
+ * Almost everything can simply call SDL_Init() near startup, with a handful
+ * of flags to specify subsystems to touch. These are here to make sure SDL
+ * does not even attempt to touch low-level pieces of the operating system
+ * that you don't intend to use. For example, you might be using SDL for video
+ * and input but chose an external library for audio, and in this case you
+ * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
+ * external library has complete control.
+ *
+ * Most apps, when terminating, should call SDL_Quit(). This will clean up
+ * (nearly) everything that SDL might have allocated, and crucially, it'll
+ * make sure that the display's resolution is back to what the user expects if
+ * you had previously changed it for your game.
+ *
+ * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
+ * to fill in details about the program. This is completely optional, but it
+ * helps in small ways (we can provide an About dialog box for the macOS menu,
+ * we can name the app in the system's audio mixer, etc). Those that want to
+ * provide a _lot_ of information should look at the more-detailed
+ * SDL_SetAppMetadataProperty().
+ *
+ * @{
+ */
+
+/**
+ * @name InitFlags
+ *
+ * Initialization flags
+ */
+
+/**
+ * @brief Initialization flags for SDL
+ */
+using InitFlags = SDL_InitFlags;
+
+/**
+ * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
+
+/**
+ * `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main
+ * thread
+ */
+constexpr inline InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
+
+/**
+ * `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the
+ * same thread as SDL_INIT_VIDEO on Windows if you don't set
+ * SDL_HINT_JOYSTICK_THREAD
+ */
+constexpr inline InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
+
+constexpr inline InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC;
+
+/**
+ * `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`
+ */
+constexpr inline InitFlags INIT_GAMEPAD = SDL_INIT_GAMEPAD;
+
+constexpr inline InitFlags INIT_EVENTS = SDL_INIT_EVENTS;
+
+/**
+ * `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_SENSOR = SDL_INIT_SENSOR;
+
+/**
+ * `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_CAMERA = SDL_INIT_CAMERA;
+
+/// @}
+
+/**
+ * @name AppResult
+ * App result for Main callback
+ * @{
+ */
+
+/**
+ * Return values for optional main callbacks.
+ *
+ * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
+ * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
+ * success/failure to the operating system. What that means is
+ * platform-dependent. On Unix, for example, on success, the process error
+ * code will be zero, and on failure it will be 1. This interface doesn't
+ * allow you to return specific exit codes, just whether there was an error
+ * generally or not.
+ *
+ * Returning SDL_APP_CONTINUE from these functions will let the app continue
+ * to run.
+ *
+ * See
+ * [Main callbacks in
+ * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
+ * for complete details.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AppResult = SDL_AppResult;
+
+/**
+ * Value that requests that the app continue from the main callbacks.
+ */
+constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
+
+/**
+ * Value that requests termination with success from the main callbacks.
+ */
+constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
+
+/**
+ * Value that requests termination with error from the main callbacks.
+ */
+constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/// @}
+
+/**
+ * Function pointer typedef for SDL_AppInit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppInit directly.
+ *
+ * @param appstate a place where the app can optionally store a pointer for
+ *                 future use.
+ * @param argc the standard ANSI C main's argc; number of elements in `argv`.
+ * @param argv the standard ANSI C main's argv; array of command line
+ *             arguments.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppInit_func = SDL_AppInit_func;
+
+/**
+ * Function pointer typedef for SDL_AppIterate.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppIterate directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppIterate_func = SDL_AppIterate_func;
+
+/**
+ * Function pointer typedef for SDL_AppEvent.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param event the new event for the app to examine.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppEvent_func = SDL_AppEvent_func;
+
+/**
+ * Function pointer typedef for SDL_AppQuit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param result the result code that terminated the app (success or failure).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppQuit_func = SDL_AppQuit_func;
+
+/**
+ * Initialize the SDL library.
+ *
+ * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
+ * two may be used interchangeably. Though for readability of your code
+ * SDL_InitSubSystem() might be preferred.
+ *
+ * The file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)
+ * subsystems are initialized by default. Message boxes
+ * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * SDL_Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as SDL_Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `SDL_INIT_EVENTS`: events subsystem
+ * - `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
+ * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling SDL_Init, using either SDL_SetAppMetadata() or
+ * SDL_SetAppMetadataProperty().
+ *
+ * @param flags subsystem initialization flags.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
+ * @sa Quit()
+ * @sa SetMainReady()
+ * @sa WasInit()
+ */
+inline bool Init(InitFlags flags) { return SDL_Init(flags); }
+
+/**
+ * Compatibility function to initialize the SDL library.
+ *
+ * This function and SDL_Init() are interchangeable.
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa Quit()
+ * @sa QuitSubSystem()
+ */
+inline bool InitSubSystem(InitFlags flags) { return SDL_InitSubSystem(flags); }
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call SDL_Quit() even if you close all open subsystems
+ * with SDL_QuitSubSystem().
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa InitSubSystem()
+ * @sa Quit()
+ */
+inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
+
+/**
+ * Get a mask of the specified subsystems which are currently initialized.
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
+ *          returns the initialization status of the specified subsystems.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa InitSubSystem()
+ */
+inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
+
+/**
+ * Clean up all initialized subsystems.
+ *
+ * You should call this function even if you have already shutdown each
+ * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
+ * function even in the case of errors in initialization.
+ *
+ * You can use this function with atexit() to ensure that it is run when your
+ * application is shutdown, but it is not wise to do this from a library or
+ * other dynamically loaded code.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa QuitSubSystem()
+ */
+inline void Quit() { return SDL_Quit(); }
+
+/**
+ * @brief Initialize the SDL library.
+ *
+ * Also init any subsystem passed as InitFlags
+ *
+ * This might be called multiple times, it keeps a ref count and calls SDL_Quit
+ * only on the last one.
+ *
+ * The SubSystems are out of the refCount, as SDL itself already keep track
+ * internally.
+ */
+struct SDL
+{
+
+  /**
+   * @brief Init given subsystems
+   * @param flags
+   *
+   * This uses a refCount internally, so it is safe to call
+   * this multiple times, the quit will be called only on the last call.
+   */
+  SDL(InitFlags flags)
+    : flags(flags)
+  {
+    refCount(+1, true);
+  }
+
+  // Copy ctor
+  SDL(const SDL& other)
+    : flags(other.flags)
+    , active(other.active)
+  {
+    if (active) refCount(+1);
+  }
+
+  // Move ctor
+  SDL(SDL&& other)
+    : flags(other.flags)
+    , active(other.active)
+  {
+    other.active = false;
+  }
+
+  // Dtor
+  ~SDL()
+  {
+    if (active) refCount(-1);
+  }
+
+  SDL& operator=(SDL rhs)
+  {
+    std::swap(active, rhs.active);
+    std::swap(flags, rhs.flags);
+    return *this;
+  }
+
+  /**
+   * @brief Check if given subSystems are initialized
+   * @param flags the flags to test or 0 to test all
+   * @return Which subsystem are active
+   */
+  static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
+
+  /**
+   * @brief release locking such as reset() does, but never calls SDL_Quit() or
+   * SDL_QuitSubSystem()
+   * @return false if there are still other locks, true if this was last one
+   *
+   * When this returns true it is safe to call SDL_Quit()
+   */
+  bool release()
+  {
+    flags = 0;
+    return refCount(-1, false) == 0;
+  }
+
+  /**
+   * @brief reset the value of this instance, acts like it was destroyed and
+   * then newly instantiated
+   * @return false if there are still other locks, true if this was last one
+   */
+  bool reset() { return refCount(-1) == 0; }
+
+  /// @brief returns true if active and has no errors
+  operator bool() const { return active; }
+
+  InitFlags GetCurrentFlags() const { return flags; }
+
+private:
+  InitFlags flags = 0;
+  bool active = true;
+
+  int refCount(int delta, bool autoQuit = true);
+};
+
+/**
+ * Return whether this is the main thread.
+ *
+ * On Apple platforms, the main thread is the thread that runs your program's
+ * main() entry point. On other platforms, the main thread is the one that
+ * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
+ * your program's main() entry point. If you are using the main callbacks,
+ * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
+ * main thread.
+ *
+ * @returns true if this thread is the main thread, or false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+inline bool IsMainThread() { return SDL_IsMainThread(); }
+
+/**
+ * Callback run on the main thread.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+using MainThreadCallback = SDL_MainThreadCallback;
+
+/**
+ * @sa PropertiesRef.MainThreadCallback
+ */
+using MainThreadFunction = std::function<void()>;
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param userdata a pointer that is passed to `callback`.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread()
+ */
+inline bool RunOnMainThread(MainThreadCallback callback,
+                            void* userdata,
+                            bool wait_complete)
+{
+  return SDL_RunOnMainThread(callback, userdata, wait_complete);
+}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread()
+ */
+inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
+{
+  using Wrapper = CallbackWrapper<void()>;
+  return RunOnMainThread(
+    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
+}
+
+/**
+ * Specify basic metadata about your app.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left as NULL, if a specific
+ * detail doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before SDL_Init.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Passing a NULL removes any previous metadata.
+ *
+ * This is a simplified interface for the most important information. You can
+ * supply significantly more detailed metadata with
+ * SDL_SetAppMetadataProperty().
+ *
+ * @param appname The name of the application ("My Game 2: Bad Guy's
+ *                Revenge!").
+ * @param appversion The version of the application ("1.0.0beta5" or a git
+ *                   hash, or whatever makes sense).
+ * @param appidentifier A unique string in reverse-domain format that
+ *                      identifies this app ("com.example.mygame2").
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadataProperty()
+ */
+inline bool SetAppMetadata(StringParam appname,
+                           StringParam appversion,
+                           StringParam appidentifier)
+{
+  return SDL_SetAppMetadata(appname, appversion, appidentifier);
+}
+
+/**
+ * Specify metadata about your app through a set of properties.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left out, if a specific detail
+ * doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before SDL_Init.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
+ *
+ * These are the supported properties:
+ *
+ * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
+ *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
+ *   anywhere the OS shows the name of the application separately from window
+ *   titles, such as volume control applets, etc. This defaults to "SDL
+ *   Application".
+ * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
+ *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
+ *   2024" and a git hash are all valid options. This has no default.
+ * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
+ *   identifies this app. This must be in reverse-domain format, like
+ *   "com.example.mygame2". This string is used by desktop compositors to
+ *   identify and group windows together, as well as match applications with
+ *   associated desktop settings and icons. If you plan to package your
+ *   application in a container such as Flatpak, the app ID should match the
+ *   name of your Flatpak container as well. This has no default.
+ * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
+ *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
+ * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
+ *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
+ *   to one line, don't paste a copy of a whole software license in here. This
+ *   has no default.
+ * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
+ *   product page, or a storefront, or even a GitHub repository, for user's
+ *   further information This has no default.
+ * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
+ *   Currently this string can be "game" for a video game, "mediaplayer" for a
+ *   media player, or generically "application" if nothing else applies.
+ *   Future versions of SDL might add new types. This defaults to
+ *   "application".
+ *
+ * @param name the name of the metadata property to set.
+ * @param value the value of the property, or NULL to remove that property.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAppMetadataProperty()
+ * @sa SetAppMetadata()
+ */
+inline bool SetAppMetadataProperty(StringParam name, StringParam value)
+{
+  return SDL_SetAppMetadataProperty(name, value);
+}
+
+/**
+ * Get metadata about your app.
+ *
+ * This returns metadata previously set using SDL_SetAppMetadata() or
+ * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
+ * of available properties and their meanings.
+ *
+ * @param name the name of the metadata property to get.
+ * @returns the current value of the metadata property, or the default if it
+ *          is not set, NULL for properties with no default.
+ *
+ * @threadsafety It is safe to call this function from any thread, although
+ *               the string returned is not protected and could potentially be
+ *               freed if you call SDL_SetAppMetadataProperty() to set that
+ *               property from another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ */
+inline const char* GetAppMetadataProperty(StringParam name)
+{
+  return SDL_GetAppMetadataProperty(name);
+}
+
+/** @} */
+
+#pragma region impl
+
+inline int SDL::refCount(int delta, bool autoQuit)
+{
+  // TODO Locking these?
+  static int refCount = 0;
+  if (delta && active) {
+    if (delta > 0) {
+      refCount += 1;
+      if (flags) active = SDL_InitSubSystem(flags);
+    } else {
+      SDL_assert_always(refCount > 0);
+      active = false;
+      refCount -= 1;
+
+      if (autoQuit) {
+        if (refCount <= 0) {
+          // TODO Make this under FLAG
+          SDL_Quit();
+        } else if (flags) {
+          SDL_QuitSubSystem(flags);
+        }
+      }
+    }
+  }
+  return refCount;
+}
+
+#pragma endregion
+
+} // namespace SDL
+
+#endif /* SDL3PP_INIT_H_ */
+
+
+// end --- SDL3pp_init.h --- 
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+// begin --- SDL3pp_misc.h --- 
+
+
+#ifndef SDL3PP_MISC_H_
+#define SDL3PP_MISC_H_
+
+namespace SDL {
+
+/**
+ * @defgroup CategoryMisc Miscellaneous
+ *
+ * SDL API functions that don't fit elsewhere.
+ *
+ * @{
+ */
+
+/**
+ * Open a URL/URI in the browser or other appropriate external application.
+ *
+ * Open a URL in a separate, system-provided application. How this works will
+ * vary wildly depending on the platform. This will likely launch what makes
+ * sense to handle a specific URL's protocol (a web browser for `http://`,
+ * etc), but it might also be able to launch file managers for directories and
+ * other things.
+ *
+ * What happens when you open a URL varies wildly as well: your game window
+ * may lose focus (and may or may not lose focus if your game was fullscreen
+ * or grabbing input at the time). On mobile devices, your app will likely
+ * move to the background or your process might be paused. Any given platform
+ * may or may not handle a given URL.
+ *
+ * If this is unimplemented (or simply unavailable) for a platform, this will
+ * fail with an error. A successful result does not mean the URL loaded, just
+ * that we launched _something_ to handle it (or at least believe we did).
+ *
+ * All this to say: this function can be useful, but you should definitely
+ * test it on every platform you target.
+ *
+ * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
+ *            local files, if supported.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
+
+/// @}
+
+} // namespace SDL
+
+#endif /* SDL3PP_MISC_H_ */
+
+
+// end --- SDL3pp_misc.h --- 
+
+
+//
+//
+//
+//
+//
+//
+
+// begin --- SDL3pp_render.h --- 
+
+#ifndef SDL3PP_RENDER_H_
+#define SDL3PP_RENDER_H_
+
+#include <SDL3/SDL_render.h>
 
 namespace SDL {
 

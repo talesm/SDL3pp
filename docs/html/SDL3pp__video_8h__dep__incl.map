@@ -1,8 +1,10 @@
 <map id="SDL3pp/SDL3pp_video.h" name="SDL3pp/SDL3pp_video.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,184,31"/>
-<area shape="rect" id="Node000002" href="$SDL3pp_8h.html" title=" " alt="" coords="27,152,163,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,43,67,60,59,79,58,99,64,118,86,150,81,153,59,121,52,100,53,78,62,58,73,40"/>
-<area shape="rect" id="Node000003" href="$SDL3pp__render_8h.html" title=" " alt="" coords="68,79,252,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,39,151,77,147,80,113,43"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="142,116,107,154,103,150,138,113"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="27,5,205,31"/>
+<area shape="rect" id="Node000002" href="$SDL3pp_8h.html" title=" " alt="" coords="87,152,223,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,38,42,51,20,66,9,84,9,93,13,103,28,119,46,132,87,150,85,155,43,137,24,123,9,105,3,94,4,82,16,63,39,46,66,33"/>
+<area shape="rect" id="Node000003" href="$SDL3pp__events_8h.html" title=" " alt="" coords="23,79,209,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="119,44,119,79,113,79,113,44"/>
+<area shape="rect" id="Node000004" href="$SDL3pp__render_8h.html" title=" " alt="" coords="233,79,417,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,33,292,76,291,81,162,38"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="286,112,184,154,182,149,284,107"/>
 </map>

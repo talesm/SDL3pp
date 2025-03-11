@@ -22,6 +22,12 @@
  * @ref CategoryRect        | SDL3pp_rect.h
  * @ref CategorySurface     | SDL3pp_surface.h
  *
+ * ## Input Events
+ *
+ * Category                 | Header
+ * ------------------------ | --------------------
+ * @ref CategoryEvents      | SDL3pp_events.h
+ *
  * ## Time
  *
  * Category                 | Header
@@ -68,6 +74,11 @@
  * @addtogroup CategoryBlendmode
  * @addtogroup CategoryRect
  * @addtogroup CategorySurface
+ * @}
+ *
+ * @defgroup CategoriesEvents Input Events
+ * @{
+ * @addtogroup CategoryEvents
  * @}
  *
  * @defgroup CategoriesTime Time

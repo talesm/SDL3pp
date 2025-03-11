@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['_7epropertieslock_0',['~PropertiesLock',['../classSDL_1_1PropertiesLock.html#a034ade85da668dbc7339460cee886982',1,'SDL::PropertiesLock']]],
-  ['_7esdl_1',['~SDL',['../structSDL_1_1SDL.html#a98221fe7655ef540a3833824272b66b9',1,'SDL::SDL']]],
-  ['_7esurfacelock_2',['~SurfaceLock',['../classSDL_1_1SurfaceLock.html#a143fd9ac7ed58d25c97ed44d375d8813',1,'SDL::SurfaceLock']]],
-  ['_7etexturelock_3',['~TextureLock',['../classSDL_1_1TextureLock.html#a3dda3bd8f0b45fcf18b3fddf8635c395',1,'SDL::TextureLock']]]
+  ['value_0',['value',['../classSDL_1_1OptionalRef.html#a5bd97b5d07b3b4c3a08f03a683936dcb',1,'SDL::OptionalRef::value() const'],['../classSDL_1_1OptionalRef.html#a0794806aa8aa5b7e54f3315d5af1779d',1,'SDL::OptionalRef::value()']]],
+  ['values_1',['Values',['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#a6a7c60a840bf38a5c16d4c33ee9d00c9',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;']]],
+  ['vertex_2',['Vertex',['../group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b',1,'SDL']]],
+  ['video_3',['video',['../group__CategoriesVideo.html',1,'Video'],['../ApiByCategory.html#video',1,'Video']]]
 ];

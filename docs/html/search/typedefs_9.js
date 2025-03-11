@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['mainthreadcallback_0',['MainThreadCallback',['../group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c',1,'SDL']]],
-  ['mainthreadfunction_1',['MainThreadFunction',['../group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd',1,'SDL']]],
-  ['malloc_5ffunc_2',['malloc_func',['../group__CategoryStdinc.html#ga20e849be3a477a832c3f5b49aa71f793',1,'SDL']]],
-  ['matrixcoefficients_3',['MatrixCoefficients',['../group__CategoryPixels.html#gab21170cc89744e8d42089515cb258320',1,'SDL']]]
+  ['joyaxisevent_0',['JoyAxisEvent',['../group__CategoryEvents.html#ga29a035f205f59cbcb8fb6746b1f0c639',1,'SDL']]],
+  ['joyballevent_1',['JoyBallEvent',['../group__CategoryEvents.html#gae837a417e1115a9f77c0fc7c45d386ea',1,'SDL']]],
+  ['joybatteryevent_2',['JoyBatteryEvent',['../group__CategoryEvents.html#ga7c36c5c2f5a68c3cae77b3dc3d67424b',1,'SDL']]],
+  ['joybuttonevent_3',['JoyButtonEvent',['../group__CategoryEvents.html#gad5ff6bf706bfa11b22c123c9f56902f8',1,'SDL']]],
+  ['joydeviceevent_4',['JoyDeviceEvent',['../group__CategoryEvents.html#gae71d192a32f74e6a816302b8bdf45832',1,'SDL']]],
+  ['joyhatevent_5',['JoyHatEvent',['../group__CategoryEvents.html#gabcf611acd104ed6af29b32b9f279a247',1,'SDL']]]
 ];

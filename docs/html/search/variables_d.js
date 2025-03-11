@@ -1,25 +1,9 @@
 var searchData=
 [
-  ['textureaccess_5fstatic_0',['TEXTUREACCESS_STATIC',['../group__CategoryRender.html#gaa279e3194ca1c39c29ba228dfbaf1a11',1,'SDL']]],
-  ['textureaccess_5fstreaming_1',['TEXTUREACCESS_STREAMING',['../group__CategoryRender.html#gaa7a17f596678e5bb9c8b67844a1024c9',1,'SDL']]],
-  ['textureaccess_5ftarget_2',['TEXTUREACCESS_TARGET',['../group__CategoryRender.html#ga9229ccd5925e315f1375f422a64c3f57',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fbt1361_3',['TRANSFER_CHARACTERISTICS_BT1361',['../group__CategoryPixels.html#ga9085ea4c146229a09818266725957913',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fbt2020_5f10bit_4',['TRANSFER_CHARACTERISTICS_BT2020_10BIT',['../group__CategoryPixels.html#gade591dad090358cf640b6d6135169097',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fbt2020_5f12bit_5',['TRANSFER_CHARACTERISTICS_BT2020_12BIT',['../group__CategoryPixels.html#ga1d38eff5d0b89040e2012bc580a8758d',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fbt601_6',['TRANSFER_CHARACTERISTICS_BT601',['../group__CategoryPixels.html#ga46816481ad8297d6bddc570a62a65b1d',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fbt709_7',['TRANSFER_CHARACTERISTICS_BT709',['../group__CategoryPixels.html#gaec5cced75e29a6ccc1726417d6dfffbe',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fcustom_8',['TRANSFER_CHARACTERISTICS_CUSTOM',['../group__CategoryPixels.html#gacb679aa0bf4f04c37019de9afceda5d9',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fgamma22_9',['TRANSFER_CHARACTERISTICS_GAMMA22',['../group__CategoryPixels.html#ga569e83997a5a7b608207e59015257da3',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fgamma28_10',['TRANSFER_CHARACTERISTICS_GAMMA28',['../group__CategoryPixels.html#gae5f88bdb4ec65b1a82335e416ee3ac30',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fhlg_11',['TRANSFER_CHARACTERISTICS_HLG',['../group__CategoryPixels.html#ga692854435e3b59e09ffa7666fa03a2ba',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fiec61966_12',['TRANSFER_CHARACTERISTICS_IEC61966',['../group__CategoryPixels.html#gafc2f0a4a93a9baa334906f0b38b3c278',1,'SDL']]],
-  ['transfer_5fcharacteristics_5flinear_13',['TRANSFER_CHARACTERISTICS_LINEAR',['../group__CategoryPixels.html#gad196810dd827abf228a90c8a693c13ac',1,'SDL']]],
-  ['transfer_5fcharacteristics_5flog100_14',['TRANSFER_CHARACTERISTICS_LOG100',['../group__CategoryPixels.html#ga3363f9ea9f8101c3d0974660dd02518f',1,'SDL']]],
-  ['transfer_5fcharacteristics_5flog100_5fsqrt10_15',['TRANSFER_CHARACTERISTICS_LOG100_SQRT10',['../group__CategoryPixels.html#gafb4b9c624e2cff113b35bdfb33b6ecac',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fpq_16',['TRANSFER_CHARACTERISTICS_PQ',['../group__CategoryPixels.html#ga9549b3f817b00df916f083192b6eeaaf',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fsmpte240_17',['TRANSFER_CHARACTERISTICS_SMPTE240',['../group__CategoryPixels.html#ga1a87b7b0d197d112388b4957f8b10f83',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fsmpte428_18',['TRANSFER_CHARACTERISTICS_SMPTE428',['../group__CategoryPixels.html#ga53cad8871d4a4e7d8801c0ef0487cffb',1,'SDL']]],
-  ['transfer_5fcharacteristics_5fsrgb_19',['TRANSFER_CHARACTERISTICS_SRGB',['../group__CategoryPixels.html#ga59652dbc190661efeebcd1b39c64d763',1,'SDL']]],
-  ['transfer_5fcharacteristics_5funknown_20',['TRANSFER_CHARACTERISTICS_UNKNOWN',['../group__CategoryPixels.html#gad233d6d5100c24bab856652a415d11b2',1,'SDL']]],
-  ['transfer_5fcharacteristics_5funspecified_21',['TRANSFER_CHARACTERISTICS_UNSPECIFIED',['../group__CategoryPixels.html#gabf9b0c3030212c9dc28301c90a9decfb',1,'SDL']]]
+  ['scalemode_5finvalid_0',['SCALEMODE_INVALID',['../group__CategorySurface.html#gaa6cc4b06d3842efd9aa23a4fbb61f148',1,'SDL']]],
+  ['scalemode_5flinear_1',['SCALEMODE_LINEAR',['../group__CategorySurface.html#ga54bde4af0a6606edd0ef6356592d122e',1,'SDL']]],
+  ['scalemode_5fnearest_2',['SCALEMODE_NEAREST',['../group__CategorySurface.html#ga66f4bba63ed46834695fa4bc8c915bf3',1,'SDL']]],
+  ['system_5ftheme_5fdark_3',['SYSTEM_THEME_DARK',['../group__CategoryVideo.html#ga1f644a35cdaaaff5e0738450e0a2d164',1,'SDL']]],
+  ['system_5ftheme_5flight_4',['SYSTEM_THEME_LIGHT',['../group__CategoryVideo.html#ga1453372d0b6fb7605372737012d53193',1,'SDL']]],
+  ['system_5ftheme_5funknown_5',['SYSTEM_THEME_UNKNOWN',['../group__CategoryVideo.html#gaa0f0e83f250340f736c6ac06da885ab1',1,'SDL']]]
 ];

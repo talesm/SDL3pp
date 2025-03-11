@@ -12796,6 +12796,1635 @@
         }
       }
     },
+    "SDL3pp_events.h": {
+      "name": "SDL3pp_events.h",
+      "doc": "@defgroup CategoryEvents Category Events\n\nEvent queue management.\n\nIt's extremely common--often required--that an app deal with SDL's event\nqueue. Almost all useful information about interactions with the real world\nflow through here: the user interacting with the computer and app, hardware\ncoming and going, the system changing in some way, etc.\n\nAn app generally takes a moment, perhaps at the start of a new frame, to\nexamine any events that have occured since the last time and process or\nignore them. This is generally done by calling SDL_PollEvent() in a loop\nuntil it returns false (or, if using the main callbacks, events are\nprovided one at a time in calls to SDL_AppEvent() before the next call to\nSDL_AppIterate(); in this scenario, the app does not call SDL_PollEvent()\nat all).\n\nThere is other forms of control, too: SDL_PeepEvents() has more\nfunctionality at the cost of more complexity, and SDL_WaitEvent() can block\nthe process until something interesting happens, which might be beneficial\nfor certain types of programs on low-power hardware. One may also call\nSDL_AddEventWatch() to set a callback when new events arrive.\n\nThe app is free to generate their own events, too: SDL_PushEvent allows the\napp to put events onto the queue for later retrieval; SDL_RegisterEvents\ncan guarantee that these events have a type that isn't in use by other\nparts of the system.",
+      "entries": {
+        "EventType": {
+          "doc": "The types of events that can be delivered.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "EventType",
+          "kind": "alias",
+          "sourceName": "SDL_EventType",
+          "type": "SDL_EventType"
+        },
+        "EVENT_FIRST": {
+          "doc": "Unused (do not remove)",
+          "name": "EVENT_FIRST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_FIRST",
+          "constexpr": true
+        },
+        "EVENT_QUIT": {
+          "doc": "User-requested quit",
+          "name": "EVENT_QUIT",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_QUIT",
+          "constexpr": true
+        },
+        "EVENT_TERMINATING": {
+          "doc": "",
+          "name": "EVENT_TERMINATING",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_TERMINATING",
+          "constexpr": true
+        },
+        "EVENT_LOW_MEMORY": {
+          "doc": "",
+          "name": "EVENT_LOW_MEMORY",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_LOW_MEMORY",
+          "constexpr": true
+        },
+        "EVENT_WILL_ENTER_BACKGROUND": {
+          "doc": "",
+          "name": "EVENT_WILL_ENTER_BACKGROUND",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WILL_ENTER_BACKGROUND",
+          "constexpr": true
+        },
+        "EVENT_DID_ENTER_BACKGROUND": {
+          "doc": "",
+          "name": "EVENT_DID_ENTER_BACKGROUND",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DID_ENTER_BACKGROUND",
+          "constexpr": true
+        },
+        "EVENT_WILL_ENTER_FOREGROUND": {
+          "doc": "",
+          "name": "EVENT_WILL_ENTER_FOREGROUND",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WILL_ENTER_FOREGROUND",
+          "constexpr": true
+        },
+        "EVENT_DID_ENTER_FOREGROUND": {
+          "doc": "",
+          "name": "EVENT_DID_ENTER_FOREGROUND",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DID_ENTER_FOREGROUND",
+          "constexpr": true
+        },
+        "EVENT_LOCALE_CHANGED": {
+          "doc": "The user's locale preferences have changed.",
+          "name": "EVENT_LOCALE_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_LOCALE_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_SYSTEM_THEME_CHANGED": {
+          "doc": "The system theme changed",
+          "name": "EVENT_SYSTEM_THEME_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_SYSTEM_THEME_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_ORIENTATION": {
+          "doc": "Display orientation has changed to data1",
+          "name": "EVENT_DISPLAY_ORIENTATION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_ORIENTATION",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_ADDED": {
+          "doc": "Display has been added to the system",
+          "name": "EVENT_DISPLAY_ADDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_ADDED",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_REMOVED": {
+          "doc": "Display has been removed from the system",
+          "name": "EVENT_DISPLAY_REMOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_REMOVED",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_MOVED": {
+          "doc": "Display has changed position",
+          "name": "EVENT_DISPLAY_MOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_MOVED",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_DESKTOP_MODE_CHANGED": {
+          "doc": "Display has changed desktop mode",
+          "name": "EVENT_DISPLAY_DESKTOP_MODE_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_CURRENT_MODE_CHANGED": {
+          "doc": "Display has changed current mode",
+          "name": "EVENT_DISPLAY_CURRENT_MODE_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_CONTENT_SCALE_CHANGED": {
+          "doc": "Display has changed content scale",
+          "name": "EVENT_DISPLAY_CONTENT_SCALE_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_FIRST": {
+          "doc": "",
+          "name": "EVENT_DISPLAY_FIRST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_FIRST",
+          "constexpr": true
+        },
+        "EVENT_DISPLAY_LAST": {
+          "doc": "",
+          "name": "EVENT_DISPLAY_LAST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DISPLAY_LAST",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_SHOWN": {
+          "doc": "Window has been shown",
+          "name": "EVENT_WINDOW_SHOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_SHOWN",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_HIDDEN": {
+          "doc": "Window has been hidden",
+          "name": "EVENT_WINDOW_HIDDEN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_HIDDEN",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_EXPOSED": {
+          "doc": "Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event",
+          "name": "EVENT_WINDOW_EXPOSED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_EXPOSED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_MOVED": {
+          "doc": "Window has been moved to data1, data2",
+          "name": "EVENT_WINDOW_MOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_MOVED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_RESIZED": {
+          "doc": "Window has been resized to data1xdata2",
+          "name": "EVENT_WINDOW_RESIZED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_RESIZED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_PIXEL_SIZE_CHANGED": {
+          "doc": "The pixel size of the window has changed to data1xdata2",
+          "name": "EVENT_WINDOW_PIXEL_SIZE_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_METAL_VIEW_RESIZED": {
+          "doc": "The pixel size of a Metal view associated with the window has changed",
+          "name": "EVENT_WINDOW_METAL_VIEW_RESIZED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_METAL_VIEW_RESIZED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_MINIMIZED": {
+          "doc": "Window has been minimized",
+          "name": "EVENT_WINDOW_MINIMIZED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_MINIMIZED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_MAXIMIZED": {
+          "doc": "Window has been maximized",
+          "name": "EVENT_WINDOW_MAXIMIZED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_MAXIMIZED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_RESTORED": {
+          "doc": "Window has been restored to normal size and position",
+          "name": "EVENT_WINDOW_RESTORED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_RESTORED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_MOUSE_ENTER": {
+          "doc": "Window has gained mouse focus",
+          "name": "EVENT_WINDOW_MOUSE_ENTER",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_MOUSE_ENTER",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_MOUSE_LEAVE": {
+          "doc": "Window has lost mouse focus",
+          "name": "EVENT_WINDOW_MOUSE_LEAVE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_MOUSE_LEAVE",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_FOCUS_GAINED": {
+          "doc": "Window has gained keyboard focus",
+          "name": "EVENT_WINDOW_FOCUS_GAINED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_FOCUS_GAINED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_FOCUS_LOST": {
+          "doc": "Window has lost keyboard focus",
+          "name": "EVENT_WINDOW_FOCUS_LOST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_FOCUS_LOST",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_CLOSE_REQUESTED": {
+          "doc": "The window manager requests that the window be closed",
+          "name": "EVENT_WINDOW_CLOSE_REQUESTED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_CLOSE_REQUESTED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_HIT_TEST": {
+          "doc": "Window had a hit test that wasn't SDL_HITTEST_NORMAL",
+          "name": "EVENT_WINDOW_HIT_TEST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_HIT_TEST",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_ICCPROF_CHANGED": {
+          "doc": "The ICC profile of the window's display has changed",
+          "name": "EVENT_WINDOW_ICCPROF_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_ICCPROF_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_DISPLAY_CHANGED": {
+          "doc": "Window has been moved to display data1",
+          "name": "EVENT_WINDOW_DISPLAY_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_DISPLAY_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_DISPLAY_SCALE_CHANGED": {
+          "doc": "Window display scale has been changed",
+          "name": "EVENT_WINDOW_DISPLAY_SCALE_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_SAFE_AREA_CHANGED": {
+          "doc": "The window safe area has been changed",
+          "name": "EVENT_WINDOW_SAFE_AREA_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_SAFE_AREA_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_OCCLUDED": {
+          "doc": "The window has been occluded",
+          "name": "EVENT_WINDOW_OCCLUDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_OCCLUDED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_ENTER_FULLSCREEN": {
+          "doc": "The window has entered fullscreen mode",
+          "name": "EVENT_WINDOW_ENTER_FULLSCREEN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_ENTER_FULLSCREEN",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_LEAVE_FULLSCREEN": {
+          "doc": "The window has left fullscreen mode",
+          "name": "EVENT_WINDOW_LEAVE_FULLSCREEN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_LEAVE_FULLSCREEN",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_DESTROYED": {
+          "doc": "",
+          "name": "EVENT_WINDOW_DESTROYED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_DESTROYED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_HDR_STATE_CHANGED": {
+          "doc": "Window HDR properties have changed",
+          "name": "EVENT_WINDOW_HDR_STATE_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_HDR_STATE_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_FIRST": {
+          "doc": "",
+          "name": "EVENT_WINDOW_FIRST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_FIRST",
+          "constexpr": true
+        },
+        "EVENT_WINDOW_LAST": {
+          "doc": "",
+          "name": "EVENT_WINDOW_LAST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_WINDOW_LAST",
+          "constexpr": true
+        },
+        "EVENT_KEY_DOWN": {
+          "doc": "Key pressed",
+          "name": "EVENT_KEY_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_KEY_DOWN",
+          "constexpr": true
+        },
+        "EVENT_KEY_UP": {
+          "doc": "Key released",
+          "name": "EVENT_KEY_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_KEY_UP",
+          "constexpr": true
+        },
+        "EVENT_TEXT_EDITING": {
+          "doc": "Keyboard text editing (composition)",
+          "name": "EVENT_TEXT_EDITING",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_TEXT_EDITING",
+          "constexpr": true
+        },
+        "EVENT_TEXT_INPUT": {
+          "doc": "Keyboard text input",
+          "name": "EVENT_TEXT_INPUT",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_TEXT_INPUT",
+          "constexpr": true
+        },
+        "EVENT_KEYMAP_CHANGED": {
+          "doc": "",
+          "name": "EVENT_KEYMAP_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_KEYMAP_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_KEYBOARD_ADDED": {
+          "doc": "A new keyboard has been inserted into the system",
+          "name": "EVENT_KEYBOARD_ADDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_KEYBOARD_ADDED",
+          "constexpr": true
+        },
+        "EVENT_KEYBOARD_REMOVED": {
+          "doc": "A keyboard has been removed",
+          "name": "EVENT_KEYBOARD_REMOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_KEYBOARD_REMOVED",
+          "constexpr": true
+        },
+        "EVENT_TEXT_EDITING_CANDIDATES": {
+          "doc": "Keyboard text editing candidates",
+          "name": "EVENT_TEXT_EDITING_CANDIDATES",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_TEXT_EDITING_CANDIDATES",
+          "constexpr": true
+        },
+        "EVENT_MOUSE_MOTION": {
+          "doc": "Mouse moved",
+          "name": "EVENT_MOUSE_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_MOUSE_MOTION",
+          "constexpr": true
+        },
+        "EVENT_MOUSE_BUTTON_DOWN": {
+          "doc": "Mouse button pressed",
+          "name": "EVENT_MOUSE_BUTTON_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_MOUSE_BUTTON_DOWN",
+          "constexpr": true
+        },
+        "EVENT_MOUSE_BUTTON_UP": {
+          "doc": "Mouse button released",
+          "name": "EVENT_MOUSE_BUTTON_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_MOUSE_BUTTON_UP",
+          "constexpr": true
+        },
+        "EVENT_MOUSE_WHEEL": {
+          "doc": "Mouse wheel motion",
+          "name": "EVENT_MOUSE_WHEEL",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_MOUSE_WHEEL",
+          "constexpr": true
+        },
+        "EVENT_MOUSE_ADDED": {
+          "doc": "A new mouse has been inserted into the system",
+          "name": "EVENT_MOUSE_ADDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_MOUSE_ADDED",
+          "constexpr": true
+        },
+        "EVENT_MOUSE_REMOVED": {
+          "doc": "A mouse has been removed",
+          "name": "EVENT_MOUSE_REMOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_MOUSE_REMOVED",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_AXIS_MOTION": {
+          "doc": "Joystick axis motion",
+          "name": "EVENT_JOYSTICK_AXIS_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_AXIS_MOTION",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_BALL_MOTION": {
+          "doc": "Joystick trackball motion",
+          "name": "EVENT_JOYSTICK_BALL_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_BALL_MOTION",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_HAT_MOTION": {
+          "doc": "Joystick hat position change",
+          "name": "EVENT_JOYSTICK_HAT_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_HAT_MOTION",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_BUTTON_DOWN": {
+          "doc": "Joystick button pressed",
+          "name": "EVENT_JOYSTICK_BUTTON_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_BUTTON_DOWN",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_BUTTON_UP": {
+          "doc": "Joystick button released",
+          "name": "EVENT_JOYSTICK_BUTTON_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_BUTTON_UP",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_ADDED": {
+          "doc": "A new joystick has been inserted into the system",
+          "name": "EVENT_JOYSTICK_ADDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_ADDED",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_REMOVED": {
+          "doc": "An opened joystick has been removed",
+          "name": "EVENT_JOYSTICK_REMOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_REMOVED",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_BATTERY_UPDATED": {
+          "doc": "Joystick battery level change",
+          "name": "EVENT_JOYSTICK_BATTERY_UPDATED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_BATTERY_UPDATED",
+          "constexpr": true
+        },
+        "EVENT_JOYSTICK_UPDATE_COMPLETE": {
+          "doc": "Joystick update is complete",
+          "name": "EVENT_JOYSTICK_UPDATE_COMPLETE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_JOYSTICK_UPDATE_COMPLETE",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_AXIS_MOTION": {
+          "doc": "Gamepad axis motion",
+          "name": "EVENT_GAMEPAD_AXIS_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_AXIS_MOTION",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_BUTTON_DOWN": {
+          "doc": "Gamepad button pressed",
+          "name": "EVENT_GAMEPAD_BUTTON_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_BUTTON_DOWN",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_BUTTON_UP": {
+          "doc": "Gamepad button released",
+          "name": "EVENT_GAMEPAD_BUTTON_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_BUTTON_UP",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_ADDED": {
+          "doc": "A new gamepad has been inserted into the system",
+          "name": "EVENT_GAMEPAD_ADDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_ADDED",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_REMOVED": {
+          "doc": "A gamepad has been removed",
+          "name": "EVENT_GAMEPAD_REMOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_REMOVED",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_REMAPPED": {
+          "doc": "The gamepad mapping was updated",
+          "name": "EVENT_GAMEPAD_REMAPPED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_REMAPPED",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_TOUCHPAD_DOWN": {
+          "doc": "Gamepad touchpad was touched",
+          "name": "EVENT_GAMEPAD_TOUCHPAD_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_TOUCHPAD_MOTION": {
+          "doc": "Gamepad touchpad finger was moved",
+          "name": "EVENT_GAMEPAD_TOUCHPAD_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_TOUCHPAD_UP": {
+          "doc": "Gamepad touchpad finger was lifted",
+          "name": "EVENT_GAMEPAD_TOUCHPAD_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_TOUCHPAD_UP",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_SENSOR_UPDATE": {
+          "doc": "Gamepad sensor was updated",
+          "name": "EVENT_GAMEPAD_SENSOR_UPDATE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_SENSOR_UPDATE",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_UPDATE_COMPLETE": {
+          "doc": "Gamepad update is complete",
+          "name": "EVENT_GAMEPAD_UPDATE_COMPLETE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_UPDATE_COMPLETE",
+          "constexpr": true
+        },
+        "EVENT_GAMEPAD_STEAM_HANDLE_UPDATED": {
+          "doc": "Gamepad Steam handle has changed",
+          "name": "EVENT_GAMEPAD_STEAM_HANDLE_UPDATED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED",
+          "constexpr": true
+        },
+        "EVENT_FINGER_DOWN": {
+          "doc": "",
+          "name": "EVENT_FINGER_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_FINGER_DOWN",
+          "constexpr": true
+        },
+        "EVENT_FINGER_UP": {
+          "doc": "",
+          "name": "EVENT_FINGER_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_FINGER_UP",
+          "constexpr": true
+        },
+        "EVENT_FINGER_MOTION": {
+          "doc": "",
+          "name": "EVENT_FINGER_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_FINGER_MOTION",
+          "constexpr": true
+        },
+        "EVENT_FINGER_CANCELED": {
+          "doc": "",
+          "name": "EVENT_FINGER_CANCELED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_FINGER_CANCELED",
+          "constexpr": true
+        },
+        "EVENT_CLIPBOARD_UPDATE": {
+          "doc": "The clipboard or primary selection changed",
+          "name": "EVENT_CLIPBOARD_UPDATE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_CLIPBOARD_UPDATE",
+          "constexpr": true
+        },
+        "EVENT_DROP_FILE": {
+          "doc": "The system requests a file open",
+          "name": "EVENT_DROP_FILE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DROP_FILE",
+          "constexpr": true
+        },
+        "EVENT_DROP_TEXT": {
+          "doc": "text/plain drag-and-drop event",
+          "name": "EVENT_DROP_TEXT",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DROP_TEXT",
+          "constexpr": true
+        },
+        "EVENT_DROP_BEGIN": {
+          "doc": "A new set of drops is beginning (NULL filename)",
+          "name": "EVENT_DROP_BEGIN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DROP_BEGIN",
+          "constexpr": true
+        },
+        "EVENT_DROP_COMPLETE": {
+          "doc": "Current set of drops is now complete (NULL filename)",
+          "name": "EVENT_DROP_COMPLETE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DROP_COMPLETE",
+          "constexpr": true
+        },
+        "EVENT_DROP_POSITION": {
+          "doc": "Position while moving over the window",
+          "name": "EVENT_DROP_POSITION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_DROP_POSITION",
+          "constexpr": true
+        },
+        "EVENT_AUDIO_DEVICE_ADDED": {
+          "doc": "A new audio device is available",
+          "name": "EVENT_AUDIO_DEVICE_ADDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_AUDIO_DEVICE_ADDED",
+          "constexpr": true
+        },
+        "EVENT_AUDIO_DEVICE_REMOVED": {
+          "doc": "An audio device has been removed.",
+          "name": "EVENT_AUDIO_DEVICE_REMOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_AUDIO_DEVICE_REMOVED",
+          "constexpr": true
+        },
+        "EVENT_AUDIO_DEVICE_FORMAT_CHANGED": {
+          "doc": "An audio device's format has been changed by the system.",
+          "name": "EVENT_AUDIO_DEVICE_FORMAT_CHANGED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_AUDIO_DEVICE_FORMAT_CHANGED",
+          "constexpr": true
+        },
+        "EVENT_SENSOR_UPDATE": {
+          "doc": "A sensor was updated",
+          "name": "EVENT_SENSOR_UPDATE",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_SENSOR_UPDATE",
+          "constexpr": true
+        },
+        "EVENT_PEN_PROXIMITY_IN": {
+          "doc": "Pressure-sensitive pen has become available",
+          "name": "EVENT_PEN_PROXIMITY_IN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_PROXIMITY_IN",
+          "constexpr": true
+        },
+        "EVENT_PEN_PROXIMITY_OUT": {
+          "doc": "Pressure-sensitive pen has become unavailable",
+          "name": "EVENT_PEN_PROXIMITY_OUT",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_PROXIMITY_OUT",
+          "constexpr": true
+        },
+        "EVENT_PEN_DOWN": {
+          "doc": "Pressure-sensitive pen touched drawing surface",
+          "name": "EVENT_PEN_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_DOWN",
+          "constexpr": true
+        },
+        "EVENT_PEN_UP": {
+          "doc": "Pressure-sensitive pen stopped touching drawing surface",
+          "name": "EVENT_PEN_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_UP",
+          "constexpr": true
+        },
+        "EVENT_PEN_BUTTON_DOWN": {
+          "doc": "Pressure-sensitive pen button pressed",
+          "name": "EVENT_PEN_BUTTON_DOWN",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_BUTTON_DOWN",
+          "constexpr": true
+        },
+        "EVENT_PEN_BUTTON_UP": {
+          "doc": "Pressure-sensitive pen button released",
+          "name": "EVENT_PEN_BUTTON_UP",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_BUTTON_UP",
+          "constexpr": true
+        },
+        "EVENT_PEN_MOTION": {
+          "doc": "Pressure-sensitive pen is moving on the tablet",
+          "name": "EVENT_PEN_MOTION",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_MOTION",
+          "constexpr": true
+        },
+        "EVENT_PEN_AXIS": {
+          "doc": "Pressure-sensitive pen angle/pressure/etc changed",
+          "name": "EVENT_PEN_AXIS",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PEN_AXIS",
+          "constexpr": true
+        },
+        "EVENT_CAMERA_DEVICE_ADDED": {
+          "doc": "A new camera device is available",
+          "name": "EVENT_CAMERA_DEVICE_ADDED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_ADDED",
+          "constexpr": true
+        },
+        "EVENT_CAMERA_DEVICE_REMOVED": {
+          "doc": "A camera device has been removed.",
+          "name": "EVENT_CAMERA_DEVICE_REMOVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_REMOVED",
+          "constexpr": true
+        },
+        "EVENT_CAMERA_DEVICE_APPROVED": {
+          "doc": "A camera device has been approved for use by the user.",
+          "name": "EVENT_CAMERA_DEVICE_APPROVED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_APPROVED",
+          "constexpr": true
+        },
+        "EVENT_CAMERA_DEVICE_DENIED": {
+          "doc": "A camera device has been denied for use by the user.",
+          "name": "EVENT_CAMERA_DEVICE_DENIED",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_CAMERA_DEVICE_DENIED",
+          "constexpr": true
+        },
+        "EVENT_RENDER_TARGETS_RESET": {
+          "doc": "The render targets have been reset and their contents need to be updated",
+          "name": "EVENT_RENDER_TARGETS_RESET",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_RENDER_TARGETS_RESET",
+          "constexpr": true
+        },
+        "EVENT_RENDER_DEVICE_RESET": {
+          "doc": "The device has been reset and all textures need to be recreated",
+          "name": "EVENT_RENDER_DEVICE_RESET",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_RENDER_DEVICE_RESET",
+          "constexpr": true
+        },
+        "EVENT_RENDER_DEVICE_LOST": {
+          "doc": "The device has been lost and can't be recovered.",
+          "name": "EVENT_RENDER_DEVICE_LOST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_RENDER_DEVICE_LOST",
+          "constexpr": true
+        },
+        "EVENT_PRIVATE0": {
+          "doc": "",
+          "name": "EVENT_PRIVATE0",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PRIVATE0",
+          "constexpr": true
+        },
+        "EVENT_PRIVATE1": {
+          "doc": "",
+          "name": "EVENT_PRIVATE1",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PRIVATE1",
+          "constexpr": true
+        },
+        "EVENT_PRIVATE2": {
+          "doc": "",
+          "name": "EVENT_PRIVATE2",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PRIVATE2",
+          "constexpr": true
+        },
+        "EVENT_PRIVATE3": {
+          "doc": "",
+          "name": "EVENT_PRIVATE3",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_PRIVATE3",
+          "constexpr": true
+        },
+        "EVENT_POLL_SENTINEL": {
+          "doc": "Signals the end of an event poll cycle",
+          "name": "EVENT_POLL_SENTINEL",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_POLL_SENTINEL",
+          "constexpr": true
+        },
+        "EVENT_USER": {
+          "doc": "Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use,\n and should be allocated with SDL_RegisterEvents()",
+          "name": "EVENT_USER",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_USER",
+          "constexpr": true
+        },
+        "EVENT_LAST": {
+          "doc": "This last event is only for bounding internal arrays",
+          "name": "EVENT_LAST",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_LAST",
+          "constexpr": true
+        },
+        "EVENT_ENUM_PADDING": {
+          "doc": "",
+          "name": "EVENT_ENUM_PADDING",
+          "kind": "var",
+          "type": "EventType",
+          "sourceName": "SDL_EVENT_ENUM_PADDING",
+          "constexpr": true
+        },
+        "CommonEvent": {
+          "doc": "Fields shared by every event\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "CommonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_CommonEvent",
+          "type": "SDL_CommonEvent"
+        },
+        "DisplayEvent": {
+          "doc": "Display state change event data (event.display.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "DisplayEvent",
+          "kind": "alias",
+          "sourceName": "SDL_DisplayEvent",
+          "type": "SDL_DisplayEvent"
+        },
+        "WindowEvent": {
+          "doc": "Window state change event data (event.window.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "WindowEvent",
+          "kind": "alias",
+          "sourceName": "SDL_WindowEvent",
+          "type": "SDL_WindowEvent"
+        },
+        "KeyboardDeviceEvent": {
+          "doc": "Keyboard device event structure (event.kdevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "KeyboardDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_KeyboardDeviceEvent",
+          "type": "SDL_KeyboardDeviceEvent"
+        },
+        "KeyboardEvent": {
+          "doc": "Keyboard button event structure (event.key.*)\n\nThe `key` is the base SDL_Keycode generated by pressing the `scancode`\nusing the current keyboard layout, applying any options specified in\nSDL_HINT_KEYCODE_OPTIONS. You can get the SDL_Keycode corresponding to the\nevent scancode and modifiers directly from the keyboard layout, bypassing\nSDL_HINT_KEYCODE_OPTIONS, by calling SDL_GetKeyFromScancode().\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_GetKeyFromScancode\n@sa SDL_HINT_KEYCODE_OPTIONS",
+          "name": "KeyboardEvent",
+          "kind": "alias",
+          "sourceName": "SDL_KeyboardEvent",
+          "type": "SDL_KeyboardEvent"
+        },
+        "TextEditingEvent": {
+          "doc": "Keyboard text editing event structure (event.edit.*)\n\nThe start cursor is the position, in UTF-8 characters, where new typing\nwill be inserted into the editing text. The length is the number of UTF-8\ncharacters that will be replaced by new typing.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "TextEditingEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TextEditingEvent",
+          "type": "SDL_TextEditingEvent"
+        },
+        "TextEditingCandidatesEvent": {
+          "doc": "Keyboard IME candidates event structure (event.edit_candidates.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "TextEditingCandidatesEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TextEditingCandidatesEvent",
+          "type": "SDL_TextEditingCandidatesEvent"
+        },
+        "TextInputEvent": {
+          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nSDL_StartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_StartTextInput\n@sa SDL_StopTextInput",
+          "name": "TextInputEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TextInputEvent",
+          "type": "SDL_TextInputEvent"
+        },
+        "MouseDeviceEvent": {
+          "doc": "Mouse device event structure (event.mdevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseDeviceEvent",
+          "type": "SDL_MouseDeviceEvent"
+        },
+        "MouseMotionEvent": {
+          "doc": "Mouse motion event structure (event.motion.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseMotionEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseMotionEvent",
+          "type": "SDL_MouseMotionEvent"
+        },
+        "MouseButtonEvent": {
+          "doc": "Mouse button event structure (event.button.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseButtonEvent",
+          "type": "SDL_MouseButtonEvent"
+        },
+        "MouseWheelEvent": {
+          "doc": "Mouse wheel event structure (event.wheel.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "MouseWheelEvent",
+          "kind": "alias",
+          "sourceName": "SDL_MouseWheelEvent",
+          "type": "SDL_MouseWheelEvent"
+        },
+        "JoyAxisEvent": {
+          "doc": "Joystick axis motion event structure (event.jaxis.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyAxisEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyAxisEvent",
+          "type": "SDL_JoyAxisEvent"
+        },
+        "JoyBallEvent": {
+          "doc": "Joystick trackball motion event structure (event.jball.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyBallEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyBallEvent",
+          "type": "SDL_JoyBallEvent"
+        },
+        "JoyHatEvent": {
+          "doc": "Joystick hat position change event structure (event.jhat.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyHatEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyHatEvent",
+          "type": "SDL_JoyHatEvent"
+        },
+        "JoyButtonEvent": {
+          "doc": "Joystick button event structure (event.jbutton.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyButtonEvent",
+          "type": "SDL_JoyButtonEvent"
+        },
+        "JoyDeviceEvent": {
+          "doc": "Joystick device event structure (event.jdevice.*)\n\nSDL will send JOYSTICK_ADDED events for devices that are already plugged in\nduring SDL_Init.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_GamepadDeviceEvent",
+          "name": "JoyDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyDeviceEvent",
+          "type": "SDL_JoyDeviceEvent"
+        },
+        "JoyBatteryEvent": {
+          "doc": "Joystick battery level change event structure (event.jbattery.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "JoyBatteryEvent",
+          "kind": "alias",
+          "sourceName": "SDL_JoyBatteryEvent",
+          "type": "SDL_JoyBatteryEvent"
+        },
+        "GamepadAxisEvent": {
+          "doc": "Gamepad axis motion event structure (event.gaxis.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadAxisEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadAxisEvent",
+          "type": "SDL_GamepadAxisEvent"
+        },
+        "GamepadButtonEvent": {
+          "doc": "Gamepad button event structure (event.gbutton.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadButtonEvent",
+          "type": "SDL_GamepadButtonEvent"
+        },
+        "GamepadDeviceEvent": {
+          "doc": "Gamepad device event structure (event.gdevice.*)\n\nJoysticks that are supported gamepads receive both an SDL_JoyDeviceEvent\nand an SDL_GamepadDeviceEvent.\n\nSDL will send GAMEPAD_ADDED events for joysticks that are already plugged\nin during SDL_Init() and are recognized as gamepads. It will also send\nevents for joysticks that get gamepad mappings at runtime.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_JoyDeviceEvent",
+          "name": "GamepadDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadDeviceEvent",
+          "type": "SDL_GamepadDeviceEvent"
+        },
+        "GamepadTouchpadEvent": {
+          "doc": "Gamepad touchpad event structure (event.gtouchpad.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadTouchpadEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadTouchpadEvent",
+          "type": "SDL_GamepadTouchpadEvent"
+        },
+        "GamepadSensorEvent": {
+          "doc": "Gamepad sensor event structure (event.gsensor.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GamepadSensorEvent",
+          "kind": "alias",
+          "sourceName": "SDL_GamepadSensorEvent",
+          "type": "SDL_GamepadSensorEvent"
+        },
+        "AudioDeviceEvent": {
+          "doc": "Audio device event structure (event.adevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "AudioDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_AudioDeviceEvent",
+          "type": "SDL_AudioDeviceEvent"
+        },
+        "CameraDeviceEvent": {
+          "doc": "Camera device event structure (event.cdevice.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "CameraDeviceEvent",
+          "kind": "alias",
+          "sourceName": "SDL_CameraDeviceEvent",
+          "type": "SDL_CameraDeviceEvent"
+        },
+        "RenderEvent": {
+          "doc": "Renderer event structure (event.render.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "RenderEvent",
+          "kind": "alias",
+          "sourceName": "SDL_RenderEvent",
+          "type": "SDL_RenderEvent"
+        },
+        "TouchFingerEvent": {
+          "doc": "Touch finger event structure (event.tfinger.*)\n\nCoordinates in this event are normalized. `x` and `y` are normalized to a\nrange between 0.0f and 1.0f, relative to the window, so (0,0) is the top\nleft and (1,1) is the bottom right. Delta coordinates `dx` and `dy` are\nnormalized in the ranges of -1.0f (traversed all the way from the bottom or\nright to all the way up or left) to 1.0f (traversed all the way from the\ntop or left to all the way down or right).\n\nNote that while the coordinates are _normalized_, they are not _clamped_,\nwhich means in some circumstances you can get a value outside of this\nrange. For example, a renderer using logical presentation might give a\nnegative value when the touch is in the letterboxing. Some platforms might\nreport a touch outside of the window, which will also be outside of the\nrange.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "TouchFingerEvent",
+          "kind": "alias",
+          "sourceName": "SDL_TouchFingerEvent",
+          "type": "SDL_TouchFingerEvent"
+        },
+        "PenProximityEvent": {
+          "doc": "Pressure-sensitive pen proximity event structure (event.pmotion.*)\n\nWhen a pen becomes visible to the system (it is close enough to a tablet,\netc), SDL will send an SDL_EVENT_PEN_PROXIMITY_IN event with the new pen's\nID. This ID is valid until the pen leaves proximity again (has been removed\nfrom the tablet's area, the tablet has been unplugged, etc). If the same\npen reenters proximity again, it will be given a new ID.\n\nNote that \"proximity\" means \"close enough for the tablet to know the tool\nis there.\" The pen touching and lifting off from the tablet while not\nleaving the area are handled by SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenProximityEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenProximityEvent",
+          "type": "SDL_PenProximityEvent"
+        },
+        "PenMotionEvent": {
+          "doc": "Pressure-sensitive pen motion event structure (event.pmotion.*)\n\nDepending on the hardware, you may get motion events when the pen is not\ntouching a tablet, for tracking a pen even when it isn't drawing. You\nshould listen for SDL_EVENT_PEN_DOWN and SDL_EVENT_PEN_UP events, or check\n`pen_state & SDL_PEN_INPUT_DOWN` to decide if a pen is \"drawing\" when\ndealing with pen motion.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenMotionEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenMotionEvent",
+          "type": "SDL_PenMotionEvent"
+        },
+        "PenTouchEvent": {
+          "doc": "Pressure-sensitive pen touched event structure (event.ptouch.*)\n\nThese events come when a pen touches a surface (a tablet, etc), or lifts\noff from one.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenTouchEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenTouchEvent",
+          "type": "SDL_PenTouchEvent"
+        },
+        "PenButtonEvent": {
+          "doc": "Pressure-sensitive pen button event structure (event.pbutton.*)\n\nThis is for buttons on the pen itself that the user might click. The pen\nitself pressing down to draw triggers a SDL_EVENT_PEN_DOWN event instead.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenButtonEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenButtonEvent",
+          "type": "SDL_PenButtonEvent"
+        },
+        "PenAxisEvent": {
+          "doc": "Pressure-sensitive pen pressure / angle event structure (event.paxis.*)\n\nYou might get some of these events even if the pen isn't touching the\ntablet.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "PenAxisEvent",
+          "kind": "alias",
+          "sourceName": "SDL_PenAxisEvent",
+          "type": "SDL_PenAxisEvent"
+        },
+        "DropEvent": {
+          "doc": "An event used to drop text or request a file open by the system\n(event.drop.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "DropEvent",
+          "kind": "alias",
+          "sourceName": "SDL_DropEvent",
+          "type": "SDL_DropEvent"
+        },
+        "ClipboardEvent": {
+          "doc": "An event triggered when the clipboard contents have changed\n(event.clipboard.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "ClipboardEvent",
+          "kind": "alias",
+          "sourceName": "SDL_ClipboardEvent",
+          "type": "SDL_ClipboardEvent"
+        },
+        "SensorEvent": {
+          "doc": "Sensor event structure (event.sensor.*)\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "SensorEvent",
+          "kind": "alias",
+          "sourceName": "SDL_SensorEvent",
+          "type": "SDL_SensorEvent"
+        },
+        "QuitEvent": {
+          "doc": "The \"quit requested\" event\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "QuitEvent",
+          "kind": "alias",
+          "sourceName": "SDL_QuitEvent",
+          "type": "SDL_QuitEvent"
+        },
+        "UserEvent": {
+          "doc": "A user-defined event type (event.user.*)\n\nThis event is unique; it is never created by SDL, but only by the\napplication. The event can be pushed onto the event queue using\nSDL_PushEvent(). The contents of the structure members are completely up to\nthe programmer; the only requirement is that '''type''' is a value obtained\nfrom SDL_RegisterEvents().\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "UserEvent",
+          "kind": "alias",
+          "sourceName": "SDL_UserEvent",
+          "type": "SDL_UserEvent"
+        },
+        "Event": {
+          "doc": "The structure for all events in SDL.\n\nThe SDL_Event structure is the core of all event handling in SDL. SDL_Event\nis a union of all event structures used in SDL.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "Event",
+          "kind": "alias",
+          "sourceName": "SDL_Event",
+          "type": "SDL_Event"
+        },
+        "PumpEvents": {
+          "doc": "Pump the event loop, gathering events from the input devices.\n\nThis function updates the event queue and internal input device state.\n\nSDL_PumpEvents() gathers all the pending input information from devices and\nplaces it in the event queue. Without calls to SDL_PumpEvents() no events\nwould ever be placed on the queue. Often the need for calls to\nSDL_PumpEvents() is hidden from the user since SDL_PollEvent() and\nSDL_WaitEvent() implicitly call SDL_PumpEvents(). However, if you are not\npolling or waiting for events (e.g. you are filtering them), then you must\ncall SDL_PumpEvents() to force an event queue update.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PollEvent\n@sa SDL_WaitEvent",
+          "name": "PumpEvents",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_PumpEvents"
+        },
+        "EventAction": {
+          "doc": "The type of action to request from SDL_PeepEvents().\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "EventAction",
+          "kind": "alias",
+          "sourceName": "SDL_EventAction",
+          "type": "SDL_EventAction"
+        },
+        "ADDEVENT": {
+          "doc": "Add events to the back of the queue.",
+          "name": "ADDEVENT",
+          "kind": "var",
+          "type": "EventAction",
+          "sourceName": "SDL_ADDEVENT",
+          "constexpr": true
+        },
+        "PEEKEVENT": {
+          "doc": "Check but don't remove events from the queue front.",
+          "name": "PEEKEVENT",
+          "kind": "var",
+          "type": "EventAction",
+          "sourceName": "SDL_PEEKEVENT",
+          "constexpr": true
+        },
+        "GETEVENT": {
+          "doc": "Retrieve/remove events from the front of the queue.",
+          "name": "GETEVENT",
+          "kind": "var",
+          "type": "EventAction",
+          "sourceName": "SDL_GETEVENT",
+          "constexpr": true
+        },
+        "PeepEvents": {
+          "doc": "Check the event queue for messages and optionally return them.\n\n`action` may be any of the following:\n\n- `SDL_ADDEVENT`: up to `numevents` events will be added to the back of the\n  event queue.\n- `SDL_PEEKEVENT`: `numevents` events at the front of the event queue,\n  within the specified minimum and maximum type, will be returned to the\n  caller and will _not_ be removed from the queue. If you pass NULL for\n  `events`, then `numevents` is ignored and the total number of matching\n  events will be returned.\n- `SDL_GETEVENT`: up to `numevents` events at the front of the event queue,\n  within the specified minimum and maximum type, will be returned to the\n  caller and will be removed from the queue.\n\nYou may have to call SDL_PumpEvents() before calling this function.\nOtherwise, the events may not be ready to be filtered when you call\nSDL_PeepEvents().\n\n@param events destination buffer for the retrieved events, may be NULL to\n              leave the events in the queue and return the number of events\n              that would have been stored.\n@param numevents if action is SDL_ADDEVENT, the number of events to add\n                 back to the event queue; if action is SDL_PEEKEVENT or\n                 SDL_GETEVENT, the maximum number of events to retrieve.\n@param action action to take; see [Remarks](#remarks) for details.\n@param minType minimum value of the event type to be considered;\n               SDL_EVENT_FIRST is a safe choice.\n@param maxType maximum value of the event type to be considered;\n               SDL_EVENT_LAST is a safe choice.\n@returns the number of events actually stored or -1 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PollEvent\n@sa SDL_PumpEvents\n@sa SDL_PushEvent",
+          "name": "PeepEvents",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "events",
+              "type": "Event *"
+            },
+            {
+              "name": "numevents",
+              "type": "int"
+            },
+            {
+              "name": "action",
+              "type": "EventAction"
+            },
+            {
+              "name": "minType",
+              "type": "Uint32"
+            },
+            {
+              "name": "maxType",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_PeepEvents"
+        },
+        "HasEvent": {
+          "doc": "Check for the existence of a certain event type in the event queue.\n\nIf you need to check for a range of event types, use SDL_HasEvents()\ninstead.\n\n@param type the type of event to be queried; see SDL_EventType for details.\n@returns true if events matching `type` are present, or false if events\n         matching `type` are not present.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_HasEvents",
+          "name": "HasEvent",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_HasEvent"
+        },
+        "HasEvents": {
+          "doc": "Check for the existence of certain event types in the event queue.\n\nIf you need to check for a single event type, use SDL_HasEvent() instead.\n\n@param minType the low end of event type to be queried, inclusive; see\n               SDL_EventType for details.\n@param maxType the high end of event type to be queried, inclusive; see\n               SDL_EventType for details.\n@returns true if events with type >= `minType` and <= `maxType` are\n         present, or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_HasEvents",
+          "name": "HasEvents",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "minType",
+              "type": "Uint32"
+            },
+            {
+              "name": "maxType",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_HasEvents"
+        },
+        "FlushEvent": {
+          "doc": "Clear events of a specific type from the event queue.\n\nThis will unconditionally remove any events from the queue that match\n`type`. If you need to remove a range of event types, use SDL_FlushEvents()\ninstead.\n\nIt's also normal to just ignore events you don't care about in your event\nloop without calling this function.\n\nThis function only affects currently queued events. If you want to make\nsure that all pending OS events are flushed, you can call SDL_PumpEvents()\non the main thread immediately before the flush call.\n\nIf you have user events with custom data that needs to be freed, you should\nuse SDL_PeepEvents() to remove and clean up those events before calling\nthis function.\n\n@param type the type of event to be cleared; see SDL_EventType for details.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_FlushEvents",
+          "name": "FlushEvent",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_FlushEvent"
+        },
+        "FlushEvents": {
+          "doc": "Clear events of a range of types from the event queue.\n\nThis will unconditionally remove any events from the queue that are in the\nrange of `minType` to `maxType`, inclusive. If you need to remove a single\nevent type, use SDL_FlushEvent() instead.\n\nIt's also normal to just ignore events you don't care about in your event\nloop without calling this function.\n\nThis function only affects currently queued events. If you want to make\nsure that all pending OS events are flushed, you can call SDL_PumpEvents()\non the main thread immediately before the flush call.\n\n@param minType the low end of event type to be cleared, inclusive; see\n               SDL_EventType for details.\n@param maxType the high end of event type to be cleared, inclusive; see\n               SDL_EventType for details.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_FlushEvent",
+          "name": "FlushEvents",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "minType",
+              "type": "Uint32"
+            },
+            {
+              "name": "maxType",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_FlushEvents"
+        },
+        "PollEvent": [
+          {
+            "doc": "Poll for currently pending events.\n\nIf `event` is not NULL, the next event is removed from the queue and stored\nin the SDL_Event structure pointed to by `event`. The 1 returned refers to\nthis event, immediately stored in the SDL Event structure -- not an event\nto follow.\n\nIf `event` is NULL, it simply returns 1 if there is an event in the queue,\nbut will not remove it from the queue.\n\nAs this function may implicitly call SDL_PumpEvents(), you can only call\nthis function in the thread that set the video mode.\n\nSDL_PollEvent() is the favored way of receiving system events since it can\nbe done from the main loop and does not suspend the main loop while waiting\non an event to be posted.\n\nThe common practice is to fully process the event queue once every frame,\nusually as a first step before updating the game's state:\n\n```c\nwhile (game_is_still_running) {\n    SDL_Event event;\n    while (SDL_PollEvent(&event)) {  // poll until all events are handled!\n        // decide what to do with this event.\n    }\n\n    // update game state, draw the current frame\n}\n```\n\n@param event the SDL_Event structure to be filled with the next event from\n             the queue, or NULL.\n@returns true if this got an event or false if there are none available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PushEvent\n@sa SDL_WaitEvent\n@sa SDL_WaitEventTimeout",
+            "name": "PollEvent",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              }
+            ],
+            "sourceName": "SDL_PollEvent"
+          },
+          {
+            "kind": "function",
+            "name": "PollEvent",
+            "type": "std::optional<Event>",
+            "parameters": [],
+            "doc": ""
+          }
+        ],
+        "WaitEvent": [
+          {
+            "doc": "Wait indefinitely for the next available event.\n\nIf `event` is not NULL, the next event is removed from the queue and stored\nin the SDL_Event structure pointed to by `event`.\n\nAs this function may implicitly call SDL_PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\n@param event the SDL_Event structure to be filled in with the next event\n             from the queue, or NULL.\n@returns true on success or false if there was an error while waiting for\n         events; call SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PollEvent\n@sa SDL_PushEvent\n@sa SDL_WaitEventTimeout",
+            "name": "WaitEvent",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              }
+            ],
+            "sourceName": "SDL_WaitEvent"
+          },
+          {
+            "kind": "function",
+            "name": "WaitEvent",
+            "type": "std::optional<Event>",
+            "parameters": [],
+            "doc": ""
+          }
+        ],
+        "WaitEventTimeout": [
+          {
+            "doc": "Wait until the specified timeout (in milliseconds) for the next available\nevent.\n\nIf `event` is not NULL, the next event is removed from the queue and stored\nin the SDL_Event structure pointed to by `event`.\n\nAs this function may implicitly call SDL_PumpEvents(), you can only call\nthis function in the thread that initialized the video subsystem.\n\nThe timeout is not guaranteed, the actual wait time could be longer due to\nsystem scheduling.\n\n@param event the SDL_Event structure to be filled in with the next event\n             from the queue, or NULL.\n@param timeoutMS the maximum number of milliseconds to wait for the next\n                 available event.\n@returns true if this got an event or false if the timeout elapsed without\n         any events available.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PollEvent\n@sa SDL_PushEvent\n@sa SDL_WaitEvent",
+            "name": "WaitEventTimeout",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              },
+              {
+                "name": "timeoutMS",
+                "type": "Sint32"
+              }
+            ],
+            "sourceName": "SDL_WaitEventTimeout"
+          },
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "std::optional<Event>",
+            "parameters": [
+              {
+                "type": "Sint32",
+                "name": "timeoutMS"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "Event *",
+                "name": "event"
+              },
+              {
+                "type": "std::chrono::milliseconds",
+                "name": "timeoutDuration"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "std::optional<Event>",
+            "parameters": [
+              {
+                "type": "std::chrono::milliseconds",
+                "name": "timeoutDuration"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "PushEvent": [
+          {
+            "doc": "Add an event to the event queue.\n\nThe event queue can actually be used as a two way communication channel.\nNot only can events be read from the queue, but the user can also push\ntheir own events onto it. `event` is a pointer to the event structure you\nwish to push onto the queue. The event is copied into the queue, and the\ncaller may dispose of the memory pointed to after SDL_PushEvent() returns.\n\nNote: Pushing device input events onto the queue doesn't modify the state\nof the device within SDL.\n\nNote: Events pushed onto the queue with SDL_PushEvent() get passed through\nthe event filter but events added with SDL_PeepEvents() do not.\n\nFor pushing application-specific events, please use SDL_RegisterEvents() to\nget an event type that does not conflict with other code that also wants\nits own custom event types.\n\n@param event the SDL_Event to be added to the queue.\n@returns true on success, false if the event was filtered or on failure;\n         call SDL_GetError() for more information. A common reason for\n         error is the event queue being full.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PeepEvents\n@sa SDL_PollEvent\n@sa SDL_RegisterEvents",
+            "name": "PushEvent",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "event",
+                "type": "Event *"
+              }
+            ],
+            "sourceName": "SDL_PushEvent"
+          },
+          {
+            "kind": "function",
+            "name": "PushEvent",
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "const Event &",
+                "name": "event"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "EventFilter": {
+          "doc": "A function pointer used for callbacks that watch the event queue.\n\n@param userdata what was passed as `userdata` to SDL_SetEventFilter() or\n                SDL_AddEventWatch, etc.\n@param event the event that triggered the callback.\n@returns true to permit event to be added to the queue, and false to\n         disallow it. When used with SDL_AddEventWatch, the return value is\n         ignored.\n\n@threadsafety SDL may call this callback at any time from any thread; the\n              application is responsible for locking resources the callback\n              touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_SetEventFilter\n@sa SDL_AddEventWatch",
+          "name": "EventFilter",
+          "kind": "alias",
+          "type": "SDL_EventFilter",
+          "sourceName": "SDL_EventFilter"
+        },
+        "SetEventFilter": {
+          "doc": "Set up a filter to process all events before they are added to the internal\nevent queue.\n\nIf you just want to see events without modifying them or preventing them\nfrom being queued, you should use SDL_AddEventWatch() instead.\n\nIf the filter function returns true when called, then the event will be\nadded to the internal queue. If it returns false, then the event will be\ndropped from the queue, but the internal state will still be updated. This\nallows selective filtering of dynamically arriving events.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nOn platforms that support it, if the quit event is generated by an\ninterrupt signal (e.g. pressing Ctrl-C), it will be delivered to the\napplication at the next event poll.\n\nNote: Disabled events never make it to the event filter function; see\nSDL_SetEventEnabled().\n\nNote: Events pushed onto the queue with SDL_PushEvent() get passed through\nthe event filter, but events pushed onto the queue with SDL_PeepEvents() do\nnot.\n\n@param filter an SDL_EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddEventWatch\n@sa SDL_SetEventEnabled\n@sa SDL_GetEventFilter\n@sa SDL_PeepEvents\n@sa SDL_PushEvent",
+          "name": "SetEventFilter",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "filter",
+              "type": "EventFilter"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_SetEventFilter"
+        },
+        "GetEventFilter": {
+          "doc": "Query the current event filter.\n\nThis function can be used to \"chain\" filters, by saving the existing filter\nbefore replacing it with a function that will call that saved filter.\n\n@param filter the current callback function will be stored here.\n@param userdata the pointer that is passed to the current event filter will\n                be stored here.\n@returns true on success or false if there is no event filter set.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetEventFilter",
+          "name": "GetEventFilter",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "filter",
+              "type": "EventFilter *"
+            },
+            {
+              "name": "userdata",
+              "type": "void **"
+            }
+          ],
+          "sourceName": "SDL_GetEventFilter"
+        },
+        "AddEventWatch": {
+          "doc": "Add a callback to be triggered when an event is added to the event queue.\n\n`filter` will be called when an event happens, and its return value is\nignored.\n\n**WARNING**: Be very careful of what you do in the event filter function,\nas it may run in a different thread!\n\nIf the quit event is generated by a signal (e.g. SIGINT), it will bypass\nthe internal queue and be delivered to the watch callback immediately, and\narrive at the next event poll.\n\nNote: the callback is called for events posted by the user through\nSDL_PushEvent(), but not for disabled events, nor for events by a filter\ncallback set with SDL_SetEventFilter(), nor for events posted by the user\nthrough SDL_PeepEvents().\n\n@param filter an SDL_EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RemoveEventWatch\n@sa SDL_SetEventFilter",
+          "name": "AddEventWatch",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "filter",
+              "type": "EventFilter"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_AddEventWatch"
+        },
+        "RemoveEventWatch": {
+          "doc": "Remove an event watch callback added with SDL_AddEventWatch().\n\nThis function takes the same input as SDL_AddEventWatch() to identify and\ndelete the corresponding callback.\n\n@param filter the function originally passed to SDL_AddEventWatch().\n@param userdata the pointer originally passed to SDL_AddEventWatch().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddEventWatch",
+          "name": "RemoveEventWatch",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "filter",
+              "type": "EventFilter"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_RemoveEventWatch"
+        },
+        "FilterEvents": {
+          "doc": "Run a specific filter function on the current event queue, removing any\nevents for which the filter returns false.\n\nSee SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),\nthis function does not change the filter permanently, it only uses the\nsupplied filter until this function returns.\n\n@param filter the SDL_EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEventFilter\n@sa SDL_SetEventFilter",
+          "name": "FilterEvents",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "filter",
+              "type": "EventFilter"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_FilterEvents"
+        },
+        "SetEventEnabled": {
+          "doc": "Set the state of processing events by type.\n\n@param type the type of event; see SDL_EventType for details.\n@param enabled whether to process the event or not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_EventEnabled",
+          "name": "SetEventEnabled",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_SetEventEnabled"
+        },
+        "EventEnabled": {
+          "doc": "Query the state of processing events by type.\n\n@param type the type of event; see SDL_EventType for details.\n@returns true if the event is being processed, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetEventEnabled",
+          "name": "EventEnabled",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_EventEnabled"
+        },
+        "RegisterEvents": {
+          "doc": "Allocate a set of user-defined events, and return the beginning event\nnumber for that set of events.\n\n@param numevents the number of events to be allocated.\n@returns the beginning event number, or 0 if numevents is invalid or if\n         there are not enough user-defined events left.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PushEvent",
+          "name": "RegisterEvents",
+          "kind": "function",
+          "type": "Uint32",
+          "parameters": [
+            {
+              "name": "numevents",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_RegisterEvents"
+        },
+        "GetWindowFromEvent": {
+          "doc": "Get window associated with an event.\n\n@param event an event containing a `windowID`.\n@returns the associated window on success or NULL if there is none.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_PollEvent\n@sa SDL_WaitEvent\n@sa SDL_WaitEventTimeout",
+          "name": "GetWindowFromEvent",
+          "kind": "function",
+          "type": "WindowRef",
+          "parameters": [
+            {
+              "name": "event",
+              "type": "const Event *"
+            }
+          ],
+          "sourceName": "SDL_GetWindowFromEvent"
+        }
+      }
+    },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
       "doc": "@defgroup CategoryInit Category Init\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call SDL_Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `SDL_INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call SDL_Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSDL_SetAppMetadataProperty().",

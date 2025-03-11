@@ -33,8 +33,6 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  bool running = true;
-
   constexpr int WW = 64;
 
   SDL::Point smileyPos{WINDOW_SZ.x / 2 - smileyImg.GetWidth() / 2,
@@ -54,10 +52,10 @@ int main(int argc, char** argv)
     makeRandomPoint(),
   };
 
+  bool running = true;
   while (running) {
-    SDL_Event ev;
-    while (SDL_PollEvent(&ev)) {
-      if (ev.type == SDL_EVENT_QUIT) { running = false; }
+    while (auto ev = SDL::PollEvent()) {
+      if (ev->type == SDL_EVENT_QUIT) { running = false; }
     }
     for (int i = 0; i < 4; i++) {
       auto& xx = rects[i].x;

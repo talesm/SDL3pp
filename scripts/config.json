@@ -10,6 +10,7 @@
     "SDL_video.h",
     "SDL_render.h",
     "SDL_timer.h",
+    "SDL_events.h",
     "SDL_init.h"
   ],
   "api": "scripts/target.json",

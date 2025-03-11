@@ -3856,6 +3856,72 @@
         }
       }
     },
+    "SDL_events.h": {
+      "includeAfter": {
+        "SDL_PollEvent": {
+          "kind": "function",
+          "name": "PollEvent",
+          "type": "std::optional<Event>",
+          "parameters": []
+        },
+        "SDL_WaitEvent": {
+          "kind": "function",
+          "name": "WaitEvent",
+          "type": "std::optional<Event>",
+          "parameters": []
+        },
+        "SDL_WaitEventTimeout": [
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "std::optional<Event>",
+            "parameters": [
+              {
+                "type": "Sint32",
+                "name": "timeoutMS"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "Event *",
+                "name": "event"
+              },
+              {
+                "type": "std::chrono::milliseconds",
+                "name": "timeoutDuration"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "WaitEventTimeout",
+            "type": "std::optional<Event>",
+            "parameters": [
+              {
+                "type": "std::chrono::milliseconds",
+                "name": "timeoutDuration"
+              }
+            ]
+          }
+        ],
+        "SDL_PushEvent": {
+          "kind": "function",
+          "name": "PushEvent",
+          "type": "bool",
+          "parameters": [
+            {
+              "type": "const Event &",
+              "name": "event"
+            }
+          ]
+        }
+      }
+    },
     "SDL_init.h": {
       "includeAfter": {
         "SDL_Quit": {

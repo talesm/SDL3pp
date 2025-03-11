@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['window_0',['Window',['../group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847',1,'SDL']]],
-  ['windowflags_1',['WindowFlags',['../group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67',1,'SDL']]],
-  ['windowid_2',['WindowID',['../group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3',1,'SDL']]],
-  ['windowref_3',['WindowRef',['../group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066',1,'SDL']]]
+  ['scalemode_0',['ScaleMode',['../group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d',1,'SDL']]],
+  ['sensorevent_1',['SensorEvent',['../group__CategoryEvents.html#ga4fae2c347fbaa6db58c8e1b7341411bc',1,'SDL']]],
+  ['stringparam_2',['StringParam',['../namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1',1,'SDL']]],
+  ['surface_3',['Surface',['../group__CategorySurface.html#ga5128f762b815ce424b759043e06fd646',1,'SDL']]],
+  ['surfaceflags_4',['SurfaceFlags',['../group__CategorySurface.html#ga2d815ea45ea1a0a4336a1c9952ff2264',1,'SDL']]],
+  ['surfaceref_5',['SurfaceRef',['../group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2',1,'SDL']]],
+  ['systemtheme_6',['SystemTheme',['../group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed',1,'SDL']]]
 ];
