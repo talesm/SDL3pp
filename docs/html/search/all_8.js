@@ -9,7 +9,17 @@ var searchData=
   ['hasrle_6',['HasRLE',['../structSDL_1_1SurfaceBase.html#a6f916834a4f556a743da62c263920840',1,'SDL::SurfaceBase']]],
   ['hassurface_7',['HasSurface',['../structSDL_1_1WindowBase.html#a3323af4fd14511ce3074a2d0840665bb',1,'SDL::WindowBase']]],
   ['hide_8',['Hide',['../structSDL_1_1WindowBase.html#aacfd463171baa3b337fb09c29b613de2',1,'SDL::WindowBase']]],
-  ['hittest_9',['HitTest',['../structSDL_1_1WindowBase.html#af22deedf419728468ebed702609b564e',1,'SDL::WindowBase']]],
-  ['hittestfunction_10',['HitTestFunction',['../structSDL_1_1WindowBase.html#a937c0b696f6fb0d38aa731263d084efa',1,'SDL::WindowBase']]],
-  ['hittestresult_11',['HitTestResult',['../structSDL_1_1WindowBase.html#aef689a4f4f814d7689bdee9a4a6aaf67',1,'SDL::WindowBase']]]
+  ['hittest_9',['HitTest',['../group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955',1,'SDL']]],
+  ['hittest_5fdraggable_10',['HITTEST_DRAGGABLE',['../group__CategoryVideo.html#ga0c37abb65e417e265f6ac52127aa737d',1,'SDL']]],
+  ['hittest_5fnormal_11',['HITTEST_NORMAL',['../group__CategoryVideo.html#ga447fd85da5c5eef074b95bebce997039',1,'SDL']]],
+  ['hittest_5fresize_5fbottom_12',['HITTEST_RESIZE_BOTTOM',['../group__CategoryVideo.html#gae81cd8de316b2556147cd3d022c17e69',1,'SDL']]],
+  ['hittest_5fresize_5fbottomleft_13',['HITTEST_RESIZE_BOTTOMLEFT',['../group__CategoryVideo.html#ga0d0b239213ecfdc200e26a47ed284126',1,'SDL']]],
+  ['hittest_5fresize_5fbottomright_14',['HITTEST_RESIZE_BOTTOMRIGHT',['../group__CategoryVideo.html#gaa0a3408cfb19733b82750d2109cca6ea',1,'SDL']]],
+  ['hittest_5fresize_5fleft_15',['HITTEST_RESIZE_LEFT',['../group__CategoryVideo.html#ga76ebd79c9b99f56354446203fa18dc5d',1,'SDL']]],
+  ['hittest_5fresize_5fright_16',['HITTEST_RESIZE_RIGHT',['../group__CategoryVideo.html#ga51c8eb53fb9c845f464e3e10e1ac46de',1,'SDL']]],
+  ['hittest_5fresize_5ftop_17',['HITTEST_RESIZE_TOP',['../group__CategoryVideo.html#ga96e576ef1f1820b79b5a4839878523ef',1,'SDL']]],
+  ['hittest_5fresize_5ftopleft_18',['HITTEST_RESIZE_TOPLEFT',['../group__CategoryVideo.html#ga9f8b4f0aadf28d64b985f8969fd75cd1',1,'SDL']]],
+  ['hittest_5fresize_5ftopright_19',['HITTEST_RESIZE_TOPRIGHT',['../group__CategoryVideo.html#ga4438c9ae8060b5a85affedffb522c90e',1,'SDL']]],
+  ['hittestfunction_20',['HitTestFunction',['../structSDL_1_1WindowBase.html#a937c0b696f6fb0d38aa731263d084efa',1,'SDL::WindowBase']]],
+  ['hittestresult_21',['HitTestResult',['../group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e',1,'SDL']]]
 ];

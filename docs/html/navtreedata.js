@@ -75,9 +75,9 @@ var NAVTREEINDEX =
 "functions_func_n.html",
 "group__CategoryPixels.html#gaca8b6001cb74a30bdef81ad134d684b5",
 "group__CategoryStringParam.html",
-"structSDL_1_1EnvironmentBase.html#af4869b8834a581757030a9b7c311eab2",
-"structSDL_1_1Rect.html#a626b56c4aad2b0a0c2b37aaca8a9018e",
-"structSDL_1_1SurfaceBase.html#af1c045d28701effcf4b61e1594abee8e"
+"structSDL_1_1EnvironmentBase.html",
+"structSDL_1_1PropertiesDeleter.html",
+"structSDL_1_1SurfaceBase.html#ad380fbca29727790d7c67cda2da2f411"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

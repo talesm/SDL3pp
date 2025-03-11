@@ -13068,11 +13068,50 @@ struct ObjectDeleter<SDL_Window>
 using Window = WindowBase<ObjectUnique<SDL_Window>>;
 
 /**
+ * @name DisplayOrientations
+ * @{
+ */
+
+/**
  * Display orientation values; the way a display is rotated.
  *
  * @since This enum is available since SDL 3.2.0.
+ * @sa ORIENTATION_LANDSCAPE
+ * @sa ORIENTATION_PORTRAIT
+ * @sa ORIENTATION_UNKNOWN
  */
 using DisplayOrientation = SDL_DisplayOrientation;
+
+/**
+ * The display orientation can't be determined
+ */
+constexpr DisplayOrientation ORIENTATION_UNKNOWN = SDL_ORIENTATION_UNKNOWN;
+
+/**
+ * The display is in landscape mode, with the right side up, relative to
+ * portrait mode
+ */
+constexpr DisplayOrientation ORIENTATION_LANDSCAPE = SDL_ORIENTATION_LANDSCAPE;
+
+/**
+ * The display is in landscape mode, with the left side up, relative to portrait
+ * mode
+ */
+constexpr DisplayOrientation ORIENTATION_LANDSCAPE_FLIPPED =
+  SDL_ORIENTATION_LANDSCAPE_FLIPPED;
+
+/**
+ * The display is in portrait mode
+ */
+constexpr DisplayOrientation ORIENTATION_PORTRAIT = SDL_ORIENTATION_PORTRAIT;
+
+/**
+ * The display is in portrait mode, upside down
+ */
+constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
+  SDL_ORIENTATION_PORTRAIT_FLIPPED;
+
+/// @}
 
 /**
  * Internal display mode data.
@@ -13113,11 +13152,121 @@ using DisplayMode = SDL_DisplayMode;
 using WindowFlags = SDL_WindowFlags;
 
 /**
+ * @name FlashOperations
+ * @{
+ */
+
+/**
  * Window flash operation.
  *
  * @since This enum is available since SDL 3.2.0.
+ * @sa FLASH_CANCEL
+ * @sa FLASH_BRIEFLY
+ * @sa FLASH_UNTIL_FOCUSED
  */
 using FlashOperation = SDL_FlashOperation;
+
+/**
+ * Cancel any window flash state
+ */
+constexpr FlashOperation FLASH_CANCEL = SDL_FLASH_CANCEL;
+
+/**
+ * Flash the window briefly to get attention
+ */
+constexpr FlashOperation FLASH_BRIEFLY = SDL_FLASH_BRIEFLY;
+
+/**
+ * Flash the window until it gets focus
+ */
+constexpr FlashOperation FLASH_UNTIL_FOCUSED = SDL_FLASH_UNTIL_FOCUSED;
+
+/// @}
+
+/**
+ * @name HitTestResults
+ * Possible return values from the HitTest callback
+ *
+ * @{
+ */
+
+/**
+ * Possible return values from the HitTest callback.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa HitTest
+ * @sa HITTEST_NORMAL
+ */
+using HitTestResult = SDL_HitTestResult;
+
+/**
+ * Region is normal. No special properties.
+ */
+constexpr HitTestResult HITTEST_NORMAL = SDL_HITTEST_NORMAL;
+
+/**
+ * Region can drag entire window.
+ */
+constexpr HitTestResult HITTEST_DRAGGABLE = SDL_HITTEST_DRAGGABLE;
+
+/**
+ * Region is the resizable top-left corner border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_TOPLEFT = SDL_HITTEST_RESIZE_TOPLEFT;
+
+/**
+ * Region is the resizable top border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_TOP = SDL_HITTEST_RESIZE_TOP;
+
+/**
+ * Region is the resizable top-right corner border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_TOPRIGHT = SDL_HITTEST_RESIZE_TOPRIGHT;
+
+/**
+ * Region is the resizable right border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_RIGHT = SDL_HITTEST_RESIZE_RIGHT;
+
+/**
+ * Region is the resizable bottom-right corner border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_BOTTOMRIGHT =
+  SDL_HITTEST_RESIZE_BOTTOMRIGHT;
+
+/**
+ * Region is the resizable bottom border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_BOTTOM = SDL_HITTEST_RESIZE_BOTTOM;
+
+/**
+ * Region is the resizable bottom-left corner border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_BOTTOMLEFT =
+  SDL_HITTEST_RESIZE_BOTTOMLEFT;
+
+/**
+ * Region is the resizable left border.
+ */
+constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
+
+/// @}
+
+/**
+ * Callback used for hit-testing.
+ *
+ * @param win the SDL_Window where hit-testing was set on.
+ * @param area an SDL_Point which should be hit-tested.
+ * @param data what was passed as `callback_data` to WindowBase::SetHitTest().
+ * @returns an SDL::HitTestResult value.
+ *
+ * @sa WindowBase::SetHitTest()
+ */
+using HitTest = SDL_HitTest;
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -13476,6 +13625,11 @@ struct Display
 using WindowID = SDL_WindowID;
 
 /**
+ * @name SystemThemes
+ * @{
+ */
+
+/**
  * System theme.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -13497,34 +13651,7 @@ constexpr SystemTheme SYSTEM_THEME_LIGHT = SDL_SYSTEM_THEME_LIGHT;
  */
 constexpr SystemTheme SYSTEM_THEME_DARK = SDL_SYSTEM_THEME_DARK;
 
-/**
- * The display orientation can't be determined
- */
-constexpr DisplayOrientation ORIENTATION_UNKNOWN = SDL_ORIENTATION_UNKNOWN;
-
-/**
- * The display is in landscape mode, with the right side up, relative to
- * portrait mode
- */
-constexpr DisplayOrientation ORIENTATION_LANDSCAPE = SDL_ORIENTATION_LANDSCAPE;
-
-/**
- * The display is in landscape mode, with the left side up, relative to portrait
- * mode
- */
-constexpr DisplayOrientation ORIENTATION_LANDSCAPE_FLIPPED =
-  SDL_ORIENTATION_LANDSCAPE_FLIPPED;
-
-/**
- * The display is in portrait mode
- */
-constexpr DisplayOrientation ORIENTATION_PORTRAIT = SDL_ORIENTATION_PORTRAIT;
-
-/**
- * The display is in portrait mode, upside down
- */
-constexpr DisplayOrientation ORIENTATION_PORTRAIT_FLIPPED =
-  SDL_ORIENTATION_PORTRAIT_FLIPPED;
+/// @}
 
 /**
  * @brief Represents a handle to a window
@@ -15308,29 +15435,6 @@ struct WindowBase : T
   }
 
   /**
-   * Possible return values from the SDL_HitTest callback.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This enum is available since SDL 3.2.0.
-   *
-   * @sa HitTest
-   */
-  using HitTestResult = SDL_HitTestResult;
-
-  /**
-   * Callback used for hit-testing.
-   *
-   * @param win the SDL_Window where hit-testing was set on.
-   * @param area an SDL_Point which should be hit-tested.
-   * @param data what was passed as `callback_data` to SDL_SetWindowHitTest().
-   * @returns an SDL_HitTestResult value.
-   *
-   * @sa SetHitTest()
-   */
-  using HitTest = SDL_HitTest;
-
-  /**
    * @sa HitTest
    */
   using HitTestFunction =
@@ -15494,21 +15598,6 @@ struct WindowBase : T
 };
 
 /**
- * Cancel any window flash state
- */
-constexpr FlashOperation FLASH_CANCEL = SDL_FLASH_CANCEL;
-
-/**
- * Flash the window briefly to get attention
- */
-constexpr FlashOperation FLASH_BRIEFLY = SDL_FLASH_BRIEFLY;
-
-/**
- * Flash the window until it gets focus
- */
-constexpr FlashOperation FLASH_UNTIL_FOCUSED = SDL_FLASH_UNTIL_FOCUSED;
-
-/**
  * An opaque handle to an OpenGL context.
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -15607,6 +15696,11 @@ using EGLAttribArrayCallback = SDL_EGLAttribArrayCallback;
  * @sa EGL_SetAttributeCallbacks()
  */
 using EGLIntArrayCallback = SDL_EGLIntArrayCallback;
+
+/**
+ * @name GLAttrs
+ * @{
+ */
 
 /**
  * An enumeration of OpenGL configuration attributes.
@@ -15774,6 +15868,8 @@ constexpr GLAttr GL_CONTEXT_NO_ERROR = SDL_GL_CONTEXT_NO_ERROR;
 constexpr GLAttr GL_FLOATBUFFERS = SDL_GL_FLOATBUFFERS;
 
 constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
+
+/// @}
 
 /**
  * Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.

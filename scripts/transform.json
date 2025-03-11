@@ -2406,6 +2406,26 @@
             "kind": "placeholder"
           },
           {
+            "name": "ORIENTATION_UNKNOWN",
+            "kind": "placeholder"
+          },
+          {
+            "name": "ORIENTATION_LANDSCAPE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "ORIENTATION_LANDSCAPE_FLIPPED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "ORIENTATION_PORTRAIT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "ORIENTATION_PORTRAIT_FLIPPED",
+            "kind": "placeholder"
+          },
+          {
             "name": "DisplayModeData",
             "kind": "placeholder"
           },
@@ -2423,6 +2443,66 @@
           },
           {
             "name": "FlashOperation",
+            "kind": "placeholder"
+          },
+          {
+            "name": "FLASH_CANCEL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "FLASH_BRIEFLY",
+            "kind": "placeholder"
+          },
+          {
+            "name": "FLASH_UNTIL_FOCUSED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HitTestResult",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_NORMAL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_DRAGGABLE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_TOPLEFT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_TOP",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_TOPRIGHT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_RIGHT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_BOTTOMRIGHT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_BOTTOM",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_BOTTOMLEFT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HITTEST_RESIZE_LEFT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "HitTest",
             "kind": "placeholder"
           }
         ]
@@ -2750,8 +2830,6 @@
                 }
               ]
             },
-            "SDL_HitTestResult": "alias",
-            "SDL_HitTest": "alias",
             "HitTestFunction": {
               "kind": "alias",
               "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",

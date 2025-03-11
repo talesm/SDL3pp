@@ -8612,6 +8612,46 @@
           "sourceName": "SDL_DisplayOrientation",
           "type": "SDL_DisplayOrientation"
         },
+        "ORIENTATION_UNKNOWN": {
+          "doc": "The display orientation can't be determined",
+          "name": "ORIENTATION_UNKNOWN",
+          "kind": "var",
+          "type": "DisplayOrientation",
+          "sourceName": "SDL_ORIENTATION_UNKNOWN",
+          "constexpr": true
+        },
+        "ORIENTATION_LANDSCAPE": {
+          "doc": "The display is in landscape mode, with the right side up, relative to portrait mode",
+          "name": "ORIENTATION_LANDSCAPE",
+          "kind": "var",
+          "type": "DisplayOrientation",
+          "sourceName": "SDL_ORIENTATION_LANDSCAPE",
+          "constexpr": true
+        },
+        "ORIENTATION_LANDSCAPE_FLIPPED": {
+          "doc": "The display is in landscape mode, with the left side up, relative to portrait mode",
+          "name": "ORIENTATION_LANDSCAPE_FLIPPED",
+          "kind": "var",
+          "type": "DisplayOrientation",
+          "sourceName": "SDL_ORIENTATION_LANDSCAPE_FLIPPED",
+          "constexpr": true
+        },
+        "ORIENTATION_PORTRAIT": {
+          "doc": "The display is in portrait mode",
+          "name": "ORIENTATION_PORTRAIT",
+          "kind": "var",
+          "type": "DisplayOrientation",
+          "sourceName": "SDL_ORIENTATION_PORTRAIT",
+          "constexpr": true
+        },
+        "ORIENTATION_PORTRAIT_FLIPPED": {
+          "doc": "The display is in portrait mode, upside down",
+          "name": "ORIENTATION_PORTRAIT_FLIPPED",
+          "kind": "var",
+          "type": "DisplayOrientation",
+          "sourceName": "SDL_ORIENTATION_PORTRAIT_FLIPPED",
+          "constexpr": true
+        },
         "DisplayModeData": {
           "doc": "Internal display mode data.\n\nThis lives as a field in SDL_DisplayMode, as opaque data.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_DisplayMode",
           "name": "DisplayModeData",
@@ -8639,6 +8679,124 @@
           "kind": "alias",
           "sourceName": "SDL_FlashOperation",
           "type": "SDL_FlashOperation"
+        },
+        "FLASH_CANCEL": {
+          "doc": "Cancel any window flash state",
+          "name": "FLASH_CANCEL",
+          "kind": "var",
+          "type": "FlashOperation",
+          "sourceName": "SDL_FLASH_CANCEL",
+          "constexpr": true
+        },
+        "FLASH_BRIEFLY": {
+          "doc": "Flash the window briefly to get attention",
+          "name": "FLASH_BRIEFLY",
+          "kind": "var",
+          "type": "FlashOperation",
+          "sourceName": "SDL_FLASH_BRIEFLY",
+          "constexpr": true
+        },
+        "FLASH_UNTIL_FOCUSED": {
+          "doc": "Flash the window until it gets focus",
+          "name": "FLASH_UNTIL_FOCUSED",
+          "kind": "var",
+          "type": "FlashOperation",
+          "sourceName": "SDL_FLASH_UNTIL_FOCUSED",
+          "constexpr": true
+        },
+        "HitTestResult": {
+          "doc": "Possible return values from the SDL_HitTest callback.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_HitTest",
+          "name": "HitTestResult",
+          "kind": "alias",
+          "sourceName": "SDL_HitTestResult",
+          "type": "SDL_HitTestResult"
+        },
+        "HITTEST_NORMAL": {
+          "doc": "Region is normal. No special properties.",
+          "name": "HITTEST_NORMAL",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_NORMAL",
+          "constexpr": true
+        },
+        "HITTEST_DRAGGABLE": {
+          "doc": "Region can drag entire window.",
+          "name": "HITTEST_DRAGGABLE",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_DRAGGABLE",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_TOPLEFT": {
+          "doc": "Region is the resizable top-left corner border.",
+          "name": "HITTEST_RESIZE_TOPLEFT",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_TOPLEFT",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_TOP": {
+          "doc": "Region is the resizable top border.",
+          "name": "HITTEST_RESIZE_TOP",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_TOP",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_TOPRIGHT": {
+          "doc": "Region is the resizable top-right corner border.",
+          "name": "HITTEST_RESIZE_TOPRIGHT",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_TOPRIGHT",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_RIGHT": {
+          "doc": "Region is the resizable right border.",
+          "name": "HITTEST_RESIZE_RIGHT",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_RIGHT",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_BOTTOMRIGHT": {
+          "doc": "Region is the resizable bottom-right corner border.",
+          "name": "HITTEST_RESIZE_BOTTOMRIGHT",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMRIGHT",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_BOTTOM": {
+          "doc": "Region is the resizable bottom border.",
+          "name": "HITTEST_RESIZE_BOTTOM",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_BOTTOM",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_BOTTOMLEFT": {
+          "doc": "Region is the resizable bottom-left corner border.",
+          "name": "HITTEST_RESIZE_BOTTOMLEFT",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMLEFT",
+          "constexpr": true
+        },
+        "HITTEST_RESIZE_LEFT": {
+          "doc": "Region is the resizable left border.",
+          "name": "HITTEST_RESIZE_LEFT",
+          "kind": "var",
+          "type": "HitTestResult",
+          "sourceName": "SDL_HITTEST_RESIZE_LEFT",
+          "constexpr": true
+        },
+        "HitTest": {
+          "doc": "Callback used for hit-testing.\n\n@param win the SDL_Window where hit-testing was set on.\n@param area an SDL_Point which should be hit-tested.\n@param data what was passed as `callback_data` to SDL_SetWindowHitTest().\n@returns an SDL_HitTestResult value.\n\n@sa SDL_SetWindowHitTest",
+          "name": "HitTest",
+          "kind": "alias",
+          "type": "SDL_HitTest",
+          "sourceName": "SDL_HitTest"
         },
         "Display": {
           "doc": "This is a unique ID for a display for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the display is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n@since This datatype is available since SDL 3.2.0.",
@@ -8885,46 +9043,6 @@
           "kind": "var",
           "type": "SystemTheme",
           "sourceName": "SDL_SYSTEM_THEME_DARK",
-          "constexpr": true
-        },
-        "ORIENTATION_UNKNOWN": {
-          "doc": "The display orientation can't be determined",
-          "name": "ORIENTATION_UNKNOWN",
-          "kind": "var",
-          "type": "DisplayOrientation",
-          "sourceName": "SDL_ORIENTATION_UNKNOWN",
-          "constexpr": true
-        },
-        "ORIENTATION_LANDSCAPE": {
-          "doc": "The display is in landscape mode, with the right side up, relative to portrait mode",
-          "name": "ORIENTATION_LANDSCAPE",
-          "kind": "var",
-          "type": "DisplayOrientation",
-          "sourceName": "SDL_ORIENTATION_LANDSCAPE",
-          "constexpr": true
-        },
-        "ORIENTATION_LANDSCAPE_FLIPPED": {
-          "doc": "The display is in landscape mode, with the left side up, relative to portrait mode",
-          "name": "ORIENTATION_LANDSCAPE_FLIPPED",
-          "kind": "var",
-          "type": "DisplayOrientation",
-          "sourceName": "SDL_ORIENTATION_LANDSCAPE_FLIPPED",
-          "constexpr": true
-        },
-        "ORIENTATION_PORTRAIT": {
-          "doc": "The display is in portrait mode",
-          "name": "ORIENTATION_PORTRAIT",
-          "kind": "var",
-          "type": "DisplayOrientation",
-          "sourceName": "SDL_ORIENTATION_PORTRAIT",
-          "constexpr": true
-        },
-        "ORIENTATION_PORTRAIT_FLIPPED": {
-          "doc": "The display is in portrait mode, upside down",
-          "name": "ORIENTATION_PORTRAIT_FLIPPED",
-          "kind": "var",
-          "type": "DisplayOrientation",
-          "sourceName": "SDL_ORIENTATION_PORTRAIT_FLIPPED",
           "constexpr": true
         },
         "WindowBase": {
@@ -9736,20 +9854,6 @@
               "sourceName": "SDL_ShowWindowSystemMenu",
               "static": false
             },
-            "HitTestResult": {
-              "doc": "Possible return values from the SDL_HitTest callback.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_HitTest",
-              "name": "HitTestResult",
-              "kind": "alias",
-              "sourceName": "SDL_HitTestResult",
-              "type": "SDL_HitTestResult"
-            },
-            "HitTest": {
-              "doc": "Callback used for hit-testing.\n\n@param win the SDL_Window where hit-testing was set on.\n@param area an SDL_Point which should be hit-tested.\n@param data what was passed as `callback_data` to SDL_SetWindowHitTest().\n@returns an SDL_HitTestResult value.\n\n@sa SDL_SetWindowHitTest",
-              "name": "HitTest",
-              "kind": "alias",
-              "type": "SDL_HitTest",
-              "sourceName": "SDL_HitTest"
-            },
             "HitTestFunction": {
               "kind": "alias",
               "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
@@ -9822,30 +9926,6 @@
               "sourceName": "SDL_DestroyWindow"
             }
           }
-        },
-        "FLASH_CANCEL": {
-          "doc": "Cancel any window flash state",
-          "name": "FLASH_CANCEL",
-          "kind": "var",
-          "type": "FlashOperation",
-          "sourceName": "SDL_FLASH_CANCEL",
-          "constexpr": true
-        },
-        "FLASH_BRIEFLY": {
-          "doc": "Flash the window briefly to get attention",
-          "name": "FLASH_BRIEFLY",
-          "kind": "var",
-          "type": "FlashOperation",
-          "sourceName": "SDL_FLASH_BRIEFLY",
-          "constexpr": true
-        },
-        "FLASH_UNTIL_FOCUSED": {
-          "doc": "Flash the window until it gets focus",
-          "name": "FLASH_UNTIL_FOCUSED",
-          "kind": "var",
-          "type": "FlashOperation",
-          "sourceName": "SDL_FLASH_UNTIL_FOCUSED",
-          "constexpr": true
         },
         "GLContext": {
           "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
@@ -10232,86 +10312,6 @@
           "type": "WindowRef",
           "parameters": [],
           "sourceName": "SDL_GetGrabbedWindow"
-        },
-        "HITTEST_NORMAL": {
-          "doc": "Region is normal. No special properties.",
-          "name": "HITTEST_NORMAL",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_NORMAL",
-          "constexpr": true
-        },
-        "HITTEST_DRAGGABLE": {
-          "doc": "Region can drag entire window.",
-          "name": "HITTEST_DRAGGABLE",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_DRAGGABLE",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_TOPLEFT": {
-          "doc": "Region is the resizable top-left corner border.",
-          "name": "HITTEST_RESIZE_TOPLEFT",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_TOPLEFT",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_TOP": {
-          "doc": "Region is the resizable top border.",
-          "name": "HITTEST_RESIZE_TOP",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_TOP",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_TOPRIGHT": {
-          "doc": "Region is the resizable top-right corner border.",
-          "name": "HITTEST_RESIZE_TOPRIGHT",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_TOPRIGHT",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_RIGHT": {
-          "doc": "Region is the resizable right border.",
-          "name": "HITTEST_RESIZE_RIGHT",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_RIGHT",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_BOTTOMRIGHT": {
-          "doc": "Region is the resizable bottom-right corner border.",
-          "name": "HITTEST_RESIZE_BOTTOMRIGHT",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMRIGHT",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_BOTTOM": {
-          "doc": "Region is the resizable bottom border.",
-          "name": "HITTEST_RESIZE_BOTTOM",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_BOTTOM",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_BOTTOMLEFT": {
-          "doc": "Region is the resizable bottom-left corner border.",
-          "name": "HITTEST_RESIZE_BOTTOMLEFT",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_BOTTOMLEFT",
-          "constexpr": true
-        },
-        "HITTEST_RESIZE_LEFT": {
-          "doc": "Region is the resizable left border.",
-          "name": "HITTEST_RESIZE_LEFT",
-          "kind": "var",
-          "type": "WindowBase.HitTestResult",
-          "sourceName": "SDL_HITTEST_RESIZE_LEFT",
-          "constexpr": true
         },
         "ScreenSaverEnabled": {
           "doc": "Check whether the screensaver is currently enabled.\n\nThe screensaver is disabled by default.\n\nThe default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`.\n\n@returns true if the screensaver is enabled, false if it is disabled.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DisableScreenSaver\n@sa SDL_EnableScreenSaver",

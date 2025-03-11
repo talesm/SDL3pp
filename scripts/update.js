@@ -107,7 +107,7 @@ function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
       changes.push({
         begin,
         end: begin,
-        replacement: "\n" + generateEntry(targetEntry, prefix) + "\n",
+        replacement: generateEntry(targetEntry, prefix) + "\n",
       });
     } else if (sourceIndex < sourceNames.length) {
       if (sourceIndex < index) {
@@ -150,7 +150,7 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
       const sourceSubEntry = sourceEntry[i];
       if (!sourceSubEntry) {
         system.log(`${name} overload(s) added to line ${end} or after`);
-        changes.push({ begin: end, end, replacement: "\n" + generateEntry(targetEntry.slice(i), prefix) });
+        changes.push({ begin: end, end, replacement: generateEntry(targetEntry.slice(i), prefix) });
         break;
       }
       changes.push(...checkEntryChanges(name,

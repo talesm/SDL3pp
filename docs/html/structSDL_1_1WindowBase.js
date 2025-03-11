@@ -1,8 +1,6 @@
 var structSDL_1_1WindowBase =
 [
-    [ "HitTest", "structSDL_1_1WindowBase.html#af22deedf419728468ebed702609b564e", null ],
     [ "HitTestFunction", "structSDL_1_1WindowBase.html#a937c0b696f6fb0d38aa731263d084efa", null ],
-    [ "HitTestResult", "structSDL_1_1WindowBase.html#aef689a4f4f814d7689bdee9a4a6aaf67", null ],
     [ "WindowBase", "structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614", null ],
     [ "WindowBase", "structSDL_1_1WindowBase.html#acb74480c07b4832be01028e828f23284", null ],
     [ "WindowBase", "structSDL_1_1WindowBase.html#aa53f308f46a1c76ec83d6f1e204def89", null ],
