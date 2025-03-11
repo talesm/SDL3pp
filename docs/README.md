@@ -24,8 +24,11 @@ the choice to not use them and, for example, manage memory yourself.
 ## Documentation
 
 - See @ref ApiByCategory
+- See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
+  for some examples.
 - See @ref transformations to understand the design approach.
-- See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
+- See [our source code](https://github.com/talesm/SDL3pp);
+- See [most recent version of this Doxygen](https://talesm.github.io/SDL3pp/)
 
 ## Examples
 

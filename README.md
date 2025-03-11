@@ -27,6 +27,8 @@ TODO
 ## Documentation
 
 - See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
+- See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
+  for some examples.
 - See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html)
 - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html) to understand the design approach.
 
