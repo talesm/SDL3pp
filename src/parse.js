@@ -244,6 +244,7 @@ class ContentParser {
         entry.entries = insertEntry({}, this.parseEntries(token.spaces + 1));
         entryEnd = this.expect("endStruct").end;
         break;
+      case "union": break;
       case "var":
         entry.type = normalizeType(token.type);
         if (token.constexpr) entry.constexpr = token.constexpr;
