@@ -8299,6 +8299,7 @@ constexpr Rect::operator FRect() const
 #include <span>
 #include <SDL3/SDL_assert.h>
 #include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_version.h>
 
 namespace SDL {
 
@@ -9026,10 +9027,13 @@ constexpr PixelFormat PIXELFORMAT_P010 = SDL_PIXELFORMAT_P010;
  */
 constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
 
+#if SDL_VERSION_ATLEAST(3, 2, 9)
 /**
  * Motion JPEG
  */
 constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
+
+#endif
 
 constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32;
 
@@ -10311,7 +10315,9 @@ using SurfaceFlags = SDL_SurfaceFlags;
  */
 using ScaleMode = SDL_ScaleMode;
 
+#if SDL_VERSION_ATLEAST(3, 2, 9)
 constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
+#endif
 
 /**
  * nearest pixel sampling
