@@ -84,6 +84,7 @@ function tokenize(lines) {
         ln = lines[++i];
       }
       if (token.value.endsWith('_')) continue;
+      token.doc = checkInlineDoc(line);
     } else if (m = /^typedef\s+(([\w*]+\s+)+\**)(\w+);/.exec(line)) {
       token.kind = "alias";
       token.value = m[3];
@@ -222,8 +223,7 @@ function tokenize(lines) {
         }
       } else {
         token.kind = "var";
-        const m = member.match(/\/\*\*<(.*)\*\//);
-        if (m) token.doc = m[1].trim();
+        token.doc = checkInlineDoc(member);
       }
       if (m = /^((?:[*&]\s*)+)(\w+)\s*$/.exec(token.value)) {
         token.type += " " + m[1];
@@ -253,6 +253,12 @@ function checkTokenTooLarge(token) {
   if (token.kind == "union") return delta > 100;
   if (token.kind == "function" || token.kind == "callback" || token.kind == "def") return delta > 30;
   return delta > 10;
+}
+
+/** @param {string} str  */
+function checkInlineDoc(str) {
+  const m = str.match(/\/\*\*<(.*)\*\//);
+  if (m) return m[1].trim();
 }
 
 /**
