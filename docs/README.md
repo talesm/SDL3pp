@@ -32,7 +32,7 @@ the choice to not use them and, for example, manage memory yourself.
 
 ## Examples
 
-TODO
+@include window_with_renderer.cpp
 
 ## Building
 
