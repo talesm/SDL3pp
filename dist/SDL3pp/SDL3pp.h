@@ -5346,6 +5346,12 @@ namespace SDL {
 using InitFlags = SDL_InitFlags;
 
 /**
+ * @name AppResult
+ * App result for Main callback
+ * @{
+ */
+
+/**
  * Return values for optional main callbacks.
  *
  * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
@@ -5382,6 +5388,8 @@ constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
  * Value that requests termination with error from the main callbacks.
  */
 constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/// @}
 
 /**
  * Function pointer typedef for SDL_AppInit.
