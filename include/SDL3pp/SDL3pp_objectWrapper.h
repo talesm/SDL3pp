@@ -20,7 +20,7 @@ class ObjectRef
 public:
   using pointer = POINTER;
 
-  constexpr ObjectRef(pointer value)
+  constexpr ObjectRef(pointer value = nullptr)
     : value(value)
   {
   }
@@ -66,7 +66,7 @@ class ObjectUnique
 public:
   using pointer = std::unique_ptr<T, DELETER>::pointer;
 
-  explicit ObjectUnique(pointer value)
+  explicit ObjectUnique(pointer value = nullptr)
     : value(value)
   {
   }
