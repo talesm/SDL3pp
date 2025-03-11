@@ -47,13 +47,7 @@ namespace SDL {
  * @{
  */
 
-// Forward decl
-template<ObjectBox<SDL_Renderer*> T>
-struct RendererBase;
-
-/// @brief Handle to a non owned renderer
-using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
-
+/**  Deleter */
 template<>
 struct ObjectDeleter<SDL_Renderer>
 {
@@ -2688,22 +2682,6 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 }
 
 /**
- * Get the renderer associated with a window.
- *
- * @param window the window to query.
- * @returns the rendering context on success or NULL on failure; call
- *          GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline RendererRef GetRenderer(WindowRef window)
-{
-  return {SDL_GetRenderer(window.get())};
-}
-
-/**
  * Get the CAMetalLayer associated with the given Metal renderer.
  *
  * This function returns `void *`, so SDL doesn't have to include Metal's
@@ -2826,6 +2804,12 @@ inline Texture LoadTextureBMP(RendererRef renderer, StringParam file)
 
 #pragma region impl
 /// @}
+
+template<ObjectBox<SDL_Window*> T>
+inline RendererRef WindowBase<T>::GetRenderer() const
+{
+  return {SDL_GetRenderer(T::get())};
+}
 
 template<ObjectBox<SDL_Renderer*> T>
 bool RendererBase<T>::SetTarget(TextureRef texture)

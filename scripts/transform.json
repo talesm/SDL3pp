@@ -2370,7 +2370,7 @@
             "template": [
               {
                 "name": "T",
-                "type": "class"
+                "type": "ObjectBox<SDL_Window *>"
               }
             ]
           },
@@ -2402,6 +2402,21 @@
             "name": "Window",
             "kind": "alias",
             "type": "WindowBase<ObjectUnique<SDL_Window>>"
+          },
+          {
+            "name": "RendererBase",
+            "kind": "forward",
+            "template": [
+              {
+                "type": "ObjectBox<SDL_Renderer *>",
+                "name": "T"
+              }
+            ]
+          },
+          {
+            "name": "RendererRef",
+            "kind": "alias",
+            "type": "RendererBase<ObjectRef<SDL_Renderer>>"
           },
           {
             "name": "DisplayOrientation",
@@ -2610,7 +2625,7 @@
           "kind": "struct",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_Window *>",
               "name": "T"
             }
           ],
@@ -2789,6 +2804,12 @@
             "SDL_RestoreWindow": "function",
             "SDL_SetWindowFullscreen": "function",
             "SDL_SyncWindow": "function",
+            "GetRenderer": {
+              "kind": "function",
+              "type": "RendererRef",
+              "immutable": true,
+              "parameters": []
+            },
             "SDL_WindowHasSurface": "immutable",
             "SDL_GetWindowSurface": "function",
             "SDL_SetWindowSurfaceVSync": "function",
@@ -2862,25 +2883,11 @@
     "SDL_render.h": {
       "ignoreEntries": [
         "SDL_LockTextureToSurface",
-        "SDL_RenderDebugTextFormat"
+        "SDL_RenderDebugTextFormat",
+        "SDL_GetRenderer"
       ],
       "includeAfter": {
         "__begin": [
-          {
-            "name": "RendererBase",
-            "kind": "forward",
-            "template": [
-              {
-                "type": "ObjectBox<SDL_Renderer *>",
-                "name": "T"
-              }
-            ]
-          },
-          {
-            "name": "RendererRef",
-            "kind": "alias",
-            "type": "RendererBase<ObjectRef<SDL_Renderer>>"
-          },
           {
             "name": "ObjectDeleter<SDL_Renderer>",
             "kind": "struct",

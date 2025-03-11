@@ -5307,6 +5307,7 @@ inline void ObjectDeleter<SDL_iconv_data_t>::operator()(IConvRef iconv) const
 #include <memory>
 #include <optional>
 #include <vector>
+#include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
 // begin --- SDL3pp_properties.h --- 
@@ -12338,7 +12339,7 @@ namespace SDL {
  */
 
 // Forward decl
-template<class T>
+template<ObjectBox<SDL_Window*> T>
 struct WindowBase;
 
 /**
@@ -12356,6 +12357,12 @@ struct ObjectDeleter<SDL_Window>
  * @brief Handle to an owned window
  */
 using Window = WindowBase<ObjectUnique<SDL_Window>>;
+
+// Forward decl
+template<ObjectBox<SDL_Renderer*> T>
+struct RendererBase;
+
+using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
 
 /**
  * @name DisplayOrientations
@@ -12947,7 +12954,7 @@ constexpr SystemTheme SYSTEM_THEME_DARK = SDL_SYSTEM_THEME_DARK;
  * @brief Represents a handle to a window
  * @ingroup resource
  */
-template<class T>
+template<ObjectBox<SDL_Window*> T>
 struct WindowBase : T
 {
   using T::T;
@@ -14311,6 +14318,18 @@ struct WindowBase : T
    * @sa SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
    */
   bool Sync() { return SDL_SyncWindow(T::get()); }
+
+  /**
+   * Get the renderer associated with a window.
+   *
+   * @returns the rendering context on success or nullptr on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  RendererRef GetRenderer() const;
 
   /**
    * @brief Return whether the window has a surface associated with it.
@@ -18351,13 +18370,7 @@ namespace SDL {
  * @{
  */
 
-// Forward decl
-template<ObjectBox<SDL_Renderer*> T>
-struct RendererBase;
-
-/// @brief Handle to a non owned renderer
-using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
-
+/**  Deleter */
 template<>
 struct ObjectDeleter<SDL_Renderer>
 {
@@ -20992,22 +21005,6 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 }
 
 /**
- * Get the renderer associated with a window.
- *
- * @param window the window to query.
- * @returns the rendering context on success or NULL on failure; call
- *          GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline RendererRef GetRenderer(WindowRef window)
-{
-  return {SDL_GetRenderer(window.get())};
-}
-
-/**
  * Get the CAMetalLayer associated with the given Metal renderer.
  *
  * This function returns `void *`, so SDL doesn't have to include Metal's
@@ -21130,6 +21127,12 @@ inline Texture LoadTextureBMP(RendererRef renderer, StringParam file)
 
 #pragma region impl
 /// @}
+
+template<ObjectBox<SDL_Window*> T>
+inline RendererRef WindowBase<T>::GetRenderer() const
+{
+  return {SDL_GetRenderer(T::get())};
+}
 
 template<ObjectBox<SDL_Renderer*> T>
 bool RendererBase<T>::SetTarget(TextureRef texture)

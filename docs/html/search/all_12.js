@@ -26,7 +26,7 @@ var searchData=
   ['renderer_23',['Renderer',['../group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068',1,'SDL']]],
   ['rendererbase_24',['rendererbase',['../structSDL_1_1RendererBase.html',1,'SDL::RendererBase&lt; T &gt;'],['../structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc',1,'SDL::RendererBase::RendererBase(PropertiesRef props)'],['../group__resource.html#ga6cd596ee84afc3ead3c26a6c429a797c',1,'SDL::RendererBase::RendererBase(WindowRef window)'],['../structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413',1,'SDL::RendererBase::RendererBase(WindowRef window, StringParam name)'],['../structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92',1,'SDL::RendererBase::RendererBase(SurfaceRef surface)']]],
   ['rendererlogicalpresentation_25',['RendererLogicalPresentation',['../group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d',1,'SDL']]],
-  ['rendererref_26',['RendererRef',['../group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d',1,'SDL']]],
+  ['rendererref_26',['RendererRef',['../group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d',1,'SDL']]],
   ['renderevent_27',['RenderEvent',['../group__CategoryEvents.html#ga2659db701de06c5a2e1632526c4f6345',1,'SDL']]],
   ['renderfillrect_28',['RenderFillRect',['../structSDL_1_1RendererBase.html#a18cf4e2266ac4aebb2cbe9578f019aa8',1,'SDL::RendererBase']]],
   ['renderfillrects_29',['RenderFillRects',['../structSDL_1_1RendererBase.html#aa112dbeabca41279666106c3a3c4adc5',1,'SDL::RendererBase']]],
