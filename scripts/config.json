@@ -1,6 +1,7 @@
 {
   "sources": [
     "SDL_stdinc.h",
+    "SDL_misc.h",
     "SDL_pixels.h",
     "SDL_blendmode.h",
     "SDL_properties.h",

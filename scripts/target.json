@@ -2814,6 +2814,25 @@
         }
       }
     },
+    "SDL3pp_misc.h": {
+      "name": "SDL3pp_misc.h",
+      "doc": "@defgroup CategoryMisc Category Misc\n\nSDL API functions that don't fit elsewhere.",
+      "entries": {
+        "OpenURL": {
+          "doc": "Open a URL/URI in the browser or other appropriate external application.\n\nOpen a URL in a separate, system-provided application. How this works will\nvary wildly depending on the platform. This will likely launch what makes\nsense to handle a specific URL's protocol (a web browser for `http://`,\netc), but it might also be able to launch file managers for directories and\nother things.\n\nWhat happens when you open a URL varies wildly as well: your game window\nmay lose focus (and may or may not lose focus if your game was fullscreen\nor grabbing input at the time). On mobile devices, your app will likely\nmove to the background or your process might be paused. Any given platform\nmay or may not handle a given URL.\n\nIf this is unimplemented (or simply unavailable) for a platform, this will\nfail with an error. A successful result does not mean the URL loaded, just\nthat we launched _something_ to handle it (or at least believe we did).\n\nAll this to say: this function can be useful, but you should definitely\ntest it on every platform you target.\n\n@param url a valid URL/URI to open. Use `file:///full/path/to/file` for\n           local files, if supported.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OpenURL",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "url",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_OpenURL"
+        }
+      }
+    },
     "SDL3pp_pixels.h": {
       "name": "SDL3pp_pixels.h",
       "doc": "@defgroup CategoryPixels Category Pixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",

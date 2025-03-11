@@ -32,9 +32,10 @@ var searchData=
   ['memset_29',['memset',['../group__CategoryStdinc.html#ga5a6487beb5a07d1110c8afe1fe030446',1,'SDL']]],
   ['memset4_30',['memset4',['../group__CategoryStdinc.html#ga8e06e75cea4ef203bf1f3c967f8bff54',1,'SDL']]],
   ['minimize_31',['Minimize',['../structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73',1,'SDL::WindowBase']]],
-  ['modes_32',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
-  ['modf_33',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL']]],
-  ['modff_34',['modff',['../group__CategoryStdinc.html#ga0108470ee7d88fa093ddf12185060c10',1,'SDL']]],
-  ['murmur3_5f32_35',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
-  ['mustlock_36',['MustLock',['../structSDL_1_1SurfaceBase.html#a6b0bf68e5aa38621f0a9777cca093d9e',1,'SDL::SurfaceBase']]]
+  ['miscellaneous_32',['Miscellaneous',['../group__CategoryMisc.html',1,'']]],
+  ['modes_33',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
+  ['modf_34',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL']]],
+  ['modff_35',['modff',['../group__CategoryStdinc.html#ga0108470ee7d88fa093ddf12185060c10',1,'SDL']]],
+  ['murmur3_5f32_36',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
+  ['mustlock_37',['MustLock',['../structSDL_1_1SurfaceBase.html#a6b0bf68e5aa38621f0a9777cca093d9e',1,'SDL::SurfaceBase']]]
 ];

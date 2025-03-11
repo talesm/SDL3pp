@@ -6,6 +6,7 @@ var dir_97ce39b7d3b637544d6563dae0aa493a =
     [ "SDL3pp_error.h", "SDL3pp__error_8h.html", "SDL3pp__error_8h" ],
     [ "SDL3pp_freeWrapper.h", "SDL3pp__freeWrapper_8h.html", "SDL3pp__freeWrapper_8h" ],
     [ "SDL3pp_init.h", "SDL3pp__init_8h.html", "SDL3pp__init_8h" ],
+    [ "SDL3pp_misc.h", "SDL3pp__misc_8h.html", "SDL3pp__misc_8h" ],
     [ "SDL3pp_objectWrapper.h", "SDL3pp__objectWrapper_8h.html", "SDL3pp__objectWrapper_8h" ],
     [ "SDL3pp_optionalRef.h", "SDL3pp__optionalRef_8h.html", "SDL3pp__optionalRef_8h" ],
     [ "SDL3pp_pixels.h", "SDL3pp__pixels_8h.html", "SDL3pp__pixels_8h" ],

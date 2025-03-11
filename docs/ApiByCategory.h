@@ -33,6 +33,7 @@
  * Category             | Header
  * -------------------- | --------------------
  * @ref CategoryStdinc  | SDL3pp_stdinc.h
+ * @ref CategoryMisc    | SDL3pp_misc.h
  *
  *
  * ## C++ Support
@@ -77,6 +78,7 @@
  * @defgroup CategoriesAdditionalFunctionality Additional Functionality
  * @{
  * @addtogroup CategoryStdinc
+ * @addtogroup CategoryMisc
  * @}
  *
  * @defgroup CategoriesCppSupport C++ Support

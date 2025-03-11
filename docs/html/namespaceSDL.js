@@ -265,6 +265,7 @@ var namespaceSDL =
     [ "modf", "group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681", null ],
     [ "modff", "group__CategoryStdinc.html#ga0108470ee7d88fa093ddf12185060c10", null ],
     [ "murmur3_32", "group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824", null ],
+    [ "OpenURL", "group__CategoryMisc.html#ga59e209c6233f74a03b27e90eba2ab151", null ],
     [ "pow", "group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce", null ],
     [ "powf", "group__CategoryStdinc.html#ga652fc1da140490bb87abbbf05ccfe8fa", null ],
     [ "PremultiplyAlpha", "group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5", null ],
