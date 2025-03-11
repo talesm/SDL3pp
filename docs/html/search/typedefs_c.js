@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['scalemode_0',['ScaleMode',['../group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d',1,'SDL']]],
-  ['stringparam_1',['StringParam',['../namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1',1,'SDL']]],
-  ['surface_2',['Surface',['../group__CategorySurface.html#ga5128f762b815ce424b759043e06fd646',1,'SDL']]],
-  ['surfaceflags_3',['SurfaceFlags',['../group__CategorySurface.html#ga2d815ea45ea1a0a4336a1c9952ff2264',1,'SDL']]],
-  ['surfaceref_4',['SurfaceRef',['../group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2',1,'SDL']]],
-  ['systemtheme_5',['SystemTheme',['../group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed',1,'SDL']]]
+  ['realloc_5ffunc_0',['realloc_func',['../group__CategoryStdinc.html#gaa0d42a4ebfbbe5ab7908f55ba0560ecb',1,'SDL']]],
+  ['renderer_1',['Renderer',['../group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068',1,'SDL']]],
+  ['rendererlogicalpresentation_2',['RendererLogicalPresentation',['../group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d',1,'SDL']]],
+  ['rendererref_3',['RendererRef',['../group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d',1,'SDL']]]
 ];

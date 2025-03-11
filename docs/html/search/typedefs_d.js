@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['texture_0',['Texture',['../group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a',1,'SDL']]],
-  ['textureaccess_1',['TextureAccess',['../group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56',1,'SDL']]],
-  ['textureref_2',['TextureRef',['../group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7',1,'SDL']]],
-  ['time_3',['Time',['../group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f',1,'SDL']]],
-  ['transfercharacteristics_4',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]]
+  ['scalemode_0',['ScaleMode',['../group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d',1,'SDL']]],
+  ['stringparam_1',['StringParam',['../namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1',1,'SDL']]],
+  ['surface_2',['Surface',['../group__CategorySurface.html#ga5128f762b815ce424b759043e06fd646',1,'SDL']]],
+  ['surfaceflags_3',['SurfaceFlags',['../group__CategorySurface.html#ga2d815ea45ea1a0a4336a1c9952ff2264',1,'SDL']]],
+  ['surfaceref_4',['SurfaceRef',['../group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2',1,'SDL']]],
+  ['systemtheme_5',['SystemTheme',['../group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed',1,'SDL']]]
 ];

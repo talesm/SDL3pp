@@ -3830,6 +3830,32 @@
         }
       }
     },
+    "SDL_timer.h": {
+      "includeAfter": {
+        "SDL_Delay": {
+          "kind": "function",
+          "name": "Delay",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "std::chrono::nanoseconds",
+              "name": "duration"
+            }
+          ]
+        },
+        "SDL_DelayPrecise": {
+          "kind": "function",
+          "name": "DelayPrecise",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "std::chrono::nanoseconds",
+              "name": "duration"
+            }
+          ]
+        }
+      }
+    },
     "SDL_init.h": {
       "includeAfter": {
         "SDL_Quit": {

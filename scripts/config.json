@@ -8,6 +8,7 @@
     "SDL_surface.h",
     "SDL_video.h",
     "SDL_render.h",
+    "SDL_timer.h",
     "SDL_init.h"
   ],
   "api": "scripts/target.json",

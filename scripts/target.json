@@ -12596,6 +12596,187 @@
         }
       }
     },
+    "SDL3pp_timer.h": {
+      "name": "SDL3pp_timer.h",
+      "doc": "@defgroup CategoryTimer Category Timer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nSDL_GetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(SDL_AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nSDL_SECONDS_TO_NS() and such.",
+      "entries": {
+        "GetTicks": {
+          "doc": "Get the number of milliseconds since SDL library initialization.\n\n@returns an unsigned 64-bit value representing the number of milliseconds\n         since the SDL library initialized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetTicks",
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [],
+          "sourceName": "SDL_GetTicks"
+        },
+        "GetTicksNS": {
+          "doc": "Get the number of nanoseconds since SDL library initialization.\n\n@returns an unsigned 64-bit value representing the number of nanoseconds\n         since the SDL library initialized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetTicksNS",
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [],
+          "sourceName": "SDL_GetTicksNS"
+        },
+        "GetPerformanceCounter": {
+          "doc": "Get the current value of the high resolution counter.\n\nThis function is typically used for profiling.\n\nThe counter values are only meaningful relative to each other. Differences\nbetween values can be converted to times by using\nSDL_GetPerformanceFrequency().\n\n@returns the current counter value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPerformanceFrequency",
+          "name": "GetPerformanceCounter",
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [],
+          "sourceName": "SDL_GetPerformanceCounter"
+        },
+        "GetPerformanceFrequency": {
+          "doc": "Get the count per second of the high resolution counter.\n\n@returns a platform-specific count per second.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPerformanceCounter",
+          "name": "GetPerformanceFrequency",
+          "kind": "function",
+          "type": "Uint64",
+          "parameters": [],
+          "sourceName": "SDL_GetPerformanceFrequency"
+        },
+        "Delay": [
+          {
+            "doc": "Wait a specified number of milliseconds before returning.\n\nThis function waits a specified number of milliseconds before returning. It\nwaits at least the specified time, but possibly longer due to OS\nscheduling.\n\n@param ms the number of milliseconds to delay.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DelayNS\n@sa SDL_DelayPrecise",
+            "name": "Delay",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "ms",
+                "type": "Uint32"
+              }
+            ],
+            "sourceName": "SDL_Delay"
+          },
+          {
+            "kind": "function",
+            "name": "Delay",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "std::chrono::nanoseconds",
+                "name": "duration"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "DelayNS": {
+          "doc": "Wait a specified number of nanoseconds before returning.\n\nThis function waits a specified number of nanoseconds before returning. It\nwaits at least the specified time, but possibly longer due to OS\nscheduling.\n\n@param ns the number of nanoseconds to delay.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Delay\n@sa SDL_DelayPrecise",
+          "name": "DelayNS",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "ns",
+              "type": "Uint64"
+            }
+          ],
+          "sourceName": "SDL_DelayNS"
+        },
+        "DelayPrecise": [
+          {
+            "doc": "Wait a specified number of nanoseconds before returning.\n\nThis function waits a specified number of nanoseconds before returning. It\nwill attempt to wait as close to the requested time as possible, busy\nwaiting if necessary, but could return later due to OS scheduling.\n\n@param ns the number of nanoseconds to delay.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Delay\n@sa SDL_DelayNS",
+            "name": "DelayPrecise",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "ns",
+                "type": "Uint64"
+              }
+            ],
+            "sourceName": "SDL_DelayPrecise"
+          },
+          {
+            "kind": "function",
+            "name": "DelayPrecise",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "std::chrono::nanoseconds",
+                "name": "duration"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "TimerID": {
+          "doc": "Definition of the timer ID type.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "TimerID",
+          "kind": "alias",
+          "type": "SDL_TimerID",
+          "sourceName": "SDL_TimerID"
+        },
+        "TimerCallback": {
+          "doc": "Function prototype for the millisecond timer callback function.\n\nThe callback function is passed the current timer interval and returns the\nnext timer interval, in milliseconds. If the returned value is the same as\nthe one passed in, the periodic alarm continues, otherwise a new alarm is\nscheduled. If the callback returns 0, the periodic alarm is canceled and\nwill be removed.\n\n@param userdata an arbitrary pointer provided by the app through\n                SDL_AddTimer, for its own use.\n@param timerID the current timer being processed.\n@param interval the current callback time interval.\n@returns the new callback time interval, or 0 to disable further runs of\n         the callback.\n\n@threadsafety SDL may call this callback at any time from a background\n              thread; the application is responsible for locking resources\n              the callback touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_AddTimer",
+          "name": "TimerCallback",
+          "kind": "alias",
+          "type": "SDL_TimerCallback",
+          "sourceName": "SDL_TimerCallback"
+        },
+        "AddTimer": {
+          "doc": "Call a callback function at a future time.\n\nThe callback function is passed the current timer interval and the user\nsupplied parameter from the SDL_AddTimer() call and should return the next\ntimer interval. If the value returned from the callback is 0, the timer is\ncanceled and will be removed.\n\nThe callback is run on a separate thread, and for short timeouts can\npotentially be called before this function returns.\n\nTimers take into account the amount of time it took to execute the\ncallback. For example, if the callback took 250 ms to execute and returned\n1000 (ms), the timer would only wait another 750 ms before its next\niteration.\n\nTiming may be inexact due to OS scheduling. Be sure to note the current\ntime with SDL_GetTicksNS() or SDL_GetPerformanceCounter() in case your\ncallback needs to adjust for variances.\n\n@param interval the timer delay, in milliseconds, passed to `callback`.\n@param callback the SDL_TimerCallback function to call when the specified\n                `interval` elapses.\n@param userdata a pointer that is passed to `callback`.\n@returns a timer ID or 0 on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddTimerNS\n@sa SDL_RemoveTimer",
+          "name": "AddTimer",
+          "kind": "function",
+          "type": "TimerID",
+          "parameters": [
+            {
+              "name": "interval",
+              "type": "Uint32"
+            },
+            {
+              "name": "callback",
+              "type": "TimerCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_AddTimer"
+        },
+        "NSTimerCallback": {
+          "doc": "Function prototype for the nanosecond timer callback function.\n\nThe callback function is passed the current timer interval and returns the\nnext timer interval, in nanoseconds. If the returned value is the same as\nthe one passed in, the periodic alarm continues, otherwise a new alarm is\nscheduled. If the callback returns 0, the periodic alarm is canceled and\nwill be removed.\n\n@param userdata an arbitrary pointer provided by the app through\n                SDL_AddTimer, for its own use.\n@param timerID the current timer being processed.\n@param interval the current callback time interval.\n@returns the new callback time interval, or 0 to disable further runs of\n         the callback.\n\n@threadsafety SDL may call this callback at any time from a background\n              thread; the application is responsible for locking resources\n              the callback touches that need to be protected.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_AddTimerNS",
+          "name": "NSTimerCallback",
+          "kind": "alias",
+          "type": "SDL_NSTimerCallback",
+          "sourceName": "SDL_NSTimerCallback"
+        },
+        "AddTimerNS": {
+          "doc": "Call a callback function at a future time.\n\nThe callback function is passed the current timer interval and the user\nsupplied parameter from the SDL_AddTimerNS() call and should return the\nnext timer interval. If the value returned from the callback is 0, the\ntimer is canceled and will be removed.\n\nThe callback is run on a separate thread, and for short timeouts can\npotentially be called before this function returns.\n\nTimers take into account the amount of time it took to execute the\ncallback. For example, if the callback took 250 ns to execute and returned\n1000 (ns), the timer would only wait another 750 ns before its next\niteration.\n\nTiming may be inexact due to OS scheduling. Be sure to note the current\ntime with SDL_GetTicksNS() or SDL_GetPerformanceCounter() in case your\ncallback needs to adjust for variances.\n\n@param interval the timer delay, in nanoseconds, passed to `callback`.\n@param callback the SDL_TimerCallback function to call when the specified\n                `interval` elapses.\n@param userdata a pointer that is passed to `callback`.\n@returns a timer ID or 0 on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddTimer\n@sa SDL_RemoveTimer",
+          "name": "AddTimerNS",
+          "kind": "function",
+          "type": "TimerID",
+          "parameters": [
+            {
+              "name": "interval",
+              "type": "Uint64"
+            },
+            {
+              "name": "callback",
+              "type": "NSTimerCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_AddTimerNS"
+        },
+        "RemoveTimer": {
+          "doc": "Remove a timer created with SDL_AddTimer().\n\n@param id the ID of the timer to remove.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddTimer",
+          "name": "RemoveTimer",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "id",
+              "type": "TimerID"
+            }
+          ],
+          "sourceName": "SDL_RemoveTimer"
+        }
+      }
+    },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
       "doc": "@defgroup CategoryInit Category Init\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call SDL_Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `SDL_INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call SDL_Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSDL_SetAppMetadataProperty().",
