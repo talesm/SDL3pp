@@ -3,7 +3,7 @@ const { tokenize } = require("./tokenize.js");
 
 /**
  * @typedef {object} ParseConfig
- * @prop {string}   baseDir
+ * @prop {string[]} baseDir
  * @prop {string[]} sources
  * @prop {boolean=} storeLineNumbers
  */
@@ -19,10 +19,27 @@ function parseApi(config) {
   const api = { files: {} };
   for (const name of sources) {
     system.log(`Reading file ${name}`);
-    const content = readLinesSync(baseDir + name);
+    const content = readContent(name, baseDir);
     api.files[name] = parseContent(name, content, config);
   }
   return api;
+}
+
+/**
+ * The content to read
+ * @param {string} name 
+ * @param {string[]} baseDirs 
+ */
+function readContent(name, baseDirs) {
+  for (const baseDir of baseDirs) {
+    try {
+      const content = readLinesSync(baseDir + name);
+      return content;
+    } catch (err) {
+      system.log(`${name} not found at ${baseDir}, looking at next one`);
+    }
+  }
+  throw new Error("File not found: " + name);
 }
 
 /**

@@ -78,7 +78,7 @@ function parse(args) {
     outputFile: "",
     /** @type {*} */
     api: null,
-    baseDir: "",
+    baseDir: [],
   };
   let printConfig = false;
   for (let i = 0; i < args.length; i++) {
@@ -98,7 +98,7 @@ function parse(args) {
       case '--outputFile':
       case '-o': config.outputFile = args[++i].replaceAll("\\", '/'); break;
       case '--baseDir':
-      case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
+      case '-d': config.baseDir.push(args[++i].replaceAll("\\", '/')); break;
       case '--config':
       case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
       case '--print-config': printConfig = true; break;
@@ -108,19 +108,20 @@ function parse(args) {
         throw new Error(`Invalid option ${arg}`);
     }
   }
-  if (!config.baseDir && config.sources.length && config.sources[0].includes('/')) {
-    config.baseDir = config.sources[0].slice(0, config.sources[0].lastIndexOf("/") + 1);
+  if (!config.baseDir?.length && config.sources.length && config.sources[0].includes('/')) {
+    let baseDir = config.sources[0].slice(0, config.sources[0].lastIndexOf("/") + 1);
     for (let i = 1; i < config.sources.length; i++) {
       const file = config.sources[i];
-      while (!file.startsWith(config.baseDir)) {
-        const pos = config.baseDir.lastIndexOf('/');
-        config.baseDir = config.baseDir.slice(0, pos + 1);
+      while (!file.startsWith(baseDir)) {
+        const pos = baseDir.lastIndexOf('/');
+        baseDir = baseDir.slice(0, pos + 1);
       }
     }
-  }
-  if (config.baseDir) {
-    const baseDirLen = config.baseDir.length;
-    config.sources = config.sources.map(file => file.startsWith(config.baseDir) ? file.slice(baseDirLen) : file);
+    if (baseDir) {
+      config.baseDir = [baseDir];
+      const baseDirLen = baseDir.length;
+      config.sources = config.sources.map(file => file.startsWith(baseDir) ? file.slice(baseDirLen) : file);
+    }
   }
   if (!config.outputFile && typeof config.api == "string") config.outputFile = config.api;
   if (printConfig) writeJSONSync(config.outputFile ? 1 : 2, config);
