@@ -10,6 +10,7 @@
  * @ref CategoryInit        | SDL3pp_init.h
  * @ref CategoryProperties  | SDL3pp_properties.h
  * @ref CategoryError       | SDL3pp_error.h
+ * @ref CategoryVersion     | SDL3pp_version.h
  *
  * ## Video
  *
@@ -64,6 +65,7 @@
  * @addtogroup CategoryInit
  * @addtogroup CategoryProperties
  * @addtogroup CategoryError
+ * @addtogroup CategoryVersion
  * @}
  *
  * @defgroup CategoriesVideo Video

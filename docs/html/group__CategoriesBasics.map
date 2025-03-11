@@ -1,7 +1,8 @@
 <map id="Basics" name="Basics">
-<area shape="rect" id="Node000002" href="$group__Categories.html" title="You probably want to see API by Category." alt="" coords="5,63,97,88"/>
-<area shape="rect" id="Node000001" title=" " alt="" coords="145,63,209,88"/>
-<area shape="rect" id="Node000005" href="$group__CategoryError.html" title="Simple error message routines for SDL." alt="" coords="267,5,382,31"/>
-<area shape="rect" id="Node000003" href="$group__CategoryInit.html" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="259,55,390,95"/>
-<area shape="rect" id="Node000004" href="$group__CategoryProperties.html" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="257,120,392,145"/>
+<area shape="rect" id="Node000002" href="$group__Categories.html" title="You probably want to see API by Category." alt="" coords="5,92,97,117"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="145,92,209,117"/>
+<area shape="rect" id="Node000005" href="$group__CategoryError.html" title="Simple error message routines for SDL." alt="" coords="281,5,396,31"/>
+<area shape="rect" id="Node000003" href="$group__CategoryInit.html" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="273,55,404,95"/>
+<area shape="rect" id="Node000004" href="$group__CategoryProperties.html" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="271,120,406,145"/>
+<area shape="rect" id="Node000006" href="$group__CategoryVersion.html" title="Functionality to query the current SDL version, both as headers the app was compiled against,..." alt="" coords="257,169,420,195"/>
 </map>

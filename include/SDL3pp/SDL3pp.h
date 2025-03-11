@@ -22,7 +22,7 @@
 // #include "SDL3pp/SDL3pp_dialog.h"
 // #include "SDL3pp/SDL3pp_endian.h"
 #include "SDL3pp/SDL3pp_error.h"
-// #include "SDL3pp/SDL3pp_events.h"
+#include "SDL3pp/SDL3pp_events.h"
 // #include "SDL3pp/SDL3pp_filesystem.h"
 // #include "SDL3pp/SDL3pp_gamepad.h"
 // #include "SDL3pp/SDL3pp_gpu.h"
@@ -62,7 +62,7 @@
 #include "SDL3pp/SDL3pp_timer.h"
 // #include "SDL3pp/SDL3pp_touch.h"
 // #include "SDL3pp/SDL3pp_tray.h"
-// #include "SDL3pp/SDL3pp_version.h"
+#include "SDL3pp/SDL3pp_version.h"
 #include "SDL3pp/SDL3pp_video.h"
 
 #endif /* SDL3PP_H_ */

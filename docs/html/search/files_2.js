@@ -19,5 +19,6 @@ var searchData=
   ['sdl3pp_5fstringparam_2eh_16',['SDL3pp_stringParam.h',['../SDL3pp__stringParam_8h.html',1,'']]],
   ['sdl3pp_5fsurface_2eh_17',['SDL3pp_surface.h',['../SDL3pp__surface_8h.html',1,'']]],
   ['sdl3pp_5ftimer_2eh_18',['SDL3pp_timer.h',['../SDL3pp__timer_8h.html',1,'']]],
-  ['sdl3pp_5fvideo_2eh_19',['SDL3pp_video.h',['../SDL3pp__video_8h.html',1,'']]]
+  ['sdl3pp_5fversion_2eh_19',['SDL3pp_version.h',['../SDL3pp__version_8h.html',1,'']]],
+  ['sdl3pp_5fvideo_2eh_20',['SDL3pp_video.h',['../SDL3pp__video_8h.html',1,'']]]
 ];
