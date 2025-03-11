@@ -268,31 +268,30 @@ function checkInlineDoc(str) {
  * @param {number} spaces 
  */
 function ignoreBody(lines, begin, spaces) {
+  let opened = false;
   if (!lines[begin].endsWith("{")) {
     const line = lines[begin + 1].trim();
     if (line.startsWith("{")) {
       begin += 1;
       if (line.endsWith("}")) return begin;
-    } else if (line.startsWith(":")) {
-      for (begin += 2; begin < lines.length; begin++) {
-        const line = lines[begin].trim();
-        if (line.startsWith("{")) {
-          if (line.endsWith("}")) return begin;
-          break;
-        }
-      }
-    } else {
-      return begin;
+      opened = true;
     }
-  } else begin++;
+  } else {
+    begin++;
+    opened = true;
+  }
   const spaceRegex = /^\s+/;
   for (let i = begin + 1; i < lines.length; i++) {
     const line = lines[i];
     if (!line.trim()) continue;
     const indentation = spaceRegex.exec(line)?.[0]?.length ?? 0;
     if (indentation <= spaces) {
-      if (line.slice(indentation).startsWith("}")) return i;
-      return i - 1;
+      if (line.slice(indentation).startsWith("{")) {
+        opened = true;
+        if (line.endsWith("}") || line.endsWith("};")) return i;
+      } else if (line.slice(indentation).startsWith("}") && opened) {
+        return i;
+      } else return i - 1;
     }
   }
   return lines.length;

@@ -2,7 +2,7 @@ const { tokenize } = require("../src/tokenize.js");
 
 /** @param {string} text  */
 function tokenizeText(text) {
-  return tokenize((text.trimEnd() + "\n").split("\n"));
+  return tokenize((text.trimEnd() + "\n#pragma region impl\n").split("\n"));
 }
 
 test("tokenize doc", () => {
@@ -43,7 +43,6 @@ test("tokenize alias defined next line", () => {
     type: "Templated<Ref<Value, OtherValue>>",
   }]);
 });
-
 test("tokenize function", () => {
   expect(tokenizeText("int func(int a, int b);")).toEqual([{
     begin: 1,
@@ -219,7 +218,7 @@ test("tokenize function operator<=> immutable with body", () => {
 });
 
 test("tokenize function ctor with initialization and body", () => {
-  expect(tokenizeText("Func(int a, int b)\n: a(a)\n  , b(b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
+  expect(tokenizeText("Func(int a, int b)\n  : a(a)\n  , b(b)\n{\n  int a;\n  ignored stuff\n}")).toEqual([{
     begin: 1,
     end: 8,
     spaces: 0,
@@ -227,6 +226,37 @@ test("tokenize function ctor with initialization and body", () => {
     value: "Func",
     type: "",
     parameters: "int a, int b",
+  }]);
+});
+
+test("tokenize var", () => {
+  expect(tokenizeText("int aVar;")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "var",
+    value: "aVar",
+    type: "int",
+  }]);
+});
+test("tokenize var with assignment", () => {
+  expect(tokenizeText("int aVar = 123;")).toEqual([{
+    begin: 1,
+    end: 2,
+    spaces: 0,
+    kind: "var",
+    value: "aVar",
+    type: "int",
+  }]);
+});
+test("tokenize var with assignment in next line", () => {
+  expect(tokenizeText("int aVar =\n   123;")).toEqual([{
+    begin: 1,
+    end: 3,
+    spaces: 0,
+    kind: "var",
+    value: "aVar",
+    type: "int",
   }]);
 });
 
