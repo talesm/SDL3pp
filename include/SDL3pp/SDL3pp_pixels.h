@@ -95,6 +95,11 @@ using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
 struct Color;
 
 /**
+ * @name PixelTypes
+ * @{
+ */
+
+/**
  * Pixel type.
  *
  * @since This enum is available since SDL 3.2.0.
@@ -127,6 +132,13 @@ constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32;
 
 constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2;
 
+/// @}
+
+/**
+ * @name BitmapOrders
+ * @{
+ */
+
 /**
  * Bitmap pixel order, high bit -> low bit.
  *
@@ -139,6 +151,13 @@ constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE;
 constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321;
 
 constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234;
+
+/// @}
+
+/**
+ * @name PackedOrders
+ * @{
+ */
 
 /**
  * Packed component order, high bit -> low bit.
@@ -165,6 +184,13 @@ constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR;
 
 constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA;
 
+/// @}
+
+/**
+ * @name ArrayOrders
+ * @{
+ */
+
 /**
  * Array component order, low byte -> high byte.
  *
@@ -185,6 +211,13 @@ constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR;
 constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA;
 
 constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR;
+
+/// @}
+
+/**
+ * @name PackedLayouts
+ * @{
+ */
 
 /**
  * Packed component layout.
@@ -210,6 +243,8 @@ constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888;
 constexpr PackedLayout PACKEDLAYOUT_2101010 = SDL_PACKEDLAYOUT_2101010;
 
 constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
+
+/// @}
 
 /**
  * Details about the format of a pixel.
@@ -252,6 +287,8 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  * RGBA8888 on big-endian CPUs.
  *
  * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa PixelFormats
  */
 struct PixelFormat
 {
@@ -580,6 +617,12 @@ struct PixelFormat
   inline Color Get(Uint32 pixel, PaletteRef palette) const;
 };
 
+/**
+ * @defgroup PixelFormats Pixel Formats
+ *
+ * Pixel formats
+ * @{
+ */
 constexpr PixelFormat PIXELFORMAT_UNKNOWN = SDL_PIXELFORMAT_UNKNOWN;
 
 constexpr PixelFormat PIXELFORMAT_INDEX1LSB = SDL_PIXELFORMAT_INDEX1LSB;
@@ -738,6 +781,7 @@ constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
 #if SDL_VERSION_ATLEAST(3, 2, 9)
 /**
  * Motion JPEG
+ * @since SDL 3.2.10
  */
 constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
 
@@ -759,6 +803,13 @@ constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32;
 
 constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
 
+/// @}
+
+/**
+ * @name Colorspaces
+ * @{
+ */
+
 /**
  * @brief Colorspace color type.
  *
@@ -771,6 +822,13 @@ constexpr ColorType COLOR_TYPE_UNKNOWN = SDL_COLOR_TYPE_UNKNOWN;
 constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB;
 
 constexpr ColorType COLOR_TYPE_YCBCR = SDL_COLOR_TYPE_YCBCR;
+
+/// @}
+
+/**
+ * @name ColorRanges
+ * @{
+ */
 
 /**
  * Colorspace color range, as described by
@@ -791,6 +849,13 @@ constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
  * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
  */
 constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
+
+/// @}
+
+/**
+ * @name ColorPrimaries
+ * @{
+ */
 
 /**
  * Colorspace color primaries, as described by
@@ -865,6 +930,13 @@ constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
 constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 = SDL_COLOR_PRIMARIES_EBU3213;
 
 constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM = SDL_COLOR_PRIMARIES_CUSTOM;
+
+/// @}
+
+/**
+ * @name TransferCharacteristics
+ * @{
+ */
 
 /**
  * Colorspace transfer characteristics.
@@ -971,6 +1043,13 @@ constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
 constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
   SDL_TRANSFER_CHARACTERISTICS_CUSTOM;
 
+/// @}
+
+/**
+ * @name MatrixCoefficients
+ * @{
+ */
+
 /**
  * Colorspace matrix coefficients.
  *
@@ -1053,6 +1132,13 @@ constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
 constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
   SDL_MATRIX_COEFFICIENTS_CUSTOM;
 
+/// @}
+
+/**
+ * @name ChromaLocations
+ * @{
+ */
+
 /**
  * Colorspace chroma sample location.
  *
@@ -1086,6 +1172,8 @@ constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
  */
 constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
 
+/// @}
+
 /**
  * Colorspace definitions.
  *
@@ -1095,16 +1183,18 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  *
  * @since This enum is available since SDL 3.2.0.
  *
+ * @sa Colorspaces
  * @sa ColorPrimaries
  * @sa ColorRange
  * @sa ColorType
  * @sa MatrixCoefficients
  * @sa TransferCharacteristics
  */
-struct Colorspace
+class Colorspace
 {
   SDL_Colorspace colorspace;
 
+public:
   /**
    * Wrap a SDL_Colorspace
    *
@@ -1321,6 +1411,11 @@ struct Colorspace
   }
 };
 
+/**
+ * @defgroup Colorspaces Colorspaces
+ * @{
+ */
+
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN;
 
 /**
@@ -1382,6 +1477,8 @@ constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
  * The default colorspace for YUV surfaces if no colorspace is specified
  */
 constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
+
+/// @}
 
 /**
  * A structure that represents a color as RGBA components.

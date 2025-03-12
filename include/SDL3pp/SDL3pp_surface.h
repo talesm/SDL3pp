@@ -74,6 +74,10 @@ using SurfaceFlags = SDL_SurfaceFlags;
 using ScaleMode = SDL_ScaleMode;
 
 #if SDL_VERSION_ATLEAST(3, 2, 9)
+
+/**
+ * @since SDL 3.2.10
+ */
 constexpr ScaleMode SCALEMODE_INVALID = SDL_SCALEMODE_INVALID;
 #endif
 
