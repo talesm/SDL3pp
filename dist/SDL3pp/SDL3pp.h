@@ -5919,13 +5919,17 @@ struct PropertiesBase : T
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @ingroup SyncCallback
    */
   bool Enumerate(EnumerateFunction callback) const
   {
-    using Wrapper =
-      CallbackWrapper<void(SDL_PropertiesID props, const char* name)>;
-    void* cbHandle = Wrapper::Wrap(std::move(callback));
-    return Enumerate(&Wrapper::CallOnce, cbHandle);
+    return Enumerate(
+      [](void* userdata, SDL_PropertiesID props, const char* name) {
+        auto& f = *static_cast<EnumerateFunction*>(userdata);
+        f(props, name);
+      },
+      &callback);
   }
 
   /**

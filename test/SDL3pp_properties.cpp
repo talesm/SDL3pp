@@ -13,6 +13,11 @@ TEST_CASE("Properties")
   CHECK(props.GetNumber("potato", 0) == 42);
   CHECK(props.GetPointer("potato", nullptr) == nullptr);
   CHECK(props.GetCount() == 1);
+
+  std::string element;
+  props.Enumerate([&](auto props, const char* key) { element = key; });
+
+  CHECK(element == "potato");
 }
 
 TEST_CASE("PropertiesID compat")
