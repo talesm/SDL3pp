@@ -21709,7 +21709,7 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #ifndef SDL3PP_IMAGE_H_
 #define SDL3PP_IMAGE_H_
 
-#if __has_include(<SDL3_image/SDL_image.h>)
+#if __has_include(<SDL3_image/SDL_image.h>) || defined(SDL3PP_DOC)
 
 #include <SDL3_image/SDL_image.h>
 #define SDL3PP_HAS_IMAGE

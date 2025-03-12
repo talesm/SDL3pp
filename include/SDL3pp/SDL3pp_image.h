@@ -7,7 +7,7 @@
 #include "SDL3pp_version.h"
 #include "SDL3pp_video.h"
 
-#if __has_include(<SDL3_image/SDL_image.h>)
+#if __has_include(<SDL3_image/SDL_image.h>) || defined(SDL3PP_DOC)
 
 #include <SDL3_image/SDL_image.h>
 #define SDL3PP_HAS_IMAGE
