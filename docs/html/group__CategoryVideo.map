@@ -1,6 +1,0 @@
-<map id="Display and Window Management" name="Display and Window Management">
-<area shape="rect" id="Node000002" href="$group__CategoriesVideo.html" title=" " alt="" coords="5,31,64,56"/>
-<area shape="rect" id="Node000001" title="SDL&#39;s video subsystem is largely interested in abstracting window management from the underlying oper..." alt="" coords="113,23,268,63"/>
-<area shape="rect" id="Node000004" href="$group__CategoryRender.html" title="Header file for SDL 2D rendering functions." alt="" coords="441,5,632,31"/>
-<area shape="rect" id="Node000003" href="$group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="495,55,578,80"/>
-</map>

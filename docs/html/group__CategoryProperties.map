@@ -1,5 +1,0 @@
-<map id="Object Properties" name="Object Properties">
-<area shape="rect" id="Node000002" href="$group__CategoriesBasics.html" title=" " alt="" coords="5,7,69,33"/>
-<area shape="rect" id="Node000001" title="A property is a variable that can be created and retrieved by name at runtime." alt="" coords="119,7,253,33"/>
-<area shape="rect" id="Node000003" href="$group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()..." alt="" coords="433,7,516,33"/>
-</map>
