@@ -368,11 +368,19 @@ inline bool ClearError() { return SDL_ClearError(); }
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryCallbackWrapper Async callback helpers
+ *
+ * Async callback wrapper helper functions and types.
+ *
+ * @{
+ */
+
 template<class F>
 struct CallbackWrapper;
 
 template<typename Result, typename... Args>
-struct CallbackWrapper<Result(Args...)>
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   CallbackWrapper() = delete;
   using FunctionType = std::function<Result(Args...)>;
@@ -441,6 +449,8 @@ struct CallbackWrapper<Result(Args...)>
     return values;
   }
 };
+
+/// @}
 
 } // namespace SDL
 
@@ -5375,6 +5385,88 @@ using Properties =
  */
 using PropertyType = SDL_PropertyType;
 
+/**
+ * @name Callbacks for PropertiesBase.SetPointerWithCleanup()
+ * @{
+ */
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ SetPointerWithCleanup() if
+ * the function fails for any reason.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase.SetPointerWithCleanup()
+ *
+ * @ingroup Callback
+ */
+using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * @sa PropertiesRef.CleanupPropertyCallback
+ * @sa PropertiesBase.SetPointerWithCleanup()
+ *
+ * @ingroup DelayedCallback
+ * @ingroup Callback
+ */
+using CleanupPropertyFunction = std::function<void(void*)>;
+
+/// @}
+/**
+ * @name Callbacks for PropertiesBase.Enumerate()
+ * @{
+ */
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param props the SDL_PropertiesID that is being enumerated.
+ * @param name the next property name in the enumeration.
+ *
+ * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
+ *               callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase::Enumerate()
+ */
+using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @sa EnumeratePropertyCallback
+ * @sa PropertiesBase::Enumerate()
+ * @ingroup SyncCallback
+ */
+using EnumeratePropertiesFunction =
+  std::function<void(PropertiesRef props, const char* name)>;
+
+/// @}
+
 // Forward decl
 struct PropertiesLock;
 
@@ -5459,33 +5551,38 @@ struct PropertiesBase : T
   PropertiesLock Lock() &;
 
   /**
-   * A callback used to free resources when a property is deleted.
+   * @brief Set a pointer property in a group of properties with a cleanup
+   * function that is called when the property is deleted.
    *
-   * This should release any resources associated with `value` that are no
-   * longer needed.
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
    *
-   * This callback is set per-property. Different properties in the same group
-   * can have different cleanup callbacks.
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * SetNumber(), SetBoolean(), or SetString()
+   * instead, as those functions will handle cleanup on your behalf. This
+   * function is only for more complex, custom data.
    *
-   * This callback will be called _during_ SetPointerWithCleanup() if
-   * the function fails for any reason.
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or NULL to delete the property.
+   * @param cleanup the function to call when this property is deleted.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
    *
-   * @param userdata an app-defined pointer passed to the callback.
-   * @param value the pointer assigned to the property to clean up.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @threadsafety This callback may fire without any locks held; if this is a
-   *               concern, the app should provide its own locking.
-   *
-   * @since This datatype is available since SDL 3.2.0.
-   *
-   * @sa SetPointerWithCleanup
+   * @ingroup DelayedCallback
    */
-  using CleanupCallback = SDL_CleanupPropertyCallback;
+  bool SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupPropertyFunction cleanup)
+  {
+    using Wrapper = CallbackWrapper<CleanupPropertyFunction>;
 
-  /**
-   * @sa PropertiesRef.CleanupCallback
-   */
-  using CleanupFunction = std::function<void(void*)>;
+    return SetPointerWithCleanup(std::move(name),
+                                 value,
+                                 &Wrapper::CallOnce,
+                                 Wrapper::Wrap(std::move(cleanup)));
+  }
 
   /**
    * Set a pointer property in a group of properties with a cleanup function
@@ -5517,43 +5614,11 @@ struct PropertiesBase : T
    */
   bool SetPointerWithCleanup(StringParam name,
                              void* value,
-                             CleanupCallback cleanup,
+                             CleanupPropertyCallback cleanup,
                              void* userdata)
   {
     return SDL_SetPointerPropertyWithCleanup(
       T::get(), name, value, cleanup, userdata);
-  }
-
-  /**
-   * @brief Set a pointer property in a group of properties with a cleanup
-   * function that is called when the property is deleted.
-   *
-   * The cleanup function is also called if setting the property fails for any
-   * reason.
-   *
-   * For simply setting basic data types, like numbers, bools, or strings, use
-   * SetNumber(), SetBoolean(), or SetString()
-   * instead, as those functions will handle cleanup on your behalf. This
-   * function is only for more complex, custom data.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @param cleanup the function to call when this property is deleted.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             CleanupFunction cleanup)
-  {
-    using Wrapper = CallbackWrapper<void(void* value)>;
-
-    return SetPointerWithCleanup(std::move(name),
-                                 value,
-                                 &Wrapper::CallOnce,
-                                 Wrapper::Wrap(std::move(cleanup)));
   }
 
   /**
@@ -5865,48 +5930,19 @@ struct PropertiesBase : T
   bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
 
   /**
-   * A callback used to enumerate all the properties in a group of properties.
+   * @brief Enumerate the properties contained in a group of properties.
    *
-   * This callback is called from SDL_EnumerateProperties(), and is called once
-   * per property in the set.
-   *
-   * @param userdata an app-defined pointer passed to the callback.
-   * @param props the SDL_PropertiesID that is being enumerated.
-   * @param name the next property name in the enumeration.
-   *
-   * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
-   *               callback.
-   *
-   * @since This datatype is available since SDL 3.2.0.
-   *
-   * @sa Enumerate()
-   */
-  using EnumerateCallback = SDL_EnumeratePropertiesCallback;
-
-  /**
-   * @sa EnumerateCallback()
-   */
-  using EnumerateFunction =
-    std::function<void(PropertiesRef props, const char* name)>;
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * The callback function is called for each property in the group of
-   * properties. The properties are locked during enumeration.
-   *
-   * @param callback the function to call for each property.
-   * @param userdata a pointer that is passed to `callback`.
+   * @param outputIter an output iterator to be assigned to each property name
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
    */
-  bool Enumerate(EnumerateCallback callback, void* userdata) const
+  template<std::output_iterator<const char*> IT>
+  bool Enumerate(IT outputIter) const
   {
-    return SDL_EnumerateProperties(T::get(), callback, userdata);
+    return Enumerate(
+      [&outputIter](auto props, const char name) { *outputIter++ = name; });
   }
 
   /**
@@ -5923,30 +5959,34 @@ struct PropertiesBase : T
    *
    * @ingroup SyncCallback
    */
-  bool Enumerate(EnumerateFunction callback) const
+  bool Enumerate(EnumeratePropertiesFunction callback) const
   {
     return Enumerate(
       [](void* userdata, SDL_PropertiesID props, const char* name) {
-        auto& f = *static_cast<EnumerateFunction*>(userdata);
+        auto& f = *static_cast<EnumeratePropertiesFunction*>(userdata);
         f({props}, name);
       },
       &callback);
   }
 
   /**
-   * @brief Enumerate the properties contained in a group of properties.
+   * Enumerate the properties contained in a group of properties.
    *
-   * @param outputIter an output iterator to be assigned to each property name
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @param userdata a pointer that is passed to `callback`.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
    */
-  template<std::output_iterator<const char*> IT>
-  bool Enumerate(IT outputIter) const
+  bool Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
   {
-    return Enumerate(
-      [&outputIter](auto props, const char name) { *outputIter++ = name; });
+    return SDL_EnumerateProperties(T::get(), callback, userdata);
   }
 
   /**
@@ -12665,6 +12705,11 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
 /// @}
 
 /**
+ * @name Callbacks for WindowBase::SetHitTest()
+ * @{
+ */
+
+/**
  * Callback used for hit-testing.
  *
  * @param win the SDL_Window where hit-testing was set on.
@@ -12675,6 +12720,17 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
  * @sa WindowBase::SetHitTest()
  */
 using HitTest = SDL_HitTest;
+
+/**
+ * Callback used for hit-testing.
+ *
+ * @ingroup ListenerCallback
+ * @sa HitTest
+ */
+using HitTestFunction =
+  std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
+
+/// @}
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -14855,12 +14911,6 @@ struct WindowBase : T
   }
 
   /**
-   * @sa HitTest
-   */
-  using HitTestFunction =
-    std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
-
-  /**
    * Provide a callback that decides if a window region has special properties.
    *
    * Normally windows are dragged and resized by decorations provided by the
@@ -14899,11 +14949,12 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @ingroup ListenerCallback
    */
   bool SetHitTest(HitTestFunction callback)
   {
-    using Wrapper = CallbackWrapper<HitTestResult(SDL_Window * window,
-                                                  const SDL_Point* area)>;
+    using Wrapper = CallbackWrapper<HitTestFunction>;
     void* cbHandle = Wrapper::Wrap(std::move(callback));
     return SetHitTest(&Wrapper::CallSuffixed, cbHandle);
   }
@@ -17723,6 +17774,8 @@ namespace SDL {
  * @name InitFlags
  *
  * Initialization flags
+ *
+ * @{
  */
 
 /**
@@ -17816,6 +17869,12 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 /// @}
 
 /**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
  * Function pointer typedef for SDL_AppInit.
  *
  * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
@@ -17878,6 +17937,8 @@ using AppEvent_func = SDL_AppEvent_func;
  * @since This datatype is available since SDL 3.2.0.
  */
 using AppQuit_func = SDL_AppQuit_func;
+
+/// @}
 
 /**
  * Initialize the SDL library.
@@ -18116,6 +18177,11 @@ private:
 inline bool IsMainThread() { return SDL_IsMainThread(); }
 
 /**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
  * Callback run on the main thread.
  *
  * @param userdata an app-controlled pointer that is passed to the callback.
@@ -18128,8 +18194,12 @@ using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
  * @sa PropertiesRef.MainThreadCallback
+ *
+ * @ingroup DelayedCallback
  */
 using MainThreadFunction = std::function<void()>;
+
+/// @}
 
 /**
  * Call a function on the main thread during event processing.
@@ -18184,10 +18254,12 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IsMainThread()
+ *
+ * @ingroup DelayedCallback
  */
 inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
 {
-  using Wrapper = CallbackWrapper<void()>;
+  using Wrapper = CallbackWrapper<MainThreadFunction>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
 }
@@ -18327,7 +18399,7 @@ inline const char* GetAppMetadataProperty(StringParam name)
   return SDL_GetAppMetadataProperty(name);
 }
 
-/** @} */
+/// @}
 
 #pragma region impl
 

@@ -38,12 +38,13 @@ var searchData=
   ['arrayorder_5frgba_35',['ARRAYORDER_RGBA',['../group__CategoryPixels.html#gad61f6d2378212aecceee78b91b95416a',1,'SDL']]],
   ['asin_36',['asin',['../group__CategoryStdinc.html#ga316a2eed1e595c002830ee628c1b4963',1,'SDL']]],
   ['asinf_37',['asinf',['../group__CategoryStdinc.html#ga093ee4582ee6f6c02ab22c77718f56a8',1,'SDL']]],
-  ['at_38',['at',['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#ad87a43c1b43a30f18eb3014e4adde31c',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;']]],
-  ['atan_39',['atan',['../group__CategoryStdinc.html#ga11d0eaba28baba36fc8050f8541c8ee5',1,'SDL']]],
-  ['atan2_40',['atan2',['../group__CategoryStdinc.html#gae0884b892c70d428cf50522d9791eb61',1,'SDL']]],
-  ['atan2f_41',['atan2f',['../group__CategoryStdinc.html#gaf1be31240212288c0d7556cf80340b93',1,'SDL']]],
-  ['atanf_42',['atanf',['../group__CategoryStdinc.html#ga19e239deb9997e2ff33bbfdbaec436b2',1,'SDL']]],
-  ['atof_43',['atof',['../group__CategoryStdinc.html#gaeecdd7ec80c303a7474d59b641a892f7',1,'SDL']]],
-  ['atoi_44',['atoi',['../group__CategoryStdinc.html#ga756fd0202aa809d537fc01e28b0c7564',1,'SDL']]],
-  ['audiodeviceevent_45',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
+  ['async_20callback_20helpers_38',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
+  ['at_39',['at',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aaf2fa06ded3bdc7d660fca21dd6bcd4b',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;']]],
+  ['atan_40',['atan',['../group__CategoryStdinc.html#ga11d0eaba28baba36fc8050f8541c8ee5',1,'SDL']]],
+  ['atan2_41',['atan2',['../group__CategoryStdinc.html#gae0884b892c70d428cf50522d9791eb61',1,'SDL']]],
+  ['atan2f_42',['atan2f',['../group__CategoryStdinc.html#gaf1be31240212288c0d7556cf80340b93',1,'SDL']]],
+  ['atanf_43',['atanf',['../group__CategoryStdinc.html#ga19e239deb9997e2ff33bbfdbaec436b2',1,'SDL']]],
+  ['atof_44',['atof',['../group__CategoryStdinc.html#gaeecdd7ec80c303a7474d59b641a892f7',1,'SDL']]],
+  ['atoi_45',['atoi',['../group__CategoryStdinc.html#ga756fd0202aa809d537fc01e28b0c7564',1,'SDL']]],
+  ['audiodeviceevent_46',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
 ];

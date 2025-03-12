@@ -847,6 +847,24 @@
             "kind": "placeholder"
           },
           {
+            "name": "CleanupPropertyCallback",
+            "kind": "placeholder"
+          },
+          {
+            "name": "CleanupPropertyFunction",
+            "doc": "@sa PropertiesRef.CleanupCallback",
+            "kind": "alias"
+          },
+          {
+            "name": "EnumeratePropertiesCallback",
+            "kind": "placeholder"
+          },
+          {
+            "name": "EnumeratePropertiesFunction",
+            "doc": "@sa PropertiesRef.EnumerateCallback",
+            "kind": "alias"
+          },
+          {
             "name": "PropertiesLock",
             "kind": "forward"
           }
@@ -925,61 +943,7 @@
               "parameters": []
             }
           }
-        },
-        "__end": [
-          {
-            "kind": "function",
-            "name": "PropertiesBase.SetPointerWithCleanup",
-            "static": false,
-            "type": "bool",
-            "parameters": [
-              {
-                "type": "StringParam",
-                "name": "name"
-              },
-              {
-                "type": "void *",
-                "name": "value"
-              },
-              {
-                "type": "CleanupFunction",
-                "name": "cleanup"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "PropertiesBase.Enumerate",
-            "static": false,
-            "type": "bool",
-            "immutable": true,
-            "parameters": [
-              {
-                "type": "EnumerateFunction",
-                "name": "callback"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "PropertiesBase.Enumerate",
-            "static": false,
-            "type": "bool",
-            "immutable": true,
-            "template": [
-              {
-                "type": "std::output_iterator<const char *>",
-                "name": "IT"
-              }
-            ],
-            "parameters": [
-              {
-                "type": "IT",
-                "name": "outputIter"
-              }
-            ]
-          }
-        ]
+        }
       },
       "transform": {
         "SDL_PropertiesID": {
@@ -1005,13 +969,24 @@
               "type": "PropertiesLock",
               "reference": 1
             },
-            "SDL_CleanupPropertyCallback": {
-              "name": "CleanupCallback"
-            },
-            "CleanupFunction": {
-              "doc": "@sa PropertiesRef.CleanupCallback",
-              "kind": "alias",
-              "type": "std::function<void(void *)>"
+            "SetPointerWithCleanup": {
+              "kind": "function",
+              "static": false,
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                },
+                {
+                  "type": "void *",
+                  "name": "value"
+                },
+                {
+                  "type": "CleanupPropertyFunction",
+                  "name": "cleanup"
+                }
+              ]
             },
             "SDL_SetPointerPropertyWithCleanup": {
               "kind": "function",
@@ -1076,14 +1051,36 @@
               "kind": "function",
               "name": "Clear"
             },
-            "SDL_EnumeratePropertiesCallback": {
-              "name": "EnumerateCallback"
-            },
-            "EnumerateFunction": {
-              "doc": "@sa PropertiesRef.EnumerateCallback",
-              "kind": "alias",
-              "type": "std::function<void(PropertiesRef props, const char *name)>"
-            },
+            "Enumerate": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "template": [
+                  {
+                    "type": "std::output_iterator<const char *>",
+                    "name": "IT"
+                  }
+                ],
+                "parameters": [
+                  {
+                    "type": "IT",
+                    "name": "outputIter"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "EnumeratePropertiesFunction",
+                    "name": "callback"
+                  }
+                ]
+              }
+            ],
             "SDL_EnumerateProperties": {
               "kind": "function",
               "name": "Enumerate",
@@ -2524,6 +2521,12 @@
           {
             "name": "HitTest",
             "kind": "placeholder"
+          },
+          {
+            "kind": "alias",
+            "name": "HitTestFunction",
+            "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
+            "doc": "@sa HitTest"
           }
         ]
       },
@@ -2855,11 +2858,6 @@
                   "name": "p"
                 }
               ]
-            },
-            "HitTestFunction": {
-              "kind": "alias",
-              "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
-              "doc": "@sa HitTest"
             },
             "SetHitTest": {
               "kind": "function",

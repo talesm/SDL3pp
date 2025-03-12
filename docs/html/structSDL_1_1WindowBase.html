@@ -75,7 +75,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="structSDL_1_1WindowBase-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SDL::WindowBase&lt; T &gt; Struct Template Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryVideo.html">Display and Window Management</a> &#124; <a class="el" href="group__resource.html">Resource</a></div></div></div>
@@ -105,11 +104,6 @@ Collaboration diagram for SDL::WindowBase&lt; T &gt;:</div>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a937c0b696f6fb0d38aa731263d084efa" id="r_a937c0b696f6fb0d38aa731263d084efa"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a937c0b696f6fb0d38aa731263d084efa">HitTestFunction</a> = std::function&lt; <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(SDL_Window *window, const SDL_Point *area)&gt;</td></tr>
-<tr class="separator:a937c0b696f6fb0d38aa731263d084efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a82df25d3ef02bd3e3ad69480547f5614" id="r_a82df25d3ef02bd3e3ad69480547f5614"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614">WindowBase</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> flags=0)</td></tr>
@@ -310,7 +304,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a795c0db196d642fc565586a45983c107" id="r_a795c0db196d642fc565586a45983c107"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a795c0db196d642fc565586a45983c107">ShowSystemMenu</a> (SDL_Point p)</td></tr>
 <tr class="memdesc:a795c0db196d642fc565586a45983c107"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a> the system-level window menu.  <br /></td></tr>
 <tr class="separator:a795c0db196d642fc565586a45983c107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a29f41f5e9608270f7241d1ef8392ca" id="r_a6a29f41f5e9608270f7241d1ef8392ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a6a29f41f5e9608270f7241d1ef8392ca">SetHitTest</a> (<a class="el" href="structSDL_1_1WindowBase.html#a937c0b696f6fb0d38aa731263d084efa">HitTestFunction</a> callback)</td></tr>
+<tr class="memitem:a6a29f41f5e9608270f7241d1ef8392ca" id="r_a6a29f41f5e9608270f7241d1ef8392ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a6a29f41f5e9608270f7241d1ef8392ca">SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#gac32a41ea0c7f52e898562de99071a7aa">HitTestFunction</a> callback)</td></tr>
 <tr class="memdesc:a6a29f41f5e9608270f7241d1ef8392ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a callback that decides if a window region has special properties.  <br /></td></tr>
 <tr class="separator:a6a29f41f5e9608270f7241d1ef8392ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae17c12fefe937bbfa8d5ae657e6edda5" id="r_ae17c12fefe937bbfa8d5ae657e6edda5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#ae17c12fefe937bbfa8d5ae657e6edda5">SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955">HitTest</a> callback, void *callback_data)</td></tr>
@@ -330,28 +324,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt;<br />
 struct SDL::WindowBase&lt; T &gt;</div><p>Represents a handle to a window. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00663">663</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a937c0b696f6fb0d38aa731263d084efa" name="a937c0b696f6fb0d38aa731263d084efa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a937c0b696f6fb0d38aa731263d084efa">&#9670;&#160;</a></span>HitTestFunction</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::HitTestFunction =  std::function&lt;<a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(SDL_Window* window, const SDL_Point* area)&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955" title="Callback used for hit-testing.">HitTest</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02454">2454</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00679">679</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a82df25d3ef02bd3e3ad69480547f5614" name="a82df25d3ef02bd3e3ad69480547f5614"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a82df25d3ef02bd3e3ad69480547f5614">&#9670;&#160;</a></span>WindowBase() <span class="overload">[1/3]</span></h2>
 
@@ -443,7 +417,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00747">747</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00763">763</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -531,7 +505,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a59eef9c52d3ed116d3a61c4082b13a93" title="Get parent of a window.">GetParent()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00806">806</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00822">822</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -625,7 +599,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3" title="Handle to an owned surface.">Properties</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00935">935</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00951">951</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +635,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02611">2611</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02622">2622</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -698,7 +672,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a3323af4fd14511ce3074a2d0840665bb" title="Return whether the window has a surface associated with it.">HasSurface()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02185">2185</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02201">2201</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -739,7 +713,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02592">2592</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02603">2603</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -792,7 +766,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SetspectRatio() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01590">1590</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01606">1606</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -862,7 +836,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a9c7cdebba6f3911ed72e1bfbae7747e6" title="Get the size of a window&#39;s client area.">GetSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01628">1628</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01644">1644</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -894,7 +868,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <p>Get the display associated with a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the display containing the center of the window on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00947">947</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00963">963</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -929,7 +903,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the display scale, or 0.0f on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00984">984</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01000">1000</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -974,7 +948,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a5697f649732d90c479758befb7ef8426" title="Show a window.">Show()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01238">1238</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01254">1254</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1011,7 +985,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a20e380d4c0f9c08ec3387853b75fdb6a" title="Request that the window&#39;s fullscreen state be changed.">SetFullscreen()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01036">1036</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01052">1052</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1052,7 +1026,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01053">1053</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01069">1069</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1086,7 +1060,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the ID of the window on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01085">1085</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01101">1101</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1121,7 +1095,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02256">2256</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02272">2272</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1176,7 +1150,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a51741a99b88d4668ea4198ad62e8e093" title="Set the maximum size of a window&#39;s client area.">SetMaximumSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01750">1750</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01766">1766</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1231,7 +1205,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#aa0765b664547d3d048d8fc9dace25082" title="Set the minimum size of a window&#39;s client area.">SetMinimumSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01709">1709</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01725">1725</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1272,7 +1246,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02272">2272</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02288">2288</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1311,7 +1285,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02312">2312</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02328">2328</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1347,7 +1321,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a8f9d58a02dc960f280d967f8ffa132d9" title="Set the opacity for a window.">SetOpacity()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02352">2352</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02368">2368</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1381,7 +1355,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01097">1097</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01113">1113</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1416,7 +1390,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a75077a1e44bec472624f3b5ac47de3c8" title="Get the content display scale relative to a window&#39;s pixel size.">WindowBase.GetDisplayScale()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00963">963</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00979">979</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1450,7 +1424,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01069">1069</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01085">1085</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1488,7 +1462,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 SetPosition(int *, int *) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01390">1390</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01406">1406</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1543,7 +1517,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a89a23881e6b70255345e9595eb6bccc0" title="Request that the window&#39;s position be set.">SetPosition()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01418">1418</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01434">1434</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1642,7 +1616,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or falsy one on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01217">1217</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01233">1233</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1676,7 +1650,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use SDL_GetWindowSizeInPixels() or SDL_GetRenderOutputSize() to get the real client area size in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd>std::optional&lt;Rect&gt; </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01326">1326</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01342">1342</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1745,7 +1719,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01525">1525</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01541">1541</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1787,7 +1761,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 GetSize(int *, int *) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01477">1477</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01493">1493</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1845,7 +1819,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3" title="Request that the size of a window&#39;s client area be set.">SetSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01503">1503</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01519">1519</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1882,7 +1856,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 GetSizeInPixels(int*, int*) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01646">1646</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01662">1662</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1935,7 +1909,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a9c7cdebba6f3911ed72e1bfbae7747e6" title="Get the size of a window&#39;s client area.">GetSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01668">1668</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01684">1684</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1978,7 +1952,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a439ff2ab8a4ea8b8b4cdf5fd88a4d3b2" title="Copy areas of the window surface to the screen.">UpdateSurfaceRects()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02073">2073</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02089">2089</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2013,7 +1987,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#ad2678f94ed335e4c66c9e08304a90aaf" title="Toggle VSync for the window surface.">SetSurfaceVSync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02115">2115</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02131">2131</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2048,7 +2022,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a71234a32ca6fc918001ae9068f182375" title="Set the title of a window.">SetTitle()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01272">1272</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01288">1288</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2082,7 +2056,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#abdc683dcdc473d25d7489a429ec35fa5" title="Get the SDL surface associated with the window.">WindowBase.GetSurface()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02048">2048</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02064">2064</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2119,7 +2093,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 SDL_WINDOW_HIDDEN </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01852">1852</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01868">1868</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2162,7 +2136,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01904">1904</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01920">1920</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2204,7 +2178,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01932">1932</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01948">1948</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2239,7 +2213,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01871">1871</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01887">1887</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2281,7 +2255,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01961">1961</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01977">1977</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2324,7 +2298,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a25a4b4b4781403ab4422e0d408783b05" title="Get the window flags.">GetFlags()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01819">1819</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01835">1835</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2383,7 +2357,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01569">1569</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01585">1585</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2427,7 +2401,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a25a4b4b4781403ab4422e0d408783b05" title="Get the window flags.">GetFlags()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01774">1774</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01790">1790</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2468,7 +2442,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02421">2421</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02437">2437</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2519,7 +2493,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 SDL_WINDOW_FULLSCREEN </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01992">1992</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02008">2008</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2568,7 +2542,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01018">1018</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01034">1034</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2626,7 +2600,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02546">2546</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02557">2557</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2644,7 +2618,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::SetHitTest </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1WindowBase.html#a937c0b696f6fb0d38aa731263d084efa">HitTestFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gac32a41ea0c7f52e898562de99071a7aa">HitTestFunction</a>&#160;</td>
           <td class="paramname"><em>callback</em></td><td>)</td>
           <td></td>
         </tr>
@@ -2673,7 +2647,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02497">2497</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02509">2509</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2715,7 +2689,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01295">1295</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01311">1311</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2763,7 +2737,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02217">2217</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02233">2233</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2807,7 +2781,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#aa0765b664547d3d048d8fc9dace25082" title="Set the minimum size of a window&#39;s client area.">SetMinimumSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01728">1728</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01744">1744</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2851,7 +2825,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a51741a99b88d4668ea4198ad62e8e093" title="Set the maximum size of a window&#39;s client area.">SetMaximumSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01687">1687</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01703">1703</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2896,7 +2870,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 SDL_WINDOW_MODAL </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02407">2407</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02423">2423</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2945,7 +2919,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02240">2240</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02256">2256</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2992,7 +2966,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02293">2293</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02309">2309</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3036,7 +3010,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#af519b9dd35b6c07c64236f567ca99e14" title="Get the opacity of a window.">GetOpacity()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02332">2332</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02348">2348</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3083,7 +3057,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a7b5953075255b793ed8f04503b76fa07" title="Toggle the state of the window as modal.">SetModal()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02385">2385</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02401">2401</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3131,7 +3105,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01369">1369</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01385">1385</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3174,7 +3148,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3" title="Request that the size of a window&#39;s client area be set.">SetSize()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01309">1309</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01325">1325</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3218,7 +3192,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetWindowFlags() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01798">1798</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01814">1814</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3262,7 +3236,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02576">2576</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02587">2587</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3312,7 +3286,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01456">1456</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01472">1472</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3356,7 +3330,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a60f31c3427f652fb389bd4be091e0793" title="Get VSync for the window surface.">GetSurfaceVSync()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02098">2098</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02114">2114</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3399,7 +3373,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#aa89aeab4b9966165a28017025986d28a" title="Get the title of a window.">GetTitle()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01255">1255</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01271">1271</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3436,7 +3410,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#ad2e6a8e788af1805e9c6afafffdb9b38" title="Request that a window be raised above other windows and gain the input focus.">Raise()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01837">1837</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01853">1853</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3479,7 +3453,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02446">2446</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02462">2462</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3528,7 +3502,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02025">2025</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02041">2041</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3566,7 +3540,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a439ff2ab8a4ea8b8b4cdf5fd88a4d3b2" title="Copy areas of the window surface to the screen.">UpdateSurfaceRects()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02139">2139</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02155">2155</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3613,7 +3587,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#ac7f41ac26be0841520d8cbb42e63ed33" title="Copy the window surface to the screen.">UpdateSurface()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02166">2166</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02182">2182</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>

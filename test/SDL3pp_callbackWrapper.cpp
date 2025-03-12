@@ -3,7 +3,7 @@
 
 TEST_CASE("CallbackWrapper no params")
 {
-  using CallbackType = void();
+  using CallbackType = std::function<void()>;
   int counter = 0;
   auto addCounterCB = [&]() { counter++; };
   using CallbackWrapper = SDL::CallbackWrapper<CallbackType>;
@@ -32,7 +32,7 @@ TEST_CASE("CallbackWrapper no params")
 }
 TEST_CASE("CallbackWrapper with params")
 {
-  using CallbackType = int(int);
+  using CallbackType = std::function<int(int)>;
   auto addTwoCB = [](int v) { return v + 2; };
   using CallbackWrapper = SDL::CallbackWrapper<CallbackType>;
   void* addTwoHandle = CallbackWrapper::Wrap(addTwoCB);

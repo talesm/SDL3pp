@@ -259,6 +259,11 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
 /// @}
 
 /**
+ * @name Callbacks for WindowBase::SetHitTest()
+ * @{
+ */
+
+/**
  * Callback used for hit-testing.
  *
  * @param win the SDL_Window where hit-testing was set on.
@@ -269,6 +274,17 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
  * @sa WindowBase::SetHitTest()
  */
 using HitTest = SDL_HitTest;
+
+/**
+ * Callback used for hit-testing.
+ *
+ * @ingroup ListenerCallback
+ * @sa HitTest
+ */
+using HitTestFunction =
+  std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
+
+/// @}
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -2449,12 +2465,6 @@ struct WindowBase : T
   }
 
   /**
-   * @sa HitTest
-   */
-  using HitTestFunction =
-    std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
-
-  /**
    * Provide a callback that decides if a window region has special properties.
    *
    * Normally windows are dragged and resized by decorations provided by the
@@ -2493,11 +2503,12 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @ingroup ListenerCallback
    */
   bool SetHitTest(HitTestFunction callback)
   {
-    using Wrapper = CallbackWrapper<HitTestResult(SDL_Window * window,
-                                                  const SDL_Point* area)>;
+    using Wrapper = CallbackWrapper<HitTestFunction>;
     void* cbHandle = Wrapper::Wrap(std::move(callback));
     return SetHitTest(&Wrapper::CallSuffixed, cbHandle);
   }

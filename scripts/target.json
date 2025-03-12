@@ -5586,6 +5586,30 @@
           "sourceName": "SDL_PropertyType",
           "type": "SDL_PropertyType"
         },
+        "CleanupPropertyCallback": {
+          "doc": "A callback used to free resources when a property is deleted.\n\nThis should release any resources associated with `value` that are no\nlonger needed.\n\nThis callback is set per-property. Different properties in the same group\ncan have different cleanup callbacks.\n\nThis callback will be called _during_ SDL_SetPointerPropertyWithCleanup if\nthe function fails for any reason.\n\n@param userdata an app-defined pointer passed to the callback.\n@param value the pointer assigned to the property to clean up.\n\n@threadsafety This callback may fire without any locks held; if this is a\n              concern, the app should provide its own locking.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_SetPointerPropertyWithCleanup",
+          "name": "CleanupPropertyCallback",
+          "kind": "alias",
+          "type": "SDL_CleanupPropertyCallback",
+          "sourceName": "SDL_CleanupPropertyCallback"
+        },
+        "CleanupPropertyFunction": {
+          "name": "CleanupPropertyFunction",
+          "doc": "@sa PropertiesRef.CleanupCallback",
+          "kind": "alias"
+        },
+        "EnumeratePropertiesCallback": {
+          "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from SDL_EnumerateProperties(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the SDL_PropertiesID that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety SDL_EnumerateProperties holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_EnumerateProperties",
+          "name": "EnumeratePropertiesCallback",
+          "kind": "alias",
+          "type": "SDL_EnumeratePropertiesCallback",
+          "sourceName": "SDL_EnumeratePropertiesCallback"
+        },
+        "EnumeratePropertiesFunction": {
+          "name": "EnumeratePropertiesFunction",
+          "doc": "@sa PropertiesRef.EnumerateCallback",
+          "kind": "alias"
+        },
         "PropertiesLock-forward": {
           "name": "PropertiesLock",
           "kind": "forward",
@@ -5632,20 +5656,28 @@
               "sourceName": "SDL_LockProperties",
               "reference": 1
             },
-            "CleanupCallback": {
-              "doc": "A callback used to free resources when a property is deleted.\n\nThis should release any resources associated with `value` that are no\nlonger needed.\n\nThis callback is set per-property. Different properties in the same group\ncan have different cleanup callbacks.\n\nThis callback will be called _during_ SDL_SetPointerPropertyWithCleanup if\nthe function fails for any reason.\n\n@param userdata an app-defined pointer passed to the callback.\n@param value the pointer assigned to the property to clean up.\n\n@threadsafety This callback may fire without any locks held; if this is a\n              concern, the app should provide its own locking.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_SetPointerPropertyWithCleanup",
-              "name": "CleanupCallback",
-              "kind": "alias",
-              "type": "SDL_CleanupPropertyCallback",
-              "sourceName": "SDL_CleanupPropertyCallback"
-            },
-            "CleanupFunction": {
-              "doc": "@sa PropertiesRef.CleanupCallback",
-              "kind": "alias",
-              "type": "std::function<void(void *)>",
-              "name": "CleanupFunction"
-            },
             "SetPointerWithCleanup": [
+              {
+                "kind": "function",
+                "static": false,
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "StringParam",
+                    "name": "name"
+                  },
+                  {
+                    "type": "void *",
+                    "name": "value"
+                  },
+                  {
+                    "type": "CleanupPropertyFunction",
+                    "name": "cleanup"
+                  }
+                ],
+                "name": "SetPointerWithCleanup",
+                "doc": ""
+              },
               {
                 "doc": "Set a pointer property in a group of properties with a cleanup function\nthat is called when the property is deleted.\n\nThe cleanup function is also called if setting the property fails for any\nreason.\n\nFor simply setting basic data types, like numbers, bools, or strings, use\nSDL_SetNumberProperty, SDL_SetBooleanProperty, or SDL_SetStringProperty\ninstead, as those functions will handle cleanup on your behalf. This\nfunction is only for more complex, custom data.\n\n@param props the properties to modify.\n@param name the name of the property to modify.\n@param value the new value of the property, or NULL to delete the property.\n@param cleanup the function to call when this property is deleted, or NULL\n               if no cleanup is necessary.\n@param userdata a pointer that is passed to the cleanup function.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPointerProperty\n@sa SDL_SetPointerProperty\n@sa SDL_CleanupPropertyCallback",
                 "name": "SetPointerWithCleanup",
@@ -5662,7 +5694,7 @@
                   },
                   {
                     "name": "cleanup",
-                    "type": "CleanupCallback"
+                    "type": "CleanupPropertyCallback"
                   },
                   {
                     "name": "userdata",
@@ -5670,27 +5702,6 @@
                   }
                 ],
                 "sourceName": "SDL_SetPointerPropertyWithCleanup"
-              },
-              {
-                "kind": "function",
-                "name": "SetPointerWithCleanup",
-                "static": false,
-                "type": "bool",
-                "parameters": [
-                  {
-                    "type": "StringParam",
-                    "name": "name"
-                  },
-                  {
-                    "type": "void *",
-                    "name": "value"
-                  },
-                  {
-                    "type": "CleanupFunction",
-                    "name": "cleanup"
-                  }
-                ],
-                "doc": ""
               }
             ],
             "SetPointer": {
@@ -5909,56 +5920,9 @@
               ],
               "sourceName": "SDL_ClearProperty"
             },
-            "EnumerateCallback": {
-              "doc": "A callback used to enumerate all the properties in a group of properties.\n\nThis callback is called from SDL_EnumerateProperties(), and is called once\nper property in the set.\n\n@param userdata an app-defined pointer passed to the callback.\n@param props the SDL_PropertiesID that is being enumerated.\n@param name the next property name in the enumeration.\n\n@threadsafety SDL_EnumerateProperties holds a lock on `props` during this\n              callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_EnumerateProperties",
-              "name": "EnumerateCallback",
-              "kind": "alias",
-              "type": "SDL_EnumeratePropertiesCallback",
-              "sourceName": "SDL_EnumeratePropertiesCallback"
-            },
-            "EnumerateFunction": {
-              "doc": "@sa PropertiesRef.EnumerateCallback",
-              "kind": "alias",
-              "type": "std::function<void(PropertiesRef props, const char *name)>",
-              "name": "EnumerateFunction"
-            },
             "Enumerate": [
               {
-                "doc": "Enumerate the properties contained in a group of properties.\n\nThe callback function is called for each property in the group of\nproperties. The properties are locked during enumeration.\n\n@param props the properties to query.\n@param callback the function to call for each property.\n@param userdata a pointer that is passed to `callback`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
-                "name": "Enumerate",
                 "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "name": "callback",
-                    "type": "EnumerateCallback"
-                  },
-                  {
-                    "name": "userdata",
-                    "type": "void *"
-                  }
-                ],
-                "sourceName": "SDL_EnumerateProperties",
-                "immutable": true
-              },
-              {
-                "kind": "function",
-                "name": "Enumerate",
-                "static": false,
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "EnumerateFunction",
-                    "name": "callback"
-                  }
-                ],
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "Enumerate",
-                "static": false,
                 "type": "bool",
                 "immutable": true,
                 "template": [
@@ -5973,7 +5937,39 @@
                     "name": "outputIter"
                   }
                 ],
+                "name": "Enumerate",
                 "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "EnumeratePropertiesFunction",
+                    "name": "callback"
+                  }
+                ],
+                "name": "Enumerate",
+                "doc": ""
+              },
+              {
+                "doc": "Enumerate the properties contained in a group of properties.\n\nThe callback function is called for each property in the group of\nproperties. The properties are locked during enumeration.\n\n@param props the properties to query.\n@param callback the function to call for each property.\n@param userdata a pointer that is passed to `callback`.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "Enumerate",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "callback",
+                    "type": "EnumeratePropertiesCallback"
+                  },
+                  {
+                    "name": "userdata",
+                    "type": "void *"
+                  }
+                ],
+                "sourceName": "SDL_EnumerateProperties",
+                "immutable": true
               }
             ],
             "Destroy": {
@@ -8855,6 +8851,12 @@
           "type": "SDL_HitTest",
           "sourceName": "SDL_HitTest"
         },
+        "HitTestFunction": {
+          "kind": "alias",
+          "name": "HitTestFunction",
+          "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
+          "doc": "@sa HitTest"
+        },
         "Display": {
           "doc": "This is a unique ID for a display for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the display is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "Display",
@@ -9918,12 +9920,6 @@
               ],
               "sourceName": "SDL_ShowWindowSystemMenu",
               "static": false
-            },
-            "HitTestFunction": {
-              "kind": "alias",
-              "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
-              "doc": "@sa HitTest",
-              "name": "HitTestFunction"
             },
             "SetHitTest": [
               {

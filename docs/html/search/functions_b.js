@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nextid_0',['NextId',['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#a86b8ce8065ed0d8904cb0e330a77e8e2',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;']]]
+  ['nextid_0',['NextId',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aecb6fa388a8137d4d9252fe072dc15bb',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;']]]
 ];

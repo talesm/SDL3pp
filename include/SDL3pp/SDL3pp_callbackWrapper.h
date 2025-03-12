@@ -7,11 +7,19 @@
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryCallbackWrapper Async callback helpers
+ *
+ * Async callback wrapper helper functions and types.
+ *
+ * @{
+ */
+
 template<class F>
 struct CallbackWrapper;
 
 template<typename Result, typename... Args>
-struct CallbackWrapper<Result(Args...)>
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   CallbackWrapper() = delete;
   using FunctionType = std::function<Result(Args...)>;
@@ -80,6 +88,8 @@ struct CallbackWrapper<Result(Args...)>
     return values;
   }
 };
+
+/// @}
 
 } // namespace SDL
 

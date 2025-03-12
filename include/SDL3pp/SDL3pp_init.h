@@ -46,6 +46,8 @@ namespace SDL {
  * @name InitFlags
  *
  * Initialization flags
+ *
+ * @{
  */
 
 /**
@@ -139,6 +141,12 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 /// @}
 
 /**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
  * Function pointer typedef for SDL_AppInit.
  *
  * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
@@ -201,6 +209,8 @@ using AppEvent_func = SDL_AppEvent_func;
  * @since This datatype is available since SDL 3.2.0.
  */
 using AppQuit_func = SDL_AppQuit_func;
+
+/// @}
 
 /**
  * Initialize the SDL library.
@@ -439,6 +449,11 @@ private:
 inline bool IsMainThread() { return SDL_IsMainThread(); }
 
 /**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
  * Callback run on the main thread.
  *
  * @param userdata an app-controlled pointer that is passed to the callback.
@@ -451,8 +466,12 @@ using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
  * @sa PropertiesRef.MainThreadCallback
+ *
+ * @ingroup DelayedCallback
  */
 using MainThreadFunction = std::function<void()>;
+
+/// @}
 
 /**
  * Call a function on the main thread during event processing.
@@ -507,10 +526,12 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IsMainThread()
+ *
+ * @ingroup DelayedCallback
  */
 inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
 {
-  using Wrapper = CallbackWrapper<void()>;
+  using Wrapper = CallbackWrapper<MainThreadFunction>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
 }
@@ -650,7 +671,7 @@ inline const char* GetAppMetadataProperty(StringParam name)
   return SDL_GetAppMetadataProperty(name);
 }
 
-/** @} */
+/// @}
 
 #pragma region impl
 

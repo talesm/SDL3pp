@@ -45,5 +45,5 @@ var searchData=
   ['functionality_42',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../ApiByCategory.html#additional-functionality',1,'Additional Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]],
   ['functionpointer_43',['FunctionPointer',['../group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7',1,'SDL']]],
   ['functions_44',['Rectangle Functions',['../group__CategoryRect.html',1,'']]],
-  ['functiontype_45',['FunctionType',['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#ae66e086d5a19fe32640309bd9a7f8ca0',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;']]]
+  ['functiontype_45',['FunctionType',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7861db6da2727519334cc65ff00959c1',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;']]]
 ];

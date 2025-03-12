@@ -52,7 +52,7 @@ var searchData=
   ['setpalette_49',['SetPalette',['../structSDL_1_1SurfaceBase.html#affe172cd76054e60ecbb95ae22141d84',1,'SDL::SurfaceBase']]],
   ['setparent_50',['SetParent',['../structSDL_1_1WindowBase.html#a51b96b1e643958a47ce12e6da2cbaaab',1,'SDL::WindowBase']]],
   ['setpointer_51',['SetPointer',['../structSDL_1_1PropertiesBase.html#aa9d212a911f4b0127f01192a28e1a4a2',1,'SDL::PropertiesBase']]],
-  ['setpointerwithcleanup_52',['setpointerwithcleanup',['../structSDL_1_1PropertiesBase.html#a168539fbe50fb9d64ce3e83aaeb3309e',1,'SDL::PropertiesBase::SetPointerWithCleanup(StringParam name, void *value, CleanupCallback cleanup, void *userdata)'],['../structSDL_1_1PropertiesBase.html#ab9f30e0be918d99f8a9c5c09289268f9',1,'SDL::PropertiesBase::SetPointerWithCleanup(StringParam name, void *value, CleanupFunction cleanup)']]],
+  ['setpointerwithcleanup_52',['setpointerwithcleanup',['../structSDL_1_1PropertiesBase.html#a83a332ea44f35e94ce45c6059765a1f7',1,'SDL::PropertiesBase::SetPointerWithCleanup(StringParam name, void *value, CleanupPropertyFunction cleanup)'],['../structSDL_1_1PropertiesBase.html#af5015087038ec619ca30284f955e8a49',1,'SDL::PropertiesBase::SetPointerWithCleanup(StringParam name, void *value, CleanupPropertyCallback cleanup, void *userdata)']]],
   ['setposition_53',['SetPosition',['../structSDL_1_1WindowBase.html#a89a23881e6b70255345e9595eb6bccc0',1,'SDL::WindowBase']]],
   ['setrect_54',['SetRect',['../structSDL_1_1WindowBase.html#ad2e70250ae5ac2ff74a56f9fde10ebea',1,'SDL::WindowBase']]],
   ['setred_55',['setred',['../structSDL_1_1Color.html#a6cdc1c7b96e520760bcaacc2187998a9',1,'SDL::Color::SetRed()'],['../structSDL_1_1FColor.html#a08aa09ca57f7dea37ccb7978ab08b514',1,'SDL::FColor::SetRed()']]],

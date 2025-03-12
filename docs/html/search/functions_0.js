@@ -12,7 +12,7 @@ var searchData=
   ['aligned_5ffree_9',['aligned_free',['../group__CategoryStdinc.html#gaaf1efed697d82742be084a1871c95aa2',1,'SDL']]],
   ['asin_10',['asin',['../group__CategoryStdinc.html#ga316a2eed1e595c002830ee628c1b4963',1,'SDL']]],
   ['asinf_11',['asinf',['../group__CategoryStdinc.html#ga093ee4582ee6f6c02ab22c77718f56a8',1,'SDL']]],
-  ['at_12',['at',['../structSDL_1_1CallbackWrapper_3_01Result_07Args_8_8_8_08_4.html#ad87a43c1b43a30f18eb3014e4adde31c',1,'SDL::CallbackWrapper&lt; Result(Args...)&gt;']]],
+  ['at_12',['at',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#aaf2fa06ded3bdc7d660fca21dd6bcd4b',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;']]],
   ['atan_13',['atan',['../group__CategoryStdinc.html#ga11d0eaba28baba36fc8050f8541c8ee5',1,'SDL']]],
   ['atan2_14',['atan2',['../group__CategoryStdinc.html#gae0884b892c70d428cf50522d9791eb61',1,'SDL']]],
   ['atan2f_15',['atan2f',['../group__CategoryStdinc.html#gaf1be31240212288c0d7556cf80340b93',1,'SDL']]],
