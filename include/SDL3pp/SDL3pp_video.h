@@ -278,8 +278,10 @@ using HitTest = SDL_HitTest;
 /**
  * Callback used for hit-testing.
  *
- * @ingroup ListenerCallback
  * @sa HitTest
+ * @sa ListenerCallback
+ *
+ * @ingroup ListenerCallback
  */
 using HitTestFunction =
   std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
@@ -2503,6 +2505,8 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ListenerCallback
    *
    * @ingroup ListenerCallback
    */

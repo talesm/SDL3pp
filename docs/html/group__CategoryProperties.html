@@ -183,9 +183,9 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This callback may fire without any locks held; if this is a concern, the app should provide its own locking.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a83a332ea44f35e94ce45c6059765a1f7" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__ResultCallback.html#ga83a332ea44f35e94ce45c6059765a1f7" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00098">98</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00096">96</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -204,9 +204,11 @@ Variables</h2></td></tr>
 <p>A callback used to free resources when a property is deleted. </p>
 <dl class="section see"><dt>See also</dt><dd>PropertiesRef.CleanupPropertyCallback </dd>
 <dd>
-<a class="el" href="structSDL_1_1PropertiesBase.html#a83a332ea44f35e94ce45c6059765a1f7" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup()</a> </dd></dl>
+<a class="el" href="group__ResultCallback.html#ga83a332ea44f35e94ce45c6059765a1f7" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup()</a> </dd>
+<dd>
+<a class="el" href="group__ResultCallback.html" title="Result callback is invoked at single point and then discarded.">Result callback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00109">109</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00107">107</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -236,7 +238,7 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00134">134</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00132">132</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -256,7 +258,9 @@ Variables</h2></td></tr>
 <p>This callback is called from <a class="el" href="structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a>, and is called once per property in the set.</p>
 <dl class="section see"><dt>See also</dt><dd>EnumeratePropertyCallback </dd>
 <dd>
-<a class="el" href="structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a> </dd></dl>
+<a class="el" href="structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a> </dd>
+<dd>
+<a class="el" href="group__SyncCallback.html" title="Immediate callback or synchronous callback is always invoked before the callee function returns.">Immediate callback</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00146">146</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
@@ -348,7 +352,7 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3" title="Handle to an owned surface.">Properties</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00803">803</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00807">807</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -378,7 +382,7 @@ Variables</h2></td></tr>
 <p>Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties. </p>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00784">784</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00788">788</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -403,7 +407,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00776">776</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00780">780</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -427,7 +431,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00774">774</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00778">778</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -451,7 +455,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00766">766</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00770">770</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -475,7 +479,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00772">772</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00776">776</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -499,7 +503,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00768">768</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00772">772</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -523,7 +527,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00770">770</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00774">774</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>

@@ -466,8 +466,10 @@ using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
  * @sa PropertiesRef.MainThreadCallback
+ * @sa ResultCallback
  *
- * @ingroup DelayedCallback
+ * @ingroup ResultCallback
+ *
  */
 using MainThreadFunction = std::function<void()>;
 
@@ -526,8 +528,9 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IsMainThread()
+ * @sa ResultCallback
  *
- * @ingroup DelayedCallback
+ * @ingroup ResultCallback
  */
 inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
 {

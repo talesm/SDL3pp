@@ -5411,8 +5411,6 @@ using PropertyType = SDL_PropertyType;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa PropertiesBase.SetPointerWithCleanup()
- *
- * @ingroup Callback
  */
 using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 
@@ -5421,9 +5419,9 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa PropertiesRef.CleanupPropertyCallback
  * @sa PropertiesBase.SetPointerWithCleanup()
+ * @sa ResultCallback
  *
- * @ingroup DelayedCallback
- * @ingroup Callback
+ * @ingroup ResultCallback
  */
 using CleanupPropertyFunction = std::function<void(void*)>;
 
@@ -5460,6 +5458,8 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  *
  * @sa EnumeratePropertyCallback
  * @sa PropertiesBase::Enumerate()
+ * @sa SyncCallback
+ *
  * @ingroup SyncCallback
  */
 using EnumeratePropertiesFunction =
@@ -5570,7 +5570,10 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @ingroup DelayedCallback
+   * @sa ResultCallback
+   *
+   * @ingroup ResultCallback
+   *
    */
   bool SetPointerWithCleanup(StringParam name,
                              void* value,
@@ -5957,6 +5960,7 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
+   * @sa SyncCallback
    * @ingroup SyncCallback
    */
   bool Enumerate(EnumeratePropertiesFunction callback) const
@@ -12724,8 +12728,10 @@ using HitTest = SDL_HitTest;
 /**
  * Callback used for hit-testing.
  *
- * @ingroup ListenerCallback
  * @sa HitTest
+ * @sa ListenerCallback
+ *
+ * @ingroup ListenerCallback
  */
 using HitTestFunction =
   std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
@@ -14949,6 +14955,8 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ListenerCallback
    *
    * @ingroup ListenerCallback
    */
@@ -18194,8 +18202,10 @@ using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
  * @sa PropertiesRef.MainThreadCallback
+ * @sa ResultCallback
  *
- * @ingroup DelayedCallback
+ * @ingroup ResultCallback
+ *
  */
 using MainThreadFunction = std::function<void()>;
 
@@ -18254,8 +18264,9 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IsMainThread()
+ * @sa ResultCallback
  *
- * @ingroup DelayedCallback
+ * @ingroup ResultCallback
  */
 inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
 {

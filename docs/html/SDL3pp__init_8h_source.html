@@ -217,84 +217,84 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span> </div>
 <div class="line"><a id="l00465" name="l00465"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">  465</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> = SDL_MainThreadCallback;</div>
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span> </div>
-<div class="line"><a id="l00472" name="l00472"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">  472</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> = std::function&lt;void()&gt;;</div>
-<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span> </div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">  474</a></span><span class="keyword">using </span><a class="code hl_typedef" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> = std::function&lt;void()&gt;;</div>
 <div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span> </div>
-<div class="foldopen" id="foldopen00500" data-start="{" data-end="}">
-<div class="line"><a id="l00500" name="l00500"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">  500</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> callback,</div>
-<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>                            <span class="keywordtype">void</span>* userdata,</div>
-<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>                            <span class="keywordtype">bool</span> wait_complete)</div>
-<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>{</div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>  <span class="keywordflow">return</span> SDL_RunOnMainThread(callback, userdata, wait_complete);</div>
-<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>}</div>
+<div class="line"><a id="l00477" name="l00477"></a><span class="lineno">  477</span> </div>
+<div class="foldopen" id="foldopen00502" data-start="{" data-end="}">
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">  502</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> callback,</div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>                            <span class="keywordtype">void</span>* userdata,</div>
+<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>                            <span class="keywordtype">bool</span> wait_complete)</div>
+<div class="line"><a id="l00505" name="l00505"></a><span class="lineno">  505</span>{</div>
+<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span>  <span class="keywordflow">return</span> SDL_RunOnMainThread(callback, userdata, wait_complete);</div>
+<div class="line"><a id="l00507" name="l00507"></a><span class="lineno">  507</span>}</div>
 </div>
-<div class="line"><a id="l00506" name="l00506"></a><span class="lineno">  506</span> </div>
-<div class="foldopen" id="foldopen00532" data-start="{" data-end="}">
-<div class="line"><a id="l00532" name="l00532"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga02cae05cce6b7468a89fa31cc991c2de">  532</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> callback, <span class="keywordtype">bool</span> wait_complete)</div>
-<div class="line"><a id="l00533" name="l00533"></a><span class="lineno">  533</span>{</div>
-<div class="line"><a id="l00534" name="l00534"></a><span class="lineno">  534</span>  <span class="keyword">using </span>Wrapper = <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper&lt;MainThreadFunction&gt;</a>;</div>
-<div class="line"><a id="l00535" name="l00535"></a><span class="lineno">  535</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(</div>
-<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>    &amp;Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);</div>
-<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>}</div>
+<div class="line"><a id="l00508" name="l00508"></a><span class="lineno">  508</span> </div>
+<div class="foldopen" id="foldopen00535" data-start="{" data-end="}">
+<div class="line"><a id="l00535" name="l00535"></a><span class="lineno"><a class="line" href="group__ResultCallback.html#ga02cae05cce6b7468a89fa31cc991c2de">  535</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(<a class="code hl_typedef" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> callback, <span class="keywordtype">bool</span> wait_complete)</div>
+<div class="line"><a id="l00536" name="l00536"></a><span class="lineno">  536</span>{</div>
+<div class="line"><a id="l00537" name="l00537"></a><span class="lineno">  537</span>  <span class="keyword">using </span>Wrapper = <a class="code hl_struct" href="structSDL_1_1CallbackWrapper.html">CallbackWrapper&lt;MainThreadFunction&gt;</a>;</div>
+<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">RunOnMainThread</a>(</div>
+<div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>    &amp;Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);</div>
+<div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>}</div>
 </div>
-<div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span> </div>
-<div class="foldopen" id="foldopen00575" data-start="{" data-end="}">
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">  575</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">SetAppMetadata</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appname,</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appversion,</div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appidentifier)</div>
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span>{</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>  <span class="keywordflow">return</span> SDL_SetAppMetadata(appname, appversion, appidentifier);</div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>}</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span> </div>
+<div class="foldopen" id="foldopen00578" data-start="{" data-end="}">
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">  578</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">SetAppMetadata</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appname,</div>
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appversion,</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>                           <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> appidentifier)</div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>{</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>  <span class="keywordflow">return</span> SDL_SetAppMetadata(appname, appversion, appidentifier);</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>}</div>
 </div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span> </div>
-<div class="foldopen" id="foldopen00643" data-start="{" data-end="}">
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78">  643</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78">SetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> value)</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>{</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>  <span class="keywordflow">return</span> SDL_SetAppMetadataProperty(name, value);</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>}</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span> </div>
+<div class="foldopen" id="foldopen00646" data-start="{" data-end="}">
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78">  646</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78">SetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> value)</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>{</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>  <span class="keywordflow">return</span> SDL_SetAppMetadataProperty(name, value);</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>}</div>
 </div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span> </div>
-<div class="foldopen" id="foldopen00669" data-start="{" data-end="}">
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">  669</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">GetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>{</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>  <span class="keywordflow">return</span> SDL_GetAppMetadataProperty(name);</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>}</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
+<div class="foldopen" id="foldopen00672" data-start="{" data-end="}">
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">  672</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">GetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>{</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>  <span class="keywordflow">return</span> SDL_GetAppMetadataProperty(name);</div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>}</div>
 </div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span> </div>
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span> </div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span><span class="preprocessor">#pragma region impl</span></div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span> </div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span><span class="keyword">inline</span> <span class="keywordtype">int</span> SDL::refCount(<span class="keywordtype">int</span> delta, <span class="keywordtype">bool</span> autoQuit)</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>{</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>  <span class="comment">// TODO Locking these?</span></div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> refCount = 0;</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>  <span class="keywordflow">if</span> (delta &amp;&amp; active) {</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>    <span class="keywordflow">if</span> (delta &gt; 0) {</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>      refCount += 1;</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>      <span class="keywordflow">if</span> (flags) active = SDL_InitSubSystem(flags);</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>      SDL_assert_always(refCount &gt; 0);</div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>      active = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>      refCount -= 1;</div>
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span> </div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>      <span class="keywordflow">if</span> (autoQuit) {</div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>        <span class="keywordflow">if</span> (refCount &lt;= 0) {</div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>          <span class="comment">// TODO Make this under FLAG</span></div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>          SDL_Quit();</div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flags) {</div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>          SDL_QuitSubSystem(flags);</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        }</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>      }</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>    }</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>  }</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>  <span class="keywordflow">return</span> refCount;</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>}</div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span> </div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span><span class="preprocessor">#pragma endregion</span></div>
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span> </div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span> </div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_INIT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span> </div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span> </div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span><span class="preprocessor">#pragma region impl</span></div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span> </div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span><span class="keyword">inline</span> <span class="keywordtype">int</span> SDL::refCount(<span class="keywordtype">int</span> delta, <span class="keywordtype">bool</span> autoQuit)</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>{</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>  <span class="comment">// TODO Locking these?</span></div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>  <span class="keyword">static</span> <span class="keywordtype">int</span> refCount = 0;</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>  <span class="keywordflow">if</span> (delta &amp;&amp; active) {</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>    <span class="keywordflow">if</span> (delta &gt; 0) {</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>      refCount += 1;</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>      <span class="keywordflow">if</span> (flags) active = SDL_InitSubSystem(flags);</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>      SDL_assert_always(refCount &gt; 0);</div>
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>      active = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>      refCount -= 1;</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span> </div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>      <span class="keywordflow">if</span> (autoQuit) {</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        <span class="keywordflow">if</span> (refCount &lt;= 0) {</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>          <span class="comment">// TODO Make this under FLAG</span></div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>          SDL_Quit();</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (flags) {</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>          SDL_QuitSubSystem(flags);</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        }</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>      }</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>    }</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>  }</div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>  <span class="keywordflow">return</span> refCount;</div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>}</div>
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span> </div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span><span class="preprocessor">#pragma endregion</span></div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span> </div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span> </div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_INIT_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aSDL3pp__callbackWrapper_8h_html"><div class="ttname"><a href="SDL3pp__callbackWrapper_8h.html">SDL3pp_callbackWrapper.h</a></div></div>
 <div class="ttc" id="aSDL3pp__error_8h_html"><div class="ttname"><a href="SDL3pp__error_8h.html">SDL3pp_error.h</a></div></div>
 <div class="ttc" id="aSDL3pp__stdinc_8h_html"><div class="ttname"><a href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a></div></div>
@@ -302,7 +302,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aclassSDL_1_1StringParamImpl_html"><div class="ttname"><a href="classSDL_1_1StringParamImpl.html">SDL::StringParamImpl</a></div><div class="ttdoc">A safe and mostly efficient wrapper to std::string and std::string_view parameters.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__stringParam_8h_source.html#l00026">SDL3pp_stringParam.h:27</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga075264ef70aa0e1e7832a07477f1246c"><div class="ttname"><a href="group__CategoryInit.html#ga075264ef70aa0e1e7832a07477f1246c">SDL::INIT_SENSOR</a></div><div class="ttdeci">constexpr InitFlags INIT_SENSOR</div><div class="ttdoc">SDL_INIT_SENSOR implies SDL_INIT_EVENTS</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00088">SDL3pp_init.h:88</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga2d9c710ec219aa2818bfdc55e4115f44"><div class="ttname"><a href="group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44">SDL::WasInit</a></div><div class="ttdeci">InitFlags WasInit(InitFlags flags)</div><div class="ttdoc">Get a mask of the specified subsystems which are currently initialized.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00316">SDL3pp_init.h:316</a></div></div>
-<div class="ttc" id="agroup__CategoryInit_html_ga46def1efc7856e6d4842d4d7cd05aa78"><div class="ttname"><a href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78">SDL::SetAppMetadataProperty</a></div><div class="ttdeci">bool SetAppMetadataProperty(StringParam name, StringParam value)</div><div class="ttdoc">Specify metadata about your app through a set of properties.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00643">SDL3pp_init.h:643</a></div></div>
+<div class="ttc" id="agroup__CategoryInit_html_ga46def1efc7856e6d4842d4d7cd05aa78"><div class="ttname"><a href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78">SDL::SetAppMetadataProperty</a></div><div class="ttdeci">bool SetAppMetadataProperty(StringParam name, StringParam value)</div><div class="ttdoc">Specify metadata about your app through a set of properties.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00646">SDL3pp_init.h:646</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga5cf321856f8f4b0c79457f7fc4465ab8"><div class="ttname"><a href="group__CategoryInit.html#ga5cf321856f8f4b0c79457f7fc4465ab8">SDL::APP_FAILURE</a></div><div class="ttdeci">constexpr AppResult APP_FAILURE</div><div class="ttdoc">Value that requests termination with error from the main callbacks.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00139">SDL3pp_init.h:139</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga5eee8ab4cd2f485ee9fa63baa8c1bc3e"><div class="ttname"><a href="group__CategoryInit.html#ga5eee8ab4cd2f485ee9fa63baa8c1bc3e">SDL::INIT_JOYSTICK</a></div><div class="ttdeci">constexpr InitFlags INIT_JOYSTICK</div><div class="ttdoc">SDL_INIT_JOYSTICK implies SDL_INIT_EVENTS, should be initialized on the same thread as SDL_INIT_VIDEO...</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00074">SDL3pp_init.h:74</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga63ca590321877744a1050ab71ff4e3c5"><div class="ttname"><a href="group__CategoryInit.html#ga63ca590321877744a1050ab71ff4e3c5">SDL::INIT_VIDEO</a></div><div class="ttdeci">constexpr InitFlags INIT_VIDEO</div><div class="ttdoc">SDL_INIT_VIDEO implies SDL_INIT_EVENTS, should be initialized on the main thread</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00067">SDL3pp_init.h:67</a></div></div>
@@ -310,12 +310,12 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryInit_html_ga649ccd445bb0296103ce839b05fb8ddf"><div class="ttname"><a href="group__CategoryInit.html#ga649ccd445bb0296103ce839b05fb8ddf">SDL::AppIterate_func</a></div><div class="ttdeci">SDL_AppIterate_func AppIterate_func</div><div class="ttdoc">Function pointer typedef for SDL_AppIterate.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00181">SDL3pp_init.h:181</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga65bdd3a913bd08eea41fd70fb49e5079"><div class="ttname"><a href="group__CategoryInit.html#ga65bdd3a913bd08eea41fd70fb49e5079">SDL::INIT_AUDIO</a></div><div class="ttdeci">constexpr InitFlags INIT_AUDIO</div><div class="ttdoc">SDL_INIT_AUDIO implies SDL_INIT_EVENTS</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00061">SDL3pp_init.h:61</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga7621ccbf8a8e81e8ff90b14397f87c1e"><div class="ttname"><a href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e">SDL::InitSubSystem</a></div><div class="ttdeci">bool InitSubSystem(InitFlags flags)</div><div class="ttdoc">Compatibility function to initialize the SDL library.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00287">SDL3pp_init.h:287</a></div></div>
-<div class="ttc" id="agroup__CategoryInit_html_ga7ae0a016d954f3a072c0a49d9dd9caf2"><div class="ttname"><a href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a></div><div class="ttdeci">const char * GetAppMetadataProperty(StringParam name)</div><div class="ttdoc">Get metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00669">SDL3pp_init.h:669</a></div></div>
+<div class="ttc" id="agroup__CategoryInit_html_ga7ae0a016d954f3a072c0a49d9dd9caf2"><div class="ttname"><a href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a></div><div class="ttdeci">const char * GetAppMetadataProperty(StringParam name)</div><div class="ttdoc">Get metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00672">SDL3pp_init.h:672</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga85ebd45ffe827a5fe36abd499560314c"><div class="ttname"><a href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">SDL::MainThreadCallback</a></div><div class="ttdeci">SDL_MainThreadCallback MainThreadCallback</div><div class="ttdoc">Callback run on the main thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00465">SDL3pp_init.h:465</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga8cfb5253a0e7d61a295144448a8d4273"><div class="ttname"><a href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">SDL::AppResult</a></div><div class="ttdeci">SDL_AppResult AppResult</div><div class="ttdoc">Return values for optional main callbacks.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00124">SDL3pp_init.h:124</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga9a65ec9e9aeee92fbd1928335d689ef5"><div class="ttname"><a href="group__CategoryInit.html#ga9a65ec9e9aeee92fbd1928335d689ef5">SDL::INIT_EVENTS</a></div><div class="ttdeci">constexpr InitFlags INIT_EVENTS</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00083">SDL3pp_init.h:83</a></div></div>
-<div class="ttc" id="agroup__CategoryInit_html_ga9cb24cc6035ea3ba1c152347e2114e6b"><div class="ttname"><a href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">SDL::SetAppMetadata</a></div><div class="ttdeci">bool SetAppMetadata(StringParam appname, StringParam appversion, StringParam appidentifier)</div><div class="ttdoc">Specify basic metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00575">SDL3pp_init.h:575</a></div></div>
-<div class="ttc" id="agroup__CategoryInit_html_gaa0da34c8dc3a2eca5592eb26d8867bbd"><div class="ttname"><a href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">SDL::MainThreadFunction</a></div><div class="ttdeci">std::function&lt; void()&gt; MainThreadFunction</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00472">SDL3pp_init.h:472</a></div></div>
+<div class="ttc" id="agroup__CategoryInit_html_ga9cb24cc6035ea3ba1c152347e2114e6b"><div class="ttname"><a href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">SDL::SetAppMetadata</a></div><div class="ttdeci">bool SetAppMetadata(StringParam appname, StringParam appversion, StringParam appidentifier)</div><div class="ttdoc">Specify basic metadata about your app.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00578">SDL3pp_init.h:578</a></div></div>
+<div class="ttc" id="agroup__CategoryInit_html_gaa0da34c8dc3a2eca5592eb26d8867bbd"><div class="ttname"><a href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">SDL::MainThreadFunction</a></div><div class="ttdeci">std::function&lt; void()&gt; MainThreadFunction</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00474">SDL3pp_init.h:474</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_gaa769d313fe619516b0b4e621de494b1c"><div class="ttname"><a href="group__CategoryInit.html#gaa769d313fe619516b0b4e621de494b1c">SDL::AppInit_func</a></div><div class="ttdeci">SDL_AppInit_func AppInit_func</div><div class="ttdoc">Function pointer typedef for SDL_AppInit.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00166">SDL3pp_init.h:166</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_gab53d2dea05d627f11cb7a8c24a8e1a44"><div class="ttname"><a href="group__CategoryInit.html#gab53d2dea05d627f11cb7a8c24a8e1a44">SDL::Init</a></div><div class="ttdeci">bool Init(InitFlags flags)</div><div class="ttdoc">Initialize the SDL library.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00270">SDL3pp_init.h:270</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_gac0812d3287da34e3d6b228677440a24c"><div class="ttname"><a href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c">SDL::Quit</a></div><div class="ttdeci">void Quit()</div><div class="ttdoc">Clean up all initialized subsystems.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00334">SDL3pp_init.h:334</a></div></div>
@@ -327,7 +327,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryInit_html_gae10f17c2662e06ffae89564b29eb7e3a"><div class="ttname"><a href="group__CategoryInit.html#gae10f17c2662e06ffae89564b29eb7e3a">SDL::AppQuit_func</a></div><div class="ttdeci">SDL_AppQuit_func AppQuit_func</div><div class="ttdoc">Function pointer typedef for SDL_AppQuit.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00211">SDL3pp_init.h:211</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_gae810a530a8a0feac423157287eef3616"><div class="ttname"><a href="group__CategoryInit.html#gae810a530a8a0feac423157287eef3616">SDL::APP_SUCCESS</a></div><div class="ttdeci">constexpr AppResult APP_SUCCESS</div><div class="ttdoc">Value that requests termination with success from the main callbacks.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00134">SDL3pp_init.h:134</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_gaecde345a1ce196a269e1f25c70b9878a"><div class="ttname"><a href="group__CategoryInit.html#gaecde345a1ce196a269e1f25c70b9878a">SDL::INIT_CAMERA</a></div><div class="ttdeci">constexpr InitFlags INIT_CAMERA</div><div class="ttdoc">SDL_INIT_CAMERA implies SDL_INIT_EVENTS</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00093">SDL3pp_init.h:93</a></div></div>
-<div class="ttc" id="agroup__CategoryInit_html_gaf819cae500f98321d9ec860a18c50f9b"><div class="ttname"><a href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">SDL::RunOnMainThread</a></div><div class="ttdeci">bool RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)</div><div class="ttdoc">Call a function on the main thread during event processing.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00500">SDL3pp_init.h:500</a></div></div>
+<div class="ttc" id="agroup__CategoryInit_html_gaf819cae500f98321d9ec860a18c50f9b"><div class="ttname"><a href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">SDL::RunOnMainThread</a></div><div class="ttdeci">bool RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)</div><div class="ttdoc">Call a function on the main thread during event processing.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00502">SDL3pp_init.h:502</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_gafd0701244620c6298147fe6cc25a4771"><div class="ttname"><a href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">SDL::InitFlags</a></div><div class="ttdeci">SDL_InitFlags InitFlags</div><div class="ttdoc">Initialization flags for SDL.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00056">SDL3pp_init.h:56</a></div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__blendmode_8h_source.html#l00006">SDL3pp_blendmode.h:6</a></div></div>
 <div class="ttc" id="astructSDL_1_1CallbackWrapper_html"><div class="ttname"><a href="structSDL_1_1CallbackWrapper.html">SDL::CallbackWrapper</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__callbackWrapper_8h_source.html#l00019">SDL3pp_callbackWrapper.h:19</a></div></div>

@@ -92,8 +92,6 @@ using PropertyType = SDL_PropertyType;
  * @since This datatype is available since SDL 3.2.0.
  *
  * @sa PropertiesBase.SetPointerWithCleanup()
- *
- * @ingroup Callback
  */
 using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
 
@@ -102,9 +100,9 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa PropertiesRef.CleanupPropertyCallback
  * @sa PropertiesBase.SetPointerWithCleanup()
+ * @sa ResultCallback
  *
- * @ingroup DelayedCallback
- * @ingroup Callback
+ * @ingroup ResultCallback
  */
 using CleanupPropertyFunction = std::function<void(void*)>;
 
@@ -141,6 +139,8 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  *
  * @sa EnumeratePropertyCallback
  * @sa PropertiesBase::Enumerate()
+ * @sa SyncCallback
+ *
  * @ingroup SyncCallback
  */
 using EnumeratePropertiesFunction =
@@ -251,7 +251,10 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @ingroup DelayedCallback
+   * @sa ResultCallback
+   *
+   * @ingroup ResultCallback
+   *
    */
   bool SetPointerWithCleanup(StringParam name,
                              void* value,
@@ -638,6 +641,7 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
+   * @sa SyncCallback
    * @ingroup SyncCallback
    */
   bool Enumerate(EnumeratePropertiesFunction callback) const

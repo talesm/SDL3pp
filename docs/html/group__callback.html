@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SDL3pp: Design notes</title>
+<title>SDL3pp: Callback</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -72,26 +72,24 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a>  </div>
-  <div class="headertitle"><div class="title">Design notes</div></div>
+  <div class="headertitle"><div class="title">Callback<div class="ingroups"><a class="el" href="group__DesignNotes.html">Design notes</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Design notes on this project.  
+<p>A callback is a invocable object passed to a function as a customization point.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="groups" name="groups"></a>
 Modules</h2></td></tr>
-<tr class="memitem:group__resource" id="r_group__resource"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__resource.html">Resource</a></td></tr>
-<tr class="memdesc:group__resource"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Resource is a type where its memory is controlled by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>, usually with functions like <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>. <br /></td></tr>
+<tr class="memitem:group__SyncCallback" id="r_group__SyncCallback"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SyncCallback.html">Immediate callback</a></td></tr>
+<tr class="memdesc:group__SyncCallback"><td class="mdescLeft">&#160;</td><td class="mdescRight">Immediate callback or synchronous callback is always invoked before the callee function returns. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__callback" id="r_group__callback"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__callback.html">Callback</a></td></tr>
-<tr class="memdesc:group__callback"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback is a invocable object passed to a function as a customization point. <br /></td></tr>
+<tr class="memitem:group__AsyncCallback" id="r_group__AsyncCallback"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__AsyncCallback.html">Delayed callback</a></td></tr>
+<tr class="memdesc:group__AsyncCallback"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delayed or Asynchronous callback is a callback that may be invoked after the callee returns. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Design notes on this project. </p>
-<p>Here we describe common design aspects and patterns used in the project. To have an idea on all fits together you may look into <a class="el" href="transformations.html">Transformations</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="transformations.html">Transformations</a> </dd></dl>
+<p>A callback is a invocable object passed to a function as a customization point. </p>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
