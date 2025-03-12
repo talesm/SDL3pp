@@ -1,0 +1,18 @@
+/**
+@defgroup DesignNotes Design notes
+
+Here we describe common design aspects and patterns used in the project
+
+@{
+*/
+
+/**
+@defgroup resource Resource
+
+A Resource is a type where its memory is controlled by SDL, usually with
+functions like `SDL_Create*()` and `SDL_Destroy*()`.
+*/
+
+/**
+@}
+*/
