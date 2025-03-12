@@ -2525,7 +2525,6 @@
           {
             "kind": "alias",
             "name": "HitTestFunction",
-            "type": "std::function<HitTestResult(SDL_Window *window, const SDL_Point *area)>",
             "doc": "@sa HitTest"
           }
         ]
@@ -3927,7 +3926,32 @@
               "name": "event"
             }
           ]
-        }
+        },
+        "SDL_EventFilter": {
+          "kind": "alias",
+          "name": "EventFilterFunction",
+          "type": "std::function<bool(const Event &)>"
+        },
+        "SDL_SetEventFilter": {
+          "kind": "function",
+          "name": "SetEventFilter",
+          "type": "auto",
+          "parameters": [
+            {
+              "type": "EventFilterFunction",
+              "name": "filter",
+              "default": "{}"
+            }
+          ]
+        },
+        "SDL_GetEventFilter": [
+          {
+            "kind": "function",
+            "name": "GetEventFilter",
+            "type": "EventFilterFunction",
+            "parameters": []
+          }
+        ]
       }
     },
     "SDL_init.h": {

@@ -22,7 +22,7 @@ var searchData=
   ['environmentref_19',['EnvironmentRef',['../group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e',1,'SDL']]],
   ['equal_20',['equal',['../structSDL_1_1Rect.html#a09f05c066213374274e055034aa3b28b',1,'SDL::Rect::Equal()'],['../structSDL_1_1FRect.html#a196110eaa3957ab44f9ec977fbbae3fd',1,'SDL::FRect::Equal(const FRect &amp;other) const']]],
   ['equalepsilon_21',['EqualEpsilon',['../structSDL_1_1FRect.html#a0dddedcee6c59d91fef1defa8aa0ae17',1,'SDL::FRect']]],
-  ['erase_22',['erase',['../structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050',1,'SDL::KeyValueWrapper::erase()'],['../structSDL_1_1KeyValueWrapper_3_01void_00_01VALUE_01_4.html#a01c83f1630977f2ca690dd6771334818',1,'SDL::KeyValueWrapper&lt; void, VALUE &gt;::erase()']]],
+  ['erase_22',['erase',['../structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050',1,'SDL::KeyValueWrapper::erase()'],['../structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597',1,'SDL::UniqueWrapper::erase()']]],
   ['error_20handling_23',['Error Handling',['../group__CategoryError.html',1,'']]],
   ['event_24',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
   ['event_20types_25',['Event Types',['../group__EventTypes.html',1,'']]],
@@ -147,10 +147,11 @@ var searchData=
   ['eventaction_144',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
   ['eventenabled_145',['EventEnabled',['../group__CategoryEvents.html#gae67ec89cc5986f1f99a24916db4d20d0',1,'SDL']]],
   ['eventfilter_146',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
-  ['events_147',['events',['../group__CategoryEvents.html',1,'Category Events'],['../ApiByCategory.html#input-events',1,'Input Events'],['../group__CategoriesEvents.html',1,'Input Events']]],
-  ['eventtype_148',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]],
-  ['examples_149',['Examples',['../index.html#examples',1,'']]],
-  ['exp_150',['exp',['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
-  ['expf_151',['expf',['../group__CategoryStdinc.html#ga5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],
-  ['extend_152',['extend',['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)']]]
+  ['eventfilterfunction_147',['EventFilterFunction',['../group__CategoryEvents.html#ga89729782789df28788240517ea5b82be',1,'SDL']]],
+  ['events_148',['events',['../group__CategoryEvents.html',1,'Category Events'],['../ApiByCategory.html#input-events',1,'Input Events'],['../group__CategoriesEvents.html',1,'Input Events']]],
+  ['eventtype_149',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]],
+  ['examples_150',['Examples',['../index.html#examples',1,'']]],
+  ['exp_151',['exp',['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
+  ['expf_152',['expf',['../group__CategoryStdinc.html#ga5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],
+  ['extend_153',['extend',['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)']]]
 ];

@@ -48,7 +48,7 @@ available.
 @defgroup ResultCallback Result callback
 
 Result callback is invoked at single point and then discarded. This means that
-after its called it safe to free any memory it is holding. The ResultCallback 
+after its called it safe to free any memory it is holding. The ResultCallbackWrapper 
 is perfect to safely wrap it and avoid dangling pointer. An example of such 
 uses is RunOnMainThread().
 */
@@ -59,6 +59,9 @@ uses is RunOnMainThread().
 Listener callback is invoked multiple times whenever the event it subscripted
 happens. It's not safe to free memory after call, so a separate mechanism must
 be provided.
+
+When there is a single listener per program, like SetEventFilter(), you we can
+use UniqueWrapper, which makes sure only a single one per type exists.
 
 When there can be just a single callback listening per resource we can use 
 KeyValueWrapper with a Resource pointer as key. An example of this technique is

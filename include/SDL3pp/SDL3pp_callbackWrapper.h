@@ -2,6 +2,7 @@
 #define SDL3PP_CALLBACK_WRAPPER_H_
 
 #include <functional>
+#include <memory>
 #include <unordered_map>
 #include <SDL3/SDL_assert.h>
 
@@ -117,39 +118,49 @@ private:
 };
 
 template<class VALUE>
-struct KeyValueWrapper<void, VALUE>
+struct UniqueWrapper
 {
-  KeyValueWrapper() = delete;
+  UniqueWrapper() = delete;
 
   using ValueType = VALUE;
 
-  static void* Wrap(ValueType&& value)
+  static ValueType* Wrap(ValueType&& value)
   {
+    /// @todo make this an opaque type
     auto& v = Value();
-    v = std::move(value);
-    return &v;
+    if (value)
+      v = std::make_unique<ValueType>(std::move(value));
+    else
+      v.reset();
+    return v.get();
   }
 
-  static bool contains(void* handle)
+  static bool contains(void* handle) { return Value().get() == handle; }
+
+  static const ValueType& at(void* handle)
   {
     auto& v = Value();
-    return bool(v) && &v == handle;
+    SDL_assert_paranoid(v.get() == handle);
+    return *v;
   }
-
-  static const ValueType& at(void* handle) { return Value(); }
 
   static ValueType release(void* handle)
   {
-    ValueType value{std::move(Value())};
+    auto& v = Value();
+    SDL_assert_paranoid(v.get() == handle);
+
+    ValueType value{std::move(*v)};
+    v.reset();
+
     return value;
   }
 
-  static void erase(void* handle) { return Value() = {}; }
+  static void erase() { return Value().reset(); }
 
 private:
-  static ValueType& Value()
+  static std::unique_ptr<ValueType>& Value()
   {
-    static ValueType value;
+    static std::unique_ptr<ValueType> value;
     return value;
   }
 };

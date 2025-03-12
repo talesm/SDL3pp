@@ -93,6 +93,7 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Listener callback is invoked multiple times whenever the event it subscripted happens. </p>
 <p>It's not safe to free memory after call, so a separate mechanism must be provided.</p>
+<p>When there is a single listener per program, like SetEventFilter(), you we can use UniqueWrapper, which makes sure only a single one per type exists.</p>
 <p>When there can be just a single callback listening per resource we can use KeyValueWrapper with a Resource pointer as key. An example of this technique is in WindowBase::SetHitTest(HitTestFunction). We need to make sure we call KeyValueWrapper.erase() on the equivalent <code>*.Destroy()</code> function, again the example is WindowBase::Destroy(). </p>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga876ef260b3a07cbebc869191f56331bc" name="ga876ef260b3a07cbebc869191f56331bc"></a>
