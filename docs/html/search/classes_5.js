@@ -1,14 +1,5 @@
 var searchData=
 [
-  ['objectdeleter_0',['ObjectDeleter',['../structSDL_1_1ObjectDeleter.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fenvironment_20_3e_1',['ObjectDeleter&lt; SDL_Environment &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Environment_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5ficonv_5fdata_5ft_20_3e_2',['ObjectDeleter&lt; SDL_iconv_data_t &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__iconv__data__t_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fpalette_20_3e_3',['ObjectDeleter&lt; SDL_Palette &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Palette_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5frenderer_20_3e_4',['ObjectDeleter&lt; SDL_Renderer &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Renderer_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fsurface_20_3e_5',['ObjectDeleter&lt; SDL_Surface &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Surface_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5ftexture_20_3e_6',['ObjectDeleter&lt; SDL_Texture &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Texture_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fwindow_20_3e_7',['ObjectDeleter&lt; SDL_Window &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Window_01_4.html',1,'SDL']]],
-  ['objectref_8',['ObjectRef',['../classSDL_1_1ObjectRef.html',1,'SDL']]],
-  ['objectunique_9',['ObjectUnique',['../classSDL_1_1ObjectUnique.html',1,'SDL']]],
-  ['optionalref_10',['OptionalRef',['../classSDL_1_1OptionalRef.html',1,'SDL']]]
+  ['keyvaluewrapper_0',['KeyValueWrapper',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]],
+  ['keyvaluewrapper_3c_20void_2c_20value_20_3e_1',['KeyValueWrapper&lt; void, VALUE &gt;',['../structSDL_1_1KeyValueWrapper_3_01void_00_01VALUE_01_4.html',1,'SDL']]]
 ];

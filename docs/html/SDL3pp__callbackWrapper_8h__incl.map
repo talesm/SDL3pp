@@ -1,9 +1,9 @@
 <map id="SDL3pp/SDL3pp_callbackWrapper.h" name="SDL3pp/SDL3pp_callbackWrapper.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="17,5,267,31"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="53,5,303,31"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,79,92,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,33,76,72,73,68,125,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="117,79,167,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,31,145,65,139,65,139,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="192,79,335,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,28,233,69,231,74,160,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,33,83,74,81,69,156,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="116,79,240,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="181,31,181,65,175,65,175,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="264,79,407,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="204,28,298,71,296,75,202,33"/>
 </map>

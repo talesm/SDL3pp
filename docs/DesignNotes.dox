@@ -48,7 +48,9 @@ available.
 @defgroup ResultCallback Result callback
 
 Result callback is invoked at single point and then discarded. This means that
-after its called it safe to free any memory it is holding.
+after its called it safe to free any memory it is holding. The ResultCallback 
+is perfect to safely wrap it and avoid dangling pointer. An example of such 
+uses is RunOnMainThread().
 */
 
 /**
@@ -57,6 +59,12 @@ after its called it safe to free any memory it is holding.
 Listener callback is invoked multiple times whenever the event it subscripted
 happens. It's not safe to free memory after call, so a separate mechanism must
 be provided.
+
+When there can be just a single callback listening per resource we can use 
+KeyValueWrapper with a Resource pointer as key. An example of this technique is
+in WindowBase::SetHitTest(HitTestFunction). We need to make sure we call 
+KeyValueWrapper.erase() on the equivalent `*.Destroy()` function, again the 
+example is WindowBase::Destroy().
 */
 
 /// @}

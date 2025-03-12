@@ -81,37 +81,46 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga6a29f41f5e9608270f7241d1ef8392ca" id="r_ga6a29f41f5e9608270f7241d1ef8392ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga6a29f41f5e9608270f7241d1ef8392ca">SDL::WindowBase&lt; T &gt;::SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#gac32a41ea0c7f52e898562de99071a7aa">HitTestFunction</a> callback)</td></tr>
+<tr class="memitem:ga6a29f41f5e9608270f7241d1ef8392ca" id="r_ga6a29f41f5e9608270f7241d1ef8392ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga6a29f41f5e9608270f7241d1ef8392ca">SDL::WindowBase&lt; T &gt;::SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">HitTestFunction</a> callback)</td></tr>
 <tr class="memdesc:ga6a29f41f5e9608270f7241d1ef8392ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a callback that decides if a window region has special properties.  <br /></td></tr>
 <tr class="separator:ga6a29f41f5e9608270f7241d1ef8392ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Callbacks for WindowBase::SetHitTest()</h2></td></tr>
-<tr class="memitem:gac32a41ea0c7f52e898562de99071a7aa" id="r_gac32a41ea0c7f52e898562de99071a7aa"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gac32a41ea0c7f52e898562de99071a7aa">SDL::HitTestFunction</a> = std::function&lt; <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(SDL_Window *window, const SDL_Point *area)&gt;</td></tr>
-<tr class="memdesc:gac32a41ea0c7f52e898562de99071a7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback used for hit-testing.  <br /></td></tr>
-<tr class="separator:gac32a41ea0c7f52e898562de99071a7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga876ef260b3a07cbebc869191f56331bc" id="r_ga876ef260b3a07cbebc869191f56331bc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">SDL::HitTestFunction</a> = std::function&lt; <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, const <a class="el" href="structSDL_1_1Point.html">Point</a> &amp;area)&gt;</td></tr>
+<tr class="memdesc:ga876ef260b3a07cbebc869191f56331bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback used for hit-testing.  <br /></td></tr>
+<tr class="separator:ga876ef260b3a07cbebc869191f56331bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Listener callback is invoked multiple times whenever the event it subscripted happens. </p>
-<p>It's not safe to free memory after call, so a separate mechanism must be provided. </p>
+<p>It's not safe to free memory after call, so a separate mechanism must be provided.</p>
+<p>When there can be just a single callback listening per resource we can use KeyValueWrapper with a Resource pointer as key. An example of this technique is in WindowBase::SetHitTest(HitTestFunction). We need to make sure we call KeyValueWrapper.erase() on the equivalent <code>*.Destroy()</code> function, again the example is WindowBase::Destroy(). </p>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="gac32a41ea0c7f52e898562de99071a7aa" name="gac32a41ea0c7f52e898562de99071a7aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac32a41ea0c7f52e898562de99071a7aa">&#9670;&#160;</a></span>HitTestFunction</h2>
+<a id="ga876ef260b3a07cbebc869191f56331bc" name="ga876ef260b3a07cbebc869191f56331bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga876ef260b3a07cbebc869191f56331bc">&#9670;&#160;</a></span>HitTestFunction</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryVideo.html#gac32a41ea0c7f52e898562de99071a7aa">SDL::HitTestFunction</a> = typedef std::function&lt;<a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(SDL_Window* window, const SDL_Point* area)&gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">SDL::HitTestFunction</a> = typedef std::function&lt;<a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, const <a class="el" href="structSDL_1_1Point.html">Point</a>&amp; area)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Callback used for hit-testing. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">win</td><td>the WindowRef where hit-testing was set on. </td></tr>
+    <tr><td class="paramname">area</td><td>a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> const reference which should be hit-tested. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>an <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e" title="Possible return values from the HitTest callback.">SDL::HitTestResult</a> value.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga40b63d64944c40a9ac2b889887376955" title="Callback used for hit-testing.">HitTest</a> </dd>
 <dd>
 <a class="el" href="group__ListenerCallback.html" title="Listener callback is invoked multiple times whenever the event it subscripted happens.">Listener callback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00286">286</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00290">290</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -130,7 +139,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::SetHitTest </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gac32a41ea0c7f52e898562de99071a7aa">HitTestFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">HitTestFunction</a>&#160;</td>
           <td class="paramname"><em>callback</em></td><td>)</td>
           <td></td>
         </tr>
@@ -160,7 +169,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__ListenerCallback.html" title="Listener callback is invoked multiple times whenever the event it subscripted happens.">Listener callback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02513">2513</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02517">2517</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>

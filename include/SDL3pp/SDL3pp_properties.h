@@ -260,7 +260,7 @@ struct PropertiesBase : T
                              void* value,
                              CleanupPropertyFunction cleanup)
   {
-    using Wrapper = CallbackWrapper<CleanupPropertyFunction>;
+    using Wrapper = ResultCallbackWrapper<CleanupPropertyFunction>;
 
     return SetPointerWithCleanup(std::move(name),
                                  value,

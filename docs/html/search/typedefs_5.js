@@ -5,5 +5,5 @@ var searchData=
   ['free_5ffunc_2',['free_func',['../group__CategoryStdinc.html#ga80cbbb5b121c8f78d44a66deaa573127',1,'SDL']]],
   ['freewrapper_3',['FreeWrapper',['../namespaceSDL.html#a0fb0f1d7796542b1924cb2662a63694d',1,'SDL']]],
   ['functionpointer_4',['FunctionPointer',['../group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7',1,'SDL']]],
-  ['functiontype_5',['FunctionType',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7861db6da2727519334cc65ff00959c1',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;']]]
+  ['functiontype_5',['FunctionType',['../structSDL_1_1ResultCallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#af3cb8c1ddbe04528f449b5199f0782bf',1,'SDL::ResultCallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;']]]
 ];

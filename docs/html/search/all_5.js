@@ -22,7 +22,7 @@ var searchData=
   ['environmentref_19',['EnvironmentRef',['../group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e',1,'SDL']]],
   ['equal_20',['equal',['../structSDL_1_1Rect.html#a09f05c066213374274e055034aa3b28b',1,'SDL::Rect::Equal()'],['../structSDL_1_1FRect.html#a196110eaa3957ab44f9ec977fbbae3fd',1,'SDL::FRect::Equal(const FRect &amp;other) const']]],
   ['equalepsilon_21',['EqualEpsilon',['../structSDL_1_1FRect.html#a0dddedcee6c59d91fef1defa8aa0ae17',1,'SDL::FRect']]],
-  ['erase_22',['Erase',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2669bba92899e4d774e9ff9ea507e807',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;']]],
+  ['erase_22',['erase',['../structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050',1,'SDL::KeyValueWrapper::erase()'],['../structSDL_1_1KeyValueWrapper_3_01void_00_01VALUE_01_4.html#a01c83f1630977f2ca690dd6771334818',1,'SDL::KeyValueWrapper&lt; void, VALUE &gt;::erase()']]],
   ['error_20handling_23',['Error Handling',['../group__CategoryError.html',1,'']]],
   ['event_24',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
   ['event_20types_25',['Event Types',['../group__EventTypes.html',1,'']]],

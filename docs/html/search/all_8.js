@@ -23,6 +23,6 @@ var searchData=
   ['hittest_5fresize_5ftop_20',['HITTEST_RESIZE_TOP',['../group__CategoryVideo.html#ga96e576ef1f1820b79b5a4839878523ef',1,'SDL']]],
   ['hittest_5fresize_5ftopleft_21',['HITTEST_RESIZE_TOPLEFT',['../group__CategoryVideo.html#ga9f8b4f0aadf28d64b985f8969fd75cd1',1,'SDL']]],
   ['hittest_5fresize_5ftopright_22',['HITTEST_RESIZE_TOPRIGHT',['../group__CategoryVideo.html#ga4438c9ae8060b5a85affedffb522c90e',1,'SDL']]],
-  ['hittestfunction_23',['HitTestFunction',['../group__CategoryVideo.html#gac32a41ea0c7f52e898562de99071a7aa',1,'SDL']]],
+  ['hittestfunction_23',['HitTestFunction',['../group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc',1,'SDL']]],
   ['hittestresult_24',['HitTestResult',['../group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e',1,'SDL']]]
 ];
