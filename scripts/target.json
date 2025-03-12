@@ -5919,7 +5919,7 @@
             "EnumerateFunction": {
               "doc": "@sa PropertiesRef.EnumerateCallback",
               "kind": "alias",
-              "type": "std::function<void(SDL_PropertiesID, const char *)>",
+              "type": "std::function<void(PropertiesRef props, const char *name)>",
               "name": "EnumerateFunction"
             },
             "Enumerate": [

@@ -577,7 +577,8 @@ struct PropertiesBase : T
   /**
    * @sa EnumerateCallback()
    */
-  using EnumerateFunction = std::function<void(SDL_PropertiesID, const char*)>;
+  using EnumerateFunction =
+    std::function<void(PropertiesRef props, const char* name)>;
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -618,7 +619,7 @@ struct PropertiesBase : T
     return Enumerate(
       [](void* userdata, SDL_PropertiesID props, const char* name) {
         auto& f = *static_cast<EnumerateFunction*>(userdata);
-        f(props, name);
+        f({props}, name);
       },
       &callback);
   }
