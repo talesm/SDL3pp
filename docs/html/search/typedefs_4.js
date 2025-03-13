@@ -14,6 +14,6 @@ var searchData=
   ['event_11',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
   ['eventaction_12',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
   ['eventfilter_13',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
-  ['eventfilterfunction_14',['EventFilterFunction',['../group__CategoryEvents.html#ga89729782789df28788240517ea5b82be',1,'SDL']]],
+  ['eventfilterfunction_14',['EventFilterFunction',['../group__ListenerCallback.html#ga89729782789df28788240517ea5b82be',1,'SDL']]],
   ['eventtype_15',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]]
 ];

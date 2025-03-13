@@ -147,7 +147,7 @@ var searchData=
   ['eventaction_144',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
   ['eventenabled_145',['EventEnabled',['../group__CategoryEvents.html#gae67ec89cc5986f1f99a24916db4d20d0',1,'SDL']]],
   ['eventfilter_146',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
-  ['eventfilterfunction_147',['EventFilterFunction',['../group__CategoryEvents.html#ga89729782789df28788240517ea5b82be',1,'SDL']]],
+  ['eventfilterfunction_147',['EventFilterFunction',['../group__ListenerCallback.html#ga89729782789df28788240517ea5b82be',1,'SDL']]],
   ['events_148',['events',['../group__CategoryEvents.html',1,'Category Events'],['../ApiByCategory.html#input-events',1,'Input Events'],['../group__CategoriesEvents.html',1,'Input Events']]],
   ['eventtype_149',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]],
   ['examples_150',['Examples',['../index.html#examples',1,'']]],

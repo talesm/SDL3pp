@@ -17609,6 +17609,9 @@ using EventFilter = SDL_EventFilter;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
  * @sa SetEventFilter()
  * @sa AddEventWatch()
  * @sa EventFilter
@@ -17692,6 +17695,9 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
  * @sa AddEventWatch()
  * @sa SetEventEnabled()
  * @sa GetEventFilter()

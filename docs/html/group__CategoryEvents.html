@@ -209,9 +209,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga32cb19c6685bf30697726b3efde06ab0" id="r_ga32cb19c6685bf30697726b3efde06ab0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0">SDL::EventFilter</a> = SDL_EventFilter</td></tr>
 <tr class="memdesc:ga32cb19c6685bf30697726b3efde06ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function pointer used for callbacks that watch the event queue.  <br /></td></tr>
 <tr class="separator:ga32cb19c6685bf30697726b3efde06ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga89729782789df28788240517ea5b82be" id="r_ga89729782789df28788240517ea5b82be"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga89729782789df28788240517ea5b82be">SDL::EventFilterFunction</a> = std::function&lt; bool(const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> &amp;)&gt;</td></tr>
-<tr class="memdesc:ga89729782789df28788240517ea5b82be"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::function used for callbacks that watch the event queue.  <br /></td></tr>
-<tr class="separator:ga89729782789df28788240517ea5b82be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -265,13 +262,10 @@ Functions</h2></td></tr>
 <tr class="memitem:gab04b0a4b2342c07abe0bcb79e6b91869" id="r_gab04b0a4b2342c07abe0bcb79e6b91869"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869">SDL::SetEventFilter</a> (<a class="el" href="group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0">EventFilter</a> filter, void *userdata)</td></tr>
 <tr class="memdesc:gab04b0a4b2342c07abe0bcb79e6b91869"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a filter to process all events before they are added to the internal event queue.  <br /></td></tr>
 <tr class="separator:gab04b0a4b2342c07abe0bcb79e6b91869"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5ad81a70c2b9073fe5b77819ffa977c6" id="r_ga5ad81a70c2b9073fe5b77819ffa977c6"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga5ad81a70c2b9073fe5b77819ffa977c6">SDL::SetEventFilter</a> (<a class="el" href="group__CategoryEvents.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> filter={})</td></tr>
-<tr class="memdesc:ga5ad81a70c2b9073fe5b77819ffa977c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a filter to process all events before they are added to the internal event queue.  <br /></td></tr>
-<tr class="separator:ga5ad81a70c2b9073fe5b77819ffa977c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2ec6c108852fcfe3efbedda877496eb4" id="r_ga2ec6c108852fcfe3efbedda877496eb4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga2ec6c108852fcfe3efbedda877496eb4">SDL::GetEventFilter</a> (<a class="el" href="group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0">EventFilter</a> *filter, void **userdata)</td></tr>
 <tr class="memdesc:ga2ec6c108852fcfe3efbedda877496eb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current event filter.  <br /></td></tr>
 <tr class="separator:ga2ec6c108852fcfe3efbedda877496eb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga274cf6de4be1b4faf2d734e868fa9f73" id="r_ga274cf6de4be1b4faf2d734e868fa9f73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryEvents.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga274cf6de4be1b4faf2d734e868fa9f73">SDL::GetEventFilter</a> ()</td></tr>
+<tr class="memitem:ga274cf6de4be1b4faf2d734e868fa9f73" id="r_ga274cf6de4be1b4faf2d734e868fa9f73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga274cf6de4be1b4faf2d734e868fa9f73">SDL::GetEventFilter</a> ()</td></tr>
 <tr class="memdesc:ga274cf6de4be1b4faf2d734e868fa9f73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current event filter.  <br /></td></tr>
 <tr class="separator:ga274cf6de4be1b4faf2d734e868fa9f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9336b4a3c5cd2d4bdddedeac94e4232e" id="r_ga9336b4a3c5cd2d4bdddedeac94e4232e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e">SDL::AddEventWatch</a> (<a class="el" href="group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0">EventFilter</a> filter, void *userdata)</td></tr>
@@ -505,38 +499,6 @@ Functions</h2></td></tr>
 <a class="el" href="group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01493">1493</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
-
-</div>
-</div>
-<a id="ga89729782789df28788240517ea5b82be" name="ga89729782789df28788240517ea5b82be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga89729782789df28788240517ea5b82be">&#9670;&#160;</a></span>EventFilterFunction</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryEvents.html#ga89729782789df28788240517ea5b82be">SDL::EventFilterFunction</a> = typedef std::function&lt;bool(const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a>&amp;)&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>A std::function used for callbacks that watch the event queue. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">event</td><td>the event that triggered the callback. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true to permit event to be added to the queue, and false to disallow it. When used with <a class="el" href="group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a>, the return value is ignored.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> may call this callback at any time from any thread; the application is responsible for locking resources the callback touches that need to be protected.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0" title="A function pointer used for callbacks that watch the event queue.">EventFilter</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01513">1513</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -1257,7 +1219,7 @@ StopTextInput() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01686">1686</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01692">1692</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -1297,7 +1259,7 @@ StopTextInput() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga883f6ae88fa5628490ff69fb9e2fc8e5" title="Set the state of processing events by type.">SetEventEnabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01763">1763</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01769">1769</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -1350,7 +1312,7 @@ StopTextInput() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01729">1729</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01735">1735</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -1460,7 +1422,7 @@ StopTextInput() </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryEvents.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> SDL::GetEventFilter </td>
+          <td class="memname"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> SDL::GetEventFilter </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1479,7 +1441,7 @@ StopTextInput() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01643">1643</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01649">1649</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -1531,7 +1493,7 @@ StopTextInput() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01625">1625</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01631">1631</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -1575,7 +1537,7 @@ StopTextInput() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryEvents.html#ga8467dfac03ec857a6a2cdbb1d7527fbe" title="Wait until the specified timeout (in milliseconds) for the next available event.">WaitEventTimeout()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01798">1798</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01804">1804</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -2013,7 +1975,7 @@ remarks</h2>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576" title="Add an event to the event queue.">PushEvent()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01779">1779</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01785">1785</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -2064,7 +2026,7 @@ remarks</h2>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01706">1706</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01712">1712</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
@@ -2114,12 +2076,12 @@ remarks</h2>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#gae67ec89cc5986f1f99a24916db4d20d0" title="Query the state of processing events by type.">EventEnabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01746">1746</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01752">1752</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
 <a id="gab04b0a4b2342c07abe0bcb79e6b91869" name="gab04b0a4b2342c07abe0bcb79e6b91869"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab04b0a4b2342c07abe0bcb79e6b91869">&#9670;&#160;</a></span>SetEventFilter() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gab04b0a4b2342c07abe0bcb79e6b91869">&#9670;&#160;</a></span>SetEventFilter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2178,60 +2140,7 @@ remarks</h2>
 <dd>
 <a class="el" href="group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576" title="Add an event to the event queue.">PushEvent()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01554">1554</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
-
-</div>
-</div>
-<a id="ga5ad81a70c2b9073fe5b77819ffa977c6" name="ga5ad81a70c2b9073fe5b77819ffa977c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5ad81a70c2b9073fe5b77819ffa977c6">&#9670;&#160;</a></span>SetEventFilter() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto SDL::SetEventFilter </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryEvents.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td>
-          <td class="paramname"><em>filter</em> = <code>{}</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set up a filter to process all events before they are added to the internal event queue. </p>
-<p>If you just want to see events without modifying them or preventing them from being queued, you should use SDL_AddEventWatch() instead.</p>
-<p>If the filter function returns true when called, then the event will be added to the internal queue. If it returns false, then the event will be dropped from the queue, but the internal state will still be updated. This allows selective filtering of dynamically arriving events.</p>
-<p><b>WARNING</b>: Be very careful of what you do in the event filter function, as it may run in a different thread!</p>
-<p>On platforms that support it, if the quit event is generated by an interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the application at the next event poll.</p>
-<p>Note: Disabled events never make it to the event filter function; see SDL_SetEventEnabled().</p>
-<p>Note: Events pushed onto the queue with SDL_PushEvent() get passed through the event filter, but events pushed onto the queue with SDL_PeepEvents() do not.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">filter</td><td>an EventFilterFunction function to call when an event happens.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryEvents.html#ga883f6ae88fa5628490ff69fb9e2fc8e5" title="Set the state of processing events by type.">SetEventEnabled()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryEvents.html#ga274cf6de4be1b4faf2d734e868fa9f73" title="Query the current event filter.">GetEventFilter()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576" title="Add an event to the event queue.">PushEvent()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01598">1598</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01557">1557</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
