@@ -22301,10 +22301,14 @@ inline const char* GetRevision() { return SDL_GetRevision(); }
 #ifndef SDL3PP_IMAGE_H_
 #define SDL3PP_IMAGE_H_
 
-#if __has_include(<SDL3_image/SDL_image.h>) || defined(SDL3PP_DOC)
+#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
+  __has_include(<SDL3_image/SDL_image.h>)
+#define SDL3PP_ENABLE_IMAGE
+#endif
+
+#if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #include <SDL3_image/SDL_image.h>
-#define SDL3PP_HAS_IMAGE
 
 namespace SDL::IMG {
 
@@ -24416,7 +24420,7 @@ inline Animation* LoadWEBPAnimation_IO(SDL_IOStream* src)
 /// @}
 } // namespace SDL::IMG
 
-#endif // __has_include(<SDL3/SDL_image.h>)
+#endif // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
 
 #endif /* SDL3PP_IMAGE_H_ */
 

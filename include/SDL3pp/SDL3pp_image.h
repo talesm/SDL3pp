@@ -1,16 +1,19 @@
 #ifndef SDL3PP_IMAGE_H_
 #define SDL3PP_IMAGE_H_
 
+#if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
+  __has_include(<SDL3_image/SDL_image.h>)
+#define SDL3PP_ENABLE_IMAGE
+#endif
+
+#if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
+
+#include <SDL3_image/SDL_image.h>
 #include "SDL3pp_error.h"
 #include "SDL3pp_render.h"
 #include "SDL3pp_surface.h"
 #include "SDL3pp_version.h"
 #include "SDL3pp_video.h"
-
-#if __has_include(<SDL3_image/SDL_image.h>) || defined(SDL3PP_DOC)
-
-#include <SDL3_image/SDL_image.h>
-#define SDL3PP_HAS_IMAGE
 
 namespace SDL::IMG {
 
@@ -2122,6 +2125,6 @@ inline Animation* LoadWEBPAnimation_IO(SDL_IOStream* src)
 /// @}
 } // namespace SDL::IMG
 
-#endif // __has_include(<SDL3/SDL_image.h>)
+#endif // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
 
 #endif /* SDL3PP_IMAGE_H_ */

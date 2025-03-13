@@ -4208,14 +4208,6 @@
       }
     },
     "SDL_image.h": {
-      "includeAfter": {
-        "__begin": [
-          {
-            "kind": "def",
-            "name": "SDL3PP_HAS_IMAGE"
-          }
-        ]
-      },
       "transform": {
         "IMG_LoadTyped_IO": {
           "type": "Surface",

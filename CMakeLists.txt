@@ -6,7 +6,14 @@ add_subdirectory(external/SDL)
 add_subdirectory(external/SDL_image)
 
 set(CMAKE_CXX_STANDARD 23)
-set(SDL3PP_DEPENDENCIES SDL3::SDL3 SDL3_image::SDL3_image)
+
+option(SDL3PP_DISABLE_IMAGE "Disable compilation SDL_Image" OFF)
+
+if(SDL3PP_DISABLE_IMAGE)
+    set(SDL3PP_AMALGAMATION_DEFS "-d SDL3PP_DISABLE_IMAGE")
+else((SDL3PP_DISABLE_IMAGE))
+    set(SDL3PP_DEPENDENCIES SDL3::SDL3 SDL3_image::SDL3_image)
+endif((SDL3PP_DISABLE_IMAGE))
 
 # The SDL3pp library
 add_library(SDL3pp_lib INTERFACE)
@@ -32,7 +39,7 @@ else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 
 add_custom_target(SDL3pp_amalgamate
-    COMMAND Heady --source ${PROJECT_SOURCE_DIR}/include/SDL3pp/ --output ${SDL3PP_AMALGAMATION_FILENAME}
+    COMMAND Heady --source ${PROJECT_SOURCE_DIR}/include/SDL3pp/ --output ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
 )
 
 # Manual tests
