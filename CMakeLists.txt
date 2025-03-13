@@ -62,3 +62,9 @@ if (DOXYGEN_FOUND)
         CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
     )
 endif (DOXYGEN_FOUND)
+
+# Refresh the headers
+add_custom_target(SDL3pp_refresh
+    COMMAND node refresh.js
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)

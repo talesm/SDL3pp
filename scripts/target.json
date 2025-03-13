@@ -12754,7 +12754,6 @@
         "TimerFunction": {
           "kind": "alias",
           "name": "TimerFunction",
-          "type": "std::function<Uint64(TimerID, std::chrono::nanoseconds)>",
           "doc": ""
         },
         "AddTimer": [
@@ -12807,11 +12806,15 @@
             "parameters": [
               {
                 "type": "std::chrono::nanoseconds",
-                "name": "duration"
+                "name": "interval"
               },
               {
-                "type": "TimerFunction",
+                "type": "NSTimerCallback",
                 "name": "callback"
+              },
+              {
+                "type": "void *",
+                "name": "userdata"
               }
             ],
             "doc": ""
@@ -12823,15 +12826,11 @@
             "parameters": [
               {
                 "type": "std::chrono::nanoseconds",
-                "name": "duration"
+                "name": "interval"
               },
               {
-                "type": "NSTimerCallback",
+                "type": "TimerFunction",
                 "name": "callback"
-              },
-              {
-                "type": "void *",
-                "name": "userdata"
               }
             ],
             "doc": ""
