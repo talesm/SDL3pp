@@ -19,7 +19,7 @@ int main(int argc, char** argv)
   }
 
   SDL::Texture characterTexture{
-    SDL::IMG::LoadTexture(renderer, "assets/smiley.png")};
+    SDL::LoadTexture(renderer, "assets/smiley.png")};
   if (!characterTexture) {
     SDL_Log("%s", SDL::GetError());
     return 1;

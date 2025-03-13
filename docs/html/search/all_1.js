@@ -16,7 +16,7 @@ var searchData=
   ['and_20shutdown_13',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]],
   ['and_20simple_20drawing_14',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['and_20window_20management_15',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
-  ['animation_16',['Animation',['../group__CategorySDLImage.html#gadd7ea28236ac189b133748df1ee401e9',1,'SDL::IMG']]],
+  ['animation_16',['Animation',['../group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc',1,'SDL']]],
   ['api_20by_20category_17',['API by Category',['../ApiByCategory.html',1,'']]],
   ['apibycategory_2eh_18',['ApiByCategory.h',['../ApiByCategory_8h.html',1,'']]],
   ['app_5fcontinue_19',['APP_CONTINUE',['../group__CategoryInit.html#ga646434c58bdb24bc49d377a4603d5b6b',1,'SDL']]],

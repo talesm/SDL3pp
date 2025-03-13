@@ -14900,18 +14900,18 @@
       "name": "SDL3pp_image.h",
       "doc": "@defgroup CategorySDLImage Category SDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",
       "entries": {
-        "Version": {
+        "IMG_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_image library.\n\n@returns SDL_image version.\n\n@since This function is available since SDL_image 3.0.0.",
-          "name": "Version",
+          "name": "IMG_Version",
           "kind": "function",
           "type": "int",
           "parameters": [],
-          "sourceName": "IMG_Version"
+          "sourceName": "::IMG_Version"
         },
-        "Load": [
+        "LoadSurface": [
           {
             "doc": "Load an image from an SDL data source into a software surface.\n\nAn SDL_Surface is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SDL_Surface data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SDL_Surface for\nits specifics, and use SDL_ConvertSurface to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SDL_SetSurfaceColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is NULL, SDL_image will rely solely on\nits ability to guess the format.\n\nThere is a separate function to read files from disk without having to deal\nwith SDL_IOStream: `IMG_Load(\"filename.jpg\")` will call this function and\nmanage those details for you, determining the file type from the filename's\nextension.\n\nThere is also IMG_Load_IO(), which is equivalent to this function except\nthat it will rely on SDL_image to determine what type of data it is\nloading, much like passing a NULL for type.\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an SDL_Texture for use by the GPU without using a\nsoftware surface: call IMG_LoadTextureTyped_IO() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SDL_DestroySurface().\n\n@param src an SDL_IOStream that data will be read from.\n@param closeio true to close/free the SDL_IOStream before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"BMP\", \"GIF\",\n            \"PNG\", etc).\n@returns a new SDL surface, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_Load\n@sa IMG_Load_IO\n@sa SDL_DestroySurface",
-            "name": "Load",
+            "name": "LoadSurface",
             "kind": "function",
             "type": "Surface",
             "parameters": [
@@ -14932,7 +14932,7 @@
           },
           {
             "doc": "Load an image from a filesystem path into a software surface.\n\nAn SDL_Surface is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SDL_Surface data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SDL_Surface for\nits specifics, and use SDL_ConvertSurface to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SDL_SetSurfaceColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nThere is a separate function to read files from an SDL_IOStream, if you\nneed an i/o abstraction to provide data from anywhere instead of a simple\nfilesystem read; that function is IMG_Load_IO().\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an SDL_Texture for use by the GPU without using a\nsoftware surface: call IMG_LoadTexture() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to\n[SDL_DestroySurface](https://wiki.libsdl.org/SDL3/SDL_DestroySurface)\n().\n\n@param file a path on the filesystem to load an image from.\n@returns a new SDL surface, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadTyped_IO\n@sa IMG_Load_IO\n@sa SDL_DestroySurface",
-            "name": "Load",
+            "name": "LoadSurface",
             "kind": "function",
             "type": "Surface",
             "parameters": [
@@ -14945,7 +14945,7 @@
           },
           {
             "doc": "Load an image from an SDL data source into a software surface.\n\nAn SDL_Surface is a buffer of pixels in memory accessible by the CPU. Use\nthis if you plan to hand the data to something else or manipulate it\nfurther in code.\n\nThere are no guarantees about what format the new SDL_Surface data will be;\nin many cases, SDL_image will attempt to supply a surface that exactly\nmatches the provided image, but in others it might have to convert (either\nbecause the image is in a format that SDL doesn't directly support or\nbecause it's compressed data that could reasonably uncompress to various\nformats and SDL_image had to pick one). You can inspect an SDL_Surface for\nits specifics, and use SDL_ConvertSurface to then migrate to any supported\nformat.\n\nIf the image format supports a transparent pixel, SDL will set the colorkey\nfor the surface. You can enable RLE acceleration on the surface afterwards\nby calling: SDL_SetSurfaceColorKey(image, SDL_RLEACCEL,\nimage->format->colorkey);\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nThere is a separate function to read files from disk without having to deal\nwith SDL_IOStream: `IMG_Load(\"filename.jpg\")` will call this function and\nmanage those details for you, determining the file type from the filename's\nextension.\n\nThere is also IMG_LoadTyped_IO(), which is equivalent to this function\nexcept a file extension (like \"BMP\", \"JPG\", etc) can be specified, in case\nSDL_image cannot autodetect the file format.\n\nIf you are using SDL's 2D rendering API, there is an equivalent call to\nload images directly into an SDL_Texture for use by the GPU without using a\nsoftware surface: call IMG_LoadTexture_IO() instead.\n\nWhen done with the returned surface, the app should dispose of it with a\ncall to SDL_DestroySurface().\n\n@param src an SDL_IOStream that data will be read from.\n@param closeio true to close/free the SDL_IOStream before returning, false\n               to leave it open.\n@returns a new SDL surface, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_Load\n@sa IMG_LoadTyped_IO\n@sa SDL_DestroySurface",
-            "name": "Load",
+            "name": "LoadSurface",
             "kind": "function",
             "type": "Surface",
             "parameters": [

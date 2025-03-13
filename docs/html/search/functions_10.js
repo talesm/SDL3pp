@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['saveavif_0',['saveavif',['../group__CategorySDLImage.html#ga5064e7104c2163a28d4d48ea9613b187',1,'SDL::IMG::SaveAVIF(SurfaceRef surface, StringParam file, int quality)'],['../group__CategorySDLImage.html#gaec28548065c538289f26aca0ca41bb26',1,'SDL::IMG::SaveAVIF(SurfaceRef surface, SDL_IOStream *dst, bool closeio, int quality)']]],
+  ['saveavif_0',['saveavif',['../group__CategorySDLImage.html#gafb85006ddaaff2ca5e1e209f96c9d53d',1,'SDL::SaveAVIF(SurfaceRef surface, StringParam file, int quality)'],['../group__CategorySDLImage.html#gac9ae927a80aa16155c5d7ddb58eae9bc',1,'SDL::SaveAVIF(SurfaceRef surface, SDL_IOStream *dst, bool closeio, int quality)']]],
   ['savebmp_1',['savebmp',['../group__CategorySurface.html#ga63ffd07298652015b4c886bd56467389',1,'SDL::SaveBMP(SurfaceRef surface, SDL_IOStream *dst, bool closeio)'],['../group__CategorySurface.html#gafde7120c276cc45bf7cc439889e89967',1,'SDL::SaveBMP(SurfaceRef surface, StringParam file)']]],
-  ['savejpg_2',['savejpg',['../group__CategorySDLImage.html#ga6d81b5bdacf4d39628f8443a3de58579',1,'SDL::IMG::SaveJPG(SurfaceRef surface, StringParam file, int quality)'],['../group__CategorySDLImage.html#gad5947ce74b7d45de752cf0b4cb9e961c',1,'SDL::IMG::SaveJPG(SurfaceRef surface, SDL_IOStream *dst, bool closeio, int quality)']]],
-  ['savepng_3',['savepng',['../group__CategorySDLImage.html#gaea2a9a911991b8a65ebf190b4ec0d1a3',1,'SDL::IMG::SavePNG(SurfaceRef surface, StringParam file)'],['../group__CategorySDLImage.html#gaf037418d01b71cefe5ee5c83fe359e84',1,'SDL::IMG::SavePNG(SurfaceRef surface, SDL_IOStream *dst, bool closeio)']]],
+  ['savejpg_2',['savejpg',['../group__CategorySDLImage.html#ga9cdc56c01dab60431bf3f84708a366c3',1,'SDL::SaveJPG(SurfaceRef surface, StringParam file, int quality)'],['../group__CategorySDLImage.html#gabda656ff1d13602fa298ac9e1805a299',1,'SDL::SaveJPG(SurfaceRef surface, SDL_IOStream *dst, bool closeio, int quality)']]],
+  ['savepng_3',['savepng',['../group__CategorySDLImage.html#ga4565bb2de11ec36afa8a0f5ac36e1688',1,'SDL::SavePNG(SurfaceRef surface, StringParam file)'],['../group__CategorySDLImage.html#ga352357377dcd0709a17a9a59577d4b11',1,'SDL::SavePNG(SurfaceRef surface, SDL_IOStream *dst, bool closeio)']]],
   ['scalbn_4',['scalbn',['../group__CategoryStdinc.html#ga2438009a4b8a2f4a9155a168f6cd8303',1,'SDL']]],
   ['scalbnf_5',['scalbnf',['../group__CategoryStdinc.html#ga52e712f14d91d7ecf74bd687a5458a6d',1,'SDL']]],
   ['scale_6',['Scale',['../structSDL_1_1SurfaceBase.html#a53e40ed84412c2bdcc790571150cb65f',1,'SDL::SurfaceBase']]],

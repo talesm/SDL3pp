@@ -34,7 +34,7 @@ var searchData=
   ['frect_31',['frect',['../structSDL_1_1FRect.html',1,'SDL::FRect'],['../structSDL_1_1FRect.html#a8b7ce4f4f4381689eef742c636a9572f',1,'SDL::FRect::FRect(const SDL_FRect &amp;rect={0})'],['../structSDL_1_1FRect.html#ae3f9ac79fb459cc21895887e8f87c82f',1,'SDL::FRect::FRect(float x, float y, float w, float h)'],['../structSDL_1_1FRect.html#aaa84d4c9870ba6d0a32d9de4495915d3',1,'SDL::FRect::FRect(const SDL_FPoint &amp;corner, const SDL_FPoint &amp;size)']]],
   ['free_32',['free',['../group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6',1,'SDL']]],
   ['free_5ffunc_33',['free_func',['../group__CategoryStdinc.html#ga80cbbb5b121c8f78d44a66deaa573127',1,'SDL']]],
-  ['freeanimation_34',['FreeAnimation',['../group__CategorySDLImage.html#ga31f05bacb13a68ccf0f58d83b22e2f14',1,'SDL::IMG']]],
+  ['freeanimation_34',['FreeAnimation',['../group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0',1,'SDL']]],
   ['freewrapper_35',['FreeWrapper',['../namespaceSDL.html#a0fb0f1d7796542b1924cb2662a63694d',1,'SDL']]],
   ['freewrapperdeleter_36',['FreeWrapperDeleter',['../structSDL_1_1FreeWrapperDeleter.html',1,'SDL']]],
   ['from_20several_20formats_37',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],

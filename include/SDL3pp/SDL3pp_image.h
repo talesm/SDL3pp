@@ -15,7 +15,7 @@
 #include "SDL3pp_version.h"
 #include "SDL3pp_video.h"
 
-namespace SDL::IMG {
+namespace SDL {
 
 /**
  * @defgroup CategorySDLImage Load images from several formats
@@ -33,7 +33,7 @@ namespace SDL::IMG {
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline int Version() { return IMG_Version(); }
+inline int IMG_Version() { return IMG_Version(); }
 
 /**
  * Load an image from an SDL data source into a software surface.
@@ -84,7 +84,7 @@ inline int Version() { return IMG_Version(); }
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface Load(SDL_IOStream* src, bool closeio, StringParam type)
+inline Surface LoadSurface(SDL_IOStream* src, bool closeio, StringParam type)
 {
   return Surface{IMG_LoadTyped_IO(src, closeio, type)};
 }
@@ -112,7 +112,7 @@ inline Surface Load(SDL_IOStream* src, bool closeio, StringParam type)
  *
  * There is a separate function to read files from an SDL_IOStream, if you
  * need an i/o abstraction to provide data from anywhere instead of a simple
- * filesystem read; that function is Load().
+ * filesystem read; that function is Load(SDL_IOStream*,bool).
  *
  * If you are using SDL's 2D rendering API, there is an equivalent call to
  * load images directly into an Texture for use by the GPU without using a
@@ -123,7 +123,7 @@ inline Surface Load(SDL_IOStream* src, bool closeio, StringParam type)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface Load(StringParam file) { return Surface{IMG_Load(file)}; }
+inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
 
 /**
  * Load an image from an SDL data source into a software surface.
@@ -170,7 +170,7 @@ inline Surface Load(StringParam file) { return Surface{IMG_Load(file)}; }
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface Load(SDL_IOStream* src, bool closeio)
+inline Surface LoadSurface(SDL_IOStream* src, bool closeio)
 {
   return Surface{IMG_Load_IO(src, closeio)};
 }
@@ -190,7 +190,7 @@ inline Surface Load(SDL_IOStream* src, bool closeio)
  * RGBA).
  *
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
- * memory), call Load() instead.
+ * memory), call LoadSurface(StringParam) instead.
  *
  * @param renderer the SDL_Renderer to use to create the GPU texture.
  * @param file a path on the filesystem to load an image from.
@@ -226,7 +226,7 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
  * from the filename's extension.
  *
  * If you would rather decode an image to an Surface (a buffer of pixels
- * in CPU memory), call Load() instead.
+ * in CPU memory), call Load(SDL_IOStream*,bool) instead.
  *
  * @param renderer the SDL_Renderer to use to create the GPU texture.
  * @param src an SDL_IOStream that data will be read from.
@@ -271,7 +271,7 @@ inline Texture LoadTexture(RendererRef renderer,
  * the filename's extension.
  *
  * If you would rather decode an image to an SDL_Surface (a buffer of pixels
- * in CPU memory), call IMG_Load() instead.
+ * in CPU memory), call Load(SDL_IOStream*,bool,StringParam) instead.
  *
  * @param renderer the SDL_Renderer to use to create the GPU texture.
  * @param src an SDL_IOStream that data will be read from.
@@ -2123,7 +2123,7 @@ inline Animation* LoadWEBPAnimation_IO(SDL_IOStream* src)
 }
 
 /// @}
-} // namespace SDL::IMG
+} // namespace SDL
 
 #endif // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
 

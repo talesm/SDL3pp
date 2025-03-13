@@ -4209,21 +4209,23 @@
     },
     "SDL_image.h": {
       "transform": {
+        "IMG_Version": {
+          "name": "IMG_Version"
+        },
         "IMG_LoadTyped_IO": {
           "type": "Surface",
-          "name": "Load"
+          "name": "LoadSurface"
         },
         "IMG_Load": {
           "type": "Surface",
-          "name": "Load"
+          "name": "LoadSurface"
         },
         "IMG_Load_IO": {
           "type": "Surface",
-          "name": "Load"
+          "name": "LoadSurface"
         },
         "IMG_LoadTexture": {
-          "type": "Texture",
-          "name": "LoadTexture"
+          "type": "Texture"
         },
         "IMG_LoadTexture_IO": {
           "type": "Texture",
