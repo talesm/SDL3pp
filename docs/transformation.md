@@ -18,7 +18,7 @@ its prefix.
 prefix. Eg `SDL_Surface` becomes SDL::Surface;
 
 Function rules
--------------
+--------------
 
 - All method definitions are inline. We have a header only library here;
   - Forward declarations are permitted whenever is convenient;
@@ -114,4 +114,17 @@ but have method-like functions are defined as follows:
 Callback rules
 --------------
 
-- todo
+As we mentioned in [Function rules](#function-rules), the original callback 
+functions are always supported. In addition, if has an userdata parameter we 
+create an alternative callback as follows:
+
+- The callback name will have the "Function" suffix, replacing a "Callback" 
+  suffix if any;
+- The callback type is a std::function with the same parameters than the 
+  original one, with the following changes: 
+  - Remove userdata parameter;
+  - Follow any applicable parameter transformation rules as described in 
+    [Function rules](#function-rules).
+- The function taking the callback (and the one removing it if exists) must
+  follow [this guideline](#callback) on how to marshal the std::function object
+  into the userdata. 

@@ -180,8 +180,15 @@ Type rules</h1>
 </ul>
 <h1><a class="anchor" id="callback-rules"></a>
 Callback rules</h1>
+<p>As we mentioned in <a class="el" href="transformations.html#function-rules">Function rules</a>, the original callback functions are always supported. In addition, if has an userdata parameter we create an alternative callback as follows:</p>
 <ul>
-<li>todo </li>
+<li>The callback name will have the "Function" suffix, replacing a "Callback" suffix if any;</li>
+<li>The callback type is a std::function with the same parameters than the original one, with the following changes:<ul>
+<li>Remove userdata parameter;</li>
+<li>Follow any applicable parameter transformation rules as described in <a class="el" href="transformations.html#function-rules">Function rules</a>.</li>
+</ul>
+</li>
+<li>The function taking the callback (and the one removing it if exists) must follow <a class="el" href="group__callback.html">this guideline</a> on how to marshal the std::function object into the userdata. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
