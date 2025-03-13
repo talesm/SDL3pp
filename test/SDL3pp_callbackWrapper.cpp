@@ -12,9 +12,8 @@ TEST_CASE("UniqueWrapper no params")
   SUBCASE("contains")
   {
     CHECK(UniqueWrapper::contains(addCounterHandle));
-    CHECK_FALSE(UniqueWrapper::contains((void*)2));
-    void* otherHandler = UniqueWrapper::Wrap(addCounterCB);
-    CHECK(UniqueWrapper::contains(otherHandler));
+    CHECK_FALSE(UniqueWrapper::contains(nullptr));
+    UniqueWrapper::erase();
     CHECK_FALSE(UniqueWrapper::contains(addCounterHandle));
   }
   SUBCASE("Call")

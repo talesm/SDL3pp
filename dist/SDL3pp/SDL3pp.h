@@ -503,49 +503,45 @@ struct UniqueWrapper
     /// @todo make this an opaque type
     auto lockGuard = lock();
     auto& v = Value();
-    if (value)
-      v = std::make_unique<ValueType>(std::move(value));
-    else
-      v.reset();
-    return v.get();
+    v = std::move(value);
+    return &v;
   }
 
   static bool contains(void* handle)
   {
     auto lockGuard = lock();
-    return Value().get() == handle;
+    auto& v = Value();
+    return bool(v) && &v == handle;
   }
 
   static const ValueType& at(void* handle)
   {
     auto lockGuard = lock();
     auto& v = Value();
-    SDL_assert_paranoid(v.get() == handle);
-    return *v;
+    SDL_assert_paranoid(&v == handle);
+    return v;
   }
 
   static ValueType release(void* handle)
   {
     auto lockGuard = lock();
     auto& v = Value();
-    SDL_assert_paranoid(v.get() == handle);
+    SDL_assert_paranoid(&v == handle);
 
-    ValueType value{std::move(*v)};
-    v.reset();
-
+    ValueType value{std::move(v)};
     return value;
   }
 
   static void erase()
   {
     auto lockGuard = lock();
-    return Value().reset();
+    Value() = {};
   }
 
 private:
-  static std::unique_ptr<ValueType>& Value()
+  static ValueType& Value()
   {
-    static std::unique_ptr<ValueType> value;
+    static ValueType value;
     return value;
   }
 
