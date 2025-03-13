@@ -1784,7 +1784,7 @@ inline EventWatchHandle AddEventWatch(EventFilterFunction filter)
  */
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
-  return SDL_RemoveEventWatch(filter, userdata);
+  SDL_RemoveEventWatch(filter, userdata);
 }
 
 /**
@@ -1807,15 +1807,16 @@ inline void RemoveEventWatch(EventWatchHandle handle)
   using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
   delete Store::release(handle.get());
 }
+
 /**
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),
- * this function does not change the filter permanently, it only uses the
- * supplied filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
  *
- * @param filter the SDL_EventFilter function to call when an event happens.
+ * @param filter the EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -1827,9 +1828,38 @@ inline void RemoveEventWatch(EventWatchHandle handle)
  */
 inline void FilterEvents(EventFilter filter, void* userdata)
 {
-  return SDL_FilterEvents(filter, userdata);
+  SDL_FilterEvents(filter, userdata);
 }
 
+/**
+ * Run a specific filter function on the current event queue, removing any
+ * events for which the filter returns false.
+ *
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
+ *
+ * @param filter the EventFilter function to call when an event happens.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup SyncCallback
+ *
+ * @sa SyncCallback
+ * @sa GetEventFilter()
+ * @sa SetEventFilter()
+ */
+inline void FilterEvents(EventFilterFunction filter)
+{
+  return FilterEvents(
+    [](void* userdata, SDL_Event* event) {
+      auto& f = *static_cast<EventFilterFunction*>(userdata);
+      return f(*event);
+    },
+    &filter);
+}
 /**
  * Set the state of processing events by type.
  *

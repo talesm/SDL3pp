@@ -641,8 +641,9 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @sa SyncCallback
    * @ingroup SyncCallback
+   *
+   * @sa SyncCallback
    */
   bool Enumerate(EnumeratePropertiesFunction callback) const
   {

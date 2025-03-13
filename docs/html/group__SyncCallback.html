@@ -81,6 +81,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ga1f1137c1e9907e2fa64387c67a30992e" id="r_ga1f1137c1e9907e2fa64387c67a30992e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SyncCallback.html#ga1f1137c1e9907e2fa64387c67a30992e">SDL::FilterEvents</a> (<a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> filter)</td></tr>
+<tr class="memdesc:ga1f1137c1e9907e2fa64387c67a30992e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a specific filter function on the current event queue, removing any events for which the filter returns false.  <br /></td></tr>
+<tr class="separator:ga1f1137c1e9907e2fa64387c67a30992e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b7fa67b2b1ce9b366c9192edc10e809" id="r_ga4b7fa67b2b1ce9b366c9192edc10e809"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SyncCallback.html#ga4b7fa67b2b1ce9b366c9192edc10e809">SDL::PropertiesBase&lt; T &gt;::Enumerate</a> (<a class="el" href="group__CategoryProperties.html#ga9eaf0c945d51c16b884362809a4f56d2">EnumeratePropertiesFunction</a> callback) const</td></tr>
 <tr class="memdesc:ga4b7fa67b2b1ce9b366c9192edc10e809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate the properties contained in a group of properties.  <br /></td></tr>
 <tr class="separator:ga4b7fa67b2b1ce9b366c9192edc10e809"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,7 +160,51 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__SyncCallback.html" title="Immediate callback or synchronous callback is always invoked before the callee function returns.">Immediate callback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00647">647</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00648">648</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+
+</div>
+</div>
+<a id="ga1f1137c1e9907e2fa64387c67a30992e" name="ga1f1137c1e9907e2fa64387c67a30992e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f1137c1e9907e2fa64387c67a30992e">&#9670;&#160;</a></span>FilterEvents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::FilterEvents </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td>
+          <td class="paramname"><em>filter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Run a specific filter function on the current event queue, removing any events for which the filter returns false. </p>
+<p>See <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> for more information. Unlike <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a>, this function does not change the filter permanently, it only uses the supplied filter until this function returns.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filter</td><td>the EventFilter function to call when an event happens.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__SyncCallback.html" title="Immediate callback or synchronous callback is always invoked before the callee function returns.">Immediate callback</a> </dd>
+<dd>
+<a class="el" href="group__ListenerCallback.html#ga274cf6de4be1b4faf2d734e868fa9f73" title="Query the current event filter.">GetEventFilter()</a> </dd>
+<dd>
+<a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01854">1854</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>

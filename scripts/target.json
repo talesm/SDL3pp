@@ -14465,23 +14465,37 @@
             "doc": ""
           }
         ],
-        "FilterEvents": {
-          "doc": "Run a specific filter function on the current event queue, removing any\nevents for which the filter returns false.\n\nSee SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),\nthis function does not change the filter permanently, it only uses the\nsupplied filter until this function returns.\n\n@param filter the SDL_EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEventFilter\n@sa SDL_SetEventFilter",
-          "name": "FilterEvents",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "filter",
-              "type": "EventFilter"
-            },
-            {
-              "name": "userdata",
-              "type": "void *"
-            }
-          ],
-          "sourceName": "SDL_FilterEvents"
-        },
+        "FilterEvents": [
+          {
+            "doc": "Run a specific filter function on the current event queue, removing any\nevents for which the filter returns false.\n\nSee SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),\nthis function does not change the filter permanently, it only uses the\nsupplied filter until this function returns.\n\n@param filter the SDL_EventFilter function to call when an event happens.\n@param userdata a pointer that is passed to `filter`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEventFilter\n@sa SDL_SetEventFilter",
+            "name": "FilterEvents",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "filter",
+                "type": "EventFilter"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              }
+            ],
+            "sourceName": "SDL_FilterEvents"
+          },
+          {
+            "kind": "function",
+            "name": "FilterEvents",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "EventFilterFunction",
+                "name": "filter"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "SetEventEnabled": {
           "doc": "Set the state of processing events by type.\n\n@param type the type of event; see SDL_EventType for details.\n@param enabled whether to process the event or not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_EventEnabled",
           "name": "SetEventEnabled",
