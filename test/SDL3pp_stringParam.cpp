@@ -1,6 +1,8 @@
 #include "SDL3pp/SDL3pp_stringParam.h"
 #include "doctest.h"
 
+#ifdef SDL3PP_ENABLE_STRING_PARAM
+
 TEST_CASE("StringParam")
 {
   std::string result;
@@ -20,3 +22,5 @@ TEST_CASE("StringParam const string & optimization")
   REQUIRE(SDL::StringParam(test) == test.c_str());
   REQUIRE(SDL::StringParam(std::string(test)) != test.c_str());
 }
+
+#endif // SDL3PP_ENABLE_STRING_PARAM

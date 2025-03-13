@@ -769,13 +769,13 @@ void std::swap(SDL::ObjectUnique<T, DELETER> left,
 
 namespace SDL {
 
-#ifndef SDLPP_ENABLE_STRING_PARAM
+#ifndef SDL3PP_ENABLE_STRING_PARAM
 
-#ifndef SDLPP_DISABLE_STRING_PARAM
-#define SDLPP_ENABLE_STRING_PARAM
-#endif // SDLPP_DISABLE_STRING_PARAM
+#ifndef SDL3PP_DISABLE_STRING_PARAM
+#define SDL3PP_ENABLE_STRING_PARAM
+#endif // SDL3PP_DISABLE_STRING_PARAM
 
-#endif // SDLPP_ENABLE_STRING_PARAM''
+#endif // SDL3PP_ENABLE_STRING_PARAM''
 
 /**
  * @brief A safe and mostly efficient wrapper to std::string and
@@ -827,11 +827,13 @@ public:
     return std::visit(Visitor{}, data);
   }
 };
-#ifdef SDLPP_ENABLE_STRING_PARAM
+
+#ifdef SDL3PP_ENABLE_STRING_PARAM
 using StringParam = StringParamImpl;
-#else  // SDLPP_ENABLE_STRING_PARAM
+#else  // SDL3PP_ENABLE_STRING_PARAM
 using StringParam = const char*;
-#endif // SDLPP_ENABLE_STRING_PARAM
+#endif // SDL3PP_ENABLE_STRING_PARAM
+
 } // namespace SDL
 
 #endif /* SDL3PP_STRING_PARAM_H_ */
