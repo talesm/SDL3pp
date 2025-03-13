@@ -6,7 +6,7 @@ var searchData=
   ['acosf_3',['acosf',['../group__CategoryStdinc.html#ga8e3b6760100280cb4cb51fcee4b3a2ff',1,'SDL']]],
   ['addalternateimage_4',['AddAlternateImage',['../structSDL_1_1SurfaceBase.html#a5489278a992e1c5255f7aff9de6b003d',1,'SDL::SurfaceBase']]],
   ['addevent_5',['ADDEVENT',['../group__CategoryEvents.html#gab3a96effb1b5dae59df7a4799d7faded',1,'SDL']]],
-  ['addeventwatch_6',['AddEventWatch',['../group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e',1,'SDL']]],
+  ['addeventwatch_6',['addeventwatch',['../group__ListenerCallback.html#ga9336b4a3c5cd2d4bdddedeac94e4232e',1,'SDL::AddEventWatch(EventFilter filter, void *userdata)'],['../group__CategoryEvents.html#ga12ffc976b35a76dfa7b3c047b7973ecf',1,'SDL::AddEventWatch(EventFilterFunction filter)']]],
   ['additional_20functionality_7',['additional functionality',['../ApiByCategory.html#additional-functionality',1,'Additional Functionality'],['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality']]],
   ['addtimer_8',['AddTimer',['../group__CategoryTimer.html#ga1fe40532c4b1f9f7c481b5a2e309a89d',1,'SDL']]],
   ['addtimerns_9',['AddTimerNS',['../group__CategoryTimer.html#ga75aa4ca21f1dcc3f98ce0822a1716eb1',1,'SDL']]],

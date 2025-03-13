@@ -3927,11 +3927,50 @@
             }
           ]
         },
-        "SDL_EventFilter": {
-          "kind": "alias",
-          "name": "EventFilterFunction",
-          "type": "std::function<bool(const Event &)>"
-        },
+        "SDL_EventFilter": [
+          {
+            "kind": "alias",
+            "name": "EventFilterFunction",
+            "type": "std::function<bool(const Event &)>"
+          },
+          {
+            "doc": "Handle returned by AddEventWatch()",
+            "kind": "struct",
+            "name": "EventWatchHandle",
+            "entries": {
+              "id": {
+                "kind": "var",
+                "type": "void *"
+              },
+              "EventWatchHandle": {
+                "kind": "function",
+                "type": "explicit",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "void *",
+                    "name": "id",
+                    "default": "nullptr"
+                  }
+                ]
+              },
+              "get": {
+                "kind": "function",
+                "type": "void *",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": []
+              },
+              "operator bool": {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "immutable": true,
+                "parameters": []
+              }
+            }
+          }
+        ],
         "SDL_SetEventFilter": {
           "kind": "function",
           "name": "SetEventFilter",
@@ -3944,14 +3983,34 @@
             }
           ]
         },
-        "SDL_GetEventFilter": [
-          {
-            "kind": "function",
-            "name": "GetEventFilter",
-            "type": "EventFilterFunction",
-            "parameters": []
-          }
-        ]
+        "SDL_GetEventFilter": {
+          "kind": "function",
+          "name": "GetEventFilter",
+          "type": "EventFilterFunction",
+          "parameters": []
+        },
+        "SDL_AddEventWatch": {
+          "kind": "function",
+          "name": "AddEventWatch",
+          "type": "EventWatchHandle",
+          "parameters": [
+            {
+              "type": "EventFilterFunction",
+              "name": "filter"
+            }
+          ]
+        },
+        "SDL_RemoveEventWatch": {
+          "kind": "function",
+          "name": "RemoveEventWatch",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "EventWatchHandle",
+              "name": "handle"
+            }
+          ]
+        }
       }
     },
     "SDL_init.h": {

@@ -4,7 +4,7 @@ var searchData=
   ['acos_1',['acos',['../group__CategoryStdinc.html#ga9f6543d319422a6044570b59cc6377b4',1,'SDL']]],
   ['acosf_2',['acosf',['../group__CategoryStdinc.html#ga8e3b6760100280cb4cb51fcee4b3a2ff',1,'SDL']]],
   ['addalternateimage_3',['AddAlternateImage',['../structSDL_1_1SurfaceBase.html#a5489278a992e1c5255f7aff9de6b003d',1,'SDL::SurfaceBase']]],
-  ['addeventwatch_4',['AddEventWatch',['../group__CategoryEvents.html#ga9336b4a3c5cd2d4bdddedeac94e4232e',1,'SDL']]],
+  ['addeventwatch_4',['addeventwatch',['../group__ListenerCallback.html#ga9336b4a3c5cd2d4bdddedeac94e4232e',1,'SDL::AddEventWatch(EventFilter filter, void *userdata)'],['../group__CategoryEvents.html#ga12ffc976b35a76dfa7b3c047b7973ecf',1,'SDL::AddEventWatch(EventFilterFunction filter)']]],
   ['addtimer_5',['AddTimer',['../group__CategoryTimer.html#ga1fe40532c4b1f9f7c481b5a2e309a89d',1,'SDL']]],
   ['addtimerns_6',['AddTimerNS',['../group__CategoryTimer.html#ga75aa4ca21f1dcc3f98ce0822a1716eb1',1,'SDL']]],
   ['addvulkanrendersemaphores_7',['AddVulkanRenderSemaphores',['../group__CategoryRender.html#gac4528e04e28d93b190e651508b82ac18',1,'SDL']]],

@@ -42,7 +42,7 @@ struct ResultCallbackWrapper<std::function<Result(Args...)>>
    * @param cb
    * @return void*
    */
-  static void* Wrap(FunctionType&& cb)
+  static FunctionType* Wrap(FunctionType&& cb)
   {
     return new FunctionType(std::move(cb));
   }
