@@ -48,7 +48,7 @@ available.
 @defgroup ResultCallback Result callback
 
 Result callback is invoked at single point and then discarded. This means that
-after its called it safe to free any memory it is holding. The ResultCallbackWrapper 
+after its called it safe to free any memory it is holding. The CallbackWrapper 
 is perfect to safely wrap it and avoid dangling pointer. An example of such 
 uses is RunOnMainThread().
 */
@@ -70,7 +70,7 @@ KeyValueWrapper.erase() on the equivalent `*.Destroy()` function, again the
 example is WindowBase::Destroy().
 
 When there is multiple callbacks simultaneously per program, we can use a 
-combination of ResultCallbackWrapper to wrap it and KeyValueWrapper to 
+combination of CallbackWrapper to wrap it and KeyValueWrapper to 
 associate them with an id you can later use to remove it, as we use in both
 AddEventWatch() and AddTimer().
 

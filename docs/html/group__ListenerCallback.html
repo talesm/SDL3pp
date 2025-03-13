@@ -114,7 +114,7 @@ Functions</h2></td></tr>
 <p>It's not safe to free memory after call, so a separate mechanism must be provided.</p>
 <p>When there is a single listener per program, like SetEventFilter(), you we can use UniqueWrapper, which makes sure only a single one per type exists.</p>
 <p>When there can be just a single callback listening per resource we can use KeyValueWrapper with a Resource pointer as key. An example of this technique is in WindowBase::SetHitTest(HitTestFunction). We need to make sure we call KeyValueWrapper.erase() on the equivalent <code>*.Destroy()</code> function, again the example is WindowBase::Destroy().</p>
-<p>When there is multiple callbacks simultaneously per program, we can use a combination of ResultCallbackWrapper to wrap it and KeyValueWrapper to associate them with an id you can later use to remove it, as we use in both AddEventWatch() and AddTimer().</p>
+<p>When there is multiple callbacks simultaneously per program, we can use a combination of CallbackWrapper to wrap it and KeyValueWrapper to associate them with an id you can later use to remove it, as we use in both AddEventWatch() and AddTimer().</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Allow listener handle to be stored into a RAII object.</dd></dl>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga89729782789df28788240517ea5b82be" name="ga89729782789df28788240517ea5b82be"></a>

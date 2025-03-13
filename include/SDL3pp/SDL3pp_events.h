@@ -1757,7 +1757,7 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  */
 inline EventWatchHandle AddEventWatch(EventFilterFunction filter)
 {
-  using Wrapper = ResultCallbackWrapper<EventFilterFunction>;
+  using Wrapper = CallbackWrapper<EventFilterFunction>;
   using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
 
   auto cb = Wrapper::Wrap(std::move(filter));

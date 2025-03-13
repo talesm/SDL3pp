@@ -379,7 +379,7 @@ namespace SDL {
  */
 
 template<class F>
-struct ResultCallbackWrapper;
+struct CallbackWrapper;
 
 /**
  * @brief Wrapper [result callbacks](#ResultCallback)
@@ -392,11 +392,11 @@ struct ResultCallbackWrapper;
  * In all cases, use Wrap to change the callback into a void* pointer.
  */
 template<class Result, class... Args>
-struct ResultCallbackWrapper<std::function<Result(Args...)>>
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
-  ResultCallbackWrapper() = delete;
+  CallbackWrapper() = delete;
 
-  using FunctionType = std::function<Result(Args...)>;
+  using ValueType = std::function<Result(Args...)>;
 
   /**
    * @brief Change the callback into a void* pointer
@@ -404,9 +404,9 @@ struct ResultCallbackWrapper<std::function<Result(Args...)>>
    * @param cb
    * @return void*
    */
-  static FunctionType* Wrap(FunctionType&& cb)
+  static ValueType* Wrap(ValueType&& cb)
   {
-    return new FunctionType(std::move(cb));
+    return new ValueType(std::move(cb));
   }
 
   static Result CallOnce(void* handle, Args... args)
@@ -427,11 +427,11 @@ struct ResultCallbackWrapper<std::function<Result(Args...)>>
    *
    * @return the callback ready to be invoked.
    */
-  static FunctionType release(void* handle)
+  static ValueType release(void* handle)
   {
     if (handle == nullptr) return {};
-    auto ptr = static_cast<FunctionType*>(handle);
-    FunctionType value{std::move(*ptr)};
+    auto ptr = static_cast<ValueType*>(handle);
+    ValueType value{std::move(*ptr)};
     delete ptr;
     return value;
   }
@@ -5685,7 +5685,7 @@ struct PropertiesBase : T
                              void* value,
                              CleanupPropertyFunction cleanup)
   {
-    using Wrapper = ResultCallbackWrapper<CleanupPropertyFunction>;
+    using Wrapper = CallbackWrapper<CleanupPropertyFunction>;
 
     return SetPointerWithCleanup(std::move(name),
                                  value,
@@ -17889,7 +17889,7 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  */
 inline EventWatchHandle AddEventWatch(EventFilterFunction filter)
 {
-  using Wrapper = ResultCallbackWrapper<EventFilterFunction>;
+  using Wrapper = CallbackWrapper<EventFilterFunction>;
   using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
 
   auto cb = Wrapper::Wrap(std::move(filter));
@@ -18583,7 +18583,7 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  */
 inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
 {
-  using Wrapper = ResultCallbackWrapper<MainThreadFunction>;
+  using Wrapper = CallbackWrapper<MainThreadFunction>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
 }

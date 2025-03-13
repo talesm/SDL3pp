@@ -534,7 +534,7 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  */
 inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
 {
-  using Wrapper = ResultCallbackWrapper<MainThreadFunction>;
+  using Wrapper = CallbackWrapper<MainThreadFunction>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
 }
