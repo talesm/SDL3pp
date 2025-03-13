@@ -86,22 +86,28 @@ struct KeyValueWrapper
 
   static void* Wrap(KeyType key, ValueType&& value)
   {
-    Values().insert_or_assign(key, std::move(value));
+    {
+      auto lockGuard = lock();
+      Values().insert_or_assign(key, std::move(value));
+    }
     return (void*)(key);
   }
 
   static bool contains(void* handle)
   {
+    auto lockGuard = lock();
     return Values().contains((KeyType)(handle));
   }
 
   static const ValueType& at(void* handle)
   {
+    auto lockGuard = lock();
     return Values().at((KeyType)(handle));
   }
 
   static ValueType release(void* handle)
   {
+    auto lockGuard = lock();
     ValueType value{std::move(Values().at((KeyType)(handle)))};
     erase(handle);
     return value;
@@ -115,6 +121,12 @@ private:
     static std::unordered_map<KeyType, ValueType> values;
     return values;
   }
+
+  static std::lock_guard<std::mutex> lock()
+  {
+    static std::mutex uniqueMutex;
+    return std::lock_guard{uniqueMutex};
+  }
 };
 
 template<class VALUE>
@@ -127,6 +139,7 @@ struct UniqueWrapper
   static ValueType* Wrap(ValueType&& value)
   {
     /// @todo make this an opaque type
+    auto lockGuard = lock();
     auto& v = Value();
     if (value)
       v = std::make_unique<ValueType>(std::move(value));
@@ -135,10 +148,15 @@ struct UniqueWrapper
     return v.get();
   }
 
-  static bool contains(void* handle) { return Value().get() == handle; }
+  static bool contains(void* handle)
+  {
+    auto lockGuard = lock();
+    return Value().get() == handle;
+  }
 
   static const ValueType& at(void* handle)
   {
+    auto lockGuard = lock();
     auto& v = Value();
     SDL_assert_paranoid(v.get() == handle);
     return *v;
@@ -146,6 +164,7 @@ struct UniqueWrapper
 
   static ValueType release(void* handle)
   {
+    auto lockGuard = lock();
     auto& v = Value();
     SDL_assert_paranoid(v.get() == handle);
 
@@ -155,13 +174,23 @@ struct UniqueWrapper
     return value;
   }
 
-  static void erase() { return Value().reset(); }
+  static void erase()
+  {
+    auto lockGuard = lock();
+    return Value().reset();
+  }
 
 private:
   static std::unique_ptr<ValueType>& Value()
   {
     static std::unique_ptr<ValueType> value;
     return value;
+  }
+
+  static std::lock_guard<std::mutex> lock()
+  {
+    static std::mutex uniqueMutex;
+    return std::lock_guard{uniqueMutex};
   }
 };
 
