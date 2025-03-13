@@ -11,7 +11,7 @@ var searchData=
   ['environmentbase_8',['EnvironmentBase',['../structSDL_1_1EnvironmentBase.html#a880debc9b624b80f3879ff6946b9cb7b',1,'SDL::EnvironmentBase']]],
   ['equal_9',['equal',['../structSDL_1_1FRect.html#a196110eaa3957ab44f9ec977fbbae3fd',1,'SDL::FRect::Equal()'],['../structSDL_1_1Rect.html#a09f05c066213374274e055034aa3b28b',1,'SDL::Rect::Equal()']]],
   ['equalepsilon_10',['EqualEpsilon',['../structSDL_1_1FRect.html#a0dddedcee6c59d91fef1defa8aa0ae17',1,'SDL::FRect']]],
-  ['erase_11',['erase',['../structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050',1,'SDL::KeyValueWrapper::erase()'],['../structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597',1,'SDL::UniqueWrapper::erase()']]],
+  ['erase_11',['erase',['../structSDL_1_1KeyValueWrapper.html#aae418cf415798568ed550ce03be1472b',1,'SDL::KeyValueWrapper::erase(KeyType handle)'],['../structSDL_1_1KeyValueWrapper.html#ab8ba46cf0280eba693994cbf8ccac050',1,'SDL::KeyValueWrapper::erase(void *handle)'],['../structSDL_1_1UniqueWrapper.html#ad40be15b116d0b9c7b2fd66d72ceb597',1,'SDL::UniqueWrapper::erase()']]],
   ['eventenabled_12',['EventEnabled',['../group__CategoryEvents.html#gae67ec89cc5986f1f99a24916db4d20d0',1,'SDL']]],
   ['eventwatchauxcallback_13',['EventWatchAuxCallback',['../group__CategoryEvents.html#ga98ee361698ead2f22e5375dc26473c7b',1,'SDL']]],
   ['eventwatchhandle_14',['EventWatchHandle',['../classSDL_1_1EventWatchHandle.html#a1ec0515325dc98a06ebfc48a5e09aa14',1,'SDL::EventWatchHandle']]],

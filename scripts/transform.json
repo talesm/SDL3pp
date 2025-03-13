@@ -3860,6 +3860,57 @@
               "name": "duration"
             }
           ]
+        },
+        "SDL_TimerCallback": [
+          {
+            "kind": "placeholder",
+            "name": "NSTimerCallback"
+          },
+          {
+            "kind": "alias",
+            "name": "TimerFunction"
+          }
+        ],
+        "SDL_AddTimerNS": [
+          {
+            "kind": "function",
+            "name": "AddTimer",
+            "type": "TimerID",
+            "parameters": [
+              {
+                "type": "std::chrono::nanoseconds",
+                "name": "interval"
+              },
+              {
+                "type": "NSTimerCallback",
+                "name": "callback"
+              },
+              {
+                "type": "void *",
+                "name": "userdata"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "AddTimer",
+            "type": "TimerID",
+            "parameters": [
+              {
+                "type": "std::chrono::nanoseconds",
+                "name": "interval"
+              },
+              {
+                "type": "TimerFunction",
+                "name": "callback"
+              }
+            ]
+          }
+        ]
+      },
+      "transform": {
+        "SDL_AddTimerNS": {
+          "name": "AddTimer"
         }
       }
     },

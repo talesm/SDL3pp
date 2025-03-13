@@ -1722,9 +1722,6 @@ inline bool EventWatchAuxCallback(void* userdata, Event* event)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
- *
- * @sa ListenerCallback
  * @sa RemoveEventWatch()
  * @sa SetEventFilter()
  */
@@ -1759,6 +1756,9 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
  * @sa RemoveEventWatch()
  * @sa SetEventFilter()
  */

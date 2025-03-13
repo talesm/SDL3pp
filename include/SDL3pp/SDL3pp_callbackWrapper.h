@@ -90,7 +90,7 @@ struct KeyValueWrapper
       auto lockGuard = lock();
       Values().insert_or_assign(key, std::move(value));
     }
-    return (void*)(key);
+    return reinterpret_cast<void*>(key);
   }
 
   static bool contains(void* handle)
@@ -105,15 +105,26 @@ struct KeyValueWrapper
     return Values().at((KeyType)(handle));
   }
 
-  static ValueType release(void* handle)
+  static ValueType release(KeyType handle)
   {
     auto lockGuard = lock();
-    ValueType value{std::move(Values().at((KeyType)(handle)))};
-    erase(handle);
+    auto& values = Values();
+    auto it = values.find(handle);
+    if (it == values.end()) return {};
+    ValueType value{std::move(it->second)};
+    values.erase(it);
     return value;
   }
 
-  static bool erase(void* handle) { return Values().erase((KeyType)handle); }
+  static ValueType release(void* handle) { return release((KeyType)handle); }
+
+  static bool erase(KeyType handle)
+  {
+    auto lockGuard = lock();
+    return Values().erase(handle);
+  }
+
+  static bool erase(void* handle) { return erase((KeyType)handle); }
 
 private:
   static std::unordered_map<KeyType, ValueType>& Values()
