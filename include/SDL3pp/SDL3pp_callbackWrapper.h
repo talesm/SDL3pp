@@ -2,38 +2,51 @@
 #define SDL3PP_CALLBACK_WRAPPER_H_
 
 #include <functional>
-#include <map>
+#include <memory>
+#include <unordered_map>
 #include <SDL3/SDL_assert.h>
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryCallbackWrapper Async callback helpers
+ *
+ * Async callback wrapper helper functions and types.
+ *
+ * @{
+ */
+
 template<class F>
 struct CallbackWrapper;
 
-template<typename Result, typename... Args>
-struct CallbackWrapper<Result(Args...)>
+/**
+ * @brief Wrapper [result callbacks](#ResultCallback)
+ *
+ * @tparam F the function type
+ *
+ * For the simpler case, where no transformation is done on the parameters, you
+ * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
+ *
+ * In all cases, use Wrap to change the callback into a void* pointer.
+ */
+template<class Result, class... Args>
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   CallbackWrapper() = delete;
-  using FunctionType = std::function<Result(Args...)>;
 
-  static void* Wrap(FunctionType cb)
+  using ValueType = std::function<Result(Args...)>;
+
+  /**
+   * @brief Change the callback into a void* pointer
+   *
+   * @param cb
+   * @return void*
+   */
+  static ValueType* Wrap(ValueType&& cb)
   {
-    // TODO Protect against concurrency
-    auto id = NextId();
-    Values().insert_or_assign(id, std::move(cb));
-    return (void*)id;
+    return new ValueType(std::move(cb));
   }
 
-  static Result Call(void* handle, Args... args)
-  {
-    auto& f = at(handle);
-    return f(args...);
-  }
-  static Result CallSuffixed(Args... args, void* handle)
-  {
-    auto& f = at(handle);
-    return f(args...);
-  }
   static Result CallOnce(void* handle, Args... args)
   {
     auto f = release(handle);
@@ -41,45 +54,154 @@ struct CallbackWrapper<Result(Args...)>
   }
   static Result CallOnceSuffixed(Args... args, void* handle)
   {
-    auto& f = release(handle);
+    auto f = release(handle);
     return f(args...);
+  }
+
+  /**
+   * @brief Transfer ownership from the function and delete handle
+   *
+   * @param handle the handle to be released
+   *
+   * @return the callback ready to be invoked.
+   */
+  static ValueType release(void* handle)
+  {
+    if (handle == nullptr) return {};
+    auto ptr = static_cast<ValueType*>(handle);
+    ValueType value{std::move(*ptr)};
+    delete ptr;
+    return value;
+  }
+};
+
+template<class KEY, class VALUE>
+struct KeyValueWrapper
+{
+  static_assert(sizeof(KEY) <= sizeof(void*));
+  KeyValueWrapper() = delete;
+
+  using KeyType = KEY;
+  using ValueType = VALUE;
+
+  static void* Wrap(KeyType key, ValueType&& value)
+  {
+    {
+      auto lockGuard = lock();
+      Values().insert_or_assign(key, std::move(value));
+    }
+    return reinterpret_cast<void*>(key);
   }
 
   static bool contains(void* handle)
   {
-    return Values().contains((size_t)handle);
+    auto lockGuard = lock();
+    return Values().contains((KeyType)(handle));
   }
 
-  static const FunctionType& at(void* handle)
+  static const ValueType& at(void* handle)
   {
-    return Values().at((size_t)(handle));
+    auto lockGuard = lock();
+    return Values().at((KeyType)(handle));
   }
 
-  static FunctionType release(void* handle)
+  static ValueType release(KeyType handle)
   {
+    auto lockGuard = lock();
     auto& values = Values();
-    auto value = std::move(values.at((size_t)(handle)));
-    Erase(handle);
+    auto it = values.find(handle);
+    if (it == values.end()) return {};
+    ValueType value{std::move(it->second)};
+    values.erase(it);
     return value;
   }
 
-  static bool Erase(void* handle) { return Values().erase((size_t)handle); }
+  static ValueType release(void* handle) { return release((KeyType)handle); }
 
-  static size_t NextId()
+  static bool erase(KeyType handle)
   {
-    static size_t lastId = 0;
-    SDL_assert_paranoid(lastId < SDL_SIZE_MAX);
-    // TODO Some strategy on the odd case we get to SIZE_MAX
-    ++lastId;
-    return lastId;
+    auto lockGuard = lock();
+    return Values().erase(handle);
   }
 
-  static std::map<size_t, FunctionType>& Values()
+  static bool erase(void* handle) { return erase((KeyType)handle); }
+
+private:
+  static std::unordered_map<KeyType, ValueType>& Values()
   {
-    static std::map<size_t, FunctionType> values;
+    static std::unordered_map<KeyType, ValueType> values;
     return values;
   }
+
+  static std::lock_guard<std::mutex> lock()
+  {
+    static std::mutex uniqueMutex;
+    return std::lock_guard{uniqueMutex};
+  }
 };
+
+template<class VALUE>
+struct UniqueWrapper
+{
+  UniqueWrapper() = delete;
+
+  using ValueType = VALUE;
+
+  static ValueType* Wrap(ValueType&& value)
+  {
+    /// @todo make this an opaque type
+    auto lockGuard = lock();
+    auto& v = Value();
+    v = std::move(value);
+    return &v;
+  }
+
+  static bool contains(void* handle)
+  {
+    auto lockGuard = lock();
+    auto& v = Value();
+    return bool(v) && &v == handle;
+  }
+
+  static const ValueType& at(void* handle)
+  {
+    auto lockGuard = lock();
+    auto& v = Value();
+    SDL_assert_paranoid(&v == handle);
+    return v;
+  }
+
+  static ValueType release(void* handle)
+  {
+    auto lockGuard = lock();
+    auto& v = Value();
+    SDL_assert_paranoid(&v == handle);
+
+    ValueType value{std::move(v)};
+    return value;
+  }
+
+  static void erase()
+  {
+    auto lockGuard = lock();
+    Value() = {};
+  }
+
+private:
+  static ValueType& Value()
+  {
+    static ValueType value;
+    return value;
+  }
+
+  static std::lock_guard<std::mutex> lock()
+  {
+    static std::mutex uniqueMutex;
+    return std::lock_guard{uniqueMutex};
+  }
+};
+
+/// @}
 
 } // namespace SDL
 

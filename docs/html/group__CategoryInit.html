@@ -72,7 +72,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Initialization and Shutdown<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
 </div><!--header-->
@@ -80,41 +79,12 @@ $(function() {
 
 <p>All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> programs need to initialize the library before starting to work with it.  
 <a href="#details">More...</a></p>
-<div class="dynheader">
-Collaboration diagram for Initialization and Shutdown:</div>
-<div class="dyncontent">
-<div class="center"><img src="group__CategoryInit.png" border="0" usemap="#agroup____CategoryInit" alt=""/></div>
-<map name="agroup____CategoryInit" id="agroup____CategoryInit">
-<area shape="rect" href="group__CategoriesBasics.html" title=" " alt="" coords="5,13,69,38"/>
-<area shape="rect" title="All SDL programs need to initialize the library before starting to work with it." alt="" coords="117,5,248,45"/>
-</map>
-</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SDL.html">SDL::SDL</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library.  <a href="structSDL_1_1SDL.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:gaa769d313fe619516b0b4e621de494b1c" id="r_gaa769d313fe619516b0b4e621de494b1c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa769d313fe619516b0b4e621de494b1c">SDL::AppInit_func</a> = SDL_AppInit_func</td></tr>
-<tr class="memdesc:gaa769d313fe619516b0b4e621de494b1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppInit.  <br /></td></tr>
-<tr class="separator:gaa769d313fe619516b0b4e621de494b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga649ccd445bb0296103ce839b05fb8ddf" id="r_ga649ccd445bb0296103ce839b05fb8ddf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga649ccd445bb0296103ce839b05fb8ddf">SDL::AppIterate_func</a> = SDL_AppIterate_func</td></tr>
-<tr class="memdesc:ga649ccd445bb0296103ce839b05fb8ddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppIterate.  <br /></td></tr>
-<tr class="separator:ga649ccd445bb0296103ce839b05fb8ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac6fad763c6a19060601dfb3b0bc06706" id="r_gac6fad763c6a19060601dfb3b0bc06706"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac6fad763c6a19060601dfb3b0bc06706">SDL::AppEvent_func</a> = SDL_AppEvent_func</td></tr>
-<tr class="memdesc:gac6fad763c6a19060601dfb3b0bc06706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppEvent.  <br /></td></tr>
-<tr class="separator:gac6fad763c6a19060601dfb3b0bc06706"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae10f17c2662e06ffae89564b29eb7e3a" id="r_gae10f17c2662e06ffae89564b29eb7e3a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gae10f17c2662e06ffae89564b29eb7e3a">SDL::AppQuit_func</a> = SDL_AppQuit_func</td></tr>
-<tr class="memdesc:gae10f17c2662e06ffae89564b29eb7e3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppQuit.  <br /></td></tr>
-<tr class="separator:gae10f17c2662e06ffae89564b29eb7e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85ebd45ffe827a5fe36abd499560314c" id="r_ga85ebd45ffe827a5fe36abd499560314c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">SDL::MainThreadCallback</a> = SDL_MainThreadCallback</td></tr>
-<tr class="memdesc:ga85ebd45ffe827a5fe36abd499560314c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback run on the main thread.  <br /></td></tr>
-<tr class="separator:ga85ebd45ffe827a5fe36abd499560314c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa0da34c8dc3a2eca5592eb26d8867bbd" id="r_gaa0da34c8dc3a2eca5592eb26d8867bbd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">SDL::MainThreadFunction</a> = std::function&lt; void()&gt;</td></tr>
-<tr class="separator:gaa0da34c8dc3a2eca5592eb26d8867bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -139,9 +109,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf819cae500f98321d9ec860a18c50f9b" id="r_gaf819cae500f98321d9ec860a18c50f9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">SDL::RunOnMainThread</a> (<a class="el" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> callback, void *userdata, bool wait_complete)</td></tr>
 <tr class="memdesc:gaf819cae500f98321d9ec860a18c50f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a function on the main thread during event processing.  <br /></td></tr>
 <tr class="separator:gaf819cae500f98321d9ec860a18c50f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga02cae05cce6b7468a89fa31cc991c2de" id="r_ga02cae05cce6b7468a89fa31cc991c2de"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga02cae05cce6b7468a89fa31cc991c2de">SDL::RunOnMainThread</a> (<a class="el" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a> callback, bool wait_complete)</td></tr>
-<tr class="memdesc:ga02cae05cce6b7468a89fa31cc991c2de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a function on the main thread during event processing.  <br /></td></tr>
-<tr class="separator:ga02cae05cce6b7468a89fa31cc991c2de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9cb24cc6035ea3ba1c152347e2114e6b" id="r_ga9cb24cc6035ea3ba1c152347e2114e6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">SDL::SetAppMetadata</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> appname, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> appversion, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> appidentifier)</td></tr>
 <tr class="memdesc:ga9cb24cc6035ea3ba1c152347e2114e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify basic metadata about your app.  <br /></td></tr>
 <tr class="separator:ga9cb24cc6035ea3ba1c152347e2114e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +163,27 @@ Functions</h2></td></tr>
 <tr class="memitem:ga5cf321856f8f4b0c79457f7fc4465ab8" id="r_ga5cf321856f8f4b0c79457f7fc4465ab8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">AppResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga5cf321856f8f4b0c79457f7fc4465ab8">SDL::APP_FAILURE</a> = SDL_APP_FAILURE</td></tr>
 <tr class="memdesc:ga5cf321856f8f4b0c79457f7fc4465ab8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value that requests termination with error from the main callbacks.  <br /></td></tr>
 <tr class="separator:ga5cf321856f8f4b0c79457f7fc4465ab8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Callbacks for EnterAppMainCallbacks()</h2></td></tr>
+<tr class="memitem:gaa769d313fe619516b0b4e621de494b1c" id="r_gaa769d313fe619516b0b4e621de494b1c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa769d313fe619516b0b4e621de494b1c">SDL::AppInit_func</a> = SDL_AppInit_func</td></tr>
+<tr class="memdesc:gaa769d313fe619516b0b4e621de494b1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppInit.  <br /></td></tr>
+<tr class="separator:gaa769d313fe619516b0b4e621de494b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga649ccd445bb0296103ce839b05fb8ddf" id="r_ga649ccd445bb0296103ce839b05fb8ddf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga649ccd445bb0296103ce839b05fb8ddf">SDL::AppIterate_func</a> = SDL_AppIterate_func</td></tr>
+<tr class="memdesc:ga649ccd445bb0296103ce839b05fb8ddf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppIterate.  <br /></td></tr>
+<tr class="separator:ga649ccd445bb0296103ce839b05fb8ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac6fad763c6a19060601dfb3b0bc06706" id="r_gac6fad763c6a19060601dfb3b0bc06706"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac6fad763c6a19060601dfb3b0bc06706">SDL::AppEvent_func</a> = SDL_AppEvent_func</td></tr>
+<tr class="memdesc:gac6fad763c6a19060601dfb3b0bc06706"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppEvent.  <br /></td></tr>
+<tr class="separator:gac6fad763c6a19060601dfb3b0bc06706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae10f17c2662e06ffae89564b29eb7e3a" id="r_gae10f17c2662e06ffae89564b29eb7e3a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gae10f17c2662e06ffae89564b29eb7e3a">SDL::AppQuit_func</a> = SDL_AppQuit_func</td></tr>
+<tr class="memdesc:gae10f17c2662e06ffae89564b29eb7e3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer typedef for SDL_AppQuit.  <br /></td></tr>
+<tr class="separator:gae10f17c2662e06ffae89564b29eb7e3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Callbacks for RunOnMainThread()</h2></td></tr>
+<tr class="memitem:ga85ebd45ffe827a5fe36abd499560314c" id="r_ga85ebd45ffe827a5fe36abd499560314c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">SDL::MainThreadCallback</a> = SDL_MainThreadCallback</td></tr>
+<tr class="memdesc:ga85ebd45ffe827a5fe36abd499560314c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback run on the main thread.  <br /></td></tr>
+<tr class="separator:ga85ebd45ffe827a5fe36abd499560314c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa0da34c8dc3a2eca5592eb26d8867bbd" id="r_gaa0da34c8dc3a2eca5592eb26d8867bbd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">SDL::MainThreadFunction</a> = std::function&lt; void()&gt;</td></tr>
+<tr class="separator:gaa0da34c8dc3a2eca5592eb26d8867bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>All <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> programs need to initialize the library before starting to work with it. </p>
@@ -227,7 +215,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to terminate with success, SDL_APP_CONTINUE to continue.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00189">189</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00197">197</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -256,7 +244,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to terminate with success, SDL_APP_CONTINUE to continue.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00158">158</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00166">166</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -283,7 +271,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to terminate with success, SDL_APP_CONTINUE to continue.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00173">173</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00181">181</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -310,7 +298,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00203">203</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00211">211</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -332,7 +320,7 @@ Functions</h2></td></tr>
 <p>See <a href="https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3">Main callbacks in SDL3</a> for complete details.</p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00122">122</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00124">124</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -350,7 +338,7 @@ Functions</h2></td></tr>
 
 <p>Initialization flags for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00054">54</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00056">56</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -376,7 +364,7 @@ Functions</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b" title="Call a function on the main thread during event processing.">RunOnMainThread()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00450">450</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00465">465</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -391,9 +379,11 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd>PropertiesRef.MainThreadCallback </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>PropertiesRef.MainThreadCallback </dd>
+<dd>
+<a class="el" href="group__ResultCallback.html" title="Result callback is invoked at single point and then discarded.">Result callback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00455">455</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00474">474</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -437,7 +427,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00648">648</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00672">672</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -502,7 +492,7 @@ SetMainReady() </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44" title="Get a mask of the specified subsystems which are currently initialized.">WasInit()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00260">260</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00270">270</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -546,7 +536,7 @@ SetMainReady() </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00277">277</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00287">287</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -580,7 +570,7 @@ SetMainReady() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b" title="Call a function on the main thread during event processing.">RunOnMainThread()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00439">439</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00449">449</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -615,7 +605,7 @@ SetMainReady() </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5" title="Shut down specific SDL subsystems.">QuitSubSystem()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00324">324</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00334">334</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -656,12 +646,12 @@ SetMainReady() </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#gac0812d3287da34e3d6b228677440a24c" title="Clean up all initialized subsystems.">Quit()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00292">292</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00302">302</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
 <a id="gaf819cae500f98321d9ec860a18c50f9b" name="gaf819cae500f98321d9ec860a18c50f9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf819cae500f98321d9ec860a18c50f9b">&#9670;&#160;</a></span>RunOnMainThread() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf819cae500f98321d9ec860a18c50f9b">&#9670;&#160;</a></span>RunOnMainThread()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -716,60 +706,7 @@ SetMainReady() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gad2fef35eb16c9c97f46423b6d5df6b5c" title="Return whether this is the main thread.">IsMainThread()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00481">481</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
-
-</div>
-</div>
-<a id="ga02cae05cce6b7468a89fa31cc991c2de" name="ga02cae05cce6b7468a89fa31cc991c2de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga02cae05cce6b7468a89fa31cc991c2de">&#9670;&#160;</a></span>RunOnMainThread() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::RunOnMainThread </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd">MainThreadFunction</a>&#160;</td>
-          <td class="paramname"><em>callback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>wait_complete</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Call a function on the main thread during event processing. </p>
-<p>If this is called on the main thread, the callback is executed immediately. If this is called on another thread, this callback is queued for execution on the main thread during event processing.</p>
-<p>Be careful of deadlocks when using this functionality. You should not have the main thread wait for the current thread while this function is being called with <code>wait_complete</code> true.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">callback</td><td>the callback to call on the main thread. </td></tr>
-    <tr><td class="paramname">wait_complete</td><td>true to wait for the callback to complete, false to return immediately. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gad2fef35eb16c9c97f46423b6d5df6b5c" title="Return whether this is the main thread.">IsMainThread()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00511">511</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00502">502</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -833,7 +770,7 @@ SetMainReady() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78" title="Specify metadata about your app through a set of properties.">SetAppMetadataProperty()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00554">554</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00578">578</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -902,7 +839,7 @@ SetMainReady() </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b" title="Specify basic metadata about your app.">SetAppMetadata()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00622">622</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00646">646</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -943,7 +880,7 @@ SetMainReady() </dd>
 <dd>
 <a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e" title="Compatibility function to initialize the SDL library.">InitSubSystem()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00306">306</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00316">316</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -970,7 +907,7 @@ SetMainReady() </dd>
 
 <p>Value that requests that the app continue from the main callbacks. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00127">127</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00129">129</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -996,7 +933,7 @@ SetMainReady() </dd>
 
 <p>Value that requests termination with error from the main callbacks. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00137">137</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00139">139</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1022,7 +959,7 @@ SetMainReady() </dd>
 
 <p>Value that requests termination with success from the main callbacks. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00132">132</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00134">134</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1048,7 +985,7 @@ SetMainReady() </dd>
 
 <p><code>SDL_INIT_AUDIO</code> implies <code>SDL_INIT_EVENTS</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00059">59</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00061">61</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1011,7 @@ SetMainReady() </dd>
 
 <p><code>SDL_INIT_CAMERA</code> implies <code>SDL_INIT_EVENTS</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00091">91</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00093">93</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1098,7 +1035,7 @@ SetMainReady() </dd>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00081">81</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00083">83</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1124,7 +1061,7 @@ SetMainReady() </dd>
 
 <p><code>SDL_INIT_GAMEPAD</code> implies <code>SDL_INIT_JOYSTICK</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00079">79</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00081">81</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1148,7 +1085,7 @@ SetMainReady() </dd>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00074">74</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00076">76</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1174,7 +1111,7 @@ SetMainReady() </dd>
 
 <p><code>SDL_INIT_JOYSTICK</code> implies <code>SDL_INIT_EVENTS</code>, should be initialized on the same thread as SDL_INIT_VIDEO on Windows if you don't set SDL_HINT_JOYSTICK_THREAD </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00072">72</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00074">74</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1200,7 +1137,7 @@ SetMainReady() </dd>
 
 <p><code>SDL_INIT_SENSOR</code> implies <code>SDL_INIT_EVENTS</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00086">86</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00088">88</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>
@@ -1226,7 +1163,7 @@ SetMainReady() </dd>
 
 <p><code>SDL_INIT_VIDEO</code> implies <code>SDL_INIT_EVENTS</code>, should be initialized on the main thread </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00065">65</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00067">67</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>

@@ -1,0 +1,83 @@
+/**
+@defgroup DesignNotes Design notes
+
+Design notes on this project.
+
+Here we describe common design aspects and patterns used in the project. To 
+have an idea on all fits together you may look into @ref transformations.
+
+@sa @ref transformations
+
+@{
+*/
+
+/**
+@defgroup resource Resource
+
+A Resource is a type where its memory is controlled by SDL, usually with
+functions like `SDL_Create*()` and `SDL_Destroy*()`.
+*/
+
+/**
+@defgroup callback Callback
+
+A callback is a invocable object passed to a function as a customization point.
+
+
+@{
+*/
+
+/**
+@defgroup SyncCallback Immediate callback
+
+Immediate callback or synchronous callback is always invoked before the callee
+function returns. Because of this, there is no need to be store/marshal data
+as @ref AsyncCallback does.
+*/
+
+/**
+@defgroup AsyncCallback Delayed callback
+
+Delayed or Asynchronous callback is a callback that may be invoked after the 
+callee returns. This might be when some event occurs or when a given result 
+available.
+@{
+*/
+
+/**
+@defgroup ResultCallback Result callback
+
+Result callback is invoked at single point and then discarded. This means that
+after its called it safe to free any memory it is holding. The CallbackWrapper 
+is perfect to safely wrap it and avoid dangling pointer. An example of such 
+uses is RunOnMainThread().
+*/
+
+/**
+@defgroup ListenerCallback Listener callback
+
+Listener callback is invoked multiple times whenever the event it subscripted
+happens. It's not safe to free memory after call, so a separate mechanism must
+be provided.
+
+When there is a single listener per program, like SetEventFilter(), you we can
+use UniqueWrapper, which makes sure only a single one per type exists.
+
+When there can be just a single callback listening per resource we can use 
+KeyValueWrapper with a Resource pointer as key. An example of this technique is
+in WindowBase::SetHitTest(HitTestFunction). We need to make sure we call 
+KeyValueWrapper.erase() on the equivalent `*.Destroy()` function, again the 
+example is WindowBase::Destroy().
+
+When there is multiple callbacks simultaneously per program, we can use a 
+combination of CallbackWrapper to wrap it and KeyValueWrapper to 
+associate them with an id you can later use to remove it, as we use in both
+AddEventWatch() and AddTimer().
+
+@todo Allow listener handle to be stored into a RAII object.
+
+*/
+
+/// @}
+/// @}
+/// @}

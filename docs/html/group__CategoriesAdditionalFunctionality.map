@@ -1,6 +1,0 @@
-<map id="Additional Functionality" name="Additional Functionality">
-<area shape="rect" id="Node000002" href="$group__Categories.html" title="You probably want to see API by Category." alt="" coords="5,31,97,56"/>
-<area shape="rect" id="Node000001" title=" " alt="" coords="145,31,321,56"/>
-<area shape="rect" id="Node000004" href="$group__CategoryMisc.html" title="SDL API functions that don&#39;t fit elsewhere." alt="" coords="421,5,535,31"/>
-<area shape="rect" id="Node000003" href="$group__CategoryStdinc.html" title="SDL provides its own implementation of some of the most important C runtime functions." alt="" coords="369,55,587,80"/>
-</map>

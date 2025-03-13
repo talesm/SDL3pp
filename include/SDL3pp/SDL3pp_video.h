@@ -259,6 +259,11 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
 /// @}
 
 /**
+ * @name Callbacks for WindowBase::SetHitTest()
+ * @{
+ */
+
+/**
  * Callback used for hit-testing.
  *
  * @param win the SDL_Window where hit-testing was set on.
@@ -269,6 +274,23 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
  * @sa WindowBase::SetHitTest()
  */
 using HitTest = SDL_HitTest;
+
+/**
+ * Callback used for hit-testing.
+ *
+ * @param win the WindowRef where hit-testing was set on.
+ * @param area a Point const reference which should be hit-tested.
+ * @returns an SDL::HitTestResult value.
+ *
+ * @sa HitTest
+ * @sa ListenerCallback
+ *
+ * @ingroup ListenerCallback
+ */
+using HitTestFunction =
+  std::function<HitTestResult(WindowRef window, const Point& area)>;
+
+/// @}
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -2449,12 +2471,6 @@ struct WindowBase : T
   }
 
   /**
-   * @sa HitTest
-   */
-  using HitTestFunction =
-    std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
-
-  /**
    * Provide a callback that decides if a window region has special properties.
    *
    * Normally windows are dragged and resized by decorations provided by the
@@ -2493,13 +2509,21 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ListenerCallback
+   *
+   * @ingroup ListenerCallback
    */
   bool SetHitTest(HitTestFunction callback)
   {
-    using Wrapper = CallbackWrapper<HitTestResult(SDL_Window * window,
-                                                  const SDL_Point* area)>;
-    void* cbHandle = Wrapper::Wrap(std::move(callback));
-    return SetHitTest(&Wrapper::CallSuffixed, cbHandle);
+    using Wrapper = KeyValueWrapper<SDL_Window*, HitTestFunction>;
+    void* cbHandle = Wrapper::Wrap(T::get(), std::move(callback));
+    return SetHitTest(
+      [](SDL_Window* win, const SDL_Point* area, void* data) {
+        auto& cb = Wrapper::at(data);
+        return cb(WindowRef{win}, Point(*area));
+      },
+      cbHandle);
   }
 
   /**
@@ -2608,7 +2632,12 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy() { return SDL_DestroyWindow(T::release()); }
+  void Destroy()
+  {
+    auto window = T::release();
+    KeyValueWrapper<SDL_Window*, HitTestFunction>::erase(window);
+    return SDL_DestroyWindow(window);
+  }
 };
 
 /**

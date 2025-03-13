@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['window_20management_0',['Display and Window Management',['../group__CategoryVideo.html',1,'']]]
+  ['version_0',['Querying SDL Version',['../group__CategoryVersion.html',1,'']]],
+  ['video_1',['Video',['../group__CategoriesVideo.html',1,'']]]
 ];

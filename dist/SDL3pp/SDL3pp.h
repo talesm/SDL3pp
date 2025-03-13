@@ -354,6 +354,7 @@ inline bool ClearError() { return SDL_ClearError(); }
 #ifndef SDL3PP_EVENTS_H_
 #define SDL3PP_EVENTS_H_
 
+#include <atomic>
 #include <chrono>
 #include <SDL3/SDL_events.h>
 
@@ -363,38 +364,51 @@ inline bool ClearError() { return SDL_ClearError(); }
 #define SDL3PP_CALLBACK_WRAPPER_H_
 
 #include <functional>
-#include <map>
+#include <memory>
+#include <unordered_map>
 #include <SDL3/SDL_assert.h>
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryCallbackWrapper Async callback helpers
+ *
+ * Async callback wrapper helper functions and types.
+ *
+ * @{
+ */
+
 template<class F>
 struct CallbackWrapper;
 
-template<typename Result, typename... Args>
-struct CallbackWrapper<Result(Args...)>
+/**
+ * @brief Wrapper [result callbacks](#ResultCallback)
+ *
+ * @tparam F the function type
+ *
+ * For the simpler case, where no transformation is done on the parameters, you
+ * can just pass CallOnce() or CallOnceSuffixed(). Otherwise use release().
+ *
+ * In all cases, use Wrap to change the callback into a void* pointer.
+ */
+template<class Result, class... Args>
+struct CallbackWrapper<std::function<Result(Args...)>>
 {
   CallbackWrapper() = delete;
-  using FunctionType = std::function<Result(Args...)>;
 
-  static void* Wrap(FunctionType cb)
+  using ValueType = std::function<Result(Args...)>;
+
+  /**
+   * @brief Change the callback into a void* pointer
+   *
+   * @param cb
+   * @return void*
+   */
+  static ValueType* Wrap(ValueType&& cb)
   {
-    // TODO Protect against concurrency
-    auto id = NextId();
-    Values().insert_or_assign(id, std::move(cb));
-    return (void*)id;
+    return new ValueType(std::move(cb));
   }
 
-  static Result Call(void* handle, Args... args)
-  {
-    auto& f = at(handle);
-    return f(args...);
-  }
-  static Result CallSuffixed(Args... args, void* handle)
-  {
-    auto& f = at(handle);
-    return f(args...);
-  }
   static Result CallOnce(void* handle, Args... args)
   {
     auto f = release(handle);
@@ -402,45 +416,154 @@ struct CallbackWrapper<Result(Args...)>
   }
   static Result CallOnceSuffixed(Args... args, void* handle)
   {
-    auto& f = release(handle);
+    auto f = release(handle);
     return f(args...);
+  }
+
+  /**
+   * @brief Transfer ownership from the function and delete handle
+   *
+   * @param handle the handle to be released
+   *
+   * @return the callback ready to be invoked.
+   */
+  static ValueType release(void* handle)
+  {
+    if (handle == nullptr) return {};
+    auto ptr = static_cast<ValueType*>(handle);
+    ValueType value{std::move(*ptr)};
+    delete ptr;
+    return value;
+  }
+};
+
+template<class KEY, class VALUE>
+struct KeyValueWrapper
+{
+  static_assert(sizeof(KEY) <= sizeof(void*));
+  KeyValueWrapper() = delete;
+
+  using KeyType = KEY;
+  using ValueType = VALUE;
+
+  static void* Wrap(KeyType key, ValueType&& value)
+  {
+    {
+      auto lockGuard = lock();
+      Values().insert_or_assign(key, std::move(value));
+    }
+    return reinterpret_cast<void*>(key);
   }
 
   static bool contains(void* handle)
   {
-    return Values().contains((size_t)handle);
+    auto lockGuard = lock();
+    return Values().contains((KeyType)(handle));
   }
 
-  static const FunctionType& at(void* handle)
+  static const ValueType& at(void* handle)
   {
-    return Values().at((size_t)(handle));
+    auto lockGuard = lock();
+    return Values().at((KeyType)(handle));
   }
 
-  static FunctionType release(void* handle)
+  static ValueType release(KeyType handle)
   {
+    auto lockGuard = lock();
     auto& values = Values();
-    auto value = std::move(values.at((size_t)(handle)));
-    Erase(handle);
+    auto it = values.find(handle);
+    if (it == values.end()) return {};
+    ValueType value{std::move(it->second)};
+    values.erase(it);
     return value;
   }
 
-  static bool Erase(void* handle) { return Values().erase((size_t)handle); }
+  static ValueType release(void* handle) { return release((KeyType)handle); }
 
-  static size_t NextId()
+  static bool erase(KeyType handle)
   {
-    static size_t lastId = 0;
-    SDL_assert_paranoid(lastId < SDL_SIZE_MAX);
-    // TODO Some strategy on the odd case we get to SIZE_MAX
-    ++lastId;
-    return lastId;
+    auto lockGuard = lock();
+    return Values().erase(handle);
   }
 
-  static std::map<size_t, FunctionType>& Values()
+  static bool erase(void* handle) { return erase((KeyType)handle); }
+
+private:
+  static std::unordered_map<KeyType, ValueType>& Values()
   {
-    static std::map<size_t, FunctionType> values;
+    static std::unordered_map<KeyType, ValueType> values;
     return values;
   }
+
+  static std::lock_guard<std::mutex> lock()
+  {
+    static std::mutex uniqueMutex;
+    return std::lock_guard{uniqueMutex};
+  }
 };
+
+template<class VALUE>
+struct UniqueWrapper
+{
+  UniqueWrapper() = delete;
+
+  using ValueType = VALUE;
+
+  static ValueType* Wrap(ValueType&& value)
+  {
+    /// @todo make this an opaque type
+    auto lockGuard = lock();
+    auto& v = Value();
+    v = std::move(value);
+    return &v;
+  }
+
+  static bool contains(void* handle)
+  {
+    auto lockGuard = lock();
+    auto& v = Value();
+    return bool(v) && &v == handle;
+  }
+
+  static const ValueType& at(void* handle)
+  {
+    auto lockGuard = lock();
+    auto& v = Value();
+    SDL_assert_paranoid(&v == handle);
+    return v;
+  }
+
+  static ValueType release(void* handle)
+  {
+    auto lockGuard = lock();
+    auto& v = Value();
+    SDL_assert_paranoid(&v == handle);
+
+    ValueType value{std::move(v)};
+    return value;
+  }
+
+  static void erase()
+  {
+    auto lockGuard = lock();
+    Value() = {};
+  }
+
+private:
+  static ValueType& Value()
+  {
+    static ValueType value;
+    return value;
+  }
+
+  static std::lock_guard<std::mutex> lock()
+  {
+    static std::mutex uniqueMutex;
+    return std::lock_guard{uniqueMutex};
+  }
+};
+
+/// @}
 
 } // namespace SDL
 
@@ -5375,6 +5498,88 @@ using Properties =
  */
 using PropertyType = SDL_PropertyType;
 
+/**
+ * @name Callbacks for PropertiesBase.SetPointerWithCleanup()
+ * @{
+ */
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ SetPointerWithCleanup() if
+ * the function fails for any reason.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase.SetPointerWithCleanup()
+ */
+using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * @sa PropertiesRef.CleanupPropertyCallback
+ * @sa PropertiesBase.SetPointerWithCleanup()
+ * @sa ResultCallback
+ *
+ * @ingroup ResultCallback
+ */
+using CleanupPropertyFunction = std::function<void(void*)>;
+
+/// @}
+/**
+ * @name Callbacks for PropertiesBase.Enumerate()
+ * @{
+ */
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param props the SDL_PropertiesID that is being enumerated.
+ * @param name the next property name in the enumeration.
+ *
+ * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
+ *               callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase::Enumerate()
+ */
+using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @sa EnumeratePropertyCallback
+ * @sa PropertiesBase::Enumerate()
+ * @sa SyncCallback
+ *
+ * @ingroup SyncCallback
+ */
+using EnumeratePropertiesFunction =
+  std::function<void(PropertiesRef props, const char* name)>;
+
+/// @}
+
 // Forward decl
 struct PropertiesLock;
 
@@ -5459,33 +5664,41 @@ struct PropertiesBase : T
   PropertiesLock Lock() &;
 
   /**
-   * A callback used to free resources when a property is deleted.
+   * @brief Set a pointer property in a group of properties with a cleanup
+   * function that is called when the property is deleted.
    *
-   * This should release any resources associated with `value` that are no
-   * longer needed.
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
    *
-   * This callback is set per-property. Different properties in the same group
-   * can have different cleanup callbacks.
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * SetNumber(), SetBoolean(), or SetString()
+   * instead, as those functions will handle cleanup on your behalf. This
+   * function is only for more complex, custom data.
    *
-   * This callback will be called _during_ SetPointerWithCleanup() if
-   * the function fails for any reason.
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or NULL to delete the property.
+   * @param cleanup the function to call when this property is deleted.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
    *
-   * @param userdata an app-defined pointer passed to the callback.
-   * @param value the pointer assigned to the property to clean up.
+   * @threadsafety It is safe to call this function from any thread.
    *
-   * @threadsafety This callback may fire without any locks held; if this is a
-   *               concern, the app should provide its own locking.
+   * @sa ResultCallback
    *
-   * @since This datatype is available since SDL 3.2.0.
+   * @ingroup ResultCallback
    *
-   * @sa SetPointerWithCleanup
    */
-  using CleanupCallback = SDL_CleanupPropertyCallback;
+  bool SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupPropertyFunction cleanup)
+  {
+    using Wrapper = CallbackWrapper<CleanupPropertyFunction>;
 
-  /**
-   * @sa PropertiesRef.CleanupCallback
-   */
-  using CleanupFunction = std::function<void(void*)>;
+    return SetPointerWithCleanup(std::move(name),
+                                 value,
+                                 &Wrapper::CallOnce,
+                                 Wrapper::Wrap(std::move(cleanup)));
+  }
 
   /**
    * Set a pointer property in a group of properties with a cleanup function
@@ -5517,43 +5730,11 @@ struct PropertiesBase : T
    */
   bool SetPointerWithCleanup(StringParam name,
                              void* value,
-                             CleanupCallback cleanup,
+                             CleanupPropertyCallback cleanup,
                              void* userdata)
   {
     return SDL_SetPointerPropertyWithCleanup(
       T::get(), name, value, cleanup, userdata);
-  }
-
-  /**
-   * @brief Set a pointer property in a group of properties with a cleanup
-   * function that is called when the property is deleted.
-   *
-   * The cleanup function is also called if setting the property fails for any
-   * reason.
-   *
-   * For simply setting basic data types, like numbers, bools, or strings, use
-   * SetNumber(), SetBoolean(), or SetString()
-   * instead, as those functions will handle cleanup on your behalf. This
-   * function is only for more complex, custom data.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @param cleanup the function to call when this property is deleted.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             CleanupFunction cleanup)
-  {
-    using Wrapper = CallbackWrapper<void(void* value)>;
-
-    return SetPointerWithCleanup(std::move(name),
-                                 value,
-                                 &Wrapper::CallOnce,
-                                 Wrapper::Wrap(std::move(cleanup)));
   }
 
   /**
@@ -5865,29 +6046,46 @@ struct PropertiesBase : T
   bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
 
   /**
-   * A callback used to enumerate all the properties in a group of properties.
+   * @brief Enumerate the properties contained in a group of properties.
    *
-   * This callback is called from SDL_EnumerateProperties(), and is called once
-   * per property in the set.
+   * @param outputIter an output iterator to be assigned to each property name
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
    *
-   * @param userdata an app-defined pointer passed to the callback.
-   * @param props the SDL_PropertiesID that is being enumerated.
-   * @param name the next property name in the enumeration.
-   *
-   * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
-   *               callback.
-   *
-   * @since This datatype is available since SDL 3.2.0.
-   *
-   * @sa Enumerate()
+   * @threadsafety It is safe to call this function from any thread.
    */
-  using EnumerateCallback = SDL_EnumeratePropertiesCallback;
+  template<std::output_iterator<const char*> IT>
+  bool Enumerate(IT outputIter) const
+  {
+    return Enumerate(
+      [&outputIter](auto props, const char name) { *outputIter++ = name; });
+  }
 
   /**
-   * @sa EnumerateCallback()
+   * @brief Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @ingroup SyncCallback
+   *
+   * @sa SyncCallback
    */
-  using EnumerateFunction =
-    std::function<void(PropertiesRef props, const char* name)>;
+  bool Enumerate(EnumeratePropertiesFunction callback) const
+  {
+    return Enumerate(
+      [](void* userdata, SDL_PropertiesID props, const char* name) {
+        auto& f = *static_cast<EnumeratePropertiesFunction*>(userdata);
+        f({props}, name);
+      },
+      &callback);
+  }
 
   /**
    * Enumerate the properties contained in a group of properties.
@@ -5904,49 +6102,9 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  bool Enumerate(EnumerateCallback callback, void* userdata) const
+  bool Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
   {
     return SDL_EnumerateProperties(T::get(), callback, userdata);
-  }
-
-  /**
-   * @brief Enumerate the properties contained in a group of properties.
-   *
-   * The callback function is called for each property in the group of
-   * properties. The properties are locked during enumeration.
-   *
-   * @param callback the function to call for each property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @ingroup SyncCallback
-   */
-  bool Enumerate(EnumerateFunction callback) const
-  {
-    return Enumerate(
-      [](void* userdata, SDL_PropertiesID props, const char* name) {
-        auto& f = *static_cast<EnumerateFunction*>(userdata);
-        f({props}, name);
-      },
-      &callback);
-  }
-
-  /**
-   * @brief Enumerate the properties contained in a group of properties.
-   *
-   * @param outputIter an output iterator to be assigned to each property name
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  template<std::output_iterator<const char*> IT>
-  bool Enumerate(IT outputIter) const
-  {
-    return Enumerate(
-      [&outputIter](auto props, const char name) { *outputIter++ = name; });
   }
 
   /**
@@ -12665,6 +12823,11 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
 /// @}
 
 /**
+ * @name Callbacks for WindowBase::SetHitTest()
+ * @{
+ */
+
+/**
  * Callback used for hit-testing.
  *
  * @param win the SDL_Window where hit-testing was set on.
@@ -12675,6 +12838,23 @@ constexpr HitTestResult HITTEST_RESIZE_LEFT = SDL_HITTEST_RESIZE_LEFT;
  * @sa WindowBase::SetHitTest()
  */
 using HitTest = SDL_HitTest;
+
+/**
+ * Callback used for hit-testing.
+ *
+ * @param win the WindowRef where hit-testing was set on.
+ * @param area a Point const reference which should be hit-tested.
+ * @returns an SDL::HitTestResult value.
+ *
+ * @sa HitTest
+ * @sa ListenerCallback
+ *
+ * @ingroup ListenerCallback
+ */
+using HitTestFunction =
+  std::function<HitTestResult(WindowRef window, const Point& area)>;
+
+/// @}
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -14855,12 +15035,6 @@ struct WindowBase : T
   }
 
   /**
-   * @sa HitTest
-   */
-  using HitTestFunction =
-    std::function<HitTestResult(SDL_Window* window, const SDL_Point* area)>;
-
-  /**
    * Provide a callback that decides if a window region has special properties.
    *
    * Normally windows are dragged and resized by decorations provided by the
@@ -14899,13 +15073,21 @@ struct WindowBase : T
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ListenerCallback
+   *
+   * @ingroup ListenerCallback
    */
   bool SetHitTest(HitTestFunction callback)
   {
-    using Wrapper = CallbackWrapper<HitTestResult(SDL_Window * window,
-                                                  const SDL_Point* area)>;
-    void* cbHandle = Wrapper::Wrap(std::move(callback));
-    return SetHitTest(&Wrapper::CallSuffixed, cbHandle);
+    using Wrapper = KeyValueWrapper<SDL_Window*, HitTestFunction>;
+    void* cbHandle = Wrapper::Wrap(T::get(), std::move(callback));
+    return SetHitTest(
+      [](SDL_Window* win, const SDL_Point* area, void* data) {
+        auto& cb = Wrapper::at(data);
+        return cb(WindowRef{win}, Point(*area));
+      },
+      cbHandle);
   }
 
   /**
@@ -15014,7 +15196,12 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy() { return SDL_DestroyWindow(T::release()); }
+  void Destroy()
+  {
+    auto window = T::release();
+    KeyValueWrapper<SDL_Window*, HitTestFunction>::erase(window);
+    return SDL_DestroyWindow(window);
+  }
 };
 
 /**
@@ -17447,6 +17634,52 @@ inline bool PushEvent(const Event& event)
 using EventFilter = SDL_EventFilter;
 
 /**
+ * A std::function used for callbacks that watch the event queue.
+ *
+ * @param event the event that triggered the callback.
+ * @returns true to permit event to be added to the queue, and false to
+ *          disallow it. When used with AddEventWatch(), the return value is
+ *          ignored.
+ *
+ * @threadsafety SDL may call this callback at any time from any thread; the
+ *               application is responsible for locking resources the callback
+ *               touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
+ * @sa SetEventFilter()
+ * @sa AddEventWatch()
+ * @sa EventFilter
+ */
+using EventFilterFunction = std::function<bool(const Event&)>;
+
+/**
+ * Handle returned by AddEventWatch(EventFilterFunction)
+ *
+ * This can be used later to remove the event filter
+ * RemoveEventWatch(EventFilterHandle).
+ */
+class EventWatchHandle
+{
+  void* id;
+
+public:
+  constexpr explicit EventWatchHandle(void* id = nullptr)
+    : id(id)
+  {
+  }
+
+  /// Get Internal id
+  constexpr void* get() const { return id; }
+
+  /// True if has a valid id
+  constexpr operator bool() const { return id != 0; }
+};
+
+/**
  * Set up a filter to process all events before they are added to the internal
  * event queue.
  *
@@ -17487,7 +17720,59 @@ using EventFilter = SDL_EventFilter;
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
+  UniqueWrapper<EventFilterFunction>::erase();
   return SDL_SetEventFilter(filter, userdata);
+}
+
+/**
+ * Set up a filter to process all events before they are added to the internal
+ * event queue.
+ *
+ * If you just want to see events without modifying them or preventing them
+ * from being queued, you should use SDL_AddEventWatch() instead.
+ *
+ * If the filter function returns true when called, then the event will be
+ * added to the internal queue. If it returns false, then the event will be
+ * dropped from the queue, but the internal state will still be updated. This
+ * allows selective filtering of dynamically arriving events.
+ *
+ * **WARNING**: Be very careful of what you do in the event filter function,
+ * as it may run in a different thread!
+ *
+ * On platforms that support it, if the quit event is generated by an
+ * interrupt signal (e.g. pressing Ctrl-C), it will be delivered to the
+ * application at the next event poll.
+ *
+ * Note: Disabled events never make it to the event filter function; see
+ * SDL_SetEventEnabled().
+ *
+ * Note: Events pushed onto the queue with SDL_PushEvent() get passed through
+ * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
+ * not.
+ *
+ * @param filter an EventFilterFunction function to call when an event happens.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
+ * @sa AddEventWatch()
+ * @sa SetEventEnabled()
+ * @sa GetEventFilter()
+ * @sa PeepEvents()
+ * @sa PushEvent()
+ */
+inline void SetEventFilter(EventFilterFunction filter = {})
+{
+  using Wrapper = UniqueWrapper<EventFilterFunction>;
+  SDL_SetEventFilter(
+    [](void* userdata, SDL_Event* event) {
+      return Wrapper::at(userdata)(*event);
+    },
+    Wrapper::Wrap(std::move(filter)));
 }
 
 /**
@@ -17513,6 +17798,44 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
 }
 
 /**
+ * Query the current event filter.
+ *
+ * This function can be used to "chain" filters, by saving the existing filter
+ * before replacing it with a function that will call that saved filter.
+ *
+ * @returns EventFilterFunction on success or false if there is no event filter
+ * set.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
+ * @sa SetEventFilter()
+ */
+inline EventFilterFunction GetEventFilter()
+{
+  using Wrapper = UniqueWrapper<EventFilterFunction>;
+
+  EventFilter filter;
+  void* userdata;
+  if (!SDL_GetEventFilter(&filter, &userdata)) return {};
+  if (auto cb = Wrapper::at(userdata)) return cb;
+  return [filter, userdata](const Event& event) {
+    return filter(userdata, const_cast<Event*>(&event));
+  };
+}
+
+// Ignore me
+inline bool EventWatchAuxCallback(void* userdata, Event* event)
+{
+  auto& f = *static_cast<EventFilterFunction*>(userdata);
+  return f(*event);
+}
+
+/**
  * Add a callback to be triggered when an event is added to the event queue.
  *
  * `filter` will be called when an event happens, and its return value is
@@ -17526,11 +17849,11 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
  * arrive at the next event poll.
  *
  * Note: the callback is called for events posted by the user through
- * SDL_PushEvent(), but not for disabled events, nor for events by a filter
- * callback set with SDL_SetEventFilter(), nor for events posted by the user
- * through SDL_PeepEvents().
+ * PushEvent(), but not for disabled events, nor for events by a filter
+ * callback set with SetEventFilter(), nor for events posted by the user
+ * through PeepEvents().
  *
- * @param filter an SDL_EventFilter function to call when an event happens.
+ * @param filter an EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  * @returns true on success or false on failure; call GetError() for more
  *          information.
@@ -17545,6 +17868,54 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
 inline bool AddEventWatch(EventFilter filter, void* userdata)
 {
   return SDL_AddEventWatch(filter, userdata);
+}
+
+/**
+ * Add a callback to be triggered when an event is added to the event queue.
+ *
+ * `filter` will be called when an event happens, and its return value is
+ * ignored.
+ *
+ * **WARNING**: Be very careful of what you do in the event filter function,
+ * as it may run in a different thread!
+ *
+ * If the quit event is generated by a signal (e.g. SIGINT), it will bypass
+ * the internal queue and be delivered to the watch callback immediately, and
+ * arrive at the next event poll.
+ *
+ * Note: the callback is called for events posted by the user through
+ * PushEvent(), but not for disabled events, nor for events by a filter
+ * callback set with SetEventFilter(), nor for events posted by the user
+ * through PeepEvents().
+ *
+ * @param filter an EventFilterFunction to call when an event happens.
+ * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
+ * success or false on failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
+ * @sa RemoveEventWatch()
+ * @sa SetEventFilter()
+ */
+inline EventWatchHandle AddEventWatch(EventFilterFunction filter)
+{
+  using Wrapper = CallbackWrapper<EventFilterFunction>;
+  using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
+
+  auto cb = Wrapper::Wrap(std::move(filter));
+  if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
+    delete cb;
+    return EventWatchHandle{nullptr};
+  }
+
+  static std::atomic_size_t lastId = 0;
+  size_t id = ++lastId;
+  return EventWatchHandle{Store::Wrap(id, std::move(cb))};
 }
 
 /**
@@ -17564,18 +17935,39 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  */
 inline void RemoveEventWatch(EventFilter filter, void* userdata)
 {
-  return SDL_RemoveEventWatch(filter, userdata);
+  SDL_RemoveEventWatch(filter, userdata);
+}
+
+/**
+ * Remove an event watch callback added with
+ * SDL_AddEventWatch(EventFilterFunction).
+ *
+ * @param handle the handle returned by SDL_AddEventWatch(EventFilterFunction).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
+ * @sa AddEventWatch(EventFilterFunction)
+ */
+inline void RemoveEventWatch(EventWatchHandle handle)
+{
+  using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
+  delete Store::release(handle.get());
 }
 
 /**
  * Run a specific filter function on the current event queue, removing any
  * events for which the filter returns false.
  *
- * See SDL_SetEventFilter() for more information. Unlike SDL_SetEventFilter(),
- * this function does not change the filter permanently, it only uses the
- * supplied filter until this function returns.
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
  *
- * @param filter the SDL_EventFilter function to call when an event happens.
+ * @param filter the EventFilter function to call when an event happens.
  * @param userdata a pointer that is passed to `filter`.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -17587,9 +17979,38 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  */
 inline void FilterEvents(EventFilter filter, void* userdata)
 {
-  return SDL_FilterEvents(filter, userdata);
+  SDL_FilterEvents(filter, userdata);
 }
 
+/**
+ * Run a specific filter function on the current event queue, removing any
+ * events for which the filter returns false.
+ *
+ * See SetEventFilter() for more information. Unlike SetEventFilter(), this
+ * function does not change the filter permanently, it only uses the supplied
+ * filter until this function returns.
+ *
+ * @param filter the EventFilter function to call when an event happens.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup SyncCallback
+ *
+ * @sa SyncCallback
+ * @sa GetEventFilter()
+ * @sa SetEventFilter()
+ */
+inline void FilterEvents(EventFilterFunction filter)
+{
+  return FilterEvents(
+    [](void* userdata, SDL_Event* event) {
+      auto& f = *static_cast<EventFilterFunction*>(userdata);
+      return f(*event);
+    },
+    &filter);
+}
 /**
  * Set the state of processing events by type.
  *
@@ -17723,6 +18144,8 @@ namespace SDL {
  * @name InitFlags
  *
  * Initialization flags
+ *
+ * @{
  */
 
 /**
@@ -17816,6 +18239,12 @@ constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
 /// @}
 
 /**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
  * Function pointer typedef for SDL_AppInit.
  *
  * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
@@ -17878,6 +18307,8 @@ using AppEvent_func = SDL_AppEvent_func;
  * @since This datatype is available since SDL 3.2.0.
  */
 using AppQuit_func = SDL_AppQuit_func;
+
+/// @}
 
 /**
  * Initialize the SDL library.
@@ -18116,6 +18547,11 @@ private:
 inline bool IsMainThread() { return SDL_IsMainThread(); }
 
 /**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
  * Callback run on the main thread.
  *
  * @param userdata an app-controlled pointer that is passed to the callback.
@@ -18128,8 +18564,14 @@ using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
  * @sa PropertiesRef.MainThreadCallback
+ * @sa ResultCallback
+ *
+ * @ingroup ResultCallback
+ *
  */
 using MainThreadFunction = std::function<void()>;
+
+/// @}
 
 /**
  * Call a function on the main thread during event processing.
@@ -18184,10 +18626,13 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IsMainThread()
+ * @sa ResultCallback
+ *
+ * @ingroup ResultCallback
  */
 inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
 {
-  using Wrapper = CallbackWrapper<void()>;
+  using Wrapper = CallbackWrapper<MainThreadFunction>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
 }
@@ -18327,7 +18772,7 @@ inline const char* GetAppMetadataProperty(StringParam name)
   return SDL_GetAppMetadataProperty(name);
 }
 
-/** @} */
+/// @}
 
 #pragma region impl
 
@@ -21403,6 +21848,7 @@ TextureLock TextureBase<T>::Lock(OptionalRef<const SDL_Rect> rect) &
 #define SDL3PP_TIMER_H_
 
 #include <chrono>
+#include <functional>
 #include <SDL3/SDL_timer.h>
 
 namespace SDL {
@@ -21512,7 +21958,7 @@ inline void Delay(Uint32 ms) { SDL_Delay(ms); }
  */
 inline void Delay(std::chrono::nanoseconds duration)
 {
-  SDL_DelayNS(std::max(duration.count(), 1l));
+  SDL_DelayNS(duration.count());
 }
 
 /**
@@ -21564,7 +22010,7 @@ inline void DelayPrecise(Uint64 ns) { return SDL_DelayPrecise(ns); }
  */
 inline void DelayPrecise(std::chrono::nanoseconds duration)
 {
-  SDL_DelayPrecise(std::max(duration.count(), 1l));
+  SDL_DelayPrecise(duration.count());
 }
 /**
  * Definition of the timer ID type.
@@ -21600,6 +22046,60 @@ using TimerID = SDL_TimerID;
 using TimerCallback = SDL_TimerCallback;
 
 /**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 AddTimer(), for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddTimer()
+ */
+using NSTimerCallback = SDL_NSTimerCallback;
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
+ * @sa AddTimer(TimerFunction)
+ */
+using TimerFunction =
+  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+
+/**
  * Call a callback function at a future time.
  *
  * The callback function is passed the current timer interval and the user
@@ -21630,39 +22130,12 @@ using TimerCallback = SDL_TimerCallback;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AddTimerNS()
  * @sa RemoveTimer()
  */
 inline TimerID AddTimer(Uint32 interval, TimerCallback callback, void* userdata)
 {
   return SDL_AddTimer(interval, callback, userdata);
 }
-
-/**
- * Function prototype for the nanosecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param userdata an arbitrary pointer provided by the app through
- *                 AddTimer(), for its own use.
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddTimerNS()
- */
-using NSTimerCallback = SDL_NSTimerCallback;
 
 /**
  * Call a callback function at a future time.
@@ -21695,14 +22168,115 @@ using NSTimerCallback = SDL_NSTimerCallback;
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa AddTimer()
  * @sa RemoveTimer()
  */
-inline TimerID AddTimerNS(Uint64 interval,
-                          NSTimerCallback callback,
-                          void* userdata)
+inline TimerID AddTimer(Uint64 interval,
+                        NSTimerCallback callback,
+                        void* userdata)
 {
   return SDL_AddTimerNS(interval, callback, userdata);
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimerNS() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ * `callback`.
+ * @param callback the NSTimerCallback function to call when the specified
+ *                 `interval` elapses.
+ * @param userdata a pointer that is passed to `callback`.
+ * @returns a timer ID or 0 on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval,
+                        NSTimerCallback callback,
+                        void* userdata)
+{
+  return SDL_AddTimerNS(interval.count(), callback, userdata);
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimerNS() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ * `callback`.
+ * @param callback the TimerFunction function to call when the specified
+ *                 `interval` elapses.
+ * @returns a timer ID or 0 on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup ListenerCallback
+ *
+ * @sa ListenerCallback
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval,
+                        TimerFunction callback)
+{
+  using Wrapper = CallbackWrapper<TimerFunction>;
+  using Store = KeyValueWrapper<TimerID, TimerFunction*>;
+
+  auto cb = Wrapper::Wrap(std::move(callback));
+
+  if (TimerID id = SDL_AddTimerNS(
+        interval.count(),
+        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
+          auto& f = *static_cast<TimerFunction*>(userdata);
+          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
+          // If ask to removal, then remove it
+          if (next == 0) delete Store::release(timerID);
+          return next;
+        },
+        cb)) {
+    Store::Wrap(id, std::move(cb));
+    return id;
+  }
+  delete cb;
+  return TimerID{0};
 }
 
 /**
@@ -21718,9 +22292,11 @@ inline TimerID AddTimerNS(Uint64 interval,
  *
  * @sa AddTimer()
  */
-inline bool RemoveTimer(TimerID id) { return SDL_RemoveTimer(id); }
-
-// TODO TimerID
+inline bool RemoveTimer(TimerID id)
+{
+  delete KeyValueWrapper<TimerID, TimerFunction*>::release(id);
+  return SDL_RemoveTimer(id);
+}
 
 /// @}
 

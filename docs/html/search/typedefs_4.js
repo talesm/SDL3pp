@@ -7,12 +7,13 @@ var searchData=
   ['eglint_4',['EGLint',['../group__CategoryVideo.html#gab343f5587432ce5d36726a1ee5cf5bee',1,'SDL']]],
   ['eglintarraycallback_5',['EGLIntArrayCallback',['../group__CategoryVideo.html#gaff230867e34e519fce23045e208f158c',1,'SDL']]],
   ['eglsurface_6',['EGLSurface',['../group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8',1,'SDL']]],
-  ['enumeratecallback_7',['EnumerateCallback',['../structSDL_1_1PropertiesBase.html#aa5ea04792dd6fde23ffadf9c52e7d454',1,'SDL::PropertiesBase']]],
-  ['enumeratefunction_8',['EnumerateFunction',['../structSDL_1_1PropertiesBase.html#ac85485927d0c4582f0b0967f2d03f856',1,'SDL::PropertiesBase']]],
+  ['enumeratepropertiescallback_7',['EnumeratePropertiesCallback',['../group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c',1,'SDL']]],
+  ['enumeratepropertiesfunction_8',['EnumeratePropertiesFunction',['../group__CategoryProperties.html#ga9eaf0c945d51c16b884362809a4f56d2',1,'SDL']]],
   ['environment_9',['Environment',['../group__CategoryStdinc.html#gaedb86e9b9bb1aca04f73942d06b1d98f',1,'SDL']]],
   ['environmentref_10',['EnvironmentRef',['../group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e',1,'SDL']]],
   ['event_11',['Event',['../group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a',1,'SDL']]],
   ['eventaction_12',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
   ['eventfilter_13',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
-  ['eventtype_14',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]]
+  ['eventfilterfunction_14',['EventFilterFunction',['../group__ListenerCallback.html#ga89729782789df28788240517ea5b82be',1,'SDL']]],
+  ['eventtype_15',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]]
 ];
