@@ -20,7 +20,15 @@ you deem necessary.
 - Flexible, while we use RAII and such idioms, you have
 the choice to not use them and, for example, manage memory yourself.
 
-## Examples
+## Documentation
+
+- See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
+- See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
+  for some examples.
+- See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html)
+- See [Transformations](https://talesm.github.io/SDL3pp/transformations.html) to understand the design approach.
+
+## Example
 
 ```cpp
 #include <iostream>
@@ -59,13 +67,7 @@ int main(int argc, char** argv)
 }
 ```
 
-## Documentation
-
-- See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
-- See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
-  for some examples.
-- See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html)
-- See [Transformations](https://talesm.github.io/SDL3pp/transformations.html) to understand the design approach.
+[examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
 
 ## Building
 

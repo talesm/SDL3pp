@@ -55,7 +55,7 @@ int main(int argc, char** argv)
   bool running = true;
   while (running) {
     while (auto ev = SDL::PollEvent()) {
-      if (ev->type == SDL_EVENT_QUIT) { running = false; }
+      if (ev->type == SDL::EVENT_QUIT) { running = false; }
     }
     for (int i = 0; i < 4; i++) {
       auto& xx = rects[i].x;

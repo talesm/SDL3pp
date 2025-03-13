@@ -20,7 +20,6 @@ you deem necessary.
 - Flexible, while we use RAII and such idioms, you have
 the choice to not use them and, for example, manage memory yourself.
 
-
 ## Documentation
 
 - See @ref ApiByCategory
@@ -30,9 +29,11 @@ the choice to not use them and, for example, manage memory yourself.
 - See [our source code](https://github.com/talesm/SDL3pp);
 - See [most recent version of this Doxygen](https://talesm.github.io/SDL3pp/)
 
-## Examples
+## Example
 
 @include window_with_renderer.cpp
+
+See more examples at [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
 
 ## Building
 

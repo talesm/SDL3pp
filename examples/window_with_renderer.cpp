@@ -19,7 +19,7 @@ int main(int argc, char** argv)
   bool running = true;
   while (running) {
     while (auto ev = SDL::PollEvent()) {
-      if (ev->type == SDL_EVENT_QUIT) { running = false; }
+      if (ev->type == SDL::EVENT_QUIT) { running = false; }
     }
     renderer.SetDrawColor(SDL::FColor{.5f, .5f, .5f, 1.f});
     renderer.RenderClear();
