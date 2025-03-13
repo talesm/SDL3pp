@@ -21872,28 +21872,19 @@ namespace SDL {
  */
 
 /**
- * Get the number of milliseconds since SDL library initialization.
+ * Get the time elapsed since SDL library initialization.
  *
- * @returns an unsigned 64-bit value representing the number of milliseconds
- *          since the SDL library initialized.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline Uint64 GetTicks() { return SDL_GetTicks(); }
-
-/**
- * Get the number of nanoseconds since SDL library initialization.
- *
- * @returns an unsigned 64-bit value representing the number of nanoseconds
- *          since the SDL library initialized.
+ * @returns a std::chrono::nanoseconds value representing the number of
+ * nanoseconds since the SDL library initialized.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline Uint64 GetTicksNS() { return SDL_GetTicksNS(); }
+inline std::chrono::nanoseconds GetTicks()
+{
+  return std::chrono::nanoseconds{SDL_GetTicksNS()};
+}
 
 /**
  * Get the current value of the high resolution counter.
@@ -21931,20 +21922,6 @@ inline Uint64 GetPerformanceFrequency()
 }
 
 /**
- * Wait a specified number of milliseconds before returning.
- *
- * This function waits a specified number of milliseconds before returning. It
- * waits at least the specified time, but possibly longer due to OS
- * scheduling.
- *
- * @param ms the number of milliseconds to delay.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- */
-inline void Delay(Uint32 ms) { SDL_Delay(ms); }
-
-/**
  * Wait a specified duration before returning.
  *
  * This function waits a specified duration before returning. It
@@ -21961,36 +21938,6 @@ inline void Delay(std::chrono::nanoseconds duration)
   SDL_DelayNS(duration.count());
 }
 
-/**
- * @brief Wait a specified number of nanoseconds before returning.
- *
- * This function waits a specified number of nanoseconds before returning. It
- * will attempt to wait as close to the requested time as possible, busy
- * waiting if necessary, but could return later due to OS scheduling.
- *
- * @param ns the number of nanoseconds to delay.
- *
- * @threadsafety It is safe to call this function from any thread.
- */
-inline void DelayNS(Uint64 ns) { SDL_DelayNS(ns); }
-
-/**
- * Wait a specified number of nanoseconds before returning.
- *
- * This function waits a specified number of nanoseconds before returning. It
- * will attempt to wait as close to the requested time as possible, busy
- * waiting if necessary, but could return later due to OS scheduling.
- *
- * @param ns the number of nanoseconds to delay.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Delay()
- * @sa DelayNS()
- */
-inline void DelayPrecise(Uint64 ns) { return SDL_DelayPrecise(ns); }
 
 /**
  * Wait a specified duration before returning.
@@ -22132,49 +22079,11 @@ using TimerFunction =
  *
  * @sa RemoveTimer()
  */
-inline TimerID AddTimer(Uint32 interval, TimerCallback callback, void* userdata)
-{
-  return SDL_AddTimer(interval, callback, userdata);
-}
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in nanoseconds, passed to `callback`.
- * @param callback the NSTimerCallback function to call when the specified
- *                 `interval` elapses.
- * @param userdata a pointer that is passed to `callback`.
- * @returns a timer ID or 0 on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(Uint64 interval,
-                        NSTimerCallback callback,
+inline TimerID AddTimer(std::chrono::milliseconds interval,
+                        TimerCallback callback,
                         void* userdata)
 {
-  return SDL_AddTimerNS(interval, callback, userdata);
+  return SDL_AddTimer(interval.count(), callback, userdata);
 }
 
 /**

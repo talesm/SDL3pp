@@ -3838,29 +3838,11 @@
       }
     },
     "SDL_timer.h": {
+      "ignoreEntries": [
+        "SDL_GetTicks",
+        "SDL_DelayNS"
+      ],
       "includeAfter": {
-        "SDL_Delay": {
-          "kind": "function",
-          "name": "Delay",
-          "type": "void",
-          "parameters": [
-            {
-              "type": "std::chrono::nanoseconds",
-              "name": "duration"
-            }
-          ]
-        },
-        "SDL_DelayPrecise": {
-          "kind": "function",
-          "name": "DelayPrecise",
-          "type": "void",
-          "parameters": [
-            {
-              "type": "std::chrono::nanoseconds",
-              "name": "duration"
-            }
-          ]
-        },
         "SDL_TimerCallback": [
           {
             "kind": "placeholder",
@@ -3871,46 +3853,75 @@
             "name": "TimerFunction"
           }
         ],
-        "SDL_AddTimerNS": [
-          {
-            "kind": "function",
-            "name": "AddTimer",
-            "type": "TimerID",
-            "parameters": [
-              {
-                "type": "std::chrono::nanoseconds",
-                "name": "interval"
-              },
-              {
-                "type": "NSTimerCallback",
-                "name": "callback"
-              },
-              {
-                "type": "void *",
-                "name": "userdata"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "AddTimer",
-            "type": "TimerID",
-            "parameters": [
-              {
-                "type": "std::chrono::nanoseconds",
-                "name": "interval"
-              },
-              {
-                "type": "TimerFunction",
-                "name": "callback"
-              }
-            ]
-          }
-        ]
+        "SDL_AddTimerNS": {
+          "kind": "function",
+          "name": "AddTimer",
+          "type": "TimerID",
+          "parameters": [
+            {
+              "type": "std::chrono::nanoseconds",
+              "name": "interval"
+            },
+            {
+              "type": "TimerFunction",
+              "name": "callback"
+            }
+          ]
+        }
       },
       "transform": {
+        "SDL_GetTicksNS": {
+          "name": "GetTicks",
+          "type": "std::chrono::nanoseconds"
+        },
+        "SDL_Delay": {
+          "parameters": [
+            {
+              "type": "std::chrono::nanoseconds",
+              "name": "duration"
+            }
+          ]
+        },
+        "SDL_DelayPrecise": {
+          "parameters": [
+            {
+              "type": "std::chrono::nanoseconds",
+              "name": "duration"
+            }
+          ]
+        },
+        "SDL_AddTimer": {
+          "parameters": [
+            {
+              "type": "std::chrono::milliseconds",
+              "name": "interval"
+            },
+            {
+              "type": "TimerCallback",
+              "name": "callback"
+            },
+            {
+              "type": "void *",
+              "name": "userdata"
+            }
+          ]
+        },
         "SDL_AddTimerNS": {
-          "name": "AddTimer"
+          "name": "AddTimer",
+          "parameters": [
+            {
+              "type": "std::chrono::nanoseconds",
+              "name": "interval"
+            },
+            {
+              "type": "NSTimerCallback",
+              "name": "callback"
+            },
+            {
+              "type": "void *",
+              "name": "userdata"
+            }
+          ]
         }
       }
     },
