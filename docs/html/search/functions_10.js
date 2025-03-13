@@ -30,7 +30,7 @@ var searchData=
   ['setdrawcolor_27',['setdrawcolor',['../structSDL_1_1RendererBase.html#ab5d39f29732e13b3e5b2dce47f78479f',1,'SDL::RendererBase::SetDrawColor(SDL_FColor c)'],['../structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867',1,'SDL::RendererBase::SetDrawColor(SDL_Color c)']]],
   ['setenv_5funsafe_28',['setenv_unsafe',['../group__CategoryStdinc.html#ga97da5abe6c940c70b73fc9465cf8e75e',1,'SDL']]],
   ['seteventenabled_29',['SetEventEnabled',['../group__CategoryEvents.html#ga883f6ae88fa5628490ff69fb9e2fc8e5',1,'SDL']]],
-  ['seteventfilter_30',['seteventfilter',['../group__ListenerCallback.html#ga5ad81a70c2b9073fe5b77819ffa977c6',1,'SDL::SetEventFilter(EventFilterFunction filter={})'],['../group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869',1,'SDL::SetEventFilter(EventFilter filter, void *userdata)']]],
+  ['seteventfilter_30',['seteventfilter',['../group__ListenerCallback.html#gacd6a50432277e9af8392770756edfacd',1,'SDL::SetEventFilter(EventFilterFunction filter={})'],['../group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869',1,'SDL::SetEventFilter(EventFilter filter, void *userdata)']]],
   ['setfloat_31',['SetFloat',['../structSDL_1_1PropertiesBase.html#a9f7f305b141076af2b410e245ad935dd',1,'SDL::PropertiesBase']]],
   ['setfocusable_32',['SetFocusable',['../structSDL_1_1WindowBase.html#a96011506156f1d7bd935b2833e5e8ea6',1,'SDL::WindowBase']]],
   ['setfullscreen_33',['SetFullscreen',['../structSDL_1_1WindowBase.html#a20e380d4c0f9c08ec3387853b75fdb6a',1,'SDL::WindowBase']]],

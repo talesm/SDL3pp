@@ -3974,7 +3974,7 @@
         "SDL_SetEventFilter": {
           "kind": "function",
           "name": "SetEventFilter",
-          "type": "auto",
+          "type": "void",
           "parameters": [
             {
               "type": "EventFilterFunction",
@@ -3983,12 +3983,29 @@
             }
           ]
         },
-        "SDL_GetEventFilter": {
-          "kind": "function",
-          "name": "GetEventFilter",
-          "type": "EventFilterFunction",
-          "parameters": []
-        },
+        "SDL_GetEventFilter": [
+          {
+            "kind": "function",
+            "name": "GetEventFilter",
+            "type": "EventFilterFunction",
+            "parameters": []
+          },
+          {
+            "kind": "function",
+            "name": "EventWatchAuxCallback",
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "void *",
+                "name": "userdata"
+              },
+              {
+                "type": "Event *",
+                "name": "event"
+              }
+            ]
+          }
+        ],
         "SDL_AddEventWatch": {
           "kind": "function",
           "name": "AddEventWatch",

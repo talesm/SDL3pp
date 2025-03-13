@@ -150,9 +150,10 @@ var searchData=
   ['eventfilterfunction_147',['EventFilterFunction',['../group__ListenerCallback.html#ga89729782789df28788240517ea5b82be',1,'SDL']]],
   ['events_148',['events',['../group__CategoryEvents.html',1,'Category Events'],['../group__CategoriesEvents.html',1,'Input Events'],['../ApiByCategory.html#input-events',1,'Input Events']]],
   ['eventtype_149',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]],
-  ['eventwatchhandle_150',['eventwatchhandle',['../classSDL_1_1EventWatchHandle.html',1,'SDL::EventWatchHandle'],['../classSDL_1_1EventWatchHandle.html#a1ec0515325dc98a06ebfc48a5e09aa14',1,'SDL::EventWatchHandle::EventWatchHandle()']]],
-  ['examples_151',['Examples',['../index.html#examples',1,'']]],
-  ['exp_152',['exp',['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
-  ['expf_153',['expf',['../group__CategoryStdinc.html#ga5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],
-  ['extend_154',['extend',['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)']]]
+  ['eventwatchauxcallback_150',['EventWatchAuxCallback',['../group__CategoryEvents.html#ga98ee361698ead2f22e5375dc26473c7b',1,'SDL']]],
+  ['eventwatchhandle_151',['eventwatchhandle',['../classSDL_1_1EventWatchHandle.html',1,'SDL::EventWatchHandle'],['../classSDL_1_1EventWatchHandle.html#a1ec0515325dc98a06ebfc48a5e09aa14',1,'SDL::EventWatchHandle::EventWatchHandle()']]],
+  ['examples_152',['Examples',['../index.html#examples',1,'']]],
+  ['exp_153',['exp',['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
+  ['expf_154',['expf',['../group__CategoryStdinc.html#ga5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],
+  ['extend_155',['extend',['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)']]]
 ];

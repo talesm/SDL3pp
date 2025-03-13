@@ -17754,10 +17754,10 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * @sa PeepEvents()
  * @sa PushEvent()
  */
-inline auto SetEventFilter(EventFilterFunction filter = {})
+inline void SetEventFilter(EventFilterFunction filter = {})
 {
   using Wrapper = UniqueWrapper<EventFilterFunction>;
-  return SDL_SetEventFilter(
+  SDL_SetEventFilter(
     [](void* userdata, SDL_Event* event) {
       return Wrapper::at(userdata)(*event);
     },
@@ -17815,6 +17815,13 @@ inline EventFilterFunction GetEventFilter()
   return [filter, userdata](const Event& event) {
     return filter(userdata, const_cast<Event*>(&event));
   };
+}
+
+// Ignore me
+inline bool EventWatchAuxCallback(void* userdata, Event* event)
+{
+  auto& f = *static_cast<EventFilterFunction*>(userdata);
+  return f(*event);
 }
 
 /**
@@ -17890,6 +17897,10 @@ inline EventWatchHandle AddEventWatch(EventFilterFunction filter)
   using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
 
   auto cb = Wrapper::Wrap(std::move(filter));
+  if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
+    delete cb;
+    return EventWatchHandle{nullptr};
+  }
 
   static std::atomic_size_t lastId = 0;
   size_t id = ++lastId;
