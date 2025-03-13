@@ -108,11 +108,22 @@ Example</h1>
 <div class="line">    SDL_Log(<span class="stringliteral">&quot;%s&quot;</span>, <a class="code hl_function" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04">SDL::GetError</a>());</div>
 <div class="line">    <span class="keywordflow">return</span> 1;</div>
 <div class="line">  }</div>
+<div class="line">  <span class="keyword">constexpr</span> <a class="code hl_struct" href="structSDL_1_1Point.html">SDL::Point</a> WINDOW_SZ = {400, 400};</div>
 <div class="line">  <span class="keyword">auto</span> [window, renderer] = <a class="code hl_function" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a>(<span class="stringliteral">&quot;Test&quot;</span>, {400, 400});</div>
 <div class="line">  <span class="keywordflow">if</span> (!window) {</div>
 <div class="line">    SDL_Log(<span class="stringliteral">&quot;%s&quot;</span>, <a class="code hl_function" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04">SDL::GetError</a>());</div>
 <div class="line">    <span class="keywordflow">return</span> 1;</div>
 <div class="line">  }</div>
+<div class="line"> </div>
+<div class="line">  <a class="code hl_struct" href="structSDL_1_1TextureBase.html">SDL::Texture</a> characterTexture{</div>
+<div class="line">    <a class="code hl_function" href="group__CategorySDLImage.html#ga79ac3e96edab6a5a0a35886eae9fded9">SDL::IMG::LoadTexture</a>(renderer, <span class="stringliteral">&quot;assets/smiley.png&quot;</span>)};</div>
+<div class="line">  <span class="keywordflow">if</span> (!characterTexture) {</div>
+<div class="line">    SDL_Log(<span class="stringliteral">&quot;%s&quot;</span>, <a class="code hl_function" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04">SDL::GetError</a>());</div>
+<div class="line">    <span class="keywordflow">return</span> 1;</div>
+<div class="line">  }</div>
+<div class="line">  <a class="code hl_struct" href="structSDL_1_1FRect.html">SDL::FRect</a> characterRect(<a class="code hl_struct" href="structSDL_1_1FPoint.html">SDL::FPoint</a>(WINDOW_SZ) / 2 - <a class="code hl_struct" href="structSDL_1_1FPoint.html">SDL::FPoint</a>{64, 64},</div>
+<div class="line">                           {128, 128});</div>
+<div class="line"> </div>
 <div class="line">  <span class="keywordtype">bool</span> running = <span class="keyword">true</span>;</div>
 <div class="line">  <span class="keywordflow">while</span> (running) {</div>
 <div class="line">    <span class="keywordflow">while</span> (<span class="keyword">auto</span> ev = <a class="code hl_function" href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12">SDL::PollEvent</a>()) {</div>
@@ -120,8 +131,9 @@ Example</h1>
 <div class="line">    }</div>
 <div class="line">    renderer.SetDrawColor(<a class="code hl_struct" href="structSDL_1_1FColor.html">SDL::FColor</a>{.5f, .5f, .5f, 1.f});</div>
 <div class="line">    renderer.RenderClear();</div>
-<div class="line">    renderer.SetDrawColor(<a class="code hl_struct" href="structSDL_1_1FColor.html">SDL::FColor</a>{0.f, 1.f, 0.f, 1.f});</div>
-<div class="line">    renderer.RenderFillRect(<a class="code hl_struct" href="structSDL_1_1FRect.html">SDL::FRect</a>{10, 10, 128, 128});</div>
+<div class="line">    renderer.SetDrawColor(<a class="code hl_struct" href="structSDL_1_1FColor.html">SDL::FColor</a>{0.f, 0.725f, 0.f, 1.f});</div>
+<div class="line">    renderer.RenderFillRect(<a class="code hl_struct" href="structSDL_1_1FRect.html">SDL::FRect</a>{10, 10, 380, 380});</div>
+<div class="line">    renderer.RenderTexture(characterTexture, {}, characterRect);</div>
 <div class="line"> </div>
 <div class="line">    renderer.Present();</div>
 <div class="line">    <a class="code hl_function" href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a>(1ns);</div>
@@ -134,11 +146,15 @@ Example</h1>
 <div class="ttc" id="agroup__CategoryEvents_html_ga97ffaee5e1e3e41c04226981bb19dc12"><div class="ttname"><a href="group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12">SDL::PollEvent</a></div><div class="ttdeci">std::optional&lt; Event &gt; PollEvent()</div><div class="ttdoc">Poll for currently pending events.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__events_8h_source.html#l01257">SDL3pp_events.h:1257</a></div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga63ca590321877744a1050ab71ff4e3c5"><div class="ttname"><a href="group__CategoryInit.html#ga63ca590321877744a1050ab71ff4e3c5">SDL::INIT_VIDEO</a></div><div class="ttdeci">constexpr InitFlags INIT_VIDEO</div><div class="ttdoc">SDL_INIT_VIDEO implies SDL_INIT_EVENTS, should be initialized on the main thread</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00067">SDL3pp_init.h:67</a></div></div>
 <div class="ttc" id="agroup__CategoryRender_html_ga46a4e94c9436427b1e58a045f9ac177d"><div class="ttname"><a href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a></div><div class="ttdeci">std::pair&lt; Window, Renderer &gt; CreateWindowAndRenderer(StringParam title, SDL_Point size, WindowFlags window_flags=0)</div><div class="ttdoc">Create a window and default renderer.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__render_8h_source.html#l02672">SDL3pp_render.h:2672</a></div></div>
+<div class="ttc" id="agroup__CategorySDLImage_html_ga79ac3e96edab6a5a0a35886eae9fded9"><div class="ttname"><a href="group__CategorySDLImage.html#ga79ac3e96edab6a5a0a35886eae9fded9">SDL::IMG::LoadTexture</a></div><div class="ttdeci">Texture LoadTexture(RendererRef renderer, StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a GPU texture.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__image_8h_source.html#l00198">SDL3pp_image.h:198</a></div></div>
 <div class="ttc" id="agroup__CategoryTimer_html_ga29135876921c3060e1c60a9e839d57b4"><div class="ttname"><a href="group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4">SDL::Delay</a></div><div class="ttdeci">void Delay(std::chrono::nanoseconds duration)</div><div class="ttdoc">Wait a specified duration before returning.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__timer_8h_source.html#l00093">SDL3pp_timer.h:93</a></div></div>
 <div class="ttc" id="agroup__EventTypes_html_gaf1b29d7108b0942dfdad98e0ef195a97"><div class="ttname"><a href="group__EventTypes.html#gaf1b29d7108b0942dfdad98e0ef195a97">SDL::EVENT_QUIT</a></div><div class="ttdeci">constexpr EventType EVENT_QUIT</div><div class="ttdoc">User-requested quit.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__events_8h_source.html#l00070">SDL3pp_events.h:70</a></div></div>
 <div class="ttc" id="astructSDL_1_1FColor_html"><div class="ttname"><a href="structSDL_1_1FColor.html">SDL::FColor</a></div><div class="ttdoc">The bits of this structure can be directly reinterpreted as a float-packed color which uses the SDL_P...</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__pixels_8h_source.html#l01661">SDL3pp_pixels.h:1662</a></div></div>
+<div class="ttc" id="astructSDL_1_1FPoint_html"><div class="ttname"><a href="structSDL_1_1FPoint.html">SDL::FPoint</a></div><div class="ttdoc">The structure that defines a point (using floating point values).</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__rect_8h_source.html#l00418">SDL3pp_rect.h:419</a></div></div>
 <div class="ttc" id="astructSDL_1_1FRect_html"><div class="ttname"><a href="structSDL_1_1FRect.html">SDL::FRect</a></div><div class="ttdoc">A rectangle, with the origin at the upper left (using floats).</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__rect_8h_source.html#l01328">SDL3pp_rect.h:1329</a></div></div>
+<div class="ttc" id="astructSDL_1_1Point_html"><div class="ttname"><a href="structSDL_1_1Point.html">SDL::Point</a></div><div class="ttdoc">The structure that defines a point (using integers)</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__rect_8h_source.html#l00037">SDL3pp_rect.h:38</a></div></div>
 <div class="ttc" id="astructSDL_1_1SDL_html"><div class="ttname"><a href="structSDL_1_1SDL.html">SDL::SDL</a></div><div class="ttdoc">Initialize the SDL library.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__init_8h_source.html#l00347">SDL3pp_init.h:348</a></div></div>
+<div class="ttc" id="astructSDL_1_1TextureBase_html"><div class="ttname"><a href="structSDL_1_1TextureBase.html">SDL::TextureBase</a></div><div class="ttdoc">An efficient driver-specific representation of pixel data.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__render_8h_source.html#l01730">SDL3pp_render.h:1731</a></div></div>
 </div><!-- fragment --><p>See more examples at <a href="https://github.com/talesm/SDL3pp/tree/main/examples">examples directory</a></p>
 <h1><a class="anchor" id="building"></a>
 Building</h1>

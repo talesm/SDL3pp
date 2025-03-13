@@ -21151,7 +21151,7 @@ struct TextureBase : T
   }
 
   /**
-   * Set the blend mode for a texture, used by SDL_RenderTexture().
+   * Set the blend mode for a texture, used by RendererBase::RenderTexture().
    *
    * If the blend mode is not supported, the closest supported mode is chosen
    * and this function returns false.
@@ -21709,7 +21709,7 @@ bool RendererBase<T>::RenderTexture(TextureRef texture,
                                     OptionalRef<const SDL_FRect> srcrect,
                                     OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTexture(T::get(), texture, srcrect, dstrect);
+  return SDL_RenderTexture(T::get(), texture.get(), srcrect, dstrect);
 }
 
 template<ObjectBox<SDL_Renderer*> T>
@@ -21721,7 +21721,7 @@ bool RendererBase<T>::RenderTextureRotated(TextureRef texture,
                                            FlipMode flip)
 {
   return SDL_RenderTextureRotated(
-    T::get(), texture, srcrect, dstrect, angle, center, flip);
+    T::get(), texture.get(), srcrect, dstrect, angle, center, flip);
 }
 
 template<ObjectBox<SDL_Renderer*> T>
@@ -21732,7 +21732,7 @@ bool RendererBase<T>::RenderTextureAffine(TextureRef texture,
                                           OptionalRef<const SDL_FPoint> down)
 {
   return SDL_RenderTextureAffine(
-    T::get(), texture, srcrect, origin, right, down);
+    T::get(), texture.get(), srcrect, origin, right, down);
 }
 
 template<ObjectBox<SDL_Renderer*> T>
@@ -21741,7 +21741,8 @@ bool RendererBase<T>::RenderTextureTiled(TextureRef texture,
                                          float scale,
                                          OptionalRef<const SDL_FRect> dstrect)
 {
-  return SDL_RenderTextureTiled(T::get(), texture, srcrect, scale, dstrect);
+  return SDL_RenderTextureTiled(
+    T::get(), texture.get(), srcrect, scale, dstrect);
 }
 
 template<ObjectBox<SDL_Renderer*> T>
@@ -21755,7 +21756,7 @@ bool RendererBase<T>::RenderTexture9Grid(TextureRef texture,
                                          OptionalRef<const SDL_FRect> dstrect)
 {
   return SDL_RenderTexture9Grid(T::get(),
-                                texture,
+                                texture.get(),
                                 srcrect,
                                 left_width,
                                 right_width,
@@ -21772,10 +21773,10 @@ bool RendererBase<T>::RenderGeometry(TextureRef texture,
 {
   if (indices.empty()) {
     return SDL_RenderGeometry(
-      T::get(), texture, vertices.data(), vertices.size(), nullptr, 0);
+      T::get(), texture.get(), vertices.data(), vertices.size(), nullptr, 0);
   }
   return SDL_RenderGeometry(T::get(),
-                            texture,
+                            texture.get(),
                             vertices.data(),
                             vertices.size(),
                             indices.data(),
@@ -21796,7 +21797,7 @@ bool RendererBase<T>::RenderGeometryRaw(TextureRef texture,
                                         int size_indices)
 {
   return SDL_RenderGeometryRaw(T::get(),
-                               texture,
+                               texture.get(),
                                xy,
                                xy_stride,
                                color,
