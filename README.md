@@ -9,12 +9,16 @@ It was inspired on [SDL2pp](https://github.com/libSDL2pp/libSDL2pp),
 with the addition of flexible memory management and wrappers for 
 string and callbacks.
 
-See API reference [here](https://talesm.github.io/SDL3pp/).
+## Quick start / TLDR
+
+- Download [the single header](./dist/SDL3pp/SDL3pp.h) and add to your project;
+- See [API reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
+- See [Examples directory](./examples/).
 
 ## Goals
 
 - Be header only, we are mostly wrapping thing here
-- Intefaces should accept both C structs and the C++ wraps, so you
+- Interfaces should accept both C structs and the C++ wraps, so you
 can adapt a codebase gradually or just choose to use only what 
 you deem necessary.
 - Flexible, while we use RAII and such idioms, you have
@@ -23,10 +27,11 @@ the choice to not use them and, for example, manage memory yourself.
 ## Documentation
 
 - See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
+  - See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html)
+  - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html)
+    to understand the strategies we adopt to map we do from C to C++
 - See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
   for some examples.
-- See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html)
-- See [Transformations](https://talesm.github.io/SDL3pp/transformations.html) to understand the design approach.
 
 ## Example
 
