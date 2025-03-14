@@ -86,15 +86,28 @@ Quick start / TLDR</h1>
 <h1><a class="anchor" id="goals"></a>
 Goals</h1>
 <ul>
-<li>Be header only, we are mostly wrapping thing here</li>
+<li>Be header only, we are mostly wrapping thing here;<ul>
+<li>We even have a <a href="https://raw.githubusercontent.com/talesm/SDL3pp/refs/heads/main/dist/SDL3pp/SDL3pp.h">the single header to just put in your project</a></li>
+</ul>
+</li>
+<li>Mostly wrap the naturally OO-looking API into actual OO C++ constructs;<ul>
+<li>Also add little quick improvements like using vocabulary types to better fit C++ idioms;</li>
+<li>See <a class="el" href="transformations.html">Transformations</a> for more details;</li>
+</ul>
+</li>
+<li>Put everything into a <code><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a></code> namespace instead of prefixes;<ul>
+<li>For uniformity we also wrap non OO entities at lower priority (like aliases, functions, constants, etc);</li>
+</ul>
+</li>
 <li>Interfaces should accept both C structs and the C++ wraps, so you can adapt a codebase gradually or just choose to use only what you deem necessary.</li>
-<li>Flexible, while we use RAII and such idioms, you have the choice to not use them and, for example, manage memory yourself.</li>
+<li>Flexible, while we use <a href="https://en.cppreference.com/w/cpp/language/raii">RAII</a> idiom by default, you have the choice to not use it and, for example, manage memory yourself.</li>
 </ul>
 <h1><a class="anchor" id="documentation"></a>
 Documentation</h1>
 <ul>
 <li>See <a class="el" href="ApiByCategory.html">API by Category</a> for some examples.</li>
 <li>See <a class="el" href="transformations.html">Transformations</a> to understand the design approach.</li>
+<li>See <a class="el" href="group__DesignNotes.html">Design notes</a> to understand the rationally behind some design patterns and choices we use.</li>
 <li>See <a href="https://github.com/talesm/SDL3pp">our source code</a>;</li>
 <li>See the <a href="https://github.com/talesm/SDL3pp/tree/main/examples">examples directory</a></li>
 <li>See <a href="https://talesm.github.io/SDL3pp/">most recent version of this Doxygen</a></li>

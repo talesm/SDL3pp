@@ -17,19 +17,30 @@ string and callbacks.
 
 ## Goals
 
-- Be header only, we are mostly wrapping thing here
-- Interfaces should accept both C structs and the C++ wraps, so you
-can adapt a codebase gradually or just choose to use only what 
-you deem necessary.
-- Flexible, while we use RAII and such idioms, you have
-the choice to not use them and, for example, manage memory yourself.
+- Be header only, we are mostly wrapping thing here;
+  - We even have a 
+    [the single header to just put in your project](./dist/SDL3pp/SDL3pp.h)
+- Mostly wrap the naturally OO-looking API into actual OO C++ constructs;
+  - Also add little quick improvements like using vocabulary types to better 
+    fit C++ idioms;
+  - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html) for more details;
+- Put everything into a `SDL` namespace instead of prefixes;
+  - For uniformity we also wrap non OO entities at lower priority (like 
+    aliases, functions, constants, etc);
+- Interfaces should accept both C structs and the C++ wraps, so you can adapt a
+  codebase gradually or just choose to use only what you deem necessary.
+- Flexible, while we use [RAII](https://en.cppreference.com/w/cpp/language/raii)
+  idiom by default, you have the choice to not use it and, for example, manage
+  memory yourself.
 
 ## Documentation
 
 - See most recent [Doxygen](https://talesm.github.io/SDL3pp/)
-  - See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html)
+  - See [Api reference](https://talesm.github.io/SDL3pp/ApiByCategory.html);
   - See [Transformations](https://talesm.github.io/SDL3pp/transformations.html)
-    to understand the strategies we adopt to map we do from C to C++
+    to understand the strategies we adopt to map we do from C to C++;
+  - See [Design notes](https://talesm.github.io/SDL3pp/group__DesignNotes.html)
+    to understand the rationally behind some design patterns and choices we use.
 - See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
   for some examples.
 
