@@ -42,7 +42,16 @@ template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 struct PropertiesBase;
 
 /**
- * @brief Handle to a non owned properties
+ * Handle to a non owned properties
+ *
+ * To create a new property group use CreateProperties()
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PropertiesBase
+ * @sa Properties
+ * @sa CreateProperties()
  */
 using PropertiesRef =
   PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
@@ -54,7 +63,13 @@ struct PropertiesDeleter
 };
 
 /**
- * @brief Handle to an owned surface
+ * Handle to an owned properties
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PropertiesBase
+ * @sa PropertiesRef
  */
 using Properties =
   PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
@@ -152,7 +167,7 @@ using EnumeratePropertiesFunction =
 struct PropertiesLock;
 
 /**
- * @brief Wrap properties id
+ * Wrap properties id
  *
  * A property is a variable that can be created and retrieved by name at
  * runtime.
@@ -176,11 +191,16 @@ struct PropertiesLock;
  *
  * Properties can be removed from a group by using SDL_ClearProperty.
  *
+ * To create a new properties group use CreateProperties().
+ *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa CreateProperties()
- *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa CreateProperties()
+ * @sa Properties
+ * @sa PropertiesRef
  */
 template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 struct PropertiesBase : T
@@ -232,7 +252,7 @@ struct PropertiesBase : T
   PropertiesLock Lock() &;
 
   /**
-   * @brief Set a pointer property in a group of properties with a cleanup
+   * Set a pointer property in a group of properties with a cleanup
    * function that is called when the property is deleted.
    *
    * The cleanup function is also called if setting the property fails for any
@@ -614,7 +634,7 @@ struct PropertiesBase : T
   bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
 
   /**
-   * @brief Enumerate the properties contained in a group of properties.
+   * Enumerate the properties contained in a group of properties.
    *
    * @param outputIter an output iterator to be assigned to each property name
    * @returns true on success or false on failure; call GetError() for more
@@ -630,7 +650,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Enumerate the properties contained in a group of properties.
+   * Enumerate the properties contained in a group of properties.
    *
    * The callback function is called for each property in the group of
    * properties. The properties are locked during enumeration.
@@ -707,7 +727,7 @@ struct PropertiesBase : T
 };
 
 /**
- * @brief Wrap the lock state for PropertiesBase
+ * Wrap the lock state for PropertiesBase
  *
  */
 class PropertiesLock
@@ -749,7 +769,7 @@ public:
   }
 
   /**
-   * @brief Returns true if lock is active
+   * Returns true if lock is active
    */
   constexpr operator bool() const { return bool(properties); }
 

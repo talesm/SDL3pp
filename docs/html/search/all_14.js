@@ -5,7 +5,7 @@ var searchData=
   ['texteditingcandidatesevent_2',['TextEditingCandidatesEvent',['../group__CategoryEvents.html#gaa26d4fc42ea136ac94ddc5d5f9d2698b',1,'SDL']]],
   ['texteditingevent_3',['TextEditingEvent',['../group__CategoryEvents.html#ga928bb11f8839819f01e2b1e866795e8d',1,'SDL']]],
   ['textinputevent_4',['TextInputEvent',['../group__CategoryEvents.html#gadacb00f1879039f4af337c81ac3a575c',1,'SDL']]],
-  ['texture_5',['Texture',['../group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a',1,'SDL']]],
+  ['texture_5',['Texture',['../group__resource.html#ga13d0a07c826d3f2531cb140115008f5a',1,'SDL']]],
   ['textureaccess_6',['TextureAccess',['../group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56',1,'SDL']]],
   ['textureaccess_5fstatic_7',['TEXTUREACCESS_STATIC',['../group__CategoryRender.html#gaa279e3194ca1c39c29ba228dfbaf1a11',1,'SDL']]],
   ['textureaccess_5fstreaming_8',['TEXTUREACCESS_STREAMING',['../group__CategoryRender.html#gaa7a17f596678e5bb9c8b67844a1024c9',1,'SDL']]],
@@ -13,7 +13,7 @@ var searchData=
   ['texturebase_10',['texturebase',['../structSDL_1_1TextureBase.html',1,'SDL::TextureBase&lt; T &gt;'],['../classSDL_1_1TextureLock.html#ac98a187da956fc19214e0d8dc5166e0c',1,'SDL::TextureLock::TextureBase'],['../structSDL_1_1TextureBase.html#a26b12859b23ad925ae7bed0c81ab0f46',1,'SDL::TextureBase::TextureBase(RendererRef renderer, PixelFormat format, TextureAccess access, int w, int h)'],['../structSDL_1_1TextureBase.html#ac9fb768abf109729277163693dfef21e',1,'SDL::TextureBase::TextureBase(RendererRef renderer, SurfaceRef surface)'],['../structSDL_1_1TextureBase.html#adf253d6d8727fca312e9707681ced937',1,'SDL::TextureBase::TextureBase(RendererRef renderer, PropertiesRef props)']]],
   ['texturebase_3c_20objectref_3c_20sdl_5ftexture_20_3e_20_3e_11',['TextureBase&lt; ObjectRef&lt; SDL_Texture &gt; &gt;',['../structSDL_1_1TextureBase.html',1,'SDL']]],
   ['texturelock_12',['texturelock',['../classSDL_1_1TextureLock.html#a7514e0bc1900826f7044a85661784fc5',1,'SDL::TextureLock::TextureLock(const TextureLock &amp;other)=delete'],['../classSDL_1_1TextureLock.html#ac3cd459f3b03edcae5451417253c0444',1,'SDL::TextureLock::TextureLock()'],['../classSDL_1_1TextureLock.html#a3a52d759047dc1b3e33aca59be646261',1,'SDL::TextureLock::TextureLock(TextureLock &amp;&amp;other)'],['../classSDL_1_1TextureLock.html',1,'SDL::TextureLock']]],
-  ['textureref_13',['TextureRef',['../group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7',1,'SDL']]],
+  ['textureref_13',['TextureRef',['../group__resource.html#ga4b68df1674a8dea4fabd4e9ab9e745d7',1,'SDL']]],
   ['time_14',['time',['../group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f',1,'SDL::Time'],['../group__CategoriesTime.html',1,'Time'],['../ApiByCategory.html#time',1,'Time']]],
   ['timer_20support_15',['Timer Support',['../group__CategoryTimer.html',1,'']]],
   ['timercallback_16',['TimerCallback',['../group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea',1,'SDL']]],
@@ -49,5 +49,6 @@ var searchData=
   ['trunc_46',['trunc',['../group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
   ['truncf_47',['truncf',['../group__CategoryStdinc.html#gae6b046a5844394a19061a8544376ffac',1,'SDL']]],
   ['type_20rules_48',['Type rules',['../transformations.html#type-rules',1,'']]],
-  ['types_49',['Event Types',['../group__EventTypes.html',1,'']]]
+  ['type_20wrapping_49',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
+  ['types_50',['Event Types',['../group__EventTypes.html',1,'']]]
 ];

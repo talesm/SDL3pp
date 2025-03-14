@@ -627,6 +627,13 @@ FreeWrapper<T[]> wrapArray(T* array)
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryObjectWrapper Helpers for Resource type wrapping
+ *
+ * @sa Resource
+ * @{
+ */
+
 template<class T, class POINTER>
 concept ObjectBox = requires(const T a, T b) {
   { a.get() } -> std::convertible_to<POINTER>;
@@ -735,7 +742,11 @@ public:
   T* operator->() { return &value; }
 };
 
+/// @}
+
 } // namespace SDL
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 template<class T, class POINTER>
 void std::swap(SDL::ObjectRef<T, POINTER>& left,
@@ -750,6 +761,8 @@ void std::swap(SDL::ObjectUnique<T, DELETER> left,
 {
   left.swap(right);
 }
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif /* SDL3PP_OBJECT_WRAPPER_H_ */
 
@@ -875,6 +888,15 @@ namespace SDL {
 template<ObjectBox<SDL_Environment*> T>
 struct EnvironmentBase;
 
+/**
+ * Handle to a non owning environment
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa EnvironmentBase
+ * @sa Environment
+ */
 using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 
 template<>
@@ -883,12 +905,30 @@ struct ObjectDeleter<SDL_Environment>
   inline void operator()(EnvironmentRef environment) const;
 };
 
+/**
+ * Handle to an owning environment
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa EnvironmentBase
+ * @sa EnvironmentRef
+ */
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
 
 // Forward decl
 template<ObjectBox<SDL_iconv_t> T>
 struct IConvBase;
 
+/**
+ * Handle to a non owning iconv
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa IConvBase
+ * @sa IConv
+ */
 using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
 
 template<>
@@ -897,6 +937,15 @@ struct ObjectDeleter<SDL_iconv_data_t>
   inline void operator()(IConvRef iconv) const;
 };
 
+/**
+ * Handle to an owning iconv
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa IConvBase
+ * @sa IConvRef
+ */
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
 
 /**
@@ -1265,6 +1314,10 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @since This struct is available since SDL 3.2.0.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Environment
+ * @sa EnvironmentRef
  **/
 template<ObjectBox<SDL_Environment*> T>
 struct EnvironmentBase : T
@@ -1342,9 +1395,11 @@ struct EnvironmentBase : T
   }
 
   /**
-   * @brief Get the Variables count
+   * Get the Variables count.
    *
-   * @return Uint64
+   * @return the number of existing environment variables
+   *
+   * This might be slow.
    */
   inline Uint64 GetVariableCount()
   {
@@ -5223,6 +5278,10 @@ inline float tanf(float x) { return SDL_tanf(x); }
  * @since This datatype is available since SDL 3.2.0.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa IConv
+ * @sa IConvRef
  */
 template<ObjectBox<SDL_iconv_t> T>
 struct IConvBase : T
@@ -5476,7 +5535,16 @@ template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 struct PropertiesBase;
 
 /**
- * @brief Handle to a non owned properties
+ * Handle to a non owned properties
+ *
+ * To create a new property group use CreateProperties()
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PropertiesBase
+ * @sa Properties
+ * @sa CreateProperties()
  */
 using PropertiesRef =
   PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
@@ -5488,7 +5556,13 @@ struct PropertiesDeleter
 };
 
 /**
- * @brief Handle to an owned surface
+ * Handle to an owned properties
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PropertiesBase
+ * @sa PropertiesRef
  */
 using Properties =
   PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
@@ -5586,7 +5660,7 @@ using EnumeratePropertiesFunction =
 struct PropertiesLock;
 
 /**
- * @brief Wrap properties id
+ * Wrap properties id
  *
  * A property is a variable that can be created and retrieved by name at
  * runtime.
@@ -5610,11 +5684,16 @@ struct PropertiesLock;
  *
  * Properties can be removed from a group by using SDL_ClearProperty.
  *
+ * To create a new properties group use CreateProperties().
+ *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa CreateProperties()
- *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa CreateProperties()
+ * @sa Properties
+ * @sa PropertiesRef
  */
 template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 struct PropertiesBase : T
@@ -5666,7 +5745,7 @@ struct PropertiesBase : T
   PropertiesLock Lock() &;
 
   /**
-   * @brief Set a pointer property in a group of properties with a cleanup
+   * Set a pointer property in a group of properties with a cleanup
    * function that is called when the property is deleted.
    *
    * The cleanup function is also called if setting the property fails for any
@@ -6048,7 +6127,7 @@ struct PropertiesBase : T
   bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
 
   /**
-   * @brief Enumerate the properties contained in a group of properties.
+   * Enumerate the properties contained in a group of properties.
    *
    * @param outputIter an output iterator to be assigned to each property name
    * @returns true on success or false on failure; call GetError() for more
@@ -6064,7 +6143,7 @@ struct PropertiesBase : T
   }
 
   /**
-   * @brief Enumerate the properties contained in a group of properties.
+   * Enumerate the properties contained in a group of properties.
    *
    * The callback function is called for each property in the group of
    * properties. The properties are locked during enumeration.
@@ -6141,7 +6220,7 @@ struct PropertiesBase : T
 };
 
 /**
- * @brief Wrap the lock state for PropertiesBase
+ * Wrap the lock state for PropertiesBase
  *
  */
 class PropertiesLock
@@ -6183,7 +6262,7 @@ public:
   }
 
   /**
-   * @brief Returns true if lock is active
+   * Returns true if lock is active
    */
   constexpr operator bool() const { return bool(properties); }
 
@@ -8532,7 +8611,13 @@ template<class T>
 struct PaletteBase;
 
 /**
- * @brief Handle to a non owned surface
+ * Handle to a non owned surface
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PaletteBase
+ * @sa Palette
  */
 using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 
@@ -8543,7 +8628,13 @@ struct ObjectDeleter<SDL_Palette>
 };
 
 /**
- * @brief Handle to an owned surface
+ * Handle to an owned surface
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PaletteBase
+ * @sa PaletteRef
  */
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
 
@@ -8880,7 +8971,7 @@ struct PixelFormat
   constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(format); }
 
   /**
-   * @brief Determine if this is an array format.
+   * Determine if this is an array format.
    *
    * @returns true if the format is an array, false otherwise.
    *
@@ -9267,7 +9358,7 @@ constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
  */
 
 /**
- * @brief Colorspace color type.
+ * Colorspace color type.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -9962,7 +10053,7 @@ struct Color : SDL_Color
   auto operator<=>(const Color& other) const = default;
 
   /**
-   * @brief Get the red component from the color
+   * Get the red component from the color
    *
    * @returns The red component from the color
    *
@@ -9970,7 +10061,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetRed() const { return r; }
 
   /**
-   * @brief Set the red component from the color
+   * Set the red component from the color
    *
    * @param[in] nr New red component value
    *
@@ -9984,7 +10075,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Get the green component from the color
+   * Get the green component from the color
    *
    * @returns The green component from the color
    *
@@ -9992,7 +10083,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetGreen() const { return g; }
 
   /**
-   * @brief Set the green component from the color
+   * Set the green component from the color
    *
    * @param[in] ng New green component value
    *
@@ -10006,7 +10097,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Get the blue component from the color
+   * Get the blue component from the color
    *
    * @returns The blue component from the color
    *
@@ -10014,7 +10105,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetBlue() const { return b; }
 
   /**
-   * @brief Set the blue component from the color
+   * Set the blue component from the color
    *
    * @param[in] nb New blue component value
    *
@@ -10028,7 +10119,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Get the alpha component from the color
+   * Get the alpha component from the color
    *
    * @returns The alpha component from the color
    *
@@ -10036,7 +10127,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetAlpha() const { return a; }
 
   /**
-   * @brief Set the alpha component from the color
+   * Set the alpha component from the color
    *
    * @param[in] na New alpha component value
    *
@@ -10050,7 +10141,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Map an RGBA quadruple to a pixel value for a given pixel format.
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
    *
    * This function maps the RGBA color value to the specified pixel format and
    * returns the pixel value best approximating the given RGBA color value for
@@ -10130,7 +10221,7 @@ struct FColor : SDL_FColor
   auto operator<=>(const FColor& other) const = default;
 
   /**
-   * @brief Get the red component from the color
+   * Get the red component from the color
    *
    * @returns The red component from the color
    *
@@ -10138,7 +10229,7 @@ struct FColor : SDL_FColor
   constexpr float GetRed() const { return r; }
 
   /**
-   * @brief Set the red component from the color
+   * Set the red component from the color
    *
    * @param[in] nr New red component value
    *
@@ -10152,7 +10243,7 @@ struct FColor : SDL_FColor
   }
 
   /**
-   * @brief Get the green component from the color
+   * Get the green component from the color
    *
    * @returns The green component from the color
    *
@@ -10160,7 +10251,7 @@ struct FColor : SDL_FColor
   constexpr float GetGreen() const { return g; }
 
   /**
-   * @brief Set the green component from the color
+   * Set the green component from the color
    *
    * @param[in] ng New green component value
    *
@@ -10174,7 +10265,7 @@ struct FColor : SDL_FColor
   }
 
   /**
-   * @brief Get the blue component from the color
+   * Get the blue component from the color
    *
    * @returns The blue component from the color
    *
@@ -10182,7 +10273,7 @@ struct FColor : SDL_FColor
   constexpr float GetBlue() const { return b; }
 
   /**
-   * @brief Set the blue component from the color
+   * Set the blue component from the color
    *
    * @param[in] nb New blue component value
    *
@@ -10196,7 +10287,7 @@ struct FColor : SDL_FColor
   }
 
   /**
-   * @brief Get the alpha component from the color
+   * Get the alpha component from the color
    *
    * @returns The alpha component from the color
    *
@@ -10204,7 +10295,7 @@ struct FColor : SDL_FColor
   constexpr float GetAlpha() const { return a; }
 
   /**
-   * @brief Set the alpha component from the color
+   * Set the alpha component from the color
    *
    * @param[in] na New alpha component value
    *
@@ -10219,9 +10310,13 @@ struct FColor : SDL_FColor
 };
 
 /**
- * @brief A set of indexed colors representing a palette.
+ * A set of indexed colors representing a palette.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Palette
+ * @sa PaletteRef
  */
 template<class T>
 struct PaletteBase : T
@@ -10544,7 +10639,13 @@ template<ObjectBox<SDL_Surface*> T>
 struct SurfaceBase;
 
 /**
- * @brief Handle to a non owned surface
+ * Handle to a non owned surface
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa SurfaceBase
+ * @sa Surface
  */
 using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
 
@@ -10555,7 +10656,13 @@ struct ObjectDeleter<SDL_Surface>
 };
 
 /**
- * @brief Handle to an owned surface
+ * Handle to an owned surface
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa SurfaceBase
+ * @sa SurfaceRef
  */
 using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
 
@@ -10563,7 +10670,7 @@ using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
 struct SurfaceLock;
 
 /**
- * @brief The flags on an SDL_Surface.
+ * The flags on an SDL_Surface.
  *
  * These are generally considered read-only.
  *
@@ -10571,7 +10678,7 @@ struct SurfaceLock;
 using SurfaceFlags = SDL_SurfaceFlags;
 
 /**
- * @brief The scaling mode.
+ * The scaling mode.
  *
  */
 using ScaleMode = SDL_ScaleMode;
@@ -10595,7 +10702,7 @@ constexpr ScaleMode SCALEMODE_NEAREST = SDL_SCALEMODE_NEAREST;
 constexpr ScaleMode SCALEMODE_LINEAR = SDL_SCALEMODE_LINEAR;
 
 /**
- * @brief The flip mode.
+ * The flip mode.
  *
  */
 using FlipMode = SDL_FlipMode;
@@ -10640,6 +10747,10 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL;
  * @sa SurfaceBase::SurfaceBase()
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Surface
+ * @sa SurfaceRef
  */
 template<ObjectBox<SDL_Surface*> T>
 struct SurfaceBase : T
@@ -10666,7 +10777,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Allocate a new surface with a specific pixel format and existing
+   * Allocate a new surface with a specific pixel format and existing
    * pixel data.
    *
    * No copy is made of the pixel data. Pixel data is not managed automatically;
@@ -10757,7 +10868,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Get the colorspace used by a surface.
+   * Get the colorspace used by a surface.
    *
    * The colorspace defaults to SDL_COLORSPACE_SRGB_LINEAR for floating point
    * formats, SDL_COLORSPACE_HDR10 for 10-bit formats, SDL_COLORSPACE_SRGB for
@@ -10940,7 +11051,7 @@ struct SurfaceBase : T
   SurfaceLock Lock() &;
 
   /**
-   * @brief Set the RLE acceleration hint for a surface.
+   * Set the RLE acceleration hint for a surface.
    *
    * If RLE is enabled, color key and alpha blending blits are much faster, but
    * the surface must be locked before directly accessing the pixels.
@@ -10952,7 +11063,7 @@ struct SurfaceBase : T
   bool SetRLE(bool enabled) { return SDL_SetSurfaceRLE(T::get(), enabled); }
 
   /**
-   * @brief Returns whether the surface is RLE enabled.
+   * Returns whether the surface is RLE enabled.
    *
    * @returns true if the surface is RLE enabled, false otherwise.
    */
@@ -11018,14 +11129,14 @@ struct SurfaceBase : T
   bool ClearColorKey() { return SDL_SetSurfaceColorKey(T::get(), false, 0); }
 
   /**
-   * @brief Returns whether the surface has a color key.
+   * Returns whether the surface has a color key.
    *
    * @returns true if the surface has a color key, false otherwise.
    */
   bool HasColorKey() const { return SDL_SurfaceHasColorKey(T::get()); }
 
   /**
-   * @brief Get the color key (transparent pixel) for a surface.
+   * Get the color key (transparent pixel) for a surface.
    *
    * The color key is a pixel of the format used by the surface, as generated by
    * MapRGB().
@@ -11095,7 +11206,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Set an additional color value multiplied into blit operations.
+   * Set an additional color value multiplied into blit operations.
    *
    * When this surface is blitted, during the blit operation each source color
    * channel is modulated by the appropriate color value according to the
@@ -11115,7 +11226,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Get the additional color value multiplied into blit operations.
+   * Get the additional color value multiplied into blit operations.
    *
    * @param r a pointer filled in with the current red color value.
    * @param g a pointer filled in with the current green color value.
@@ -11129,7 +11240,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Set an additional alpha value used in blit operations.
+   * Set an additional alpha value used in blit operations.
    *
    * When this surface is blitted, during the blit operation the source alpha
    * value is modulated by this alpha value according to the following formula:
@@ -11146,7 +11257,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Get the additional alpha value used in blit operations.
+   * Get the additional alpha value used in blit operations.
    *
    * @returns alpha on success or std::nullopt on failure; call GetError()
    * for more information.
@@ -11158,7 +11269,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Set an additional color and alpha value multiplied into blit
+   * Set an additional color and alpha value multiplied into blit
    * operations.
    *
    * When this surface is blitted, during the blit operation each source color
@@ -11178,7 +11289,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Get the additional color and alpha value multiplied into blit
+   * Get the additional color and alpha value multiplied into blit
    * operations.
    *
    * @returns a Color containing RGBA value on success or std::nullopt on
@@ -11251,7 +11362,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Disable the clipping rectangle for a surface.
+   * Disable the clipping rectangle for a surface.
    *
    * @returns true if clips was reset successfully
    *
@@ -11260,7 +11371,7 @@ struct SurfaceBase : T
   bool ResetClipRect() { return SDL_SetSurfaceClipRect(T::get(), nullptr); }
 
   /**
-   * @brief Get the clipping rectangle for a surface.
+   * Get the clipping rectangle for a surface.
    *
    * When `surface` is the destination of a blit, only the area within the clip
    * rectangle is drawn into.
@@ -11287,7 +11398,7 @@ struct SurfaceBase : T
   bool Flip(FlipMode flip) { return SDL_FlipSurface(T::get(), flip); }
 
   /**
-   * @brief Creates a new surface identical to the existing surface.
+   * Creates a new surface identical to the existing surface.
    *
    * If the original surface has alternate images, the new surface will have a
    * reference to them as well.
@@ -11301,7 +11412,7 @@ struct SurfaceBase : T
   Surface Duplicate() const { return {SDL_DuplicateSurface(T::get())}; }
 
   /**
-   * @brief Creates a new surface identical to the existing surface, scaled to
+   * Creates a new surface identical to the existing surface, scaled to
    * the desired size.
    *
    * The returned surface  automatically calls SDL_free after result is out of
@@ -11467,7 +11578,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Perform a fast fill of a rectangle with a specific color.
+   * Perform a fast fill of a rectangle with a specific color.
    *
    * `color` should be a pixel of the format used by the surface, and can be
    * generated by SDL_MapRGB() or SDL_MapRGBA(). If the color value contains an
@@ -12077,7 +12188,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief This function prioritizes correctness over speed: it is suitable for
+   * This function prioritizes correctness over speed: it is suitable for
    * unit tests, but is not intended for use in a game engine.
    *
    * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
@@ -12095,7 +12206,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief This function prioritizes correctness over speed: it is suitable for
+   * This function prioritizes correctness over speed: it is suitable for
    * unit tests, but is not intended for use in a game engine.
    *
    * Like SDL_GetRGBA, this uses the entire 0..255 range when converting color
@@ -12114,7 +12225,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Retrieves a single pixel from a surface.
+   * Retrieves a single pixel from a surface.
    *
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
@@ -12161,7 +12272,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Retrieves a single pixel from a surface.
+   * Retrieves a single pixel from a surface.
    *
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
@@ -12185,7 +12296,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief This function prioritizes correctness over speed: it is suitable for
+   * This function prioritizes correctness over speed: it is suitable for
    * unit tests, but is not intended for use in a game engine.
    *
    * Like MapRGBA(), this uses the entire 0..255 range when converting color
@@ -12203,7 +12314,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Writes a single pixel to a surface.
+   * Writes a single pixel to a surface.
    *
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
@@ -12220,7 +12331,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief This function prioritizes correctness over speed: it is suitable for
+   * This function prioritizes correctness over speed: it is suitable for
    * unit tests, but is not intended for use in a game engine.
    *
    * Like MapRGBA(), this uses the entire 0..255 range when converting color
@@ -12241,7 +12352,7 @@ struct SurfaceBase : T
   }
 
   /**
-   * @brief Writes a single pixel to a surface.
+   * Writes a single pixel to a surface.
    *
    * This function prioritizes correctness over speed: it is suitable for unit
    * tests, but is not intended for use in a game engine.
@@ -12271,7 +12382,7 @@ struct SurfaceBase : T
 };
 
 /**
- * @brief Locks a Surface for access to its pixels
+ * Locks a Surface for access to its pixels
  *
  * Only really necessary if Surface.MustLock() returns t
  */
@@ -12318,7 +12429,7 @@ public:
   }
 
   /**
-   * @brief Returns true if lock is active
+   * Returns true if lock is active
    */
   constexpr operator bool() const { return bool(surface); }
 
@@ -12342,7 +12453,7 @@ public:
   int GetPitch() const { return surface->pitch; }
 
   /**
-   * @brief Get the pixel format
+   * Get the pixel format
    */
   PixelFormat GetFormat() const { return surface->format; }
 
@@ -12614,7 +12725,12 @@ template<ObjectBox<SDL_Window*> T>
 struct WindowBase;
 
 /**
- * @brief Handle to a non owned window
+ * Handle to a non owned window
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa WindowBase
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 
@@ -12625,7 +12741,12 @@ struct ObjectDeleter<SDL_Window>
 };
 
 /**
- * @brief Handle to an owned window
+ * Handle to an owned window
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa WindowBase
  */
 using Window = WindowBase<ObjectUnique<SDL_Window>>;
 
@@ -12633,6 +12754,15 @@ using Window = WindowBase<ObjectUnique<SDL_Window>>;
 template<ObjectBox<SDL_Renderer*> T>
 struct RendererBase;
 
+/**
+ * Handle to a non owned renderer
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa RendererBase
+ * @sa Renderer
+ */
 using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
 
 /**
@@ -13244,8 +13374,13 @@ constexpr SystemTheme SYSTEM_THEME_DARK = SDL_SYSTEM_THEME_DARK;
 /// @}
 
 /**
- * @brief Represents a handle to a window
+ * Represents a handle to a window
+ *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Window
+ * @sa WindowRef
  */
 template<ObjectBox<SDL_Window*> T>
 struct WindowBase : T
@@ -18937,13 +19072,30 @@ struct ObjectDeleter<SDL_Renderer>
   void operator()(RendererRef renderer) const;
 };
 
-/// @brief Handle to an owned renderer
+/**
+ * Handle to an owned renderer
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa RendererBase
+ * @sa RendererRef
+ */
 using Renderer = RendererBase<ObjectUnique<SDL_Renderer>>;
 
 // Forward decl
 template<ObjectBox<SDL_Texture*> T>
 struct TextureBase;
 
+/**
+ * Handle to a non owned texture
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa TextureBase
+ * @sa Texture
+ */
 using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
 
 template<>
@@ -18952,19 +19104,28 @@ struct ObjectDeleter<SDL_Texture>
   void operator()(TextureRef texture) const;
 };
 
+/**
+ * Handle to an owned texture
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa TextureBase
+ * @sa TextureRef
+ */
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
 
 // Forward decl
 struct TextureLock;
 
 /**
- * @brief Vertex structure.
+ * Vertex structure.
  *
  */
 using Vertex = SDL_Vertex;
 
 /**
- * @brief The access pattern allowed for a texture.
+ * The access pattern allowed for a texture.
  *
  */
 using TextureAccess = SDL_TextureAccess;
@@ -18985,7 +19146,7 @@ constexpr TextureAccess TEXTUREACCESS_STREAMING = SDL_TEXTUREACCESS_STREAMING;
 constexpr TextureAccess TEXTUREACCESS_TARGET = SDL_TEXTUREACCESS_TARGET;
 
 /**
- * @brief How the logical size is mapped to the output.
+ * How the logical size is mapped to the output.
  *
  */
 using RendererLogicalPresentation = SDL_RendererLogicalPresentation;
@@ -19024,8 +19185,13 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
 
 /**
- * @brief A structure representing rendering state
+ * A structure representing rendering state
  *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa Renderer
+ * @sa RendererRef
  */
 template<ObjectBox<SDL_Renderer*> T>
 struct RendererBase : T
@@ -19033,7 +19199,7 @@ struct RendererBase : T
   using T::T;
 
   /**
-   * @brief Create a 2D rendering context for a window.
+   * Create a 2D rendering context for a window.
    *
    * By default the rendering size matches the window size in pixels, but you
    * can call SDL_SetRenderLogicalPresentation() to change the content size and
@@ -19045,7 +19211,6 @@ struct RendererBase : T
    * @param window the window where rendering is displayed.
    *
    * @threadsafety This function should only be called on the main thread.
-   * @ingroup resource
    */
   RendererBase(WindowRef window)
     : T(SDL_CreateRenderer(window.get(), nullptr))
@@ -19053,7 +19218,7 @@ struct RendererBase : T
   }
 
   /**
-   * @brief Create a 2D rendering context for a window.
+   * Create a 2D rendering context for a window.
    *
    * If you want a specific renderer, you can specify its name here. A list of
    * available renderers can be obtained by calling SDL_GetRenderDriver()
@@ -20608,6 +20773,11 @@ struct RendererBase : T
  * @since This struct is available since SDL 3.2.0.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Texture
+ * @sa TextureRef
+ * @sa RendererBase
  */
 template<ObjectBox<SDL_Texture*> T>
 struct TextureBase : T
@@ -21388,7 +21558,7 @@ struct TextureBase : T
 };
 
 /**
- * @brief Locks a Texture for access to its pixels
+ * Locks a Texture for access to its pixels
  */
 class TextureLock
 {
@@ -21443,7 +21613,7 @@ public:
   }
 
   /**
-   * @brief Returns true if lock is active
+   * Returns true if lock is active
    */
   constexpr operator bool() const { return bool(texture); }
 
@@ -21481,7 +21651,7 @@ public:
   int GetPitch() const { return surface->pitch; }
 
   /**
-   * @brief Get the pixel format
+   * Get the pixel format
    */
   PixelFormat GetFormat() const { return surface->format; }
 

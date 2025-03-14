@@ -38,6 +38,15 @@ namespace SDL {
 template<ObjectBox<SDL_Environment*> T>
 struct EnvironmentBase;
 
+/**
+ * Handle to a non owning environment
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa EnvironmentBase
+ * @sa Environment
+ */
 using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 
 template<>
@@ -46,12 +55,30 @@ struct ObjectDeleter<SDL_Environment>
   inline void operator()(EnvironmentRef environment) const;
 };
 
+/**
+ * Handle to an owning environment
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa EnvironmentBase
+ * @sa EnvironmentRef
+ */
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
 
 // Forward decl
 template<ObjectBox<SDL_iconv_t> T>
 struct IConvBase;
 
+/**
+ * Handle to a non owning iconv
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa IConvBase
+ * @sa IConv
+ */
 using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
 
 template<>
@@ -60,6 +87,15 @@ struct ObjectDeleter<SDL_iconv_data_t>
   inline void operator()(IConvRef iconv) const;
 };
 
+/**
+ * Handle to an owning iconv
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa IConvBase
+ * @sa IConvRef
+ */
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
 
 /**
@@ -428,6 +464,10 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  * @since This struct is available since SDL 3.2.0.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Environment
+ * @sa EnvironmentRef
  **/
 template<ObjectBox<SDL_Environment*> T>
 struct EnvironmentBase : T
@@ -505,9 +545,11 @@ struct EnvironmentBase : T
   }
 
   /**
-   * @brief Get the Variables count
+   * Get the Variables count.
    *
-   * @return Uint64
+   * @return the number of existing environment variables
+   *
+   * This might be slow.
    */
   inline Uint64 GetVariableCount()
   {
@@ -4386,6 +4428,10 @@ inline float tanf(float x) { return SDL_tanf(x); }
  * @since This datatype is available since SDL 3.2.0.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa IConv
+ * @sa IConvRef
  */
 template<ObjectBox<SDL_iconv_t> T>
 struct IConvBase : T

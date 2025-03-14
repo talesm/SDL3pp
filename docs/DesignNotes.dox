@@ -16,6 +16,26 @@ have an idea on all fits together you may look into @ref transformations.
 
 A Resource is a type where its memory is controlled by SDL, usually with
 functions like `SDL_Create*()` and `SDL_Destroy*()`.
+
+To represent this type, we first create [CRTP](https://en.cppreference.com/w/cpp/language/crtp)
+base class that contains all the functions, but delegates the actual storage to
+its base class. There is currently two available base classes, ObjectUnique and
+ObjectRef, and we use them to typedef an owning and a non owning versions of 
+the resource. For example, for SDL_Surface we have:
+
+- SurfaceBase: struct with all OO-like functions wrapped as member functions;
+- Surface: an alias for the SurfaceBase instantiated with ObjectUnique, this is
+  the owning version, so it will destruct the contained surface when it goes 
+  out of scope by the good old [RAII rules](https://en.cppreference.com/w/cpp/language/raii);
+  - You can still opt out of this by either calling ObjectUnique::release() or
+    move assigning it to SurfaceRef;
+- SurfaceRef: an alias for the SurfaceBase instantiated with ObjectRef, this is
+  the @b non owning version, so it can be safely used for parameters that do 
+  not take ownership, to use like a rudimentary borrowed or week reference, or
+  just to opt out of RAII and managing the lifetime by yourself;
+  - You can destroy manually the resource by calling the respective *Destroy
+    method, eg. SurfaceBase::Destroy().
+
 */
 
 /**

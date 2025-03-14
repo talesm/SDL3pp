@@ -76,7 +76,13 @@ template<class T>
 struct PaletteBase;
 
 /**
- * @brief Handle to a non owned surface
+ * Handle to a non owned surface
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PaletteBase
+ * @sa Palette
  */
 using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 
@@ -87,7 +93,13 @@ struct ObjectDeleter<SDL_Palette>
 };
 
 /**
- * @brief Handle to an owned surface
+ * Handle to an owned surface
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa PaletteBase
+ * @sa PaletteRef
  */
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
 
@@ -424,7 +436,7 @@ struct PixelFormat
   constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(format); }
 
   /**
-   * @brief Determine if this is an array format.
+   * Determine if this is an array format.
    *
    * @returns true if the format is an array, false otherwise.
    *
@@ -811,7 +823,7 @@ constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
  */
 
 /**
- * @brief Colorspace color type.
+ * Colorspace color type.
  *
  * @since This enum is available since SDL 3.2.0.
  */
@@ -1506,7 +1518,7 @@ struct Color : SDL_Color
   auto operator<=>(const Color& other) const = default;
 
   /**
-   * @brief Get the red component from the color
+   * Get the red component from the color
    *
    * @returns The red component from the color
    *
@@ -1514,7 +1526,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetRed() const { return r; }
 
   /**
-   * @brief Set the red component from the color
+   * Set the red component from the color
    *
    * @param[in] nr New red component value
    *
@@ -1528,7 +1540,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Get the green component from the color
+   * Get the green component from the color
    *
    * @returns The green component from the color
    *
@@ -1536,7 +1548,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetGreen() const { return g; }
 
   /**
-   * @brief Set the green component from the color
+   * Set the green component from the color
    *
    * @param[in] ng New green component value
    *
@@ -1550,7 +1562,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Get the blue component from the color
+   * Get the blue component from the color
    *
    * @returns The blue component from the color
    *
@@ -1558,7 +1570,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetBlue() const { return b; }
 
   /**
-   * @brief Set the blue component from the color
+   * Set the blue component from the color
    *
    * @param[in] nb New blue component value
    *
@@ -1572,7 +1584,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Get the alpha component from the color
+   * Get the alpha component from the color
    *
    * @returns The alpha component from the color
    *
@@ -1580,7 +1592,7 @@ struct Color : SDL_Color
   constexpr Uint8 GetAlpha() const { return a; }
 
   /**
-   * @brief Set the alpha component from the color
+   * Set the alpha component from the color
    *
    * @param[in] na New alpha component value
    *
@@ -1594,7 +1606,7 @@ struct Color : SDL_Color
   }
 
   /**
-   * @brief Map an RGBA quadruple to a pixel value for a given pixel format.
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
    *
    * This function maps the RGBA color value to the specified pixel format and
    * returns the pixel value best approximating the given RGBA color value for
@@ -1674,7 +1686,7 @@ struct FColor : SDL_FColor
   auto operator<=>(const FColor& other) const = default;
 
   /**
-   * @brief Get the red component from the color
+   * Get the red component from the color
    *
    * @returns The red component from the color
    *
@@ -1682,7 +1694,7 @@ struct FColor : SDL_FColor
   constexpr float GetRed() const { return r; }
 
   /**
-   * @brief Set the red component from the color
+   * Set the red component from the color
    *
    * @param[in] nr New red component value
    *
@@ -1696,7 +1708,7 @@ struct FColor : SDL_FColor
   }
 
   /**
-   * @brief Get the green component from the color
+   * Get the green component from the color
    *
    * @returns The green component from the color
    *
@@ -1704,7 +1716,7 @@ struct FColor : SDL_FColor
   constexpr float GetGreen() const { return g; }
 
   /**
-   * @brief Set the green component from the color
+   * Set the green component from the color
    *
    * @param[in] ng New green component value
    *
@@ -1718,7 +1730,7 @@ struct FColor : SDL_FColor
   }
 
   /**
-   * @brief Get the blue component from the color
+   * Get the blue component from the color
    *
    * @returns The blue component from the color
    *
@@ -1726,7 +1738,7 @@ struct FColor : SDL_FColor
   constexpr float GetBlue() const { return b; }
 
   /**
-   * @brief Set the blue component from the color
+   * Set the blue component from the color
    *
    * @param[in] nb New blue component value
    *
@@ -1740,7 +1752,7 @@ struct FColor : SDL_FColor
   }
 
   /**
-   * @brief Get the alpha component from the color
+   * Get the alpha component from the color
    *
    * @returns The alpha component from the color
    *
@@ -1748,7 +1760,7 @@ struct FColor : SDL_FColor
   constexpr float GetAlpha() const { return a; }
 
   /**
-   * @brief Set the alpha component from the color
+   * Set the alpha component from the color
    *
    * @param[in] na New alpha component value
    *
@@ -1763,9 +1775,13 @@ struct FColor : SDL_FColor
 };
 
 /**
- * @brief A set of indexed colors representing a palette.
+ * A set of indexed colors representing a palette.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Palette
+ * @sa PaletteRef
  */
 template<class T>
 struct PaletteBase : T

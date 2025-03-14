@@ -6,6 +6,13 @@
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryObjectWrapper Helpers for Resource type wrapping
+ *
+ * @sa Resource
+ * @{
+ */
+
 template<class T, class POINTER>
 concept ObjectBox = requires(const T a, T b) {
   { a.get() } -> std::convertible_to<POINTER>;
@@ -114,7 +121,11 @@ public:
   T* operator->() { return &value; }
 };
 
+/// @}
+
 } // namespace SDL
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 template<class T, class POINTER>
 void std::swap(SDL::ObjectRef<T, POINTER>& left,
@@ -129,5 +140,7 @@ void std::swap(SDL::ObjectUnique<T, DELETER> left,
 {
   left.swap(right);
 }
+
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 
 #endif /* SDL3PP_OBJECT_WRAPPER_H_ */

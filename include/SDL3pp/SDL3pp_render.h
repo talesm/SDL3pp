@@ -54,13 +54,30 @@ struct ObjectDeleter<SDL_Renderer>
   void operator()(RendererRef renderer) const;
 };
 
-/// @brief Handle to an owned renderer
+/**
+ * Handle to an owned renderer
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa RendererBase
+ * @sa RendererRef
+ */
 using Renderer = RendererBase<ObjectUnique<SDL_Renderer>>;
 
 // Forward decl
 template<ObjectBox<SDL_Texture*> T>
 struct TextureBase;
 
+/**
+ * Handle to a non owned texture
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa TextureBase
+ * @sa Texture
+ */
 using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
 
 template<>
@@ -69,19 +86,28 @@ struct ObjectDeleter<SDL_Texture>
   void operator()(TextureRef texture) const;
 };
 
+/**
+ * Handle to an owned texture
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa TextureBase
+ * @sa TextureRef
+ */
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
 
 // Forward decl
 struct TextureLock;
 
 /**
- * @brief Vertex structure.
+ * Vertex structure.
  *
  */
 using Vertex = SDL_Vertex;
 
 /**
- * @brief The access pattern allowed for a texture.
+ * The access pattern allowed for a texture.
  *
  */
 using TextureAccess = SDL_TextureAccess;
@@ -102,7 +128,7 @@ constexpr TextureAccess TEXTUREACCESS_STREAMING = SDL_TEXTUREACCESS_STREAMING;
 constexpr TextureAccess TEXTUREACCESS_TARGET = SDL_TEXTUREACCESS_TARGET;
 
 /**
- * @brief How the logical size is mapped to the output.
+ * How the logical size is mapped to the output.
  *
  */
 using RendererLogicalPresentation = SDL_RendererLogicalPresentation;
@@ -141,8 +167,13 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
   SDL_LOGICAL_PRESENTATION_INTEGER_SCALE;
 
 /**
- * @brief A structure representing rendering state
+ * A structure representing rendering state
  *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa Renderer
+ * @sa RendererRef
  */
 template<ObjectBox<SDL_Renderer*> T>
 struct RendererBase : T
@@ -150,7 +181,7 @@ struct RendererBase : T
   using T::T;
 
   /**
-   * @brief Create a 2D rendering context for a window.
+   * Create a 2D rendering context for a window.
    *
    * By default the rendering size matches the window size in pixels, but you
    * can call SDL_SetRenderLogicalPresentation() to change the content size and
@@ -162,7 +193,6 @@ struct RendererBase : T
    * @param window the window where rendering is displayed.
    *
    * @threadsafety This function should only be called on the main thread.
-   * @ingroup resource
    */
   RendererBase(WindowRef window)
     : T(SDL_CreateRenderer(window.get(), nullptr))
@@ -170,7 +200,7 @@ struct RendererBase : T
   }
 
   /**
-   * @brief Create a 2D rendering context for a window.
+   * Create a 2D rendering context for a window.
    *
    * If you want a specific renderer, you can specify its name here. A list of
    * available renderers can be obtained by calling SDL_GetRenderDriver()
@@ -1725,6 +1755,11 @@ struct RendererBase : T
  * @since This struct is available since SDL 3.2.0.
  *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Texture
+ * @sa TextureRef
+ * @sa RendererBase
  */
 template<ObjectBox<SDL_Texture*> T>
 struct TextureBase : T
@@ -2505,7 +2540,7 @@ struct TextureBase : T
 };
 
 /**
- * @brief Locks a Texture for access to its pixels
+ * Locks a Texture for access to its pixels
  */
 class TextureLock
 {
@@ -2560,7 +2595,7 @@ public:
   }
 
   /**
-   * @brief Returns true if lock is active
+   * Returns true if lock is active
    */
   constexpr operator bool() const { return bool(texture); }
 
@@ -2598,7 +2633,7 @@ public:
   int GetPitch() const { return surface->pitch; }
 
   /**
-   * @brief Get the pixel format
+   * Get the pixel format
    */
   PixelFormat GetFormat() const { return surface->format; }
 

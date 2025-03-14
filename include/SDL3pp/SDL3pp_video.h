@@ -48,7 +48,12 @@ template<ObjectBox<SDL_Window*> T>
 struct WindowBase;
 
 /**
- * @brief Handle to a non owned window
+ * Handle to a non owned window
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa WindowBase
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 
@@ -59,7 +64,12 @@ struct ObjectDeleter<SDL_Window>
 };
 
 /**
- * @brief Handle to an owned window
+ * Handle to an owned window
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa WindowBase
  */
 using Window = WindowBase<ObjectUnique<SDL_Window>>;
 
@@ -67,6 +77,15 @@ using Window = WindowBase<ObjectUnique<SDL_Window>>;
 template<ObjectBox<SDL_Renderer*> T>
 struct RendererBase;
 
+/**
+ * Handle to a non owned renderer
+ *
+ * @ingroup resource
+ *
+ * @sa resource
+ * @sa RendererBase
+ * @sa Renderer
+ */
 using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
 
 /**
@@ -678,8 +697,13 @@ constexpr SystemTheme SYSTEM_THEME_DARK = SDL_SYSTEM_THEME_DARK;
 /// @}
 
 /**
- * @brief Represents a handle to a window
+ * Represents a handle to a window
+ *
  * @ingroup resource
+ *
+ * @sa resource
+ * @sa Window
+ * @sa WindowRef
  */
 template<ObjectBox<SDL_Window*> T>
 struct WindowBase : T
