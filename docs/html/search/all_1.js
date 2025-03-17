@@ -18,7 +18,7 @@ var searchData=
   ['and_20window_20management_15',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
   ['animation_16',['Animation',['../group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc',1,'SDL']]],
   ['api_20by_20category_17',['API by Category',['../ApiByCategory.html',1,'']]],
-  ['apibycategory_2eh_18',['ApiByCategory.h',['../ApiByCategory_8h.html',1,'']]],
+  ['apibycategory_2edox_18',['ApiByCategory.dox',['../ApiByCategory_8dox.html',1,'']]],
   ['app_5fcontinue_19',['APP_CONTINUE',['../group__CategoryInit.html#ga646434c58bdb24bc49d377a4603d5b6b',1,'SDL']]],
   ['app_5ffailure_20',['APP_FAILURE',['../group__CategoryInit.html#ga5cf321856f8f4b0c79457f7fc4465ab8',1,'SDL']]],
   ['app_5fsuccess_21',['APP_SUCCESS',['../group__CategoryInit.html#gae810a530a8a0feac423157287eef3616',1,'SDL']]],

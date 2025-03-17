@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['apibycategory_2eh_0',['ApiByCategory.h',['../ApiByCategory_8h.html',1,'']]]
+  ['apibycategory_2edox_0',['ApiByCategory.dox',['../ApiByCategory_8dox.html',1,'']]]
 ];
