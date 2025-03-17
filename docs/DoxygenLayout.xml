@@ -5,8 +5,16 @@
   <navindex>
     <tab type="mainpage" visible="yes" title=""/>
     <tab type="user" visible="yes" title="API By Category" url="@ref ApiByCategory"/>
-    <tab type="pages" visible="yes" title="" intro=""/>
-    <tab type="topics" visible="yes" title="" intro=""/>
+    <tab type="user" visible="yes" title="Design notes" url="@ref DesignNotes">
+      <tab type="user" visible="yes" title="Transformations" url="@ref transformations"/>
+      <tab type="user" visible="yes" title="Resource" url="@ref resource"/>
+      <tab type="user" visible="yes" title="Callback" url="@ref callback"/>
+      <tab type="user" visible="yes" title="Formatted strings" url="@ref FmtString"/>
+    </tab>
+    <tab type="pages" visible="yes" title="" intro="">
+      <tab type="pages" visible="yes" title="All pages" intro=""/>
+      <tab type="topics" visible="yes" title="All topics" intro=""/>
+    </tab>
     <tab type="modules" visible="yes" title="" intro="">
       <tab type="modulelist" visible="yes" title="" intro=""/>
       <tab type="modulemembers" visible="yes" title="" intro=""/>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['windowbase_0',['WindowBase',['../structSDL_1_1WindowBase.html',1,'SDL']]]
+  ['uniquewrapper_0',['UniqueWrapper',['../structSDL_1_1UniqueWrapper.html',1,'SDL']]]
 ];

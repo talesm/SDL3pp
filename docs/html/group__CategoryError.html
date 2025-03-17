@@ -81,6 +81,12 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gaf93aa5024945f514fc6d405bec4295bc" id="r_gaf93aa5024945f514fc6d405bec4295bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SDL::SetError</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> message)</td></tr>
+<tr class="memdesc:gaf93aa5024945f514fc6d405bec4295bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> error message for the current thread.  <br /></td></tr>
+<tr class="separator:gaf93aa5024945f514fc6d405bec4295bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6055e5dd4150f7162eecc3b1113eb578" id="r_ga6055e5dd4150f7162eecc3b1113eb578"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#ga6055e5dd4150f7162eecc3b1113eb578">SDL::OutOfMemory</a> ()</td></tr>
+<tr class="memdesc:ga6055e5dd4150f7162eecc3b1113eb578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an error indicating that memory allocation failed.  <br /></td></tr>
+<tr class="separator:ga6055e5dd4150f7162eecc3b1113eb578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6daa473f21fd59c14bce134abce9bd04" id="r_ga6daa473f21fd59c14bce134abce9bd04"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04">SDL::GetError</a> ()</td></tr>
 <tr class="memdesc:ga6daa473f21fd59c14bce134abce9bd04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a message about the last error that occurred on the current thread.  <br /></td></tr>
 <tr class="separator:ga6daa473f21fd59c14bce134abce9bd04"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,9 +100,10 @@ Functions</h2></td></tr>
 <p>These strings are maintained per-thread, and apps are welcome to set their own errors, which is popular when building libraries on top of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> for other apps to consume. These strings are set by calling SDL_SetError().</p>
 <p>A common usage pattern is to have a function that returns true for success and false for failure, and do this when something fails:</p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span> (something_went_wrong) {</div>
-<div class="line">   <span class="keywordflow">return</span> SetError(<span class="stringliteral">&quot;The thing broke in this specific way: %d&quot;</span>, errcode);</div>
+<div class="line">   <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SetError</a>(<span class="stringliteral">&quot;The thing broke in this specific way: %d&quot;</span>, errcode);</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>It's also common to just return <code>false</code> in this case if the failing thing is known to call SetError(), so errors simply propagate through. </p>
+<div class="ttc" id="agroup__CategoryError_html_gaf93aa5024945f514fc6d405bec4295bc"><div class="ttname"><a href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SDL::SetError</a></div><div class="ttdeci">bool SetError(StringParam message)</div><div class="ttdoc">Set the SDL error message for the current thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__error_8h_source.html#l00064">SDL3pp_error.h:64</a></div></div>
+</div><!-- fragment --><p>It's also common to just return <code>false</code> in this case if the failing thing is known to call <a class="el" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc" title="Set the SDL error message for the current thread.">SetError()</a>, so errors simply propagate through. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga7307f5502856bade5976f55c8adf5326" name="ga7307f5502856bade5976f55c8adf5326"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7307f5502856bade5976f55c8adf5326">&#9670;&#160;</a></span>ClearError()</h2>
@@ -126,7 +133,7 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00079">79</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00165">165</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
 
 </div>
 </div>
@@ -163,7 +170,87 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326" title="Clear any previous error message for this thread.">ClearError()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00068">68</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00154">154</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
+
+</div>
+</div>
+<a id="ga6055e5dd4150f7162eecc3b1113eb578" name="ga6055e5dd4150f7162eecc3b1113eb578"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6055e5dd4150f7162eecc3b1113eb578">&#9670;&#160;</a></span>OutOfMemory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::OutOfMemory </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set an error indicating that memory allocation failed. </p>
+<p>This function does not do any memory allocation.</p>
+<dl class="section return"><dt>Returns</dt><dd>false.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00120">120</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
+
+</div>
+</div>
+<a id="gaf93aa5024945f514fc6d405bec4295bc" name="gaf93aa5024945f514fc6d405bec4295bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf93aa5024945f514fc6d405bec4295bc">&#9670;&#160;</a></span>SetError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::SetError </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> error message for the current thread. </p>
+<p>Calling this function will replace any previous error message that was set.</p>
+<p>This function always returns false, since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> frequently uses false to signify a failing result, leading to this idiom:</p>
+<div class="fragment"><div class="line"><span class="keywordflow">if</span> (error_code) {</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SetError</a>(<span class="stringliteral">&quot;This operation has failed: {}&quot;</span>, error_code);</div>
+<div class="line">}</div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">message</td><td>the error message </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>false.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326" title="Clear any previous error message for this thread.">ClearError</a> </dd>
+<dd>
+<a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00064">64</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
 
 </div>
 </div>

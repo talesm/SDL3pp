@@ -18,7 +18,7 @@ endif((SDL3PP_DISABLE_IMAGE))
 option(SDL3PP_DISABLE_STRING_PARAM "Disable StringParam wrapping" OFF)
 if(SDL3PP_DISABLE_STRING_PARAM)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_STRING_PARAM")
-endif((SDL3PP_DISABLE_STRING_PARAM))
+endif(SDL3PP_DISABLE_STRING_PARAM)
 
 
 # The SDL3pp library
@@ -49,12 +49,16 @@ add_custom_target(SDL3pp_amalgamate
 )
 
 # Manual tests
-add_executable(example_window_with_surface WIN32 examples/window_with_surface.cpp)
-target_link_libraries(example_window_with_surface PRIVATE SDL3pp)
-add_executable(example_window_with_renderer WIN32 examples/window_with_renderer.cpp)
-target_link_libraries(example_window_with_renderer PRIVATE SDL3pp)
 add_executable(example_environment_list WIN32 examples/environment_list.cpp)
 target_link_libraries(example_environment_list PRIVATE SDL3pp)
+add_executable(example_locale_list WIN32 examples/locale_list.cpp)
+target_link_libraries(example_locale_list PRIVATE SDL3pp)
+add_executable(example_open_url WIN32 examples/open_url.cpp)
+target_link_libraries(example_open_url PRIVATE SDL3pp)
+add_executable(example_window_with_renderer WIN32 examples/window_with_renderer.cpp)
+target_link_libraries(example_window_with_renderer PRIVATE SDL3pp)
+add_executable(example_window_with_surface WIN32 examples/window_with_surface.cpp)
+target_link_libraries(example_window_with_surface PRIVATE SDL3pp)
 
 # Unit tests
 add_library(test_main OBJECT test/doctest.cpp)

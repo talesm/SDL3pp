@@ -100,4 +100,47 @@ AddEventWatch() and AddTimer().
 
 /// @}
 /// @}
+
+/**
+@defgroup FmtString Formatted string
+
+C++ has the type-safe [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+style, so where applicable we wrap the SDL's C style formatted string with the
+it.
+
+@todo make an example on how to wrap (see SetError() for now)
+*/
+
+/**
+@defgroup WrapState Wrapped state
+
+We define an wrapped state when we have a opaque void*, an integer or enum that
+just represent some state or handle that does not relate to any allocation (it
+is safe to copy around), but it has some OO-like macro properties to query and or 
+OO-like functions to manipulate it.
+
+An wrap state is class with a single attribute storing the state, and with a 
+constexpr converting constructor from the state type and a constexpr converting
+operator back to it. This usually is not recommended in C++ style guides, but
+we do this in order to make the state usable transparently. If there is no need
+for using it transparently. then we have a get function instead.
+
+If the state has some sort of @b invalid or @b uninitialized state, we also
+create a converting operator to bool that is true when the state valid.
+
+*/
+
+/**
+@defgroup WrapExtend Wrap extending struct
+
+This is similar to @ref WrapState, but when the state is a struct. In that case
+we can have similar results by extending it and adding the member functions on 
+the extended type. 
+
+The extended type must not have any attribute and must have a constructor 
+to the original type. If the state has some sort of @b invalid or @b uninitialized
+state, we also create a converting operator to bool that is true when the state
+valid.
+*/
+
 /// @}

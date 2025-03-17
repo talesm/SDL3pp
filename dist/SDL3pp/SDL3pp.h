@@ -14,7 +14,373 @@
 #define SDL3PP_H_
 
 #include <SDL3/SDL.h>
-//
+
+// begin --- SDL3pp_assert.h --- 
+
+/**
+ * @defgroup CategoryAssert Assertions
+ *
+ * A helpful assertion macro!
+ *
+ * SDL assertions operate like your usual `assert` macro, but with some added
+ * features:
+ *
+ * - It uses a trick with the `sizeof` operator, so disabled assertions
+ *   vaporize out of the compiled code, but variables only referenced in the
+ *   assertion won't trigger compiler warnings about being unused.
+ * - It is safe to use with a dangling-else: `if (x) SDL_assert(y); else
+ *   do_something();`
+ * - It works the same everywhere, instead of counting on various platforms'
+ *   compiler and C runtime to behave.
+ * - It provides multiple levels of assertion (SDL_assert, SDL_assert_release,
+ *   SDL_assert_paranoid) instead of a single all-or-nothing option.
+ * - It offers a variety of responses when an assertion fails (retry, trigger
+ *   the debugger, abort the program, ignore the failure once, ignore it for
+ *   the rest of the program's run).
+ * - It tries to show the user a dialog by default, if possible, but the app
+ *   can provide a callback to handle assertion failures however they like.
+ * - It lets failed assertions be retried. Perhaps you had a network failure
+ *   and just want to retry the test after plugging your network cable back
+ *   in? You can.
+ * - It lets the user ignore an assertion failure, if there's a harmless
+ *   problem that one can continue past.
+ * - It lets the user mark an assertion as ignored for the rest of the
+ *   program's run; if there's a harmless problem that keeps popping up.
+ * - It provides statistics and data on all failed assertions to the app.
+ * - It allows the default assertion handler to be controlled with environment
+ *   variables, in case an automated script needs to control it.
+ * - It can be used as an aid to Clang's static analysis; it will treat SDL
+ *   assertions as universally true (under the assumption that you are serious
+ *   about the asserted claims and that your debug builds will detect when
+ *   these claims were wrong). This can help the analyzer avoid false
+ *   positives.
+ *
+ * To use it: compile a debug build and just sprinkle around tests to check
+ * your code!
+ */
+
+#ifndef SDL3PP_ASSERT_H_
+#define SDL3PP_ASSERT_H_
+
+#include <SDL3/SDL_assert.h>
+
+// begin --- SDL3pp_stringParam.h --- 
+
+#ifndef SDL3PP_STRING_PARAM_H_
+#define SDL3PP_STRING_PARAM_H_
+
+#include <string>
+#include <string_view>
+#include <variant>
+
+namespace SDL {
+
+#ifndef SDL3PP_ENABLE_STRING_PARAM
+
+#ifndef SDL3PP_DISABLE_STRING_PARAM
+#define SDL3PP_ENABLE_STRING_PARAM
+#endif // SDL3PP_DISABLE_STRING_PARAM
+
+#endif // SDL3PP_ENABLE_STRING_PARAM''
+
+/**
+ * @brief A safe and mostly efficient wrapper to std::string and
+ * std::string_view parameters
+ *
+ * This should only be declared in [function
+ * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
+ * using it otherwise is to ask for undefined behavior
+ */
+class StringParamImpl
+{
+  std::variant<std::monostate, const char*, std::string> data;
+
+public:
+  constexpr StringParamImpl(std::nullptr_t = nullptr) {}
+  constexpr StringParamImpl(const char* str)
+    : data(str)
+  {
+  }
+
+  StringParamImpl(const std::string& str)
+    : StringParamImpl(str.c_str())
+  {
+  }
+
+  StringParamImpl(std::string&& str)
+    : data(std::move(str))
+  {
+  }
+
+  StringParamImpl(std::string_view str)
+    : StringParamImpl(std::string{str})
+  {
+  }
+
+  StringParamImpl(const StringParamImpl&) = delete;
+  StringParamImpl(StringParamImpl&&) = default;
+  StringParamImpl& operator=(const StringParamImpl&) = delete;
+  StringParamImpl& operator=(StringParamImpl&&) = default;
+
+  operator const char*() const
+  {
+    struct Visitor
+    {
+      const char* operator()(const char* a) const { return a; }
+      const char* operator()(const std::string& s) const { return s.c_str(); }
+      const char* operator()(std::monostate) const { return ""; }
+    };
+    return std::visit(Visitor{}, data);
+  }
+};
+
+#ifdef SDL3PP_ENABLE_STRING_PARAM
+using StringParam = StringParamImpl;
+#else  // SDL3PP_ENABLE_STRING_PARAM
+using StringParam = const char*;
+#endif // SDL3PP_ENABLE_STRING_PARAM
+
+} // namespace SDL
+
+#endif /* SDL3PP_STRING_PARAM_H_ */
+
+
+// end --- SDL3pp_stringParam.h --- 
+
+
+
+namespace SDL {
+
+/**
+ * Possible outcomes from a triggered assertion.
+ *
+ * When an enabled assertion triggers, it may call the assertion handler
+ * (possibly one provided by the app via SDL_SetAssertionHandler), which will
+ * return one of these values, possibly after asking the user.
+ *
+ * Then SDL will respond based on this outcome (loop around to retry the
+ * condition, try to break in a debugger, kill the program, or ignore the
+ * problem).
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AssertState = SDL_AssertState;
+
+/**
+ * Retry the assert immediately.
+ */
+constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
+
+/**
+ * Make the debugger trigger a breakpoint.
+ */
+constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
+
+/**
+ * Terminate the program.
+ */
+constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
+
+/**
+ * Ignore the assert.
+ */
+constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
+
+/**
+ * Ignore the assert from now on.
+ */
+constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
+
+/**
+ * Information about an assertion failure.
+ *
+ * This structure is filled in with information about a triggered assertion,
+ * used by the assertion handler, then added to the assertion report. This is
+ * returned as a linked list from SDL_GetAssertionReport().
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using AssertData = SDL_AssertData;
+
+/**
+ * Never call this directly.
+ *
+ * Use the SDL_assert macros instead.
+ *
+ * @param data assert data structure.
+ * @param func function name.
+ * @param file file name.
+ * @param line line number.
+ * @returns assert state.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline AssertState ReportAssertion(AssertData* data,
+                                   StringParam func,
+                                   StringParam file,
+                                   int line)
+{
+  return SDL_ReportAssertion(data, func, file, line);
+}
+
+/**
+ * A callback that fires when an SDL assertion fails.
+ *
+ * @param data a pointer to the SDL_AssertData structure corresponding to the
+ *             current assertion.
+ * @param userdata what was passed as `userdata` to SDL_SetAssertionHandler().
+ * @returns an SDL_AssertState value indicating how to handle the failure.
+ *
+ * @threadsafety This callback may be called from any thread that triggers an
+ *               assert at any time.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AssertionHandler = SDL_AssertionHandler;
+
+/**
+ * Set an application-defined assertion handler.
+ *
+ * This function allows an application to show its own assertion UI and/or
+ * force the response to an assertion failure. If the application doesn't
+ * provide this, SDL will try to do the right thing, popping up a
+ * system-specific GUI dialog, and probably minimizing any fullscreen windows.
+ *
+ * This callback may fire from any thread, but it runs wrapped in a mutex, so
+ * it will only fire from one thread at a time.
+ *
+ * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
+ *
+ * @param handler the SDL_AssertionHandler function to call when an assertion
+ *                fails or NULL for the default handler.
+ * @param userdata a pointer that is passed to `handler`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionHandler
+ */
+inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
+{
+  return SDL_SetAssertionHandler(handler, userdata);
+}
+
+/**
+ * Get the default assertion handler.
+ *
+ * This returns the function pointer that is called by default when an
+ * assertion is triggered. This is an internal function provided by SDL, that
+ * is used for assertions when SDL_SetAssertionHandler() hasn't been used to
+ * provide a different function.
+ *
+ * @returns the default SDL_AssertionHandler that is called when an assert
+ *          triggers.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionHandler
+ */
+inline AssertionHandler GetDefaultAssertionHandler()
+{
+  return SDL_GetDefaultAssertionHandler();
+}
+
+/**
+ * Get the current assertion handler.
+ *
+ * This returns the function pointer that is called when an assertion is
+ * triggered. This is either the value last passed to
+ * SDL_SetAssertionHandler(), or if no application-specified function is set,
+ * is equivalent to calling SDL_GetDefaultAssertionHandler().
+ *
+ * The parameter `puserdata` is a pointer to a void*, which will store the
+ * "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value
+ * will always be NULL for the default handler. If you don't care about this
+ * data, it is safe to pass a NULL pointer to this function to ignore it.
+ *
+ * @param puserdata pointer which is filled with the "userdata" pointer that
+ *                  was passed to SDL_SetAssertionHandler().
+ * @returns the SDL_AssertionHandler that is called when an assert triggers.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetAssertionHandler
+ */
+inline AssertionHandler GetAssertionHandler(void** puserdata)
+{
+  return SDL_GetAssertionHandler(puserdata);
+}
+
+/**
+ * Get a list of all assertion failures.
+ *
+ * This function gets all assertions triggered since the last call to
+ * SDL_ResetAssertionReport(), or the start of the program.
+ *
+ * The proper way to examine this data looks something like this:
+ *
+ * ```c
+ * const SDL_AssertData *item = SDL_GetAssertionReport();
+ * while (item) {
+ *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
+ *           item->condition, item->function, item->filename,
+ *           item->linenum, item->trigger_count,
+ *           item->always_ignore ? "yes" : "no");
+ *    item = item->next;
+ * }
+ * ```
+ *
+ * @returns a list of all failed assertions or NULL if the list is empty. This
+ *          memory should not be modified or freed by the application. This
+ *          pointer remains valid until the next call to SDL_Quit() or
+ *          SDL_ResetAssertionReport().
+ *
+ * @threadsafety This function is not thread safe. Other threads calling
+ *               SDL_ResetAssertionReport() simultaneously, may render the
+ *               returned pointer invalid.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_ResetAssertionReport
+ */
+inline const AssertData* GetAssertionReport()
+{
+  return SDL_GetAssertionReport();
+}
+
+/**
+ * Clear the list of all assertion failures.
+ *
+ * This function will clear the list of all assertions triggered up to that
+ * point. Immediately following this call, SDL_GetAssertionReport will return
+ * no items. In addition, any previously-triggered assertions will be reset to
+ * a trigger_count of zero, and their always_ignore state will be false.
+ *
+ * @threadsafety This function is not thread safe. Other threads triggering an
+ *               assertion, or simultaneously calling this function may cause
+ *               memory leaks or crashes.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionReport
+ */
+inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+
+} // namespace SDL
+
+#endif /* SDL3PP_ASSERT_H_ */
+
+
+// end --- SDL3pp_assert.h --- 
+
+
 //
 //
 //
@@ -261,6 +627,9 @@ inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
 #ifndef SDL3PP_ERROR_H_
 #define SDL3PP_ERROR_H_
 
+#include <format>
+#include <string>
+#include <string_view>
 #include <SDL3/SDL_error.h>
 
 namespace SDL {
@@ -292,6 +661,88 @@ namespace SDL {
  *
  * @{
  */
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @param message the error message
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa GetError
+ */
+inline bool SetError(StringParam message)
+{
+  return SDL_SetError("%s", static_cast<const char*>(message));
+}
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @tparam ARGS the formatting parameters
+ * @param fmt a
+ * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ * style message format string
+ * @param args additional parameters matching the `{}` tokens in the format
+ * string, if any.
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup FmtString
+ *
+ * @sa FmtString
+ * @sa ClearError
+ * @sa GetError
+ * @return false
+ */
+template<class... ARGS>
+inline bool SetError(std::string_view fmt, ARGS... args)
+{
+  return SetError(
+    std::vformat(fmt, std::make_format_args(std::forward<ARGS...>(args)...)));
+}
+
+/**
+ * Set an error indicating that memory allocation failed.
+ *
+ * This function does not do any memory allocation.
+ *
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OutOfMemory() { return SDL_OutOfMemory(); }
 
 /**
  * @brief Retrieve a message about the last error that occurred on the current
@@ -592,6 +1043,13 @@ private:
 namespace SDL {
 
 /**
+ * @defgroup CategoryFreeWrapper Pointer wrapper to SDL::free()
+ *
+ * Wraps SDL generated pointers to automatically freeing them.
+ * @{
+ */
+
+/**
  * @brief Wraps around SDL alloced pointers to automatically free them
  *
  */
@@ -768,91 +1226,6 @@ void std::swap(SDL::ObjectUnique<T, DELETER> left,
 
 
 // end --- SDL3pp_objectWrapper.h --- 
-
-
-
-// begin --- SDL3pp_stringParam.h --- 
-
-#ifndef SDL3PP_STRING_PARAM_H_
-#define SDL3PP_STRING_PARAM_H_
-
-#include <string>
-#include <string_view>
-#include <variant>
-
-namespace SDL {
-
-#ifndef SDL3PP_ENABLE_STRING_PARAM
-
-#ifndef SDL3PP_DISABLE_STRING_PARAM
-#define SDL3PP_ENABLE_STRING_PARAM
-#endif // SDL3PP_DISABLE_STRING_PARAM
-
-#endif // SDL3PP_ENABLE_STRING_PARAM''
-
-/**
- * @brief A safe and mostly efficient wrapper to std::string and
- * std::string_view parameters
- *
- * This should only be declared in [function
- * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
- * using it otherwise is to ask for undefined behavior
- */
-class StringParamImpl
-{
-  std::variant<std::monostate, const char*, std::string> data;
-
-public:
-  constexpr StringParamImpl(std::nullptr_t = nullptr) {}
-  constexpr StringParamImpl(const char* str)
-    : data(str)
-  {
-  }
-
-  StringParamImpl(const std::string& str)
-    : StringParamImpl(str.c_str())
-  {
-  }
-
-  StringParamImpl(std::string&& str)
-    : data(std::move(str))
-  {
-  }
-
-  StringParamImpl(std::string_view str)
-    : StringParamImpl(std::string{str})
-  {
-  }
-
-  StringParamImpl(const StringParamImpl&) = delete;
-  StringParamImpl(StringParamImpl&&) = default;
-  StringParamImpl& operator=(const StringParamImpl&) = delete;
-  StringParamImpl& operator=(StringParamImpl&&) = default;
-
-  operator const char*() const
-  {
-    struct Visitor
-    {
-      const char* operator()(const char* a) const { return a; }
-      const char* operator()(const std::string& s) const { return s.c_str(); }
-      const char* operator()(std::monostate) const { return ""; }
-    };
-    return std::visit(Visitor{}, data);
-  }
-};
-
-#ifdef SDL3PP_ENABLE_STRING_PARAM
-using StringParam = StringParamImpl;
-#else  // SDL3PP_ENABLE_STRING_PARAM
-using StringParam = const char*;
-#endif // SDL3PP_ENABLE_STRING_PARAM
-
-} // namespace SDL
-
-#endif /* SDL3PP_STRING_PARAM_H_ */
-
-
-// end --- SDL3pp_stringParam.h --- 
 
 
 
@@ -3773,22 +4146,282 @@ inline char* UCS4ToUTF8(Uint32 codepoint, char* dst)
 }
 
 /**
+ * This works exactly like sscanf() but doesn't require access to a C runtime.
+ *
+ * Scan a string, matching a format string, converting each '%' item and
+ * storing it to pointers provided through variable arguments.
+ *
+ * @param text the string to scan. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of pointers to values to be filled in with scanned items.
+ * @returns the number of items that matched the format string.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int sscanf(StringParam text,
+                  SDL_SCANF_FORMAT_STRING const char* fmt,
+                  ...)
+{
+  int rc;
+  va_list ap;
+  va_start(ap, fmt);
+  rc = SDL_vsscanf(text, fmt, ap);
+  va_end(ap);
+  return rc;
+}
+
+/**
+ * This works exactly like vsscanf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_sscanf(), except it takes a `va_list` instead
+ * of using `...` variable arguments.
+ *
+ * @param text the string to scan. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ap a `va_list` of pointers to values to be filled in with scanned
+ *           items.
+ * @returns the number of items that matched the format string.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vsscanf(StringParam text,
+                   SDL_SCANF_FORMAT_STRING const char* fmt,
+                   va_list ap)
+{
+  return SDL_vsscanf(text, fmt, ap);
+}
+
+/**
+ * This works exactly like snprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Format a string of up to `maxlen`-1 bytes, converting each '%' item with
+ * values provided through variable arguments.
+ *
+ * While some C runtimes differ on how to deal with too-large strings, this
+ * function null-terminates the output, by treating the null-terminator as
+ * part of the `maxlen` count. Note that if `maxlen` is zero, however, no
+ * bytes will be written at all.
+ *
+ * This function returns the number of _bytes_ (not _characters_) that should
+ * be written, excluding the null-terminator character. If this returns a
+ * number >= `maxlen`, it means the output string was truncated. A negative
+ * return value means an error occurred.
+ *
+ * Referencing the output string's pointer with a format item is undefined
+ * behavior.
+ *
+ * @param text the buffer to write the string into. Must not be NULL.
+ * @param maxlen the maximum bytes to write, including the null-terminator.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of values to be used with the format string.
+ * @returns the number of bytes that should be written, not counting the
+ *          null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int snprintf(char* text,
+                    size_t maxlen,
+                    SDL_PRINTF_FORMAT_STRING const char* fmt,
+                    ...)
+{
+  va_list ap;
+  int result;
+
+  va_start(ap, fmt);
+  result = SDL_vsnprintf(text, maxlen, fmt, ap);
+  va_end(ap);
+
+  return result;
+}
+
+/**
+ * This works exactly like swprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Format a wide string of up to `maxlen`-1 wchar_t values, converting each
+ * '%' item with values provided through variable arguments.
+ *
+ * While some C runtimes differ on how to deal with too-large strings, this
+ * function null-terminates the output, by treating the null-terminator as
+ * part of the `maxlen` count. Note that if `maxlen` is zero, however, no wide
+ * characters will be written at all.
+ *
+ * This function returns the number of _wide characters_ (not _codepoints_)
+ * that should be written, excluding the null-terminator character. If this
+ * returns a number >= `maxlen`, it means the output string was truncated. A
+ * negative return value means an error occurred.
+ *
+ * Referencing the output string's pointer with a format item is undefined
+ * behavior.
+ *
+ * @param text the buffer to write the wide string into. Must not be NULL.
+ * @param maxlen the maximum wchar_t values to write, including the
+ *               null-terminator.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of values to be used with the format string.
+ * @returns the number of wide characters that should be written, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int swprintf(wchar_t* text,
+                    size_t maxlen,
+                    SDL_PRINTF_FORMAT_STRING const wchar_t* fmt,
+                    ...)
+{
+  va_list ap;
+  int result;
+
+  va_start(ap, fmt);
+  result = SDL_vswprintf(text, maxlen, fmt, ap);
+  va_end(ap);
+
+  return result;
+}
+
+/**
+ * This works exactly like vsnprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_snprintf(), except it takes a `va_list`
+ * instead of using `...` variable arguments.
+ *
+ * @param text the buffer to write the string into. Must not be NULL.
+ * @param maxlen the maximum bytes to write, including the null-terminator.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ap a `va_list` values to be used with the format string.
+ * @returns the number of bytes that should be written, not counting the
+ *          null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vsnprintf(char* text,
+                     size_t maxlen,
+                     SDL_PRINTF_FORMAT_STRING const char* fmt,
+                     va_list ap)
+{
+  return SDL_vsnprintf(text, maxlen, fmt, ap);
+}
+
+/**
+ * This works exactly like vswprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_swprintf(), except it takes a `va_list`
+ * instead of using `...` variable arguments.
+ *
+ * @param text the buffer to write the string into. Must not be NULL.
+ * @param maxlen the maximum wide characters to write, including the
+ *               null-terminator.
+ * @param fmt a printf-style format wide string. Must not be NULL.
+ * @param ap a `va_list` values to be used with the format string.
+ * @returns the number of wide characters that should be written, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vswprintf(wchar_t* text,
+                     size_t maxlen,
+                     SDL_PRINTF_FORMAT_STRING const wchar_t* fmt,
+                     va_list ap)
+{
+  return SDL_vswprintf(text, maxlen, fmt, ap);
+}
+
+/**
+ * This works exactly like asprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_snprintf(), except it allocates a buffer large
+ * enough to hold the output string on behalf of the caller.
+ *
+ * On success, this function returns the number of bytes (not characters)
+ * comprising the output string, not counting the null-terminator character,
+ * and sets `*strp` to the newly-allocated string.
+ *
+ * On error, this function returns a negative number, and the value of `*strp`
+ * is undefined.
+ *
+ * The returned string is owned by the caller, and should be passed to
+ * SDL_free when no longer needed.
+ *
+ * @param strp on output, is set to the new string. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of values to be used with the format string.
+ * @returns the number of bytes in the newly-allocated string, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int asprintf(char** strp, SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
+{
+  va_list ap;
+  int result;
+
+  va_start(ap, fmt);
+  result = SDL_vasprintf(strp, fmt, ap);
+  va_end(ap);
+
+  return result;
+}
+
+/**
+ * This works exactly like vasprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_asprintf(), except it takes a `va_list`
+ * instead of using `...` variable arguments.
+ *
+ * @param strp on output, is set to the new string. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ap a `va_list` values to be used with the format string.
+ * @returns the number of bytes in the newly-allocated string, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vasprintf(char** strp,
+                     SDL_PRINTF_FORMAT_STRING const char* fmt,
+                     va_list ap)
+{
+  return SDL_vasprintf(strp, fmt, ap);
+}
+
+/**
  * Seeds the pseudo-random number generator.
  *
- * Reusing the seed number will cause SDL_rand_*() to repeat the same stream
+ * Reusing the seed number will cause rand_*() to repeat the same stream
  * of 'random' numbers.
  *
  * @param seed the value to use as a random number seed, or 0 to use
  *             SDL_GetPerformanceCounter().
  *
  * @threadsafety This should be called on the same thread that calls
- *               SDL_rand*()
+ *               rand*()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_rand
- * @sa SDL_rand_bits
- * @sa SDL_randf
+ * @sa rand()
+ * @sa rand_bits()
+ * @sa randf()
  **/
 inline void srand(Uint64 seed) { SDL_srand(seed); }
 
@@ -3799,14 +4432,13 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
  * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
  * much worse as n gets bigger.
  *
- * Example: to simulate a d6 use `SDL_rand(6) + 1` The +1 converts 0..5 to
+ * Example: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to
  * 1..6
  *
  * If you want to generate a pseudo-random number in the full range of Sint32,
  * you should use: (Sint32)SDL_rand_bits()
  *
- * If you want reproducible output, be sure to initialize with SDL_srand()
- * first.
+ * If you want reproducible output, be sure to initialize with srand() first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -3821,16 +4453,15 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_srand
- * @sa SDL_randf
+ * @sa srand()
+ * @sa randf()
  **/
 inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
- * If you want reproducible output, be sure to initialize with SDL_srand()
- * first.
+ * If you want reproducible output, be sure to initialize with srand() first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -3844,15 +4475,15 @@ inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_srand
- * @sa SDL_rand
+ * @sa srand()
+ * @sa rand()
  **/
 inline float randf() { return SDL_randf(); }
 
 /**
  * Generate 32 pseudo-random bits.
  *
- * You likely want to use SDL_rand() to get a psuedo-random number instead.
+ * You likely want to use rand() to get a pseudo-random number instead.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -3866,98 +4497,113 @@ inline float randf() { return SDL_randf(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_rand
- * @sa SDL_randf
- * @sa SDL_srand
+ * @sa rand()
+ * @sa randf()
+ * @sa srand()
  **/
 inline Uint32 rand_bits() { return SDL_rand_bits(); }
 
 /**
- * Generate a pseudo-random number less than n for positive n
+ * A independent pseudo random state
  *
- * The method used is faster and of better quality than `rand() % n`. Odds are
- * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
- * much worse as n gets bigger.
+ * This can be instantiated in any thread and as long as it is not shared with
+ * another thread all members are safe to call.
  *
- * Example: to simulate a d6 use `SDL_rand_r(state, 6) + 1` The +1 converts
- * 0..5 to 1..6
+ * @ingroup WrapState
  *
- * If you want to generate a pseudo-random number in the full range of Sint32,
- * you should use: (Sint32)SDL_rand_bits_r(state)
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              NULL.
- * @param n the number of possible outcomes. n must be positive.
- * @returns a random value in the range of [0 .. n-1].
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_rand
- * @sa SDL_rand_bits_r
- * @sa SDL_randf_r
- **/
-inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
+ * @sa WrapState
+ */
+class Random
+{
+  Uint64 m_state;
 
-/**
- * Generate a uniform pseudo-random floating point number less than 1.0
- *
- * If you want reproducible output, be sure to initialize with SDL_srand()
- * first.
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              NULL.
- * @returns a random value in the range of [0.0, 1.0).
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_rand_bits_r
- * @sa SDL_rand_r
- * @sa SDL_randf
- **/
-inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
+public:
+  constexpr Random(Uint64 state = 0)
+    : m_state(state)
+  {
+  }
 
-/**
- * Generate 32 pseudo-random bits.
- *
- * You likely want to use SDL_rand_r() to get a psuedo-random number instead.
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              NULL.
- * @returns a random value in the range of [0-SDL_MAX_UINT32].
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_rand_r
- * @sa SDL_randf_r
- **/
-inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
+  constexpr operator Uint64() { return m_state; }
+
+  /**
+   * Generate a pseudo-random number less than n for positive n
+   *
+   * The method used is faster and of better quality than `rand() % n`. Odds are
+   * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+   * much worse as n gets bigger.
+   *
+   * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
+   * 0..5 to 1..6
+   *
+   * If you want to generate a pseudo-random number in the full range of Sint32,
+   * you should use: (Sint32)state.rand_bits()
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @param n the number of possible outcomes. n must be positive.
+   * @returns a random value in the range of [0 .. n-1].
+   *
+   * @threadsafety This function is thread-safe, as long as this object
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL::rand()
+   * @sa rand_bits()
+   * @sa randf()
+   */
+  Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
+
+  /**
+   * Generate a uniform pseudo-random floating point number less than 1.0
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0.0, 1.0).
+   *
+   * @threadsafety This function is thread-safe, as long as this object
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand_bits()
+   * @sa rand()
+   * @sa SDL::randf()
+   */
+  float randf() { return SDL_randf_r(&m_state); }
+
+  /**
+   * Generate 32 pseudo-random bits.
+   *
+   * You likely want to use Random.rand() to get a pseudo-random number instead.
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0-SDL_MAX_UINT32].
+   *
+   * @threadsafety This function is thread-safe, as long as this object
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand()
+   * @sa randf()
+   * @sa SDL::rand_bits()
+   */
+  Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
+};
 
 /**
  * Compute the arc cosine of `x`.
@@ -6519,6 +7165,10 @@ struct FRect;
  * @brief The structure that defines a point (using integers)
  *
  * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct Point : SDL_Point
 {
@@ -6900,6 +7550,10 @@ struct Point : SDL_Point
 
 /**
  * @brief The structure that defines a point (using floating point values).
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct FPoint : SDL_FPoint
 {
@@ -7213,6 +7867,10 @@ struct FPoint : SDL_FPoint
 
 /**
  * @brief A rectangle, with the origin at the upper left (using integers).
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct Rect : SDL_Rect
 {
@@ -7810,6 +8468,10 @@ struct Rect : SDL_Rect
 
 /**
  * @brief A rectangle, with the origin at the upper left (using floats).
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct FRect : SDL_FRect
 {
@@ -8835,6 +9497,9 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This enum is available since SDL 3.2.0.
  *
+ * @ingroup WrapState
+ *
+ * @sa WrapState
  * @sa PixelFormats
  */
 struct PixelFormat
@@ -9730,6 +10395,10 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  *
  * @since This enum is available since SDL 3.2.0.
  *
+ * @ingroup WrapState
+ *
+ * @sa WrapState
+ *
  * @sa Colorspaces
  * @sa ColorPrimaries
  * @sa ColorRange
@@ -10036,6 +10705,10 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  * SDL_PIXELFORMAT_RGBA8888 on big-endian systems).
  *
  * @since This struct is available since SDL 3.2.0.
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct Color : SDL_Color
 {
@@ -10204,6 +10877,10 @@ struct Color : SDL_Color
  * color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format
  *
  * @since This struct is available since SDL 3.2.0.
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct FColor : SDL_FColor
 {
@@ -18230,10 +18907,395 @@ inline WindowRef GetWindowFromEvent(const Event* event)
 //
 //
 //
+
+// begin --- SDL3pp_guid.h --- 
+
+#ifndef SDL3PP_GUID_H_
+#define SDL3PP_GUID_H_
+
+#include <SDL3/SDL_guid.h>
+
+namespace SDL {
+
+/**
+ * @defgroup CategoryGUID GUIDs
+ *
+ * A GUID is a 128-bit value that represents something that is uniquely
+ * identifiable by this value: "globally unique."
+ *
+ * SDL provides functions to convert a GUID to/from a string.
+ * @{
+ */
+
+/**
+ * An SDL_GUID is a 128-bit identifier for an input device that identifies
+ * that device across runs of SDL programs on the same platform.
+ *
+ * If the device is detached and then re-attached to a different port, or if
+ * the base system is rebooted, the device should still report the same GUID.
+ *
+ * GUIDs are as precise as possible but are not guaranteed to distinguish
+ * physically distinct but equivalent devices. For example, two game
+ * controllers from the same vendor with the same product ID and revision may
+ * have the same GUID.
+ *
+ * GUIDs may be platform-dependent (i.e., the same device may report different
+ * GUIDs on different operating systems).
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
+ */
+struct GUID : SDL_GUID
+{
+  constexpr GUID()
+    : SDL_GUID({0})
+  {
+  }
+
+  constexpr GUID(SDL_GUID guid)
+    : SDL_GUID(guid)
+  {
+  }
+
+  /**
+   * Convert a GUID string into a SDL_GUID structure.
+   *
+   * Performs no error checking. If this function is given a string containing
+   * an invalid GUID, the function will silently succeed, but the GUID generated
+   * will not be useful.
+   *
+   * @param pchGUID string containing an ASCII representation of a GUID.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GUIDToString
+   */
+  GUID(StringParam pchGUID)
+    : SDL_GUID(SDL_StringToGUID(pchGUID))
+  {
+  }
+
+  /**
+   * Get an ASCII string representation for a given SDL_GUID.
+   *
+   * @returns pszGUID the ASCII string representation for
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_StringToGUID
+   */
+  std::string ToString() const
+  {
+    std::string result(32, ' ');
+    SDL_GUIDToString(*this, result.data(), 33);
+    return result;
+  }
+};
+
+/**
+ * Get an ASCII string representation for a given SDL_GUID.
+ *
+ * @param guid the SDL_GUID you wish to convert to string.
+ * @param pszGUID buffer in which to write the ASCII string.
+ * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_StringToGUID
+ */
+inline void GUIDToString(SDL_GUID guid, char* pszGUID, int cbGUID)
+{
+  return SDL_GUIDToString(guid, pszGUID, cbGUID);
+}
+
+/**
+ * Convert a GUID string into a SDL_GUID structure.
+ *
+ * Performs no error checking. If this function is given a string containing
+ * an invalid GUID, the function will silently succeed, but the GUID generated
+ * will not be useful.
+ *
+ * @param pchGUID string containing an ASCII representation of a GUID.
+ * @returns a SDL_GUID structure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GUIDToString
+ */
+inline SDL_GUID StringToGUID(StringParam pchGUID)
+{
+  return SDL_StringToGUID(pchGUID);
+}
+
+/// @}
+
+} // namespace SDL
+
+#endif /* SDL3PP_GUID_H_ */
+
+
+// end --- SDL3pp_guid.h --- 
+
+
 //
 //
-//
-//
+
+// begin --- SDL3pp_hints.h --- 
+
+#ifndef SDL3PP_HINTS_H_
+#define SDL3PP_HINTS_H_
+
+#include <SDL3/SDL_hints.h>
+
+namespace SDL {
+
+/**
+ * @defgroup CategoryHints Configuration Variables
+ *
+ * This file contains functions to set and get configuration hints, as well as
+ * listing each of them alphabetically.
+ *
+ * The convention for naming hints is SDL_HINT_X, where "SDL_X" is the
+ * environment variable that can be used to override the default.
+ *
+ * In general these hints are just that - they may or may not be supported or
+ * applicable on any given platform, but they provide a way for an application
+ * or user to give the library a hint as to how they would like the library to
+ * work.
+ *
+ * @{
+ */
+
+/**
+ * An enumeration of hint priorities.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using HintPriority = SDL_HintPriority;
+
+constexpr HintPriority HINT_DEFAULT = SDL_HINT_DEFAULT;
+
+constexpr HintPriority HINT_NORMAL = SDL_HINT_NORMAL;
+
+constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE;
+
+/**
+ * Set a hint with a specific priority.
+ *
+ * The priority controls the behavior when setting a hint that already has a
+ * value. Hints will replace existing hints of their priority and lower.
+ * Environment variables are considered to have override priority.
+ *
+ * @param name the hint to set.
+ * @param value the value of the hint variable.
+ * @param priority the SDL_HintPriority level for the hint.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_ResetHint
+ * @sa SDL_SetHint
+ */
+inline bool SetHintWithPriority(StringParam name,
+                                StringParam value,
+                                HintPriority priority)
+{
+  return SDL_SetHintWithPriority(name, value, priority);
+}
+
+/**
+ * Set a hint with normal priority.
+ *
+ * Hints will not be set if there is an existing override hint or environment
+ * variable that takes precedence. You can use SDL_SetHintWithPriority() to
+ * set the hint with override priority instead.
+ *
+ * @param name the hint to set.
+ * @param value the value of the hint variable.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_ResetHint
+ * @sa SDL_SetHintWithPriority
+ */
+inline bool SetHint(StringParam name, StringParam value)
+{
+  return SDL_SetHint(name, value);
+}
+
+/**
+ * Reset a hint to the default value.
+ *
+ * This will reset a hint to the value of the environment variable, or NULL if
+ * the environment isn't set. Callbacks will be called normally with this
+ * change.
+ *
+ * @param name the hint to set.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHint
+ * @sa SDL_ResetHints
+ */
+inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
+
+/**
+ * Reset all hints to the default values.
+ *
+ * This will reset all hints to the value of the associated environment
+ * variable, or NULL if the environment isn't set. Callbacks will be called
+ * normally with this change.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_ResetHint
+ */
+inline void ResetHints() { return SDL_ResetHints(); }
+
+/**
+ * Get the value of a hint.
+ *
+ * @param name the hint to query.
+ * @returns the string value of a hint or NULL if the hint isn't set.
+ *
+ * @threadsafety It is safe to call this function from any thread, however the
+ *               return value only remains valid until the hint is changed; if
+ *               another thread might do so, the app should supply locks
+ *               and/or make a copy of the string. Note that using a hint
+ *               callback instead is always thread-safe, as SDL holds a lock
+ *               on the thread subsystem during the callback.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHint
+ * @sa SDL_SetHintWithPriority
+ */
+inline const char* GetHint(StringParam name) { return SDL_GetHint(name); }
+
+/**
+ * Get the boolean value of a hint variable.
+ *
+ * @param name the name of the hint to get the boolean value from.
+ * @param default_value the value to return if the hint does not exist.
+ * @returns the boolean value of a hint or the provided default value if the
+ *          hint does not exist.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_SetHint
+ */
+inline bool GetHintBoolean(StringParam name, bool default_value)
+{
+  return SDL_GetHintBoolean(name, default_value);
+}
+
+/**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during SDL_AddHintCallback with the hint's
+ * current value, and then again each time the hint's value changes.
+ *
+ * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
+ * @param name what was passed as `name` to SDL_AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when
+ *               calling this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddHintCallback
+ */
+using HintCallback = SDL_HintCallback;
+
+/**
+ * Add a function to watch a particular hint.
+ *
+ * The callback function is called _during_ this function, to provide it an
+ * initial value, and again each time the hint's value changes.
+ *
+ * @param name the hint to watch.
+ * @param callback An SDL_HintCallback function that will be called when the
+ *                 hint value changes.
+ * @param userdata a pointer to pass to the callback function.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_RemoveHintCallback
+ */
+inline bool AddHintCallback(StringParam name,
+                            HintCallback callback,
+                            void* userdata)
+{
+  return SDL_AddHintCallback(name, callback, userdata);
+}
+
+/**
+ * Remove a function watching a particular hint.
+ *
+ * @param name the hint being watched.
+ * @param callback an SDL_HintCallback function that will be called when the
+ *                 hint value changes.
+ * @param userdata a pointer being passed to the callback function.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddHintCallback
+ */
+inline void RemoveHintCallback(StringParam name,
+                               HintCallback callback,
+                               void* userdata)
+{
+  return SDL_RemoveHintCallback(name, callback, userdata);
+}
+
+/// @}
+
+} // namespace SDL
+
+#endif /* SDL3PP_HINTS_H_ */
+
+
+// end --- SDL3pp_hints.h --- 
+
+
 
 // begin --- SDL3pp_init.h --- 
 
@@ -18954,8 +20016,100 @@ inline int SDL::refCount(int delta, bool autoQuit)
 //
 //
 //
-//
-//
+
+// begin --- SDL3pp_locale.h --- 
+
+
+
+#ifndef SDL3PP_LOCALE_H_
+#define SDL3PP_LOCALE_H_
+
+#include <SDL3/SDL_locale.h>
+
+namespace SDL {
+/**
+ * @defgroup CategoryLocale Locale Info
+ *
+ * SDL locale services.
+ *
+ * This provides a way to get a list of preferred locales (language plus
+ * country) for the user. There is exactly one function:
+ * GetPreferredLocales(), which handles all the heavy lifting, and offers
+ * documentation on all the strange ways humans might have configured their
+ * language settings.
+ *
+ * @{
+ */
+
+/**
+ * A struct to provide locale data.
+ *
+ * Locale data is split into a spoken language, like English, and an optional
+ * country, like Canada. The language will be in ISO-639 format (so English
+ * would be "en"), and the country, if not NULL, will be an ISO-3166 country
+ * code (so Canada would be "CA").
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPreferredLocales()
+ */
+using Locale = SDL_Locale;
+
+/**
+ * Report the user's preferred locale.
+ *
+ * Returned language strings are in the format xx, where 'xx' is an ISO-639
+ * language specifier (such as "en" for English, "de" for German, etc).
+ * Country strings are in the format YY, where "YY" is an ISO-3166 country
+ * code (such as "US" for the United States, "CA" for Canada, etc). Country
+ * might be NULL if there's no specific guidance on them (so you might get {
+ * "en", "US" } for American English, but { "en", NULL } means "English
+ * language, generically"). Language strings are never NULL, except to
+ * terminate the array.
+ *
+ * Please note that not all of these strings are 2 characters; some are three
+ * or more.
+ *
+ * The returned list of locales are in the order of the user's preference. For
+ * example, a German citizen that is fluent in US English and knows enough
+ * Japanese to navigate around Tokyo might have a list like: { "de", "en_US",
+ * "jp", NULL }. Someone from England might prefer British English (where
+ * "color" is spelled "colour", etc), but will settle for anything like it: {
+ * "en_GB", "en", NULL }.
+ *
+ * This function returns NULL on error, including when the platform does not
+ * supply this information at all.
+ *
+ * This might be a "slow" call that has to query the operating system. It's
+ * best to ask for this once and save the results. However, this list can
+ * change, usually because the user has changed a system preference outside of
+ * your program; SDL will send an SDL::EVENT_LOCALE_CHANGED event in this case,
+ * if possible, and you can call this function again to get an updated copy of
+ * preferred locales.
+ *
+ * @param count a pointer filled in with the number of locales returned, may
+ *              be NULL.
+ * @returns a NULL terminated array of locale pointers, or NULL on failure;
+ *          call GetError() for more information. This is a single allocation
+ *          that should be freed with free() when it is no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline FreeWrapper<Locale*[]> GetPreferredLocales(int* count)
+{
+  return wrapArray(SDL_GetPreferredLocales(count));
+}
+
+/// @}
+
+} // namespace SDL
+
+#endif /* SDL3PP_LOCALE_H_ */
+
+
+// end --- SDL3pp_locale.h --- 
+
+
 //
 //
 //

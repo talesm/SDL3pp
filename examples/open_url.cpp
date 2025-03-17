@@ -1,0 +1,52 @@
+#include <iostream>
+#include <SDL3/SDL_main.h>
+#include "SDL3pp/SDL3pp.h"
+
+using namespace std::chrono_literals;
+
+int main(int argc, char** argv)
+{
+  SDL::SDL init(SDL::INIT_VIDEO);
+  if (!init) {
+    SDL_Log("%s", SDL::GetError());
+    return 1;
+  }
+  constexpr SDL::Point WINDOW_SZ = {400, 400};
+  auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", {400, 400});
+  if (!window) {
+    SDL_Log("%s", SDL::GetError());
+    return 1;
+  }
+
+  SDL::Texture characterTexture{
+    SDL::LoadTexture(renderer, "assets/smiley.png")};
+  if (!characterTexture) {
+    SDL_Log("%s", SDL::GetError());
+    return 1;
+  }
+  SDL::FRect characterRect(SDL::FPoint(WINDOW_SZ) / 2 - SDL::FPoint{64, 64},
+                           {128, 128});
+
+  bool running = true;
+  while (running) {
+    while (auto ev = SDL::PollEvent()) {
+      switch (ev->type) {
+      case SDL::EVENT_QUIT: running = false; break;
+      case SDL::EVENT_MOUSE_BUTTON_DOWN:
+        SDL::OpenURL("https://talesm.github.io/SDL3pp");
+        break;
+      default: break;
+      }
+    }
+    renderer.SetDrawColor(SDL::FColor{.5f, .5f, .5f, 1.f});
+    renderer.RenderClear();
+    renderer.SetDrawColor(SDL::FColor{0.f, 0.725f, 0.f, 1.f});
+    renderer.RenderFillRect(SDL::FRect{10, 10, 380, 380});
+    renderer.RenderTexture(characterTexture, {}, characterRect);
+
+    renderer.Present();
+    SDL::Delay(1ns);
+  }
+
+  return 0;
+}

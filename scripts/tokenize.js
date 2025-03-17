@@ -109,13 +109,12 @@ function tokenize(lines) {
     } else if (m = /^using\s+([\w:]+)\s*;/.exec(line)) {
       token.kind = "alias";
       token.value = m[1];
-    } else if (m = /^typedef\s+((\w+\s+)+\*?)\((SDLCALL )?\*(\w+)\)\(([^)]*)([\),])/.exec(line)) {
-      token.value = m[4];
+    } else if (m = /^typedef\s+((?:\w+\s*)+\*?)\((?:SDLCALL )?\*(\w+)\)\(([^)]*)(\);)?/.exec(line)) {
+      token.value = m[2];
       token.kind = "callback";
       token.type = m[1].trimEnd();
-      token.parameters = m[5]?.trim();
-      if (m[6] === ",") {
-        token.parameters += ",";
+      token.parameters = m[3]?.trim();
+      if (!m[4]) {
         for (i++; i < lines.length; i++) {
           const line = lines[i].trim();
           if (line.endsWith(");")) {

@@ -7,5 +7,8 @@ var searchData=
   ['appquit_5ffunc_4',['AppQuit_func',['../group__CategoryInit.html#gae10f17c2662e06ffae89564b29eb7e3a',1,'SDL']]],
   ['appresult_5',['AppResult',['../group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273',1,'SDL']]],
   ['arrayorder_6',['ArrayOrder',['../group__CategoryPixels.html#ga1dbdac1bb77c06fb6212f18507722247',1,'SDL']]],
-  ['audiodeviceevent_7',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
+  ['assertdata_7',['AssertData',['../namespaceSDL.html#ab8af1dcb1cc2d54244bf65a8a0c4af4d',1,'SDL']]],
+  ['assertionhandler_8',['AssertionHandler',['../namespaceSDL.html#aa96234b976cffe73f8c2d3fa30b47a23',1,'SDL']]],
+  ['assertstate_9',['AssertState',['../namespaceSDL.html#a6cef7fc19a80762bc63c2eba129c8758',1,'SDL']]],
+  ['audiodeviceevent_10',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
 ];

@@ -7,6 +7,13 @@
 namespace SDL {
 
 /**
+ * @defgroup CategoryFreeWrapper Pointer wrapper to SDL::free()
+ *
+ * Wraps SDL generated pointers to automatically freeing them.
+ * @{
+ */
+
+/**
  * @brief Wraps around SDL alloced pointers to automatically free them
  *
  */

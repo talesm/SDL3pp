@@ -80,15 +80,31 @@ $(function() {
   <div class="headertitle"><div class="title">SDL3pp_error.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;SDL3/SDL_error.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;format&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;string_view&gt;</code><br />
+<code>#include &lt;SDL3/SDL_error.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="SDL3pp__stringParam_8h_source.html">SDL3pp_stringParam.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for SDL3pp_error.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="SDL3pp__error_8h__incl.png" border="0" usemap="#aSDL3pp_2SDL3pp__error_8h" alt=""/></div>
 <map name="aSDL3pp_2SDL3pp__error_8h" id="aSDL3pp_2SDL3pp__error_8h">
-<area shape="rect" title=" " alt="" coords="5,5,179,31"/>
-<area shape="rect" title=" " alt="" coords="25,79,159,104"/>
-<area shape="poly" title=" " alt="" coords="95,31,95,65,89,65,89,31"/>
+<area shape="rect" title=" " alt="" coords="144,5,317,31"/>
+<area shape="rect" title=" " alt="" coords="5,79,72,104"/>
+<area shape="poly" title=" " alt="" coords="201,33,84,76,82,71,199,28"/>
+<area shape="rect" title=" " alt="" coords="97,152,156,177"/>
+<area shape="poly" title=" " alt="" coords="199,33,165,52,149,65,137,80,127,109,126,139,121,138,122,108,132,77,146,61,162,47,197,28"/>
+<area shape="rect" title=" " alt="" coords="374,152,471,177"/>
+<area shape="poly" title=" " alt="" coords="318,26,418,44,460,59,486,77,492,96,486,114,472,131,454,146,451,142,468,128,481,112,487,96,482,80,457,63,417,49,317,31"/>
+<area shape="rect" title=" " alt="" coords="339,79,472,104"/>
+<area shape="poly" title=" " alt="" coords="260,28,365,71,363,76,258,33"/>
+<area shape="rect" href="SDL3pp__stringParam_8h.html" title=" " alt="" coords="147,79,315,104"/>
+<area shape="poly" title=" " alt="" coords="233,31,233,65,228,65,228,31"/>
+<area shape="poly" title=" " alt="" coords="215,106,157,146,154,142,212,102"/>
+<area shape="poly" title=" " alt="" coords="262,102,379,144,377,149,261,107"/>
+<area shape="rect" title=" " alt="" coords="197,152,265,177"/>
+<area shape="poly" title=" " alt="" coords="233,104,233,138,228,138,228,104"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -96,55 +112,56 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="SDL3pp__error_8h__dep__incl.png" border="0" usemap="#aSDL3pp_2SDL3pp__error_8hdep" alt=""/></div>
 <map name="aSDL3pp_2SDL3pp__error_8hdep" id="aSDL3pp_2SDL3pp__error_8hdep">
-<area shape="rect" title=" " alt="" coords="621,5,795,31"/>
-<area shape="rect" href="SDL3pp_8h.html" title=" " alt="" coords="595,445,731,471"/>
-<area shape="poly" title=" " alt="" coords="608,22,432,28,332,37,234,49,145,68,73,92,46,107,25,124,12,143,8,164,8,312,13,333,26,351,47,368,75,383,148,407,237,425,334,438,431,446,594,453,594,459,431,452,334,443,236,431,147,412,73,388,44,372,22,355,8,335,3,313,3,163,8,141,21,121,43,103,71,88,144,63,233,44,331,31,431,23,607,17"/>
-<area shape="rect" href="SDL3pp__events_8h.html" title=" " alt="" coords="388,299,575,324"/>
-<area shape="poly" title=" " alt="" coords="608,22,521,26,431,36,354,54,325,66,306,80,296,95,291,110,290,126,293,141,309,173,335,204,368,233,402,259,462,296,459,301,399,263,364,237,331,208,305,176,288,143,285,126,286,109,291,93,302,77,322,61,352,48,430,31,521,21,608,17"/>
-<area shape="rect" href="SDL3pp__image_8h.html" title=" " alt="" coords="789,372,973,397"/>
-<area shape="poly" title=" " alt="" coords="809,27,933,46,987,60,1024,76,1048,94,1064,113,1073,134,1076,163,1076,240,1072,266,1060,290,1043,311,1022,329,973,356,925,374,923,369,970,352,1019,324,1039,307,1056,287,1067,265,1071,239,1071,163,1068,136,1059,115,1044,98,1021,81,985,65,932,51,808,32"/>
-<area shape="rect" href="SDL3pp__init_8h.html" title=" " alt="" coords="43,152,207,177"/>
-<area shape="poly" title=" " alt="" coords="608,28,397,47,298,62,228,81,200,97,174,116,137,153,133,150,171,112,197,92,226,76,297,57,397,41,607,22"/>
-<area shape="rect" href="SDL3pp__misc_8h.html" title=" " alt="" coords="334,79,509,104"/>
-<area shape="poly" title=" " alt="" coords="649,37,468,81,467,76,648,31"/>
-<area shape="rect" href="SDL3pp__properties_8h.html" title=" " alt="" coords="533,79,742,104"/>
-<area shape="poly" title=" " alt="" coords="689,43,651,80,647,77,685,39"/>
-<area shape="rect" href="SDL3pp__render_8h.html" title=" " alt="" coords="751,299,935,324"/>
-<area shape="poly" title=" " alt="" coords="809,24,866,31,922,42,969,57,987,66,999,77,1009,93,1015,109,1013,142,999,175,975,207,946,237,915,263,862,301,859,296,912,259,943,233,971,204,994,173,1008,141,1010,110,1005,95,995,80,984,71,967,62,921,47,865,37,808,29"/>
-<area shape="rect" href="SDL3pp__surface_8h.html" title=" " alt="" coords="685,152,875,177"/>
-<area shape="poly" title=" " alt="" coords="730,40,756,77,771,117,780,151,775,153,766,119,751,80,725,43"/>
-<area shape="rect" href="SDL3pp__video_8h.html" title=" " alt="" coords="447,225,625,251"/>
-<area shape="poly" title=" " alt="" coords="608,23,525,28,440,38,368,55,341,66,323,80,315,92,311,104,315,126,331,147,358,166,426,200,494,223,493,228,424,205,355,171,328,151,310,128,306,103,310,90,319,77,338,62,366,50,439,32,525,22,607,18"/>
-<area shape="rect" href="SDL3pp__rect_8h.html" title=" " alt="" coords="817,79,985,104"/>
-<area shape="poly" title=" " alt="" coords="753,33,871,76,869,81,751,38"/>
-<area shape="rect" href="SDL3pp__timer_8h.html" title=" " alt="" coords="1227,225,1405,251"/>
-<area shape="poly" title=" " alt="" coords="809,21,909,27,1018,38,1116,54,1156,64,1185,76,1231,110,1268,152,1295,193,1313,224,1308,226,1291,196,1263,155,1227,114,1183,81,1154,69,1115,59,1017,43,909,32,808,26"/>
-<area shape="rect" href="SDL3pp__version_8h.html" title=" " alt="" coords="1111,299,1302,324"/>
-<area shape="poly" title=" " alt="" coords="809,22,888,29,971,39,1044,55,1072,65,1094,76,1121,101,1144,130,1162,162,1177,195,1198,255,1207,298,1202,299,1193,257,1172,197,1158,164,1139,133,1117,105,1090,81,1070,70,1042,60,970,45,888,34,808,27"/>
-<area shape="poly" title=" " alt="" coords="509,331,650,443,646,447,505,335"/>
-<area shape="poly" title=" " alt="" coords="834,404,699,448,697,443,832,399"/>
-<area shape="poly" title=" " alt="" coords="141,188,170,233,213,290,269,348,300,373,333,395,399,423,468,441,536,451,595,455,594,460,535,456,467,446,397,428,331,400,297,378,265,352,209,294,166,236,136,191"/>
-<area shape="poly" title=" " alt="" coords="520,108,460,124,407,149,385,166,368,186,357,210,353,237,353,312,360,348,378,377,405,400,439,418,478,432,518,442,595,452,594,457,517,447,476,437,437,423,402,405,374,381,355,350,348,313,348,236,352,208,364,183,381,162,404,145,459,119,518,103"/>
-<area shape="poly" title=" " alt="" coords="646,116,657,146,674,176,710,215,751,249,823,296,820,301,748,253,706,219,670,179,652,148,641,118"/>
-<area shape="poly" title=" " alt="" coords="674,108,758,149,755,154,671,112"/>
-<area shape="poly" title=" " alt="" coords="615,115,579,154,557,192,543,226,538,224,552,190,575,150,611,111"/>
-<area shape="poly" title=" " alt="" coords="819,335,679,447,675,443,816,331"/>
-<area shape="poly" title=" " alt="" coords="858,335,877,371,873,373,853,338"/>
-<area shape="poly" title=" " alt="" coords="773,191,670,446,665,444,768,189"/>
-<area shape="poly" title=" " alt="" coords="819,181,853,200,889,226,923,259,949,298,952,309,951,321,940,342,922,360,903,374,900,370,919,356,936,339,946,319,947,310,944,300,919,262,886,230,850,205,817,186"/>
-<area shape="poly" title=" " alt="" coords="793,189,840,297,835,300,788,191"/>
-<area shape="poly" title=" " alt="" coords="729,184,576,228,575,223,727,179"/>
-<area shape="poly" title=" " alt="" coords="559,259,589,297,633,380,661,444,656,446,629,382,584,300,554,262"/>
-<area shape="poly" title=" " alt="" coords="521,263,492,300,488,297,517,260"/>
-<area shape="poly" title=" " alt="" coords="577,254,740,322,855,370,853,374,738,326,575,258"/>
-<area shape="poly" title=" " alt="" coords="599,251,794,296,792,301,598,256"/>
-<area shape="poly" title=" " alt="" coords="921,113,960,168,980,204,997,243,1010,284,1014,325,1007,364,987,399,970,413,945,424,879,441,802,451,731,457,731,451,802,446,878,436,943,419,967,408,983,396,1002,362,1008,324,1004,285,992,245,975,206,955,171,917,116"/>
-<area shape="poly" title=" " alt="" coords="901,118,889,178,868,247,850,299,845,298,863,246,884,177,895,117"/>
-<area shape="poly" title=" " alt="" coords="871,113,801,154,799,149,868,109"/>
-<area shape="poly" title=" " alt="" coords="823,110,749,128,673,154,604,192,553,227,550,223,602,187,671,150,747,123,822,104"/>
-<area shape="poly" title=" " alt="" coords="1325,264,1327,295,1324,311,1317,326,1300,343,1277,358,1217,385,1141,407,1055,424,877,446,731,456,731,451,877,441,1054,418,1139,401,1215,380,1275,354,1297,339,1312,322,1319,309,1322,294,1320,264"/>
-<area shape="poly" title=" " alt="" coords="1179,334,1117,368,1042,400,960,422,876,438,731,455,731,450,875,433,959,417,1040,395,1115,363,1176,329"/>
-<area shape="poly" title=" " alt="" coords="1142,330,935,374,933,369,1141,324"/>
+<area shape="rect" title=" " alt="" coords="585,5,759,31"/>
+<area shape="rect" href="SDL3pp_8h.html" title=" " alt="" coords="476,445,612,471"/>
+<area shape="poly" title=" " alt="" coords="572,23,405,31,311,40,219,53,136,72,69,96,43,110,24,126,12,144,8,164,8,312,11,329,22,344,38,358,60,371,117,394,187,412,264,427,341,437,476,450,476,455,341,443,263,432,186,418,115,399,57,376,35,363,18,348,7,331,3,313,3,163,7,142,20,123,40,106,67,91,135,67,218,48,310,35,404,26,571,18"/>
+<area shape="rect" href="SDL3pp__events_8h.html" title=" " alt="" coords="269,299,456,324"/>
+<area shape="poly" title=" " alt="" coords="573,35,518,52,492,65,468,81,443,105,422,134,405,165,392,197,375,257,367,299,361,298,369,256,387,195,401,163,418,131,439,102,465,77,489,60,516,47,571,30"/>
+<area shape="rect" href="SDL3pp__image_8h.html" title=" " alt="" coords="721,372,905,397"/>
+<area shape="poly" title=" " alt="" coords="772,22,837,29,901,39,954,55,975,65,989,77,1002,97,1009,118,1011,140,1008,162,991,206,963,249,928,289,892,325,831,374,828,370,888,321,924,286,959,246,987,204,1003,161,1006,140,1004,119,997,99,985,80,972,70,952,60,899,45,836,34,772,27"/>
+<area shape="rect" href="SDL3pp__init_8h.html" title=" " alt="" coords="58,152,222,177"/>
+<area shape="poly" title=" " alt="" coords="572,23,501,28,421,38,338,55,258,81,227,97,197,117,154,154,150,150,194,113,224,93,256,76,337,50,420,33,500,23,571,18"/>
+<area shape="rect" href="SDL3pp__misc_8h.html" title=" " alt="" coords="94,225,269,251"/>
+<area shape="poly" title=" " alt="" coords="572,24,517,30,457,40,397,57,340,81,306,107,264,148,193,227,189,223,260,145,303,103,337,76,395,52,456,35,516,25,571,19"/>
+<area shape="rect" href="SDL3pp__properties_8h.html" title=" " alt="" coords="497,79,706,104"/>
+<area shape="poly" title=" " alt="" coords="653,43,615,80,611,77,649,39"/>
+<area shape="rect" href="SDL3pp__render_8h.html" title=" " alt="" coords="632,299,816,324"/>
+<area shape="poly" title=" " alt="" coords="773,24,830,31,886,42,933,57,951,66,963,77,975,95,980,113,980,131,974,149,952,182,917,214,875,242,831,266,754,301,752,296,828,261,872,237,914,209,948,179,969,147,974,130,975,114,970,97,959,80,948,71,931,62,885,47,829,37,772,29"/>
+<area shape="rect" href="SDL3pp__surface_8h.html" title=" " alt="" coords="657,152,847,177"/>
+<area shape="poly" title=" " alt="" coords="693,40,720,77,739,117,751,151,746,153,734,119,715,80,689,43"/>
+<area shape="rect" href="SDL3pp__video_8h.html" title=" " alt="" coords="395,225,573,251"/>
+<area shape="poly" title=" " alt="" coords="573,30,524,48,503,62,486,80,476,98,471,117,469,158,474,196,482,224,477,226,469,197,463,158,466,116,472,96,482,77,500,58,522,43,571,25"/>
+<area shape="rect" href="SDL3pp__rect_8h.html" title=" " alt="" coords="781,79,949,104"/>
+<area shape="poly" title=" " alt="" coords="717,33,835,76,833,81,715,38"/>
+<area shape="rect" href="SDL3pp__timer_8h.html" title=" " alt="" coords="1109,372,1286,397"/>
+<area shape="poly" title=" " alt="" coords="773,23,910,36,985,47,1057,62,1122,80,1175,102,1195,115,1211,130,1221,146,1224,163,1224,239,1216,316,1203,372,1198,371,1211,315,1219,239,1219,164,1216,148,1206,133,1192,120,1172,107,1120,85,1056,67,984,53,909,42,772,28"/>
+<area shape="rect" href="SDL3pp__version_8h.html" title=" " alt="" coords="993,299,1183,324"/>
+<area shape="poly" title=" " alt="" coords="773,19,854,24,938,35,1010,51,1038,63,1058,77,1078,103,1091,133,1098,165,1102,197,1100,257,1093,299,1088,298,1094,257,1096,198,1093,166,1086,135,1073,106,1054,81,1036,68,1009,56,937,40,854,30,773,24"/>
+<area shape="poly" title=" " alt="" coords="390,331,531,443,528,447,387,335"/>
+<area shape="poly" title=" " alt="" coords="758,403,588,448,587,443,756,398"/>
+<area shape="poly" title=" " alt="" coords="114,188,97,205,84,226,81,238,84,250,102,299,122,335,150,365,192,395,243,414,318,429,476,449,475,454,317,435,242,419,189,400,146,369,117,339,97,301,79,251,76,238,79,224,93,202,111,184"/>
+<area shape="poly" title=" " alt="" coords="181,264,181,295,184,330,195,366,215,395,233,407,258,418,327,434,404,444,476,451,476,456,403,450,326,439,257,423,230,412,211,399,190,368,179,331,175,295,176,264"/>
+<area shape="poly" title=" " alt="" coords="544,110,474,135,394,174,355,199,318,229,286,262,260,300,253,316,251,330,252,344,258,356,279,379,311,399,350,415,393,428,476,445,475,450,391,433,348,420,308,403,276,383,253,359,247,345,245,330,248,314,255,297,282,259,315,225,352,195,392,170,472,130,543,105"/>
+<area shape="poly" title=" " alt="" coords="615,115,646,176,719,297,714,300,642,179,610,118"/>
+<area shape="poly" title=" " alt="" coords="639,107,728,149,726,154,637,112"/>
+<area shape="poly" title=" " alt="" coords="584,116,551,154,495,227,491,223,547,150,580,113"/>
+<area shape="poly" title=" " alt="" coords="700,335,560,447,557,443,697,331"/>
+<area shape="poly" title=" " alt="" coords="751,330,800,370,797,374,747,335"/>
+<area shape="poly" title=" " alt="" coords="729,188,677,237,622,300,597,340,577,382,550,446,546,444,572,380,593,338,618,297,673,233,726,184"/>
+<area shape="poly" title=" " alt="" coords="772,187,804,236,819,266,831,298,833,319,831,339,821,372,816,371,826,338,828,319,825,299,814,268,799,238,767,190"/>
+<area shape="poly" title=" " alt="" coords="750,191,729,299,724,298,745,190"/>
+<area shape="poly" title=" " alt="" coords="696,183,528,228,527,223,695,178"/>
+<area shape="poly" title=" " alt="" coords="493,264,543,444,538,446,488,265"/>
+<area shape="poly" title=" " alt="" coords="454,260,384,301,381,296,451,255"/>
+<area shape="poly" title=" " alt="" coords="512,257,562,289,621,322,696,350,765,369,763,375,694,355,619,326,559,294,509,261"/>
+<area shape="poly" title=" " alt="" coords="537,252,686,296,684,301,535,257"/>
+<area shape="poly" title=" " alt="" coords="882,114,912,170,928,206,940,246,948,286,949,326,940,365,919,399,898,415,868,428,787,445,696,455,612,459,612,453,695,449,786,440,866,423,896,410,915,396,935,363,943,326,943,287,935,247,923,208,908,173,878,117"/>
+<area shape="poly" title=" " alt="" coords="871,118,869,148,861,178,836,218,804,253,744,300,741,296,800,249,832,215,856,176,864,147,865,118"/>
+<area shape="poly" title=" " alt="" coords="837,114,772,154,769,150,834,109"/>
+<area shape="poly" title=" " alt="" coords="797,110,723,129,645,154,565,192,504,227,501,223,563,187,643,150,721,123,795,104"/>
+<area shape="poly" title=" " alt="" coords="1095,400,612,452,612,447,1095,394"/>
+<area shape="poly" title=" " alt="" coords="1068,336,1027,370,974,400,879,430,781,448,688,457,612,460,612,455,688,452,780,443,878,425,972,395,1024,365,1065,332"/>
+<area shape="poly" title=" " alt="" coords="1031,330,858,374,857,369,1030,325"/>
 </map>
 </div>
 </div>
@@ -158,6 +175,16 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:gaf93aa5024945f514fc6d405bec4295bc" id="r_gaf93aa5024945f514fc6d405bec4295bc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SDL::SetError</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> message)</td></tr>
+<tr class="memdesc:gaf93aa5024945f514fc6d405bec4295bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> error message for the current thread.  <br /></td></tr>
+<tr class="separator:gaf93aa5024945f514fc6d405bec4295bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf25860d775629ffbdc0fa04bf1e4b7ca" id="r_gaf25860d775629ffbdc0fa04bf1e4b7ca"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:gaf25860d775629ffbdc0fa04bf1e4b7ca"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#gaf25860d775629ffbdc0fa04bf1e4b7ca">SDL::SetError</a> (std::string_view fmt, ARGS... args)</td></tr>
+<tr class="memdesc:gaf25860d775629ffbdc0fa04bf1e4b7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> error message for the current thread.  <br /></td></tr>
+<tr class="separator:gaf25860d775629ffbdc0fa04bf1e4b7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6055e5dd4150f7162eecc3b1113eb578" id="r_ga6055e5dd4150f7162eecc3b1113eb578"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#ga6055e5dd4150f7162eecc3b1113eb578">SDL::OutOfMemory</a> ()</td></tr>
+<tr class="memdesc:ga6055e5dd4150f7162eecc3b1113eb578"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an error indicating that memory allocation failed.  <br /></td></tr>
+<tr class="separator:ga6055e5dd4150f7162eecc3b1113eb578"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6daa473f21fd59c14bce134abce9bd04" id="r_ga6daa473f21fd59c14bce134abce9bd04"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04">SDL::GetError</a> ()</td></tr>
 <tr class="memdesc:ga6daa473f21fd59c14bce134abce9bd04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve a message about the last error that occurred on the current thread.  <br /></td></tr>
 <tr class="separator:ga6daa473f21fd59c14bce134abce9bd04"><td class="memSeparator" colspan="2">&#160;</td></tr>

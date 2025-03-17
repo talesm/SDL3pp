@@ -1,7 +1,11 @@
 #ifndef SDL3PP_ERROR_H_
 #define SDL3PP_ERROR_H_
 
+#include <format>
+#include <string>
+#include <string_view>
 #include <SDL3/SDL_error.h>
+#include "SDL3pp_stringParam.h"
 
 namespace SDL {
 
@@ -32,6 +36,88 @@ namespace SDL {
  *
  * @{
  */
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @param message the error message
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa GetError
+ */
+inline bool SetError(StringParam message)
+{
+  return SDL_SetError("%s", static_cast<const char*>(message));
+}
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @tparam ARGS the formatting parameters
+ * @param fmt a
+ * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ * style message format string
+ * @param args additional parameters matching the `{}` tokens in the format
+ * string, if any.
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @ingroup FmtString
+ *
+ * @sa FmtString
+ * @sa ClearError
+ * @sa GetError
+ * @return false
+ */
+template<class... ARGS>
+inline bool SetError(std::string_view fmt, ARGS... args)
+{
+  return SetError(
+    std::vformat(fmt, std::make_format_args(std::forward<ARGS...>(args)...)));
+}
+
+/**
+ * Set an error indicating that memory allocation failed.
+ *
+ * This function does not do any memory allocation.
+ *
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OutOfMemory() { return SDL_OutOfMemory(); }
 
 /**
  * @brief Retrieve a message about the last error that occurred on the current

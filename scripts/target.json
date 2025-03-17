@@ -1910,6 +1910,178 @@
           ],
           "sourceName": "SDL_UCS4ToUTF8"
         },
+        "sscanf": {
+          "doc": "This works exactly like sscanf() but doesn't require access to a C runtime.\n\nScan a string, matching a format string, converting each '%' item and\nstoring it to pointers provided through variable arguments.\n\n@param text the string to scan. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of pointers to values to be filled in with scanned items.\n@returns the number of items that matched the format string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "sscanf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "StringParam"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_SCANF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_sscanf"
+        },
+        "vsscanf": {
+          "doc": "This works exactly like vsscanf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_sscanf(), except it takes a `va_list` instead\nof using `...` variable arguments.\n\n@param text the string to scan. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ap a `va_list` of pointers to values to be filled in with scanned\n          items.\n@returns the number of items that matched the format string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "vsscanf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "StringParam"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_SCANF_FORMAT_STRING const char *"
+            },
+            {
+              "name": "ap",
+              "type": "va_list"
+            }
+          ],
+          "sourceName": "SDL_vsscanf"
+        },
+        "snprintf": {
+          "doc": "This works exactly like snprintf() but doesn't require access to a C\nruntime.\n\nFormat a string of up to `maxlen`-1 bytes, converting each '%' item with\nvalues provided through variable arguments.\n\nWhile some C runtimes differ on how to deal with too-large strings, this\nfunction null-terminates the output, by treating the null-terminator as\npart of the `maxlen` count. Note that if `maxlen` is zero, however, no\nbytes will be written at all.\n\nThis function returns the number of _bytes_ (not _characters_) that should\nbe written, excluding the null-terminator character. If this returns a\nnumber >= `maxlen`, it means the output string was truncated. A negative\nreturn value means an error occurred.\n\nReferencing the output string's pointer with a format item is undefined\nbehavior.\n\n@param text the buffer to write the string into. Must not be NULL.\n@param maxlen the maximum bytes to write, including the null-terminator.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of values to be used with the format string.\n@returns the number of bytes that should be written, not counting the\n         null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "snprintf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "char *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_snprintf"
+        },
+        "swprintf": {
+          "doc": "This works exactly like swprintf() but doesn't require access to a C\nruntime.\n\nFormat a wide string of up to `maxlen`-1 wchar_t values, converting each\n'%' item with values provided through variable arguments.\n\nWhile some C runtimes differ on how to deal with too-large strings, this\nfunction null-terminates the output, by treating the null-terminator as\npart of the `maxlen` count. Note that if `maxlen` is zero, however, no wide\ncharacters will be written at all.\n\nThis function returns the number of _wide characters_ (not _codepoints_)\nthat should be written, excluding the null-terminator character. If this\nreturns a number >= `maxlen`, it means the output string was truncated. A\nnegative return value means an error occurred.\n\nReferencing the output string's pointer with a format item is undefined\nbehavior.\n\n@param text the buffer to write the wide string into. Must not be NULL.\n@param maxlen the maximum wchar_t values to write, including the\n              null-terminator.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of values to be used with the format string.\n@returns the number of wide characters that should be written, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "swprintf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const wchar_t *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_swprintf"
+        },
+        "vsnprintf": {
+          "doc": "This works exactly like vsnprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_snprintf(), except it takes a `va_list`\ninstead of using `...` variable arguments.\n\n@param text the buffer to write the string into. Must not be NULL.\n@param maxlen the maximum bytes to write, including the null-terminator.\n@param fmt a printf-style format string. Must not be NULL.\n@param ap a `va_list` values to be used with the format string.\n@returns the number of bytes that should be written, not counting the\n         null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "vsnprintf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "char *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            {
+              "name": "ap",
+              "type": "va_list"
+            }
+          ],
+          "sourceName": "SDL_vsnprintf"
+        },
+        "vswprintf": {
+          "doc": "This works exactly like vswprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_swprintf(), except it takes a `va_list`\ninstead of using `...` variable arguments.\n\n@param text the buffer to write the string into. Must not be NULL.\n@param maxlen the maximum wide characters to write, including the\n              null-terminator.\n@param fmt a printf-style format wide string. Must not be NULL.\n@param ap a `va_list` values to be used with the format string.\n@returns the number of wide characters that should be written, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "vswprintf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "text",
+              "type": "wchar_t *"
+            },
+            {
+              "name": "maxlen",
+              "type": "size_t"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const wchar_t *"
+            },
+            {
+              "name": "ap",
+              "type": "va_list"
+            }
+          ],
+          "sourceName": "SDL_vswprintf"
+        },
+        "asprintf": {
+          "doc": "This works exactly like asprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_snprintf(), except it allocates a buffer large\nenough to hold the output string on behalf of the caller.\n\nOn success, this function returns the number of bytes (not characters)\ncomprising the output string, not counting the null-terminator character,\nand sets `*strp` to the newly-allocated string.\n\nOn error, this function returns a negative number, and the value of `*strp`\nis undefined.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param strp on output, is set to the new string. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of values to be used with the format string.\n@returns the number of bytes in the newly-allocated string, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "asprintf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "strp",
+              "type": "char **"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            "..."
+          ],
+          "sourceName": "SDL_asprintf"
+        },
+        "vasprintf": {
+          "doc": "This works exactly like vasprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_asprintf(), except it takes a `va_list`\ninstead of using `...` variable arguments.\n\n@param strp on output, is set to the new string. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ap a `va_list` values to be used with the format string.\n@returns the number of bytes in the newly-allocated string, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "vasprintf",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "strp",
+              "type": "char **"
+            },
+            {
+              "name": "fmt",
+              "type": "SDL_PRINTF_FORMAT_STRING const char *"
+            },
+            {
+              "name": "ap",
+              "type": "va_list"
+            }
+          ],
+          "sourceName": "SDL_vasprintf"
+        },
         "srand": {
           "doc": "Seeds the pseudo-random number generator.\n\nReusing the seed number will cause SDL_rand() to repeat the same stream of\n'random' numbers.\n\n@param seed the value to use as a random number seed, or 0 to use\n            SDL_GetPerformanceCounter().\n\n@threadsafety This should be called on the same thread that calls\n              SDL_rand()\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_rand\n@sa SDL_rand_bits\n@sa SDL_randf",
           "name": "srand",
@@ -1952,48 +2124,73 @@
           "parameters": [],
           "sourceName": "SDL_rand_bits"
         },
-        "rand_r": {
-          "doc": "Generate a pseudo-random number less than n for positive n\n\nThe method used is faster and of better quality than `rand() % n`. Odds are\nroughly 99.9% even for n = 1 million. Evenness is better for smaller n, and\nmuch worse as n gets bigger.\n\nExample: to simulate a d6 use `SDL_rand_r(state, 6) + 1` The +1 converts\n0..5 to 1..6\n\nIf you want to generate a pseudo-random number in the full range of Sint32,\nyou should use: (Sint32)SDL_rand_bits_r(state)\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             NULL.\n@param n the number of possible outcomes. n must be positive.\n@returns a random value in the range of [0 .. n-1].\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_rand\n@sa SDL_rand_bits_r\n@sa SDL_randf_r",
-          "name": "rand_r",
-          "kind": "function",
-          "type": "Sint32",
-          "parameters": [
-            {
-              "name": "state",
-              "type": "Uint64 *"
+        "Random": {
+          "kind": "struct",
+          "name": "Random",
+          "entries": {
+            "m_state": {
+              "kind": "var",
+              "type": "Uint64",
+              "default": "0",
+              "name": "m_state",
+              "doc": ""
             },
-            {
-              "name": "n",
-              "type": "Sint32"
+            "Random": {
+              "kind": "function",
+              "constexpr": true,
+              "type": "",
+              "parameters": [
+                {
+                  "type": "Uint64",
+                  "name": "state",
+                  "default": "0"
+                }
+              ],
+              "name": "Random",
+              "doc": ""
+            },
+            "operator Uint64": {
+              "kind": "function",
+              "constexpr": true,
+              "type": "",
+              "parameters": [],
+              "name": "operator Uint64",
+              "doc": ""
+            },
+            "rand": {
+              "doc": "Generate a pseudo-random number less than n for positive n\n\nThe method used is faster and of better quality than `rand() % n`. Odds are\nroughly 99.9% even for n = 1 million. Evenness is better for smaller n, and\nmuch worse as n gets bigger.\n\nExample: to simulate a d6 use `SDL_rand_r(state, 6) + 1` The +1 converts\n0..5 to 1..6\n\nIf you want to generate a pseudo-random number in the full range of Sint32,\nyou should use: (Sint32)SDL_rand_bits_r(state)\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             NULL.\n@param n the number of possible outcomes. n must be positive.\n@returns a random value in the range of [0 .. n-1].\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_rand\n@sa SDL_rand_bits_r\n@sa SDL_randf_r",
+              "name": "rand",
+              "kind": "function",
+              "type": "Sint32",
+              "parameters": [
+                {
+                  "name": "n",
+                  "type": "Sint32"
+                }
+              ],
+              "sourceName": "SDL_rand_r",
+              "static": false
+            },
+            "randf": {
+              "doc": "Generate a uniform pseudo-random floating point number less than 1.0\n\nIf you want reproducible output, be sure to initialize with SDL_srand()\nfirst.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             NULL.\n@returns a random value in the range of [0.0, 1.0).\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_rand_bits_r\n@sa SDL_rand_r\n@sa SDL_randf",
+              "name": "randf",
+              "kind": "function",
+              "type": "float",
+              "parameters": [],
+              "sourceName": "SDL_randf_r",
+              "static": false
+            },
+            "rand_bits": {
+              "doc": "Generate 32 pseudo-random bits.\n\nYou likely want to use SDL_rand_r() to get a psuedo-random number instead.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             NULL.\n@returns a random value in the range of [0-SDL_MAX_UINT32].\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_rand_r\n@sa SDL_randf_r",
+              "name": "rand_bits",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [],
+              "sourceName": "SDL_rand_bits_r",
+              "static": false
             }
-          ],
-          "sourceName": "SDL_rand_r"
-        },
-        "randf_r": {
-          "doc": "Generate a uniform pseudo-random floating point number less than 1.0\n\nIf you want reproducible output, be sure to initialize with SDL_srand()\nfirst.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             NULL.\n@returns a random value in the range of [0.0, 1.0).\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_rand_bits_r\n@sa SDL_rand_r\n@sa SDL_randf",
-          "name": "randf_r",
-          "kind": "function",
-          "type": "float",
-          "parameters": [
-            {
-              "name": "state",
-              "type": "Uint64 *"
-            }
-          ],
-          "sourceName": "SDL_randf_r"
-        },
-        "rand_bits_r": {
-          "doc": "Generate 32 pseudo-random bits.\n\nYou likely want to use SDL_rand_r() to get a psuedo-random number instead.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param state a pointer to the current random number state, this may not be\n             NULL.\n@returns a random value in the range of [0-SDL_MAX_UINT32].\n\n@threadsafety This function is thread-safe, as long as the state pointer\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_rand_r\n@sa SDL_randf_r",
-          "name": "rand_bits_r",
-          "kind": "function",
-          "type": "Uint32",
-          "parameters": [
-            {
-              "name": "state",
-              "type": "Uint64 *"
-            }
-          ],
-          "sourceName": "SDL_rand_bits_r"
+          },
+          "doc": ""
         },
         "acos": {
           "doc": "Compute the arc cosine of `x`.\n\nThe definition of `y = acos(x)` is `x = cos(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `0 <= y <= Pi`\n\nThis function operates on double-precision floating point values, use\nSDL_acosf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc cosine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_acosf\n@sa SDL_asin\n@sa SDL_cos",
@@ -2814,6 +3011,219 @@
         }
       }
     },
+    "SDL3pp_error.h": {
+      "name": "SDL3pp_error.h",
+      "doc": "@defgroup CategoryError Category Error\n\nSimple error message routines for SDL.\n\nMost apps will interface with these APIs in exactly one function: when\nalmost any SDL function call reports failure, you can get a human-readable\nstring of the problem from SDL_GetError().\n\nThese strings are maintained per-thread, and apps are welcome to set their\nown errors, which is popular when building libraries on top of SDL for\nother apps to consume. These strings are set by calling SDL_SetError().\n\nA common usage pattern is to have a function that returns true for success\nand false for failure, and do this when something fails:\n\n```c\nif (something_went_wrong) {\n   return SDL_SetError(\"The thing broke in this specific way: %d\", errcode);\n}\n```\n\nIt's also common to just return `false` in this case if the failing thing\nis known to call SDL_SetError(), so errors simply propagate through.",
+      "entries": {
+        "SetError": [
+          {
+            "doc": "Set the SDL error message for the current thread.\n\nCalling this function will replace any previous error message that was set.\n\nThis function always returns false, since SDL frequently uses false to\nsignify a failing result, leading to this idiom:\n\n```c\nif (error_code) {\n    return SDL_SetError(\"This operation has failed: %d\", error_code);\n}\n```\n\n@param fmt a printf()-style message format string.\n@param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ClearError\n@sa SDL_GetError\n@sa SDL_SetErrorV",
+            "name": "SetError",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "message",
+                "type": "StringParam"
+              }
+            ],
+            "sourceName": "SDL_SetError"
+          },
+          {
+            "kind": "function",
+            "name": "SetError",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class...",
+                "name": "ARGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "std::string_view",
+                "name": "fmt"
+              },
+              {
+                "type": "ARGS...",
+                "name": "args"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "OutOfMemory": {
+          "doc": "Set an error indicating that memory allocation failed.\n\nThis function does not do any memory allocation.\n\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "OutOfMemory",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_OutOfMemory"
+        },
+        "GetError": {
+          "doc": "Retrieve a message about the last error that occurred on the current\nthread.\n\nIt is possible for multiple errors to occur before calling SDL_GetError().\nOnly the last error is returned.\n\nThe message is only applicable when an SDL function has signaled an error.\nYou must check the return values of SDL function calls to determine when to\nappropriately call SDL_GetError(). You should *not* use the results of\nSDL_GetError() to decide if an error has occurred! Sometimes SDL will set\nan error string even when reporting success.\n\nSDL will *not* clear the error string for successful API calls. You *must*\ncheck return values for failure cases before you can assume the error\nstring applies.\n\nError strings are set per-thread, so an error set in a different thread\nwill not interfere with the current thread's operation.\n\nThe returned value is a thread-local string which will remain valid until\nthe current thread's error string is changed. The caller should make a copy\nif the value is needed after the next SDL API call.\n\n@returns a message with information about the specific error that occurred,\n         or an empty string if there hasn't been an error message set since\n         the last call to SDL_ClearError().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ClearError\n@sa SDL_SetError",
+          "name": "GetError",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "sourceName": "SDL_GetError"
+        },
+        "ClearError": {
+          "doc": "Clear any previous error message for this thread.\n\n@returns true.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetError\n@sa SDL_SetError",
+          "name": "ClearError",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_ClearError"
+        }
+      }
+    },
+    "SDL3pp_assert.h": {
+      "name": "SDL3pp_assert.h",
+      "doc": "@defgroup CategoryAssert Category Assert\n\nA helpful assertion macro!\n\nSDL assertions operate like your usual `assert` macro, but with some added\nfeatures:\n\n- It uses a trick with the `sizeof` operator, so disabled assertions\n  vaporize out of the compiled code, but variables only referenced in the\n  assertion won't trigger compiler warnings about being unused.\n- It is safe to use with a dangling-else: `if (x) SDL_assert(y); else\n  do_something();`\n- It works the same everywhere, instead of counting on various platforms'\n  compiler and C runtime to behave.\n- It provides multiple levels of assertion (SDL_assert, SDL_assert_release,\n  SDL_assert_paranoid) instead of a single all-or-nothing option.\n- It offers a variety of responses when an assertion fails (retry, trigger\n  the debugger, abort the program, ignore the failure once, ignore it for\n  the rest of the program's run).\n- It tries to show the user a dialog by default, if possible, but the app\n  can provide a callback to handle assertion failures however they like.\n- It lets failed assertions be retried. Perhaps you had a network failure\n  and just want to retry the test after plugging your network cable back\n  in? You can.\n- It lets the user ignore an assertion failure, if there's a harmless\n  problem that one can continue past.\n- It lets the user mark an assertion as ignored for the rest of the\n  program's run; if there's a harmless problem that keeps popping up.\n- It provides statistics and data on all failed assertions to the app.\n- It allows the default assertion handler to be controlled with environment\n  variables, in case an automated script needs to control it.\n- It can be used as an aid to Clang's static analysis; it will treat SDL\n  assertions as universally true (under the assumption that you are serious\n  about the asserted claims and that your debug builds will detect when\n  these claims were wrong). This can help the analyzer avoid false\n  positives.\n\nTo use it: compile a debug build and just sprinkle around tests to check\nyour code!",
+      "entries": {
+        "AssertState": {
+          "doc": "Possible outcomes from a triggered assertion.\n\nWhen an enabled assertion triggers, it may call the assertion handler\n(possibly one provided by the app via SDL_SetAssertionHandler), which will\nreturn one of these values, possibly after asking the user.\n\nThen SDL will respond based on this outcome (loop around to retry the\ncondition, try to break in a debugger, kill the program, or ignore the\nproblem).\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "AssertState",
+          "kind": "alias",
+          "sourceName": "SDL_AssertState",
+          "type": "SDL_AssertState"
+        },
+        "ASSERTION_RETRY": {
+          "doc": "Retry the assert immediately.",
+          "name": "ASSERTION_RETRY",
+          "kind": "var",
+          "type": "AssertState",
+          "sourceName": "SDL_ASSERTION_RETRY",
+          "constexpr": true
+        },
+        "ASSERTION_BREAK": {
+          "doc": "Make the debugger trigger a breakpoint.",
+          "name": "ASSERTION_BREAK",
+          "kind": "var",
+          "type": "AssertState",
+          "sourceName": "SDL_ASSERTION_BREAK",
+          "constexpr": true
+        },
+        "ASSERTION_ABORT": {
+          "doc": "Terminate the program.",
+          "name": "ASSERTION_ABORT",
+          "kind": "var",
+          "type": "AssertState",
+          "sourceName": "SDL_ASSERTION_ABORT",
+          "constexpr": true
+        },
+        "ASSERTION_IGNORE": {
+          "doc": "Ignore the assert.",
+          "name": "ASSERTION_IGNORE",
+          "kind": "var",
+          "type": "AssertState",
+          "sourceName": "SDL_ASSERTION_IGNORE",
+          "constexpr": true
+        },
+        "ASSERTION_ALWAYS_IGNORE": {
+          "doc": "Ignore the assert from now on.",
+          "name": "ASSERTION_ALWAYS_IGNORE",
+          "kind": "var",
+          "type": "AssertState",
+          "sourceName": "SDL_ASSERTION_ALWAYS_IGNORE",
+          "constexpr": true
+        },
+        "AssertData": {
+          "doc": "Information about an assertion failure.\n\nThis structure is filled in with information about a triggered assertion,\nused by the assertion handler, then added to the assertion report. This is\nreturned as a linked list from SDL_GetAssertionReport().\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "AssertData",
+          "kind": "alias",
+          "sourceName": "SDL_AssertData",
+          "type": "SDL_AssertData"
+        },
+        "ReportAssertion": {
+          "doc": "Never call this directly.\n\nUse the SDL_assert macros instead.\n\n@param data assert data structure.\n@param func function name.\n@param file file name.\n@param line line number.\n@returns assert state.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "ReportAssertion",
+          "kind": "function",
+          "type": "AssertState",
+          "parameters": [
+            {
+              "name": "data",
+              "type": "AssertData *"
+            },
+            {
+              "name": "func",
+              "type": "StringParam"
+            },
+            {
+              "name": "file",
+              "type": "StringParam"
+            },
+            {
+              "name": "line",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_ReportAssertion"
+        },
+        "AssertionHandler": {
+          "doc": "A callback that fires when an SDL assertion fails.\n\n@param data a pointer to the SDL_AssertData structure corresponding to the\n            current assertion.\n@param userdata what was passed as `userdata` to SDL_SetAssertionHandler().\n@returns an SDL_AssertState value indicating how to handle the failure.\n\n@threadsafety This callback may be called from any thread that triggers an\n              assert at any time.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "AssertionHandler",
+          "kind": "alias",
+          "type": "SDL_AssertionHandler",
+          "sourceName": "SDL_AssertionHandler"
+        },
+        "SetAssertionHandler": {
+          "doc": "Set an application-defined assertion handler.\n\nThis function allows an application to show its own assertion UI and/or\nforce the response to an assertion failure. If the application doesn't\nprovide this, SDL will try to do the right thing, popping up a\nsystem-specific GUI dialog, and probably minimizing any fullscreen windows.\n\nThis callback may fire from any thread, but it runs wrapped in a mutex, so\nit will only fire from one thread at a time.\n\nThis callback is NOT reset to SDL's internal handler upon SDL_Quit()!\n\n@param handler the SDL_AssertionHandler function to call when an assertion\n               fails or NULL for the default handler.\n@param userdata a pointer that is passed to `handler`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetAssertionHandler",
+          "name": "SetAssertionHandler",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "handler",
+              "type": "AssertionHandler"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_SetAssertionHandler"
+        },
+        "GetDefaultAssertionHandler": {
+          "doc": "Get the default assertion handler.\n\nThis returns the function pointer that is called by default when an\nassertion is triggered. This is an internal function provided by SDL, that\nis used for assertions when SDL_SetAssertionHandler() hasn't been used to\nprovide a different function.\n\n@returns the default SDL_AssertionHandler that is called when an assert\n         triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetAssertionHandler",
+          "name": "GetDefaultAssertionHandler",
+          "kind": "function",
+          "type": "AssertionHandler",
+          "parameters": [],
+          "sourceName": "SDL_GetDefaultAssertionHandler"
+        },
+        "GetAssertionHandler": {
+          "doc": "Get the current assertion handler.\n\nThis returns the function pointer that is called when an assertion is\ntriggered. This is either the value last passed to\nSDL_SetAssertionHandler(), or if no application-specified function is set,\nis equivalent to calling SDL_GetDefaultAssertionHandler().\n\nThe parameter `puserdata` is a pointer to a void*, which will store the\n\"userdata\" pointer that was passed to SDL_SetAssertionHandler(). This value\nwill always be NULL for the default handler. If you don't care about this\ndata, it is safe to pass a NULL pointer to this function to ignore it.\n\n@param puserdata pointer which is filled with the \"userdata\" pointer that\n                 was passed to SDL_SetAssertionHandler().\n@returns the SDL_AssertionHandler that is called when an assert triggers.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAssertionHandler",
+          "name": "GetAssertionHandler",
+          "kind": "function",
+          "type": "AssertionHandler",
+          "parameters": [
+            {
+              "name": "puserdata",
+              "type": "void **"
+            }
+          ],
+          "sourceName": "SDL_GetAssertionHandler"
+        },
+        "GetAssertionReport": {
+          "doc": "Get a list of all assertion failures.\n\nThis function gets all assertions triggered since the last call to\nSDL_ResetAssertionReport(), or the start of the program.\n\nThe proper way to examine this data looks something like this:\n\n```c\nconst SDL_AssertData *item = SDL_GetAssertionReport();\nwhile (item) {\n   printf(\"'%s', %s (%s:%d), triggered %u times, always ignore: %s.\\@n\",\n          item->condition, item->function, item->filename,\n          item->linenum, item->trigger_count,\n          item->always_ignore ? \"yes\" : \"no\");\n   item = item->next;\n}\n```\n\n@returns a list of all failed assertions or NULL if the list is empty. This\n         memory should not be modified or freed by the application. This\n         pointer remains valid until the next call to SDL_Quit() or\n         SDL_ResetAssertionReport().\n\n@threadsafety This function is not thread safe. Other threads calling\n              SDL_ResetAssertionReport() simultaneously, may render the\n              returned pointer invalid.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ResetAssertionReport",
+          "name": "GetAssertionReport",
+          "kind": "function",
+          "type": "const AssertData *",
+          "parameters": [],
+          "sourceName": "SDL_GetAssertionReport"
+        },
+        "ResetAssertionReport": {
+          "doc": "Clear the list of all assertion failures.\n\nThis function will clear the list of all assertions triggered up to that\npoint. Immediately following this call, SDL_GetAssertionReport will return\nno items. In addition, any previously-triggered assertions will be reset to\na trigger_count of zero, and their always_ignore state will be false.\n\n@threadsafety This function is not thread safe. Other threads triggering an\n              assertion, or simultaneously calling this function may cause\n              memory leaks or crashes.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetAssertionReport",
+          "name": "ResetAssertionReport",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_ResetAssertionReport"
+        }
+      }
+    },
     "SDL3pp_misc.h": {
       "name": "SDL3pp_misc.h",
       "doc": "@defgroup CategoryMisc Category Misc\n\nSDL API functions that don't fit elsewhere.",
@@ -2830,6 +3240,67 @@
             }
           ],
           "sourceName": "SDL_OpenURL"
+        }
+      }
+    },
+    "SDL3pp_guid.h": {
+      "name": "SDL3pp_guid.h",
+      "doc": "@defgroup CategoryGUID Category GUID\n\nA GUID is a 128-bit value that represents something that is uniquely\nidentifiable by this value: \"globally unique.\"\n\nSDL provides functions to convert a GUID to/from a string.",
+      "entries": {
+        "GUID": {
+          "doc": "An SDL_GUID is a 128-bit identifier for an input device that identifies\nthat device across runs of SDL programs on the same platform.\n\nIf the device is detached and then re-attached to a different port, or if\nthe base system is rebooted, the device should still report the same GUID.\n\nGUIDs are as precise as possible but are not guaranteed to distinguish\nphysically distinct but equivalent devices. For example, two game\ncontrollers from the same vendor with the same product ID and revision may\nhave the same GUID.\n\nGUIDs may be platform-dependent (i.e., the same device may report different\nGUIDs on different operating systems).\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "GUID",
+          "kind": "struct",
+          "type": "SDL_GUID",
+          "sourceName": "SDL_GUID",
+          "entries": {
+            "GUID": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [],
+                "name": "GUID",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL_GUID",
+                    "name": "guid"
+                  }
+                ],
+                "name": "GUID",
+                "doc": ""
+              },
+              {
+                "doc": "Convert a GUID string into a SDL_GUID structure.\n\nPerforms no error checking. If this function is given a string containing\nan invalid GUID, the function will silently succeed, but the GUID generated\nwill not be useful.\n\n@param pchGUID string containing an ASCII representation of a GUID.\n@returns a SDL_GUID structure.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GUIDToString",
+                "name": "GUID",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "pchGUID",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "SDL_StringToGUID",
+                "static": false
+              }
+            ],
+            "ToString": {
+              "doc": "Get an ASCII string representation for a given SDL_GUID.\n\n@param guid the SDL_GUID you wish to convert to string.\n@param pszGUID buffer in which to write the ASCII string.\n@param cbGUID the size of pszGUID, should be at least 33 bytes.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_StringToGUID",
+              "name": "ToString",
+              "kind": "function",
+              "type": "std::string",
+              "parameters": [],
+              "sourceName": "SDL_GUIDToString",
+              "immutable": true
+            }
+          }
         }
       }
     },
@@ -2852,6 +3323,32 @@
           "type": "const char *",
           "parameters": [],
           "sourceName": "SDL_GetRevision"
+        }
+      }
+    },
+    "SDL3pp_locale.h": {
+      "name": "SDL3pp_locale.h",
+      "doc": "@defgroup CategoryLocale Category Locale\n\nSDL locale services.\n\nThis provides a way to get a list of preferred locales (language plus\ncountry) for the user. There is exactly one function:\nSDL_GetPreferredLocales(), which handles all the heavy lifting, and offers\ndocumentation on all the strange ways humans might have configured their\nlanguage settings.",
+      "entries": {
+        "Locale": {
+          "doc": "A struct to provide locale data.\n\nLocale data is split into a spoken language, like English, and an optional\ncountry, like Canada. The language will be in ISO-639 format (so English\nwould be \"en\"), and the country, if not NULL, will be an ISO-3166 country\ncode (so Canada would be \"CA\").\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPreferredLocales",
+          "name": "Locale",
+          "kind": "alias",
+          "sourceName": "SDL_Locale",
+          "type": "SDL_Locale"
+        },
+        "GetPreferredLocales": {
+          "doc": "Report the user's preferred locale.\n\nReturned language strings are in the format xx, where 'xx' is an ISO-639\nlanguage specifier (such as \"en\" for English, \"de\" for German, etc).\nCountry strings are in the format YY, where \"YY\" is an ISO-3166 country\ncode (such as \"US\" for the United States, \"CA\" for Canada, etc). Country\nmight be NULL if there's no specific guidance on them (so you might get {\n\"en\", \"US\" } for American English, but { \"en\", NULL } means \"English\nlanguage, generically\"). Language strings are never NULL, except to\nterminate the array.\n\nPlease note that not all of these strings are 2 characters; some are three\nor more.\n\nThe returned list of locales are in the order of the user's preference. For\nexample, a German citizen that is fluent in US English and knows enough\nJapanese to navigate around Tokyo might have a list like: { \"de\", \"en_US\",\n\"jp\", NULL }. Someone from England might prefer British English (where\n\"color\" is spelled \"colour\", etc), but will settle for anything like it: {\n\"en_GB\", \"en\", NULL }.\n\nThis function returns NULL on error, including when the platform does not\nsupply this information at all.\n\nThis might be a \"slow\" call that has to query the operating system. It's\nbest to ask for this once and save the results. However, this list can\nchange, usually because the user has changed a system preference outside of\nyour program; SDL will send an SDL_EVENT_LOCALE_CHANGED event in this case,\nif possible, and you can call this function again to get an updated copy of\npreferred locales.\n\n@param count a pointer filled in with the number of locales returned, may\n             be NULL.\n@returns a NULL terminated array of locale pointers, or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetPreferredLocales",
+          "kind": "function",
+          "type": "FreeWrapper<Locale *[]>",
+          "parameters": [
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "SDL_GetPreferredLocales"
         }
       }
     },
@@ -5523,6 +6020,181 @@
             }
           ],
           "sourceName": "SDL_ComposeCustomBlendMode"
+        }
+      }
+    },
+    "SDL3pp_hints.h": {
+      "name": "SDL3pp_hints.h",
+      "doc": "@defgroup CategoryHints Category Hints\n\nThis file contains functions to set and get configuration hints, as well as\nlisting each of them alphabetically.\n\nThe convention for naming hints is SDL_HINT_X, where \"SDL_X\" is the\nenvironment variable that can be used to override the default.\n\nIn general these hints are just that - they may or may not be supported or\napplicable on any given platform, but they provide a way for an application\nor user to give the library a hint as to how they would like the library to\nwork.",
+      "entries": {
+        "HintPriority": {
+          "doc": "An enumeration of hint priorities.\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "HintPriority",
+          "kind": "alias",
+          "sourceName": "SDL_HintPriority",
+          "type": "SDL_HintPriority"
+        },
+        "HINT_DEFAULT": {
+          "doc": "",
+          "name": "HINT_DEFAULT",
+          "kind": "var",
+          "type": "HintPriority",
+          "sourceName": "SDL_HINT_DEFAULT",
+          "constexpr": true
+        },
+        "HINT_NORMAL": {
+          "doc": "",
+          "name": "HINT_NORMAL",
+          "kind": "var",
+          "type": "HintPriority",
+          "sourceName": "SDL_HINT_NORMAL",
+          "constexpr": true
+        },
+        "HINT_OVERRIDE": {
+          "doc": "",
+          "name": "HINT_OVERRIDE",
+          "kind": "var",
+          "type": "HintPriority",
+          "sourceName": "SDL_HINT_OVERRIDE",
+          "constexpr": true
+        },
+        "SetHintWithPriority": {
+          "doc": "Set a hint with a specific priority.\n\nThe priority controls the behavior when setting a hint that already has a\nvalue. Hints will replace existing hints of their priority and lower.\nEnvironment variables are considered to have override priority.\n\n@param name the hint to set.\n@param value the value of the hint variable.\n@param priority the SDL_HintPriority level for the hint.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetHint\n@sa SDL_ResetHint\n@sa SDL_SetHint",
+          "name": "SetHintWithPriority",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "StringParam"
+            },
+            {
+              "name": "priority",
+              "type": "HintPriority"
+            }
+          ],
+          "sourceName": "SDL_SetHintWithPriority"
+        },
+        "SetHint": {
+          "doc": "Set a hint with normal priority.\n\nHints will not be set if there is an existing override hint or environment\nvariable that takes precedence. You can use SDL_SetHintWithPriority() to\nset the hint with override priority instead.\n\n@param name the hint to set.\n@param value the value of the hint variable.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetHint\n@sa SDL_ResetHint\n@sa SDL_SetHintWithPriority",
+          "name": "SetHint",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "value",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_SetHint"
+        },
+        "ResetHint": {
+          "doc": "Reset a hint to the default value.\n\nThis will reset a hint to the value of the environment variable, or NULL if\nthe environment isn't set. Callbacks will be called normally with this\nchange.\n\n@param name the hint to set.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetHint\n@sa SDL_ResetHints",
+          "name": "ResetHint",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_ResetHint"
+        },
+        "ResetHints": {
+          "doc": "Reset all hints to the default values.\n\nThis will reset all hints to the value of the associated environment\nvariable, or NULL if the environment isn't set. Callbacks will be called\nnormally with this change.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ResetHint",
+          "name": "ResetHints",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_ResetHints"
+        },
+        "GetHint": {
+          "doc": "Get the value of a hint.\n\n@param name the hint to query.\n@returns the string value of a hint or NULL if the hint isn't set.\n\n@threadsafety It is safe to call this function from any thread, however the\n              return value only remains valid until the hint is changed; if\n              another thread might do so, the app should supply locks\n              and/or make a copy of the string. Note that using a hint\n              callback instead is always thread-safe, as SDL holds a lock\n              on the thread subsystem during the callback.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetHint\n@sa SDL_SetHintWithPriority",
+          "name": "GetHint",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_GetHint"
+        },
+        "GetHintBoolean": {
+          "doc": "Get the boolean value of a hint variable.\n\n@param name the name of the hint to get the boolean value from.\n@param default_value the value to return if the hint does not exist.\n@returns the boolean value of a hint or the provided default value if the\n         hint does not exist.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetHint\n@sa SDL_SetHint",
+          "name": "GetHintBoolean",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "default_value",
+              "type": "bool"
+            }
+          ],
+          "sourceName": "SDL_GetHintBoolean"
+        },
+        "HintCallback": {
+          "doc": "A callback used to send notifications of hint value changes.\n\nThis is called an initial time during SDL_AddHintCallback with the hint's\ncurrent value, and then again each time the hint's value changes.\n\n@param userdata what was passed as `userdata` to SDL_AddHintCallback().\n@param name what was passed as `name` to SDL_AddHintCallback().\n@param oldValue the previous hint value.\n@param newValue the new value hint is to be set to.\n\n@threadsafety This callback is fired from whatever thread is setting a new\n              hint value. SDL holds a lock on the hint subsystem when\n              calling this callback.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_AddHintCallback",
+          "name": "HintCallback",
+          "kind": "alias",
+          "type": "SDL_HintCallback",
+          "sourceName": "SDL_HintCallback"
+        },
+        "AddHintCallback": {
+          "doc": "Add a function to watch a particular hint.\n\nThe callback function is called _during_ this function, to provide it an\ninitial value, and again each time the hint's value changes.\n\n@param name the hint to watch.\n@param callback An SDL_HintCallback function that will be called when the\n                hint value changes.\n@param userdata a pointer to pass to the callback function.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_RemoveHintCallback",
+          "name": "AddHintCallback",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "callback",
+              "type": "HintCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_AddHintCallback"
+        },
+        "RemoveHintCallback": {
+          "doc": "Remove a function watching a particular hint.\n\n@param name the hint being watched.\n@param callback an SDL_HintCallback function that will be called when the\n                hint value changes.\n@param userdata a pointer being passed to the callback function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddHintCallback",
+          "name": "RemoveHintCallback",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            },
+            {
+              "name": "callback",
+              "type": "HintCallback"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_RemoveHintCallback"
         }
       }
     },

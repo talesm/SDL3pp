@@ -93,6 +93,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ObjectDeleter_3_01SDL__iconv__data__t_01_4.html">SDL::ObjectDeleter&lt; SDL_iconv_data_t &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Random.html">SDL::Random</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A independent pseudo random state.  <a href="classSDL_1_1Random.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -405,6 +408,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ga032867626ec7d90baa207d817fdbddcf" id="r_ga032867626ec7d90baa207d817fdbddcf"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga032867626ec7d90baa207d817fdbddcf">SDL::UCS4ToUTF8</a> (Uint32 codepoint, char *dst)</td></tr>
 <tr class="memdesc:ga032867626ec7d90baa207d817fdbddcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a single Unicode codepoint to UTF-8.  <br /></td></tr>
 <tr class="separator:ga032867626ec7d90baa207d817fdbddcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga592054168270da087e8630cac0df2530" id="r_ga592054168270da087e8630cac0df2530"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga592054168270da087e8630cac0df2530">SDL::sscanf</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> text, SDL_SCANF_FORMAT_STRING const char *fmt,...)</td></tr>
+<tr class="memdesc:ga592054168270da087e8630cac0df2530"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#ga592054168270da087e8630cac0df2530" title="This works exactly like sscanf() but doesn&#39;t require access to a C runtime.">sscanf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:ga592054168270da087e8630cac0df2530"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac1c131187ea64c08ed8abb3d04551072" id="r_gac1c131187ea64c08ed8abb3d04551072"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gac1c131187ea64c08ed8abb3d04551072">SDL::vsscanf</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> text, SDL_SCANF_FORMAT_STRING const char *fmt, va_list ap)</td></tr>
+<tr class="memdesc:gac1c131187ea64c08ed8abb3d04551072"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#gac1c131187ea64c08ed8abb3d04551072" title="This works exactly like vsscanf() but doesn&#39;t require access to a C runtime.">vsscanf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:gac1c131187ea64c08ed8abb3d04551072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga57b48f04ae9e3949774b9f0c9dc0c151" id="r_ga57b48f04ae9e3949774b9f0c9dc0c151"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga57b48f04ae9e3949774b9f0c9dc0c151">SDL::snprintf</a> (char *text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const char *fmt,...)</td></tr>
+<tr class="memdesc:ga57b48f04ae9e3949774b9f0c9dc0c151"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#ga57b48f04ae9e3949774b9f0c9dc0c151" title="This works exactly like snprintf() but doesn&#39;t require access to a C runtime.">snprintf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:ga57b48f04ae9e3949774b9f0c9dc0c151"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga90fbec4327cabf79747426483a3f24cd" id="r_ga90fbec4327cabf79747426483a3f24cd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga90fbec4327cabf79747426483a3f24cd">SDL::swprintf</a> (wchar_t *text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const wchar_t *fmt,...)</td></tr>
+<tr class="memdesc:ga90fbec4327cabf79747426483a3f24cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#ga90fbec4327cabf79747426483a3f24cd" title="This works exactly like swprintf() but doesn&#39;t require access to a C runtime.">swprintf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:ga90fbec4327cabf79747426483a3f24cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4402ec18128560a4643446630b3a4633" id="r_ga4402ec18128560a4643446630b3a4633"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga4402ec18128560a4643446630b3a4633">SDL::vsnprintf</a> (char *text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap)</td></tr>
+<tr class="memdesc:ga4402ec18128560a4643446630b3a4633"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#ga4402ec18128560a4643446630b3a4633" title="This works exactly like vsnprintf() but doesn&#39;t require access to a C runtime.">vsnprintf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:ga4402ec18128560a4643446630b3a4633"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga83409fe8ca79edcf997ebfcda6226a5a" id="r_ga83409fe8ca79edcf997ebfcda6226a5a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga83409fe8ca79edcf997ebfcda6226a5a">SDL::vswprintf</a> (wchar_t *text, size_t maxlen, SDL_PRINTF_FORMAT_STRING const wchar_t *fmt, va_list ap)</td></tr>
+<tr class="memdesc:ga83409fe8ca79edcf997ebfcda6226a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#ga83409fe8ca79edcf997ebfcda6226a5a" title="This works exactly like vswprintf() but doesn&#39;t require access to a C runtime.">vswprintf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:ga83409fe8ca79edcf997ebfcda6226a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12e5aac7458286e05c61d71278f59215" id="r_ga12e5aac7458286e05c61d71278f59215"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga12e5aac7458286e05c61d71278f59215">SDL::asprintf</a> (char **strp, SDL_PRINTF_FORMAT_STRING const char *fmt,...)</td></tr>
+<tr class="memdesc:ga12e5aac7458286e05c61d71278f59215"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#ga12e5aac7458286e05c61d71278f59215" title="This works exactly like asprintf() but doesn&#39;t require access to a C runtime.">asprintf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:ga12e5aac7458286e05c61d71278f59215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabd658aed3baf56ca11c8148de5cd9480" id="r_gabd658aed3baf56ca11c8148de5cd9480"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gabd658aed3baf56ca11c8148de5cd9480">SDL::vasprintf</a> (char **strp, SDL_PRINTF_FORMAT_STRING const char *fmt, va_list ap)</td></tr>
+<tr class="memdesc:gabd658aed3baf56ca11c8148de5cd9480"><td class="mdescLeft">&#160;</td><td class="mdescRight">This works exactly like <a class="el" href="group__CategoryStdinc.html#gabd658aed3baf56ca11c8148de5cd9480" title="This works exactly like vasprintf() but doesn&#39;t require access to a C runtime.">vasprintf()</a> but doesn't require access to a C runtime.  <br /></td></tr>
+<tr class="separator:gabd658aed3baf56ca11c8148de5cd9480"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga85fc72ab5435901400efdaebc1187630" id="r_ga85fc72ab5435901400efdaebc1187630"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga85fc72ab5435901400efdaebc1187630">SDL::srand</a> (Uint64 seed)</td></tr>
 <tr class="memdesc:ga85fc72ab5435901400efdaebc1187630"><td class="mdescLeft">&#160;</td><td class="mdescRight">Seeds the pseudo-random number generator.  <br /></td></tr>
 <tr class="separator:ga85fc72ab5435901400efdaebc1187630"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -417,15 +444,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gae6517052066ab937273e6a89c7d1eca8" id="r_gae6517052066ab937273e6a89c7d1eca8"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gae6517052066ab937273e6a89c7d1eca8">SDL::rand_bits</a> ()</td></tr>
 <tr class="memdesc:gae6517052066ab937273e6a89c7d1eca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate 32 pseudo-random bits.  <br /></td></tr>
 <tr class="separator:gae6517052066ab937273e6a89c7d1eca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga88a7882cb74660c593be8127ed18fb3b" id="r_ga88a7882cb74660c593be8127ed18fb3b"><td class="memItemLeft" align="right" valign="top">Sint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga88a7882cb74660c593be8127ed18fb3b">SDL::rand_r</a> (Uint64 *state, Sint32 n)</td></tr>
-<tr class="memdesc:ga88a7882cb74660c593be8127ed18fb3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a pseudo-random number less than n for positive n.  <br /></td></tr>
-<tr class="separator:ga88a7882cb74660c593be8127ed18fb3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9" id="r_ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9">SDL::randf_r</a> (Uint64 *state)</td></tr>
-<tr class="memdesc:ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a uniform pseudo-random floating point number less than 1.0.  <br /></td></tr>
-<tr class="separator:ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5fa067963ccb1728fb4e81abe36c46c6" id="r_ga5fa067963ccb1728fb4e81abe36c46c6"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga5fa067963ccb1728fb4e81abe36c46c6">SDL::rand_bits_r</a> (Uint64 *state)</td></tr>
-<tr class="memdesc:ga5fa067963ccb1728fb4e81abe36c46c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate 32 pseudo-random bits.  <br /></td></tr>
-<tr class="separator:ga5fa067963ccb1728fb4e81abe36c46c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9f6543d319422a6044570b59cc6377b4" id="r_ga9f6543d319422a6044570b59cc6377b4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga9f6543d319422a6044570b59cc6377b4">SDL::acos</a> (double x)</td></tr>
 <tr class="memdesc:ga9f6543d319422a6044570b59cc6377b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the arc cosine of <code>x</code>.  <br /></td></tr>
 <tr class="separator:ga9f6543d319422a6044570b59cc6377b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,7 +600,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> provides its own implementation of some of the most important C runtime functions. </p>
-<p>Using these functions allows an app to have access to common C functionality without depending on a specific C runtime (or a C runtime at all). More importantly, the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> implementations work identically across platforms, so apps can avoid surprises like snprintf() behaving differently between Windows and Linux builds, or <a class="el" href="group__CategoryStdinc.html#gac0d19dc9f116d9f492fd4d17296f0c4b" title="Convert an integer into a string.">itoa()</a> only existing on some platforms.</p>
+<p>Using these functions allows an app to have access to common C functionality without depending on a specific C runtime (or a C runtime at all). More importantly, the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> implementations work identically across platforms, so apps can avoid surprises like <a class="el" href="group__CategoryStdinc.html#ga57b48f04ae9e3949774b9f0c9dc0c151" title="This works exactly like snprintf() but doesn&#39;t require access to a C runtime.">snprintf()</a> behaving differently between Windows and Linux builds, or <a class="el" href="group__CategoryStdinc.html#gac0d19dc9f116d9f492fd4d17296f0c4b" title="Convert an integer into a string.">itoa()</a> only existing on some platforms.</p>
 <p>For many of the most common functions, like SDL_memcpy, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might just call through to the usual C runtime behind the scenes, if it makes sense to do so (if it's faster and always available/reliable on a given platform), reducing library size and offering the most optimized option.</p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers other C-runtime-adjacent functionality in this header that either isn't, strictly speaking, part of any C runtime standards, like SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better options, like SDL_strlcpy(), which functions as a safer form of strcpy(). </p>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -734,7 +752,7 @@ SDL_SetMemoryFunctions </dd></dl>
 <p>If for some reason you need to force this typedef to be an actual <code>void *</code>, perhaps to work around a compiler or existing code, you can define <code>SDL_FUNCTION_POINTER_IS_VOID_POINTER</code> before including any <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> headers.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04608">4608</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04881">4881</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -917,7 +935,7 @@ SDL_asin </dd>
 <dd>
 SDL_cos </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03140">3140</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03413">3413</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -966,7 +984,7 @@ SDL_asinf </dd>
 <dd>
 SDL_cosf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03170">3170</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03443">3443</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1110,7 +1128,7 @@ SDL_acos </dd>
 <dd>
 SDL_sin </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03200">3200</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03473">3473</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1159,7 +1177,68 @@ SDL_acosf </dd>
 <dd>
 SDL_sinf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03230">3230</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03503">3503</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga12e5aac7458286e05c61d71278f59215" name="ga12e5aac7458286e05c61d71278f59215"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga12e5aac7458286e05c61d71278f59215">&#9670;&#160;</a></span>asprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::asprintf </td>
+          <td>(</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>strp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_PRINTF_FORMAT_STRING const char *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#ga12e5aac7458286e05c61d71278f59215" title="This works exactly like asprintf() but doesn&#39;t require access to a C runtime.">asprintf()</a> but doesn't require access to a C runtime. </p>
+<p>Functions identically to SDL_snprintf(), except it allocates a buffer large enough to hold the output string on behalf of the caller.</p>
+<p>On success, this function returns the number of bytes (not characters) comprising the output string, not counting the null-terminator character, and sets <code>*strp</code> to the newly-allocated string.</p>
+<p>On error, this function returns a negative number, and the value of <code>*strp</code> is undefined.</p>
+<p>The returned string is owned by the caller, and should be passed to SDL_free when no longer needed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">strp</td><td>on output, is set to the new string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">...</td><td>a list of values to be used with the format string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of bytes in the newly-allocated string, not counting the null-terminator char, or a negative value on error.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03149">3149</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1209,7 +1288,7 @@ SDL_atan2 </dd>
 <dd>
 SDL_tan </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03262">3262</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03535">3535</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1270,7 +1349,7 @@ SDL_atan </dd>
 <dd>
 SDL_tan </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03330">3330</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03603">3603</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1331,7 +1410,7 @@ SDL_atan </dd>
 <dd>
 SDL_tan </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03366">3366</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03639">3639</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1381,7 +1460,7 @@ SDL_atan2f </dd>
 <dd>
 SDL_tanf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03294">3294</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03567">3567</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1810,7 +1889,7 @@ SDL_round </dd>
 <dd>
 SDL_lround </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03394">3394</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03667">3667</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1862,7 +1941,7 @@ SDL_roundf </dd>
 <dd>
 SDL_lroundf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03422">3422</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03695">3695</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1919,7 +1998,7 @@ SDL_lroundf </dd></dl>
 <dd>
 SDL_fabs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03448">3448</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03721">3721</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -1976,7 +2055,7 @@ SDL_fabs </dd></dl>
 <dd>
 SDL_fabsf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03474">3474</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03747">3747</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2024,7 +2103,7 @@ SDL_acos </dd>
 <dd>
 SDL_sin </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03502">3502</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03775">3775</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2072,7 +2151,7 @@ SDL_acosf </dd>
 <dd>
 SDL_sinf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03530">3530</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03803">3803</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2238,7 +2317,7 @@ SDL_sinf </dd></dl>
 <dd>
 SDL_log </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03562">3562</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03835">3835</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2286,7 +2365,7 @@ SDL_log </dd></dl>
 <dd>
 SDL_logf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03594">3594</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03867">3867</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2329,7 +2408,7 @@ SDL_logf </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_fabsf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03615">3615</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03888">3888</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2372,7 +2451,7 @@ SDL_logf </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_fabs </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03636">3636</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03909">3909</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2424,7 +2503,7 @@ SDL_round </dd>
 <dd>
 SDL_lround </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03664">3664</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03937">3937</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2476,7 +2555,7 @@ SDL_roundf </dd>
 <dd>
 SDL_lroundf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03692">3692</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03965">3965</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2543,7 +2622,7 @@ SDL_round </dd>
 <dd>
 SDL_lround </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03780">3780</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04053">4053</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2610,7 +2689,7 @@ SDL_roundf </dd>
 <dd>
 SDL_lroundf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03810">3810</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04083">4083</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -3073,7 +3152,7 @@ SDL_iconv_close </dd>
 <dd>
 SDL_iconv </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04541">4541</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04814">4814</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -3355,7 +3434,7 @@ SDL_iconv </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_isinff </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03824">3824</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04097">4097</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -3395,7 +3474,7 @@ SDL_iconv </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_isinf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03838">3838</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04111">4111</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -3475,7 +3554,7 @@ SDL_iconv </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_isnanf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03852">3852</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04125">4125</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -3515,7 +3594,7 @@ SDL_iconv </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_isnan </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03866">3866</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04139">4139</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -3904,7 +3983,7 @@ SDL_log10 </dd>
 <dd>
 SDL_exp </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03896">3896</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04169">4169</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -3953,7 +4032,7 @@ SDL_log </dd>
 <dd>
 SDL_pow </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03955">3955</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04228">4228</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4002,7 +4081,7 @@ SDL_logf </dd>
 <dd>
 SDL_powf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03985">3985</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04258">4258</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4049,7 +4128,7 @@ SDL_powf </dd></dl>
 <dd>
 SDL_expf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03925">3925</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04198">4198</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4101,7 +4180,7 @@ SDL_ceil </dd>
 <dd>
 SDL_trunc </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04176">4176</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04449">4449</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4153,7 +4232,7 @@ SDL_ceilf </dd>
 <dd>
 SDL_truncf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04205">4205</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04478">4478</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4615,7 +4694,7 @@ SDL_trunc </dd>
 <dd>
 SDL_fmod </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04005">4005</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04278">4278</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4671,7 +4750,7 @@ SDL_truncf </dd>
 <dd>
 SDL_fmodf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04025">4025</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04298">4298</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4791,7 +4870,7 @@ SDL_exp </dd>
 <dd>
 SDL_log </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04057">4057</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04330">4330</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -4851,7 +4930,7 @@ SDL_expf </dd>
 <dd>
 SDL_logf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04089">4089</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04362">4362</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5077,9 +5156,9 @@ SDL_qsort </dd></dl>
 
 <p>Generate a pseudo-random number less than n for positive n. </p>
 <p>The method used is faster and of better quality than <code><a class="el" href="group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7" title="Generate a pseudo-random number less than n for positive n.">rand()</a> % n</code>. Odds are roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and much worse as n gets bigger.</p>
-<p>Example: to simulate a d6 use <code>SDL_rand(6) + 1</code> The +1 converts 0..5 to 1..6</p>
+<p>Example: to simulate a d6 use <code>rand(6) + 1</code> The +1 converts 0..5 to 1..6</p>
 <p>If you want to generate a pseudo-random number in the full range of Sint32, you should use: (Sint32)SDL_rand_bits()</p>
-<p>If you want reproducible output, be sure to initialize with SDL_srand() first.</p>
+<p>If you want reproducible output, be sure to initialize with <a class="el" href="group__CategoryStdinc.html#ga85fc72ab5435901400efdaebc1187630" title="Seeds the pseudo-random number generator.">srand()</a> first.</p>
 <p>There are no guarantees as to the quality of the random sequence produced, and this should not be used for security (cryptography, passwords) or where money is on the line (loot-boxes, casinos). There are many random number libraries available with different characteristics and you should pick one of those to meet any serious needs.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -5090,11 +5169,11 @@ SDL_qsort </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a random value in the range of [0 .. n-1].</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>All calls should be made from a single thread</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_srand </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#ga85fc72ab5435901400efdaebc1187630" title="Seeds the pseudo-random number generator.">srand()</a> </dd>
 <dd>
-SDL_randf </dd></dl>
+<a class="el" href="group__CategoryStdinc.html#gaab0a933463eebe63f34b3acec7e96c6e" title="Generate a uniform pseudo-random floating point number less than 1.0.">randf()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l02977">2977</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03236">3236</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5122,121 +5201,18 @@ SDL_randf </dd></dl>
 </div><div class="memdoc">
 
 <p>Generate 32 pseudo-random bits. </p>
-<p>You likely want to use SDL_rand() to get a psuedo-random number instead.</p>
+<p>You likely want to use <a class="el" href="group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7" title="Generate a pseudo-random number less than n for positive n.">rand()</a> to get a pseudo-random number instead.</p>
 <p>There are no guarantees as to the quality of the random sequence produced, and this should not be used for security (cryptography, passwords) or where money is on the line (loot-boxes, casinos). There are many random number libraries available with different characteristics and you should pick one of those to meet any serious needs.</p>
 <dl class="section return"><dt>Returns</dt><dd>a random value in the range of [0-SDL_MAX_UINT32].</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>All calls should be made from a single thread</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_rand </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7" title="Generate a pseudo-random number less than n for positive n.">rand()</a> </dd>
 <dd>
-SDL_randf </dd>
+<a class="el" href="group__CategoryStdinc.html#gaab0a933463eebe63f34b3acec7e96c6e" title="Generate a uniform pseudo-random floating point number less than 1.0.">randf()</a> </dd>
 <dd>
-SDL_srand </dd></dl>
+<a class="el" href="group__CategoryStdinc.html#ga85fc72ab5435901400efdaebc1187630" title="Seeds the pseudo-random number generator.">srand()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03023">3023</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
-
-</div>
-</div>
-<a id="ga5fa067963ccb1728fb4e81abe36c46c6" name="ga5fa067963ccb1728fb4e81abe36c46c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5fa067963ccb1728fb4e81abe36c46c6">&#9670;&#160;</a></span>rand_bits_r()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Uint32 SDL::rand_bits_r </td>
-          <td>(</td>
-          <td class="paramtype">Uint64 *&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generate 32 pseudo-random bits. </p>
-<p>You likely want to use SDL_rand_r() to get a psuedo-random number instead.</p>
-<p>There are no guarantees as to the quality of the random sequence produced, and this should not be used for security (cryptography, passwords) or where money is on the line (loot-boxes, casinos). There are many random number libraries available with different characteristics and you should pick one of those to meet any serious needs.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td>a pointer to the current random number state, this may not be NULL. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a random value in the range of [0-SDL_MAX_UINT32].</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is thread-safe, as long as the state pointer isn't shared between threads.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_rand_r </dd>
-<dd>
-SDL_randf_r </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03110">3110</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
-
-</div>
-</div>
-<a id="ga88a7882cb74660c593be8127ed18fb3b" name="ga88a7882cb74660c593be8127ed18fb3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga88a7882cb74660c593be8127ed18fb3b">&#9670;&#160;</a></span>rand_r()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Sint32 SDL::rand_r </td>
-          <td>(</td>
-          <td class="paramtype">Uint64 *&#160;</td>
-          <td class="paramname"><em>state</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Sint32&#160;</td>
-          <td class="paramname"><em>n</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generate a pseudo-random number less than n for positive n. </p>
-<p>The method used is faster and of better quality than <code><a class="el" href="group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7" title="Generate a pseudo-random number less than n for positive n.">rand()</a> % n</code>. Odds are roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and much worse as n gets bigger.</p>
-<p>Example: to simulate a d6 use <code>SDL_rand_r(state, 6) + 1</code> The +1 converts 0..5 to 1..6</p>
-<p>If you want to generate a pseudo-random number in the full range of Sint32, you should use: (Sint32)SDL_rand_bits_r(state)</p>
-<p>There are no guarantees as to the quality of the random sequence produced, and this should not be used for security (cryptography, passwords) or where money is on the line (loot-boxes, casinos). There are many random number libraries available with different characteristics and you should pick one of those to meet any serious needs.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td>a pointer to the current random number state, this may not be NULL. </td></tr>
-    <tr><td class="paramname">n</td><td>the number of possible outcomes. n must be positive. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a random value in the range of [0 .. n-1].</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is thread-safe, as long as the state pointer isn't shared between threads.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_rand </dd>
-<dd>
-SDL_rand_bits_r </dd>
-<dd>
-SDL_randf_r </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03058">3058</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03281">3281</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5264,62 +5240,16 @@ SDL_randf_r </dd></dl>
 </div><div class="memdoc">
 
 <p>Generate a uniform pseudo-random floating point number less than 1.0. </p>
-<p>If you want reproducible output, be sure to initialize with SDL_srand() first.</p>
+<p>If you want reproducible output, be sure to initialize with <a class="el" href="group__CategoryStdinc.html#ga85fc72ab5435901400efdaebc1187630" title="Seeds the pseudo-random number generator.">srand()</a> first.</p>
 <p>There are no guarantees as to the quality of the random sequence produced, and this should not be used for security (cryptography, passwords) or where money is on the line (loot-boxes, casinos). There are many random number libraries available with different characteristics and you should pick one of those to meet any serious needs.</p>
 <dl class="section return"><dt>Returns</dt><dd>a random value in the range of [0.0, 1.0).</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>All calls should be made from a single thread</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_srand </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#ga85fc72ab5435901400efdaebc1187630" title="Seeds the pseudo-random number generator.">srand()</a> </dd>
 <dd>
-SDL_rand </dd></dl>
+<a class="el" href="group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7" title="Generate a pseudo-random number less than n for positive n.">rand()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03000">3000</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
-
-</div>
-</div>
-<a id="ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9" name="ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6bc84a2bf06f414f7d3f9bbbe9ee6bf9">&#9670;&#160;</a></span>randf_r()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">float SDL::randf_r </td>
-          <td>(</td>
-          <td class="paramtype">Uint64 *&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generate a uniform pseudo-random floating point number less than 1.0. </p>
-<p>If you want reproducible output, be sure to initialize with SDL_srand() first.</p>
-<p>There are no guarantees as to the quality of the random sequence produced, and this should not be used for security (cryptography, passwords) or where money is on the line (loot-boxes, casinos). There are many random number libraries available with different characteristics and you should pick one of those to meet any serious needs.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">state</td><td>a pointer to the current random number state, this may not be NULL. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a random value in the range of [0.0, 1.0).</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function is thread-safe, as long as the state pointer isn't shared between threads.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_rand_bits_r </dd>
-<dd>
-SDL_rand_r </dd>
-<dd>
-SDL_randf </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03085">3085</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03258">3258</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5434,7 +5364,7 @@ SDL_ceil </dd>
 <dd>
 SDL_trunc </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04118">4118</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04391">4391</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5486,7 +5416,7 @@ SDL_ceilf </dd>
 <dd>
 SDL_truncf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04147">4147</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04420">4420</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5543,7 +5473,7 @@ SDL_truncf </dd></dl>
 <dd>
 SDL_pow </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04230">4230</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04503">4503</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5600,7 +5530,7 @@ SDL_pow </dd></dl>
 <dd>
 SDL_powf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04255">4255</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04528">4528</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5775,7 +5705,7 @@ SDL_asin </dd>
 <dd>
 SDL_cos </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04283">4283</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04556">4556</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5823,7 +5753,7 @@ SDL_asinf </dd>
 <dd>
 SDL_cosf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04311">4311</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04584">4584</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5882,7 +5812,7 @@ SDL_cosf </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04588">4588</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04861">4861</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5941,7 +5871,75 @@ SDL_cosf </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04566">4566</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04839">4839</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga57b48f04ae9e3949774b9f0c9dc0c151" name="ga57b48f04ae9e3949774b9f0c9dc0c151"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga57b48f04ae9e3949774b9f0c9dc0c151">&#9670;&#160;</a></span>snprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::snprintf </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_PRINTF_FORMAT_STRING const char *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#ga57b48f04ae9e3949774b9f0c9dc0c151" title="This works exactly like snprintf() but doesn&#39;t require access to a C runtime.">snprintf()</a> but doesn't require access to a C runtime. </p>
+<p>Format a string of up to <code>maxlen</code>-1 bytes, converting each '' item with values provided through variable arguments.</p>
+<p>While some C runtimes differ on how to deal with too-large strings, this function null-terminates the output, by treating the null-terminator as part of the <code>maxlen</code> count. Note that if <code>maxlen</code> is zero, however, no bytes will be written at all.</p>
+<p>This function returns the number of <em>bytes</em> (not <em>characters</em>) that should be written, excluding the null-terminator character. If this returns a number &gt;= <code>maxlen</code>, it means the output string was truncated. A negative return value means an error occurred.</p>
+<p>Referencing the output string's pointer with a format item is undefined behavior.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the buffer to write the string into. Must not be NULL. </td></tr>
+    <tr><td class="paramname">maxlen</td><td>the maximum bytes to write, including the null-terminator. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">...</td><td>a list of values to be used with the format string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of bytes that should be written, not counting the null-terminator char, or a negative value on error.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03007">3007</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -5985,7 +5983,7 @@ SDL_cosf </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_sqrtf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04337">4337</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04610">4610</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -6029,7 +6027,7 @@ SDL_cosf </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_sqrt </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04363">4363</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04636">4636</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -6058,22 +6056,80 @@ SDL_cosf </dd></dl>
 </div><div class="memdoc">
 
 <p>Seeds the pseudo-random number generator. </p>
-<p>Reusing the seed number will cause SDL_rand_*() to repeat the same stream of 'random' numbers.</p>
+<p>Reusing the seed number will cause rand_*() to repeat the same stream of 'random' numbers.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">seed</td><td>the value to use as a random number seed, or 0 to use SDL_GetPerformanceCounter().</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This should be called on the same thread that calls SDL_rand*()</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This should be called on the same thread that calls rand*()</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_rand </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7" title="Generate a pseudo-random number less than n for positive n.">rand()</a> </dd>
 <dd>
-SDL_rand_bits </dd>
+<a class="el" href="group__CategoryStdinc.html#gae6517052066ab937273e6a89c7d1eca8" title="Generate 32 pseudo-random bits.">rand_bits()</a> </dd>
 <dd>
-SDL_randf </dd></dl>
+<a class="el" href="group__CategoryStdinc.html#gaab0a933463eebe63f34b3acec7e96c6e" title="Generate a uniform pseudo-random floating point number less than 1.0.">randf()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l02943">2943</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03203">3203</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga592054168270da087e8630cac0df2530" name="ga592054168270da087e8630cac0df2530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga592054168270da087e8630cac0df2530">&#9670;&#160;</a></span>sscanf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::sscanf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_SCANF_FORMAT_STRING const char *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#ga592054168270da087e8630cac0df2530" title="This works exactly like sscanf() but doesn&#39;t require access to a C runtime.">sscanf()</a> but doesn't require access to a C runtime. </p>
+<p>Scan a string, matching a format string, converting each '' item and storing it to pointers provided through variable arguments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the string to scan. Must not be NULL. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">...</td><td>a list of pointers to values to be filled in with scanned items. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of items that matched the format string.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l02940">2940</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -7595,6 +7651,74 @@ SDL_ulltoa </dd></dl>
 
 </div>
 </div>
+<a id="ga90fbec4327cabf79747426483a3f24cd" name="ga90fbec4327cabf79747426483a3f24cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga90fbec4327cabf79747426483a3f24cd">&#9670;&#160;</a></span>swprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::swprintf </td>
+          <td>(</td>
+          <td class="paramtype">wchar_t *&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_PRINTF_FORMAT_STRING const wchar_t *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#ga90fbec4327cabf79747426483a3f24cd" title="This works exactly like swprintf() but doesn&#39;t require access to a C runtime.">swprintf()</a> but doesn't require access to a C runtime. </p>
+<p>Format a wide string of up to <code>maxlen</code>-1 wchar_t values, converting each '' item with values provided through variable arguments.</p>
+<p>While some C runtimes differ on how to deal with too-large strings, this function null-terminates the output, by treating the null-terminator as part of the <code>maxlen</code> count. Note that if <code>maxlen</code> is zero, however, no wide characters will be written at all.</p>
+<p>This function returns the number of <em>wide characters</em> (not <em>codepoints</em>) that should be written, excluding the null-terminator character. If this returns a number &gt;= <code>maxlen</code>, it means the output string was truncated. A negative return value means an error occurred.</p>
+<p>Referencing the output string's pointer with a format item is undefined behavior.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the buffer to write the wide string into. Must not be NULL. </td></tr>
+    <tr><td class="paramname">maxlen</td><td>the maximum wchar_t values to write, including the null-terminator. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">...</td><td>a list of values to be used with the format string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of wide characters that should be written, not counting the null-terminator char, or a negative value on error.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03054">3054</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
 <a id="ga88b5a6adb928a623a97598a7a154432c" name="ga88b5a6adb928a623a97598a7a154432c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga88b5a6adb928a623a97598a7a154432c">&#9670;&#160;</a></span>tan()</h2>
 
@@ -7643,7 +7767,7 @@ SDL_atan </dd>
 <dd>
 SDL_atan2 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04393">4393</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04666">4666</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -7695,7 +7819,7 @@ SDL_atanf </dd>
 <dd>
 SDL_atan2f </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04423">4423</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04696">4696</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -7831,7 +7955,7 @@ SDL_round </dd>
 <dd>
 SDL_lround </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03721">3721</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03994">3994</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -7885,7 +8009,7 @@ SDL_roundf </dd>
 <dd>
 SDL_lroundf </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03750">3750</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04023">4023</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -8335,6 +8459,252 @@ SDL_strlen </dd></dl>
 SDL_strnlen </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l02247">2247</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="gabd658aed3baf56ca11c8148de5cd9480" name="gabd658aed3baf56ca11c8148de5cd9480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabd658aed3baf56ca11c8148de5cd9480">&#9670;&#160;</a></span>vasprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::vasprintf </td>
+          <td>(</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>strp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_PRINTF_FORMAT_STRING const char *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>ap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#gabd658aed3baf56ca11c8148de5cd9480" title="This works exactly like vasprintf() but doesn&#39;t require access to a C runtime.">vasprintf()</a> but doesn't require access to a C runtime. </p>
+<p>Functions identically to SDL_asprintf(), except it takes a <code>va_list</code> instead of using <code>...</code> variable arguments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">strp</td><td>on output, is set to the new string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">ap</td><td>a <code>va_list</code> values to be used with the format string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of bytes in the newly-allocated string, not counting the null-terminator char, or a negative value on error.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03178">3178</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4402ec18128560a4643446630b3a4633" name="ga4402ec18128560a4643446630b3a4633"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4402ec18128560a4643446630b3a4633">&#9670;&#160;</a></span>vsnprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::vsnprintf </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_PRINTF_FORMAT_STRING const char *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>ap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#ga4402ec18128560a4643446630b3a4633" title="This works exactly like vsnprintf() but doesn&#39;t require access to a C runtime.">vsnprintf()</a> but doesn't require access to a C runtime. </p>
+<p>Functions identically to SDL_snprintf(), except it takes a <code>va_list</code> instead of using <code>...</code> variable arguments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the buffer to write the string into. Must not be NULL. </td></tr>
+    <tr><td class="paramname">maxlen</td><td>the maximum bytes to write, including the null-terminator. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">ap</td><td>a <code>va_list</code> values to be used with the format string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of bytes that should be written, not counting the null-terminator char, or a negative value on error.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03087">3087</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="gac1c131187ea64c08ed8abb3d04551072" name="gac1c131187ea64c08ed8abb3d04551072"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac1c131187ea64c08ed8abb3d04551072">&#9670;&#160;</a></span>vsscanf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::vsscanf </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_SCANF_FORMAT_STRING const char *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>ap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#gac1c131187ea64c08ed8abb3d04551072" title="This works exactly like vsscanf() but doesn&#39;t require access to a C runtime.">vsscanf()</a> but doesn't require access to a C runtime. </p>
+<p>Functions identically to SDL_sscanf(), except it takes a <code>va_list</code> instead of using <code>...</code> variable arguments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the string to scan. Must not be NULL. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">ap</td><td>a <code>va_list</code> of pointers to values to be filled in with scanned items. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of items that matched the format string.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l02969">2969</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga83409fe8ca79edcf997ebfcda6226a5a" name="ga83409fe8ca79edcf997ebfcda6226a5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga83409fe8ca79edcf997ebfcda6226a5a">&#9670;&#160;</a></span>vswprintf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::vswprintf </td>
+          <td>(</td>
+          <td class="paramtype">wchar_t *&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>maxlen</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">SDL_PRINTF_FORMAT_STRING const wchar_t *&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">va_list&#160;</td>
+          <td class="paramname"><em>ap</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This works exactly like <a class="el" href="group__CategoryStdinc.html#ga83409fe8ca79edcf997ebfcda6226a5a" title="This works exactly like vswprintf() but doesn&#39;t require access to a C runtime.">vswprintf()</a> but doesn't require access to a C runtime. </p>
+<p>Functions identically to SDL_swprintf(), except it takes a <code>va_list</code> instead of using <code>...</code> variable arguments.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">text</td><td>the buffer to write the string into. Must not be NULL. </td></tr>
+    <tr><td class="paramname">maxlen</td><td>the maximum wide characters to write, including the null-terminator. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a printf-style format wide string. Must not be NULL. </td></tr>
+    <tr><td class="paramname">ap</td><td>a <code>va_list</code> values to be used with the format string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of wide characters that should be written, not counting the null-terminator char, or a negative value on error.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l03114">3114</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>

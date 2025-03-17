@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['version_0',['Querying SDL Version',['../group__CategoryVersion.html',1,'']]],
-  ['video_1',['Video',['../group__CategoriesVideo.html',1,'']]]
+  ['time_0',['Time',['../group__CategoriesTime.html',1,'']]],
+  ['timer_20support_1',['Timer Support',['../group__CategoryTimer.html',1,'']]],
+  ['to_20sdl_3a_3afree_2',['Pointer wrapper to SDL::free()',['../group__CategoryFreeWrapper.html',1,'']]],
+  ['type_20wrapping_3',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
+  ['types_4',['Event Types',['../group__EventTypes.html',1,'']]]
 ];

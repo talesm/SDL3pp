@@ -77,7 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classSDL_1_1Colorspace-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SDL::Colorspace Class Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryPixels.html">Pixel Formats and Conversion Routines</a></div></div></div>
+  <div class="headertitle"><div class="title">SDL::Colorspace Class Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryPixels.html">Pixel Formats and Conversion Routines</a> &#124; <a class="el" href="group__DesignNotes.html">Design notes</a> &raquo; <a class="el" href="group__WrapState.html">Wrapped state</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -134,7 +134,9 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p><a class="el" href="classSDL_1_1Colorspace.html" title="Colorspace definitions.">Colorspace</a> definitions. </p>
 <p>Since similar colorspaces may vary in their details (matrix, transfer function, etc.), this is not an exhaustive list, but rather a representative sample of the kinds of colorspaces supported in <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Colorspaces.html">Colorspaces</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__WrapState.html" title="We define an wrapped state when we have a opaque void*, an integer or enum that just represent some s...">Wrapped state</a></dd>
+<dd>
+<a class="el" href="group__Colorspaces.html">Colorspaces</a> </dd>
 <dd>
 <a class="el" href="group__CategoryPixels.html#ga29c08ffa83b105e9b630d17ae94015be" title="Colorspace color primaries, as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en.">ColorPrimaries</a> </dd>
 <dd>
@@ -146,7 +148,7 @@ Public Member Functions</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5" title="Colorspace transfer characteristics.">TransferCharacteristics</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01205">1205</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01212">1212</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4b215224758ab0464ec7be6fb480434e" name="a4b215224758ab0464ec7be6fb480434e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4b215224758ab0464ec7be6fb480434e">&#9670;&#160;</a></span>Colorspace() <span class="overload">[1/2]</span></h2>
@@ -174,7 +176,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Wrap a SDL_Colorspace. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01214">1214</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01221">1221</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -244,7 +246,7 @@ Public Member Functions</h2></td></tr>
 <div class="line">                      SDL_TRANSFER_CHARACTERISTICS_SRGB,</div>
 <div class="line">                      SDL_MATRIX_COEFFICIENTS_IDENTITY,</div>
 <div class="line">                      SDL_CHROMA_LOCATION_NONE)</div>
-<div class="ttc" id="aclassSDL_1_1Colorspace_html"><div class="ttname"><a href="classSDL_1_1Colorspace.html">SDL::Colorspace</a></div><div class="ttdoc">Colorspace definitions.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__pixels_8h_source.html#l01205">SDL3pp_pixels.h:1206</a></div></div>
+<div class="ttc" id="aclassSDL_1_1Colorspace_html"><div class="ttname"><a href="classSDL_1_1Colorspace.html">SDL::Colorspace</a></div><div class="ttdoc">Colorspace definitions.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__pixels_8h_source.html#l01212">SDL3pp_pixels.h:1213</a></div></div>
 </div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">type</td><td>the type of the new format, probably an ColorType value. </td></tr>
@@ -259,7 +261,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01247">1247</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01254">1254</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -292,7 +294,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01303">1303</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01310">1310</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -324,7 +326,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01345">1345</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01352">1352</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -356,7 +358,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01317">1317</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01324">1324</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -388,7 +390,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01289">1289</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01296">1296</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -420,7 +422,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01331">1331</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01338">1338</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -452,7 +454,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01278">1278</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01285">1285</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -484,7 +486,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01420">1420</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01427">1427</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -516,7 +518,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01406">1406</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01413">1413</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -548,7 +550,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01392">1392</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01399">1399</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -581,7 +583,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01363">1363</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01370">1370</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -613,7 +615,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01377">1377</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01384">1384</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -640,7 +642,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01262">1262</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01269">1269</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -667,7 +669,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01267">1267</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01274">1274</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>

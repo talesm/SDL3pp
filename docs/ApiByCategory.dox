@@ -8,8 +8,10 @@
 Category                 | Header
 ------------------------ | --------------------
 @ref CategoryInit        | SDL3pp_init.h
+@ref CategoryHints       | SDL3pp_hints.h
 @ref CategoryProperties  | SDL3pp_properties.h
 @ref CategoryError       | SDL3pp_error.h
+@ref CategoryAssert      | SDL3pp_assert.h
 @ref CategoryVersion     | SDL3pp_version.h
 
 ## Video
@@ -39,7 +41,9 @@ Category                 | Header
 
 Category             | Header
 -------------------- | --------------------
+@ref CategoryLocale  | SDL3pp_locale.h
 @ref CategoryStdinc  | SDL3pp_stdinc.h
+@ref CategoryGUID    | SDL3pp_guid.h
 @ref CategoryMisc    | SDL3pp_misc.h
 
 ## Satellite libraries
@@ -68,8 +72,10 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesBasics Basics
 @{
 @addtogroup CategoryInit
+@addtogroup CategoryHints
 @addtogroup CategoryProperties
 @addtogroup CategoryError
+@addtogroup CategoryAssert
 @addtogroup CategoryVersion
 @}
 
@@ -95,7 +101,9 @@ You probably want to see @ref ApiByCategory
 
 @defgroup CategoriesAdditionalFunctionality Additional Functionality
 @{
+@addtogroup CategoryLocale
 @addtogroup CategoryStdinc
+@addtogroup CategoryGUID
 @addtogroup CategoryMisc
 @}
 

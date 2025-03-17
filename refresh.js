@@ -8,7 +8,7 @@ const config = require("./scripts/config.json");
  */
 async function main(args) {
   process.chdir(__dirname);
-  var { status } = spawnSync("node", ["scripts/", "parse", "scripts/config.json", "-d", "./external/SDL/include/SDL3/", "-d", "./external/SDL_image/include/SDL3_image/"], { stdio: 'inherit' });
+  var { status } = spawnSync("node", ["scripts/", "parse", "-d", "./external/SDL/include/SDL3/", "-d", "./external/SDL_image/include/SDL3_image/", "scripts/config.json"], { stdio: 'inherit' });
   if (status === null) process.exit(1);
 
   var { status } = spawnSync("node", ["scripts/", "transform", "scripts/config.json"], { stdio: 'inherit' });
@@ -19,8 +19,10 @@ async function main(args) {
     const filter = new Set(args.map(getRadix));
     targets.push(...config.sources.map(getRadix).filter(s => !filter.has(s)).map(s => `SDL3pp_${s}.h`));
   }
-  var { status } = spawnSync("node", ["scripts/", "update", "scripts/config.json", ...targets], { stdio: 'inherit' });
-  if (status === null) process.exit(3);
+  if (!args.includes("--dry-run")) {
+    var { status } = spawnSync("node", ["scripts/", "update", "scripts/config.json", ...targets], { stdio: 'inherit' });
+    if (status === null) process.exit(3);
+  }
 }
 
 /** @param {string} name  */

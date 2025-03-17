@@ -41,14 +41,6 @@
       "ignoreEntries": [
         "SDL_alignment_test",
         "SDL_DUMMY_ENUM",
-        "SDL_sscanf",
-        "SDL_vsscanf",
-        "SDL_snprintf",
-        "SDL_swprintf",
-        "SDL_vsnprintf",
-        "SDL_vswprintf",
-        "SDL_asprintf",
-        "SDL_vasprintf",
         "SDL_size_mul_check_overflow_builtin",
         "SDL_size_add_check_overflow_builtin"
       ],
@@ -132,7 +124,56 @@
             "kind": "alias",
             "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>"
           }
-        ]
+        ],
+        "SDL_rand_bits": {
+          "kind": "struct",
+          "name": "Random",
+          "entries": {
+            "m_state": {
+              "kind": "var",
+              "type": "Uint64",
+              "default": "0"
+            },
+            "Random": {
+              "kind": "function",
+              "constexpr": true,
+              "type": "",
+              "parameters": [
+                {
+                  "type": "Uint64",
+                  "name": "state",
+                  "default": "0"
+                }
+              ]
+            },
+            "operator Uint64": {
+              "kind": "function",
+              "constexpr": true,
+              "type": "",
+              "parameters": []
+            },
+            "SDL_rand_r": {
+              "name": "rand",
+              "static": false,
+              "parameters": [
+                {
+                  "type": "Sint32",
+                  "name": "n"
+                }
+              ]
+            },
+            "SDL_randf_r": {
+              "name": "randf",
+              "static": false,
+              "parameters": []
+            },
+            "SDL_rand_bits_r": {
+              "name": "rand_bits",
+              "static": false,
+              "parameters": []
+            }
+          }
+        }
       },
       "includeDefs": [
         "SDL_FOURCC"
@@ -216,6 +257,104 @@
               "name": "close"
             }
           }
+        }
+      }
+    },
+    "SDL_error.h": {
+      "ignoreEntries": [
+        "SDL_SetErrorV"
+      ],
+      "includeAfter": {
+        "SDL_SetError": {
+          "kind": "function",
+          "name": "SetError",
+          "type": "bool",
+          "template": [
+            {
+              "type": "class...",
+              "name": "ARGS"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "std::string_view",
+              "name": "fmt"
+            },
+            {
+              "type": "ARGS...",
+              "name": "args"
+            }
+          ]
+        }
+      },
+      "transform": {
+        "SDL_SetError": {
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "message"
+            }
+          ]
+        }
+      }
+    },
+    "SDL_assert.h": {
+      "ignoreEntries": [
+        "__debugbreak"
+      ],
+      "transform": {
+        "SDL_ReportAssertion": {
+          "parameters": [
+            {},
+            {},
+            {},
+            {
+              "type": "int",
+              "name": "line"
+            }
+          ]
+        }
+      }
+    },
+    "SDL_guid.h": {
+      "transform": {
+        "SDL_GUID": {
+          "kind": "struct",
+          "type": "SDL_GUID",
+          "entries": {
+            "GUID": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "SDL_GUID",
+                    "name": "guid"
+                  }
+                ]
+              }
+            ],
+            "SDL_StringToGUID": "ctor",
+            "SDL_GUIDToString": {
+              "type": "std::string",
+              "immutable": true,
+              "parameters": []
+            }
+          }
+        }
+      }
+    },
+    "SDL_locale.h": {
+      "transform": {
+        "SDL_GetPreferredLocales": {
+          "type": "FreeWrapper<Locale *[]>"
         }
       }
     },

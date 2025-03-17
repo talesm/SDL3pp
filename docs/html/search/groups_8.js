@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['images_20from_20several_20formats_0',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
-  ['immediate_20callback_1',['Immediate callback',['../group__SyncCallback.html',1,'']]],
-  ['initialization_20and_20shutdown_2',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]],
-  ['input_20events_3',['Input Events',['../group__CategoriesEvents.html',1,'']]]
+  ['handling_0',['Error Handling',['../group__CategoryError.html',1,'']]],
+  ['helpers_1',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
+  ['helpers_20for_20resource_20type_20wrapping_2',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]]
 ];

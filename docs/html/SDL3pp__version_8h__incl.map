@@ -4,28 +4,33 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,33,120,75,118,71,214,28"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__error_8h.html" title=" " alt="" coords="181,79,301,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="243,31,243,65,238,65,238,31"/>
-<area shape="rect" id="Node000005" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="364,79,493,104"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="272,28,386,71,384,76,270,33"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="135,152,269,177"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="237,106,217,141,212,139,232,103"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="257,225,400,251"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="395,106,361,125,346,138,334,153,325,182,326,212,321,212,320,182,329,151,342,134,358,120,393,102"/>
-<area shape="rect" id="Node000007" href="$SDL3pp__freeWrapper_8h.html" title=" " alt="" coords="343,152,514,177"/>
-<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="431,104,431,138,426,138,426,104"/>
-<area shape="rect" id="Node000009" href="$SDL3pp__objectWrapper_8h.html" title=" " alt="" coords="538,152,722,177"/>
-<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="462,102,585,145,584,150,460,107"/>
-<area shape="rect" id="Node000011" href="$SDL3pp__stringParam_8h.html" title=" " alt="" coords="746,152,914,177"/>
-<area shape="poly" id="edge12_Node000005_Node000011" title=" " alt="" coords="494,101,752,147,751,152,493,107"/>
-<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="414,180,358,219,355,215,411,175"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="467,225,545,251"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="443,175,485,214,481,218,439,179"/>
-<area shape="poly" id="edge11_Node000009_Node000008" title=" " alt="" coords="611,180,539,221,537,216,609,175"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="590,225,670,251"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="633,178,633,212,627,212,627,178"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="698,225,757,251"/>
-<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="815,180,757,219,754,215,812,175"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="781,225,879,251"/>
-<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="833,178,833,212,827,212,827,178"/>
-<area shape="rect" id="Node000014" title=" " alt="" coords="903,225,971,251"/>
-<area shape="poly" id="edge15_Node000011_Node000014" title=" " alt="" coords="849,175,909,215,906,220,846,180"/>
+<area shape="rect" id="Node000010" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="603,79,732,104"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="310,28,589,74,589,80,309,33"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="34,152,101,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="214,106,109,149,107,144,212,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="139,225,198,251"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="221,106,194,126,172,153,165,182,166,211,161,212,160,182,168,151,190,122,217,102"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="283,225,380,251"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="234,106,215,139,211,158,216,176,240,201,272,218,269,223,237,205,212,179,206,158,210,138,229,103"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="226,152,359,177"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="251,103,278,139,274,142,247,106"/>
+<area shape="rect" id="Node000008" href="$SDL3pp__stringParam_8h.html" title=" " alt="" coords="383,152,551,177"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="278,101,418,145,417,150,276,107"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="420,180,212,229,211,224,419,175"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="447,180,367,221,364,217,444,175"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="433,225,501,251"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="470,178,470,212,465,212,465,178"/>
+<area shape="poly" id="edge19_Node000010_Node000008" title=" " alt="" coords="636,107,514,150,512,145,634,102"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="897,225,1040,251"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="732,94,798,100,868,111,929,127,952,138,968,150,976,165,980,181,978,212,973,212,974,181,971,167,964,154,949,142,927,132,867,116,797,105,732,99"/>
+<area shape="rect" id="Node000012" href="$SDL3pp__freeWrapper_8h.html" title=" " alt="" coords="783,152,954,177"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="701,102,824,145,822,150,699,107"/>
+<area shape="rect" id="Node000014" href="$SDL3pp__objectWrapper_8h.html" title=" " alt="" coords="575,152,759,177"/>
+<area shape="poly" id="edge16_Node000010_Node000014" title=" " alt="" coords="670,104,670,138,665,138,665,104"/>
+<area shape="poly" id="edge15_Node000012_Node000011" title=" " alt="" coords="886,175,943,215,940,219,883,180"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="774,225,851,251"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="862,179,832,216,828,213,857,176"/>
+<area shape="poly" id="edge18_Node000014_Node000013" title=" " alt="" coords="692,175,778,217,776,222,690,180"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="627,225,707,251"/>
+<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="670,178,670,212,665,212,665,178"/>
 </map>

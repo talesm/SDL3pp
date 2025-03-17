@@ -2923,22 +2923,282 @@ inline char* UCS4ToUTF8(Uint32 codepoint, char* dst)
 }
 
 /**
+ * This works exactly like sscanf() but doesn't require access to a C runtime.
+ *
+ * Scan a string, matching a format string, converting each '%' item and
+ * storing it to pointers provided through variable arguments.
+ *
+ * @param text the string to scan. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of pointers to values to be filled in with scanned items.
+ * @returns the number of items that matched the format string.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int sscanf(StringParam text,
+                  SDL_SCANF_FORMAT_STRING const char* fmt,
+                  ...)
+{
+  int rc;
+  va_list ap;
+  va_start(ap, fmt);
+  rc = SDL_vsscanf(text, fmt, ap);
+  va_end(ap);
+  return rc;
+}
+
+/**
+ * This works exactly like vsscanf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_sscanf(), except it takes a `va_list` instead
+ * of using `...` variable arguments.
+ *
+ * @param text the string to scan. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ap a `va_list` of pointers to values to be filled in with scanned
+ *           items.
+ * @returns the number of items that matched the format string.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vsscanf(StringParam text,
+                   SDL_SCANF_FORMAT_STRING const char* fmt,
+                   va_list ap)
+{
+  return SDL_vsscanf(text, fmt, ap);
+}
+
+/**
+ * This works exactly like snprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Format a string of up to `maxlen`-1 bytes, converting each '%' item with
+ * values provided through variable arguments.
+ *
+ * While some C runtimes differ on how to deal with too-large strings, this
+ * function null-terminates the output, by treating the null-terminator as
+ * part of the `maxlen` count. Note that if `maxlen` is zero, however, no
+ * bytes will be written at all.
+ *
+ * This function returns the number of _bytes_ (not _characters_) that should
+ * be written, excluding the null-terminator character. If this returns a
+ * number >= `maxlen`, it means the output string was truncated. A negative
+ * return value means an error occurred.
+ *
+ * Referencing the output string's pointer with a format item is undefined
+ * behavior.
+ *
+ * @param text the buffer to write the string into. Must not be NULL.
+ * @param maxlen the maximum bytes to write, including the null-terminator.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of values to be used with the format string.
+ * @returns the number of bytes that should be written, not counting the
+ *          null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int snprintf(char* text,
+                    size_t maxlen,
+                    SDL_PRINTF_FORMAT_STRING const char* fmt,
+                    ...)
+{
+  va_list ap;
+  int result;
+
+  va_start(ap, fmt);
+  result = SDL_vsnprintf(text, maxlen, fmt, ap);
+  va_end(ap);
+
+  return result;
+}
+
+/**
+ * This works exactly like swprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Format a wide string of up to `maxlen`-1 wchar_t values, converting each
+ * '%' item with values provided through variable arguments.
+ *
+ * While some C runtimes differ on how to deal with too-large strings, this
+ * function null-terminates the output, by treating the null-terminator as
+ * part of the `maxlen` count. Note that if `maxlen` is zero, however, no wide
+ * characters will be written at all.
+ *
+ * This function returns the number of _wide characters_ (not _codepoints_)
+ * that should be written, excluding the null-terminator character. If this
+ * returns a number >= `maxlen`, it means the output string was truncated. A
+ * negative return value means an error occurred.
+ *
+ * Referencing the output string's pointer with a format item is undefined
+ * behavior.
+ *
+ * @param text the buffer to write the wide string into. Must not be NULL.
+ * @param maxlen the maximum wchar_t values to write, including the
+ *               null-terminator.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of values to be used with the format string.
+ * @returns the number of wide characters that should be written, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int swprintf(wchar_t* text,
+                    size_t maxlen,
+                    SDL_PRINTF_FORMAT_STRING const wchar_t* fmt,
+                    ...)
+{
+  va_list ap;
+  int result;
+
+  va_start(ap, fmt);
+  result = SDL_vswprintf(text, maxlen, fmt, ap);
+  va_end(ap);
+
+  return result;
+}
+
+/**
+ * This works exactly like vsnprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_snprintf(), except it takes a `va_list`
+ * instead of using `...` variable arguments.
+ *
+ * @param text the buffer to write the string into. Must not be NULL.
+ * @param maxlen the maximum bytes to write, including the null-terminator.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ap a `va_list` values to be used with the format string.
+ * @returns the number of bytes that should be written, not counting the
+ *          null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vsnprintf(char* text,
+                     size_t maxlen,
+                     SDL_PRINTF_FORMAT_STRING const char* fmt,
+                     va_list ap)
+{
+  return SDL_vsnprintf(text, maxlen, fmt, ap);
+}
+
+/**
+ * This works exactly like vswprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_swprintf(), except it takes a `va_list`
+ * instead of using `...` variable arguments.
+ *
+ * @param text the buffer to write the string into. Must not be NULL.
+ * @param maxlen the maximum wide characters to write, including the
+ *               null-terminator.
+ * @param fmt a printf-style format wide string. Must not be NULL.
+ * @param ap a `va_list` values to be used with the format string.
+ * @returns the number of wide characters that should be written, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vswprintf(wchar_t* text,
+                     size_t maxlen,
+                     SDL_PRINTF_FORMAT_STRING const wchar_t* fmt,
+                     va_list ap)
+{
+  return SDL_vswprintf(text, maxlen, fmt, ap);
+}
+
+/**
+ * This works exactly like asprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_snprintf(), except it allocates a buffer large
+ * enough to hold the output string on behalf of the caller.
+ *
+ * On success, this function returns the number of bytes (not characters)
+ * comprising the output string, not counting the null-terminator character,
+ * and sets `*strp` to the newly-allocated string.
+ *
+ * On error, this function returns a negative number, and the value of `*strp`
+ * is undefined.
+ *
+ * The returned string is owned by the caller, and should be passed to
+ * SDL_free when no longer needed.
+ *
+ * @param strp on output, is set to the new string. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ... a list of values to be used with the format string.
+ * @returns the number of bytes in the newly-allocated string, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int asprintf(char** strp, SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
+{
+  va_list ap;
+  int result;
+
+  va_start(ap, fmt);
+  result = SDL_vasprintf(strp, fmt, ap);
+  va_end(ap);
+
+  return result;
+}
+
+/**
+ * This works exactly like vasprintf() but doesn't require access to a C
+ * runtime.
+ *
+ * Functions identically to SDL_asprintf(), except it takes a `va_list`
+ * instead of using `...` variable arguments.
+ *
+ * @param strp on output, is set to the new string. Must not be NULL.
+ * @param fmt a printf-style format string. Must not be NULL.
+ * @param ap a `va_list` values to be used with the format string.
+ * @returns the number of bytes in the newly-allocated string, not counting
+ *          the null-terminator char, or a negative value on error.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline int vasprintf(char** strp,
+                     SDL_PRINTF_FORMAT_STRING const char* fmt,
+                     va_list ap)
+{
+  return SDL_vasprintf(strp, fmt, ap);
+}
+
+/**
  * Seeds the pseudo-random number generator.
  *
- * Reusing the seed number will cause SDL_rand_*() to repeat the same stream
+ * Reusing the seed number will cause rand_*() to repeat the same stream
  * of 'random' numbers.
  *
  * @param seed the value to use as a random number seed, or 0 to use
  *             SDL_GetPerformanceCounter().
  *
  * @threadsafety This should be called on the same thread that calls
- *               SDL_rand*()
+ *               rand*()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_rand
- * @sa SDL_rand_bits
- * @sa SDL_randf
+ * @sa rand()
+ * @sa rand_bits()
+ * @sa randf()
  **/
 inline void srand(Uint64 seed) { SDL_srand(seed); }
 
@@ -2949,14 +3209,13 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
  * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
  * much worse as n gets bigger.
  *
- * Example: to simulate a d6 use `SDL_rand(6) + 1` The +1 converts 0..5 to
+ * Example: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to
  * 1..6
  *
  * If you want to generate a pseudo-random number in the full range of Sint32,
  * you should use: (Sint32)SDL_rand_bits()
  *
- * If you want reproducible output, be sure to initialize with SDL_srand()
- * first.
+ * If you want reproducible output, be sure to initialize with srand() first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -2971,16 +3230,15 @@ inline void srand(Uint64 seed) { SDL_srand(seed); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_srand
- * @sa SDL_randf
+ * @sa srand()
+ * @sa randf()
  **/
 inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
 
 /**
  * Generate a uniform pseudo-random floating point number less than 1.0
  *
- * If you want reproducible output, be sure to initialize with SDL_srand()
- * first.
+ * If you want reproducible output, be sure to initialize with srand() first.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -2994,15 +3252,15 @@ inline Sint32 rand(Sint32 n) { return SDL_rand(n); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_srand
- * @sa SDL_rand
+ * @sa srand()
+ * @sa rand()
  **/
 inline float randf() { return SDL_randf(); }
 
 /**
  * Generate 32 pseudo-random bits.
  *
- * You likely want to use SDL_rand() to get a psuedo-random number instead.
+ * You likely want to use rand() to get a pseudo-random number instead.
  *
  * There are no guarantees as to the quality of the random sequence produced,
  * and this should not be used for security (cryptography, passwords) or where
@@ -3016,98 +3274,113 @@ inline float randf() { return SDL_randf(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SDL_rand
- * @sa SDL_randf
- * @sa SDL_srand
+ * @sa rand()
+ * @sa randf()
+ * @sa srand()
  **/
 inline Uint32 rand_bits() { return SDL_rand_bits(); }
 
 /**
- * Generate a pseudo-random number less than n for positive n
+ * A independent pseudo random state
  *
- * The method used is faster and of better quality than `rand() % n`. Odds are
- * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
- * much worse as n gets bigger.
+ * This can be instantiated in any thread and as long as it is not shared with
+ * another thread all members are safe to call.
  *
- * Example: to simulate a d6 use `SDL_rand_r(state, 6) + 1` The +1 converts
- * 0..5 to 1..6
+ * @ingroup WrapState
  *
- * If you want to generate a pseudo-random number in the full range of Sint32,
- * you should use: (Sint32)SDL_rand_bits_r(state)
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              NULL.
- * @param n the number of possible outcomes. n must be positive.
- * @returns a random value in the range of [0 .. n-1].
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_rand
- * @sa SDL_rand_bits_r
- * @sa SDL_randf_r
- **/
-inline Sint32 rand_r(Uint64* state, Sint32 n) { return SDL_rand_r(state, n); }
+ * @sa WrapState
+ */
+class Random
+{
+  Uint64 m_state;
 
-/**
- * Generate a uniform pseudo-random floating point number less than 1.0
- *
- * If you want reproducible output, be sure to initialize with SDL_srand()
- * first.
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              NULL.
- * @returns a random value in the range of [0.0, 1.0).
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_rand_bits_r
- * @sa SDL_rand_r
- * @sa SDL_randf
- **/
-inline float randf_r(Uint64* state) { return SDL_randf_r(state); }
+public:
+  constexpr Random(Uint64 state = 0)
+    : m_state(state)
+  {
+  }
 
-/**
- * Generate 32 pseudo-random bits.
- *
- * You likely want to use SDL_rand_r() to get a psuedo-random number instead.
- *
- * There are no guarantees as to the quality of the random sequence produced,
- * and this should not be used for security (cryptography, passwords) or where
- * money is on the line (loot-boxes, casinos). There are many random number
- * libraries available with different characteristics and you should pick one
- * of those to meet any serious needs.
- *
- * @param state a pointer to the current random number state, this may not be
- *              NULL.
- * @returns a random value in the range of [0-SDL_MAX_UINT32].
- *
- * @threadsafety This function is thread-safe, as long as the state pointer
- *               isn't shared between threads.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_rand_r
- * @sa SDL_randf_r
- **/
-inline Uint32 rand_bits_r(Uint64* state) { return SDL_rand_bits_r(state); }
+  constexpr operator Uint64() { return m_state; }
+
+  /**
+   * Generate a pseudo-random number less than n for positive n
+   *
+   * The method used is faster and of better quality than `rand() % n`. Odds are
+   * roughly 99.9% even for n = 1 million. Evenness is better for smaller n, and
+   * much worse as n gets bigger.
+   *
+   * Example: to simulate a d6 use `state.rand(6) + 1` The +1 converts
+   * 0..5 to 1..6
+   *
+   * If you want to generate a pseudo-random number in the full range of Sint32,
+   * you should use: (Sint32)state.rand_bits()
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @param n the number of possible outcomes. n must be positive.
+   * @returns a random value in the range of [0 .. n-1].
+   *
+   * @threadsafety This function is thread-safe, as long as this object
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL::rand()
+   * @sa rand_bits()
+   * @sa randf()
+   */
+  Sint32 rand(Sint32 n) { return SDL_rand_r(&m_state, n); }
+
+  /**
+   * Generate a uniform pseudo-random floating point number less than 1.0
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0.0, 1.0).
+   *
+   * @threadsafety This function is thread-safe, as long as this object
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand_bits()
+   * @sa rand()
+   * @sa SDL::randf()
+   */
+  float randf() { return SDL_randf_r(&m_state); }
+
+  /**
+   * Generate 32 pseudo-random bits.
+   *
+   * You likely want to use Random.rand() to get a pseudo-random number instead.
+   *
+   * There are no guarantees as to the quality of the random sequence produced,
+   * and this should not be used for security (cryptography, passwords) or where
+   * money is on the line (loot-boxes, casinos). There are many random number
+   * libraries available with different characteristics and you should pick one
+   * of those to meet any serious needs.
+   *
+   * @returns a random value in the range of [0-SDL_MAX_UINT32].
+   *
+   * @threadsafety This function is thread-safe, as long as this object
+   *               isn't shared between threads.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa rand()
+   * @sa randf()
+   * @sa SDL::rand_bits()
+   */
+  Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
+};
 
 /**
  * Compute the arc cosine of `x`.

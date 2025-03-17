@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['window_20management_0',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
-  ['wrapping_1',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]]
+  ['variables_0',['Configuration Variables',['../group__CategoryHints.html',1,'']]],
+  ['version_1',['Querying SDL Version',['../group__CategoryVersion.html',1,'']]],
+  ['video_2',['Video',['../group__CategoriesVideo.html',1,'']]]
 ];

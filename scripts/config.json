@@ -1,10 +1,15 @@
 {
   "sources": [
     "SDL_stdinc.h",
+    "SDL_error.h",
+    "SDL_assert.h",
     "SDL_misc.h",
+    "SDL_guid.h",
     "SDL_version.h",
+    "SDL_locale.h",
     "SDL_pixels.h",
     "SDL_blendmode.h",
+    "SDL_hints.h",
     "SDL_properties.h",
     "SDL_rect.h",
     "SDL_surface.h",

@@ -25,8 +25,14 @@
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"API By Category",url:"ApiByCategory.html"},
-{text:"Related Pages",url:"pages.html"},
-{text:"Topics",url:"topics.html"},
+{text:"Design notes",url:"group__DesignNotes.html",children:[
+{text:"Transformations",url:"transformations.html"},
+{text:"Resource",url:"group__resource.html"},
+{text:"Callback",url:"group__callback.html"},
+{text:"Formatted strings",url:"group__FmtString.html"}]},
+{text:"Related Pages",url:"pages.html",children:[
+{text:"All pages",url:"pages.html"},
+{text:"All topics",url:"topics.html"}]},
 {text:"Concepts",url:"concepts.html"},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},

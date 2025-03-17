@@ -300,6 +300,9 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This enum is available since SDL 3.2.0.
  *
+ * @ingroup WrapState
+ *
+ * @sa WrapState
  * @sa PixelFormats
  */
 struct PixelFormat
@@ -1195,6 +1198,10 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  *
  * @since This enum is available since SDL 3.2.0.
  *
+ * @ingroup WrapState
+ *
+ * @sa WrapState
+ *
  * @sa Colorspaces
  * @sa ColorPrimaries
  * @sa ColorRange
@@ -1501,6 +1508,10 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  * SDL_PIXELFORMAT_RGBA8888 on big-endian systems).
  *
  * @since This struct is available since SDL 3.2.0.
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct Color : SDL_Color
 {
@@ -1669,6 +1680,10 @@ struct Color : SDL_Color
  * color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format
  *
  * @since This struct is available since SDL 3.2.0.
+ *
+ * @ingroup WrapExtend
+ *
+ * @sa WrapExtend
  */
 struct FColor : SDL_FColor
 {
