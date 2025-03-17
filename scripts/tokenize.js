@@ -25,25 +25,59 @@ const ignoreInSignature = new RegExp(`(${[
 
 const memberSpecifiers = new Set(["inline", "static", "constexpr"]);
 
-/**
- * 
- * @param {string[]} lines
- */
-function tokenize(lines) {
-  /** @type {FileToken[]} */
-  const result = [];
-  const spaceRegex = /^\s+/;
-  const endCommentRegex = /\*\//;
-  const continueCommentRegex = /^\s*\*\s?/;
-  for (let i = 0; i < lines.length; i++) {
-    const lineUntrimmed = lines[i];
-    const line = lineUntrimmed.trim();
-    if (!line || hasIgnoredPrefix(line)) continue;
+const spaceRegex = /^\s+/;
+const endCommentRegex = /\*\//;
+const continueCommentRegex = /^\s*\*\s?/;
 
-    let m = spaceRegex.exec(lineUntrimmed);
+class Tokenizer {
+  /** @param {string[]} lines */
+  constructor(lines) {
+    this.lines = lines;
+    this.lineCount = 0;
+    this.lastLine = "";
+  }
+
+  /** @private */
+  nextLine() {
+    if (!this.lines?.length) return null;
+    this.lineCount++;
+    this.lastLine = this.lines.shift();
+    return this.lastLine;
+  }
+
+  /** @private */
+  peekLine() {
+    if (!this.lines?.length) return null;
+    return this.lines[0];
+  }
+
+  nonEmptyLine() {
+    let line;
+    do {
+      line = this.nextLine()?.trim();
+    } while (line === "" || hasIgnoredPrefix(line));
+    return line;
+  }
+
+  finish() {
+    this.lines = [];
+    return null;
+  }
+
+
+  /**
+   * Next line
+   * 
+   * @returns {FileToken}
+   */
+  next() {
+    const line = this.nonEmptyLine();
+    if (line == null) return null;
+
+    let m = spaceRegex.exec(this.lastLine);
     /** @type {FileToken} */
     const token = {
-      begin: i + 1,
+      begin: this.lineCount,
       end: null,
       spaces: m?.[0]?.length ?? 0,
       kind: null,
@@ -53,37 +87,40 @@ function tokenize(lines) {
     if (/^\/\/\s*Forward decl/.test(line)) {
       token.kind = "doc";
     } else if (/^#pragma\s+region\s+impl/.test(line)) {
-      break;
+      return this.finish();
     } else if (line.startsWith("}") || line.startsWith("{}")) {
       token.kind = "endStruct";
     } else if (line.startsWith("//")) {
-      continue;
+      return this.next();
     } else if (m = /^\/\*(\*)?/.exec(line)) {
       let doc = '';
       const isDoc = !!m[1];
-      for (; i < lines.length; ++i) {
-        const line = lines[i];
-        if (endCommentRegex.test(line)) {
+      let ln = line;
+      while (ln !== null) {
+        if (endCommentRegex.test(ln)) {
           break;
         }
-        const m = continueCommentRegex.exec(line);
-        doc += m ? line.slice(m[0].length) : line;
+        const m = continueCommentRegex.exec(ln);
+        doc += m ? ln.slice(m[0].length) : ln;
         doc += '\n';
+        ln = this.nextLine();
       }
       if (isDoc) {
         token.kind = "doc";
         token.value = doc.replace('/**', '').trim();
-      } else continue;
+      } else {
+        return this.next();
+      }
     } else if (m = /^#define\s+(\w+)(\(([\w\s,]+)\))?/.exec(line)) {
       token.kind = "def";
       token.value = m[1];
       if (m[2]) token.parameters = m[3]?.trim();
       let ln = line;
       while (ln.endsWith('\\')) {
-        if (i > lines.length) break;
-        ln = lines[++i];
+        ln = this.nextLine();
+        if (ln === null) break;
       }
-      if (token.value.endsWith('_')) continue;
+      if (token.value.endsWith('_')) return this.next();
       token.doc = checkInlineDoc(line);
     } else if (m = /^typedef\s+(([\w*]+\s+)+\**)(\w+);/.exec(line)) {
       token.kind = "alias";
@@ -96,8 +133,8 @@ function tokenize(lines) {
         token.type = m[2].trimEnd();
       } else {
         let type = m[2];
-        for (i = i + 1; i < lines.length; i++) {
-          const line = lines[i];
+        let line;
+        while ((line = this.nextLine()) !== null) {
           if (line.endsWith(";")) {
             type += " " + line.slice(0, line.length - 1);
             break;
@@ -115,8 +152,8 @@ function tokenize(lines) {
       token.type = m[1].trimEnd();
       token.parameters = m[3]?.trim();
       if (!m[4]) {
-        for (i++; i < lines.length; i++) {
-          const line = lines[i].trim();
+        let line;
+        while ((line = this.nextLine()) !== null) {
           if (line.endsWith(");")) {
             token.parameters += " " + line.slice(line.length - 2);
             break;
@@ -129,8 +166,8 @@ function tokenize(lines) {
       token.kind = m[1];
       token.value = m[2];
       if (token.kind == "union") {
-        i = ignoreBody(lines, i, token.spaces);
-      } else if (!line.endsWith("{")) i++;
+        this.ignoreBody(token.spaces);
+      } else if (!line.endsWith("{")) this.nextLine();
     } else if (m = /^(?:struct|class)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.value = m[1];
@@ -139,18 +176,17 @@ function tokenize(lines) {
       token.value = m[1];
       if (m[3]) {
         token.type = m[3].trim();
-      } else if (lines[i + 1].trimStart().startsWith(":")) {
-        token.type = lines[++i].trimStart().slice(1).trim();
+      } else if (this.peekLine()?.trimStart().startsWith(":")) {
+        token.type = this.nextLine().trimStart().slice(1).trim();
       }
-      if (lines[i + 1]?.endsWith("{")) i++;
+      if (this.peekLine()?.endsWith("{")) this.nextLine();
     } else if (m = /^template</.exec(line)) {
       token.kind = "template";
       if (line.endsWith(">")) {
         token.parameters = line.slice(m[0].length, line.length - 1).trim();
       } else {
         let parameters = line.slice(m[0].length) ?? "";
-        for (++i; i < lines.length; ++i) {
-          const line = lines[i];
+        for (let line = this.nextLine(); line !== null; line = this.nextLine()) {
           if (line.endsWith('>')) {
             parameters += '\n' + line.slice(0, line.length - 1);
             break;
@@ -165,16 +201,16 @@ function tokenize(lines) {
     } else if (line.startsWith('#')) {
       let ln = line;
       while (ln.endsWith('\\')) {
-        if (i > lines.length) break;
-        ln = lines[i++];
+        ln = this.nextLine();
+        if (ln === null) break;
       }
-      continue;
+      return this.next();
     } else {
       const member = line.replaceAll(ignoreInSignature, "").trimStart();
       m = /^(([\w*&:<>,\[\]]+\s+)*)(operator(?:\(\)|\[\]|<=>|[-+<>=!%]{1,2})|[\w*&~]+)(\s*\()?/.exec(member);
       if (!m) {
-        system.warn(`Unknown token at line ${i + 1}: ${member}`);
-        continue;
+        system.warn(`Unknown token at line ${this.lineCount}: ${member}`);
+        return this.next();
       }
       token.value = m[3];
       const typeWords = m[1]?.trim()?.split(/\s+/) ?? [];
@@ -197,8 +233,8 @@ function tokenize(lines) {
         let parameters = member.slice(m[0].length);
         const endBracket = parameters.indexOf(")");
         if (endBracket < 0) {
-          for (++i; i < lines.length; ++i) {
-            const line = lines[i];
+          let line;
+          while ((line = this.nextLine()) !== null) {
             const m = /\)\s*(const)?(&{0,2});?$/.exec(line);
             if (m) {
               parameters += '\n' + line.slice(0, line.length - m[0].length);
@@ -228,17 +264,73 @@ function tokenize(lines) {
         token.type += " " + m[1];
         token.value = m[2];
       }
-      i = ignoreBody(lines, i, token.spaces);
+      this.ignoreBody(token.spaces);
     }
-    for (let j = i + 1; j < lines.length - 1; j++) {
-      if (!lines[j].trim()) {
-        i++;
-      } else break;
-    }
-    token.end = i + 2;
+    this.extendToNextStart();
+    token.end = this.lineCount + 1;
     if (checkTokenTooLarge(token)) {
       system.warn(`Warning: Token at ${token.begin} seems very large ${token.value} (${token.end - token.begin} lines)`);
     }
+    return token;
+  }
+
+  extendToNextStart() {
+    let line = this.peekLine();
+    while (line !== null) {
+      if (line.trim()) break;
+      this.nextLine();
+      line = this.peekLine();
+    }
+  }
+
+  /**
+   * 
+   * @param {number} spaces 
+   */
+  ignoreBody(spaces) {
+    let opened = false;
+    if (!this.lastLine.endsWith("{")) {
+      const line = this.peekLine().trim();
+      if (line.startsWith("{")) {
+        this.nextLine();
+        if (line.endsWith("}")) return;
+        opened = true;
+      }
+    } else {
+      opened = true;
+    }
+    const spaceRegex = /^\s+/;
+    let line = this.peekLine();
+    while (line !== null) {
+      if (line.trim()) {
+        const indentation = spaceRegex.exec(line)?.[0]?.length ?? 0;
+        if (indentation <= spaces) {
+          if (line.slice(indentation).startsWith("{")) {
+            opened = true;
+            if (line.endsWith("}") || line.endsWith("};")) {
+              return;
+            }
+          } else if (line.slice(indentation).startsWith("}") && opened) {
+            this.nextLine();
+            return;
+          } else return;
+        }
+      }
+      this.nextLine();
+      line = this.peekLine();
+    }
+  }
+}
+
+/**
+ * 
+ * @param {string[]} lines
+ */
+function tokenize(lines) {
+  /** @type {FileToken[]} */
+  const result = [];
+  const tokenizer = new Tokenizer(lines);
+  for (let token = tokenizer.next(); token != null; token = tokenizer.next()) {
     result.push(token);
   }
   return result;
@@ -260,50 +352,15 @@ function checkInlineDoc(str) {
   if (m) return m[1].trim();
 }
 
-/**
- * 
- * @param {string[]} lines 
- * @param {number} begin 
- * @param {number} spaces 
- */
-function ignoreBody(lines, begin, spaces) {
-  let opened = false;
-  if (!lines[begin].endsWith("{")) {
-    const line = lines[begin + 1].trim();
-    if (line.startsWith("{")) {
-      begin += 1;
-      if (line.endsWith("}")) return begin;
-      opened = true;
-    }
-  } else {
-    begin++;
-    opened = true;
-  }
-  const spaceRegex = /^\s+/;
-  for (let i = begin + 1; i < lines.length; i++) {
-    const line = lines[i];
-    if (!line.trim()) continue;
-    const indentation = spaceRegex.exec(line)?.[0]?.length ?? 0;
-    if (indentation <= spaces) {
-      if (line.slice(indentation).startsWith("{")) {
-        opened = true;
-        if (line.endsWith("}") || line.endsWith("};")) return i;
-      } else if (line.slice(indentation).startsWith("}") && opened) {
-        return i;
-      } else return i - 1;
-    }
-  }
-  return lines.length;
-}
-
 /** @param {string} line  */
 function hasIgnoredPrefix(line) {
   for (const prefix of ignorePrefixes) {
-    if (line.startsWith(prefix)) {
+    if (line?.startsWith(prefix)) {
       return true;
     }
   }
   return false;
 }
 
+exports.Tokenizer = Tokenizer;
 exports.tokenize = tokenize;

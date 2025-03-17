@@ -2131,7 +2131,6 @@
             "m_state": {
               "kind": "var",
               "type": "Uint64",
-              "default": "0",
               "name": "m_state",
               "doc": ""
             },
@@ -15572,6 +15571,10 @@
       "name": "SDL3pp_image.h",
       "doc": "@defgroup CategorySDLImage Category SDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",
       "entries": {
+        "SDL3PP_ENABLE_IMAGE": {
+          "name": "SDL3PP_ENABLE_IMAGE",
+          "doc": ""
+        },
         "IMG_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_image library.\n\n@returns SDL_image version.\n\n@since This function is available since SDL_image 3.0.0.",
           "name": "IMG_Version",

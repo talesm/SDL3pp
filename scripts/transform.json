@@ -131,8 +131,7 @@
           "entries": {
             "m_state": {
               "kind": "var",
-              "type": "Uint64",
-              "default": "0"
+              "type": "Uint64"
             },
             "Random": {
               "kind": "function",
@@ -4347,6 +4346,11 @@
       }
     },
     "SDL_image.h": {
+      "includeAfter": {
+        "__begin": {
+          "name": "SDL3PP_ENABLE_IMAGE"
+        }
+      },
       "transform": {
         "IMG_Version": {
           "name": "IMG_Version"

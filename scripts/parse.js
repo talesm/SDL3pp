@@ -1,5 +1,5 @@
 const { readLinesSync, system } = require("./utils");
-const { tokenize } = require("./tokenize.js");
+const { Tokenizer } = require("./tokenize.js");
 
 /**
  * @typedef {object} ParseConfig
@@ -54,7 +54,6 @@ function readContent(name, baseDirs) {
  * @param {ParseContentConfig=} config 
  */
 function parseContent(name, content, config) {
-  const tokens = tokenize(content);
   if (!config) config = {};
 
   /** @type {ApiFile} */
@@ -63,7 +62,7 @@ function parseContent(name, content, config) {
     doc: '',
     entries: {},
   };
-  const parser = new ContentParser(tokens, config);
+  const parser = new ContentParser(content, config);
   const entryArray = parser.parseEntries();
   insertEntry(apiFile.entries, entryArray);
   if (config.storeLineNumbers) {
@@ -137,31 +136,39 @@ function fixEntry(entry) {
 class ContentParser {
   /**
    * 
-   * @param {FileToken[]}        tokens the tokens
+   * @param {string[]}           lines the tokens
    * @param {ParseContentConfig} config the configuration
    */
-  constructor(tokens, config) {
+  constructor(lines, config) {
     /** @private */
-    this.tokens = tokens ?? [];
+    this.tokenizer = new Tokenizer(lines.slice());
+    this.nextToken = this.tokenizer.next();
     this.storeLineNumbers = config.storeLineNumbers;
     this.docBegin = 0;
     this.doc = "";
     this.docEnd = 0;
     this.entriesBegin = 0;
-    this.entriesEnd = tokens[tokens.length - 1]?.end;
+    this.entriesEnd = 0;
   }
 
   /**
    * @private
    * @returns next token
    */
-  next() { return this.tokens.shift(); }
+  next() {
+    const token = this.nextToken;
+    if (token !== null) {
+      this.entriesEnd = token.end;
+      this.nextToken = this.tokenizer.next();
+    }
+    return token;
+  }
 
   /**
   * @private
   * @returns next token, but does not consume it
   */
-  lookup() { return this.tokens[0]; }
+  lookup() { return this.nextToken; }
 
   /**
    * Parse all entries
@@ -272,7 +279,7 @@ class ContentParser {
       case "endStruct":
         if (lastTemplate) throw new Error(`Error at ${lastEnd}: Expected an entity after template signature`);
         this.entriesEnd = token.begin;
-        this.tokens = [];
+        this.nextToken = null;
         return undefined;
       default:
         throw new Error(`Error at ${token.begin}: Unexpected ${token.kind}`);

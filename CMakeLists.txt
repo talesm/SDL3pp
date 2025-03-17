@@ -82,6 +82,6 @@ endif (DOXYGEN_FOUND)
 
 # Refresh the headers
 add_custom_target(SDL3pp_refresh
-    COMMAND node refresh.js
+    COMMAND make update
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
