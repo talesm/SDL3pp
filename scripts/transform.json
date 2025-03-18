@@ -288,6 +288,7 @@
       },
       "transform": {
         "SDL_SetError": {
+          "name": "SetErrorUnformatted",
           "parameters": [
             {
               "type": "StringParam",

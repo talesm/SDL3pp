@@ -60,8 +60,9 @@ namespace SDL {
  *
  * @sa ClearError
  * @sa GetError
+ * @sa SetError
  */
-inline bool SetError(StringParam message)
+inline bool SetErrorUnformatted(StringParam message)
 {
   return SDL_SetError("%s", static_cast<const char*>(message));
 }
@@ -97,6 +98,7 @@ inline bool SetError(StringParam message)
  * @sa FmtString
  * @sa ClearError
  * @sa GetError
+ * @sa SetError
  * @return false
  */
 template<class... ARGS>

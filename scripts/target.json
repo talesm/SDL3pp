@@ -3014,43 +3014,41 @@
       "name": "SDL3pp_error.h",
       "doc": "@defgroup CategoryError Category Error\n\nSimple error message routines for SDL.\n\nMost apps will interface with these APIs in exactly one function: when\nalmost any SDL function call reports failure, you can get a human-readable\nstring of the problem from SDL_GetError().\n\nThese strings are maintained per-thread, and apps are welcome to set their\nown errors, which is popular when building libraries on top of SDL for\nother apps to consume. These strings are set by calling SDL_SetError().\n\nA common usage pattern is to have a function that returns true for success\nand false for failure, and do this when something fails:\n\n```c\nif (something_went_wrong) {\n   return SDL_SetError(\"The thing broke in this specific way: %d\", errcode);\n}\n```\n\nIt's also common to just return `false` in this case if the failing thing\nis known to call SDL_SetError(), so errors simply propagate through.",
       "entries": {
-        "SetError": [
-          {
-            "doc": "Set the SDL error message for the current thread.\n\nCalling this function will replace any previous error message that was set.\n\nThis function always returns false, since SDL frequently uses false to\nsignify a failing result, leading to this idiom:\n\n```c\nif (error_code) {\n    return SDL_SetError(\"This operation has failed: %d\", error_code);\n}\n```\n\n@param fmt a printf()-style message format string.\n@param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ClearError\n@sa SDL_GetError\n@sa SDL_SetErrorV",
-            "name": "SetError",
-            "kind": "function",
-            "type": "bool",
-            "parameters": [
-              {
-                "name": "message",
-                "type": "StringParam"
-              }
-            ],
-            "sourceName": "SDL_SetError"
-          },
-          {
-            "kind": "function",
-            "name": "SetError",
-            "type": "bool",
-            "template": [
-              {
-                "type": "class...",
-                "name": "ARGS"
-              }
-            ],
-            "parameters": [
-              {
-                "type": "std::string_view",
-                "name": "fmt"
-              },
-              {
-                "type": "ARGS...",
-                "name": "args"
-              }
-            ],
-            "doc": ""
-          }
-        ],
+        "SetErrorUnformatted": {
+          "doc": "Set the SDL error message for the current thread.\n\nCalling this function will replace any previous error message that was set.\n\nThis function always returns false, since SDL frequently uses false to\nsignify a failing result, leading to this idiom:\n\n```c\nif (error_code) {\n    return SDL_SetError(\"This operation has failed: %d\", error_code);\n}\n```\n\n@param fmt a printf()-style message format string.\n@param ... additional parameters matching % tokens in the `fmt` string, if\n           any.\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ClearError\n@sa SDL_GetError\n@sa SDL_SetErrorV",
+          "name": "SetErrorUnformatted",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "message",
+              "type": "StringParam"
+            }
+          ],
+          "sourceName": "SDL_SetError"
+        },
+        "SetError": {
+          "kind": "function",
+          "name": "SetError",
+          "type": "bool",
+          "template": [
+            {
+              "type": "class...",
+              "name": "ARGS"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "std::string_view",
+              "name": "fmt"
+            },
+            {
+              "type": "ARGS...",
+              "name": "args"
+            }
+          ],
+          "doc": ""
+        },
         "OutOfMemory": {
           "doc": "Set an error indicating that memory allocation failed.\n\nThis function does not do any memory allocation.\n\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "OutOfMemory",

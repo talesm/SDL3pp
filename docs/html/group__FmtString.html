@@ -805,9 +805,9 @@ template&lt;class... ARGS&gt; </div>
 <p>Calling this function will replace any previous error message that was set.</p>
 <p>This function always returns false, since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> frequently uses false to signify a failing result, leading to this idiom:</p>
 <div class="fragment"><div class="line"><span class="keywordflow">if</span> (error_code) {</div>
-<div class="line">    <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SetError</a>(<span class="stringliteral">&quot;This operation has failed: {}&quot;</span>, error_code);</div>
+<div class="line">    <span class="keywordflow">return</span> <a class="code hl_function" href="group__FmtString.html#gaf25860d775629ffbdc0fa04bf1e4b7ca">SetError</a>(<span class="stringliteral">&quot;This operation has failed: {}&quot;</span>, error_code);</div>
 <div class="line">}</div>
-<div class="ttc" id="agroup__CategoryError_html_gaf93aa5024945f514fc6d405bec4295bc"><div class="ttname"><a href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SDL::SetError</a></div><div class="ttdeci">bool SetError(StringParam message)</div><div class="ttdoc">Set the SDL error message for the current thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__error_8h_source.html#l00064">SDL3pp_error.h:64</a></div></div>
+<div class="ttc" id="agroup__FmtString_html_gaf25860d775629ffbdc0fa04bf1e4b7ca"><div class="ttname"><a href="group__FmtString.html#gaf25860d775629ffbdc0fa04bf1e4b7ca">SDL::SetError</a></div><div class="ttdeci">bool SetError(std::string_view fmt, ARGS... args)</div><div class="ttdoc">Set the SDL error message for the current thread.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__error_8h_source.html#l00105">SDL3pp_error.h:105</a></div></div>
 </div><!-- fragment --><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">ARGS</td><td>the formatting parameters </td></tr>
@@ -828,10 +828,12 @@ template&lt;class... ARGS&gt; </div>
 <dd>
 <a class="el" href="group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326" title="Clear any previous error message for this thread.">ClearError</a> </dd>
 <dd>
-<a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError</a> </dd></dl>
+<a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError</a> </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>false </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00103">103</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__error_8h_source.html#l00105">105</a> of file <a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>.</p>
 
 </div>
 </div>
