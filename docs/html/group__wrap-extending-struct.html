@@ -70,40 +70,12 @@ $(function() {
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle"><div class="title">Wrap extending struct<div class="ingroups"><a class="el" href="group__DesignNotes.html">Design notes</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>This is similar to <a class="el" href="group__wrap-state.html">Wrap state</a>, but when the state is a struct.  
-<a href="#details">More...</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GUID.html">SDL::GUID</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An SDL_GUID is a 128-bit identifier for an input device that identifies that device across runs of <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> programs on the same platform.  <a href="structSDL_1_1GUID.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Color.html">SDL::Color</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure that represents a color as RGBA components.  <a href="structSDL_1_1Color.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FColor.html">SDL::FColor</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bits of this structure can be directly reinterpreted as a float-packed color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format.  <a href="structSDL_1_1FColor.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Point.html">SDL::Point</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The structure that defines a point (using integers)  <a href="structSDL_1_1Point.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FPoint.html">SDL::FPoint</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The structure that defines a point (using floating point values).  <a href="structSDL_1_1FPoint.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Rect.html">SDL::Rect</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A rectangle, with the origin at the upper left (using integers).  <a href="structSDL_1_1Rect.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html">SDL::FRect</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A rectangle, with the origin at the upper left (using floats).  <a href="structSDL_1_1FRect.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+</p>
 <p>This is similar to <a class="el" href="group__wrap-state.html">Wrap state</a>, but when the state is a struct. </p>
 <p>In that case we can have similar results by extending it and adding the member functions on the extended type.</p>
 <p>The extended type must not have any attribute and must have a constructor to the original type. If the state has some sort of <b>invalid</b> or <b>uninitialized</b> state, we also create a converting operator to bool that is true when the state valid. </p>

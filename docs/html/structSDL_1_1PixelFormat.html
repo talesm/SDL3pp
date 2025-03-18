@@ -79,7 +79,7 @@ $(function() {
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structSDL_1_1PixelFormat-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SDL::PixelFormat Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryPixels.html">Pixel Formats and Conversion Routines</a> &#124; <a class="el" href="group__DesignNotes.html">Design notes</a> &raquo; <a class="el" href="group__wrap-state.html">Wrap state</a></div></div></div>
+  <div class="headertitle"><div class="title">SDL::PixelFormat Struct Reference<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesVideo.html">Video</a> &raquo; <a class="el" href="group__CategoryPixels.html">Pixel Formats and Conversion Routines</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -142,10 +142,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a21558986fed65bb09d029a9f05a3df41" id="r_a21558986fed65bb09d029a9f05a3df41"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc">PixelFormatDetails</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#a21558986fed65bb09d029a9f05a3df41">GetDetails</a> () const</td></tr>
 <tr class="memdesc:a21558986fed65bb09d029a9f05a3df41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an SDL_PixelFormatDetails structure corresponding to a pixel format.  <br /></td></tr>
 <tr class="separator:a21558986fed65bb09d029a9f05a3df41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fcb872686be3ac5ed167751bfe04880" id="r_a3fcb872686be3ac5ed167751bfe04880"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880">Map</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> color, <a class="el" href="group__resource.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette) const</td></tr>
+<tr class="memitem:a3fcb872686be3ac5ed167751bfe04880" id="r_a3fcb872686be3ac5ed167751bfe04880"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#a3fcb872686be3ac5ed167751bfe04880">Map</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> color, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette) const</td></tr>
 <tr class="memdesc:a3fcb872686be3ac5ed167751bfe04880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map an RGBA quadruple to a pixel value for a given pixel format.  <br /></td></tr>
 <tr class="separator:a3fcb872686be3ac5ed167751bfe04880"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2770572204fc028e87c914fed6e744c" id="r_ab2770572204fc028e87c914fed6e744c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c">Get</a> (Uint32 pixel, <a class="el" href="group__resource.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette) const</td></tr>
+<tr class="memitem:ab2770572204fc028e87c914fed6e744c" id="r_ab2770572204fc028e87c914fed6e744c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c">Get</a> (Uint32 pixel, <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a> palette) const</td></tr>
 <tr class="memdesc:ab2770572204fc028e87c914fed6e744c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get RGBA values from a pixel in the specified format.  <br /></td></tr>
 <tr class="separator:ab2770572204fc028e87c914fed6e744c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -170,6 +170,7 @@ Public Attributes</h2></td></tr>
 </ul>
 <p>The 32-bit byte-array encodings such as RGBA32 are aliases for the appropriate 8888 encoding for the current platform. For example, RGBA32 is an alias for ABGR8888 on little-endian CPUs like x86, or an alias for RGBA8888 on big-endian CPUs.</p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__wrap-state.html">Wrap state</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>wrap-state </dd>
 <dd>
 <a class="el" href="group__PixelFormats.html" title="Pixel formats.">Pixel Formats</a> </dd></dl>
@@ -371,7 +372,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__resource.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
           <td class="paramname"><em>palette</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
@@ -945,7 +946,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__resource.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991">PaletteRef</a>&#160;</td>
           <td class="paramname"><em>palette</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>

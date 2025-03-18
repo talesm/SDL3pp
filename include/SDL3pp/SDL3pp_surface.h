@@ -43,7 +43,7 @@ struct SurfaceBase;
 /**
  * Handle to a non owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa SurfaceBase
@@ -60,7 +60,7 @@ struct ObjectDeleter<SDL_Surface>
 /**
  * Handle to an owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa SurfaceBase
@@ -148,7 +148,7 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL;
  *
  * @sa SurfaceBase::SurfaceBase()
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Surface

@@ -46,7 +46,7 @@ struct PropertiesBase;
  *
  * To create a new property group use CreateProperties()
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PropertiesBase
@@ -65,7 +65,7 @@ struct PropertiesDeleter
 /**
  * Handle to an owned properties
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PropertiesBase
@@ -117,7 +117,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  * @sa PropertiesBase.SetPointerWithCleanup()
  * @sa result-callback
  *
- * @ingroup result-callback
+ * @cat result-callback
  */
 using CleanupPropertyCB = std::function<void(void*)>;
 
@@ -156,7 +156,7 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  * @sa PropertiesBase::Enumerate()
  * @sa immediate-callback
  *
- * @ingroup immediate-callback
+ * @cat immediate-callback
  */
 using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;
@@ -195,7 +195,7 @@ struct PropertiesLock;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa CreateProperties()
@@ -273,7 +273,7 @@ struct PropertiesBase : T
    *
    * @sa result-callback
    *
-   * @ingroup result-callback
+   * @cat result-callback
    *
    */
   bool SetPointerWithCleanup(StringParam name,
@@ -661,7 +661,7 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @ingroup immediate-callback
+   * @cat immediate-callback
    *
    * @sa immediate-callback
    */

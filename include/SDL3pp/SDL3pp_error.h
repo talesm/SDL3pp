@@ -93,7 +93,7 @@ inline bool SetErrorUnformatted(StringParam message)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup formatted-string
+ * @cat formatted-string
  *
  * @sa formatted-string
  * @sa ClearError

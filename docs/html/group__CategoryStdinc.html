@@ -99,6 +99,18 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga61951c691e5b53e2c5261c8f3536531e" id="r_ga61951c691e5b53e2c5261c8f3536531e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e">SDL::EnvironmentRef</a> = <a class="el" href="structSDL_1_1EnvironmentBase.html">EnvironmentBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Environment &gt; &gt;</td></tr>
+<tr class="memdesc:ga61951c691e5b53e2c5261c8f3536531e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owning environment.  <br /></td></tr>
+<tr class="separator:ga61951c691e5b53e2c5261c8f3536531e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaedb86e9b9bb1aca04f73942d06b1d98f" id="r_gaedb86e9b9bb1aca04f73942d06b1d98f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaedb86e9b9bb1aca04f73942d06b1d98f">SDL::Environment</a> = <a class="el" href="structSDL_1_1EnvironmentBase.html">EnvironmentBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_Environment &gt; &gt;</td></tr>
+<tr class="memdesc:gaedb86e9b9bb1aca04f73942d06b1d98f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owning environment.  <br /></td></tr>
+<tr class="separator:gaedb86e9b9bb1aca04f73942d06b1d98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3d2eecfc83ea54cacb89f4fec27fa0b0" id="r_ga3d2eecfc83ea54cacb89f4fec27fa0b0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga3d2eecfc83ea54cacb89f4fec27fa0b0">SDL::IConvRef</a> = <a class="el" href="structSDL_1_1IConvBase.html">IConvBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_iconv_data_t &gt; &gt;</td></tr>
+<tr class="memdesc:ga3d2eecfc83ea54cacb89f4fec27fa0b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owning iconv.  <br /></td></tr>
+<tr class="separator:ga3d2eecfc83ea54cacb89f4fec27fa0b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95fcbc65252fd494d78ce162e1340bea" id="r_ga95fcbc65252fd494d78ce162e1340bea"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga95fcbc65252fd494d78ce162e1340bea">SDL::IConv</a> = <a class="el" href="structSDL_1_1IConvBase.html">IConvBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_iconv_data_t &gt; &gt;</td></tr>
+<tr class="memdesc:ga95fcbc65252fd494d78ce162e1340bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owning iconv.  <br /></td></tr>
+<tr class="separator:ga95fcbc65252fd494d78ce162e1340bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4cdca510cc08a5569b9e76462e19242f" id="r_ga4cdca510cc08a5569b9e76462e19242f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f">SDL::Time</a> = SDL_Time</td></tr>
 <tr class="memdesc:ga4cdca510cc08a5569b9e76462e19242f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1, 1970).  <br /></td></tr>
 <tr class="separator:ga4cdca510cc08a5569b9e76462e19242f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,7 +171,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gae51ea510815eaec3a9b288754a805206" id="r_gae51ea510815eaec3a9b288754a805206"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gae51ea510815eaec3a9b288754a805206">SDL::GetNumAllocations</a> ()</td></tr>
 <tr class="memdesc:gae51ea510815eaec3a9b288754a805206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of outstanding (unfreed) allocations.  <br /></td></tr>
 <tr class="separator:gae51ea510815eaec3a9b288754a805206"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafc9e4411ee1c8072c58cbfa0566a5660" id="r_gafc9e4411ee1c8072c58cbfa0566a5660"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__resource.html#ga61951c691e5b53e2c5261c8f3536531e">EnvironmentRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660">SDL::GetEnvironment</a> ()</td></tr>
+<tr class="memitem:gafc9e4411ee1c8072c58cbfa0566a5660" id="r_gafc9e4411ee1c8072c58cbfa0566a5660"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e">EnvironmentRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660">SDL::GetEnvironment</a> ()</td></tr>
 <tr class="memdesc:gafc9e4411ee1c8072c58cbfa0566a5660"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the process environment.  <br /></td></tr>
 <tr class="separator:gafc9e4411ee1c8072c58cbfa0566a5660"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga97502b219bb63f4be0f31868fecc9120" id="r_ga97502b219bb63f4be0f31868fecc9120"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga97502b219bb63f4be0f31868fecc9120">SDL::getenv</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> name)</td></tr>
@@ -701,6 +713,54 @@ SDL_bsearch_r </dd></dl>
 
 </div>
 </div>
+<a id="gaedb86e9b9bb1aca04f73942d06b1d98f" name="gaedb86e9b9bb1aca04f73942d06b1d98f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaedb86e9b9bb1aca04f73942d06b1d98f">&#9670;&#160;</a></span>Environment</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#gaedb86e9b9bb1aca04f73942d06b1d98f">SDL::Environment</a> = typedef <a class="el" href="structSDL_1_1EnvironmentBase.html">EnvironmentBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_Environment&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to an owning environment. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()...">Resource</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1EnvironmentBase.html" title="A thread-safe set of environment variables.">EnvironmentBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e" title="Handle to a non owning environment.">EnvironmentRef</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00067">67</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga61951c691e5b53e2c5261c8f3536531e" name="ga61951c691e5b53e2c5261c8f3536531e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga61951c691e5b53e2c5261c8f3536531e">&#9670;&#160;</a></span>EnvironmentRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e">SDL::EnvironmentRef</a> = typedef <a class="el" href="structSDL_1_1EnvironmentBase.html">EnvironmentBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_Environment&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to a non owning environment. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()...">Resource</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1EnvironmentBase.html" title="A thread-safe set of environment variables.">EnvironmentBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#gaedb86e9b9bb1aca04f73942d06b1d98f" title="Handle to an owning environment.">Environment</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00050">50</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
 <a id="ga80cbbb5b121c8f78d44a66deaa573127" name="ga80cbbb5b121c8f78d44a66deaa573127"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga80cbbb5b121c8f78d44a66deaa573127">&#9670;&#160;</a></span>free_func</h2>
 
@@ -753,6 +813,54 @@ SDL_SetMemoryFunctions </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l04881">4881</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga95fcbc65252fd494d78ce162e1340bea" name="ga95fcbc65252fd494d78ce162e1340bea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga95fcbc65252fd494d78ce162e1340bea">&#9670;&#160;</a></span>IConv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#ga95fcbc65252fd494d78ce162e1340bea">SDL::IConv</a> = typedef <a class="el" href="structSDL_1_1IConvBase.html">IConvBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_iconv_data_t&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to an owning iconv. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()...">Resource</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state.">IConvBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#ga3d2eecfc83ea54cacb89f4fec27fa0b0" title="Handle to a non owning iconv.">IConvRef</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00099">99</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
+
+</div>
+</div>
+<a id="ga3d2eecfc83ea54cacb89f4fec27fa0b0" name="ga3d2eecfc83ea54cacb89f4fec27fa0b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3d2eecfc83ea54cacb89f4fec27fa0b0">&#9670;&#160;</a></span>IConvRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#ga3d2eecfc83ea54cacb89f4fec27fa0b0">SDL::IConvRef</a> = typedef <a class="el" href="structSDL_1_1IConvBase.html">IConvBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_iconv_data_t&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to a non owning iconv. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()...">Resource</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state.">IConvBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryStdinc.html#ga95fcbc65252fd494d78ce162e1340bea" title="Handle to an owning iconv.">IConv</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00082">82</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -2893,7 +3001,7 @@ SDL_realloc </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__resource.html#ga61951c691e5b53e2c5261c8f3536531e">EnvironmentRef</a> SDL::GetEnvironment </td>
+          <td class="memname"><a class="el" href="group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e">EnvironmentRef</a> SDL::GetEnvironment </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>

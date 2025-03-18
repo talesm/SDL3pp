@@ -78,7 +78,7 @@ struct PaletteBase;
 /**
  * Handle to a non owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PaletteBase
@@ -95,7 +95,7 @@ struct ObjectDeleter<SDL_Palette>
 /**
  * Handle to an owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PaletteBase
@@ -300,7 +300,7 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  * @sa PixelFormats
@@ -1198,7 +1198,7 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  *
@@ -1509,7 +1509,7 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -1681,7 +1681,7 @@ struct Color : SDL_Color
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -1792,7 +1792,7 @@ struct FColor : SDL_FColor
 /**
  * A set of indexed colors representing a palette.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Palette

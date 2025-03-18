@@ -109,6 +109,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf819cae500f98321d9ec860a18c50f9b" id="r_gaf819cae500f98321d9ec860a18c50f9b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b">SDL::RunOnMainThread</a> (<a class="el" href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">MainThreadCallback</a> callback, void *userdata, bool wait_complete)</td></tr>
 <tr class="memdesc:gaf819cae500f98321d9ec860a18c50f9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a function on the main thread during event processing.  <br /></td></tr>
 <tr class="separator:gaf819cae500f98321d9ec860a18c50f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d0f101553ddca55df18779d038c0dd4" id="r_ga7d0f101553ddca55df18779d038c0dd4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga7d0f101553ddca55df18779d038c0dd4">SDL::RunOnMainThread</a> (<a class="el" href="group__CategoryInit.html#ga2f8cd7a48bac7f78b92bb612d160585b">MainThreadCB</a> callback, bool wait_complete)</td></tr>
+<tr class="memdesc:ga7d0f101553ddca55df18779d038c0dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a function on the main thread during event processing.  <br /></td></tr>
+<tr class="separator:ga7d0f101553ddca55df18779d038c0dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9cb24cc6035ea3ba1c152347e2114e6b" id="r_ga9cb24cc6035ea3ba1c152347e2114e6b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">SDL::SetAppMetadata</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> appname, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> appversion, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> appidentifier)</td></tr>
 <tr class="memdesc:ga9cb24cc6035ea3ba1c152347e2114e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specify basic metadata about your app.  <br /></td></tr>
 <tr class="separator:ga9cb24cc6035ea3ba1c152347e2114e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -381,7 +384,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd>PropertiesRef.MainThreadCallback </dd>
 <dd>
-result-callback </dd></dl>
+result-callback</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__result-callback.html">Result callback</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00474">474</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
@@ -651,7 +655,7 @@ SetMainReady() </dd>
 </div>
 </div>
 <a id="gaf819cae500f98321d9ec860a18c50f9b" name="gaf819cae500f98321d9ec860a18c50f9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf819cae500f98321d9ec860a18c50f9b">&#9670;&#160;</a></span>RunOnMainThread()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf819cae500f98321d9ec860a18c50f9b">&#9670;&#160;</a></span>RunOnMainThread() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -707,6 +711,62 @@ SetMainReady() </dd>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gad2fef35eb16c9c97f46423b6d5df6b5c" title="Return whether this is the main thread.">IsMainThread()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00502">502</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
+
+</div>
+</div>
+<a id="ga7d0f101553ddca55df18779d038c0dd4" name="ga7d0f101553ddca55df18779d038c0dd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7d0f101553ddca55df18779d038c0dd4">&#9670;&#160;</a></span>RunOnMainThread() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::RunOnMainThread </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryInit.html#ga2f8cd7a48bac7f78b92bb612d160585b">MainThreadCB</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>wait_complete</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Call a function on the main thread during event processing. </p>
+<p>If this is called on the main thread, the callback is executed immediately. If this is called on another thread, this callback is queued for execution on the main thread during event processing.</p>
+<p>Be careful of deadlocks when using this functionality. You should not have the main thread wait for the current thread while this function is being called with <code>wait_complete</code> true.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>the callback to call on the main thread. </td></tr>
+    <tr><td class="paramname">wait_complete</td><td>true to wait for the callback to complete, false to return immediately. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryInit.html#gad2fef35eb16c9c97f46423b6d5df6b5c" title="Return whether this is the main thread.">IsMainThread()</a> </dd>
+<dd>
+result-callback</dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__result-callback.html">Result callback</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__init_8h_source.html#l00535">535</a> of file <a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>.</p>
 
 </div>
 </div>

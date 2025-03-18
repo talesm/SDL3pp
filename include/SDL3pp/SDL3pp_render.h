@@ -57,7 +57,7 @@ struct ObjectDeleter<SDL_Renderer>
 /**
  * Handle to an owned renderer
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa RendererBase
@@ -72,7 +72,7 @@ struct TextureBase;
 /**
  * Handle to a non owned texture
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa TextureBase
@@ -89,7 +89,7 @@ struct ObjectDeleter<SDL_Texture>
 /**
  * Handle to an owned texture
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa TextureBase
@@ -169,7 +169,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
 /**
  * A structure representing rendering state
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Renderer
@@ -1754,7 +1754,7 @@ struct RendererBase : T
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Texture

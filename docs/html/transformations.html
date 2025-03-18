@@ -82,7 +82,7 @@ General rules</h1>
 <li>An exception is to some support files that we use for ease the abstraction and have no C header equivalent.</li>
 </ul>
 </li>
-<li>All definitions are inside the <code><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a></code> namespace, definition names lose their prefix. Eg <code>SDL_Surface</code> becomes <a class="el" href="group__resource.html#ga5128f762b815ce424b759043e06fd646" title="Handle to an owned surface.">SDL::Surface</a>;</li>
+<li>All definitions are inside the <code><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a></code> namespace, definition names lose their prefix. Eg <code>SDL_Surface</code> becomes <a class="el" href="group__CategorySurface.html#ga5128f762b815ce424b759043e06fd646" title="Handle to an owned surface.">SDL::Surface</a>;</li>
 </ul>
 <h1><a class="anchor" id="function-rules"></a>
 Function rules</h1>
@@ -106,7 +106,7 @@ Function rules</h1>
 <li>If it is a instance function, the first parameter become the <code>this</code> pointer and thus is omitted.</li>
 <li>If the parameter was a <code>const char*</code>, its becomes a StringWrapper;</li>
 <li>If the parameter is a <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> type, use the type defined in <a class="el" href="transformations.html#type-rules">Type rules</a>:<ul>
-<li>If it is an <a class="el" href="group__resource.html">Resource</a>, use the non owned version, Eg <a class="el" href="group__resource.html#ga2ea8e6016ec594c51738ef06f469d5d2" title="Handle to a non owned surface.">SDL::SurfaceRef</a>;</li>
+<li>If it is an <a class="el" href="group__resource.html">Resource</a>, use the non owned version, Eg <a class="el" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2" title="Handle to a non owned surface.">SDL::SurfaceRef</a>;</li>
 <li>Otherwise use the converted name like <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">SDL::Color</a>;</li>
 </ul>
 </li>

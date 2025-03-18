@@ -101,6 +101,15 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:gaf76226a4b7cbb3af8578bdbd93f6b068" id="r_gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">SDL::Renderer</a> = <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_Renderer &gt; &gt;</td></tr>
+<tr class="memdesc:gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned renderer.  <br /></td></tr>
+<tr class="separator:gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b68df1674a8dea4fabd4e9ab9e745d7" id="r_ga4b68df1674a8dea4fabd4e9ab9e745d7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7">SDL::TextureRef</a> = <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Texture &gt; &gt;</td></tr>
+<tr class="memdesc:ga4b68df1674a8dea4fabd4e9ab9e745d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned texture.  <br /></td></tr>
+<tr class="separator:ga4b68df1674a8dea4fabd4e9ab9e745d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga13d0a07c826d3f2531cb140115008f5a" id="r_ga13d0a07c826d3f2531cb140115008f5a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">SDL::Texture</a> = <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_Texture &gt; &gt;</td></tr>
+<tr class="memdesc:ga13d0a07c826d3f2531cb140115008f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned texture.  <br /></td></tr>
+<tr class="separator:ga13d0a07c826d3f2531cb140115008f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b86011ede078f9ba75274ed30df602b" id="r_ga4b86011ede078f9ba75274ed30df602b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b">SDL::Vertex</a> = SDL_Vertex</td></tr>
 <tr class="memdesc:ga4b86011ede078f9ba75274ed30df602b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vertex structure.  <br /></td></tr>
 <tr class="separator:ga4b86011ede078f9ba75274ed30df602b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,22 +128,22 @@ Functions</h2></td></tr>
 <tr class="memitem:gaec060bae8c84c9565bf316e335b36c5a" id="r_gaec060bae8c84c9565bf316e335b36c5a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a">SDL::GetRenderDriver</a> (int index)</td></tr>
 <tr class="memdesc:gaec060bae8c84c9565bf316e335b36c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to get the name of a built in 2D rendering driver.  <br /></td></tr>
 <tr class="separator:gaec060bae8c84c9565bf316e335b36c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga46a4e94c9436427b1e58a045f9ac177d" id="r_ga46a4e94c9436427b1e58a045f9ac177d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="group__resource.html#gadc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="group__resource.html#gaf76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> window_flags=0)</td></tr>
+<tr class="memitem:ga46a4e94c9436427b1e58a045f9ac177d" id="r_ga46a4e94c9436427b1e58a045f9ac177d"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> window_flags=0)</td></tr>
 <tr class="memdesc:ga46a4e94c9436427b1e58a045f9ac177d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window and default renderer.  <br /></td></tr>
 <tr class="separator:ga46a4e94c9436427b1e58a045f9ac177d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1ebebe2c47d899c12deaf9131867080a" id="r_ga1ebebe2c47d899c12deaf9131867080a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga1ebebe2c47d899c12deaf9131867080a">SDL::GetRenderMetalLayer</a> (<a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
+<tr class="memitem:ga1ebebe2c47d899c12deaf9131867080a" id="r_ga1ebebe2c47d899c12deaf9131867080a"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga1ebebe2c47d899c12deaf9131867080a">SDL::GetRenderMetalLayer</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
 <tr class="memdesc:ga1ebebe2c47d899c12deaf9131867080a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the CAMetalLayer associated with the given Metal renderer.  <br /></td></tr>
 <tr class="separator:ga1ebebe2c47d899c12deaf9131867080a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga84052dce4147959aeaeefd6bf36c8424" id="r_ga84052dce4147959aeaeefd6bf36c8424"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga84052dce4147959aeaeefd6bf36c8424">SDL::GetRenderMetalCommandEncoder</a> (<a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
+<tr class="memitem:ga84052dce4147959aeaeefd6bf36c8424" id="r_ga84052dce4147959aeaeefd6bf36c8424"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga84052dce4147959aeaeefd6bf36c8424">SDL::GetRenderMetalCommandEncoder</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
 <tr class="memdesc:ga84052dce4147959aeaeefd6bf36c8424"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Metal command encoder for the current frame.  <br /></td></tr>
 <tr class="separator:ga84052dce4147959aeaeefd6bf36c8424"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac4528e04e28d93b190e651508b82ac18" id="r_gac4528e04e28d93b190e651508b82ac18"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac4528e04e28d93b190e651508b82ac18">SDL::AddVulkanRenderSemaphores</a> (<a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore)</td></tr>
+<tr class="memitem:gac4528e04e28d93b190e651508b82ac18" id="r_gac4528e04e28d93b190e651508b82ac18"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac4528e04e28d93b190e651508b82ac18">SDL::AddVulkanRenderSemaphores</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore)</td></tr>
 <tr class="memdesc:gac4528e04e28d93b190e651508b82ac18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a set of synchronization semaphores for the current frame.  <br /></td></tr>
 <tr class="separator:gac4528e04e28d93b190e651508b82ac18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5fef1389da94988b75cb72bd19162ae1" id="r_ga5fef1389da94988b75cb72bd19162ae1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__resource.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5fef1389da94988b75cb72bd19162ae1">SDL::LoadTextureBMP</a> (<a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, SDL_IOStream *src, bool closeio)</td></tr>
+<tr class="memitem:ga5fef1389da94988b75cb72bd19162ae1" id="r_ga5fef1389da94988b75cb72bd19162ae1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5fef1389da94988b75cb72bd19162ae1">SDL::LoadTextureBMP</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, SDL_IOStream *src, bool closeio)</td></tr>
 <tr class="memdesc:ga5fef1389da94988b75cb72bd19162ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream.  <br /></td></tr>
 <tr class="separator:ga5fef1389da94988b75cb72bd19162ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad2866da5ac1fa8e6fc88967d3d37ab8a" id="r_gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__resource.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a">SDL::LoadTextureBMP</a> (<a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file)</td></tr>
+<tr class="memitem:gad2866da5ac1fa8e6fc88967d3d37ab8a" id="r_gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a">SDL::LoadTextureBMP</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file)</td></tr>
 <tr class="memdesc:gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a file.  <br /></td></tr>
 <tr class="separator:gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -180,6 +189,30 @@ Variables</h2></td></tr>
 <p>This API is designed to accelerate simple 2D operations. You may want more functionality such as polygons and particle effects and in that case you should use <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s OpenGL/Direct3D support, the SDL3 GPU API, or one of the many good 3D engines.</p>
 <p>These functions must be called from the main thread. See this bug for details: <a href="https://github.com/libsdl-org/SDL/issues/986">https://github.com/libsdl-org/SDL/issues/986</a> </p>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a id="gaf76226a4b7cbb3af8578bdbd93f6b068" name="gaf76226a4b7cbb3af8578bdbd93f6b068"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf76226a4b7cbb3af8578bdbd93f6b068">&#9670;&#160;</a></span>Renderer</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">SDL::Renderer</a> = typedef <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_Renderer&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to an owned renderer. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()...">Resource</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1RendererBase.html" title="A structure representing rendering state.">RendererBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d" title="Handle to a non owned renderer.">RendererRef</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00066">66</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+
+</div>
+</div>
 <a id="ga91be24b12fa4efe591c43f2ece44e32d" name="ga91be24b12fa4efe591c43f2ece44e32d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga91be24b12fa4efe591c43f2ece44e32d">&#9670;&#160;</a></span>RendererLogicalPresentation</h2>
 
@@ -198,6 +231,30 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ga13d0a07c826d3f2531cb140115008f5a" name="ga13d0a07c826d3f2531cb140115008f5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga13d0a07c826d3f2531cb140115008f5a">&#9670;&#160;</a></span>Texture</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">SDL::Texture</a> = typedef <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_Texture&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to an owned texture. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()...">Resource</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureBase.html" title="An efficient driver-specific representation of pixel data.">TextureBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7" title="Handle to a non owned texture.">TextureRef</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00098">98</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+
+</div>
+</div>
 <a id="ga736d13caaeee38a712dfb94180a24f56" name="ga736d13caaeee38a712dfb94180a24f56"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga736d13caaeee38a712dfb94180a24f56">&#9670;&#160;</a></span>TextureAccess</h2>
 
@@ -213,6 +270,30 @@ Variables</h2></td></tr>
 <p>The access pattern allowed for a texture. </p>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00113">113</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4b68df1674a8dea4fabd4e9ab9e745d7" name="ga4b68df1674a8dea4fabd4e9ab9e745d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4b68df1674a8dea4fabd4e9ab9e745d7">&#9670;&#160;</a></span>TextureRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7">SDL::TextureRef</a> = typedef <a class="el" href="structSDL_1_1TextureBase.html">TextureBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_Texture&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to a non owned texture. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="group__resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html" title="A Resource is a type where its memory is controlled by SDL, usually with functions like SDL_Create*()...">Resource</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextureBase.html" title="An efficient driver-specific representation of pixel data.">TextureBase</a> </dd>
+<dd>
+<a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a" title="Handle to an owned texture.">Texture</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00081">81</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -247,7 +328,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">bool SDL::AddVulkanRenderSemaphores </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
@@ -311,7 +392,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; <a class="el" href="group__resource.html#gadc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="group__resource.html#gaf76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt; SDL::CreateWindowAndRenderer </td>
+          <td class="memname">std::pair&lt; <a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847">Window</a>, <a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">Renderer</a> &gt; SDL::CreateWindowAndRenderer </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
           <td class="paramname"><em>title</em>, </td>
@@ -353,9 +434,9 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>a pair with Window and Renderer on success or a pair of std::nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__resource.html#gaf76226a4b7cbb3af8578bdbd93f6b068" title="Handle to an owned renderer.">Renderer</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068" title="Handle to an owned renderer.">Renderer</a> </dd>
 <dd>
-<a class="el" href="group__resource.html#gadc7408c6cf3381faad6fc9ec0ef39847" title="Handle to an owned window.">Window</a> </dd></dl>
+<a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847" title="Handle to an owned window.">Window</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02707">2707</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -450,7 +531,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void * SDL::GetRenderMetalCommandEncoder </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
           <td class="paramname"><em>renderer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -492,7 +573,7 @@ Variables</h2></td></tr>
         <tr>
           <td class="memname">void * SDL::GetRenderMetalLayer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
           <td class="paramname"><em>renderer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -531,9 +612,9 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__resource.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a> SDL::LoadTextureBMP </td>
+          <td class="memname"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a> SDL::LoadTextureBMP </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>
@@ -587,9 +668,9 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__resource.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a> SDL::LoadTextureBMP </td>
+          <td class="memname"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a> SDL::LoadTextureBMP </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__resource.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
           <td class="paramname"><em>renderer</em>, </td>
         </tr>
         <tr>

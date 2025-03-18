@@ -34,7 +34,7 @@ struct FRect;
  *
  * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -419,7 +419,7 @@ struct Point : SDL_Point
 /**
  * @brief The structure that defines a point (using floating point values).
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -736,7 +736,7 @@ struct FPoint : SDL_FPoint
 /**
  * @brief A rectangle, with the origin at the upper left (using integers).
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -1337,7 +1337,7 @@ struct Rect : SDL_Rect
 /**
  * @brief A rectangle, with the origin at the upper left (using floats).
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */

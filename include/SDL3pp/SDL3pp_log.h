@@ -91,7 +91,7 @@ using LogPriority = SDL_LogPriority;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  */
@@ -217,7 +217,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -249,7 +249,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -281,7 +281,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -313,7 +313,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -345,7 +345,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -377,7 +377,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -409,7 +409,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -441,7 +441,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -566,7 +566,7 @@ inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup formatted-string
+ * @cat formatted-string
  *
  * @sa formatted-string
  * @sa LogUnformatted()
@@ -643,7 +643,7 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa LogOutputFunction
@@ -696,7 +696,7 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()
@@ -750,7 +750,7 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()

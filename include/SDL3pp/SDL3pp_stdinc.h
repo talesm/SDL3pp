@@ -41,7 +41,7 @@ struct EnvironmentBase;
 /**
  * Handle to a non owning environment
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa EnvironmentBase
@@ -58,7 +58,7 @@ struct ObjectDeleter<SDL_Environment>
 /**
  * Handle to an owning environment
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa EnvironmentBase
@@ -73,7 +73,7 @@ struct IConvBase;
 /**
  * Handle to a non owning iconv
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa IConvBase
@@ -90,7 +90,7 @@ struct ObjectDeleter<SDL_iconv_data_t>
 /**
  * Handle to an owning iconv
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa IConvBase
@@ -463,7 +463,7 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Environment
@@ -3286,7 +3286,7 @@ inline Uint32 rand_bits() { return SDL_rand_bits(); }
  * This can be instantiated in any thread and as long as it is not shared with
  * another thread all members are safe to call.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  */
@@ -4700,7 +4700,7 @@ inline float tanf(float x) { return SDL_tanf(x); }
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa IConv

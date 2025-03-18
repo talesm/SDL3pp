@@ -1507,7 +1507,7 @@ using EventFilter = SDL_EventFilter;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa SetEventFilter()
@@ -1616,7 +1616,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa AddEventWatch()
@@ -1670,7 +1670,7 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa SetEventFilter()
@@ -1756,7 +1756,7 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa RemoveEventWatch()
@@ -1808,7 +1808,7 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa AddEventWatch(EventFilterCB)
@@ -1856,7 +1856,7 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup immediate-callback
+ * @cat immediate-callback
  *
  * @sa immediate-callback
  * @sa GetEventFilter()

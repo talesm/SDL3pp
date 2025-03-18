@@ -468,7 +468,7 @@ using MainThreadCallback = SDL_MainThreadCallback;
  * @sa PropertiesRef.MainThreadCallback
  * @sa result-callback
  *
- * @ingroup result-callback
+ * @cat result-callback
  *
  */
 using MainThreadCB = std::function<void()>;
@@ -530,7 +530,7 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @sa IsMainThread()
  * @sa result-callback
  *
- * @ingroup result-callback
+ * @cat result-callback
  */
 inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
 {

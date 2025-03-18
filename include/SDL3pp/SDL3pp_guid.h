@@ -33,7 +33,7 @@ namespace SDL {
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */

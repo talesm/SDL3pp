@@ -722,7 +722,7 @@ inline bool SetErrorUnformatted(StringParam message)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup formatted-string
+ * @cat formatted-string
  *
  * @sa formatted-string
  * @sa ClearError
@@ -1270,7 +1270,7 @@ struct EnvironmentBase;
 /**
  * Handle to a non owning environment
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa EnvironmentBase
@@ -1287,7 +1287,7 @@ struct ObjectDeleter<SDL_Environment>
 /**
  * Handle to an owning environment
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa EnvironmentBase
@@ -1302,7 +1302,7 @@ struct IConvBase;
 /**
  * Handle to a non owning iconv
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa IConvBase
@@ -1319,7 +1319,7 @@ struct ObjectDeleter<SDL_iconv_data_t>
 /**
  * Handle to an owning iconv
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa IConvBase
@@ -1692,7 +1692,7 @@ inline int GetNumAllocations() { return SDL_GetNumAllocations(); }
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Environment
@@ -4515,7 +4515,7 @@ inline Uint32 rand_bits() { return SDL_rand_bits(); }
  * This can be instantiated in any thread and as long as it is not shared with
  * another thread all members are safe to call.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  */
@@ -5929,7 +5929,7 @@ inline float tanf(float x) { return SDL_tanf(x); }
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa IConv
@@ -6191,7 +6191,7 @@ struct PropertiesBase;
  *
  * To create a new property group use CreateProperties()
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PropertiesBase
@@ -6210,7 +6210,7 @@ struct PropertiesDeleter
 /**
  * Handle to an owned properties
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PropertiesBase
@@ -6262,7 +6262,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  * @sa PropertiesBase.SetPointerWithCleanup()
  * @sa result-callback
  *
- * @ingroup result-callback
+ * @cat result-callback
  */
 using CleanupPropertyCB = std::function<void(void*)>;
 
@@ -6301,7 +6301,7 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  * @sa PropertiesBase::Enumerate()
  * @sa immediate-callback
  *
- * @ingroup immediate-callback
+ * @cat immediate-callback
  */
 using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;
@@ -6340,7 +6340,7 @@ struct PropertiesLock;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa CreateProperties()
@@ -6418,7 +6418,7 @@ struct PropertiesBase : T
    *
    * @sa result-callback
    *
-   * @ingroup result-callback
+   * @cat result-callback
    *
    */
   bool SetPointerWithCleanup(StringParam name,
@@ -6806,7 +6806,7 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @ingroup immediate-callback
+   * @cat immediate-callback
    *
    * @sa immediate-callback
    */
@@ -7172,7 +7172,7 @@ struct FRect;
  *
  * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -7557,7 +7557,7 @@ struct Point : SDL_Point
 /**
  * @brief The structure that defines a point (using floating point values).
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -7874,7 +7874,7 @@ struct FPoint : SDL_FPoint
 /**
  * @brief A rectangle, with the origin at the upper left (using integers).
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -8475,7 +8475,7 @@ struct Rect : SDL_Rect
 /**
  * @brief A rectangle, with the origin at the upper left (using floats).
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -9281,7 +9281,7 @@ struct PaletteBase;
 /**
  * Handle to a non owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PaletteBase
@@ -9298,7 +9298,7 @@ struct ObjectDeleter<SDL_Palette>
 /**
  * Handle to an owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa PaletteBase
@@ -9503,7 +9503,7 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  * @sa PixelFormats
@@ -10401,7 +10401,7 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  *
@@ -10712,7 +10712,7 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -10884,7 +10884,7 @@ struct Color : SDL_Color
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -10995,7 +10995,7 @@ struct FColor : SDL_FColor
 /**
  * A set of indexed colors representing a palette.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Palette
@@ -11324,7 +11324,7 @@ struct SurfaceBase;
 /**
  * Handle to a non owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa SurfaceBase
@@ -11341,7 +11341,7 @@ struct ObjectDeleter<SDL_Surface>
 /**
  * Handle to an owned surface
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa SurfaceBase
@@ -11429,7 +11429,7 @@ constexpr FlipMode FLIP_VERTICAL = SDL_FLIP_VERTICAL;
  *
  * @sa SurfaceBase::SurfaceBase()
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Surface
@@ -13410,7 +13410,7 @@ struct WindowBase;
 /**
  * Handle to a non owned window
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa WindowBase
@@ -13426,7 +13426,7 @@ struct ObjectDeleter<SDL_Window>
 /**
  * Handle to an owned window
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa WindowBase
@@ -13440,7 +13440,7 @@ struct RendererBase;
 /**
  * Handle to a non owned renderer
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa RendererBase
@@ -13664,7 +13664,7 @@ using HitTest = SDL_HitTest;
  * @sa HitTest
  * @sa listener-callback
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
@@ -14059,7 +14059,7 @@ constexpr SystemTheme SYSTEM_THEME_DARK = SDL_SYSTEM_THEME_DARK;
 /**
  * Represents a handle to a window
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Window
@@ -15896,7 +15896,7 @@ struct WindowBase : T
    *
    * @sa listener-callback
    *
-   * @ingroup listener-callback
+   * @cat listener-callback
    */
   bool SetHitTest(HitTestCB callback)
   {
@@ -18467,7 +18467,7 @@ using EventFilter = SDL_EventFilter;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa SetEventFilter()
@@ -18576,7 +18576,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa AddEventWatch()
@@ -18630,7 +18630,7 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa SetEventFilter()
@@ -18716,7 +18716,7 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa RemoveEventWatch()
@@ -18768,7 +18768,7 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa AddEventWatch(EventFilterCB)
@@ -18816,7 +18816,7 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup immediate-callback
+ * @cat immediate-callback
  *
  * @sa immediate-callback
  * @sa GetEventFilter()
@@ -18950,7 +18950,7 @@ namespace SDL {
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup wrap-extending-struct
+ * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
@@ -19771,7 +19771,7 @@ using MainThreadCallback = SDL_MainThreadCallback;
  * @sa PropertiesRef.MainThreadCallback
  * @sa result-callback
  *
- * @ingroup result-callback
+ * @cat result-callback
  *
  */
 using MainThreadCB = std::function<void()>;
@@ -19833,7 +19833,7 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @sa IsMainThread()
  * @sa result-callback
  *
- * @ingroup result-callback
+ * @cat result-callback
  */
 inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
 {
@@ -20210,7 +20210,7 @@ using LogPriority = SDL_LogPriority;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup wrap-state
+ * @cat wrap-state
  *
  * @sa wrap-state
  */
@@ -20336,7 +20336,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20368,7 +20368,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20400,7 +20400,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20432,7 +20432,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20464,7 +20464,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20496,7 +20496,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20528,7 +20528,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20560,7 +20560,7 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup formatted-string
+   * @cat formatted-string
    *
    * @sa formatted-string
    * @sa SDL::Log()
@@ -20685,7 +20685,7 @@ inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup formatted-string
+ * @cat formatted-string
  *
  * @sa formatted-string
  * @sa LogUnformatted()
@@ -20762,7 +20762,7 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa LogOutputFunction
@@ -20815,7 +20815,7 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()
@@ -20869,7 +20869,7 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()
@@ -21030,7 +21030,7 @@ struct ObjectDeleter<SDL_Renderer>
 /**
  * Handle to an owned renderer
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa RendererBase
@@ -21045,7 +21045,7 @@ struct TextureBase;
 /**
  * Handle to a non owned texture
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa TextureBase
@@ -21062,7 +21062,7 @@ struct ObjectDeleter<SDL_Texture>
 /**
  * Handle to an owned texture
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa TextureBase
@@ -21142,7 +21142,7 @@ constexpr RendererLogicalPresentation LOGICAL_PRESENTATION_INTEGER_SCALE =
 /**
  * A structure representing rendering state
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Renderer
@@ -22727,7 +22727,7 @@ struct RendererBase : T
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Texture
@@ -24165,7 +24165,7 @@ using NSTimerCallback = SDL_NSTimerCallback;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa AddTimer(TimerCB)
@@ -24285,7 +24285,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  *
  * @sa listener-callback
  * @sa RemoveTimer()

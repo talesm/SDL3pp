@@ -50,7 +50,7 @@ struct WindowBase;
 /**
  * Handle to a non owned window
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa WindowBase
@@ -66,7 +66,7 @@ struct ObjectDeleter<SDL_Window>
 /**
  * Handle to an owned window
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa WindowBase
@@ -80,7 +80,7 @@ struct RendererBase;
 /**
  * Handle to a non owned renderer
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa RendererBase
@@ -304,7 +304,7 @@ using HitTest = SDL_HitTest;
  * @sa HitTest
  * @sa listener-callback
  *
- * @ingroup listener-callback
+ * @cat listener-callback
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
@@ -699,7 +699,7 @@ constexpr SystemTheme SYSTEM_THEME_DARK = SDL_SYSTEM_THEME_DARK;
 /**
  * Represents a handle to a window
  *
- * @ingroup resource
+ * @cat resource
  *
  * @sa resource
  * @sa Window
@@ -2536,7 +2536,7 @@ struct WindowBase : T
    *
    * @sa listener-callback
    *
-   * @ingroup listener-callback
+   * @cat listener-callback
    */
   bool SetHitTest(HitTestCB callback)
   {
