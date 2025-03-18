@@ -20,7 +20,7 @@ template<class F>
 struct CallbackWrapper;
 
 /**
- * @brief Wrapper [result callbacks](#ResultCallback)
+ * @brief Wrapper [result callbacks](#result-callback)
  *
  * @tparam F the function type
  *

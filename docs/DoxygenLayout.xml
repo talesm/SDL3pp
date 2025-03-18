@@ -9,7 +9,7 @@
       <tab type="user" visible="yes" title="Transformations" url="@ref transformations"/>
       <tab type="user" visible="yes" title="Resource" url="@ref resource"/>
       <tab type="user" visible="yes" title="Callback" url="@ref callback"/>
-      <tab type="user" visible="yes" title="Formatted strings" url="@ref FmtString"/>
+      <tab type="user" visible="yes" title="Formatted strings" url="@ref formatted-string"/>
     </tab>
     <tab type="pages" visible="yes" title="" intro="">
       <tab type="pages" visible="yes" title="All pages" intro=""/>

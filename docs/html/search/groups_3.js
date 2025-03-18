@@ -1,7 +1,7 @@
 var searchData=
 [
   ['c_20support_0',['C++ Support',['../group__CategoriesCppSupport.html',1,'']]],
-  ['callback_1',['callback',['../group__callback.html',1,'Callback'],['../group__AsyncCallback.html',1,'Delayed callback'],['../group__SyncCallback.html',1,'Immediate callback'],['../group__ListenerCallback.html',1,'Listener callback'],['../group__ResultCallback.html',1,'Result callback']]],
+  ['callback_1',['callback',['../group__callback.html',1,'Callback'],['../group__delayed-callback.html',1,'Delayed callback'],['../group__immediate-callback.html',1,'Immediate callback'],['../group__listener-callback.html',1,'Listener callback'],['../group__result-callback.html',1,'Result callback']]],
   ['callback_20helpers_2',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
   ['categories_3',['Categories',['../group__Categories.html',1,'']]],
   ['category_20events_4',['Category Events',['../group__CategoryEvents.html',1,'']]],

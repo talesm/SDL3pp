@@ -29,7 +29,7 @@ var menudata={children:[
 {text:"Transformations",url:"transformations.html"},
 {text:"Resource",url:"group__resource.html"},
 {text:"Callback",url:"group__callback.html"},
-{text:"Formatted strings",url:"group__FmtString.html"}]},
+{text:"Formatted strings",url:"group__formatted-string.html"}]},
 {text:"Related Pages",url:"pages.html",children:[
 {text:"All pages",url:"pages.html"},
 {text:"All topics",url:"topics.html"}]},

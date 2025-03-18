@@ -228,7 +228,7 @@ inline AssertState ReportAssertion(AssertData* data,
 }
 
 /**
- * A callback that fires when an SDL assertion fails.
+ * A @ref callback that fires when an SDL assertion fails.
  *
  * @param data a pointer to the SDL_AssertData structure corresponding to the
  *             current assertion.
@@ -722,9 +722,9 @@ inline bool SetErrorUnformatted(StringParam message)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup FmtString
+ * @ingroup formatted-string
  *
- * @sa FmtString
+ * @sa formatted-string
  * @sa ClearError
  * @sa GetError
  * @sa SetError
@@ -839,7 +839,7 @@ template<class F>
 struct CallbackWrapper;
 
 /**
- * @brief Wrapper [result callbacks](#ResultCallback)
+ * @brief Wrapper [result callbacks](#result-callback)
  *
  * @tparam F the function type
  *
@@ -4515,9 +4515,9 @@ inline Uint32 rand_bits() { return SDL_rand_bits(); }
  * This can be instantiated in any thread and as long as it is not shared with
  * another thread all members are safe to call.
  *
- * @ingroup WrapState
+ * @ingroup wrap-state
  *
- * @sa WrapState
+ * @sa wrap-state
  */
 class Random
 {
@@ -6260,9 +6260,9 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa PropertiesRef.CleanupPropertyCallback
  * @sa PropertiesBase.SetPointerWithCleanup()
- * @sa ResultCallback
+ * @sa result-callback
  *
- * @ingroup ResultCallback
+ * @ingroup result-callback
  */
 using CleanupPropertyCB = std::function<void(void*)>;
 
@@ -6299,9 +6299,9 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  *
  * @sa EnumeratePropertyCallback
  * @sa PropertiesBase::Enumerate()
- * @sa SyncCallback
+ * @sa immediate-callback
  *
- * @ingroup SyncCallback
+ * @ingroup immediate-callback
  */
 using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;
@@ -6416,9 +6416,9 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @sa ResultCallback
+   * @sa result-callback
    *
-   * @ingroup ResultCallback
+   * @ingroup result-callback
    *
    */
   bool SetPointerWithCleanup(StringParam name,
@@ -6806,9 +6806,9 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @ingroup SyncCallback
+   * @ingroup immediate-callback
    *
-   * @sa SyncCallback
+   * @sa immediate-callback
    */
   bool Enumerate(EnumeratePropertiesCB callback) const
   {
@@ -7172,9 +7172,9 @@ struct FRect;
  *
  * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct Point : SDL_Point
 {
@@ -7557,9 +7557,9 @@ struct Point : SDL_Point
 /**
  * @brief The structure that defines a point (using floating point values).
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct FPoint : SDL_FPoint
 {
@@ -7874,9 +7874,9 @@ struct FPoint : SDL_FPoint
 /**
  * @brief A rectangle, with the origin at the upper left (using integers).
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct Rect : SDL_Rect
 {
@@ -8475,9 +8475,9 @@ struct Rect : SDL_Rect
 /**
  * @brief A rectangle, with the origin at the upper left (using floats).
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct FRect : SDL_FRect
 {
@@ -9503,9 +9503,9 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup WrapState
+ * @ingroup wrap-state
  *
- * @sa WrapState
+ * @sa wrap-state
  * @sa PixelFormats
  */
 struct PixelFormat
@@ -10401,9 +10401,9 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup WrapState
+ * @ingroup wrap-state
  *
- * @sa WrapState
+ * @sa wrap-state
  *
  * @sa Colorspaces
  * @sa ColorPrimaries
@@ -10712,9 +10712,9 @@ constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct Color : SDL_Color
 {
@@ -10884,9 +10884,9 @@ struct Color : SDL_Color
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct FColor : SDL_FColor
 {
@@ -13662,9 +13662,9 @@ using HitTest = SDL_HitTest;
  * @returns an SDL::HitTestResult value.
  *
  * @sa HitTest
- * @sa ListenerCallback
+ * @sa listener-callback
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
@@ -15894,9 +15894,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ListenerCallback
+   * @sa listener-callback
    *
-   * @ingroup ListenerCallback
+   * @ingroup listener-callback
    */
   bool SetHitTest(HitTestCB callback)
   {
@@ -18467,9 +18467,9 @@ using EventFilter = SDL_EventFilter;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa SetEventFilter()
  * @sa AddEventWatch()
  * @sa EventFilter
@@ -18576,9 +18576,9 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa AddEventWatch()
  * @sa SetEventEnabled()
  * @sa GetEventFilter()
@@ -18630,9 +18630,9 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa SetEventFilter()
  */
 inline EventFilterCB GetEventFilter()
@@ -18716,9 +18716,9 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa RemoveEventWatch()
  * @sa SetEventFilter()
  */
@@ -18768,9 +18768,9 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa AddEventWatch(EventFilterCB)
  */
 inline void RemoveEventWatch(EventWatchHandle handle)
@@ -18816,9 +18816,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup SyncCallback
+ * @ingroup immediate-callback
  *
- * @sa SyncCallback
+ * @sa immediate-callback
  * @sa GetEventFilter()
  * @sa SetEventFilter()
  */
@@ -18950,9 +18950,9 @@ namespace SDL {
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct GUID : SDL_GUID
 {
@@ -19769,9 +19769,9 @@ using MainThreadCallback = SDL_MainThreadCallback;
 
 /**
  * @sa PropertiesRef.MainThreadCallback
- * @sa ResultCallback
+ * @sa result-callback
  *
- * @ingroup ResultCallback
+ * @ingroup result-callback
  *
  */
 using MainThreadCB = std::function<void()>;
@@ -19831,9 +19831,9 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  * @since This function is available since SDL 3.2.0.
  *
  * @sa IsMainThread()
- * @sa ResultCallback
+ * @sa result-callback
  *
- * @ingroup ResultCallback
+ * @ingroup result-callback
  */
 inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
 {
@@ -20210,9 +20210,9 @@ using LogPriority = SDL_LogPriority;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup WrapState
+ * @ingroup wrap-state
  *
- * @sa WrapState
+ * @sa wrap-state
  */
 class LogCategory
 {
@@ -20336,9 +20336,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogUnformatted()
    * @sa LogCritical()
@@ -20368,9 +20368,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -20400,9 +20400,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -20432,9 +20432,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogError()
@@ -20464,9 +20464,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -20496,9 +20496,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -20528,9 +20528,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -20560,9 +20560,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogDebug()
    * @sa LogError()
@@ -20685,9 +20685,9 @@ inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup FmtString
+ * @ingroup formatted-string
  *
- * @sa FmtString
+ * @sa formatted-string
  * @sa LogUnformatted()
  * @sa LogCategory.LogCritical()
  * @sa LogCategory.LogDebug()
@@ -20762,9 +20762,9 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa LogOutputFunction
  */
 using LogOutputFunctionCB =
@@ -20815,9 +20815,9 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()
  * @sa SetLogOutputFunction()
  */
@@ -20869,9 +20869,9 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()
  * @sa GetLogOutputFunction()
  * @sa ResetLogOutputFunction()
@@ -24165,9 +24165,9 @@ using NSTimerCallback = SDL_NSTimerCallback;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa AddTimer(TimerCB)
  */
 using TimerCB =
@@ -24285,9 +24285,9 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa RemoveTimer()
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)

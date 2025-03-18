@@ -302,9 +302,9 @@ using HitTest = SDL_HitTest;
  * @returns an SDL::HitTestResult value.
  *
  * @sa HitTest
- * @sa ListenerCallback
+ * @sa listener-callback
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  */
 using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
@@ -2534,9 +2534,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa ListenerCallback
+   * @sa listener-callback
    *
-   * @ingroup ListenerCallback
+   * @ingroup listener-callback
    */
   bool SetHitTest(HitTestCB callback)
   {

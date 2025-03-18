@@ -17,7 +17,7 @@ var searchData=
   ['time_14',['time',['../group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f',1,'SDL::Time'],['../group__CategoriesTime.html',1,'Time'],['../ApiByCategory.html#time',1,'Time']]],
   ['timer_20support_15',['Timer Support',['../group__CategoryTimer.html',1,'']]],
   ['timercallback_16',['TimerCallback',['../group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea',1,'SDL']]],
-  ['timercb_17',['TimerCB',['../group__ListenerCallback.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
+  ['timercb_17',['TimerCB',['../group__listener-callback.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
   ['timerid_18',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
   ['tldr_19',['Quick start / TLDR',['../index.html#quick-start--tldr',1,'']]],
   ['to_20sdl_3a_3afree_20',['Pointer wrapper to SDL::free()',['../group__CategoryFreeWrapper.html',1,'']]],

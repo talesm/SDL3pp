@@ -3286,9 +3286,9 @@ inline Uint32 rand_bits() { return SDL_rand_bits(); }
  * This can be instantiated in any thread and as long as it is not shared with
  * another thread all members are safe to call.
  *
- * @ingroup WrapState
+ * @ingroup wrap-state
  *
- * @sa WrapState
+ * @sa wrap-state
  */
 class Random
 {

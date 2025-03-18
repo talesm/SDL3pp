@@ -93,9 +93,9 @@ inline bool SetErrorUnformatted(StringParam message)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup FmtString
+ * @ingroup formatted-string
  *
- * @sa FmtString
+ * @sa formatted-string
  * @sa ClearError
  * @sa GetError
  * @sa SetError

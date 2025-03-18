@@ -1,7 +1,7 @@
 var searchData=
 [
   ['c_20support_0',['c support',['../ApiByCategory.html#c-support',1,'C++ Support'],['../group__CategoriesCppSupport.html',1,'C++ Support']]],
-  ['callback_1',['callback',['../group__callback.html',1,'Callback'],['../group__AsyncCallback.html',1,'Delayed callback'],['../group__SyncCallback.html',1,'Immediate callback'],['../group__ListenerCallback.html',1,'Listener callback'],['../group__ResultCallback.html',1,'Result callback']]],
+  ['callback_1',['callback',['../group__callback.html',1,'Callback'],['../group__delayed-callback.html',1,'Delayed callback'],['../group__immediate-callback.html',1,'Immediate callback'],['../group__listener-callback.html',1,'Listener callback'],['../group__result-callback.html',1,'Result callback']]],
   ['callback_20helpers_2',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
   ['callback_20rules_3',['Callback rules',['../transformations.html#callback-rules',1,'']]],
   ['callbackwrapper_4',['callbackwrapper',['../structSDL_1_1CallbackWrapper.html',1,'SDL::CallbackWrapper&lt; F &gt;'],['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a168e25c067c508446cc5c8dd1ab0bcd0',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::CallbackWrapper()']]],

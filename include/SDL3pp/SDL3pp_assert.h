@@ -125,7 +125,7 @@ inline AssertState ReportAssertion(AssertData* data,
 }
 
 /**
- * A callback that fires when an SDL assertion fails.
+ * A @ref callback that fires when an SDL assertion fails.
  *
  * @param data a pointer to the SDL_AssertData structure corresponding to the
  *             current assertion.

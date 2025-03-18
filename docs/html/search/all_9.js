@@ -6,7 +6,7 @@ var searchData=
   ['iconvref_3',['IConvRef',['../group__resource.html#ga3d2eecfc83ea54cacb89f4fec27fa0b0',1,'SDL']]],
   ['images_20from_20several_20formats_4',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
   ['img_5fversion_5',['IMG_Version',['../group__CategorySDLImage.html#ga1e0107db9eb6bcb7870bb7863a82c89b',1,'SDL']]],
-  ['immediate_20callback_6',['Immediate callback',['../group__SyncCallback.html',1,'']]],
+  ['immediate_20callback_6',['Immediate callback',['../group__immediate-callback.html',1,'']]],
   ['info_7',['Locale Info',['../group__CategoryLocale.html',1,'']]],
   ['init_8',['Init',['../group__CategoryInit.html#gab53d2dea05d627f11cb7a8c24a8e1a44',1,'SDL']]],
   ['init_5faudio_9',['INIT_AUDIO',['../group__CategoryInit.html#ga65bdd3a913bd08eea41fd70fb49e5079',1,'SDL']]],

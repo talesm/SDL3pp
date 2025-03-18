@@ -91,9 +91,9 @@ using LogPriority = SDL_LogPriority;
  *
  * @since This enum is available since SDL 3.2.0.
  *
- * @ingroup WrapState
+ * @ingroup wrap-state
  *
- * @sa WrapState
+ * @sa wrap-state
  */
 class LogCategory
 {
@@ -217,9 +217,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogUnformatted()
    * @sa LogCritical()
@@ -249,9 +249,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -281,9 +281,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -313,9 +313,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogError()
@@ -345,9 +345,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -377,9 +377,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -409,9 +409,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogCritical()
    * @sa LogDebug()
@@ -441,9 +441,9 @@ public:
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @ingroup FmtString
+   * @ingroup formatted-string
    *
-   * @sa FmtString
+   * @sa formatted-string
    * @sa SDL::Log()
    * @sa LogDebug()
    * @sa LogError()
@@ -566,9 +566,9 @@ inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup FmtString
+ * @ingroup formatted-string
  *
- * @sa FmtString
+ * @sa formatted-string
  * @sa LogUnformatted()
  * @sa LogCategory.LogCritical()
  * @sa LogCategory.LogDebug()
@@ -643,9 +643,9 @@ using LogOutputFunction = SDL_LogOutputFunction;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa LogOutputFunction
  */
 using LogOutputFunctionCB =
@@ -696,9 +696,9 @@ inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()
  * @sa SetLogOutputFunction()
  */
@@ -750,9 +750,9 @@ inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa GetDefaultLogOutputFunction()
  * @sa GetLogOutputFunction()
  * @sa ResetLogOutputFunction()

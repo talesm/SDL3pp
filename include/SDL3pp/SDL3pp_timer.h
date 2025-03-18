@@ -194,9 +194,9 @@ using NSTimerCallback = SDL_NSTimerCallback;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa AddTimer(TimerCB)
  */
 using TimerCB =
@@ -314,9 +314,9 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa RemoveTimer()
  */
 inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)

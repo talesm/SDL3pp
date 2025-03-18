@@ -2,7 +2,7 @@ var searchData=
 [
   ['data_0',['data',['../classSDL_1_1SpanRef.html#a23d68d09a1e467f402d05938133cec4a',1,'SDL::SpanRef']]],
   ['delay_1',['Delay',['../group__CategoryTimer.html#ga29135876921c3060e1c60a9e839d57b4',1,'SDL']]],
-  ['delayed_20callback_2',['Delayed callback',['../group__AsyncCallback.html',1,'']]],
+  ['delayed_20callback_2',['Delayed callback',['../group__delayed-callback.html',1,'']]],
   ['delayprecise_3',['DelayPrecise',['../group__CategoryTimer.html#ga34db37a7f8654034eb6ad62e88a2e2de',1,'SDL']]],
   ['design_20notes_4',['Design notes',['../group__DesignNotes.html',1,'']]],
   ['designnotes_2edox_5',['DesignNotes.dox',['../DesignNotes_8dox.html',1,'']]],

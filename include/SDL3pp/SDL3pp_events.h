@@ -1507,9 +1507,9 @@ using EventFilter = SDL_EventFilter;
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa SetEventFilter()
  * @sa AddEventWatch()
  * @sa EventFilter
@@ -1616,9 +1616,9 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa AddEventWatch()
  * @sa SetEventEnabled()
  * @sa GetEventFilter()
@@ -1670,9 +1670,9 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa SetEventFilter()
  */
 inline EventFilterCB GetEventFilter()
@@ -1756,9 +1756,9 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa RemoveEventWatch()
  * @sa SetEventFilter()
  */
@@ -1808,9 +1808,9 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup ListenerCallback
+ * @ingroup listener-callback
  *
- * @sa ListenerCallback
+ * @sa listener-callback
  * @sa AddEventWatch(EventFilterCB)
  */
 inline void RemoveEventWatch(EventWatchHandle handle)
@@ -1856,9 +1856,9 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @ingroup SyncCallback
+ * @ingroup immediate-callback
  *
- * @sa SyncCallback
+ * @sa immediate-callback
  * @sa GetEventFilter()
  * @sa SetEventFilter()
  */

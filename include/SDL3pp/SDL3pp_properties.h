@@ -115,9 +115,9 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @sa PropertiesRef.CleanupPropertyCallback
  * @sa PropertiesBase.SetPointerWithCleanup()
- * @sa ResultCallback
+ * @sa result-callback
  *
- * @ingroup ResultCallback
+ * @ingroup result-callback
  */
 using CleanupPropertyCB = std::function<void(void*)>;
 
@@ -154,9 +154,9 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  *
  * @sa EnumeratePropertyCallback
  * @sa PropertiesBase::Enumerate()
- * @sa SyncCallback
+ * @sa immediate-callback
  *
- * @ingroup SyncCallback
+ * @ingroup immediate-callback
  */
 using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;
@@ -271,9 +271,9 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @sa ResultCallback
+   * @sa result-callback
    *
-   * @ingroup ResultCallback
+   * @ingroup result-callback
    *
    */
   bool SetPointerWithCleanup(StringParam name,
@@ -661,9 +661,9 @@ struct PropertiesBase : T
    *
    * @threadsafety It is safe to call this function from any thread.
    *
-   * @ingroup SyncCallback
+   * @ingroup immediate-callback
    *
-   * @sa SyncCallback
+   * @sa immediate-callback
    */
   bool Enumerate(EnumeratePropertiesCB callback) const
   {

@@ -14,7 +14,7 @@ var searchData=
   ['eglsurface_11',['EGLSurface',['../group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8',1,'SDL']]],
   ['empty_12',['empty',['../structSDL_1_1FRect.html#a815a929d9f6b4e0866f458155d07c23e',1,'SDL::FRect::Empty()'],['../structSDL_1_1Rect.html#a69592160d95cc8d1d81dcf321559bfae',1,'SDL::Rect::Empty()']]],
   ['enablescreensaver_13',['EnableScreenSaver',['../group__CategoryVideo.html#ga881c12afac49a4ab69332d736885dfc2',1,'SDL']]],
-  ['enumerate_14',['enumerate',['../structSDL_1_1PropertiesBase.html#a6cfd7d258d2c11f46af02cbb5f6d808a',1,'SDL::PropertiesBase::Enumerate(EnumeratePropertiesCallback callback, void *userdata) const'],['../group__SyncCallback.html#gaffcc775f95de74420a59748b3298a429',1,'SDL::PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const'],['../structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8',1,'SDL::PropertiesBase::Enumerate(IT outputIter) const']]],
+  ['enumerate_14',['enumerate',['../structSDL_1_1PropertiesBase.html#a6cfd7d258d2c11f46af02cbb5f6d808a',1,'SDL::PropertiesBase::Enumerate(EnumeratePropertiesCallback callback, void *userdata) const'],['../group__immediate-callback.html#gaffcc775f95de74420a59748b3298a429',1,'SDL::PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const'],['../structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8',1,'SDL::PropertiesBase::Enumerate(IT outputIter) const']]],
   ['enumeratepropertiescallback_15',['EnumeratePropertiesCallback',['../group__CategoryProperties.html#ga52e1c12fca5ec69ba32453ddc9d34c6c',1,'SDL']]],
   ['enumeratepropertiescb_16',['EnumeratePropertiesCB',['../group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d',1,'SDL']]],
   ['environment_17',['Environment',['../group__resource.html#gaedb86e9b9bb1aca04f73942d06b1d98f',1,'SDL']]],
@@ -147,7 +147,7 @@ var searchData=
   ['eventaction_144',['EventAction',['../group__CategoryEvents.html#ga80fcb19ed338e51b0448fe770e9a31ef',1,'SDL']]],
   ['eventenabled_145',['EventEnabled',['../group__CategoryEvents.html#gae67ec89cc5986f1f99a24916db4d20d0',1,'SDL']]],
   ['eventfilter_146',['EventFilter',['../group__CategoryEvents.html#ga32cb19c6685bf30697726b3efde06ab0',1,'SDL']]],
-  ['eventfiltercb_147',['EventFilterCB',['../group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef',1,'SDL']]],
+  ['eventfiltercb_147',['EventFilterCB',['../group__listener-callback.html#gaf8d1bbcd20812ea4df09ab62078b98ef',1,'SDL']]],
   ['events_148',['events',['../group__CategoryEvents.html',1,'Category Events'],['../group__CategoriesEvents.html',1,'Input Events'],['../ApiByCategory.html#input-events',1,'Input Events']]],
   ['eventtype_149',['EventType',['../group__CategoryEvents.html#ga8f53a42c552531bb4c78c242eeacb7e3',1,'SDL']]],
   ['eventwatchauxcallback_150',['EventWatchAuxCallback',['../group__CategoryEvents.html#ga98ee361698ead2f22e5375dc26473c7b',1,'SDL']]],
@@ -156,5 +156,5 @@ var searchData=
   ['exp_153',['exp',['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
   ['expf_154',['expf',['../group__CategoryStdinc.html#ga5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],
   ['extend_155',['extend',['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)']]],
-  ['extending_20struct_156',['Wrap extending struct',['../group__WrapExtend.html',1,'']]]
+  ['extending_20struct_156',['Wrap extending struct',['../group__wrap-extending-struct.html',1,'']]]
 ];

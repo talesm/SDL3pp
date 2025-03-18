@@ -54,15 +54,15 @@ pattern and functions related to them.
 */
 
 /**
-@defgroup SyncCallback Immediate callback
+@defgroup immediate-callback Immediate callback
 
 Immediate callback or synchronous callback is always invoked before the callee
 function returns. Because of this, there is no need to be store/marshal data
-as @ref AsyncCallback does.
+as @ref delayed-callback does.
 */
 
 /**
-@defgroup AsyncCallback Delayed callback
+@defgroup delayed-callback Delayed callback
 
 Delayed or Asynchronous callback is a callback that may be invoked after the 
 callee returns. This might be when some event occurs or when a given result 
@@ -71,7 +71,7 @@ available.
 */
 
 /**
-@defgroup ResultCallback Result callback
+@defgroup result-callback Result callback
 
 Result callback is invoked at single point and then discarded. This means that
 after its called it safe to free any memory it is holding. The CallbackWrapper 
@@ -80,7 +80,7 @@ uses is RunOnMainThread().
 */
 
 /**
-@defgroup ListenerCallback Listener callback
+@defgroup listener-callback Listener callback
 
 Listener callback is invoked multiple times whenever the event it subscripted
 happens. It's not safe to free memory after call, so a separate mechanism must
@@ -108,7 +108,7 @@ AddEventWatch() and AddTimer().
 /// @}
 
 /**
-@defgroup FmtString Formatted string
+@defgroup formatted-string Formatted string
 
 C++ has the type-safe [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
 style, so where applicable we wrap the SDL's C style formatted string with the
@@ -118,7 +118,7 @@ it.
 */
 
 /**
-@defgroup WrapState Wrapped state
+@defgroup wrap-state Wrap state
 
 We define an wrapped state when we have a opaque void*, an integer or enum that
 just represent some state or handle that does not relate to any allocation (it
@@ -140,9 +140,9 @@ using the spaceship `<=>`.
 */
 
 /**
-@defgroup WrapExtend Wrap extending struct
+@defgroup wrap-extending-struct Wrap extending struct
 
-This is similar to @ref WrapState, but when the state is a struct. In that case
+This is similar to @ref wrap-state, but when the state is a struct. In that case
 we can have similar results by extending it and adding the member functions on 
 the extended type. 
 

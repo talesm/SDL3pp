@@ -33,9 +33,9 @@ namespace SDL {
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @ingroup WrapExtend
+ * @ingroup wrap-extending-struct
  *
- * @sa WrapExtend
+ * @sa wrap-extending-struct
  */
 struct GUID : SDL_GUID
 {
