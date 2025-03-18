@@ -306,7 +306,7 @@ using HitTest = SDL_HitTest;
  *
  * @ingroup ListenerCallback
  */
-using HitTestFunction =
+using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
 /// @}
@@ -2538,9 +2538,9 @@ struct WindowBase : T
    *
    * @ingroup ListenerCallback
    */
-  bool SetHitTest(HitTestFunction callback)
+  bool SetHitTest(HitTestCB callback)
   {
-    using Wrapper = KeyValueWrapper<SDL_Window*, HitTestFunction>;
+    using Wrapper = KeyValueWrapper<SDL_Window*, HitTestCB>;
     void* cbHandle = Wrapper::Wrap(T::get(), std::move(callback));
     return SetHitTest(
       [](SDL_Window* win, const SDL_Point* area, void* data) {
@@ -2659,7 +2659,7 @@ struct WindowBase : T
   void Destroy()
   {
     auto window = T::release();
-    KeyValueWrapper<SDL_Window*, HitTestFunction>::erase(window);
+    KeyValueWrapper<SDL_Window*, HitTestCB>::erase(window);
     return SDL_DestroyWindow(window);
   }
 };

@@ -81,30 +81,30 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga1f1137c1e9907e2fa64387c67a30992e" id="r_ga1f1137c1e9907e2fa64387c67a30992e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SyncCallback.html#ga1f1137c1e9907e2fa64387c67a30992e">SDL::FilterEvents</a> (<a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> filter)</td></tr>
-<tr class="memdesc:ga1f1137c1e9907e2fa64387c67a30992e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a specific filter function on the current event queue, removing any events for which the filter returns false.  <br /></td></tr>
-<tr class="separator:ga1f1137c1e9907e2fa64387c67a30992e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4b7fa67b2b1ce9b366c9192edc10e809" id="r_ga4b7fa67b2b1ce9b366c9192edc10e809"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SyncCallback.html#ga4b7fa67b2b1ce9b366c9192edc10e809">SDL::PropertiesBase&lt; T &gt;::Enumerate</a> (<a class="el" href="group__CategoryProperties.html#ga9eaf0c945d51c16b884362809a4f56d2">EnumeratePropertiesFunction</a> callback) const</td></tr>
-<tr class="memdesc:ga4b7fa67b2b1ce9b366c9192edc10e809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate the properties contained in a group of properties.  <br /></td></tr>
-<tr class="separator:ga4b7fa67b2b1ce9b366c9192edc10e809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga012ee46224020dd32156f124d75d3a38" id="r_ga012ee46224020dd32156f124d75d3a38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SyncCallback.html#ga012ee46224020dd32156f124d75d3a38">SDL::FilterEvents</a> (<a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a> filter)</td></tr>
+<tr class="memdesc:ga012ee46224020dd32156f124d75d3a38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run a specific filter function on the current event queue, removing any events for which the filter returns false.  <br /></td></tr>
+<tr class="separator:ga012ee46224020dd32156f124d75d3a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaffcc775f95de74420a59748b3298a429" id="r_gaffcc775f95de74420a59748b3298a429"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SyncCallback.html#gaffcc775f95de74420a59748b3298a429">SDL::PropertiesBase&lt; T &gt;::Enumerate</a> (<a class="el" href="group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d">EnumeratePropertiesCB</a> callback) const</td></tr>
+<tr class="memdesc:gaffcc775f95de74420a59748b3298a429"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumerate the properties contained in a group of properties.  <br /></td></tr>
+<tr class="separator:gaffcc775f95de74420a59748b3298a429"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Callbacks for PropertiesBase.Enumerate()</h2></td></tr>
-<tr class="memitem:ga9eaf0c945d51c16b884362809a4f56d2" id="r_ga9eaf0c945d51c16b884362809a4f56d2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga9eaf0c945d51c16b884362809a4f56d2">SDL::EnumeratePropertiesFunction</a> = std::function&lt; void(<a class="el" href="group__resource.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props, const char *name)&gt;</td></tr>
-<tr class="memdesc:ga9eaf0c945d51c16b884362809a4f56d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to enumerate all the properties in a group of properties.  <br /></td></tr>
-<tr class="separator:ga9eaf0c945d51c16b884362809a4f56d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabca9f4d0180160fe63ebc8829dd9311d" id="r_gabca9f4d0180160fe63ebc8829dd9311d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d">SDL::EnumeratePropertiesCB</a> = std::function&lt; void(<a class="el" href="group__resource.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props, const char *name)&gt;</td></tr>
+<tr class="memdesc:gabca9f4d0180160fe63ebc8829dd9311d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to enumerate all the properties in a group of properties.  <br /></td></tr>
+<tr class="separator:gabca9f4d0180160fe63ebc8829dd9311d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Immediate callback or synchronous callback is always invoked before the callee function returns. </p>
 <p>Because of this, there is no need to be store/marshal data as <a class="el" href="group__AsyncCallback.html">Delayed callback</a> does. </p>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga9eaf0c945d51c16b884362809a4f56d2" name="ga9eaf0c945d51c16b884362809a4f56d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9eaf0c945d51c16b884362809a4f56d2">&#9670;&#160;</a></span>EnumeratePropertiesFunction</h2>
+<a id="gabca9f4d0180160fe63ebc8829dd9311d" name="gabca9f4d0180160fe63ebc8829dd9311d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabca9f4d0180160fe63ebc8829dd9311d">&#9670;&#160;</a></span>EnumeratePropertiesCB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryProperties.html#ga9eaf0c945d51c16b884362809a4f56d2">SDL::EnumeratePropertiesFunction</a> = typedef std::function&lt;void(<a class="el" href="group__resource.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props, const char* name)&gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d">SDL::EnumeratePropertiesCB</a> = typedef std::function&lt;void(<a class="el" href="group__resource.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props, const char* name)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -122,8 +122,8 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga4b7fa67b2b1ce9b366c9192edc10e809" name="ga4b7fa67b2b1ce9b366c9192edc10e809"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4b7fa67b2b1ce9b366c9192edc10e809">&#9670;&#160;</a></span>Enumerate()</h2>
+<a id="gaffcc775f95de74420a59748b3298a429" name="gaffcc775f95de74420a59748b3298a429"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaffcc775f95de74420a59748b3298a429">&#9670;&#160;</a></span>Enumerate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -136,7 +136,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1PropertiesBase.html">SDL::PropertiesBase</a>&lt; T &gt;::Enumerate </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryProperties.html#ga9eaf0c945d51c16b884362809a4f56d2">EnumeratePropertiesFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryProperties.html#gabca9f4d0180160fe63ebc8829dd9311d">EnumeratePropertiesCB</a>&#160;</td>
           <td class="paramname"><em>callback</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -164,8 +164,8 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 
 </div>
 </div>
-<a id="ga1f1137c1e9907e2fa64387c67a30992e" name="ga1f1137c1e9907e2fa64387c67a30992e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1f1137c1e9907e2fa64387c67a30992e">&#9670;&#160;</a></span>FilterEvents()</h2>
+<a id="ga012ee46224020dd32156f124d75d3a38" name="ga012ee46224020dd32156f124d75d3a38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga012ee46224020dd32156f124d75d3a38">&#9670;&#160;</a></span>FilterEvents()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +176,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
         <tr>
           <td class="memname">void SDL::FilterEvents </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a>&#160;</td>
           <td class="paramname"><em>filter</em></td><td>)</td>
           <td></td>
         </tr>
@@ -200,7 +200,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__SyncCallback.html" title="Immediate callback or synchronous callback is always invoked before the callee function returns.">Immediate callback</a> </dd>
 <dd>
-<a class="el" href="group__ListenerCallback.html#ga274cf6de4be1b4faf2d734e868fa9f73" title="Query the current event filter.">GetEventFilter()</a> </dd>
+<a class="el" href="group__ListenerCallback.html#gaf4bc41d3422121ab608e253c6da4dc6c" title="Query the current event filter.">GetEventFilter()</a> </dd>
 <dd>
 <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a> </dd></dl>
 

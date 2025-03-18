@@ -90,6 +90,8 @@ Modules</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>A callback is a invocable object passed to a function as a customization point. </p>
+<p>Im addition of supporting the default <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> callbacks, whenever we have an <code>void *</code> userdata customization point, we use it wrap a std::function object, with signature similar to original and with the "CB" suffix. See <a class="el" href="transformations.html#callback-rules">Callback rules</a> for more details.</p>
+<p>This module and its submodules document the callback types that use this pattern and functions related to them. </p>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

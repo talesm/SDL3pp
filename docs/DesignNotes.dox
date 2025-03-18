@@ -42,7 +42,13 @@ the resource. For example, for SDL_Surface we have:
 @defgroup callback Callback
 
 A callback is a invocable object passed to a function as a customization point.
+Im addition of supporting the default SDL callbacks, whenever we have an 
+`void *` userdata customization point, we use it wrap a std::function object,
+with signature similar to original and with the "CB" suffix. See 
+@ref callback-rules for more details.
 
+This module and its submodules document the callback types that use this 
+pattern and functions related to them.
 
 @{
 */

@@ -118,7 +118,7 @@ As we mentioned in [Function rules](#function-rules), the original callback
 functions are always supported. In addition, if has an userdata parameter we 
 create an alternative callback as follows:
 
-- The callback name will have the "Function" suffix, replacing a "Callback" 
+- The callback name will have the "CB" suffix, replacing a "Callback" 
   suffix if any;
 - The callback type is a std::function with the same parameters than the 
   original one, with the following changes: 

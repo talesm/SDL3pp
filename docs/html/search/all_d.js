@@ -1,7 +1,7 @@
 var searchData=
 [
   ['mainthreadcallback_0',['MainThreadCallback',['../group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c',1,'SDL']]],
-  ['mainthreadfunction_1',['MainThreadFunction',['../group__CategoryInit.html#gaa0da34c8dc3a2eca5592eb26d8867bbd',1,'SDL']]],
+  ['mainthreadcb_1',['MainThreadCB',['../group__CategoryInit.html#ga2f8cd7a48bac7f78b92bb612d160585b',1,'SDL']]],
   ['malloc_2',['malloc',['../group__CategoryStdinc.html#ga48fe5521cb77ff8e4ae442bc8387be70',1,'SDL']]],
   ['malloc_5ffunc_3',['malloc_func',['../group__CategoryStdinc.html#ga20e849be3a477a832c3f5b49aa71f793',1,'SDL']]],
   ['management_4',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],

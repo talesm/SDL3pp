@@ -119,7 +119,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @ingroup ResultCallback
  */
-using CleanupPropertyFunction = std::function<void(void*)>;
+using CleanupPropertyCB = std::function<void(void*)>;
 
 /// @}
 /**
@@ -158,7 +158,7 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  *
  * @ingroup SyncCallback
  */
-using EnumeratePropertiesFunction =
+using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;
 
 /// @}
@@ -278,9 +278,9 @@ struct PropertiesBase : T
    */
   bool SetPointerWithCleanup(StringParam name,
                              void* value,
-                             CleanupPropertyFunction cleanup)
+                             CleanupPropertyCB cleanup)
   {
-    using Wrapper = CallbackWrapper<CleanupPropertyFunction>;
+    using Wrapper = CallbackWrapper<CleanupPropertyCB>;
 
     return SetPointerWithCleanup(std::move(name),
                                  value,
@@ -665,11 +665,11 @@ struct PropertiesBase : T
    *
    * @sa SyncCallback
    */
-  bool Enumerate(EnumeratePropertiesFunction callback) const
+  bool Enumerate(EnumeratePropertiesCB callback) const
   {
     return Enumerate(
       [](void* userdata, SDL_PropertiesID props, const char* name) {
-        auto& f = *static_cast<EnumeratePropertiesFunction*>(userdata);
+        auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
         f({props}, name);
       },
       &callback);

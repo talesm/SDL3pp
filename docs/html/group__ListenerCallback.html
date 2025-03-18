@@ -82,29 +82,29 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga89729782789df28788240517ea5b82be" id="r_ga89729782789df28788240517ea5b82be"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">SDL::EventFilterFunction</a> = std::function&lt; bool(const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> &amp;)&gt;</td></tr>
-<tr class="memdesc:ga89729782789df28788240517ea5b82be"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::function used for callbacks that watch the event queue.  <br /></td></tr>
-<tr class="separator:ga89729782789df28788240517ea5b82be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf8d1bbcd20812ea4df09ab62078b98ef" id="r_gaf8d1bbcd20812ea4df09ab62078b98ef"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">SDL::EventFilterCB</a> = std::function&lt; bool(const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a> &amp;)&gt;</td></tr>
+<tr class="memdesc:gaf8d1bbcd20812ea4df09ab62078b98ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">A std::function used for callbacks that watch the event queue.  <br /></td></tr>
+<tr class="separator:gaf8d1bbcd20812ea4df09ab62078b98ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2dbf9e66c462a0ae7fc5fc392708b663" id="r_ga2dbf9e66c462a0ae7fc5fc392708b663"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga2dbf9e66c462a0ae7fc5fc392708b663">SDL::LogOutputFunctionCB</a> = std::function&lt; void(<a class="el" href="classSDL_1_1LogCategory.html">LogCategory</a>, <a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>)&gt;</td></tr>
 <tr class="memdesc:ga2dbf9e66c462a0ae7fc5fc392708b663"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prototype for the log output callback function.  <br /></td></tr>
 <tr class="separator:ga2dbf9e66c462a0ae7fc5fc392708b663"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga59a958a3b9f50b97abd97cd75bfc9c06" id="r_ga59a958a3b9f50b97abd97cd75bfc9c06"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga59a958a3b9f50b97abd97cd75bfc9c06">SDL::TimerFunction</a> = std::function&lt; std::chrono::nanoseconds(<a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>, std::chrono::nanoseconds)&gt;</td></tr>
-<tr class="memdesc:ga59a958a3b9f50b97abd97cd75bfc9c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the nanosecond timer callback function.  <br /></td></tr>
-<tr class="separator:ga59a958a3b9f50b97abd97cd75bfc9c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga418a6ee007995b046629a7f12a797c53" id="r_ga418a6ee007995b046629a7f12a797c53"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga418a6ee007995b046629a7f12a797c53">SDL::TimerCB</a> = std::function&lt; std::chrono::nanoseconds(<a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>, std::chrono::nanoseconds)&gt;</td></tr>
+<tr class="memdesc:ga418a6ee007995b046629a7f12a797c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function prototype for the nanosecond timer callback function.  <br /></td></tr>
+<tr class="separator:ga418a6ee007995b046629a7f12a797c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gacd6a50432277e9af8392770756edfacd" id="r_gacd6a50432277e9af8392770756edfacd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#gacd6a50432277e9af8392770756edfacd">SDL::SetEventFilter</a> (<a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> filter={})</td></tr>
-<tr class="memdesc:gacd6a50432277e9af8392770756edfacd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a filter to process all events before they are added to the internal event queue.  <br /></td></tr>
-<tr class="separator:gacd6a50432277e9af8392770756edfacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga274cf6de4be1b4faf2d734e868fa9f73" id="r_ga274cf6de4be1b4faf2d734e868fa9f73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga274cf6de4be1b4faf2d734e868fa9f73">SDL::GetEventFilter</a> ()</td></tr>
-<tr class="memdesc:ga274cf6de4be1b4faf2d734e868fa9f73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current event filter.  <br /></td></tr>
-<tr class="separator:ga274cf6de4be1b4faf2d734e868fa9f73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga12ffc976b35a76dfa7b3c047b7973ecf" id="r_ga12ffc976b35a76dfa7b3c047b7973ecf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1EventWatchHandle.html">EventWatchHandle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga12ffc976b35a76dfa7b3c047b7973ecf">SDL::AddEventWatch</a> (<a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> filter)</td></tr>
-<tr class="memdesc:ga12ffc976b35a76dfa7b3c047b7973ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a callback to be triggered when an event is added to the event queue.  <br /></td></tr>
-<tr class="separator:ga12ffc976b35a76dfa7b3c047b7973ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabec1eec7fd94eb35a27f6958a820e98d" id="r_gabec1eec7fd94eb35a27f6958a820e98d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#gabec1eec7fd94eb35a27f6958a820e98d">SDL::SetEventFilter</a> (<a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a> filter={})</td></tr>
+<tr class="memdesc:gabec1eec7fd94eb35a27f6958a820e98d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up a filter to process all events before they are added to the internal event queue.  <br /></td></tr>
+<tr class="separator:gabec1eec7fd94eb35a27f6958a820e98d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf4bc41d3422121ab608e253c6da4dc6c" id="r_gaf4bc41d3422121ab608e253c6da4dc6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#gaf4bc41d3422121ab608e253c6da4dc6c">SDL::GetEventFilter</a> ()</td></tr>
+<tr class="memdesc:gaf4bc41d3422121ab608e253c6da4dc6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the current event filter.  <br /></td></tr>
+<tr class="separator:gaf4bc41d3422121ab608e253c6da4dc6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9471cdb876c63ac0ecf6b8a2649ac39e" id="r_ga9471cdb876c63ac0ecf6b8a2649ac39e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1EventWatchHandle.html">EventWatchHandle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga9471cdb876c63ac0ecf6b8a2649ac39e">SDL::AddEventWatch</a> (<a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a> filter)</td></tr>
+<tr class="memdesc:ga9471cdb876c63ac0ecf6b8a2649ac39e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a callback to be triggered when an event is added to the event queue.  <br /></td></tr>
+<tr class="separator:ga9471cdb876c63ac0ecf6b8a2649ac39e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafa524f0b36188ca0c048f169500628d4" id="r_gafa524f0b36188ca0c048f169500628d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#gafa524f0b36188ca0c048f169500628d4">SDL::RemoveEventWatch</a> (<a class="el" href="classSDL_1_1EventWatchHandle.html">EventWatchHandle</a> handle)</td></tr>
-<tr class="memdesc:gafa524f0b36188ca0c048f169500628d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an event watch callback added with SDL_AddEventWatch(EventFilterFunction).  <br /></td></tr>
+<tr class="memdesc:gafa524f0b36188ca0c048f169500628d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove an event watch callback added with SDL_AddEventWatch(EventFilterCB).  <br /></td></tr>
 <tr class="separator:gafa524f0b36188ca0c048f169500628d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaae40ad42b1a6520c9a29192c24b5dce6" id="r_gaae40ad42b1a6520c9a29192c24b5dce6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__ListenerCallback.html#ga2dbf9e66c462a0ae7fc5fc392708b663">LogOutputFunctionCB</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#gaae40ad42b1a6520c9a29192c24b5dce6">SDL::GetLogOutputFunction</a> ()</td></tr>
 <tr class="memdesc:gaae40ad42b1a6520c9a29192c24b5dce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current log output function.  <br /></td></tr>
@@ -112,17 +112,17 @@ Functions</h2></td></tr>
 <tr class="memitem:ga06e1e1a45b237119f72c366bb7bd4f09" id="r_ga06e1e1a45b237119f72c366bb7bd4f09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga06e1e1a45b237119f72c366bb7bd4f09">SDL::SetLogOutputFunction</a> (<a class="el" href="group__ListenerCallback.html#ga2dbf9e66c462a0ae7fc5fc392708b663">LogOutputFunctionCB</a> callback)</td></tr>
 <tr class="memdesc:ga06e1e1a45b237119f72c366bb7bd4f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace the default log output function with one of your own.  <br /></td></tr>
 <tr class="separator:ga06e1e1a45b237119f72c366bb7bd4f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacc46499d9c361e40449383ecc970845f" id="r_gacc46499d9c361e40449383ecc970845f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#gacc46499d9c361e40449383ecc970845f">SDL::AddTimer</a> (std::chrono::nanoseconds interval, <a class="el" href="group__ListenerCallback.html#ga59a958a3b9f50b97abd97cd75bfc9c06">TimerFunction</a> callback)</td></tr>
-<tr class="memdesc:gacc46499d9c361e40449383ecc970845f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a callback function at a future time.  <br /></td></tr>
-<tr class="separator:gacc46499d9c361e40449383ecc970845f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6a29f41f5e9608270f7241d1ef8392ca" id="r_ga6a29f41f5e9608270f7241d1ef8392ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga6a29f41f5e9608270f7241d1ef8392ca">SDL::WindowBase&lt; T &gt;::SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">HitTestFunction</a> callback)</td></tr>
-<tr class="memdesc:ga6a29f41f5e9608270f7241d1ef8392ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a callback that decides if a window region has special properties.  <br /></td></tr>
-<tr class="separator:ga6a29f41f5e9608270f7241d1ef8392ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4605aebef3c001d56891a33e116e0201" id="r_ga4605aebef3c001d56891a33e116e0201"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga4605aebef3c001d56891a33e116e0201">SDL::AddTimer</a> (std::chrono::nanoseconds interval, <a class="el" href="group__ListenerCallback.html#ga418a6ee007995b046629a7f12a797c53">TimerCB</a> callback)</td></tr>
+<tr class="memdesc:ga4605aebef3c001d56891a33e116e0201"><td class="mdescLeft">&#160;</td><td class="mdescRight">Call a callback function at a future time.  <br /></td></tr>
+<tr class="separator:ga4605aebef3c001d56891a33e116e0201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81baa0c7faf25f77b0c09ff5014c51d6" id="r_ga81baa0c7faf25f77b0c09ff5014c51d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ListenerCallback.html#ga81baa0c7faf25f77b0c09ff5014c51d6">SDL::WindowBase&lt; T &gt;::SetHitTest</a> (<a class="el" href="group__CategoryVideo.html#gab91ae0707a2ab45b059b19791af20c34">HitTestCB</a> callback)</td></tr>
+<tr class="memdesc:ga81baa0c7faf25f77b0c09ff5014c51d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Provide a callback that decides if a window region has special properties.  <br /></td></tr>
+<tr class="separator:ga81baa0c7faf25f77b0c09ff5014c51d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Callbacks for WindowBase::SetHitTest()</h2></td></tr>
-<tr class="memitem:ga876ef260b3a07cbebc869191f56331bc" id="r_ga876ef260b3a07cbebc869191f56331bc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">SDL::HitTestFunction</a> = std::function&lt; <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(<a class="el" href="group__resource.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, const <a class="el" href="structSDL_1_1Point.html">Point</a> &amp;area)&gt;</td></tr>
-<tr class="memdesc:ga876ef260b3a07cbebc869191f56331bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback used for hit-testing.  <br /></td></tr>
-<tr class="separator:ga876ef260b3a07cbebc869191f56331bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab91ae0707a2ab45b059b19791af20c34" id="r_gab91ae0707a2ab45b059b19791af20c34"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gab91ae0707a2ab45b059b19791af20c34">SDL::HitTestCB</a> = std::function&lt; <a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(<a class="el" href="group__resource.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, const <a class="el" href="structSDL_1_1Point.html">Point</a> &amp;area)&gt;</td></tr>
+<tr class="memdesc:gab91ae0707a2ab45b059b19791af20c34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback used for hit-testing.  <br /></td></tr>
+<tr class="separator:gab91ae0707a2ab45b059b19791af20c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Listener callback is invoked multiple times whenever the event it subscripted happens. </p>
@@ -132,14 +132,14 @@ Functions</h2></td></tr>
 <p>When there is multiple callbacks simultaneously per program, we can use a combination of CallbackWrapper to wrap it and KeyValueWrapper to associate them with an id you can later use to remove it, as we use in both AddEventWatch() and AddTimer().</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Allow listener handle to be stored into a RAII object.</dd></dl>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga89729782789df28788240517ea5b82be" name="ga89729782789df28788240517ea5b82be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga89729782789df28788240517ea5b82be">&#9670;&#160;</a></span>EventFilterFunction</h2>
+<a id="gaf8d1bbcd20812ea4df09ab62078b98ef" name="gaf8d1bbcd20812ea4df09ab62078b98ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf8d1bbcd20812ea4df09ab62078b98ef">&#9670;&#160;</a></span>EventFilterCB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">SDL::EventFilterFunction</a> = typedef std::function&lt;bool(const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a>&amp;)&gt;</td>
+          <td class="memname">using <a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">SDL::EventFilterCB</a> = typedef std::function&lt;bool(const <a class="el" href="group__CategoryEvents.html#ga89256e35005c550c3dea4f9d694c674a">Event</a>&amp;)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -166,14 +166,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga876ef260b3a07cbebc869191f56331bc" name="ga876ef260b3a07cbebc869191f56331bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga876ef260b3a07cbebc869191f56331bc">&#9670;&#160;</a></span>HitTestFunction</h2>
+<a id="gab91ae0707a2ab45b059b19791af20c34" name="gab91ae0707a2ab45b059b19791af20c34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab91ae0707a2ab45b059b19791af20c34">&#9670;&#160;</a></span>HitTestCB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">SDL::HitTestFunction</a> = typedef std::function&lt;<a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(<a class="el" href="group__resource.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, const <a class="el" href="structSDL_1_1Point.html">Point</a>&amp; area)&gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryVideo.html#gab91ae0707a2ab45b059b19791af20c34">SDL::HitTestCB</a> = typedef std::function&lt;<a class="el" href="group__CategoryVideo.html#ga676fed3c1276d6935267644c61b2ab0e">HitTestResult</a>(<a class="el" href="group__resource.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, const <a class="el" href="structSDL_1_1Point.html">Point</a>&amp; area)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -226,14 +226,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga59a958a3b9f50b97abd97cd75bfc9c06" name="ga59a958a3b9f50b97abd97cd75bfc9c06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga59a958a3b9f50b97abd97cd75bfc9c06">&#9670;&#160;</a></span>TimerFunction</h2>
+<a id="ga418a6ee007995b046629a7f12a797c53" name="ga418a6ee007995b046629a7f12a797c53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga418a6ee007995b046629a7f12a797c53">&#9670;&#160;</a></span>TimerCB</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__ListenerCallback.html#ga59a958a3b9f50b97abd97cd75bfc9c06">SDL::TimerFunction</a> = typedef std::function&lt;std::chrono::nanoseconds(<a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>, std::chrono::nanoseconds)&gt;</td>
+          <td class="memname">using <a class="el" href="group__ListenerCallback.html#ga418a6ee007995b046629a7f12a797c53">SDL::TimerCB</a> = typedef std::function&lt;std::chrono::nanoseconds(<a class="el" href="group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146">TimerID</a>, std::chrono::nanoseconds)&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -252,15 +252,15 @@ Functions</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__ListenerCallback.html" title="Listener callback is invoked multiple times whenever the event it subscripted happens.">Listener callback</a> </dd>
 <dd>
-AddTimer(TimerFunction) </dd></dl>
+AddTimer(TimerCB) </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__timer_8h_source.html#l00203">203</a> of file <a class="el" href="SDL3pp__timer_8h_source.html">SDL3pp_timer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__timer_8h_source.html#l00202">202</a> of file <a class="el" href="SDL3pp__timer_8h_source.html">SDL3pp_timer.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga12ffc976b35a76dfa7b3c047b7973ecf" name="ga12ffc976b35a76dfa7b3c047b7973ecf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga12ffc976b35a76dfa7b3c047b7973ecf">&#9670;&#160;</a></span>AddEventWatch()</h2>
+<a id="ga9471cdb876c63ac0ecf6b8a2649ac39e" name="ga9471cdb876c63ac0ecf6b8a2649ac39e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9471cdb876c63ac0ecf6b8a2649ac39e">&#9670;&#160;</a></span>AddEventWatch()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +271,7 @@ AddTimer(TimerFunction) </dd></dl>
         <tr>
           <td class="memname"><a class="el" href="classSDL_1_1EventWatchHandle.html">EventWatchHandle</a> SDL::AddEventWatch </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a>&#160;</td>
           <td class="paramname"><em>filter</em></td><td>)</td>
           <td></td>
         </tr>
@@ -290,7 +290,7 @@ AddTimer(TimerFunction) </dd></dl>
 <p>Note: the callback is called for events posted by the user through <a class="el" href="group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576" title="Add an event to the event queue.">PushEvent()</a>, but not for disabled events, nor for events by a filter callback set with <a class="el" href="group__CategoryEvents.html#gab04b0a4b2342c07abe0bcb79e6b91869" title="Set up a filter to process all events before they are added to the internal event queue.">SetEventFilter()</a>, nor for events posted by the user through <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filter</td><td>an EventFilterFunction to call when an event happens. </td></tr>
+    <tr><td class="paramname">filter</td><td>an EventFilterCB to call when an event happens. </td></tr>
   </table>
   </dd>
 </dl>
@@ -307,8 +307,8 @@ AddTimer(TimerFunction) </dd></dl>
 
 </div>
 </div>
-<a id="gacc46499d9c361e40449383ecc970845f" name="gacc46499d9c361e40449383ecc970845f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacc46499d9c361e40449383ecc970845f">&#9670;&#160;</a></span>AddTimer()</h2>
+<a id="ga4605aebef3c001d56891a33e116e0201" name="ga4605aebef3c001d56891a33e116e0201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4605aebef3c001d56891a33e116e0201">&#9670;&#160;</a></span>AddTimer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -325,7 +325,7 @@ AddTimer(TimerFunction) </dd></dl>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#ga59a958a3b9f50b97abd97cd75bfc9c06">TimerFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#ga418a6ee007995b046629a7f12a797c53">TimerCB</a>&#160;</td>
           <td class="paramname"><em>callback</em>&#160;</td>
         </tr>
         <tr>
@@ -349,7 +349,7 @@ AddTimer(TimerFunction) </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">interval</td><td>the timer delay, in std::chrono::nanoseconds, passed to <code>callback</code>. </td></tr>
-    <tr><td class="paramname">callback</td><td>the TimerFunction function to call when the specified <code>interval</code> elapses. </td></tr>
+    <tr><td class="paramname">callback</td><td>the TimerCB function to call when the specified <code>interval</code> elapses. </td></tr>
   </table>
   </dd>
 </dl>
@@ -360,12 +360,12 @@ AddTimer(TimerFunction) </dd></dl>
 <dd>
 <a class="el" href="group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf" title="Remove a timer created with AddTimer().">RemoveTimer()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__timer_8h_source.html#l00323">323</a> of file <a class="el" href="SDL3pp__timer_8h_source.html">SDL3pp_timer.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__timer_8h_source.html#l00322">322</a> of file <a class="el" href="SDL3pp__timer_8h_source.html">SDL3pp_timer.h</a>.</p>
 
 </div>
 </div>
-<a id="ga274cf6de4be1b4faf2d734e868fa9f73" name="ga274cf6de4be1b4faf2d734e868fa9f73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga274cf6de4be1b4faf2d734e868fa9f73">&#9670;&#160;</a></span>GetEventFilter()</h2>
+<a id="gaf4bc41d3422121ab608e253c6da4dc6c" name="gaf4bc41d3422121ab608e253c6da4dc6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf4bc41d3422121ab608e253c6da4dc6c">&#9670;&#160;</a></span>GetEventFilter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -374,7 +374,7 @@ AddTimer(TimerFunction) </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a> SDL::GetEventFilter </td>
+          <td class="memname"><a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a> SDL::GetEventFilter </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -389,7 +389,7 @@ AddTimer(TimerFunction) </dd></dl>
 
 <p>Query the current event filter. </p>
 <p>This function can be used to "chain" filters, by saving the existing filter before replacing it with a function that will call that saved filter.</p>
-<dl class="section return"><dt>Returns</dt><dd>EventFilterFunction on success or false if there is no event filter set.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>EventFilterCB on success or false if there is no event filter set.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__ListenerCallback.html" title="Listener callback is invoked multiple times whenever the event it subscripted happens.">Listener callback</a> </dd>
@@ -461,10 +461,10 @@ AddTimer(TimerFunction) </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Remove an event watch callback added with SDL_AddEventWatch(EventFilterFunction). </p>
+<p>Remove an event watch callback added with SDL_AddEventWatch(EventFilterCB). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">handle</td><td>the handle returned by SDL_AddEventWatch(EventFilterFunction).</td></tr>
+    <tr><td class="paramname">handle</td><td>the handle returned by SDL_AddEventWatch(EventFilterCB).</td></tr>
   </table>
   </dd>
 </dl>
@@ -472,14 +472,14 @@ AddTimer(TimerFunction) </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__ListenerCallback.html" title="Listener callback is invoked multiple times whenever the event it subscripted happens.">Listener callback</a> </dd>
 <dd>
-<a class="el" href="group__ListenerCallback.html#ga12ffc976b35a76dfa7b3c047b7973ecf" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch(EventFilterFunction)</a> </dd></dl>
+<a class="el" href="group__ListenerCallback.html#ga9471cdb876c63ac0ecf6b8a2649ac39e" title="Add a callback to be triggered when an event is added to the event queue.">AddEventWatch(EventFilterCB)</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__events_8h_source.html#l01816">1816</a> of file <a class="el" href="SDL3pp__events_8h_source.html">SDL3pp_events.h</a>.</p>
 
 </div>
 </div>
-<a id="gacd6a50432277e9af8392770756edfacd" name="gacd6a50432277e9af8392770756edfacd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacd6a50432277e9af8392770756edfacd">&#9670;&#160;</a></span>SetEventFilter()</h2>
+<a id="gabec1eec7fd94eb35a27f6958a820e98d" name="gabec1eec7fd94eb35a27f6958a820e98d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabec1eec7fd94eb35a27f6958a820e98d">&#9670;&#160;</a></span>SetEventFilter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -490,7 +490,7 @@ AddTimer(TimerFunction) </dd></dl>
         <tr>
           <td class="memname">void SDL::SetEventFilter </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#ga89729782789df28788240517ea5b82be">EventFilterFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__ListenerCallback.html#gaf8d1bbcd20812ea4df09ab62078b98ef">EventFilterCB</a>&#160;</td>
           <td class="paramname"><em>filter</em> = <code>{}</code></td><td>)</td>
           <td></td>
         </tr>
@@ -511,7 +511,7 @@ AddTimer(TimerFunction) </dd></dl>
 <p>Note: Events pushed onto the queue with SDL_PushEvent() get passed through the event filter, but events pushed onto the queue with SDL_PeepEvents() do not.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">filter</td><td>an EventFilterFunction function to call when an event happens.</td></tr>
+    <tr><td class="paramname">filter</td><td>an EventFilterCB function to call when an event happens.</td></tr>
   </table>
   </dd>
 </dl>
@@ -523,7 +523,7 @@ AddTimer(TimerFunction) </dd></dl>
 <dd>
 <a class="el" href="group__CategoryEvents.html#ga883f6ae88fa5628490ff69fb9e2fc8e5" title="Set the state of processing events by type.">SetEventEnabled()</a> </dd>
 <dd>
-<a class="el" href="group__ListenerCallback.html#ga274cf6de4be1b4faf2d734e868fa9f73" title="Query the current event filter.">GetEventFilter()</a> </dd>
+<a class="el" href="group__ListenerCallback.html#gaf4bc41d3422121ab608e253c6da4dc6c" title="Query the current event filter.">GetEventFilter()</a> </dd>
 <dd>
 <a class="el" href="group__CategoryEvents.html#ga0e103a11dbf53ae31c10a6ca48c2e3fa" title="Check the event queue for messages and optionally return them.">PeepEvents()</a> </dd>
 <dd>
@@ -533,8 +533,8 @@ AddTimer(TimerFunction) </dd></dl>
 
 </div>
 </div>
-<a id="ga6a29f41f5e9608270f7241d1ef8392ca" name="ga6a29f41f5e9608270f7241d1ef8392ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6a29f41f5e9608270f7241d1ef8392ca">&#9670;&#160;</a></span>SetHitTest()</h2>
+<a id="ga81baa0c7faf25f77b0c09ff5014c51d6" name="ga81baa0c7faf25f77b0c09ff5014c51d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga81baa0c7faf25f77b0c09ff5014c51d6">&#9670;&#160;</a></span>SetHitTest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -547,7 +547,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::SetHitTest </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga876ef260b3a07cbebc869191f56331bc">HitTestFunction</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gab91ae0707a2ab45b059b19791af20c34">HitTestCB</a>&#160;</td>
           <td class="paramname"><em>callback</em></td><td>)</td>
           <td></td>
         </tr>

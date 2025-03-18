@@ -95,7 +95,6 @@ inline void Delay(std::chrono::nanoseconds duration)
   SDL_DelayNS(duration.count());
 }
 
-
 /**
  * Wait a specified duration before returning.
  *
@@ -198,9 +197,9 @@ using NSTimerCallback = SDL_NSTimerCallback;
  * @ingroup ListenerCallback
  *
  * @sa ListenerCallback
- * @sa AddTimer(TimerFunction)
+ * @sa AddTimer(TimerCB)
  */
-using TimerFunction =
+using TimerCB =
   std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
 
 /**
@@ -306,7 +305,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  *
  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
  * `callback`.
- * @param callback the TimerFunction function to call when the specified
+ * @param callback the TimerCB function to call when the specified
  *                 `interval` elapses.
  * @returns a timer ID or 0 on failure; call GetError() for more
  *          information.
@@ -320,18 +319,17 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * @sa ListenerCallback
  * @sa RemoveTimer()
  */
-inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                        TimerFunction callback)
+inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 {
-  using Wrapper = CallbackWrapper<TimerFunction>;
-  using Store = KeyValueWrapper<TimerID, TimerFunction*>;
+  using Wrapper = CallbackWrapper<TimerCB>;
+  using Store = KeyValueWrapper<TimerID, TimerCB*>;
 
   auto cb = Wrapper::Wrap(std::move(callback));
 
   if (TimerID id = SDL_AddTimerNS(
         interval.count(),
         [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerFunction*>(userdata);
+          auto& f = *static_cast<TimerCB*>(userdata);
           auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
           // If ask to removal, then remove it
           if (next == 0) delete Store::release(timerID);
@@ -360,7 +358,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  */
 inline bool RemoveTimer(TimerID id)
 {
-  delete KeyValueWrapper<TimerID, TimerFunction*>::release(id);
+  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
   return SDL_RemoveTimer(id);
 }
 

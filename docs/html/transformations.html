@@ -182,7 +182,7 @@ Type rules</h1>
 Callback rules</h1>
 <p>As we mentioned in <a class="el" href="transformations.html#function-rules">Function rules</a>, the original callback functions are always supported. In addition, if has an userdata parameter we create an alternative callback as follows:</p>
 <ul>
-<li>The callback name will have the "Function" suffix, replacing a "Callback" suffix if any;</li>
+<li>The callback name will have the "CB" suffix, replacing a "Callback" suffix if any;</li>
 <li>The callback type is a std::function with the same parameters than the original one, with the following changes:<ul>
 <li>Remove userdata parameter;</li>
 <li>Follow any applicable parameter transformation rules as described in <a class="el" href="transformations.html#function-rules">Function rules</a>.</li>

@@ -471,7 +471,7 @@ using MainThreadCallback = SDL_MainThreadCallback;
  * @ingroup ResultCallback
  *
  */
-using MainThreadFunction = std::function<void()>;
+using MainThreadCB = std::function<void()>;
 
 /// @}
 
@@ -532,9 +532,9 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  *
  * @ingroup ResultCallback
  */
-inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
+inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
 {
-  using Wrapper = CallbackWrapper<MainThreadFunction>;
+  using Wrapper = CallbackWrapper<MainThreadCB>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
 }

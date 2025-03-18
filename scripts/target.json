@@ -6985,8 +6985,8 @@
           "type": "SDL_CleanupPropertyCallback",
           "sourceName": "SDL_CleanupPropertyCallback"
         },
-        "CleanupPropertyFunction": {
-          "name": "CleanupPropertyFunction",
+        "CleanupPropertyCB": {
+          "name": "CleanupPropertyCB",
           "doc": "@sa PropertiesRef.CleanupCallback",
           "kind": "alias"
         },
@@ -6997,8 +6997,8 @@
           "type": "SDL_EnumeratePropertiesCallback",
           "sourceName": "SDL_EnumeratePropertiesCallback"
         },
-        "EnumeratePropertiesFunction": {
-          "name": "EnumeratePropertiesFunction",
+        "EnumeratePropertiesCB": {
+          "name": "EnumeratePropertiesCB",
           "doc": "@sa PropertiesRef.EnumerateCallback",
           "kind": "alias"
         },
@@ -7063,7 +7063,7 @@
                     "name": "value"
                   },
                   {
-                    "type": "CleanupPropertyFunction",
+                    "type": "CleanupPropertyCB",
                     "name": "cleanup"
                   }
                 ],
@@ -7338,7 +7338,7 @@
                 "immutable": true,
                 "parameters": [
                   {
-                    "type": "EnumeratePropertiesFunction",
+                    "type": "EnumeratePropertiesCB",
                     "name": "callback"
                   }
                 ],
@@ -10243,9 +10243,9 @@
           "type": "SDL_HitTest",
           "sourceName": "SDL_HitTest"
         },
-        "HitTestFunction": {
+        "HitTestCB": {
           "kind": "alias",
-          "name": "HitTestFunction",
+          "name": "HitTestCB",
           "doc": "@sa HitTest"
         },
         "Display": {
@@ -11319,7 +11319,7 @@
                 "parameters": [
                   {
                     "name": "callback",
-                    "type": "HitTestFunction"
+                    "type": "HitTestCB"
                   }
                 ],
                 "name": "SetHitTest",
@@ -14094,9 +14094,9 @@
           "type": "SDL_NSTimerCallback",
           "sourceName": "SDL_NSTimerCallback"
         },
-        "TimerFunction": {
+        "TimerCB": {
           "kind": "alias",
-          "name": "TimerFunction",
+          "name": "TimerCB",
           "doc": ""
         },
         "AddTimer": [
@@ -14152,7 +14152,7 @@
                 "name": "interval"
               },
               {
-                "type": "TimerFunction",
+                "type": "TimerCB",
                 "name": "callback"
               }
             ],
@@ -15660,9 +15660,9 @@
           "type": "SDL_EventFilter",
           "sourceName": "SDL_EventFilter"
         },
-        "EventFilterFunction": {
+        "EventFilterCB": {
           "kind": "alias",
-          "name": "EventFilterFunction",
+          "name": "EventFilterCB",
           "type": "std::function<bool(const Event &)>",
           "doc": ""
         },
@@ -15735,7 +15735,7 @@
             "type": "void",
             "parameters": [
               {
-                "type": "EventFilterFunction",
+                "type": "EventFilterCB",
                 "name": "filter",
                 "default": "{}"
               }
@@ -15764,7 +15764,7 @@
           {
             "kind": "function",
             "name": "GetEventFilter",
-            "type": "EventFilterFunction",
+            "type": "EventFilterCB",
             "parameters": [],
             "doc": ""
           }
@@ -15809,7 +15809,7 @@
             "type": "EventWatchHandle",
             "parameters": [
               {
-                "type": "EventFilterFunction",
+                "type": "EventFilterCB",
                 "name": "filter"
               }
             ],
@@ -15871,7 +15871,7 @@
             "type": "void",
             "parameters": [
               {
-                "type": "EventFilterFunction",
+                "type": "EventFilterCB",
                 "name": "filter"
               }
             ],
@@ -16190,9 +16190,9 @@
           "type": "SDL_MainThreadCallback",
           "sourceName": "SDL_MainThreadCallback"
         },
-        "MainThreadFunction": {
+        "MainThreadCB": {
           "kind": "alias",
-          "name": "MainThreadFunction",
+          "name": "MainThreadCB",
           "type": "std::function<void()>",
           "doc": ""
         },
@@ -16224,7 +16224,7 @@
             "type": "bool",
             "parameters": [
               {
-                "type": "MainThreadFunction",
+                "type": "MainThreadCB",
                 "name": "callback"
               },
               {

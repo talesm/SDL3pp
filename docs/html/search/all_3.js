@@ -26,7 +26,7 @@ var searchData=
   ['chromalocation_23',['ChromaLocation',['../group__CategoryPixels.html#ga2e12fe1c4b173b97e915cd7e8963bdca',1,'SDL']]],
   ['clamp_24',['clamp',['../structSDL_1_1FPoint.html#aab425aaf0c31f945991729d0c60707a7',1,'SDL::FPoint::Clamp()'],['../structSDL_1_1Point.html#a57c4fbcb28e606bfff5c6185a5922660',1,'SDL::Point::Clamp()']]],
   ['cleanuppropertycallback_25',['CleanupPropertyCallback',['../group__CategoryProperties.html#gac68e366c86f4169ac6f6928589c0c4a8',1,'SDL']]],
-  ['cleanuppropertyfunction_26',['CleanupPropertyFunction',['../group__CategoryProperties.html#ga42eba381d65ef0d8ae1b76b93d0f5f8f',1,'SDL']]],
+  ['cleanuppropertycb_26',['CleanupPropertyCB',['../group__CategoryProperties.html#gaab288dc29211f88377acbd318c40e323',1,'SDL']]],
   ['clear_27',['clear',['../structSDL_1_1SurfaceBase.html#a376fcd3d7d4d8835d53d99d04c3af932',1,'SDL::SurfaceBase::Clear()'],['../structSDL_1_1PropertiesBase.html#a51304743586ee1c78c49f5be5f665743',1,'SDL::PropertiesBase::Clear()']]],
   ['clearcolorkey_28',['ClearColorKey',['../structSDL_1_1SurfaceBase.html#a85a345dbd8a5f4ae3936cf4c2b53fdd6',1,'SDL::SurfaceBase']]],
   ['clearerror_29',['ClearError',['../group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326',1,'SDL']]],

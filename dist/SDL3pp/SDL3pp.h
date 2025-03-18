@@ -6258,7 +6258,7 @@ using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
  *
  * @ingroup ResultCallback
  */
-using CleanupPropertyFunction = std::function<void(void*)>;
+using CleanupPropertyCB = std::function<void(void*)>;
 
 /// @}
 /**
@@ -6297,7 +6297,7 @@ using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
  *
  * @ingroup SyncCallback
  */
-using EnumeratePropertiesFunction =
+using EnumeratePropertiesCB =
   std::function<void(PropertiesRef props, const char* name)>;
 
 /// @}
@@ -6417,9 +6417,9 @@ struct PropertiesBase : T
    */
   bool SetPointerWithCleanup(StringParam name,
                              void* value,
-                             CleanupPropertyFunction cleanup)
+                             CleanupPropertyCB cleanup)
   {
-    using Wrapper = CallbackWrapper<CleanupPropertyFunction>;
+    using Wrapper = CallbackWrapper<CleanupPropertyCB>;
 
     return SetPointerWithCleanup(std::move(name),
                                  value,
@@ -6804,11 +6804,11 @@ struct PropertiesBase : T
    *
    * @sa SyncCallback
    */
-  bool Enumerate(EnumeratePropertiesFunction callback) const
+  bool Enumerate(EnumeratePropertiesCB callback) const
   {
     return Enumerate(
       [](void* userdata, SDL_PropertiesID props, const char* name) {
-        auto& f = *static_cast<EnumeratePropertiesFunction*>(userdata);
+        auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
         f({props}, name);
       },
       &callback);
@@ -13660,7 +13660,7 @@ using HitTest = SDL_HitTest;
  *
  * @ingroup ListenerCallback
  */
-using HitTestFunction =
+using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
 /// @}
@@ -15892,9 +15892,9 @@ struct WindowBase : T
    *
    * @ingroup ListenerCallback
    */
-  bool SetHitTest(HitTestFunction callback)
+  bool SetHitTest(HitTestCB callback)
   {
-    using Wrapper = KeyValueWrapper<SDL_Window*, HitTestFunction>;
+    using Wrapper = KeyValueWrapper<SDL_Window*, HitTestCB>;
     void* cbHandle = Wrapper::Wrap(T::get(), std::move(callback));
     return SetHitTest(
       [](SDL_Window* win, const SDL_Point* area, void* data) {
@@ -16013,7 +16013,7 @@ struct WindowBase : T
   void Destroy()
   {
     auto window = T::release();
-    KeyValueWrapper<SDL_Window*, HitTestFunction>::erase(window);
+    KeyValueWrapper<SDL_Window*, HitTestCB>::erase(window);
     return SDL_DestroyWindow(window);
   }
 };
@@ -18468,10 +18468,10 @@ using EventFilter = SDL_EventFilter;
  * @sa AddEventWatch()
  * @sa EventFilter
  */
-using EventFilterFunction = std::function<bool(const Event&)>;
+using EventFilterCB = std::function<bool(const Event&)>;
 
 /**
- * Handle returned by AddEventWatch(EventFilterFunction)
+ * Handle returned by AddEventWatch(EventFilterCB)
  *
  * This can be used later to remove the event filter
  * RemoveEventWatch(EventFilterHandle).
@@ -18534,7 +18534,7 @@ public:
  */
 inline void SetEventFilter(EventFilter filter, void* userdata)
 {
-  UniqueWrapper<EventFilterFunction>::erase();
+  UniqueWrapper<EventFilterCB>::erase();
   return SDL_SetEventFilter(filter, userdata);
 }
 
@@ -18564,7 +18564,7 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * the event filter, but events pushed onto the queue with SDL_PeepEvents() do
  * not.
  *
- * @param filter an EventFilterFunction function to call when an event happens.
+ * @param filter an EventFilterCB function to call when an event happens.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -18579,9 +18579,9 @@ inline void SetEventFilter(EventFilter filter, void* userdata)
  * @sa PeepEvents()
  * @sa PushEvent()
  */
-inline void SetEventFilter(EventFilterFunction filter = {})
+inline void SetEventFilter(EventFilterCB filter = {})
 {
-  using Wrapper = UniqueWrapper<EventFilterFunction>;
+  using Wrapper = UniqueWrapper<EventFilterCB>;
   SDL_SetEventFilter(
     [](void* userdata, SDL_Event* event) {
       return Wrapper::at(userdata)(*event);
@@ -18617,7 +18617,7 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
  * This function can be used to "chain" filters, by saving the existing filter
  * before replacing it with a function that will call that saved filter.
  *
- * @returns EventFilterFunction on success or false if there is no event filter
+ * @returns EventFilterCB on success or false if there is no event filter
  * set.
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -18629,9 +18629,9 @@ inline bool GetEventFilter(EventFilter* filter, void** userdata)
  * @sa ListenerCallback
  * @sa SetEventFilter()
  */
-inline EventFilterFunction GetEventFilter()
+inline EventFilterCB GetEventFilter()
 {
-  using Wrapper = UniqueWrapper<EventFilterFunction>;
+  using Wrapper = UniqueWrapper<EventFilterCB>;
 
   EventFilter filter;
   void* userdata;
@@ -18645,7 +18645,7 @@ inline EventFilterFunction GetEventFilter()
 // Ignore me
 inline bool EventWatchAuxCallback(void* userdata, Event* event)
 {
-  auto& f = *static_cast<EventFilterFunction*>(userdata);
+  auto& f = *static_cast<EventFilterCB*>(userdata);
   return f(*event);
 }
 
@@ -18702,7 +18702,7 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  * callback set with SetEventFilter(), nor for events posted by the user
  * through PeepEvents().
  *
- * @param filter an EventFilterFunction to call when an event happens.
+ * @param filter an EventFilterCB to call when an event happens.
  * @returns a handle that can be used on RemoveEventWatch(EventFilterHandle) on
  * success or false on failure; call GetError() for more information.
  *
@@ -18716,10 +18716,10 @@ inline bool AddEventWatch(EventFilter filter, void* userdata)
  * @sa RemoveEventWatch()
  * @sa SetEventFilter()
  */
-inline EventWatchHandle AddEventWatch(EventFilterFunction filter)
+inline EventWatchHandle AddEventWatch(EventFilterCB filter)
 {
-  using Wrapper = CallbackWrapper<EventFilterFunction>;
-  using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
+  using Wrapper = CallbackWrapper<EventFilterCB>;
+  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
 
   auto cb = Wrapper::Wrap(std::move(filter));
   if (!SDL_AddEventWatch(&EventWatchAuxCallback, &cb)) {
@@ -18754,9 +18754,9 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
 
 /**
  * Remove an event watch callback added with
- * SDL_AddEventWatch(EventFilterFunction).
+ * SDL_AddEventWatch(EventFilterCB).
  *
- * @param handle the handle returned by SDL_AddEventWatch(EventFilterFunction).
+ * @param handle the handle returned by SDL_AddEventWatch(EventFilterCB).
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -18765,11 +18765,11 @@ inline void RemoveEventWatch(EventFilter filter, void* userdata)
  * @ingroup ListenerCallback
  *
  * @sa ListenerCallback
- * @sa AddEventWatch(EventFilterFunction)
+ * @sa AddEventWatch(EventFilterCB)
  */
 inline void RemoveEventWatch(EventWatchHandle handle)
 {
-  using Store = KeyValueWrapper<size_t, EventFilterFunction*>;
+  using Store = KeyValueWrapper<size_t, EventFilterCB*>;
   delete Store::release(handle.get());
 }
 
@@ -18816,11 +18816,11 @@ inline void FilterEvents(EventFilter filter, void* userdata)
  * @sa GetEventFilter()
  * @sa SetEventFilter()
  */
-inline void FilterEvents(EventFilterFunction filter)
+inline void FilterEvents(EventFilterCB filter)
 {
   return FilterEvents(
     [](void* userdata, SDL_Event* event) {
-      auto& f = *static_cast<EventFilterFunction*>(userdata);
+      auto& f = *static_cast<EventFilterCB*>(userdata);
       return f(*event);
     },
     &filter);
@@ -19768,7 +19768,7 @@ using MainThreadCallback = SDL_MainThreadCallback;
  * @ingroup ResultCallback
  *
  */
-using MainThreadFunction = std::function<void()>;
+using MainThreadCB = std::function<void()>;
 
 /// @}
 
@@ -19829,9 +19829,9 @@ inline bool RunOnMainThread(MainThreadCallback callback,
  *
  * @ingroup ResultCallback
  */
-inline bool RunOnMainThread(MainThreadFunction callback, bool wait_complete)
+inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
 {
-  using Wrapper = CallbackWrapper<MainThreadFunction>;
+  using Wrapper = CallbackWrapper<MainThreadCB>;
   return RunOnMainThread(
     &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
 }
@@ -24060,7 +24060,6 @@ inline void Delay(std::chrono::nanoseconds duration)
   SDL_DelayNS(duration.count());
 }
 
-
 /**
  * Wait a specified duration before returning.
  *
@@ -24163,9 +24162,9 @@ using NSTimerCallback = SDL_NSTimerCallback;
  * @ingroup ListenerCallback
  *
  * @sa ListenerCallback
- * @sa AddTimer(TimerFunction)
+ * @sa AddTimer(TimerCB)
  */
-using TimerFunction =
+using TimerCB =
   std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
 
 /**
@@ -24271,7 +24270,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  *
  * @param interval the timer delay, in std::chrono::nanoseconds, passed to
  * `callback`.
- * @param callback the TimerFunction function to call when the specified
+ * @param callback the TimerCB function to call when the specified
  *                 `interval` elapses.
  * @returns a timer ID or 0 on failure; call GetError() for more
  *          information.
@@ -24285,18 +24284,17 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  * @sa ListenerCallback
  * @sa RemoveTimer()
  */
-inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                        TimerFunction callback)
+inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
 {
-  using Wrapper = CallbackWrapper<TimerFunction>;
-  using Store = KeyValueWrapper<TimerID, TimerFunction*>;
+  using Wrapper = CallbackWrapper<TimerCB>;
+  using Store = KeyValueWrapper<TimerID, TimerCB*>;
 
   auto cb = Wrapper::Wrap(std::move(callback));
 
   if (TimerID id = SDL_AddTimerNS(
         interval.count(),
         [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerFunction*>(userdata);
+          auto& f = *static_cast<TimerCB*>(userdata);
           auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
           // If ask to removal, then remove it
           if (next == 0) delete Store::release(timerID);
@@ -24325,7 +24323,7 @@ inline TimerID AddTimer(std::chrono::nanoseconds interval,
  */
 inline bool RemoveTimer(TimerID id)
 {
-  delete KeyValueWrapper<TimerID, TimerFunction*>::release(id);
+  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
   return SDL_RemoveTimer(id);
 }
 

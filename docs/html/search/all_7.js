@@ -54,7 +54,7 @@ var searchData=
   ['getenvironment_51',['GetEnvironment',['../group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660',1,'SDL']]],
   ['geterror_52',['GetError',['../group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04',1,'SDL']]],
   ['getevent_53',['GETEVENT',['../group__CategoryEvents.html#ga768efcccd9e59353521c88820e352621',1,'SDL']]],
-  ['geteventfilter_54',['geteventfilter',['../group__CategoryEvents.html#ga2ec6c108852fcfe3efbedda877496eb4',1,'SDL::GetEventFilter(EventFilter *filter, void **userdata)'],['../group__ListenerCallback.html#ga274cf6de4be1b4faf2d734e868fa9f73',1,'SDL::GetEventFilter()']]],
+  ['geteventfilter_54',['geteventfilter',['../group__CategoryEvents.html#ga2ec6c108852fcfe3efbedda877496eb4',1,'SDL::GetEventFilter(EventFilter *filter, void **userdata)'],['../group__ListenerCallback.html#gaf4bc41d3422121ab608e253c6da4dc6c',1,'SDL::GetEventFilter()']]],
   ['getextension_55',['getextension',['../structSDL_1_1Rect.html#a7ae368dcda306c96a75cfc966e8e0a0e',1,'SDL::Rect::GetExtension()'],['../structSDL_1_1FRect.html#adc14624960574e1dbdefaac9464f9fed',1,'SDL::FRect::GetExtension(float hAmount, float vAmount) const'],['../structSDL_1_1FRect.html#a84d874ac5c32fbdf3cfbcf9759483c55',1,'SDL::FRect::GetExtension(unsigned int amount) const'],['../structSDL_1_1Rect.html#a39e5d213a443bf1d20ccdda8e0626eec',1,'SDL::Rect::GetExtension()']]],
   ['getflags_56',['GetFlags',['../structSDL_1_1WindowBase.html#a25a4b4b4781403ab4422e0d408783b05',1,'SDL::WindowBase']]],
   ['getfloat_57',['GetFloat',['../structSDL_1_1PropertiesBase.html#a8b948910f53266d5e482ca8e150dd9ec',1,'SDL::PropertiesBase']]],
