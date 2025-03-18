@@ -1,3 +1,11 @@
+#ifndef SDL3PP_ASSERT_H_
+#define SDL3PP_ASSERT_H_
+
+#include <SDL3/SDL_assert.h>
+#include "SDL3pp_stringParam.h"
+
+namespace SDL {
+
 /**
  * @defgroup CategoryAssert Assertions
  *
@@ -38,15 +46,9 @@
  *
  * To use it: compile a debug build and just sprinkle around tests to check
  * your code!
+ *
+ * @{
  */
-
-#ifndef SDL3PP_ASSERT_H_
-#define SDL3PP_ASSERT_H_
-
-#include <SDL3/SDL_assert.h>
-#include "SDL3pp_stringParam.h"
-
-namespace SDL {
 
 /**
  * Possible outcomes from a triggered assertion.
@@ -269,6 +271,8 @@ inline const AssertData* GetAssertionReport()
  * @sa SDL_GetAssertionReport
  */
 inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+
+/// @}
 
 } // namespace SDL
 

@@ -54,7 +54,7 @@ var searchData=
   ['setappmetadata_51',['SetAppMetadata',['../group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b',1,'SDL']]],
   ['setappmetadataproperty_52',['SetAppMetadataProperty',['../group__CategoryInit.html#ga46def1efc7856e6d4842d4d7cd05aa78',1,'SDL']]],
   ['setaspectratio_53',['SetAspectRatio',['../structSDL_1_1WindowBase.html#aa1cb9c2d3a972cedbdb4add55f256546',1,'SDL::WindowBase']]],
-  ['setassertionhandler_54',['SetAssertionHandler',['../namespaceSDL.html#adc28db02e4fc8cf22d9e839c1780c16a',1,'SDL']]],
+  ['setassertionhandler_54',['SetAssertionHandler',['../group__CategoryAssert.html#gadc28db02e4fc8cf22d9e839c1780c16a',1,'SDL']]],
   ['setblendmode_55',['setblendmode',['../structSDL_1_1TextureBase.html#a4025ebbafd04fb89e57163fb8b3c8a9a',1,'SDL::TextureBase::SetBlendMode()'],['../structSDL_1_1SurfaceBase.html#a0f9754c71f9cc000b692c60d851d153f',1,'SDL::SurfaceBase::SetBlendMode()']]],
   ['setblue_56',['setblue',['../structSDL_1_1Color.html#a2f54c47ef5be2aa97601be2ade9f9a62',1,'SDL::Color::SetBlue()'],['../structSDL_1_1FColor.html#a0ea516cad418a6c2c8fd7ec9657b9f1b',1,'SDL::FColor::SetBlue()']]],
   ['setboolean_57',['SetBoolean',['../structSDL_1_1PropertiesBase.html#ae3ef622691ec79576bd91c4c27740a4a',1,'SDL::PropertiesBase']]],
