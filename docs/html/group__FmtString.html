@@ -85,11 +85,686 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf25860d775629ffbdc0fa04bf1e4b7ca"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#gaf25860d775629ffbdc0fa04bf1e4b7ca">SDL::SetError</a> (std::string_view fmt, ARGS... args)</td></tr>
 <tr class="memdesc:gaf25860d775629ffbdc0fa04bf1e4b7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> error message for the current thread.  <br /></td></tr>
 <tr class="separator:gaf25860d775629ffbdc0fa04bf1e4b7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga67b420fcb5d7bebbeba43ffd9cd82b9c" id="r_ga67b420fcb5d7bebbeba43ffd9cd82b9c"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga67b420fcb5d7bebbeba43ffd9cd82b9c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c">SDL::LogCategory::Log</a> (<a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a> priority, std::string_view fmt, ARGS... args) const</td></tr>
+<tr class="memdesc:ga67b420fcb5d7bebbeba43ffd9cd82b9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with the specified priority.  <br /></td></tr>
+<tr class="separator:ga67b420fcb5d7bebbeba43ffd9cd82b9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5157a0ade909be52bc25694bb7fa1981" id="r_ga5157a0ade909be52bc25694bb7fa1981"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga5157a0ade909be52bc25694bb7fa1981"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981">SDL::LogCategory::LogTrace</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga5157a0ade909be52bc25694bb7fa1981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with SDL_LOG_PRIORITY_TRACE.  <br /></td></tr>
+<tr class="separator:ga5157a0ade909be52bc25694bb7fa1981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d71732533aee2167b6bed89e6b287ac" id="r_ga4d71732533aee2167b6bed89e6b287ac"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga4d71732533aee2167b6bed89e6b287ac"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac">SDL::LogCategory::LogVerbose</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga4d71732533aee2167b6bed89e6b287ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with SDL_LOG_PRIORITY_VERBOSE.  <br /></td></tr>
+<tr class="separator:ga4d71732533aee2167b6bed89e6b287ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7480d5cd3f635e605b118b5ebfa0e582" id="r_ga7480d5cd3f635e605b118b5ebfa0e582"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga7480d5cd3f635e605b118b5ebfa0e582"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582">SDL::LogCategory::LogDebug</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga7480d5cd3f635e605b118b5ebfa0e582"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with SDL_LOG_PRIORITY_DEBUG.  <br /></td></tr>
+<tr class="separator:ga7480d5cd3f635e605b118b5ebfa0e582"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3aa2fbe389a2d823f62d62615ad9c674" id="r_ga3aa2fbe389a2d823f62d62615ad9c674"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga3aa2fbe389a2d823f62d62615ad9c674"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674">SDL::LogCategory::LogInfo</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga3aa2fbe389a2d823f62d62615ad9c674"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with SDL_LOG_PRIORITY_INFO.  <br /></td></tr>
+<tr class="separator:ga3aa2fbe389a2d823f62d62615ad9c674"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05ea486e7417da33e623f7a613b3b848" id="r_ga05ea486e7417da33e623f7a613b3b848"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga05ea486e7417da33e623f7a613b3b848"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848">SDL::LogCategory::LogWarn</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga05ea486e7417da33e623f7a613b3b848"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with SDL_LOG_PRIORITY_WARN.  <br /></td></tr>
+<tr class="separator:ga05ea486e7417da33e623f7a613b3b848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6883dfbc3da8391cbc239c966fc0d89d" id="r_ga6883dfbc3da8391cbc239c966fc0d89d"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga6883dfbc3da8391cbc239c966fc0d89d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d">SDL::LogCategory::LogError</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga6883dfbc3da8391cbc239c966fc0d89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with SDL_LOG_PRIORITY_ERROR.  <br /></td></tr>
+<tr class="separator:ga6883dfbc3da8391cbc239c966fc0d89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5bbb6bd9e1f05fc57016309fbab2466f" id="r_ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f">SDL::LogCategory::LogCritical</a> (std::string_view fmt, ARGS &amp;&amp;... args) const</td></tr>
+<tr class="memdesc:ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with SDL_LOG_PRIORITY_CRITICAL.  <br /></td></tr>
+<tr class="separator:ga5bbb6bd9e1f05fc57016309fbab2466f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga844718b13c9d5fb87fabfd339217199a" id="r_ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:ga844718b13c9d5fb87fabfd339217199a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a">SDL::Log</a> (std::string_view fmt, ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ga844718b13c9d5fb87fabfd339217199a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.  <br /></td></tr>
+<tr class="separator:ga844718b13c9d5fb87fabfd339217199a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>C++ has the type-safe <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style, so where applicable we wrap the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s C style formatted string with the it. </p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>make an example on how to wrap (see SetError() for now) </dd></dl>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga67b420fcb5d7bebbeba43ffd9cd82b9c" name="ga67b420fcb5d7bebbeba43ffd9cd82b9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga67b420fcb5d7bebbeba43ffd9cd82b9c">&#9670;&#160;</a></span>Log() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::Log </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategoryLog.html#ga6642f207255233f8fc873fef588ad705">LogPriority</a>&#160;</td>
+          <td class="paramname"><em>priority</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with the specified priority. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">priority</td><td>the priority of the message. </td></tr>
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00234">234</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga844718b13c9d5fb87fabfd339217199a" name="ga844718b13c9d5fb87fabfd339217199a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga844718b13c9d5fb87fabfd339217199a">&#9670;&#160;</a></span>Log() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::Log </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__CategoryLog.html#ga525492ed0880eb1b6675e101a265623e" title="Log an unformatted message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCategory.LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogCategory.LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogCategory.LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogCategory.LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">LogCategory.Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogCategory.LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogCategory.LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogCategory.LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogCategory.LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00584">584</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga5bbb6bd9e1f05fc57016309fbab2466f" name="ga5bbb6bd9e1f05fc57016309fbab2466f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5bbb6bd9e1f05fc57016309fbab2466f">&#9670;&#160;</a></span>LogCritical()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogCritical </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with SDL_LOG_PRIORITY_CRITICAL. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00458">458</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga7480d5cd3f635e605b118b5ebfa0e582" name="ga7480d5cd3f635e605b118b5ebfa0e582"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7480d5cd3f635e605b118b5ebfa0e582">&#9670;&#160;</a></span>LogDebug()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogDebug </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with SDL_LOG_PRIORITY_DEBUG. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00330">330</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga6883dfbc3da8391cbc239c966fc0d89d" name="ga6883dfbc3da8391cbc239c966fc0d89d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6883dfbc3da8391cbc239c966fc0d89d">&#9670;&#160;</a></span>LogError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogError </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with SDL_LOG_PRIORITY_ERROR. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00426">426</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga3aa2fbe389a2d823f62d62615ad9c674" name="ga3aa2fbe389a2d823f62d62615ad9c674"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3aa2fbe389a2d823f62d62615ad9c674">&#9670;&#160;</a></span>LogInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogInfo </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with SDL_LOG_PRIORITY_INFO. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00362">362</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga5157a0ade909be52bc25694bb7fa1981" name="ga5157a0ade909be52bc25694bb7fa1981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5157a0ade909be52bc25694bb7fa1981">&#9670;&#160;</a></span>LogTrace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogTrace </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with SDL_LOG_PRIORITY_TRACE. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00266">266</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4d71732533aee2167b6bed89e6b287ac" name="ga4d71732533aee2167b6bed89e6b287ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d71732533aee2167b6bed89e6b287ac">&#9670;&#160;</a></span>LogVerbose()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogVerbose </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with SDL_LOG_PRIORITY_VERBOSE. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga05ea486e7417da33e623f7a613b3b848" title="Log a message with SDL_LOG_PRIORITY_WARN.">LogWarn()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00298">298</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
+<a id="ga05ea486e7417da33e623f7a613b3b848" name="ga05ea486e7417da33e623f7a613b3b848"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga05ea486e7417da33e623f7a613b3b848">&#9670;&#160;</a></span>LogWarn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::LogCategory::LogWarn </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Log a message with SDL_LOG_PRIORITY_WARN. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fmt</td><td>a <a href="https://en.cppreference.com/w/cpp/utility/format/spec">std::format/fmt</a> style message format string. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching the <code>{}</code> tokens in the format string, if any.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__FmtString.html" title="C++ has the type-safe std::format/fmt style, so where applicable we wrap the SDL&#39;s C style formatted ...">Formatted string</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga844718b13c9d5fb87fabfd339217199a" title="Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.">SDL::Log()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5bbb6bd9e1f05fc57016309fbab2466f" title="Log a message with SDL_LOG_PRIORITY_CRITICAL.">LogCritical()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga7480d5cd3f635e605b118b5ebfa0e582" title="Log a message with SDL_LOG_PRIORITY_DEBUG.">LogDebug()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga6883dfbc3da8391cbc239c966fc0d89d" title="Log a message with SDL_LOG_PRIORITY_ERROR.">LogError()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga3aa2fbe389a2d823f62d62615ad9c674" title="Log a message with SDL_LOG_PRIORITY_INFO.">LogInfo()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga67b420fcb5d7bebbeba43ffd9cd82b9c" title="Log a message with the specified priority.">Log()</a> </dd>
+<dd>
+<a class="el" href="classSDL_1_1LogCategory.html#a1f4ac7674ccfbec01dca7b0e03a0e15f" title="Log an unformatted message with the specified priority.">LogUnformatted()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga5157a0ade909be52bc25694bb7fa1981" title="Log a message with SDL_LOG_PRIORITY_TRACE.">LogTrace()</a> </dd>
+<dd>
+<a class="el" href="group__FmtString.html#ga4d71732533aee2167b6bed89e6b287ac" title="Log a message with SDL_LOG_PRIORITY_VERBOSE.">LogVerbose()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__log_8h_source.html#l00394">394</a> of file <a class="el" href="SDL3pp__log_8h_source.html">SDL3pp_log.h</a>.</p>
+
+</div>
+</div>
 <a id="gaf25860d775629ffbdc0fa04bf1e4b7ca" name="gaf25860d775629ffbdc0fa04bf1e4b7ca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf25860d775629ffbdc0fa04bf1e4b7ca">&#9670;&#160;</a></span>SetError()</h2>
 

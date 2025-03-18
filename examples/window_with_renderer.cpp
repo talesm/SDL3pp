@@ -8,20 +8,20 @@ int main(int argc, char** argv)
 {
   SDL::SDL init(SDL::INIT_VIDEO);
   if (!init) {
-    SDL_Log("%s", SDL::GetError());
+    SDL::LogUnformatted(SDL::GetError());
     return 1;
   }
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", {400, 400});
   if (!window) {
-    SDL_Log("%s", SDL::GetError());
+    SDL::LogUnformatted(SDL::GetError());
     return 1;
   }
 
   SDL::Texture characterTexture{
     SDL::LoadTexture(renderer, "assets/smiley.png")};
   if (!characterTexture) {
-    SDL_Log("%s", SDL::GetError());
+    SDL::LogUnformatted(SDL::GetError());
     return 1;
   }
   SDL::FRect characterRect(SDL::FPoint(WINDOW_SZ) / 2 - SDL::FPoint{64, 64},

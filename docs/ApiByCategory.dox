@@ -11,6 +11,7 @@ Category                 | Header
 @ref CategoryHints       | SDL3pp_hints.h
 @ref CategoryProperties  | SDL3pp_properties.h
 @ref CategoryError       | SDL3pp_error.h
+@ref CategoryLog         | SDL3pp_log.h
 @ref CategoryAssert      | SDL3pp_assert.h
 @ref CategoryVersion     | SDL3pp_version.h
 
@@ -75,6 +76,7 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryHints
 @addtogroup CategoryProperties
 @addtogroup CategoryError
+@addtogroup CategoryLog
 @addtogroup CategoryAssert
 @addtogroup CategoryVersion
 @}

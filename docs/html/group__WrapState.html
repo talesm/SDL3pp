@@ -81,6 +81,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1LogCategory.html">SDL::LogCategory</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The predefined log categories.  <a href="classSDL_1_1LogCategory.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PixelFormat.html">SDL::PixelFormat</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pixel format.  <a href="structSDL_1_1PixelFormat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -94,7 +97,8 @@ Classes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>We define an wrapped state when we have a opaque void*, an integer or enum that just represent some state or handle that does not relate to any allocation (it is safe to copy around), but it has some OO-like macro properties to query and or OO-like functions to manipulate it. </p>
 <p>An wrap state is class with a single attribute storing the state, and with a constexpr converting constructor from the state type and a constexpr converting operator back to it. This usually is not recommended in C++ style guides, but we do this in order to make the state usable transparently. If there is no need for using it transparently. then we have a get function instead.</p>
-<p>If the state has some sort of <b>invalid</b> or <b>uninitialized</b> state, we also create a converting operator to bool that is true when the state valid. </p>
+<p>If the state has some sort of <b>invalid</b> or <b>uninitialized</b> state, we also create a converting operator to bool that is true when the state valid.</p>
+<p>There should be a default comparison operator, also constexpr and if possible using the spaceship <code>&lt;=&gt;</code>. </p>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

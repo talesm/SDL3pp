@@ -128,6 +128,9 @@ for using it transparently. then we have a get function instead.
 If the state has some sort of @b invalid or @b uninitialized state, we also
 create a converting operator to bool that is true when the state valid.
 
+There should be a default comparison operator, also constexpr and if possible 
+using the spaceship `<=>`.
+
 */
 
 /**

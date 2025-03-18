@@ -103,7 +103,7 @@ template<class... ARGS>
 inline bool SetError(std::string_view fmt, ARGS... args)
 {
   return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS...>(args)...)));
+    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
 }
 
 /**

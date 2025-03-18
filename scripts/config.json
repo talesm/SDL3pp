@@ -3,6 +3,7 @@
     "SDL_stdinc.h",
     "SDL_error.h",
     "SDL_assert.h",
+    "SDL_log.h",
     "SDL_misc.h",
     "SDL_guid.h",
     "SDL_version.h",

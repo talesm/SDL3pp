@@ -1,0 +1,25 @@
+<map id="SDL3pp/SDL3pp_log.h" name="SDL3pp/SDL3pp_log.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="168,5,331,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,72,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,33,86,77,84,72,215,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="96,79,219,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,33,185,72,181,68,233,29"/>
+<area shape="rect" id="Node000004" href="$SDL3pp__callbackWrapper_8h.html" title=" " alt="" coords="243,79,442,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="266,29,318,68,315,72,263,33"/>
+<area shape="rect" id="Node000009" href="$SDL3pp__stringParam_8h.html" title=" " alt="" coords="593,79,761,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="319,28,595,74,594,79,318,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="67,152,154,177"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="306,107,162,151,160,145,305,101"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="179,152,256,177"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="324,106,251,147,248,143,321,102"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="281,152,405,177"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="345,104,345,138,340,138,340,104"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="429,152,571,177"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="369,102,463,144,461,149,367,106"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="596,152,655,177"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="671,106,644,142,640,139,667,103"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="679,152,777,177"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="688,103,714,139,710,142,684,106"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="801,152,869,177"/>
+<area shape="poly" id="edge11_Node000009_Node000012" title=" " alt="" coords="704,102,798,144,796,149,702,106"/>
+</map>

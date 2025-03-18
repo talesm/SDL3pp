@@ -315,6 +315,319 @@
         }
       }
     },
+    "SDL_log.h": {
+      "includeAfter": {
+        "__begin": {
+          "name": "LogPriority",
+          "kind": "placeholder"
+        },
+        "SDL_LogOutputFunction": {
+          "name": "LogOutputFunctionCB",
+          "doc": "@sa LogOutputFunction",
+          "kind": "alias"
+        },
+        "SDL_GetLogOutputFunction": {
+          "name": "GetLogOutputFunction",
+          "kind": "function",
+          "type": "LogOutputFunctionCB",
+          "parameters": []
+        },
+        "SDL_SetLogOutputFunction": [
+          {
+            "name": "SetLogOutputFunction",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "LogOutputFunctionCB",
+                "name": "callback"
+              }
+            ]
+          },
+          {
+            "name": "ResetLogOutputFunction",
+            "kind": "function",
+            "type": "void",
+            "parameters": []
+          }
+        ]
+      },
+      "transform": {
+        "SDL_LogCategory": {
+          "kind": "struct",
+          "type": "",
+          "entries": {
+            "m_category": {
+              "kind": "var",
+              "type": "int"
+            },
+            "LogCategory": [
+              {
+                "kind": "function",
+                "type": "explicit",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "category"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SDL_LogCategory",
+                    "name": "category"
+                  }
+                ]
+              }
+            ],
+            "operator int": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "parameters": []
+            },
+            "operator SDL_LogCategory": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "parameters": []
+            },
+            "operator<=>": {
+              "kind": "function",
+              "immutable": true,
+              "type": "auto",
+              "parameters": [
+                {
+                  "type": "const LogCategory &",
+                  "name": "other"
+                }
+              ]
+            },
+            "SDL_SetLogPriorities": "function",
+            "SDL_SetLogPriority": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "LogPriority",
+                  "name": "priority"
+                }
+              ]
+            },
+            "SDL_GetLogPriority": {
+              "immutable": true,
+              "parameters": []
+            },
+            "SDL_ResetLogPriorities": {
+              "static": true
+            },
+            "SDL_LogMessage": {
+              "name": "LogUnformatted",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "LogPriority",
+                  "name": "priority"
+                },
+                {
+                  "type": "StringParam",
+                  "name": "message"
+                }
+              ]
+            },
+            "Log": {
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "LogPriority",
+                  "name": "priority"
+                },
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_LogTrace": {
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS &&...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_LogVerbose": {
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS &&...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_LogDebug": {
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS &&...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_LogInfo": {
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS &&...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_LogWarn": {
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS &&...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_LogError": {
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS &&...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_LogCritical": {
+              "immutable": true,
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS &&...",
+                  "name": "args"
+                }
+              ]
+            }
+          }
+        },
+        "SDL_Log": {
+          "template": [
+            {
+              "type": "class...",
+              "name": "ARGS"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "std::string_view",
+              "name": "fmt"
+            },
+            {
+              "type": "ARGS &&...",
+              "name": "args"
+            }
+          ]
+        },
+        "SDL_LogMessageV": {
+          "name": "LogUnformatted",
+          "parameters": [
+            {
+              "type": "StringParam",
+              "name": "message"
+            }
+          ]
+        }
+      }
+    },
     "SDL_guid.h": {
       "transform": {
         "SDL_GUID": {

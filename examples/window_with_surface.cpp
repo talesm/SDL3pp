@@ -17,19 +17,19 @@ int main(int argc, char** argv)
 {
   SDL::SDL init(SDL::INIT_VIDEO);
   if (!init) {
-    SDL_Log("%s", SDL::GetError());
+    SDL::LogUnformatted(SDL::GetError());
     return 1;
   }
   constexpr SDL::Point WINDOW_SZ = {400, 400};
   SDL::Window window{"Test", WINDOW_SZ};
   if (!window) {
-    SDL_Log("%s", SDL::GetError());
+    SDL::LogUnformatted(SDL::GetError());
     return 1;
   }
   SDL::SurfaceRef screen = window.GetSurface();
   SDL::Surface smileyImg = SDL::LoadBMP("assets/smiley.bmp");
   if (!smileyImg) {
-    SDL_Log("%s", SDL::GetError());
+    SDL::LogUnformatted(SDL::GetError());
     return 1;
   }
 

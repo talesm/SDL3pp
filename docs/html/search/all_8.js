@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['handling_0',['Error Handling',['../group__CategoryError.html',1,'']]],
+  ['handling_0',['handling',['../group__CategoryError.html',1,'Error Handling'],['../group__CategoryLog.html',1,'Log Handling']]],
   ['has_1',['Has',['../structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5',1,'SDL::PropertiesBase']]],
   ['has_5fvalue_2',['has_value',['../classSDL_1_1OptionalRef.html#a3fa38c49138afa7a14144ed3e3e0b329',1,'SDL::OptionalRef']]],
   ['hasalternateimages_3',['HasAlternateImages',['../structSDL_1_1SurfaceBase.html#a6102c18105dd1f140f46fb47e4c4db80',1,'SDL::SurfaceBase']]],

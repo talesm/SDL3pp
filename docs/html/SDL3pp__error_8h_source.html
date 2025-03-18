@@ -105,7 +105,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="group__FmtString.html#gaf25860d775629ffbdc0fa04bf1e4b7ca">  103</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SetError</a>(std::string_view fmt, ARGS... args)</div>
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>{</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordflow">return</span> <a class="code hl_function" href="group__CategoryError.html#gaf93aa5024945f514fc6d405bec4295bc">SetError</a>(</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    std::vformat(fmt, std::make_format_args(std::forward&lt;ARGS...&gt;(args)...)));</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    std::vformat(fmt, std::make_format_args(std::forward&lt;ARGS&gt;(args)...)));</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>}</div>
 </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
