@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sdl3pp_0',['SDL3pp',['../index.html',1,'']]]
+  ['extending_20struct_0',['Wrap extending struct',['../wrap-extending-struct.html',1,'DesignNotes']]]
 ];

@@ -25,12 +25,11 @@
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"API By Category",url:"ApiByCategory.html"},
-{text:"Design notes",url:"group__DesignNotes.html",children:[
+{text:"Design notes",url:"DesignNotes.html",children:[
+{text:"Design notes",url:"DesignNotes.html"},
 {text:"Transformations",url:"transformations.html"},
-{text:"Resource",url:"group__resource.html"},
-{text:"Callback",url:"group__callback.html"},
-{text:"Formatted strings",url:"group__formatted-string.html"}]},
-{text:"Related Pages",url:"pages.html",children:[
+{text:"Resources",url:"resource.html"},
+{text:"Callbacks",url:"callback.html"},
 {text:"All pages",url:"pages.html"},
 {text:"All topics",url:"topics.html"}]},
 {text:"Concepts",url:"concepts.html"},

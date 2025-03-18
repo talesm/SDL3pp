@@ -6,12 +6,10 @@
     <tab type="mainpage" visible="yes" title=""/>
     <tab type="user" visible="yes" title="API By Category" url="@ref ApiByCategory"/>
     <tab type="user" visible="yes" title="Design notes" url="@ref DesignNotes">
+      <tab type="user" visible="yes" title="Design notes" url="@ref DesignNotes"/>
       <tab type="user" visible="yes" title="Transformations" url="@ref transformations"/>
-      <tab type="user" visible="yes" title="Resource" url="@ref resource"/>
-      <tab type="user" visible="yes" title="Callback" url="@ref callback"/>
-      <tab type="user" visible="yes" title="Formatted strings" url="@ref formatted-string"/>
-    </tab>
-    <tab type="pages" visible="yes" title="" intro="">
+      <tab type="user" visible="yes" title="Resources" url="@ref resource"/>
+      <tab type="user" visible="yes" title="Callbacks" url="@ref callback"/>
       <tab type="pages" visible="yes" title="All pages" intro=""/>
       <tab type="topics" visible="yes" title="All topics" intro=""/>
     </tab>

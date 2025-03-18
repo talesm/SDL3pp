@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SDL3pp: Listener callback</title>
+<title>SDL3pp: Callback</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -47,7 +47,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-</div><!-- top -->
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -69,20 +68,47 @@ $(function() {
 </div>
 </div>
 
-<div class="header">
-  <div class="headertitle"><div class="title">Listener callback<div class="ingroups"><a class="el" href="group__DesignNotes.html">Design notes</a> &raquo; <a class="el" href="group__callback.html">Callback</a> &raquo; <a class="el" href="group__delayed-callback.html">Delayed callback</a></div></div></div>
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="DesignNotes.html">Design notes</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div><div class="header">
+  <div class="headertitle"><div class="title">Callback</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Listener callback is invoked multiple times whenever the event it subscripted happens.  
-</p>
-<p>Listener callback is invoked multiple times whenever the event it subscripted happens. </p>
-<p>It's not safe to free memory after call, so a separate mechanism must be provided.</p>
+<div class="textblock"><p>A callback is a invocable object passed to a function as a customization point. Im addition of supporting the default <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> callbacks, whenever we have an <code>void *</code> userdata customization point, we use it wrap a std::function object, with signature similar to original and with the "CB" suffix. See <a class="el" href="transformations.html#callback-rules">Callback rules</a> for more details.</p>
+<p>This module and its submodules document the callback types that use this pattern and functions related to them. In general, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> uses callbacks like this:</p>
+<ul>
+<li><a class="el" href="callback.html#immediate-callback">Calling immediately</a>, before the function taking the callback returns;</li>
+<li><a class="el" href="callback.html#delayed-callback">Storing the callback internaly</a>:<ul>
+<li>to call only once a <a class="el" href="callback.html#result-callback">result completes</a>;</li>
+<li>to call multiple times, <a class="el" href="callback.html#listener-callback">listening to some condition</a>.</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="immediate-callback"></a>
+Immediate callback</h1>
+<p>Immediate callback or synchronous callback is always invoked before the callee function returns. Because of this, there is no need to be store/marshal data as <a class="el" href="callback.html#delayed-callback">Delayed callback</a> does.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>list all immediate callbacks</dd></dl>
+<h1><a class="anchor" id="delayed-callback"></a>
+Delayed callback</h1>
+<p>Delayed or Asynchronous callback is a callback that may be invoked after the callee returns. This might be when some event occurs or when a given result available.</p>
+<h2><a class="anchor" id="result-callback"></a>
+Result callback</h2>
+<p>Result callback is invoked at single point and then discarded. This means that after its called it safe to free any memory it is holding. The CallbackWrapper is perfect to safely wrap it and avoid dangling pointer. An example of such uses is RunOnMainThread().</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>list all result callbacks</dd></dl>
+<h2><a class="anchor" id="listener-callback"></a>
+Listener callback</h2>
+<p>Listener callback is invoked multiple times whenever the event it subscripted happens. It's not safe to free memory after call, so a separate mechanism must be provided.</p>
 <p>When there is a single listener per program, like SetEventFilter(), you we can use UniqueWrapper, which makes sure only a single one per type exists.</p>
 <p>When there can be just a single callback listening per resource we can use KeyValueWrapper with a Resource pointer as key. An example of this technique is in WindowBase::SetHitTest(HitTestFunction). We need to make sure we call KeyValueWrapper.erase() on the equivalent <code>*.Destroy()</code> function, again the example is WindowBase::Destroy().</p>
 <p>When there is multiple callbacks simultaneously per program, we can use a combination of CallbackWrapper to wrap it and KeyValueWrapper to associate them with an id you can later use to remove it, as we use in both AddEventWatch() and AddTimer().</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Allow listener handle to be stored into a RAII object.</dd></dl>
-</div><!-- contents -->
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd><p class="startdd">list all result callbacks </p>
+<p class="enddd">Allow listener handle to be stored into a RAII object. </p>
+</dd></dl>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8

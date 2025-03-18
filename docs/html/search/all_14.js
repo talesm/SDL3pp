@@ -47,7 +47,7 @@ var searchData=
   ['transfer_5fcharacteristics_5funspecified_44',['TRANSFER_CHARACTERISTICS_UNSPECIFIED',['../group__CategoryPixels.html#gabf9b0c3030212c9dc28301c90a9decfb',1,'SDL']]],
   ['transfercharacteristics_45',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]],
   ['transformation_2emd_46',['transformation.md',['../transformation_8md.html',1,'']]],
-  ['transformations_47',['Transformations',['../transformations.html',1,'']]],
+  ['transformations_47',['Transformations',['../transformations.html',1,'DesignNotes']]],
   ['trunc_48',['trunc',['../group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
   ['truncf_49',['truncf',['../group__CategoryStdinc.html#gae6b046a5844394a19061a8544376ffac',1,'SDL']]],
   ['type_20rules_50',['Type rules',['../transformations.html#type-rules',1,'']]],

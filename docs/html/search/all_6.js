@@ -30,7 +30,7 @@ var searchData=
   ['format_27',['format',['../structSDL_1_1PixelFormat.html#adf151f3aa89ba89ba5d6f8d6634d71bf',1,'SDL::PixelFormat']]],
   ['formats_28',['formats',['../group__CategorySDLImage.html',1,'Load images from several formats'],['../group__PixelFormats.html',1,'Pixel Formats']]],
   ['formats_20and_20conversion_20routines_29',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
-  ['formatted_20string_30',['Formatted string',['../group__formatted-string.html',1,'']]],
+  ['formatted_20string_30',['Formatted string',['../formatted-string.html',1,'DesignNotes']]],
   ['fourcc_31',['FourCC',['../group__CategoryStdinc.html#gaa932b3872f6162d7257c924b184e5381',1,'SDL']]],
   ['fpoint_32',['fpoint',['../structSDL_1_1FPoint.html',1,'SDL::FPoint'],['../structSDL_1_1FPoint.html#acdec9354bdd953e155892b7208bc3dbb',1,'SDL::FPoint::FPoint(const SDL_FPoint &amp;point)'],['../structSDL_1_1FPoint.html#a40485b70db1c89893a174bc9cd65616b',1,'SDL::FPoint::FPoint()'],['../structSDL_1_1FPoint.html#a0c9bbff2c9e27b02d876efca0b81f984',1,'SDL::FPoint::FPoint(float x, float y)']]],
   ['frect_33',['frect',['../structSDL_1_1FRect.html',1,'SDL::FRect'],['../structSDL_1_1FRect.html#a8b7ce4f4f4381689eef742c636a9572f',1,'SDL::FRect::FRect(const SDL_FRect &amp;rect={0})'],['../structSDL_1_1FRect.html#ae3f9ac79fb459cc21895887e8f87c82f',1,'SDL::FRect::FRect(float x, float y, float w, float h)'],['../structSDL_1_1FRect.html#aaa84d4c9870ba6d0a32d9de4495915d3',1,'SDL::FRect::FRect(const SDL_FPoint &amp;corner, const SDL_FPoint &amp;size)']]],

@@ -68,6 +68,10 @@ $(function() {
 </div>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="DesignNotes.html">Design notes</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div><div class="header">
   <div class="headertitle"><div class="title">Transformations</div></div>
@@ -106,14 +110,14 @@ Function rules</h1>
 <li>If it is a instance function, the first parameter become the <code>this</code> pointer and thus is omitted.</li>
 <li>If the parameter was a <code>const char*</code>, its becomes a StringWrapper;</li>
 <li>If the parameter is a <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> type, use the type defined in <a class="el" href="transformations.html#type-rules">Type rules</a>:<ul>
-<li>If it is an <a class="el" href="group__resource.html">Resource</a>, use the non owned version, Eg <a class="el" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2" title="Handle to a non owned surface.">SDL::SurfaceRef</a>;</li>
+<li>If it is an <a class="el" href="resource.html">Resource</a>, use the non owned version, Eg <a class="el" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2" title="Handle to a non owned surface.">SDL::SurfaceRef</a>;</li>
 <li>Otherwise use the converted name like <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">SDL::Color</a>;</li>
 </ul>
 </li>
 <li>If the parameter is used as const pointer, it is allowed to be transformed to:<ul>
 <li>const reference if mandatory;</li>
 <li><a class="el" href="classSDL_1_1OptionalRef.html" title="Shim to get optional-like interface for references.">SDL::OptionalRef</a> value if parameter is optional;</li>
-<li>The non owning <em>Type</em>Ref, if the type is a <a class="el" href="group__resource.html">Resource</a>.</li>
+<li>The non owning <em>Type</em>Ref, if the type is a <a class="el" href="resource.html">Resource</a>.</li>
 </ul>
 </li>
 <li>If the parameter is the only out parameter, and the return type is the regular boolean for success or failure:<ul>
@@ -158,7 +162,7 @@ Type rules</h1>
 <li>No destructor, copy constructor, move constructor or assignment operator should be defined;</li>
 </ul>
 </li>
-<li><a class="el" href="group__resource.html">Resource</a> types that are created and destroyed by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> functions (such <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>) are represented as follows:<ul>
+<li><a class="el" href="resource.html">Resource</a> types that are created and destroyed by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> functions (such <code>SDL_Create*()</code> and <code>SDL_Destroy*()</code>) are represented as follows:<ul>
 <li>A struct called <em>Type</em>Base, defined as a <a href="https://en.cppreference.com/w/cpp/language/crtp">CRTP</a> is defined, expecting the template parameter to fulfill the <a class="el" href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a> concept;<ul>
 <li>This struct will have all wrappers for method-like functions defined in its body;</li>
 <li>If the original type is a non opaque struct we can define methods to manipulate the most common access patterns directly, when convenient to do so;</li>
@@ -188,7 +192,7 @@ Callback rules</h1>
 <li>Follow any applicable parameter transformation rules as described in <a class="el" href="transformations.html#function-rules">Function rules</a>.</li>
 </ul>
 </li>
-<li>The function taking the callback (and the one removing it if exists) must follow <a class="el" href="group__callback.html">this guideline</a> on how to marshal the std::function object into the userdata. </li>
+<li>The function taking the callback (and the one removing it if exists) must follow <a class="el" href="callback.html">this guideline</a> on how to marshal the std::function object into the userdata. </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

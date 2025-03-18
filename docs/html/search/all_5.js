@@ -156,5 +156,5 @@ var searchData=
   ['exp_153',['exp',['../group__CategoryStdinc.html#ga3e4417a78f0393e80fa7645a534a53a3',1,'SDL']]],
   ['expf_154',['expf',['../group__CategoryStdinc.html#ga5c6a34f6bfb50b176f502a6133880aa8',1,'SDL']]],
   ['extend_155',['extend',['../structSDL_1_1FRect.html#a1b96b2a9b1585a3b6b8118426f878ea9',1,'SDL::FRect::Extend(float hAmount, float vAmount)'],['../structSDL_1_1FRect.html#acda40231b458b74f6eed23f6bdfa81b8',1,'SDL::FRect::Extend(float amount)'],['../structSDL_1_1Rect.html#a5a156963ab44072868b25b5e94c43c9c',1,'SDL::Rect::Extend(unsigned int hAmount, unsigned int vAmount)'],['../structSDL_1_1Rect.html#a8c3b56bb319014397a303c36ff698015',1,'SDL::Rect::Extend(unsigned int amount)']]],
-  ['extending_20struct_156',['Wrap extending struct',['../group__wrap-extending-struct.html',1,'']]]
+  ['extending_20struct_156',['Wrap extending struct',['../wrap-extending-struct.html',1,'DesignNotes']]]
 ];

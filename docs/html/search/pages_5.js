@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['todo_20list_0',['Todo List',['../todo.html',1,'']]],
-  ['transformations_1',['Transformations',['../transformations.html',1,'']]]
+  ['formatted_20string_0',['Formatted string',['../formatted-string.html',1,'DesignNotes']]]
 ];
