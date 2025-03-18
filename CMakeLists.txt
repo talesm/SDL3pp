@@ -8,7 +8,7 @@ add_subdirectory(external/SDL_image)
 set(CMAKE_CXX_STANDARD 23)
 
 
-file(GLOB originalHeaders CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/*.h)
+file(GLOB SDL3PP_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/*.h)
 
 # Enable/Disable options
 option(SDL3PP_DISABLE_IMAGE "Disable compilation SDL_Image" OFF)
@@ -16,8 +16,8 @@ if(SDL3PP_DISABLE_IMAGE)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_IMAGE")
 else((SDL3PP_DISABLE_IMAGE))
     set(SDL3PP_DEPENDENCIES SDL3::SDL3 SDL3_image::SDL3_image)
-    file(GLOB imageHeaders CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/*.h)
-    set(originalHeaders ${originalHeaders} ${imageHeaders})
+    file(GLOB SDL3PP_IMAGE_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/*.h)
+    set(SDL3PP_ORIGINAL_HEADERS ${SDL3PP_ORIGINAL_HEADERS} ${SDL3PP_IMAGE_ORIGINAL_HEADERS})
 endif(SDL3PP_DISABLE_IMAGE)
 
 option(SDL3PP_DISABLE_STRING_PARAM "Disable StringParam wrapping" OFF)
@@ -86,10 +86,9 @@ if (DOXYGEN_FOUND)
 endif (DOXYGEN_FOUND)
 
 # Refresh the headers
-
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
     COMMAND node scripts/ parse -d ./external/SDL/include/SDL3/ -d ./external/SDL_image/include/SDL3_image/ scripts/config.json 
-    DEPENDS ${originalHeaders}
+    DEPENDS ${SDL3PP_ORIGINAL_HEADERS}
 )
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
     COMMAND node scripts/ transform scripts/config.json
