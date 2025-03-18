@@ -31,13 +31,16 @@ add_library(SDL3pp_lib INTERFACE)
 target_include_directories(SDL3pp_lib INTERFACE include/)
 target_link_libraries(SDL3pp_lib INTERFACE ${SDL3PP_DEPENDENCIES})
 
-set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/dist" CACHE FILEPATH "Amalgamation output directory")
-set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}/SDL3pp/SDL3pp.h")
 
 file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets COPY_ON_ERROR SYMBOLIC)
 
 # The amalgamation header
-add_library(SDL3pp_amalgamated INTERFACE)
+set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/dist" CACHE FILEPATH "Amalgamation output directory")
+set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}SDL3pp/SDL3pp.h")
+file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
+message("${SDL3PP_AMALGAMATION_FILENAME}")
+
+add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME})
 target_include_directories(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_DIR})
 target_link_libraries(SDL3pp_amalgamated INTERFACE ${SDL3PP_DEPENDENCIES})
 
@@ -49,8 +52,9 @@ else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
     add_library(SDL3pp ALIAS SDL3pp_lib)
 endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 
-add_custom_target(SDL3pp_amalgamate
+add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
     COMMAND Heady --source ${PROJECT_SOURCE_DIR}/include/SDL3pp/ --output ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS} Heady
 )
 
 # Manual tests
