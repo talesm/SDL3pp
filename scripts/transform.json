@@ -1,7 +1,8 @@
 {
   "prefixes": [
     "SDL_",
-    "IMG_"
+    "IMG_",
+    "TTF_"
   ],
   "renameRules": [
     {
@@ -25,7 +26,8 @@
     "SDL_Surface *": "SurfaceRef",
     "SDL_Window *": "WindowRef",
     "SDL_Renderer *": "RendererRef",
-    "SDL_Texture *": "TextureRef"
+    "SDL_Texture *": "TextureRef",
+    "TTF_Font *": "FontRef"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
@@ -34,7 +36,8 @@
     "SDL_Surface *": "SurfaceRef",
     "SDL_Window *": "WindowRef",
     "SDL_Renderer *": "RendererRef",
-    "SDL_Texture *": "TextureRef"
+    "SDL_Texture *": "TextureRef",
+    "TTF_Font *": "FontRef"
   },
   "files": {
     "SDL_stdinc.h": {
@@ -4788,6 +4791,408 @@
         },
         "IMG_SaveJPG_IO": {
           "name": "SaveJPG"
+        }
+      }
+    },
+    "SDL_ttf.h": {
+      "includeAfter": {
+        "__begin": [
+          {
+            "name": "SDL3PP_ENABLE_TTF",
+            "kind": "def"
+          },
+          {
+            "name": "FontBase",
+            "kind": "forward",
+            "template": [
+              {
+                "name": "T",
+                "type": "ObjectBox<TTF_Font *>"
+              }
+            ]
+          },
+          {
+            "name": "FontRef",
+            "kind": "alias",
+            "type": "FontBase<ObjectRef<TTF_Font>>"
+          },
+          {
+            "name": "ObjectDeleter<TTF_Font>",
+            "kind": "struct",
+            "template": [],
+            "entries": {
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "FontRef",
+                    "name": "font"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Font",
+            "kind": "alias",
+            "type": "FontBase<ObjectUnique<TTF_Font>>"
+          },
+          {
+            "name": "FontStyleFlags",
+            "type": "placeholder"
+          },
+          {
+            "name": "HintingFlags",
+            "type": "placeholder"
+          },
+          {
+            "name": "HorizontalAlignment",
+            "type": "placeholder"
+          },
+          {
+            "name": "Direction",
+            "type": "placeholder"
+          },
+          {
+            "name": "ImageType",
+            "type": "placeholder"
+          }
+        ]
+      },
+      "transform": {
+        "TTF_Version": {
+          "name": "TTF_Version"
+        },
+        "TTF_Font": {
+          "name": "FontBase",
+          "kind": "struct",
+          "type": "T",
+          "template": [
+            {
+              "type": "ObjectBox<TTF_Font *>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": "alias",
+            "TTF_OpenFont": "ctor",
+            "TTF_OpenFontIO": "ctor",
+            "TTF_OpenFontWithProperties": "ctor",
+            "TTF_CopyFont": {
+              "immutable": true,
+              "type": "Font"
+            },
+            "TTF_GetFontProperties": "function",
+            "TTF_GetFontGeneration": "immutable",
+            "TTF_AddFallbackFont": "function",
+            "TTF_RemoveFallbackFont": "function",
+            "TTF_ClearFallbackFonts": "function",
+            "TTF_SetFontSize": "function",
+            "TTF_SetFontSizeDPI": "function",
+            "TTF_GetFontSize": "immutable",
+            "TTF_GetFontDPI": "immutable",
+            "TTF_SetFontStyle": "function",
+            "TTF_GetFontStyle": "immutable",
+            "TTF_SetFontOutline": "function",
+            "TTF_GetFontOutline": "immutable",
+            "TTF_SetFontHinting": "function",
+            "TTF_GetNumFontFaces": "immutable",
+            "TTF_GetFontHinting": "immutable",
+            "TTF_SetFontSDF": "function",
+            "TTF_GetFontSDF": "immutable",
+            "TTF_SetFontWrapAlignment": "function",
+            "TTF_GetFontWrapAlignment": "immutable",
+            "TTF_GetFontHeight": "immutable",
+            "TTF_GetFontAscent": "immutable",
+            "TTF_GetFontDescent": "immutable",
+            "TTF_SetFontLineSkip": "function",
+            "TTF_GetFontLineSkip": "immutable",
+            "TTF_SetFontKerning": "function",
+            "TTF_GetFontKerning": "immutable",
+            "TTF_FontIsFixedWidth": "immutable",
+            "TTF_FontIsScalable": "immutable",
+            "TTF_GetFontFamilyName": "immutable",
+            "TTF_GetFontStyleName": "immutable",
+            "TTF_SetFontDirection": "function",
+            "TTF_GetFontDirection": "immutable",
+            "TTF_SetFontScript": "function",
+            "TTF_GetFontScript": "immutable",
+            "TTF_GetGlyphScript": "immutable",
+            "TTF_SetFontLanguage": "function",
+            "TTF_FontHasGlyph": "immutable",
+            "TTF_GetGlyphImage": "immutable",
+            "TTF_GetGlyphImageForIndex": "immutable",
+            "TTF_GetGlyphMetrics": "immutable",
+            "TTF_GetGlyphKerning": {
+              "immutable": true,
+              "type": "std::optional<int>",
+              "parameters": [
+                {},
+                {},
+                {}
+              ]
+            },
+            "GetStringSize": {
+              "kind": "function",
+              "immutable": true,
+              "type": "std::optional<Point>",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                }
+              ]
+            },
+            "TTF_GetStringSize": {
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "w",
+                  "type": "int *"
+                },
+                {
+                  "name": "h",
+                  "type": "int *"
+                }
+              ]
+            },
+            "GetStringSizeWrapped": {
+              "kind": "function",
+              "immutable": true,
+              "type": "std::optional<Point>",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "wrap_width",
+                  "type": "int"
+                }
+              ]
+            },
+            "TTF_GetStringSizeWrapped": {
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "wrap_width",
+                  "type": "int"
+                },
+                {
+                  "name": "w",
+                  "type": "int *"
+                },
+                {
+                  "name": "h",
+                  "type": "int *"
+                }
+              ]
+            },
+            "TTF_MeasureString": {
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "max_width",
+                  "type": "int"
+                },
+                {
+                  "name": "measured_width",
+                  "type": "int *"
+                },
+                {
+                  "name": "measured_length",
+                  "type": "size_t *"
+                }
+              ]
+            },
+            "TTF_RenderText_Solid": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                }
+              ]
+            },
+            "TTF_RenderText_Solid_Wrapped": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                },
+                {
+                  "name": "wrap_width",
+                  "type": "int"
+                }
+              ]
+            },
+            "TTF_RenderGlyph_Solid": {
+              "immutable": true,
+              "type": "Surface"
+            },
+            "TTF_RenderText_Shaded": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                },
+                {
+                  "name": "bg",
+                  "type": "Color"
+                }
+              ]
+            },
+            "TTF_RenderText_Shaded_Wrapped": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                },
+                {
+                  "name": "bg",
+                  "type": "Color"
+                },
+                {
+                  "name": "wrap_width",
+                  "type": "int"
+                }
+              ]
+            },
+            "TTF_RenderGlyph_Shaded": {
+              "immutable": true,
+              "type": "Surface"
+            },
+            "TTF_RenderText_Blended": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                }
+              ]
+            },
+            "TTF_RenderText_Blended_Wrapped": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                },
+                {
+                  "name": "wrap_width",
+                  "type": "int"
+                }
+              ]
+            },
+            "TTF_RenderGlyph_Blended": {
+              "immutable": true,
+              "type": "Surface"
+            },
+            "TTF_RenderText_LCD": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                },
+                {
+                  "name": "bg",
+                  "type": "Color"
+                }
+              ]
+            },
+            "TTF_RenderText_LCD_Wrapped": {
+              "immutable": true,
+              "type": "Surface",
+              "parameters": [
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                },
+                {
+                  "name": "fg",
+                  "type": "Color"
+                },
+                {
+                  "name": "bg",
+                  "type": "Color"
+                },
+                {
+                  "name": "wrap_width",
+                  "type": "int"
+                }
+              ]
+            },
+            "TTF_RenderGlyph_LCD": {
+              "immutable": true,
+              "type": "Surface"
+            },
+            "TTF_CloseFont": {
+              "name": "Destroy"
+            }
+          }
+        },
+        "TTF_Init": {
+          "name": "TTF_Init"
+        },
+        "TTF_Quit": {
+          "name": "TTF_Quit"
+        },
+        "TTF_WasInit": {
+          "name": "TTF_WasInit"
         }
       }
     }

@@ -171,7 +171,7 @@ class Tokenizer {
     } else if (m = /^(?:struct|class)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.value = m[1];
-    } else if (m = /^(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) {
+    } else if ((m = /^(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) && !line.includes(";")) {
       token.kind = "struct";
       token.value = m[1];
       if (m[3]) {

@@ -52,6 +52,7 @@ Category             | Header
 Category               | Header
 ---------------------- | --------------------
 @ref CategorySDLImage  | SDL3pp_image.h
+@ref CategorySDLTTF    | SDL3pp_ttf.h
 
 ## C++ Support
 
@@ -112,6 +113,7 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesLibs Satellite Libraries
 @{
 @addtogroup CategorySDLImage
+@addtogroup CategorySDLTTF
 @}
 
 @defgroup CategoriesCppSupport C++ Support

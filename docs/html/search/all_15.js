@@ -12,9 +12,10 @@ var searchData=
   ['updatenv_9',['UpdateNV',['../structSDL_1_1TextureBase.html#a03be377c1b2770c7b2d610d280b8ba87',1,'SDL::TextureBase']]],
   ['updatesurface_10',['UpdateSurface',['../structSDL_1_1WindowBase.html#ac7f41ac26be0841520d8cbb42e63ed33',1,'SDL::WindowBase']]],
   ['updatesurfacerects_11',['UpdateSurfaceRects',['../structSDL_1_1WindowBase.html#a439ff2ab8a4ea8b8b4cdf5fd88a4d3b2',1,'SDL::WindowBase']]],
-  ['updateyuv_12',['UpdateYUV',['../structSDL_1_1TextureBase.html#a7ddf202449e6271ea46e2e1ccfb62f7f',1,'SDL::TextureBase']]],
-  ['userevent_13',['UserEvent',['../group__CategoryEvents.html#ga9523397a5d659447d2161f638046880a',1,'SDL']]],
-  ['utf8strlcpy_14',['utf8strlcpy',['../group__CategoryStdinc.html#ga8ae726c47fde58d11167345dfda765a4',1,'SDL']]],
-  ['utf8strlen_15',['utf8strlen',['../group__CategoryStdinc.html#ga81767a08005a153d60b63896c58c106f',1,'SDL']]],
-  ['utf8strnlen_16',['utf8strnlen',['../group__CategoryStdinc.html#ga82960b752efedfdd3cbfcf166d06161e',1,'SDL']]]
+  ['updatetext_12',['UpdateText',['../group__CategorySDLTTF.html#ga070b66cd7147495b1512ff57a07cf0e3',1,'SDL']]],
+  ['updateyuv_13',['UpdateYUV',['../structSDL_1_1TextureBase.html#a7ddf202449e6271ea46e2e1ccfb62f7f',1,'SDL::TextureBase']]],
+  ['userevent_14',['UserEvent',['../group__CategoryEvents.html#ga9523397a5d659447d2161f638046880a',1,'SDL']]],
+  ['utf8strlcpy_15',['utf8strlcpy',['../group__CategoryStdinc.html#ga8ae726c47fde58d11167345dfda765a4',1,'SDL']]],
+  ['utf8strlen_16',['utf8strlen',['../group__CategoryStdinc.html#ga81767a08005a153d60b63896c58c106f',1,'SDL']]],
+  ['utf8strnlen_17',['utf8strnlen',['../group__CategoryStdinc.html#ga82960b752efedfdd3cbfcf166d06161e',1,'SDL']]]
 ];
