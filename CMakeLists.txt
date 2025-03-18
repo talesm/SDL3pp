@@ -3,23 +3,43 @@ project(SDL3pp)
 
 add_subdirectory(external/Heady)
 add_subdirectory(external/SDL)
-add_subdirectory(external/SDL_image)
 
 set(CMAKE_CXX_STANDARD 23)
 
+set(SDL3PP_ORIGINAL_INCLUDE_DIRS 
+    ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/
+    ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/
+    ${PROJECT_SOURCE_DIR}/external/SDL_ttf/include/SDL3_ttf/
+)
+list(TRANSFORM SDL3PP_ORIGINAL_INCLUDE_DIRS PREPEND "-d;" OUTPUT_VARIABLE SDL3PP_PARSE_DIR_PARAMS)
+list(TRANSFORM SDL3PP_ORIGINAL_INCLUDE_DIRS APPEND "*.h" OUTPUT_VARIABLE SDL3PP_HEADER_GLOB)
 
-file(GLOB SDL3PP_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/external/SDL/include/SDL3/*.h)
+file(GLOB SDL3PP_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${SDL3PP_HEADER_GLOB})
 
-# Enable/Disable options
-option(SDL3PP_DISABLE_IMAGE "Disable compilation SDL_Image" OFF)
+#############################
+### Enable/Disable options ##
+#############################
+set(SDL3PP_DEPENDENCIES SDL3::SDL3)
+
+# SDL_image
+option(SDL3PP_DISABLE_IMAGE "Disable compilation of SDL_Image" OFF)
 if(SDL3PP_DISABLE_IMAGE)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_IMAGE")
-else((SDL3PP_DISABLE_IMAGE))
-    set(SDL3PP_DEPENDENCIES SDL3::SDL3 SDL3_image::SDL3_image)
-    file(GLOB SDL3PP_IMAGE_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/*.h)
-    set(SDL3PP_ORIGINAL_HEADERS ${SDL3PP_ORIGINAL_HEADERS} ${SDL3PP_IMAGE_ORIGINAL_HEADERS})
+else(SDL3PP_DISABLE_IMAGE)
+    add_subdirectory(external/SDL_image)
+    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_image::SDL3_image)
 endif(SDL3PP_DISABLE_IMAGE)
 
+# SDL_ttf
+option(SDL3PP_DISABLE_TTF "Disable compilation of SDL_TTF" OFF)
+if(SDL3PP_DISABLE_TTF)
+    set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_TTF")
+else(SDL3PP_DISABLE_TTF)
+    add_subdirectory(external/SDL_ttf)
+    set(SDL3PP_DEPENDENCIES ${SDL3PP_DEPENDENCIES} SDL3_ttf::SDL3_ttf)
+endif(SDL3PP_DISABLE_TTF)
+
+# use StringParam
 option(SDL3PP_DISABLE_STRING_PARAM "Disable StringParam wrapping" OFF)
 if(SDL3PP_DISABLE_STRING_PARAM)
     set(SDL3PP_AMALGAMATION_DEFS "${SDL3PP_AMALGAMATION_DEFS} -d SDL3PP_DISABLE_STRING_PARAM")
@@ -91,7 +111,7 @@ endif (DOXYGEN_FOUND)
 
 # Refresh the headers
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND node scripts/ parse -d ./external/SDL/include/SDL3/ -d ./external/SDL_image/include/SDL3_image/ scripts/config.json 
+    COMMAND node scripts/ parse ${SDL3PP_PARSE_DIR_PARAMS} scripts/config.json 
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
