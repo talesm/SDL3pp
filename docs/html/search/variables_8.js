@@ -7,5 +7,15 @@ var searchData=
   ['init_5fhaptic_4',['INIT_HAPTIC',['../group__CategoryInit.html#gadaddabe3fa4d4f145f4b50ffd8baaac1',1,'SDL']]],
   ['init_5fjoystick_5',['INIT_JOYSTICK',['../group__CategoryInit.html#ga5eee8ab4cd2f485ee9fa63baa8c1bc3e',1,'SDL']]],
   ['init_5fsensor_6',['INIT_SENSOR',['../group__CategoryInit.html#ga075264ef70aa0e1e7832a07477f1246c',1,'SDL']]],
-  ['init_5fvideo_7',['INIT_VIDEO',['../group__CategoryInit.html#ga63ca590321877744a1050ab71ff4e3c5',1,'SDL']]]
+  ['init_5fvideo_7',['INIT_VIDEO',['../group__CategoryInit.html#ga63ca590321877744a1050ab71ff4e3c5',1,'SDL']]],
+  ['io_5fseek_5fcur_8',['IO_SEEK_CUR',['../group__CategoryIOStream.html#gabab8b78d2e651e38ccc19b1c62f56b66',1,'SDL']]],
+  ['io_5fseek_5fend_9',['IO_SEEK_END',['../group__CategoryIOStream.html#gaf7177fead5d617167aa73bafec86ffe1',1,'SDL']]],
+  ['io_5fseek_5fset_10',['IO_SEEK_SET',['../group__CategoryIOStream.html#gaf4eccd7acaff5d2af103c49e26a0100f',1,'SDL']]],
+  ['io_5fstatus_5feof_11',['IO_STATUS_EOF',['../group__CategoryIOStream.html#ga770e7700b3051e06307b0a4694535c16',1,'SDL']]],
+  ['io_5fstatus_5ferror_12',['IO_STATUS_ERROR',['../group__CategoryIOStream.html#ga659db4a110cd5d4c9c55c82fe6cca22d',1,'SDL']]],
+  ['io_5fstatus_5fnot_5fready_13',['IO_STATUS_NOT_READY',['../group__CategoryIOStream.html#gadd19fed8fd3d810f9b58376b753e9d24',1,'SDL']]],
+  ['io_5fstatus_5freadonly_14',['IO_STATUS_READONLY',['../group__CategoryIOStream.html#gad49f75db9e5b37ab6e670a792754617d',1,'SDL']]],
+  ['io_5fstatus_5fready_15',['IO_STATUS_READY',['../group__CategoryIOStream.html#gadca1e808b43d37fa4bcfedac6abdd125',1,'SDL']]],
+  ['io_5fstatus_5fwriteonly_16',['IO_STATUS_WRITEONLY',['../group__CategoryIOStream.html#ga9af9c81fff2c2d7fbd1fc431be4cb92f',1,'SDL']]],
+  ['iofromdynamicmem_17',['IOFromDynamicMem',['../group__CategoryIOStream.html#gacaa9988b2fc00136dccf5f557222bcaa',1,'SDL']]]
 ];

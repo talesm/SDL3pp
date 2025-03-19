@@ -1767,6 +1767,22 @@ struct TextureBase : T
   using T::T;
 
   /**
+   * Load an image from a filesystem path into a GPU texture.
+   *
+   * If available, this uses LoadTexture(RendererRef, StringParam), otherwise it
+   * uses LoadTextureBMP(RendererRef, StringParam).
+   *
+   * @param renderer the Renderer to use to create the GPU texture.
+   * @param file a path on the filesystem to load an image from.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call GetError() for more information.
+   *
+   * @sa LoadTexture(RendererRef, StringParam)
+   * @sa LoadTextureBMP(RendererRef, StringParam)
+   */
+  TextureBase(RendererRef renderer, StringParam file);
+
+  /**
    * Create a texture for a rendering context.
    *
    * The contents of a texture when first created are not defined.
@@ -2805,8 +2821,6 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
  *
  * @param renderer the renderer to create texture
  * @param src the data stream for the surface.
- * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
- *                in the case of an error.
  * @returns a Texture with loaded content or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -2814,10 +2828,9 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
  *
  */
 inline Texture LoadTextureBMP(RendererRef renderer,
-                              SDL_IOStream* src,
-                              bool closeio)
+                              ObjectBox<SDL_IOStream> auto&& src)
 {
-  Surface surface{LoadBMP(src, closeio)};
+  Surface surface{LoadBMP(src)};
   return Texture(renderer, surface);
 }
 

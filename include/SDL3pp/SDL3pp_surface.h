@@ -160,6 +160,21 @@ struct SurfaceBase : T
   using T::T;
 
   /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param file a path on the filesystem to load an image from.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call GetError() for more information.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
+  SurfaceBase(StringParam file);
+
+  /**
    * Allocate a new surface with a specific pixel format.
    *
    * The pixels of the new surface are initialized to zero.
@@ -168,8 +183,7 @@ struct SurfaceBase : T
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
+   * or convertible to false on failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -197,8 +211,7 @@ struct SurfaceBase : T
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
    * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
+   * or convertible to false on failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -1872,13 +1885,15 @@ public:
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
  *
+ * @threadsafety It is safe to call this function from any thread.
+ *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SaveBMP()
  */
-inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
+inline Surface LoadBMP(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return Surface{SDL_LoadBMP_IO(src, closeio)};
+  return Surface{SDL_LoadBMP_IO(src, false)};
 }
 
 /**
@@ -1887,6 +1902,8 @@ inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
  * @param file the BMP file to load.
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1910,13 +1927,15 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SaveBMP()
+ * @sa LoadBMP()
  */
-inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
+inline bool SaveBMP(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
 {
-  return SDL_SaveBMP_IO(surface.get(), dst, closeio);
+  return SDL_SaveBMP_IO(surface.get(), dst, false);
 }
 
 /**

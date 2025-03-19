@@ -38,6 +38,12 @@ Category                 | Header
 ------------------------ | --------------------
 @ref CategoryTimer       | SDL3pp_timer.h
 
+## File and I/O Abstractions
+
+Category                 | Header
+------------------------ | --------------------
+@ref CategoryIOStream    | SDL3pp_iostream.h
+
 ## Additional Functionality
 
 Category             | Header
@@ -99,6 +105,11 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesTime Time
 @{
 @addtogroup CategoryTimer
+@}
+
+@defgroup CategoriesFileIO File and I/O Abstractions
+@{
+@addtogroup CategoryIOStream
 @}
 
 @defgroup CategoriesAdditionalFunctionality Additional Functionality

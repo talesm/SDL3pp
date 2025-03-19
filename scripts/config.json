@@ -8,6 +8,7 @@
     "SDL_guid.h",
     "SDL_version.h",
     "SDL_locale.h",
+    "SDL_iostream.h",
     "SDL_pixels.h",
     "SDL_blendmode.h",
     "SDL_hints.h",
