@@ -1,27 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,351,44,377"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1PropertiesBase.html" title=" " alt="" coords="92,5,332,75"/>
-<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="26,338,49,203,67,132,78,105,90,85,103,73,106,77,94,88,83,107,72,134,54,204,32,338"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1SurfaceBase.html" title=" " alt="" coords="115,99,309,139"/>
-<area shape="poly" id="edge9_Node000000_Node000002" title=" " alt="" coords="24,337,28,296,38,245,58,194,72,170,90,149,114,133,117,137,94,153,76,173,62,196,43,247,33,297,29,338"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1TextureBase.html" title=" " alt="" coords="116,163,308,203"/>
-<area shape="poly" id="edge10_Node000000_Node000003" title=" " alt="" coords="28,337,47,275,65,241,90,213,115,197,117,202,94,217,70,244,52,277,33,339"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1EnvironmentBase.html" title="A thread&#45;safe set of environment variables." alt="" coords="108,227,316,253"/>
-<area shape="poly" id="edge11_Node000000_Node000004" title=" " alt="" coords="34,337,56,298,71,278,91,262,112,250,115,255,93,266,75,282,60,301,38,340"/>
-<area shape="rect" id="Node000005" href="$structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state." alt="" coords="131,277,293,302"/>
-<area shape="poly" id="edge12_Node000000_Node000005" title=" " alt="" coords="47,340,68,324,91,311,130,298,131,303,93,316,71,329,51,344"/>
-<area shape="rect" id="Node000006" href="$structSDL_1_1IOStreamBase.html" title="The read/write operation structure." alt="" coords="119,326,305,351"/>
-<area shape="poly" id="edge13_Node000000_Node000006" title=" " alt="" coords="57,357,118,349,119,354,58,362"/>
-<area shape="rect" id="Node000007" href="$structSDL_1_1PaletteBase.html" title="A set of indexed colors representing a palette." alt="" coords="127,375,297,401"/>
-<area shape="poly" id="edge14_Node000000_Node000007" title=" " alt="" coords="58,365,127,374,126,380,57,371"/>
-<area shape="rect" id="Node000008" href="$structSDL_1_1PropertiesBase.html" title="Wrap properties id." alt="" coords="117,425,307,450"/>
-<area shape="poly" id="edge15_Node000000_Node000008" title=" " alt="" coords="52,383,93,410,130,422,128,427,91,414,49,388"/>
-<area shape="rect" id="Node000009" href="$structSDL_1_1RendererBase.html" title="A structure representing rendering state." alt="" coords="120,474,304,499"/>
-<area shape="poly" id="edge16_Node000000_Node000009" title=" " alt="" coords="39,388,61,426,76,444,93,459,121,472,118,477,91,464,72,448,56,429,34,391"/>
-<area shape="rect" id="Node000010" href="$structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting." alt="" coords="125,523,299,549"/>
-<area shape="poly" id="edge17_Node000000_Node000010" title=" " alt="" coords="33,390,40,418,52,451,70,482,94,509,126,525,123,530,90,513,65,485,47,453,35,420,28,391"/>
-<area shape="rect" id="Node000011" href="$structSDL_1_1TextureBase.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="125,573,299,598"/>
-<area shape="poly" id="edge18_Node000000_Node000011" title=" " alt="" coords="30,390,34,428,45,474,64,520,77,540,94,558,109,568,126,576,124,581,106,573,90,562,73,543,59,522,39,475,29,429,24,391"/>
-<area shape="rect" id="Node000012" href="$structSDL_1_1WindowBase.html" title="Represents a handle to a window." alt="" coords="123,622,301,647"/>
-<area shape="poly" id="edge19_Node000000_Node000012" title=" " alt="" coords="27,391,29,438,38,496,58,556,74,584,94,607,108,618,124,625,122,630,105,622,90,611,69,587,53,559,32,498,24,438,22,391"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,88,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers)." alt="" coords="136,5,220,31"/>
+<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="102,15,136,15,136,21,102,21"/>
 </map>
