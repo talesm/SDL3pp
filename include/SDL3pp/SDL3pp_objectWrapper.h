@@ -52,6 +52,8 @@ public:
   const T& operator*() const { return *get(); }
   T& operator*() { return *get(); }
 
+  constexpr bool operator==(std::nullptr_t) const { return !value; }
+
   pointer release()
   {
     pointer p;
@@ -90,6 +92,8 @@ public:
   pointer operator->() { return get(); }
   const T& operator*() const { return *value; }
   T& operator*() { return *value; }
+
+  constexpr bool operator==(std::nullptr_t) const { return !value; }
 
   pointer release() { return value.release(); }
   void reset(pointer other = nullptr) { return value.reset(other); }
