@@ -152,7 +152,7 @@ public:
 
 } // namespace SDL
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef SDL3PP_DOC
 
 template<class T, class POINTER>
 void std::swap(SDL::ObjectRef<T, POINTER>& left,
@@ -168,6 +168,6 @@ void std::swap(SDL::ObjectUnique<T, DELETER>& left,
   left.swap(right);
 }
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+#endif // SDL3PP_DOC
 
 #endif /* SDL3PP_OBJECT_WRAPPER_H_ */

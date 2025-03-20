@@ -6608,8 +6608,6 @@ using Locale = SDL_Locale;
  * if possible, and you can call this function again to get an updated copy of
  * preferred locales.
  *
- * @param count a pointer filled in with the number of locales returned, may
- *              be NULL.
  * @returns a std::nullptr terminated array of locale pointers, or std::nullptr
  * on failure; call GetError() for more information. This is a single allocation
  *          that should be freed with free() when it is no longer needed.
@@ -13707,8 +13705,8 @@ struct IOStreamBase : T
    * @param file a UTF-8 string representing the filename to open.
    * @param mode an ASCII string representing the mode to be used for opening
    *             the file.
-   * @returns a pointer to the SDL_IOStream structure that is created or NULL on
-   *          failure; call SDL_GetError() for more information.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -13750,8 +13748,8 @@ struct IOStreamBase : T
    *
    * @param mem a pointer to a buffer to feed an SDL_IOStream stream.
    * @param size the buffer size, in bytes.
-   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -13796,8 +13794,8 @@ struct IOStreamBase : T
    *
    * @param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.
    * @param size the buffer size, in bytes.
-   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -13829,8 +13827,8 @@ struct IOStreamBase : T
    * - `SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
-   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -13861,8 +13859,8 @@ struct IOStreamBase : T
    * @param iface the interface that implements this SDL_IOStream, initialized
    *              using SDL_INIT_INTERFACE().
    * @param userdata the pointer that will be passed to the interface functions.
-   * @returns a pointer to the allocated memory on success or NULL on failure;
-   *          call SDL_GetError() for more information.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -13906,7 +13904,6 @@ struct IOStreamBase : T
    * should call SDL_FlushIO() before closing. Note that flushing takes time and
    * makes the system and your app operate less efficiently, so do so sparingly.
    *
-   * @param context SDL_IOStream structure to close.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -13921,7 +13918,6 @@ struct IOStreamBase : T
   /**
    * Get the properties associated with an SDL_IOStream.
    *
-   * @param context a pointer to an SDL_IOStream structure.
    * @returns a valid property ID on success or 0 on failure; call
    *          SDL_GetError() for more information.
    *
@@ -13942,7 +13938,6 @@ struct IOStreamBase : T
    * SDL_WriteIO call; don't expect it to change if you just call this query
    * function in a tight loop.
    *
-   * @param context the SDL_IOStream to query.
    * @returns an SDL_IOStatus enum with the current state.
    *
    * @threadsafety This function is not thread safe.
@@ -13954,7 +13949,6 @@ struct IOStreamBase : T
   /**
    * Use this function to get the size of the data stream in an SDL_IOStream.
    *
-   * @param context the SDL_IOStream to get the size of the data stream from.
    * @returns the size of the data stream in the SDL_IOStream on success or a
    *          negative error code on failure; call SDL_GetError() for more
    *          information.
@@ -13978,7 +13972,6 @@ struct IOStreamBase : T
    *
    * If this stream can not seek, it will return -1.
    *
-   * @param context a pointer to an SDL_IOStream structure.
    * @param offset an offset in bytes, relative to `whence` location; can be
    *               negative.
    * @param whence any of `SDL_IO_SEEK_SET`, `SDL_IO_SEEK_CUR`,
@@ -14004,8 +13997,6 @@ struct IOStreamBase : T
    * `seek` method, with an offset of 0 bytes from `SDL_IO_SEEK_CUR`, to
    * simplify application development.
    *
-   * @param context an SDL_IOStream data stream object from which to get the
-   *                current offset.
    * @returns the current offset in the stream, or -1 if the information can not
    *          be determined.
    *
@@ -14028,7 +14019,6 @@ struct IOStreamBase : T
    * the stream is not at EOF, SDL_GetIOStatus() will return a different error
    * value and SDL_GetError() will offer a human-readable message.
    *
-   * @param context a pointer to an SDL_IOStream structure.
    * @param ptr a pointer to a buffer to read data into.
    * @param size the number of bytes to read from the data source.
    * @returns the number of bytes read, or 0 on end of file or other failure;
@@ -14068,7 +14058,6 @@ struct IOStreamBase : T
    * recoverable, such as a non-blocking write that can simply be retried later,
    * or a fatal error.
    *
-   * @param context a pointer to an SDL_IOStream structure.
    * @param ptr a pointer to a buffer containing data to write.
    * @param size the number of bytes to write.
    * @returns the number of bytes written, which will be less than `size` on
@@ -14114,7 +14103,6 @@ struct IOStreamBase : T
    *
    * This function does formatted printing to the stream.
    *
-   * @param context a pointer to an SDL_IOStream structure.
    * @param fmt a printf() style format string.
    * @param ... additional parameters matching % tokens in the `fmt` string, if
    *            any.
@@ -14147,7 +14135,6 @@ struct IOStreamBase : T
    *
    * This function does formatted printing to the stream.
    *
-   * @param context a pointer to an SDL_IOStream structure.
    * @param fmt a printf() style format string.
    * @param ap a variable argument list.
    * @returns the number of bytes written or 0 on failure; call SDL_GetError()
@@ -14172,7 +14159,6 @@ struct IOStreamBase : T
    * Normally this isn't necessary but if the stream is a pipe or socket it
    * guarantees that any pending data is sent.
    *
-   * @param context SDL_IOStream structure to flush.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -14192,7 +14178,6 @@ struct IOStreamBase : T
    * convenience. This extra byte is not included in the value reported via
    * `datasize`.
    *
-   * @param src the SDL_IOStream to read all available data from.
    * @returns the data or NULL on failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
@@ -14224,12 +14209,9 @@ struct IOStreamBase : T
   /**
    * Save all the data into an SDL data stream.
    *
-   * @param src the SDL_IOStream to write all data to.
    * @param data the data to be written. If datasize is 0, may be NULL or a
    *             invalid pointer.
    * @param datasize the number of bytes to be written.
-   * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
-   *                in the case of an error.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -14252,7 +14234,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the SDL_IOStream to read from.
    * @param value a pointer filled in with the data read.
    * @returns true on success or false on failure or EOF; call SDL_GetError()
    *          for more information.
@@ -14271,7 +14252,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the SDL_IOStream to read from.
    * @param value a pointer filled in with the data read.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -14294,7 +14274,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14317,7 +14296,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14340,7 +14318,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14363,7 +14340,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14386,7 +14362,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14409,7 +14384,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14432,7 +14406,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14455,7 +14428,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14478,7 +14450,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14501,7 +14472,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14524,7 +14494,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14547,7 +14516,6 @@ struct IOStreamBase : T
    * and the stream is not at EOF, SDL_GetIOStatus() will return a different
    * error value and SDL_GetError() will offer a human-readable message.
    *
-   * @param src the stream from which to read data.
    * @param value a pointer filled in with the data read.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14561,7 +14529,6 @@ struct IOStreamBase : T
   /**
    * Use this function to write a byte to an SDL_IOStream.
    *
-   * @param dst the SDL_IOStream to write to.
    * @param value the byte value to write.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14575,7 +14542,6 @@ struct IOStreamBase : T
   /**
    * Use this function to write a signed byte to an SDL_IOStream.
    *
-   * @param dst the SDL_IOStream to write to.
    * @param value the byte value to write.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14594,7 +14560,6 @@ struct IOStreamBase : T
    * specifies native format, and the data written will be in little-endian
    * format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14613,7 +14578,6 @@ struct IOStreamBase : T
    * specifies native format, and the data written will be in little-endian
    * format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14631,7 +14595,6 @@ struct IOStreamBase : T
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14649,7 +14612,6 @@ struct IOStreamBase : T
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14668,7 +14630,6 @@ struct IOStreamBase : T
    * specifies native format, and the data written will be in little-endian
    * format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14687,7 +14648,6 @@ struct IOStreamBase : T
    * specifies native format, and the data written will be in little-endian
    * format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14705,7 +14665,6 @@ struct IOStreamBase : T
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14723,7 +14682,6 @@ struct IOStreamBase : T
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14742,7 +14700,6 @@ struct IOStreamBase : T
    * specifies native format, and the data written will be in little-endian
    * format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14761,7 +14718,6 @@ struct IOStreamBase : T
    * specifies native format, and the data written will be in little-endian
    * format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14779,7 +14735,6 @@ struct IOStreamBase : T
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14797,7 +14752,6 @@ struct IOStreamBase : T
    * SDL byteswaps the data only if necessary, so the application always
    * specifies native format, and the data written will be in big-endian format.
    *
-   * @param dst the stream to which data will be written.
    * @param value the data to be written, in native format.
    * @returns true on successful write or false on failure; call SDL_GetError()
    *          for more information.
@@ -14819,7 +14773,6 @@ struct IOStreamBase : T
  * The data should be freed with SDL_free().
  *
  * @param file the path to read all available data from.
- * @param datasize if not NULL, will store the number of bytes read.
  * @returns the data or NULL on failure; call SDL_GetError() for more
  *          information.
  *
@@ -15267,8 +15220,6 @@ struct SurfaceBase : T
    * They are still referenced by the surface being queried and will be cleaned
    * up normally.
    *
-   * @param count a pointer filled in with the number of surface pointers
-   *              returned, may be NULL.
    * @returns a NULL terminated array of SDL_Surface pointers or NULL on
    *          failure; call SDL_GetError() for more information. This should be
    *          freed with SDL_free() when it is no longer needed.
@@ -16748,8 +16699,6 @@ public:
  * Load a BMP image from a seekable SDL data stream.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
- *                in the case of an error.
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -16790,8 +16739,6 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @param surface the SDL_Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
- *                in the case of an error.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
@@ -27406,10 +27353,9 @@ inline Animation* LoadAnimation(StringParam file)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa FreeAnimation
+ * @sa FreeAnimation()
  */
-inline Animation* LoadAnimation_IO(ObjectBox<SDL_IOStream> auto&& src,
-                                   bool closeio)
+inline Animation* LoadAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
   return IMG_LoadAnimation_IO(src, false);
 }
@@ -27433,10 +27379,10 @@ inline Animation* LoadAnimation_IO(ObjectBox<SDL_IOStream> auto&& src,
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa LoadAnimation()
+ * @sa FreeAnimation()
  */
-inline Animation* LoadAnimationTyped_IO(ObjectBox<SDL_IOStream> auto&& src,
-                                        bool closeio,
-                                        StringParam type)
+inline Animation* LoadAnimation(ObjectBox<SDL_IOStream> auto&& src,
+                                StringParam type)
 {
   return IMG_LoadAnimationTyped_IO(src, false, type);
 }

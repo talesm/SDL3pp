@@ -5222,6 +5222,28 @@
               "type": "int"
             }
           ]
+        },
+        "IMG_LoadAnimation_IO": {
+          "name": "LoadAnimation",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            }
+          ]
+        },
+        "IMG_LoadAnimationTyped_IO": {
+          "name": "LoadAnimation",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            },
+            {
+              "name": "type",
+              "type": "StringParam"
+            }
+          ]
         }
       }
     }

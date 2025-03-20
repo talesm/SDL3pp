@@ -404,8 +404,6 @@ struct SurfaceBase : T
    * They are still referenced by the surface being queried and will be cleaned
    * up normally.
    *
-   * @param count a pointer filled in with the number of surface pointers
-   *              returned, may be NULL.
    * @returns a NULL terminated array of SDL_Surface pointers or NULL on
    *          failure; call SDL_GetError() for more information. This should be
    *          freed with SDL_free() when it is no longer needed.
@@ -1885,8 +1883,6 @@ public:
  * Load a BMP image from a seekable SDL data stream.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
- *                in the case of an error.
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -1927,8 +1923,6 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @param surface the SDL_Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
- *                in the case of an error.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *

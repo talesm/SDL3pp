@@ -1945,10 +1945,9 @@ inline Animation* LoadAnimation(StringParam file)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa FreeAnimation
+ * @sa FreeAnimation()
  */
-inline Animation* LoadAnimation_IO(ObjectBox<SDL_IOStream> auto&& src,
-                                   bool closeio)
+inline Animation* LoadAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
   return IMG_LoadAnimation_IO(src, false);
 }
@@ -1972,10 +1971,10 @@ inline Animation* LoadAnimation_IO(ObjectBox<SDL_IOStream> auto&& src,
  * @since This function is available since SDL_image 3.0.0.
  *
  * @sa LoadAnimation()
+ * @sa FreeAnimation()
  */
-inline Animation* LoadAnimationTyped_IO(ObjectBox<SDL_IOStream> auto&& src,
-                                        bool closeio,
-                                        StringParam type)
+inline Animation* LoadAnimation(ObjectBox<SDL_IOStream> auto&& src,
+                                StringParam type)
 {
   return IMG_LoadAnimationTyped_IO(src, false, type);
 }

@@ -65,8 +65,6 @@ using Locale = SDL_Locale;
  * if possible, and you can call this function again to get an updated copy of
  * preferred locales.
  *
- * @param count a pointer filled in with the number of locales returned, may
- *              be NULL.
  * @returns a std::nullptr terminated array of locale pointers, or std::nullptr
  * on failure; call GetError() for more information. This is a single allocation
  *          that should be freed with free() when it is no longer needed.
