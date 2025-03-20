@@ -22,7 +22,7 @@ var searchData=
   ['timercb_19',['TimerCB',['../group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
   ['timerid_20',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
   ['tldr_21',['Quick start / TLDR',['../index.html#quick-start--tldr',1,'']]],
-  ['to_20sdl_3a_3afree_22',['Pointer wrapper to SDL::free()',['../group__CategoryFreeWrapper.html',1,'']]],
+  ['to_20sdl_3a_3afree_22',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
   ['todo_20list_23',['Todo List',['../todo.html',1,'']]],
   ['tolower_24',['tolower',['../group__CategoryStdinc.html#ga77f89764775d85be34bed2bc447d543a',1,'SDL']]],
   ['tostring_25',['ToString',['../structSDL_1_1GUID.html#ac28093a04bc1ab6ef3b73eab31ac1b0e',1,'SDL::GUID']]],

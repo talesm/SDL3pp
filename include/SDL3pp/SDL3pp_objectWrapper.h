@@ -3,6 +3,7 @@
 
 #include <concepts>
 #include <memory>
+#include <type_traits>
 
 namespace SDL {
 
@@ -19,31 +20,31 @@ concept ObjectBox = requires(const T a, T b) {
   { b.release() } -> std::convertible_to<POINTER>;
 };
 
-template<class T, class POINTER = T*>
+template<class T, class POINTER = std::remove_extent_t<T>*>
 class ObjectRef
 {
-  POINTER value;
+  POINTER m_value;
 
 public:
   using pointer = POINTER;
 
   constexpr ObjectRef(pointer value = nullptr)
-    : value(value)
+    : m_value(value)
   {
   }
 
   template<ObjectBox<POINTER> BOX>
   ObjectRef(BOX&& box)
-    : value(std::is_reference_v<BOX> ? box.get() : box.release())
+    : m_value(std::is_reference_v<BOX> ? box.get() : box.release())
   {
   }
 
   constexpr ObjectRef(std::nullptr_t)
-    : value{0}
+    : m_value{0}
   {
   }
 
-  constexpr pointer get() const { return value; }
+  constexpr pointer get() const { return m_value; }
 
   constexpr operator bool() const { return bool(get()); }
 
@@ -52,14 +53,27 @@ public:
   const T& operator*() const { return *get(); }
   T& operator*() { return *get(); }
 
+  constexpr bool operator==(std::nullptr_t) const { return !m_value; }
+
   pointer release()
   {
     pointer p;
-    std::swap(value, p);
+    std::swap(m_value, p);
     return p;
   }
-  void reset(pointer other = nullptr) { return std::swap(value, other); }
-  void swap(ObjectRef& other) { return std::swap(value, other.value); }
+  void reset(pointer other = nullptr) { return std::swap(m_value, other); }
+  void swap(ObjectRef& other) { return std::swap(m_value, other.m_value); }
+
+  auto& operator[](ptrdiff_t index)
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
+  const auto& operator[](ptrdiff_t index) const
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
 };
 
 template<class T>
@@ -68,32 +82,45 @@ struct ObjectDeleter;
 template<class T, class DELETER = ObjectDeleter<T>>
 class ObjectUnique
 {
-  std::unique_ptr<T, DELETER> value;
+  std::unique_ptr<T, DELETER> m_value;
 
 public:
   using pointer = std::unique_ptr<T, DELETER>::pointer;
 
   explicit ObjectUnique(pointer value = nullptr)
-    : value(value)
+    : m_value(value)
   {
   }
 
   constexpr ObjectUnique(std::nullptr_t)
-    : value{}
+    : m_value{}
   {
   }
 
-  pointer get() const { return value.get(); }
+  pointer get() const { return m_value.get(); }
   operator bool() const { return bool(get()); }
 
   const pointer operator->() const { return get(); }
   pointer operator->() { return get(); }
-  const T& operator*() const { return *value; }
-  T& operator*() { return *value; }
+  const auto& operator*() const { return *m_value; }
+  auto& operator*() { return *m_value; }
 
-  pointer release() { return value.release(); }
-  void reset(pointer other = nullptr) { return value.reset(other); }
-  void swap(ObjectUnique& other) { return std::swap(value, other.value); }
+  constexpr bool operator==(std::nullptr_t) const { return !m_value; }
+
+  pointer release() { return m_value.release(); }
+  void reset(pointer other = nullptr) { return m_value.reset(other); }
+  void swap(ObjectUnique& other) { return std::swap(m_value, other.m_value); }
+
+  auto& operator[](ptrdiff_t index)
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
+  const auto& operator[](ptrdiff_t index) const
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
 };
 
 template<class T, T defaultValue = 0>
@@ -135,7 +162,7 @@ void std::swap(SDL::ObjectRef<T, POINTER>& left,
 }
 
 template<class T, class DELETER>
-void std::swap(SDL::ObjectUnique<T, DELETER> left,
+void std::swap(SDL::ObjectUnique<T, DELETER>& left,
                SDL::ObjectUnique<T, DELETER>& right)
 {
   left.swap(right);

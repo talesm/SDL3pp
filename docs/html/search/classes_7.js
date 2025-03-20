@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['logcategory_0',['LogCategory',['../classSDL_1_1LogCategory.html',1,'SDL']]]
+  ['keyvaluewrapper_0',['KeyValueWrapper',['../structSDL_1_1KeyValueWrapper.html',1,'SDL']]]
 ];

@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['scalemode_0',['ScaleMode',['../group__CategorySurface.html#gaed7f0fa288a530b226389e23c38e843d',1,'SDL']]],
-  ['sensorevent_1',['SensorEvent',['../group__CategoryEvents.html#ga4fae2c347fbaa6db58c8e1b7341411bc',1,'SDL']]],
-  ['stringparam_2',['StringParam',['../namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1',1,'SDL']]],
-  ['surface_3',['Surface',['../group__CategorySurface.html#ga5128f762b815ce424b759043e06fd646',1,'SDL']]],
-  ['surfaceflags_4',['SurfaceFlags',['../group__CategorySurface.html#ga2d815ea45ea1a0a4336a1c9952ff2264',1,'SDL']]],
-  ['surfaceref_5',['SurfaceRef',['../group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2',1,'SDL']]],
-  ['systemtheme_6',['SystemTheme',['../group__CategoryVideo.html#ga6d46b1179134bbd5203db0a7a74b89ed',1,'SDL']]]
+  ['realloc_5ffunc_0',['realloc_func',['../group__CategoryStdinc.html#gaa0d42a4ebfbbe5ab7908f55ba0560ecb',1,'SDL']]],
+  ['refarray_1',['RefArray',['../group__CategoryOwnPtr.html#ga32f8cdb48052c736f47b8b0dbef45595',1,'SDL']]],
+  ['refptr_2',['RefPtr',['../group__CategoryOwnPtr.html#ga24f5e412a5178a7e8ff7f99e458254e3',1,'SDL']]],
+  ['renderer_3',['Renderer',['../group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068',1,'SDL']]],
+  ['rendererlogicalpresentation_4',['RendererLogicalPresentation',['../group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d',1,'SDL']]],
+  ['rendererref_5',['RendererRef',['../group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d',1,'SDL']]],
+  ['renderevent_6',['RenderEvent',['../group__CategoryEvents.html#ga2659db701de06c5a2e1632526c4f6345',1,'SDL']]]
 ];

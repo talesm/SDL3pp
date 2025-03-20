@@ -375,7 +375,7 @@
               "doc": "Get all variables in the environment.\n\n@param env the environment to query.\n@returns a NULL terminated array of pointers to environment variables in\n         the form \"variable=value\" or NULL on failure; call SDL_GetError()\n         for more information. This is a single allocation that should be\n         freed with SDL_free() when it is no longer needed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
               "name": "GetVariables",
               "kind": "function",
-              "type": "FreeWrapper<char *[]>",
+              "type": "OwnArray<char *>",
               "parameters": [],
               "sourceName": "SDL_GetEnvironmentVariables"
             },
@@ -4059,13 +4059,8 @@
           "doc": "Report the user's preferred locale.\n\nReturned language strings are in the format xx, where 'xx' is an ISO-639\nlanguage specifier (such as \"en\" for English, \"de\" for German, etc).\nCountry strings are in the format YY, where \"YY\" is an ISO-3166 country\ncode (such as \"US\" for the United States, \"CA\" for Canada, etc). Country\nmight be NULL if there's no specific guidance on them (so you might get {\n\"en\", \"US\" } for American English, but { \"en\", NULL } means \"English\nlanguage, generically\"). Language strings are never NULL, except to\nterminate the array.\n\nPlease note that not all of these strings are 2 characters; some are three\nor more.\n\nThe returned list of locales are in the order of the user's preference. For\nexample, a German citizen that is fluent in US English and knows enough\nJapanese to navigate around Tokyo might have a list like: { \"de\", \"en_US\",\n\"jp\", NULL }. Someone from England might prefer British English (where\n\"color\" is spelled \"colour\", etc), but will settle for anything like it: {\n\"en_GB\", \"en\", NULL }.\n\nThis function returns NULL on error, including when the platform does not\nsupply this information at all.\n\nThis might be a \"slow\" call that has to query the operating system. It's\nbest to ask for this once and save the results. However, this list can\nchange, usually because the user has changed a system preference outside of\nyour program; SDL will send an SDL_EVENT_LOCALE_CHANGED event in this case,\nif possible, and you can call this function again to get an updated copy of\npreferred locales.\n\n@param count a pointer filled in with the number of locales returned, may\n             be NULL.\n@returns a NULL terminated array of locale pointers, or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetPreferredLocales",
           "kind": "function",
-          "type": "FreeWrapper<Locale *[]>",
-          "parameters": [
-            {
-              "name": "count",
-              "type": "int *"
-            }
-          ],
+          "type": "OwnArray<Locale *>",
+          "parameters": [],
           "sourceName": "SDL_GetPreferredLocales"
         }
       }
@@ -4540,18 +4535,10 @@
               "doc": "Load all the data from an SDL data stream.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with SDL_free().\n\n@param src the SDL_IOStream to read all available data from.\n@param datasize a pointer filled in with the number of bytes read, may be\n                NULL.\n@param closeio if true, calls SDL_CloseIO() on `src` before returning, even\n               in the case of an error.\n@returns the data or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LoadFile\n@sa SDL_SaveFile_IO",
               "name": "LoadFile",
               "kind": "function",
-              "type": "FreeWrapper<void>",
-              "parameters": [
-                {
-                  "name": "datasize",
-                  "type": "size_t *"
-                },
-                {
-                  "name": "closeio",
-                  "type": "bool"
-                }
-              ],
-              "sourceName": "SDL_LoadFile_IO"
+              "type": "OwnArray<std::byte>",
+              "parameters": [],
+              "sourceName": "SDL_LoadFile_IO",
+              "static": false
             },
             "SaveFile": [
               {
@@ -4972,15 +4959,11 @@
           "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with SDL_free().\n\n@param file the path to read all available data from.\n@param datasize if not NULL, will store the number of bytes read.\n@returns the data or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LoadFile_IO\n@sa SDL_SaveFile",
           "name": "LoadFile",
           "kind": "function",
-          "type": "FreeWrapper<void>",
+          "type": "OwnArray<std::byte>",
           "parameters": [
             {
               "name": "file",
               "type": "StringParam"
-            },
-            {
-              "name": "datasize",
-              "type": "size_t *"
             }
           ],
           "sourceName": "SDL_LoadFile"
@@ -9581,14 +9564,8 @@
               "doc": "Get an array including all versions of a surface.\n\nThis returns all versions of a surface, with the surface being queried as\nthe first element in the returned array.\n\nFreeing the array of surfaces does not affect the surfaces in the array.\nThey are still referenced by the surface being queried and will be cleaned\nup normally.\n\n@param surface the SDL_Surface structure to query.\n@param count a pointer filled in with the number of surface pointers\n             returned, may be NULL.\n@returns a NULL terminated array of SDL_Surface pointers or NULL on\n         failure; call SDL_GetError() for more information. This should be\n         freed with SDL_free() when it is no longer needed.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_AddSurfaceAlternateImage\n@sa SDL_RemoveSurfaceAlternateImages\n@sa SDL_SurfaceHasAlternateImages",
               "name": "GetImages",
               "kind": "function",
-              "type": "FreeWrapper<SurfaceRef *[]>",
-              "parameters": [
-                {
-                  "name": "count",
-                  "type": "int *",
-                  "default": "nullptr"
-                }
-              ],
+              "type": "OwnArray<SurfaceRef *>",
+              "parameters": [],
               "sourceName": "SDL_GetSurfaceImages",
               "immutable": true
             },
@@ -11268,15 +11245,9 @@
               "doc": "Get a list of currently connected displays.\n\n@param count a pointer filled in with the number of displays returned, may\n             be NULL.\n@returns a 0 terminated array of display instance IDs or NULL on failure;\n         call SDL_GetError() for more information. This should be freed\n         with SDL_free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetAll",
               "kind": "function",
-              "type": "FreeWrapper<Display[]>",
-              "parameters": [
-                {
-                  "name": "count",
-                  "type": "int *"
-                }
-              ],
-              "sourceName": "SDL_GetDisplays",
-              "static": true
+              "type": "OwnArray<Display>",
+              "parameters": [],
+              "sourceName": "SDL_GetDisplays"
             },
             "GetPrimary": {
               "doc": "Return the primary display.\n\n@returns the instance ID of the primary display on success or 0 on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetDisplays",
@@ -11353,13 +11324,8 @@
               "doc": "Get a list of fullscreen display modes available on a display.\n\nThe display modes are sorted in this priority:\n\n- w -> largest to smallest\n- h -> largest to smallest\n- bits per pixel -> more colors to fewer colors\n- packed pixel layout -> largest to smallest\n- refresh rate -> highest to lowest\n- pixel density -> lowest to highest\n\n@param displayID the instance ID of the display to query.\n@param count a pointer filled in with the number of display modes returned,\n             may be NULL.\n@returns a NULL terminated array of display mode pointers or NULL on\n         failure; call SDL_GetError() for more information. This is a\n         single allocation that should be freed with SDL_free() when it is\n         no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetDisplays",
               "name": "GetFullscreenModes",
               "kind": "function",
-              "type": "FreeWrapper<DisplayMode *[]>",
-              "parameters": [
-                {
-                  "name": "count",
-                  "type": "int *"
-                }
-              ],
+              "type": "OwnArray<DisplayMode *>",
+              "parameters": [],
               "sourceName": "SDL_GetFullscreenDisplayModes",
               "immutable": true
             },
@@ -11611,7 +11577,7 @@
               "doc": "Get the raw ICC profile data for the screen the window is currently on.\n\n@param window the window to query.\n@param size the size of the ICC profile.\n@returns the raw ICC profile data on success or NULL on failure; call\n         SDL_GetError() for more information. This should be freed with\n         SDL_free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetICCProfile",
               "kind": "function",
-              "type": "FreeWrapper<void *>",
+              "type": "OwnPtr<void>",
               "parameters": [
                 {
                   "name": "size",
@@ -12715,13 +12681,8 @@
           "doc": "Get a list of valid windows.\n\n@param count a pointer filled in with the number of windows returned, may\n             be NULL.\n@returns a NULL terminated array of SDL_Window pointers or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetWindows",
           "kind": "function",
-          "type": "FreeWrapper<WindowRef[]>",
-          "parameters": [
-            {
-              "name": "count",
-              "type": "int *"
-            }
-          ],
+          "type": "OwnArray<WindowRef>",
+          "parameters": [],
           "sourceName": "SDL_GetWindows"
         },
         "GetWindowFromID": {

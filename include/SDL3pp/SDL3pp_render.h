@@ -4,7 +4,6 @@
 #include <SDL3/SDL_render.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
-#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_optionalRef.h"
 #include "SDL3pp_pixels.h"

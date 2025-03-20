@@ -166,9 +166,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a41d6dd31abef69751a90690e1e051fbf" id="r_a41d6dd31abef69751a90690e1e051fbf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a41d6dd31abef69751a90690e1e051fbf">Flush</a> ()</td></tr>
 <tr class="memdesc:a41d6dd31abef69751a90690e1e051fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flush any buffered data in the stream.  <br /></td></tr>
 <tr class="separator:a41d6dd31abef69751a90690e1e051fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2eee33a98924a9240809caf26b5a8d20" id="r_a2eee33a98924a9240809caf26b5a8d20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryFreeWrapper.html#ga0fb0f1d7796542b1924cb2662a63694d">FreeWrapper</a>&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a2eee33a98924a9240809caf26b5a8d20">LoadFile</a> (size_t *datasize, bool closeio)</td></tr>
-<tr class="memdesc:a2eee33a98924a9240809caf26b5a8d20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the data from an <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream.  <br /></td></tr>
-<tr class="separator:a2eee33a98924a9240809caf26b5a8d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af05ef3379e8a39adbe413e5908e73bc0" id="r_af05ef3379e8a39adbe413e5908e73bc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryOwnPtr.html#ga6de15a6952ddc3d7f9090013d7d7637f">OwnArray</a>&lt; std::byte &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#af05ef3379e8a39adbe413e5908e73bc0">LoadFile</a> ()</td></tr>
+<tr class="memdesc:af05ef3379e8a39adbe413e5908e73bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the data from an <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream.  <br /></td></tr>
+<tr class="separator:af05ef3379e8a39adbe413e5908e73bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47f1da651796c0cb85b932b229936835" id="r_a47f1da651796c0cb85b932b229936835"><td class="memTemplParams" colspan="2">template&lt;class U &gt; </td></tr>
 <tr class="memitem:a47f1da651796c0cb85b932b229936835"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a47f1da651796c0cb85b932b229936835">SaveFile</a> (std::span&lt; U &gt; data)</td></tr>
 <tr class="separator:a47f1da651796c0cb85b932b229936835"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -853,8 +853,8 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 
 </div>
 </div>
-<a id="a2eee33a98924a9240809caf26b5a8d20" name="a2eee33a98924a9240809caf26b5a8d20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2eee33a98924a9240809caf26b5a8d20">&#9670;&#160;</a></span>LoadFile()</h2>
+<a id="af05ef3379e8a39adbe413e5908e73bc0" name="af05ef3379e8a39adbe413e5908e73bc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af05ef3379e8a39adbe413e5908e73bc0">&#9670;&#160;</a></span>LoadFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -865,21 +865,10 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryFreeWrapper.html#ga0fb0f1d7796542b1924cb2662a63694d">FreeWrapper</a>&lt; void &gt; <a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::LoadFile </td>
+          <td class="memname"><a class="el" href="group__CategoryOwnPtr.html#ga6de15a6952ddc3d7f9090013d7d7637f">OwnArray</a>&lt; std::byte &gt; <a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::LoadFile </td>
           <td>(</td>
-          <td class="paramtype">size_t *&#160;</td>
-          <td class="paramname"><em>datasize</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>closeio</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -891,23 +880,20 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 
 <p>Load all the data from an <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream. </p>
 <p>The data is allocated with a zero byte at the end (null terminated) for convenience. This extra byte is not included in the value reported via <code>datasize</code>.</p>
-<p>The data should be freed with SDL_free().</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>the SDL_IOStream to read all available data from. </td></tr>
-    <tr><td class="paramname">datasize</td><td>a pointer filled in with the number of bytes read, may be NULL. </td></tr>
-    <tr><td class="paramname">closeio</td><td>if true, calls SDL_CloseIO() on <code>src</code> before returning, even in the case of an error. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>the data or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the data or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_LoadFile </dd>
 <dd>
 SDL_SaveFile_IO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00729">729</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00722">722</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1149,7 +1135,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00896">896</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00892">892</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1193,7 +1179,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00850">850</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00846">846</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1237,7 +1223,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00988">988</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00984">984</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1281,7 +1267,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00942">942</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00938">938</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1325,7 +1311,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01080">1080</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01076">1076</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1369,7 +1355,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01034">1034</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01030">1030</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1412,7 +1398,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00804">804</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00800">800</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1456,7 +1442,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00873">873</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00869">869</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1500,7 +1486,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00827">827</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00823">823</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1544,7 +1530,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00965">965</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00961">961</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1588,7 +1574,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00919">919</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00915">915</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1632,7 +1618,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01057">1057</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01053">1053</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1676,7 +1662,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01011">1011</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01007">1007</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1719,7 +1705,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00785">785</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00781">781</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1776,7 +1762,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dd>
 SDL_LoadFile_IO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00764">764</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00760">760</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1808,7 +1794,7 @@ template&lt;class U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00735">735</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00731">731</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1838,7 +1824,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00740">740</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00736">736</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2170,7 +2156,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01182">1182</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01178">1178</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2213,7 +2199,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01146">1146</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01142">1142</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2256,7 +2242,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01256">1256</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01252">1252</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2299,7 +2285,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01220">1220</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01216">1216</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2342,7 +2328,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01330">1330</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01326">1326</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2385,7 +2371,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01294">1294</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01290">1290</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2427,7 +2413,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01108">1108</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01104">1104</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2470,7 +2456,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01164">1164</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01160">1160</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2513,7 +2499,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01127">1127</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01123">1123</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2556,7 +2542,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01238">1238</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01234">1234</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2599,7 +2585,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01201">1201</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01197">1197</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2642,7 +2628,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01312">1312</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01308">1308</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2685,7 +2671,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01275">1275</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01271">1271</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2727,7 +2713,7 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01094">1094</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01090">1090</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>

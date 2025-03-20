@@ -2,8 +2,8 @@
 #define SDL3PP_IOSTREAM_H_
 
 #include <SDL3/SDL_iostream.h>
-#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_stringParam.h"
 
@@ -709,15 +709,8 @@ struct IOStreamBase : T
    * convenience. This extra byte is not included in the value reported via
    * `datasize`.
    *
-   * The data should be freed with SDL_free().
-   *
    * @param src the SDL_IOStream to read all available data from.
-   * @param datasize a pointer filled in with the number of bytes read, may be
-   *                 NULL.
-   * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
-   *                in the case of an error.
-   * @returns the data or NULL on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the data or NULL on failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -726,9 +719,12 @@ struct IOStreamBase : T
    * @sa SDL_LoadFile
    * @sa SDL_SaveFile_IO
    */
-  FreeWrapper<void> LoadFile(size_t* datasize, bool closeio)
+  OwnArray<std::byte> LoadFile()
   {
-    return FreeWrapper<void>{SDL_LoadFile_IO(T::get(), datasize, closeio)};
+    size_t datasize = 0;
+    auto data =
+      static_cast<std::byte*>(SDL_LoadFile_IO(T::get(), &datasize, false));
+    return OwnArray<std::byte>{data, datasize};
   }
 
   template<class U>
@@ -1351,9 +1347,11 @@ struct IOStreamBase : T
  * @sa SDL_LoadFile_IO
  * @sa SDL_SaveFile
  */
-inline FreeWrapper<void> LoadFile(StringParam file, size_t* datasize)
+inline OwnArray<std::byte> LoadFile(StringParam file)
 {
-  return FreeWrapper<void>{SDL_LoadFile(file, datasize)};
+  size_t datasize = 0;
+  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
+  return OwnArray<std::byte>{data, datasize};
 }
 
 /**

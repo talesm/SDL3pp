@@ -4,8 +4,8 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,33,111,75,109,70,199,28"/>
 <area shape="rect" id="Node000003" href="$SDL3pp__error_8h.html" title=" " alt="" coords="165,79,285,104"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,31,227,65,222,65,222,31"/>
-<area shape="rect" id="Node000010" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="587,79,716,104"/>
-<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="294,28,573,74,573,80,293,33"/>
+<area shape="rect" id="Node000010" href="$SDL3pp__stdinc_8h.html" title=" " alt="" coords="621,79,751,104"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="299,28,608,75,607,81,298,33"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="18,152,85,177"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="198,106,93,149,91,144,196,102"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="123,225,182,251"/>
@@ -20,17 +20,19 @@
 <area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="431,180,351,221,348,217,428,175"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="417,225,485,251"/>
 <area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="454,178,454,212,449,212,449,178"/>
-<area shape="poly" id="edge19_Node000010_Node000008" title=" " alt="" coords="620,107,498,150,496,145,618,102"/>
-<area shape="rect" id="Node000011" title=" " alt="" coords="881,225,1024,251"/>
-<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="716,94,782,100,852,111,913,127,936,138,952,150,960,165,964,181,962,212,957,212,958,181,955,167,948,154,933,142,911,132,851,116,781,105,716,99"/>
-<area shape="rect" id="Node000012" href="$SDL3pp__freeWrapper_8h.html" title=" " alt="" coords="767,152,938,177"/>
-<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="685,102,808,145,806,150,683,107"/>
-<area shape="rect" id="Node000014" href="$SDL3pp__objectWrapper_8h.html" title=" " alt="" coords="559,152,743,177"/>
-<area shape="poly" id="edge16_Node000010_Node000014" title=" " alt="" coords="654,104,654,138,649,138,649,104"/>
-<area shape="poly" id="edge15_Node000012_Node000011" title=" " alt="" coords="870,175,927,215,924,219,867,180"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="758,225,835,251"/>
-<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="846,179,816,216,812,213,841,176"/>
-<area shape="poly" id="edge18_Node000014_Node000013" title=" " alt="" coords="676,175,762,217,760,222,674,180"/>
-<area shape="rect" id="Node000015" title=" " alt="" coords="611,225,691,251"/>
-<area shape="poly" id="edge17_Node000014_Node000015" title=" " alt="" coords="654,178,654,212,649,212,649,178"/>
+<area shape="poly" id="edge20_Node000010_Node000008" title=" " alt="" coords="649,107,503,151,502,145,648,101"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="560,152,703,177"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="679,106,651,143,646,140,675,103"/>
+<area shape="rect" id="Node000012" href="$SDL3pp__objectWrapper_8h.html" title=" " alt="" coords="701,225,885,251"/>
+<area shape="poly" id="edge13_Node000010_Node000012" title=" " alt="" coords="697,103,778,213,774,216,693,106"/>
+<area shape="rect" id="Node000016" href="$SDL3pp__ownPtr_8h.html" title=" " alt="" coords="779,152,913,177"/>
+<area shape="poly" id="edge17_Node000010_Node000016" title=" " alt="" coords="706,102,802,144,799,149,704,106"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="650,299,730,324"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="778,253,720,293,717,288,775,248"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="754,299,831,324"/>
+<area shape="poly" id="edge15_Node000012_Node000014" title=" " alt="" coords="795,251,795,285,790,285,790,251"/>
+<area shape="rect" id="Node000015" title=" " alt="" coords="856,299,948,324"/>
+<area shape="poly" id="edge16_Node000012_Node000015" title=" " alt="" coords="812,248,874,289,871,293,809,253"/>
+<area shape="poly" id="edge19_Node000016_Node000010" title=" " alt="" coords="826,154,730,112,732,107,828,149"/>
+<area shape="poly" id="edge18_Node000016_Node000012" title=" " alt="" coords="839,179,812,216,807,213,835,176"/>
 </map>

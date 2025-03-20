@@ -108,17 +108,23 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a752e125d22c30fa4b3950ad8fcdd6008"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4ccbb5c06fbf44d73b093b9bb4ddac6" id="r_aa4ccbb5c06fbf44d73b093b9bb4ddac6"><td class="memItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectRef.html#aa4ccbb5c06fbf44d73b093b9bb4ddac6">operator*</a> ()</td></tr>
 <tr class="separator:aa4ccbb5c06fbf44d73b093b9bb4ddac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4d8d83d66e4925071e666a7a208bd53" id="r_aa4d8d83d66e4925071e666a7a208bd53"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectRef.html#aa4d8d83d66e4925071e666a7a208bd53">operator==</a> (std::nullptr_t) const</td></tr>
+<tr class="separator:aa4d8d83d66e4925071e666a7a208bd53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4f6d08cb929ceb5f08bd9356a0104b1" id="r_aa4f6d08cb929ceb5f08bd9356a0104b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1ObjectRef.html#aef8c06e39fcbedd4e34bfee19863e763">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectRef.html#aa4f6d08cb929ceb5f08bd9356a0104b1">release</a> ()</td></tr>
 <tr class="separator:aa4f6d08cb929ceb5f08bd9356a0104b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a904c39d377d20bb593e9883864b45802" id="r_a904c39d377d20bb593e9883864b45802"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectRef.html#a904c39d377d20bb593e9883864b45802">reset</a> (<a class="el" href="classSDL_1_1ObjectRef.html#aef8c06e39fcbedd4e34bfee19863e763">pointer</a> other=nullptr)</td></tr>
 <tr class="separator:a904c39d377d20bb593e9883864b45802"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a420eb2fcb0acda70c2a971583d151dfe" id="r_a420eb2fcb0acda70c2a971583d151dfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectRef.html#a420eb2fcb0acda70c2a971583d151dfe">swap</a> (<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a> &amp;other)</td></tr>
 <tr class="separator:a420eb2fcb0acda70c2a971583d151dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0679564faf4ea2289d0e5088ef9064b1" id="r_a0679564faf4ea2289d0e5088ef9064b1"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectRef.html#a0679564faf4ea2289d0e5088ef9064b1">operator[]</a> (ptrdiff_t index)</td></tr>
+<tr class="separator:a0679564faf4ea2289d0e5088ef9064b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a281dd0440080680f6b410bbcc8e293a6" id="r_a281dd0440080680f6b410bbcc8e293a6"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectRef.html#a281dd0440080680f6b410bbcc8e293a6">operator[]</a> (ptrdiff_t index) const</td></tr>
+<tr class="separator:a281dd0440080680f6b410bbcc8e293a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class T, class POINTER = T*&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;class T, class POINTER = std::remove_extent_t&lt;T&gt;*&gt;<br />
 class SDL::ObjectRef&lt; T, POINTER &gt;</div>
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00023">23</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00024">24</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aef8c06e39fcbedd4e34bfee19863e763" name="aef8c06e39fcbedd4e34bfee19863e763"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aef8c06e39fcbedd4e34bfee19863e763">&#9670;&#160;</a></span>pointer</h2>
@@ -126,7 +132,7 @@ class SDL::ObjectRef&lt; T, POINTER &gt;</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef</a>&lt; T, POINTER &gt;::pointer =  POINTER</td>
@@ -134,7 +140,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00028">28</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00029">29</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -145,7 +151,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -165,7 +171,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00030">30</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00031">31</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -175,7 +181,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <div class="memtemplate">
 template&lt;ObjectBox&lt; POINTER &gt; BOX&gt; </div>
 <table class="mlabels">
@@ -197,7 +203,7 @@ template&lt;ObjectBox&lt; POINTER &gt; BOX&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00036">36</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00037">37</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -207,7 +213,7 @@ template&lt;ObjectBox&lt; POINTER &gt; BOX&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -227,7 +233,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00041">41</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00042">42</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -238,7 +244,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -257,7 +263,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00046">46</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00047">47</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -267,7 +273,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -286,7 +292,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00048">48</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00049">49</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -296,7 +302,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -315,7 +321,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00053">53</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00054">54</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -325,7 +331,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -344,7 +350,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00052">52</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00053">53</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +360,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -373,7 +379,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00051">51</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00052">52</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +389,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -402,7 +408,97 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00050">50</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00051">51</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+
+</div>
+</div>
+<a id="aa4d8d83d66e4925071e666a7a208bd53" name="aa4d8d83d66e4925071e666a7a208bd53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d8d83d66e4925071e666a7a208bd53">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool <a class="el" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef</a>&lt; T, POINTER &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">std::nullptr_t&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00056">56</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+
+</div>
+</div>
+<a id="a0679564faf4ea2289d0e5088ef9064b1" name="a0679564faf4ea2289d0e5088ef9064b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0679564faf4ea2289d0e5088ef9064b1">&#9670;&#160;</a></span>operator[]() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto &amp; <a class="el" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef</a>&lt; T, POINTER &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">ptrdiff_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00067">67</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+
+</div>
+</div>
+<a id="a281dd0440080680f6b410bbcc8e293a6" name="a281dd0440080680f6b410bbcc8e293a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a281dd0440080680f6b410bbcc8e293a6">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const auto &amp; <a class="el" href="classSDL_1_1ObjectRef.html">SDL::ObjectRef</a>&lt; T, POINTER &gt;::operator[] </td>
+          <td>(</td>
+          <td class="paramtype">ptrdiff_t&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00072">72</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -412,7 +508,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -431,7 +527,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00055">55</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00058">58</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -441,7 +537,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -461,7 +557,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00061">61</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00064">64</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -471,7 +567,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class POINTER  = T*&gt; </div>
+template&lt;class T , class POINTER  = std::remove_extent_t&lt;T&gt;*&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -491,7 +587,7 @@ template&lt;class T , class POINTER  = T*&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00062">62</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00065">65</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>

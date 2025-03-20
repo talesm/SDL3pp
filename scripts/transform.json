@@ -225,7 +225,7 @@
             "SDL_CreateEnvironment": "ctor",
             "SDL_GetEnvironmentVariable": "function",
             "SDL_GetEnvironmentVariables": {
-              "type": "FreeWrapper<char *[]>"
+              "type": "OwnArray<char *>"
             },
             "GetVariableCount": {
               "kind": "function",
@@ -669,7 +669,8 @@
     "SDL_locale.h": {
       "transform": {
         "SDL_GetPreferredLocales": {
-          "type": "FreeWrapper<Locale *[]>"
+          "type": "OwnArray<Locale *>",
+          "parameters": []
         }
       }
     },
@@ -918,7 +919,9 @@
             },
             "SDL_LoadFile_IO": {
               "name": "LoadFile",
-              "type": "FreeWrapper<void>"
+              "type": "OwnArray<std::byte>",
+              "static": false,
+              "parameters": []
             },
             "SaveFile": [
               {
@@ -987,7 +990,10 @@
           }
         },
         "SDL_LoadFile": {
-          "type": "FreeWrapper<void>"
+          "type": "OwnArray<std::byte>",
+          "parameters": [
+            {}
+          ]
         }
       }
     },
@@ -2490,15 +2496,8 @@
             "SDL_GetSurfaceImages": {
               "kind": "function",
               "immutable": true,
-              "type": "FreeWrapper<SurfaceRef *[]>",
-              "parameters": [
-                {
-                  "name": "this"
-                },
-                {
-                  "default": "nullptr"
-                }
-              ]
+              "type": "OwnArray<SurfaceRef *>",
+              "parameters": []
             },
             "SDL_RemoveSurfaceAlternateImages": {
               "kind": "function",
@@ -3354,7 +3353,8 @@
             "SDL_GetDisplays": {
               "kind": "function",
               "name": "GetAll",
-              "type": "FreeWrapper<Display[]>"
+              "type": "OwnArray<Display>",
+              "parameters": []
             },
             "SDL_GetPrimaryDisplay": {
               "kind": "function",
@@ -3389,7 +3389,8 @@
               "kind": "function",
               "name": "GetFullscreenModes",
               "immutable": true,
-              "type": "FreeWrapper<DisplayMode *[]>"
+              "type": "OwnArray<DisplayMode *>",
+              "parameters": []
             },
             "SDL_GetClosestFullscreenDisplayMode": {
               "kind": "function",
@@ -3497,7 +3498,7 @@
             "SDL_GetWindowICCProfile": {
               "kind": "function",
               "immutable": true,
-              "type": "FreeWrapper<void *>"
+              "type": "OwnPtr<void>"
             },
             "SDL_GetWindowPixelFormat": "immutable",
             "SDL_GetWindowID": "immutable",
@@ -3669,7 +3670,8 @@
         },
         "SDL_GetWindows": {
           "kind": "function",
-          "type": "FreeWrapper<WindowRef[]>"
+          "type": "OwnArray<WindowRef>",
+          "parameters": []
         }
       }
     },
