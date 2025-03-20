@@ -107,54 +107,54 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">// TODO category</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structSDL_1_1PtrBase.html">   28</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1PtrBase.html">PtrBase</a> : <a class="code hl_struct" href="structSDL_1_1details_1_1PtrCommon.html">details::PtrCommon</a>&lt;T&gt;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">using </span><a class="code hl_struct" href="structSDL_1_1details_1_1PtrCommon.html">details::PtrCommon</a>&lt;T&gt;::PtrCommon;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structSDL_1_1PtrBase.html">   30</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1PtrBase.html">PtrBase</a> : <a class="code hl_struct" href="structSDL_1_1details_1_1PtrCommon.html">details::PtrCommon</a>&lt;T&gt;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">using </span><a class="code hl_struct" href="structSDL_1_1details_1_1PtrCommon.html">details::PtrCommon</a>&lt;T&gt;::PtrCommon;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
 </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a24f5e412a5178a7e8ff7f99e458254e3">   43</a></span><span class="keyword">using </span><a class="code hl_struct" href="structSDL_1_1PtrBase.html">RefPtr</a> = <a class="code hl_struct" href="structSDL_1_1PtrBase.html">PtrBase&lt;ObjectRef&lt;T&gt;</a>&gt;;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00046" data-start="{" data-end="};">
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structSDL_1_1PtrDeleter.html">   46</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1PtrDeleter.html">PtrDeleter</a></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>{</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structSDL_1_1PtrDeleter.html#ae3cdd5124265d41290d73ef86770bb3b">   48</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1PtrDeleter.html#ae3cdd5124265d41290d73ef86770bb3b">operator()</a>(<a class="code hl_struct" href="structSDL_1_1PtrBase.html">RefPtr&lt;T&gt;</a> ptr)<span class="keyword"> const </span>{ ptr.<a class="code hl_function" href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">free</a>(); }</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a24f5e412a5178a7e8ff7f99e458254e3">   45</a></span><span class="keyword">using </span><a class="code hl_struct" href="structSDL_1_1PtrBase.html">RefPtr</a> = <a class="code hl_struct" href="structSDL_1_1PtrBase.html">PtrBase&lt;ObjectRef&lt;T&gt;</a>&gt;;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="};">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structSDL_1_1PtrDeleter.html">   48</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structSDL_1_1PtrDeleter.html">PtrDeleter</a></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="structSDL_1_1PtrDeleter.html#ae3cdd5124265d41290d73ef86770bb3b">   50</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1PtrDeleter.html#ae3cdd5124265d41290d73ef86770bb3b">operator()</a>(<a class="code hl_struct" href="structSDL_1_1PtrBase.html">RefPtr&lt;T&gt;</a> ptr)<span class="keyword"> const </span>{ ptr.<a class="code hl_function" href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">free</a>(); }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
 </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a1b38786e36f2943046731ad164c8a408">   61</a></span><span class="keyword">using </span><a class="code hl_struct" href="structSDL_1_1PtrBase.html">OwnPtr</a> = <a class="code hl_struct" href="structSDL_1_1PtrBase.html">PtrBase&lt;ObjectUnique&lt;T, PtrDeleter&lt;T&gt;</a>&gt;&gt;;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_OWN_PTR_H_ */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a>&quot;</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="namespaceSDL.html#a1b38786e36f2943046731ad164c8a408">   63</a></span><span class="keyword">using </span><a class="code hl_struct" href="structSDL_1_1PtrBase.html">OwnPtr</a> = <a class="code hl_struct" href="structSDL_1_1PtrBase.html">PtrBase&lt;ObjectUnique&lt;T, PtrDeleter&lt;T&gt;</a>&gt;&gt;;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_OWN_PTR_H_ */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL_1_1details.html">SDL::details</a> {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#include &quot;<a class="code" href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a>&quot;</span></div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
-<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">   71</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">PtrCommon&lt;T&gt;::free</a>()</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>{</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <a class="code hl_function" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a>(T::release());</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>}</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL_1_1details.html">SDL::details</a> {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt;</div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">   73</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">PtrCommon&lt;T&gt;::free</a>()</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>{</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_function" href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a>(T::release());</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
 </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace SDL</span></div>
 <div class="ttc" id="aSDL3pp__objectWrapper_8h_html"><div class="ttname"><a href="SDL3pp__objectWrapper_8h.html">SDL3pp_objectWrapper.h</a></div></div>
 <div class="ttc" id="aSDL3pp__stdinc_8h_html"><div class="ttname"><a href="SDL3pp__stdinc_8h.html">SDL3pp_stdinc.h</a></div></div>
 <div class="ttc" id="agroup__CategoryStdinc_html_gadfa01257ca1f966fffb72f002db27fa6"><div class="ttname"><a href="group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6">SDL::free</a></div><div class="ttdeci">void free(void *mem)</div><div class="ttdoc">Free allocated memory.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__stdinc_8h_source.html#l00237">SDL3pp_stdinc.h:237</a></div></div>
 <div class="ttc" id="anamespaceSDL_1_1details_html"><div class="ttname"><a href="namespaceSDL_1_1details.html">SDL::details</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00008">SDL3pp_ownPtr.h:8</a></div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__assert_8h_source.html#l00007">SDL3pp_assert.h:7</a></div></div>
-<div class="ttc" id="astructSDL_1_1PtrBase_html"><div class="ttname"><a href="structSDL_1_1PtrBase.html">SDL::PtrBase</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00028">SDL3pp_ownPtr.h:29</a></div></div>
-<div class="ttc" id="astructSDL_1_1PtrDeleter_html"><div class="ttname"><a href="structSDL_1_1PtrDeleter.html">SDL::PtrDeleter</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00046">SDL3pp_ownPtr.h:47</a></div></div>
-<div class="ttc" id="astructSDL_1_1PtrDeleter_html_ae3cdd5124265d41290d73ef86770bb3b"><div class="ttname"><a href="structSDL_1_1PtrDeleter.html#ae3cdd5124265d41290d73ef86770bb3b">SDL::PtrDeleter::operator()</a></div><div class="ttdeci">void operator()(RefPtr&lt; T &gt; ptr) const</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00048">SDL3pp_ownPtr.h:48</a></div></div>
+<div class="ttc" id="astructSDL_1_1PtrBase_html"><div class="ttname"><a href="structSDL_1_1PtrBase.html">SDL::PtrBase</a></div><div class="ttdoc">Base class for pointer wrap.</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00030">SDL3pp_ownPtr.h:31</a></div></div>
+<div class="ttc" id="astructSDL_1_1PtrDeleter_html"><div class="ttname"><a href="structSDL_1_1PtrDeleter.html">SDL::PtrDeleter</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00048">SDL3pp_ownPtr.h:49</a></div></div>
+<div class="ttc" id="astructSDL_1_1PtrDeleter_html_ae3cdd5124265d41290d73ef86770bb3b"><div class="ttname"><a href="structSDL_1_1PtrDeleter.html#ae3cdd5124265d41290d73ef86770bb3b">SDL::PtrDeleter::operator()</a></div><div class="ttdeci">void operator()(RefPtr&lt; T &gt; ptr) const</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00050">SDL3pp_ownPtr.h:50</a></div></div>
 <div class="ttc" id="astructSDL_1_1details_1_1PtrCommon_html"><div class="ttname"><a href="structSDL_1_1details_1_1PtrCommon.html">SDL::details::PtrCommon</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00011">SDL3pp_ownPtr.h:12</a></div></div>
-<div class="ttc" id="astructSDL_1_1details_1_1PtrCommon_html_a040d4d6f7f878b5d97047ef0e5b72176"><div class="ttname"><a href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">SDL::details::PtrCommon::free</a></div><div class="ttdeci">void free()</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00071">SDL3pp_ownPtr.h:71</a></div></div>
+<div class="ttc" id="astructSDL_1_1details_1_1PtrCommon_html_a040d4d6f7f878b5d97047ef0e5b72176"><div class="ttname"><a href="structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176">SDL::details::PtrCommon::free</a></div><div class="ttdeci">void free()</div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__ownPtr_8h_source.html#l00073">SDL3pp_ownPtr.h:73</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

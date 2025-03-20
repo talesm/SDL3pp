@@ -18,3 +18,13 @@ TEST_CASE("Scalar OwnPtr")
   REQUIRE_NOTHROW(*ptr = 42);
   CHECK(*ptr == 42);
 }
+
+TEST_CASE("Array OwnPtr")
+{
+  SDL::OwnPtr<int[]> ptr{static_cast<int*>(SDL::calloc(4, sizeof(int)))};
+  CHECK(ptr == true);
+  CHECK(ptr != nullptr);
+  CHECK(ptr.get() != nullptr);
+  REQUIRE_NOTHROW(ptr[0] = 42);
+  CHECK(ptr[0] == 42);
+}

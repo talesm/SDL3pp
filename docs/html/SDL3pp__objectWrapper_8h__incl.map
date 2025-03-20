@@ -1,7 +1,9 @@
 <map id="SDL3pp/SDL3pp_objectWrapper.h" name="SDL3pp/SDL3pp_objectWrapper.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,243,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="33,79,113,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,33,92,69,87,66,113,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="137,79,215,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,29,162,66,157,69,130,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="29,5,267,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,85,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,33,75,73,72,68,130,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="109,79,187,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,31,151,65,145,65,145,31"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="211,79,303,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="167,28,229,69,226,73,164,33"/>
 </map>

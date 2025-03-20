@@ -20,9 +20,11 @@ struct PtrCommon : T
 // TODO category
 
 /**
- * @brief
+ * Base class for pointer wrap
  *
- * @tparam T
+ * @tparam T the wrapped type
+ *
+ * @cat resource
  */
 template<class T>
 struct PtrBase : details::PtrCommon<T>
@@ -31,7 +33,7 @@ struct PtrBase : details::PtrCommon<T>
 };
 
 /**
- * Handle to a non owned ptr
+ * Handle to a non owned pointer
  *
  * @cat resource
  *
@@ -49,13 +51,13 @@ struct PtrDeleter
 };
 
 /**
- * Handle to an owned surface
+ * Handle to an owned pointer
  *
  * @cat resource
  *
  * @sa resource
- * @sa SurfaceBase
- * @sa SurfaceRef
+ * @sa PtrBase
+ * @sa RefPtr
  */
 template<class T>
 using OwnPtr = PtrBase<ObjectUnique<T, PtrDeleter<T>>>;
