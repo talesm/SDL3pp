@@ -8,6 +8,5 @@ var searchData=
   ['propertiesdeleter_5',['PropertiesDeleter',['../structSDL_1_1PropertiesDeleter.html',1,'SDL']]],
   ['propertieslock_6',['PropertiesLock',['../classSDL_1_1PropertiesLock.html',1,'SDL']]],
   ['ptrbase_7',['PtrBase',['../structSDL_1_1PtrBase.html',1,'SDL']]],
-  ['ptrcommon_8',['PtrCommon',['../structSDL_1_1details_1_1PtrCommon.html',1,'SDL::details']]],
-  ['ptrdeleter_9',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]]
+  ['ptrdeleter_8',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]]
 ];

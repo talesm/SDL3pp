@@ -35,7 +35,7 @@ var searchData=
   ['fourcc_32',['FourCC',['../group__CategoryStdinc.html#gaa932b3872f6162d7257c924b184e5381',1,'SDL']]],
   ['fpoint_33',['fpoint',['../structSDL_1_1FPoint.html#a40485b70db1c89893a174bc9cd65616b',1,'SDL::FPoint::FPoint()'],['../structSDL_1_1FPoint.html#a0c9bbff2c9e27b02d876efca0b81f984',1,'SDL::FPoint::FPoint(float x, float y)'],['../structSDL_1_1FPoint.html#acdec9354bdd953e155892b7208bc3dbb',1,'SDL::FPoint::FPoint(const SDL_FPoint &amp;point)'],['../structSDL_1_1FPoint.html',1,'SDL::FPoint']]],
   ['frect_34',['frect',['../structSDL_1_1FRect.html',1,'SDL::FRect'],['../structSDL_1_1FRect.html#a8b7ce4f4f4381689eef742c636a9572f',1,'SDL::FRect::FRect(const SDL_FRect &amp;rect={0})'],['../structSDL_1_1FRect.html#ae3f9ac79fb459cc21895887e8f87c82f',1,'SDL::FRect::FRect(float x, float y, float w, float h)'],['../structSDL_1_1FRect.html#aaa84d4c9870ba6d0a32d9de4495915d3',1,'SDL::FRect::FRect(const SDL_FPoint &amp;corner, const SDL_FPoint &amp;size)']]],
-  ['free_35',['free',['../group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6',1,'SDL::free()'],['../structSDL_1_1details_1_1PtrCommon.html#a040d4d6f7f878b5d97047ef0e5b72176',1,'SDL::details::PtrCommon::free()']]],
+  ['free_35',['free',['../group__CategoryStdinc.html#gadfa01257ca1f966fffb72f002db27fa6',1,'SDL::free()'],['../structSDL_1_1PtrBase.html#a917f844e1eeed2c57db4855c0be07939',1,'SDL::PtrBase::free()']]],
   ['free_5ffunc_36',['free_func',['../group__CategoryStdinc.html#ga80cbbb5b121c8f78d44a66deaa573127',1,'SDL']]],
   ['freeanimation_37',['FreeAnimation',['../group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0',1,'SDL']]],
   ['from_20several_20formats_38',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],

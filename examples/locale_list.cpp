@@ -6,7 +6,7 @@ int main()
 {
   SDL::SDL init{SDL::INIT_VIDEO};
   int count = 0;
-  auto locales = SDL::GetPreferredLocales(&count);
+  auto locales = SDL::GetPreferredLocales();
   if (!locales) {
     std::cout << "No locales: " << SDL::GetError() << "\n";
     return 1;

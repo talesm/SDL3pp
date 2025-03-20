@@ -122,9 +122,9 @@ var searchData=
   ['pixeltype_5fpacked8_119',['PIXELTYPE_PACKED8',['../group__CategoryPixels.html#ga0a7f409461c96b777b878ab2d6623f6e',1,'SDL']]],
   ['pixeltype_5funknown_120',['PIXELTYPE_UNKNOWN',['../group__CategoryPixels.html#ga7d8d0ee0b48339aaaace7aa1f4dc95bf',1,'SDL']]],
   ['point_121',['point',['../structSDL_1_1Point.html',1,'SDL::Point'],['../structSDL_1_1Point.html#a4d552b29ff24f5baa3e80426dc0aa21f',1,'SDL::Point::Point(const SDL_Point &amp;point)'],['../structSDL_1_1Point.html#a3cdbe11429c5519cb494547b82524bce',1,'SDL::Point::Point()'],['../structSDL_1_1Point.html#ad470c898ade45930e6ab3c91befa8aff',1,'SDL::Point::Point(int x, int y)']]],
-  ['pointer_122',['pointer',['../classSDL_1_1ObjectUnique.html#a1c89429cb2cb299135194c60f1f44805',1,'SDL::ObjectUnique::pointer'],['../structSDL_1_1PropertiesDeleter.html#a90df45dc414e86e4bab0294d50b0b2c9',1,'SDL::PropertiesDeleter::pointer'],['../classSDL_1_1ObjectRef.html#aef8c06e39fcbedd4e34bfee19863e763',1,'SDL::ObjectRef::pointer']]],
+  ['pointer_122',['pointer',['../structSDL_1_1PropertiesDeleter.html#a90df45dc414e86e4bab0294d50b0b2c9',1,'SDL::PropertiesDeleter::pointer'],['../classSDL_1_1ObjectRef.html#aef8c06e39fcbedd4e34bfee19863e763',1,'SDL::ObjectRef::pointer'],['../classSDL_1_1ObjectUnique.html#a1c89429cb2cb299135194c60f1f44805',1,'SDL::ObjectUnique::pointer']]],
   ['pointer_20wrapper_20to_20sdl_3a_3afree_123',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
-  ['pollevent_124',['pollevent',['../group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12',1,'SDL::PollEvent()'],['../group__CategoryEvents.html#ga9fe4acc517213fe44e3d4e3fb8ea37f3',1,'SDL::PollEvent(Event *event)']]],
+  ['pollevent_124',['pollevent',['../group__CategoryEvents.html#ga9fe4acc517213fe44e3d4e3fb8ea37f3',1,'SDL::PollEvent(Event *event)'],['../group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12',1,'SDL::PollEvent()']]],
   ['pow_125',['pow',['../group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce',1,'SDL']]],
   ['powf_126',['powf',['../group__CategoryStdinc.html#ga652fc1da140490bb87abbbf05ccfe8fa',1,'SDL']]],
   ['premultiplyalpha_127',['premultiplyalpha',['../structSDL_1_1SurfaceBase.html#a4da1c83b0dabe2838c3219c043f59343',1,'SDL::SurfaceBase::PremultiplyAlpha()'],['../group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5',1,'SDL::PremultiplyAlpha()']]],
@@ -146,8 +146,7 @@ var searchData=
   ['property_5ftype_5fstring_143',['PROPERTY_TYPE_STRING',['../group__CategoryProperties.html#gaa0fbb4ae7fb0a346d4b70d2b8d580640',1,'SDL']]],
   ['propertytype_144',['PropertyType',['../group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f',1,'SDL']]],
   ['ptrbase_145',['PtrBase',['../structSDL_1_1PtrBase.html',1,'SDL']]],
-  ['ptrcommon_146',['PtrCommon',['../structSDL_1_1details_1_1PtrCommon.html',1,'SDL::details']]],
-  ['ptrdeleter_147',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]],
-  ['pumpevents_148',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
-  ['pushevent_149',['pushevent',['../group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576',1,'SDL::PushEvent(Event *event)'],['../group__CategoryEvents.html#gad4b7289dcacfa19eb1f868a42b9c1e69',1,'SDL::PushEvent(const Event &amp;event)']]]
+  ['ptrdeleter_146',['PtrDeleter',['../structSDL_1_1PtrDeleter.html',1,'SDL']]],
+  ['pumpevents_147',['PumpEvents',['../group__CategoryEvents.html#gaec1dc5437690710c976018e1dcf75e09',1,'SDL']]],
+  ['pushevent_148',['pushevent',['../group__CategoryEvents.html#gad0f4b7bfbf9a30e32b78da8824beb576',1,'SDL::PushEvent(Event *event)'],['../group__CategoryEvents.html#gad4b7289dcacfa19eb1f868a42b9c1e69',1,'SDL::PushEvent(const Event &amp;event)']]]
 ];

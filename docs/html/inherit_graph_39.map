@@ -16,18 +16,16 @@
 <area shape="poly" id="edge14_Node000000_Node000007" title=" " alt="" coords="58,385,126,385,126,391,58,391"/>
 <area shape="rect" id="Node000008" href="$structSDL_1_1PropertiesBase.html" title="Wrap properties id." alt="" coords="117,425,307,450"/>
 <area shape="poly" id="edge15_Node000000_Node000008" title=" " alt="" coords="58,398,93,409,144,422,142,427,91,415,56,403"/>
-<area shape="rect" id="Node000009" href="$structSDL_1_1RendererBase.html" title="A structure representing rendering state." alt="" coords="120,474,304,499"/>
-<area shape="poly" id="edge16_Node000000_Node000009" title=" " alt="" coords="44,411,66,437,93,459,122,471,120,476,91,464,62,441,40,414"/>
-<area shape="rect" id="Node000010" href="$structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting." alt="" coords="125,523,299,549"/>
-<area shape="poly" id="edge17_Node000000_Node000010" title=" " alt="" coords="35,413,56,463,73,488,94,509,126,525,123,529,90,513,68,491,51,465,30,415"/>
-<area shape="rect" id="Node000011" href="$structSDL_1_1TextureBase.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="125,573,299,598"/>
-<area shape="poly" id="edge18_Node000000_Node000011" title=" " alt="" coords="31,414,37,447,48,486,66,525,94,558,126,575,124,580,90,562,62,528,43,488,32,448,26,414"/>
-<area shape="rect" id="Node000012" href="$structSDL_1_1WindowBase.html" title="Represents a handle to a window." alt="" coords="123,622,301,647"/>
-<area shape="poly" id="edge19_Node000000_Node000012" title=" " alt="" coords="28,414,31,457,41,509,61,563,75,586,94,607,124,625,122,630,90,611,71,590,56,565,36,511,26,458,23,415"/>
-<area shape="rect" id="Node000013" href="$structSDL_1_1details_1_1PtrCommon.html" title=" " alt="" coords="101,671,323,697"/>
-<area shape="poly" id="edge20_Node000000_Node000013" title=" " alt="" coords="31,414,53,546,71,614,82,640,94,657,111,669,108,673,90,661,77,642,66,616,47,547,26,415"/>
-<area shape="rect" id="Node000014" href="$structSDL_1_1PtrBase.html" title="Base class for SDL memory allocated pointer wrap." alt="" coords="380,671,523,697"/>
-<area shape="poly" id="edge21_Node000013_Node000014" title=" " alt="" coords="337,681,380,681,380,687,337,687"/>
-<area shape="rect" id="Node000015" href="$classSDL_1_1ArrayBase.html" title="Base class for SDL memory allocated array wrap." alt="" coords="571,671,731,697"/>
-<area shape="poly" id="edge22_Node000014_Node000015" title=" " alt="" coords="537,681,570,681,570,687,537,687"/>
+<area shape="rect" id="Node000009" href="$structSDL_1_1PtrBase.html" title="Base class for SDL memory allocated pointer wrap." alt="" coords="141,474,283,499"/>
+<area shape="poly" id="edge16_Node000000_Node000009" title=" " alt="" coords="44,411,66,437,93,459,116,470,141,477,139,482,114,475,91,464,62,441,40,414"/>
+<area shape="rect" id="Node000011" href="$structSDL_1_1RendererBase.html" title="A structure representing rendering state." alt="" coords="120,523,304,549"/>
+<area shape="poly" id="edge18_Node000000_Node000011" title=" " alt="" coords="35,413,56,463,73,488,94,509,121,523,118,528,90,513,68,491,51,465,30,415"/>
+<area shape="rect" id="Node000012" href="$structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting." alt="" coords="125,573,299,598"/>
+<area shape="poly" id="edge19_Node000000_Node000012" title=" " alt="" coords="31,414,37,447,48,486,66,525,94,558,125,575,123,580,90,562,62,528,43,488,32,448,26,414"/>
+<area shape="rect" id="Node000013" href="$structSDL_1_1TextureBase.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="125,622,299,647"/>
+<area shape="poly" id="edge20_Node000000_Node000013" title=" " alt="" coords="28,414,31,457,41,509,61,563,75,586,94,607,109,618,126,625,124,630,106,623,90,611,71,590,56,565,36,511,26,458,23,415"/>
+<area shape="rect" id="Node000014" href="$structSDL_1_1WindowBase.html" title="Represents a handle to a window." alt="" coords="123,671,301,697"/>
+<area shape="poly" id="edge21_Node000000_Node000014" title=" " alt="" coords="31,414,53,546,71,614,82,640,94,657,108,667,124,675,122,680,105,672,90,661,77,642,66,616,47,547,26,415"/>
+<area shape="rect" id="Node000010" href="$classSDL_1_1ArrayBase.html" title="Base class for SDL memory allocated array wrap." alt="" coords="380,474,540,499"/>
+<area shape="poly" id="edge17_Node000009_Node000010" title=" " alt="" coords="297,484,380,484,380,489,297,489"/>
 </map>

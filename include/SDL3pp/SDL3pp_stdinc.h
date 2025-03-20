@@ -4884,7 +4884,7 @@ using FunctionPointer = SDL_FunctionPointer;
 /// @}
 
 template<class T>
-void details::PtrCommon<T>::free()
+void PtrBase<T>::free()
 {
   SDL::free(T::release());
 }

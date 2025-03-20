@@ -1226,18 +1226,6 @@ void std::swap(SDL::ObjectUnique<T, DELETER>& left,
 
 namespace SDL {
 
-namespace details {
-
-template<class T>
-struct PtrCommon : T
-{
-  using T::T;
-
-  void free();
-};
-
-} // namespace details
-
 /**
  * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()
  *
@@ -1253,9 +1241,11 @@ struct PtrCommon : T
  * @cat resource
  */
 template<class T>
-struct PtrBase : details::PtrCommon<T>
+struct PtrBase : T
 {
-  using details::PtrCommon<T>::PtrCommon;
+  using T::T;
+
+  void free();
 };
 
 /**
@@ -6241,7 +6231,7 @@ using FunctionPointer = SDL_FunctionPointer;
 /// @}
 
 template<class T>
-void details::PtrCommon<T>::free()
+void PtrBase<T>::free()
 {
   SDL::free(T::release());
 }
