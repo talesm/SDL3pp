@@ -67,7 +67,7 @@ Category                     | Header
 @ref CategoryOptionalRef     | SDL3pp_optionalRef.h
 @ref CategoryStringParam     | SDL3pp_stringParam.h
 @ref CategorySpanRef         | SDL3pp_spanRef.h
-@ref CategoryFreeWrapper     | SDL3pp_freeWrapper.h
+@ref CategoryOwnPtr          | SDL3pp_ownPtr.h
 @ref CategoryCallbackWrapper | SDL3pp_callbackWrapper.h
 
 @defgroup Categories Categories
@@ -131,7 +131,7 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryOptionalRef
 @addtogroup CategoryStringParam
 @addtogroup CategorySpanRef
-@addtogroup CategoryFreeWrapper
+@addtogroup CategoryOwnPtr
 @addtogroup CategoryCallbackWrapper
 @}
 

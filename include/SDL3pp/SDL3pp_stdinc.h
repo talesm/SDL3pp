@@ -2,8 +2,8 @@
 #define SDL3PP_STDINC_H_
 
 #include <SDL3/SDL_stdinc.h>
-#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_stringParam.h"
 
 namespace SDL {
@@ -539,9 +539,9 @@ struct EnvironmentBase : T
    * @sa SDL_SetEnvironmentVariable
    * @sa SDL_UnsetEnvironmentVariable
    **/
-  inline FreeWrapper<char*[]> GetVariables()
+  inline OwnArray<char*> GetVariables()
   {
-    return wrapArray(SDL_GetEnvironmentVariables(T::get()));
+    return OwnArray<char*>{SDL_GetEnvironmentVariables(T::get())};
   }
 
   /**
@@ -4882,6 +4882,12 @@ using FunctionPointer = SDL_FunctionPointer;
 
 #pragma region impl
 /// @}
+
+template<class T>
+void details::PtrCommon<T>::free()
+{
+  SDL::free(T::release());
+}
 
 inline void ObjectDeleter<SDL_Environment>::operator()(
   EnvironmentRef environment) const

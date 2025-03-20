@@ -7,8 +7,8 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include "SDL3pp_error.h"
-#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
 #include "SDL3pp_stringParam.h"
@@ -335,8 +335,6 @@ struct Display
   /**
    * Get a list of currently connected displays.
    *
-   * @param count a pointer filled in with the number of displays returned, may
-   *              be NULL.
    * @returns a 0 terminated array of display instance IDs or NULL on failure;
    *          call GetError() for more information. This should be freed
    *          with SDL_free() when it is no longer needed.
@@ -345,9 +343,11 @@ struct Display
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static FreeWrapper<Display[]> GetAll(int* count)
+  static OwnArray<Display> GetAll()
   {
-    return wrapArray(reinterpret_cast<Display*>(SDL_GetDisplays(count)));
+    int count = 0;
+    auto data = reinterpret_cast<Display*>(SDL_GetDisplays(&count));
+    return OwnArray<Display>{data, size_t(count)};
   }
 
   /**
@@ -496,7 +496,7 @@ struct Display
   }
 
   /**
-   * @brief Get a list of fullscreen display modes available on a display.
+   * Get a list of fullscreen display modes available on a display.
    *
    * The display modes are sorted in this priority:
    *
@@ -507,8 +507,6 @@ struct Display
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param count a pointer filled in with the number of display modes returned,
-   *              may be NULL.
    * @returns a NULL terminated array of display mode pointers or NULL on
    *          failure; call GetError() for more information.
    *
@@ -516,12 +514,16 @@ struct Display
    *
    * This automatically calls SDL_free after result is out of scope.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
    * @sa Display.GetAll()
    * @sa GetDisplays()
    */
-  FreeWrapper<DisplayMode*[]> GetFullscreenModes(int* count = nullptr) const
+  OwnArray<DisplayMode*> GetFullscreenModes() const
   {
-    return wrapArray(SDL_GetFullscreenDisplayModes(displayID, count));
+    int count = 0;
+    auto data = SDL_GetFullscreenDisplayModes(displayID, &count);
+    return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
   /**
@@ -1096,9 +1098,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  FreeWrapper<void*> GetICCProfile(size_t* size) const
+  OwnPtr<void> GetICCProfile(size_t* size) const
   {
-    return {SDL_GetWindowICCProfile(T::get(), size)};
+    return OwnPtr<void>{SDL_GetWindowICCProfile(T::get(), size)};
   }
 
   /**
@@ -3040,8 +3042,6 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 /**
  * Get a list of valid windows.
  *
- * @param count a pointer filled in with the number of windows returned, may
- *              be NULL.
  * @returns a NULL terminated array of SDL_Window pointers or NULL on failure;
  *          call GetError() for more information. This is a single
  *          allocation that should be freed with SDL_free() when it is no
@@ -3051,9 +3051,11 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline FreeWrapper<WindowRef[]> GetWindows(int* count)
+inline OwnArray<WindowRef> GetWindows()
 {
-  return wrapArray(reinterpret_cast<WindowRef*>(SDL_GetWindows(count)));
+  int count = 0;
+  auto data = reinterpret_cast<WindowRef*>(SDL_GetWindows(&count));
+  return OwnArray<WindowRef>{data, size_t(count)};
 }
 
 /**

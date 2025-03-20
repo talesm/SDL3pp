@@ -123,7 +123,7 @@ var searchData=
   ['pixeltype_5funknown_120',['PIXELTYPE_UNKNOWN',['../group__CategoryPixels.html#ga7d8d0ee0b48339aaaace7aa1f4dc95bf',1,'SDL']]],
   ['point_121',['point',['../structSDL_1_1Point.html',1,'SDL::Point'],['../structSDL_1_1Point.html#a4d552b29ff24f5baa3e80426dc0aa21f',1,'SDL::Point::Point(const SDL_Point &amp;point)'],['../structSDL_1_1Point.html#a3cdbe11429c5519cb494547b82524bce',1,'SDL::Point::Point()'],['../structSDL_1_1Point.html#ad470c898ade45930e6ab3c91befa8aff',1,'SDL::Point::Point(int x, int y)']]],
   ['pointer_122',['pointer',['../classSDL_1_1ObjectUnique.html#a1c89429cb2cb299135194c60f1f44805',1,'SDL::ObjectUnique::pointer'],['../structSDL_1_1PropertiesDeleter.html#a90df45dc414e86e4bab0294d50b0b2c9',1,'SDL::PropertiesDeleter::pointer'],['../classSDL_1_1ObjectRef.html#aef8c06e39fcbedd4e34bfee19863e763',1,'SDL::ObjectRef::pointer']]],
-  ['pointer_20wrapper_20to_20sdl_3a_3afree_123',['Pointer wrapper to SDL::free()',['../group__CategoryFreeWrapper.html',1,'']]],
+  ['pointer_20wrapper_20to_20sdl_3a_3afree_123',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
   ['pollevent_124',['pollevent',['../group__CategoryEvents.html#ga97ffaee5e1e3e41c04226981bb19dc12',1,'SDL::PollEvent()'],['../group__CategoryEvents.html#ga9fe4acc517213fe44e3d4e3fb8ea37f3',1,'SDL::PollEvent(Event *event)']]],
   ['pow_125',['pow',['../group__CategoryStdinc.html#ga6cfca7e593d97a56d7fca043af3ac2ce',1,'SDL']]],
   ['powf_126',['powf',['../group__CategoryStdinc.html#ga652fc1da140490bb87abbbf05ccfe8fa',1,'SDL']]],

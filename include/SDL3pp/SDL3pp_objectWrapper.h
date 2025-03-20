@@ -102,8 +102,8 @@ public:
 
   const pointer operator->() const { return get(); }
   pointer operator->() { return get(); }
-  const T& operator*() const { return *m_value; }
-  T& operator*() { return *m_value; }
+  const auto& operator*() const { return *m_value; }
+  auto& operator*() { return *m_value; }
 
   constexpr bool operator==(std::nullptr_t) const { return !m_value; }
 

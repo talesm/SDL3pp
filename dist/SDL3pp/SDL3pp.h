@@ -1038,49 +1038,6 @@ private:
 
 #include <SDL3/SDL_stdinc.h>
 
-// begin --- SDL3pp_freeWrapper.h --- 
-
-#ifndef SDL3PP_FREE_WRAPPER_H_
-#define SDL3PP_FREE_WRAPPER_H_
-
-#include <memory>
-#include <SDL3/SDL_stdinc.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryFreeWrapper Pointer wrapper to SDL::free()
- *
- * Wraps SDL generated pointers to automatically freeing them.
- * @{
- */
-
-/**
- * @brief Wraps around SDL alloced pointers to automatically free them
- *
- */
-struct FreeWrapperDeleter
-{
-  void operator()(void* mem) const { SDL_free(mem); }
-};
-
-template<class T>
-using FreeWrapper = std::unique_ptr<T, FreeWrapperDeleter>;
-
-template<class T>
-FreeWrapper<T[]> wrapArray(T* array)
-{
-  return FreeWrapper<T[]>{array};
-}
-} // namespace SDL
-
-#endif /* SDL3PP_FREE_WRAPPER_H_ */
-
-
-// end --- SDL3pp_freeWrapper.h --- 
-
-
-
 // begin --- SDL3pp_objectWrapper.h --- 
 
 #ifndef SDL3PP_OBJECT_WRAPPER_H_
@@ -1187,8 +1144,8 @@ public:
 
   const pointer operator->() const { return get(); }
   pointer operator->() { return get(); }
-  const T& operator*() const { return *m_value; }
-  T& operator*() { return *m_value; }
+  const auto& operator*() const { return *m_value; }
+  auto& operator*() { return *m_value; }
 
   constexpr bool operator==(std::nullptr_t) const { return !m_value; }
 
@@ -1259,6 +1216,150 @@ void std::swap(SDL::ObjectUnique<T, DELETER>& left,
 
 
 // end --- SDL3pp_objectWrapper.h --- 
+
+
+
+// begin --- SDL3pp_ownPtr.h --- 
+
+#ifndef SDL3PP_OWN_PTR_H_
+#define SDL3PP_OWN_PTR_H_
+
+namespace SDL {
+
+namespace details {
+
+template<class T>
+struct PtrCommon : T
+{
+  using T::T;
+
+  void free();
+};
+
+} // namespace details
+
+/**
+ * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()
+ *
+ * Wraps SDL generated pointers to automatically freeing them.
+ * @{
+ */
+
+/**
+ * Base class for SDL memory allocated pointer wrap
+ *
+ * @tparam T the wrapped type
+ *
+ * @cat resource
+ */
+template<class T>
+struct PtrBase : details::PtrCommon<T>
+{
+  using details::PtrCommon<T>::PtrCommon;
+};
+
+/**
+ * Handle to a non owned SDL memory allocated pointer
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa SurfaceBase
+ * @sa Surface
+ */
+template<class T>
+using RefPtr = PtrBase<ObjectRef<T>>;
+
+template<class T>
+struct PtrDeleter
+{
+  void operator()(RefPtr<T> ptr) const { ptr.free(); }
+};
+
+/**
+ * Handle to an owned SDL memory allocated pointer
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa PtrBase
+ * @sa RefPtr
+ */
+template<class T>
+using OwnPtr = PtrBase<ObjectUnique<T, PtrDeleter<T>>>;
+
+/**
+ * Base class for SDL memory allocated array wrap
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ */
+template<class T>
+class ArrayBase : public PtrBase<T>
+{
+  size_t m_size = 0;
+
+public:
+  using PtrBase<T>::PtrBase;
+
+  constexpr explicit ArrayBase(PtrBase<T>::pointer ptr, size_t size)
+    : PtrBase<T>{ptr}
+    , m_size(size)
+  {
+  }
+
+  constexpr explicit ArrayBase(PtrBase<T>::pointer ptr)
+    : PtrBase<T>{ptr}
+    , m_size(0)
+  {
+    if (ptr) {
+      auto endPtr = ptr;
+      while (*endPtr) ++endPtr;
+      m_size = endPtr - ptr;
+    }
+  }
+
+  constexpr size_t size() const { return m_size; }
+};
+
+/**
+ * Handle to an owned SDL memory allocated array
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa ArrayBase
+ * @sa OwnArray
+ * @sa RefPtr
+ */
+template<class T>
+using RefArray = ArrayBase<ObjectRef<T[]>>;
+
+/**
+ * Handle to an owned SDL memory allocated array
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa ArrayBase
+ * @sa RefArray
+ * @sa OwnPtr
+ */
+template<class T>
+using OwnArray = ArrayBase<ObjectUnique<T[], PtrDeleter<T[]>>>;
+
+/// @}
+
+} // namespace SDL
+#endif /* SDL3PP_OWN_PTR_H_ */
+
+
+// end --- SDL3pp_ownPtr.h --- 
 
 
 
@@ -1795,9 +1896,9 @@ struct EnvironmentBase : T
    * @sa SDL_SetEnvironmentVariable
    * @sa SDL_UnsetEnvironmentVariable
    **/
-  inline FreeWrapper<char*[]> GetVariables()
+  inline OwnArray<char*> GetVariables()
   {
-    return wrapArray(SDL_GetEnvironmentVariables(T::get()));
+    return OwnArray<char*>{SDL_GetEnvironmentVariables(T::get())};
   }
 
   /**
@@ -6138,6 +6239,12 @@ using FunctionPointer = SDL_FunctionPointer;
 
 #pragma region impl
 /// @}
+
+template<class T>
+void details::PtrCommon<T>::free()
+{
+  SDL::free(T::release());
+}
 
 inline void ObjectDeleter<SDL_Environment>::operator()(
   EnvironmentRef environment) const
@@ -11718,15 +11825,20 @@ struct SurfaceBase : T
    *          failure; call SDL_GetError() for more information. This should be
    *          freed with SDL_free() when it is no longer needed.
    *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AddAlternateImage()
    * @sa RemoveAlternateImages()
    * @sa HasAlternateImages()
    */
-  FreeWrapper<SurfaceRef*[]> GetImages(int* count = nullptr) const
+  OwnArray<SurfaceRef*> GetImages() const
   {
-    return SDL_GetSurfaceImages(T::get(), count);
+    int count = 0;
+    auto data =
+      reinterpret_cast<SurfaceRef*>(SDL_GetSurfaceImages(T::get(), &count));
+    return OwnArray<SurfaceRef*>{data, size_t(count)};
   }
 
   /**
@@ -13741,8 +13853,6 @@ struct Display
   /**
    * Get a list of currently connected displays.
    *
-   * @param count a pointer filled in with the number of displays returned, may
-   *              be NULL.
    * @returns a 0 terminated array of display instance IDs or NULL on failure;
    *          call GetError() for more information. This should be freed
    *          with SDL_free() when it is no longer needed.
@@ -13751,9 +13861,11 @@ struct Display
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static FreeWrapper<Display[]> GetAll(int* count)
+  static OwnArray<Display> GetAll()
   {
-    return wrapArray(reinterpret_cast<Display*>(SDL_GetDisplays(count)));
+    int count = 0;
+    auto data = reinterpret_cast<Display*>(SDL_GetDisplays(&count));
+    return OwnArray<Display>{data, size_t(count)};
   }
 
   /**
@@ -13902,7 +14014,7 @@ struct Display
   }
 
   /**
-   * @brief Get a list of fullscreen display modes available on a display.
+   * Get a list of fullscreen display modes available on a display.
    *
    * The display modes are sorted in this priority:
    *
@@ -13913,8 +14025,6 @@ struct Display
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param count a pointer filled in with the number of display modes returned,
-   *              may be NULL.
    * @returns a NULL terminated array of display mode pointers or NULL on
    *          failure; call GetError() for more information.
    *
@@ -13922,12 +14032,16 @@ struct Display
    *
    * This automatically calls SDL_free after result is out of scope.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
    * @sa Display.GetAll()
    * @sa GetDisplays()
    */
-  FreeWrapper<DisplayMode*[]> GetFullscreenModes(int* count = nullptr) const
+  OwnArray<DisplayMode*> GetFullscreenModes() const
   {
-    return wrapArray(SDL_GetFullscreenDisplayModes(displayID, count));
+    int count = 0;
+    auto data = SDL_GetFullscreenDisplayModes(displayID, &count);
+    return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
   /**
@@ -14502,9 +14616,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  FreeWrapper<void*> GetICCProfile(size_t* size) const
+  OwnPtr<void> GetICCProfile(size_t* size) const
   {
-    return {SDL_GetWindowICCProfile(T::get(), size)};
+    return OwnPtr<void>{SDL_GetWindowICCProfile(T::get(), size)};
   }
 
   /**
@@ -16446,8 +16560,6 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 /**
  * Get a list of valid windows.
  *
- * @param count a pointer filled in with the number of windows returned, may
- *              be NULL.
  * @returns a NULL terminated array of SDL_Window pointers or NULL on failure;
  *          call GetError() for more information. This is a single
  *          allocation that should be freed with SDL_free() when it is no
@@ -16457,9 +16569,11 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline FreeWrapper<WindowRef[]> GetWindows(int* count)
+inline OwnArray<WindowRef> GetWindows()
 {
-  return wrapArray(reinterpret_cast<WindowRef*>(SDL_GetWindows(count)));
+  int count = 0;
+  auto data = reinterpret_cast<WindowRef*>(SDL_GetWindows(&count));
+  return OwnArray<WindowRef>{data, size_t(count)};
 }
 
 /**
@@ -20773,15 +20887,8 @@ struct IOStreamBase : T
    * convenience. This extra byte is not included in the value reported via
    * `datasize`.
    *
-   * The data should be freed with SDL_free().
-   *
    * @param src the SDL_IOStream to read all available data from.
-   * @param datasize a pointer filled in with the number of bytes read, may be
-   *                 NULL.
-   * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
-   *                in the case of an error.
-   * @returns the data or NULL on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the data or NULL on failure; call GetError() for more information.
    *
    * @threadsafety This function is not thread safe.
    *
@@ -20790,9 +20897,12 @@ struct IOStreamBase : T
    * @sa SDL_LoadFile
    * @sa SDL_SaveFile_IO
    */
-  FreeWrapper<void> LoadFile(size_t* datasize, bool closeio)
+  OwnArray<std::byte> LoadFile()
   {
-    return FreeWrapper<void>{SDL_LoadFile_IO(T::get(), datasize, closeio)};
+    size_t datasize = 0;
+    auto data =
+      static_cast<std::byte*>(SDL_LoadFile_IO(T::get(), &datasize, false));
+    return OwnArray<std::byte>{data, datasize};
   }
 
   template<class U>
@@ -21415,9 +21525,11 @@ struct IOStreamBase : T
  * @sa SDL_LoadFile_IO
  * @sa SDL_SaveFile
  */
-inline FreeWrapper<void> LoadFile(StringParam file, size_t* datasize)
+inline OwnArray<std::byte> LoadFile(StringParam file)
 {
-  return FreeWrapper<void>{SDL_LoadFile(file, datasize)};
+  size_t datasize = 0;
+  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
+  return OwnArray<std::byte>{data, datasize};
 }
 
 /**
@@ -21477,8 +21589,6 @@ inline void ObjectDeleter<SDL_IOStream>::operator()(IOStreamRef stream) const
 //
 
 // begin --- SDL3pp_locale.h --- 
-
-
 
 #ifndef SDL3PP_LOCALE_H_
 #define SDL3PP_LOCALE_H_
@@ -21548,15 +21658,17 @@ using Locale = SDL_Locale;
  *
  * @param count a pointer filled in with the number of locales returned, may
  *              be NULL.
- * @returns a NULL terminated array of locale pointers, or NULL on failure;
- *          call GetError() for more information. This is a single allocation
+ * @returns a std::nullptr terminated array of locale pointers, or std::nullptr
+ * on failure; call GetError() for more information. This is a single allocation
  *          that should be freed with free() when it is no longer needed.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline FreeWrapper<Locale*[]> GetPreferredLocales(int* count)
+inline OwnArray<Locale*> GetPreferredLocales()
 {
-  return wrapArray(SDL_GetPreferredLocales(count));
+  int count = 0;
+  auto data = SDL_GetPreferredLocales(&count);
+  return OwnArray<Locale*>{data, size_t(count)};
 }
 
 /// @}
@@ -27977,86 +28089,4 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 
 
 // end --- SDL3pp.h --- 
-
-
-
-// begin --- SDL3pp_ownPtr.h --- 
-
-#ifndef SDL3PP_OWN_PTR_H_
-#define SDL3PP_OWN_PTR_H_
-
-namespace SDL {
-
-namespace details {
-
-template<class T>
-struct PtrCommon : T
-{
-  using T::T;
-
-  void free();
-};
-
-} // namespace details
-
-// TODO category
-
-/**
- * Base class for pointer wrap
- *
- * @tparam T the wrapped type
- *
- * @cat resource
- */
-template<class T>
-struct PtrBase : details::PtrCommon<T>
-{
-  using details::PtrCommon<T>::PtrCommon;
-};
-
-/**
- * Handle to a non owned pointer
- *
- * @cat resource
- *
- * @sa resource
- * @sa SurfaceBase
- * @sa Surface
- */
-template<class T>
-using RefPtr = PtrBase<ObjectRef<T>>;
-
-template<class T>
-struct PtrDeleter
-{
-  void operator()(RefPtr<T> ptr) const { ptr.free(); }
-};
-
-/**
- * Handle to an owned pointer
- *
- * @cat resource
- *
- * @sa resource
- * @sa PtrBase
- * @sa RefPtr
- */
-template<class T>
-using OwnPtr = PtrBase<ObjectUnique<T, PtrDeleter<T>>>;
-
-} // namespace SDL
-#endif /* SDL3PP_OWN_PTR_H_ */
-
-namespace SDL::details {
-
-template<class T>
-void PtrCommon<T>::free()
-{
-  SDL::free(T::release());
-}
-
-} // namespace SDL
-
-
-// end --- SDL3pp_ownPtr.h --- 
 

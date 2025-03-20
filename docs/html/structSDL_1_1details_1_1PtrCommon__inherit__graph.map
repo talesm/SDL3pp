@@ -1,7 +1,9 @@
 <map id="SDL::details::PtrCommon&lt; T &gt;" name="SDL::details::PtrCommon&lt; T &gt;">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,79,228,104"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1PtrBase.html" title="Base class for pointer wrap." alt="" coords="45,152,188,177"/>
+<area shape="rect" id="Node000003" href="$structSDL_1_1PtrBase.html" title="Base class for SDL memory allocated pointer wrap." alt="" coords="45,152,188,177"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="119,118,119,152,114,152,114,118"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="97,5,136,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,44,119,79,114,79,114,44"/>
+<area shape="rect" id="Node000004" href="$classSDL_1_1ArrayBase.html" title="Base class for SDL memory allocated array wrap." alt="" coords="37,225,197,251"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="119,191,119,225,114,225,114,191"/>
 </map>

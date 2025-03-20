@@ -5,9 +5,9 @@
 #include <SDL3/SDL_version.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
-#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_optionalRef.h"
+#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
@@ -410,15 +410,20 @@ struct SurfaceBase : T
    *          failure; call SDL_GetError() for more information. This should be
    *          freed with SDL_free() when it is no longer needed.
    *
+   * @threadsafety This function is not thread safe.
+   *
    * @since This function is available since SDL 3.2.0.
    *
    * @sa AddAlternateImage()
    * @sa RemoveAlternateImages()
    * @sa HasAlternateImages()
    */
-  FreeWrapper<SurfaceRef*[]> GetImages(int* count = nullptr) const
+  OwnArray<SurfaceRef*> GetImages() const
   {
-    return SDL_GetSurfaceImages(T::get(), count);
+    int count = 0;
+    auto data =
+      reinterpret_cast<SurfaceRef*>(SDL_GetSurfaceImages(T::get(), &count));
+    return OwnArray<SurfaceRef*>{data, size_t(count)};
   }
 
   /**
