@@ -11,9 +11,7 @@ int main()
     std::cout << "No locales: " << SDL::GetError() << "\n";
     return 1;
   }
-  std::cout << count << " locales:\n";
-  for (int i = 0; i < count; ++i) {
-    auto locale = locales[i];
+  for (auto locale : locales) {
     if (locale->country) {
       std::cout << locale->language << '/' << locale->country << '\n';
     } else {

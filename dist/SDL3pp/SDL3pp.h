@@ -1311,6 +1311,26 @@ public:
   }
 
   constexpr size_t size() const { return m_size; }
+
+  /**
+   * @{
+   *
+   * Get iterator to first element
+   */
+  PtrBase<T>::pointer begin() { return PtrBase<T>::get(); }
+  const PtrBase<T>::pointer begin() const { return PtrBase<T>::get(); }
+  const PtrBase<T>::pointer cbegin() const { return begin(); }
+  /// @}
+
+  /**
+   * @{
+   *
+   * Get iterator to one past end element
+   */
+  PtrBase<T>::pointer end() { return begin() + size(); }
+  const PtrBase<T>::pointer end() const { return begin() + size(); }
+  const PtrBase<T>::pointer cend() const { return begin() + size(); }
+  /// @}
 };
 
 /**

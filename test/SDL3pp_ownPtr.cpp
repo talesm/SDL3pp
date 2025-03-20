@@ -1,4 +1,5 @@
 #include "SDL3pp/SDL3pp_ownPtr.h"
+#include <span>
 #include "doctest.h"
 
 TEST_CASE("Empty OwnPtr")
@@ -47,12 +48,16 @@ TEST_CASE("OwnArray")
     CHECK(arr[2] == 108);
     CHECK(arr[3] == 0);
     REQUIRE(arr.size() == 3);
+    std::span sArr{arr};
+    REQUIRE(sArr.size() == 3);
   }
 
   SUBCASE("Automatic counting")
   {
     SDL::RefArray<int> rArr{arr.get()};
     REQUIRE(rArr);
-    REQUIRE(arr.size() == 3);
+    REQUIRE(rArr.size() == 3);
+    std::span sArr{rArr};
+    REQUIRE(sArr.size() == 3);
   }
 }

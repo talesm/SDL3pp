@@ -14,8 +14,6 @@ int main()
     std::cout << "No variables\n";
     return 1;
   }
-  for (char** variable = &variables[0]; *variable != nullptr; variable++) {
-    std::cout << *variable << '\n';
-  }
+  for (auto variable : variables) std::cout << variable << '\n';
   return 0;
 }
