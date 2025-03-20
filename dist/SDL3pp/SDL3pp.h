@@ -1219,6 +1219,69 @@ void std::swap(SDL::ObjectUnique<T, DELETER>& left,
 
 
 
+// begin --- SDL3pp_optionalRef.h --- 
+
+#ifndef SDL3PP_OPTIONAL_REF_H_
+#define SDL3PP_OPTIONAL_REF_H_
+
+#include <optional>
+
+namespace SDL {
+
+/**
+ * @brief Shim to get optional-like interface for references
+ *
+ * @tparam T
+ */
+template<class T>
+class OptionalRef
+{
+  T* ptr;
+
+public:
+  constexpr OptionalRef(std::nullopt_t = std::nullopt)
+    : ptr(nullptr)
+  {
+  }
+
+  constexpr OptionalRef(T& value)
+    : ptr(&value)
+  {
+  }
+
+  constexpr auto operator<=>(const OptionalRef&) const = default;
+
+  constexpr bool has_value() const { return ptr != nullptr; }
+
+  constexpr const T& value() const { return *ptr; }
+  constexpr T& value() { return *ptr; }
+
+  constexpr operator T*() const { return ptr; }
+
+  constexpr bool operator==(std::nullopt_t) const { return ptr == nullptr; }
+
+  constexpr T& operator*() { return *ptr; }
+  constexpr const T& operator*() const { return *ptr; }
+  constexpr T* operator->() { return ptr; }
+  constexpr const T* operator->() const { return ptr; }
+};
+
+template<class T>
+constexpr OptionalRef<T> fromNullable(T* ptr)
+{
+  if (ptr) return {*ptr};
+  return std::nullopt;
+}
+
+} // namespace SDL
+
+#endif /* SDL3PP_OPTIONAL_REF_H_ */
+
+
+// end --- SDL3pp_optionalRef.h --- 
+
+
+
 // begin --- SDL3pp_ownPtr.h --- 
 
 #ifndef SDL3PP_OWN_PTR_H_
@@ -1370,6 +1433,80 @@ using OwnArray = ArrayBase<ObjectUnique<T[], PtrDeleter<T[]>>>;
 
 
 // end --- SDL3pp_ownPtr.h --- 
+
+
+
+// begin --- SDL3pp_spanRef.h --- 
+
+#ifndef SDL3PP_SPAN_REF_H_
+#define SDL3PP_SPAN_REF_H_
+
+#include <concepts>
+#include <ranges>
+#include <span>
+
+namespace SDL {
+
+template<class T, class BASE>
+concept DerivedWrapper =
+  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
+
+/**
+ * A wrapper around span that works for out derived-wrapper pattern
+ * (eg, Rect, Color)
+ *
+ */
+template<class T>
+class SpanRef
+{
+  std::span<T> value;
+
+public:
+  constexpr SpanRef() = default;
+
+  template<DerivedWrapper<T> U, size_t N>
+  constexpr SpanRef(U (&other)[N])
+    : value(static_cast<T*>(other), N)
+  {
+  }
+
+  template<DerivedWrapper<T> U>
+  constexpr SpanRef(const std::span<U>& other)
+    : value(other.data(), other.size())
+  {
+  }
+
+  template<std::contiguous_iterator It>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, size_t count)
+    : value((T*)(&*first), count)
+  {
+  }
+
+  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, End last)
+    : value((T*)(&*first), size_t(last - first))
+  {
+  }
+  template<std::ranges::contiguous_range R>
+    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
+  constexpr SpanRef(R&& range)
+    : SpanRef(std::begin(range), std::end(range))
+  {
+  }
+
+  constexpr size_t size() const { return value.size(); }
+
+  constexpr T* data() const { return value.data(); }
+};
+
+} // namespace SDL
+
+#endif /* SDL3PP_SPAN_REF_H_ */
+
+
+// end --- SDL3pp_spanRef.h --- 
 
 
 
@@ -7154,143 +7291,6 @@ PropertiesLock PropertiesBase<T>::Lock() &
 #include <optional>
 #include <span>
 #include <SDL3/SDL_rect.h>
-
-// begin --- SDL3pp_optionalRef.h --- 
-
-#ifndef SDL3PP_OPTIONAL_REF_H_
-#define SDL3PP_OPTIONAL_REF_H_
-
-#include <optional>
-
-namespace SDL {
-
-/**
- * @brief Shim to get optional-like interface for references
- *
- * @tparam T
- */
-template<class T>
-class OptionalRef
-{
-  T* ptr;
-
-public:
-  constexpr OptionalRef(std::nullopt_t = std::nullopt)
-    : ptr(nullptr)
-  {
-  }
-
-  constexpr OptionalRef(T& value)
-    : ptr(&value)
-  {
-  }
-
-  constexpr auto operator<=>(const OptionalRef&) const = default;
-
-  constexpr bool has_value() const { return ptr != nullptr; }
-
-  constexpr const T& value() const { return *ptr; }
-  constexpr T& value() { return *ptr; }
-
-  constexpr operator T*() const { return ptr; }
-
-  constexpr bool operator==(std::nullopt_t) const { return ptr == nullptr; }
-
-  constexpr T& operator*() { return *ptr; }
-  constexpr const T& operator*() const { return *ptr; }
-  constexpr T* operator->() { return ptr; }
-  constexpr const T* operator->() const { return ptr; }
-};
-
-template<class T>
-constexpr OptionalRef<T> fromNullable(T* ptr)
-{
-  if (ptr) return {*ptr};
-  return std::nullopt;
-}
-
-} // namespace SDL
-
-#endif /* SDL3PP_OPTIONAL_REF_H_ */
-
-
-// end --- SDL3pp_optionalRef.h --- 
-
-
-
-// begin --- SDL3pp_spanRef.h --- 
-
-#ifndef SDL3PP_SPAN_REF_H_
-#define SDL3PP_SPAN_REF_H_
-
-#include <concepts>
-#include <ranges>
-#include <span>
-
-namespace SDL {
-
-template<class T, class BASE>
-concept DerivedWrapper =
-  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
-
-/**
- * A wrapper around span that works for out derived-wrapper pattern
- * (eg, Rect, Color)
- *
- */
-template<class T>
-class SpanRef
-{
-  std::span<T> value;
-
-public:
-  constexpr SpanRef() = default;
-
-  template<DerivedWrapper<T> U, size_t N>
-  constexpr SpanRef(U (&other)[N])
-    : value(static_cast<T*>(other), N)
-  {
-  }
-
-  template<DerivedWrapper<T> U>
-  constexpr SpanRef(const std::span<U>& other)
-    : value(other.data(), other.size())
-  {
-  }
-
-  template<std::contiguous_iterator It>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, size_t count)
-    : value((T*)(&*first), count)
-  {
-  }
-
-  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, End last)
-    : value((T*)(&*first), size_t(last - first))
-  {
-  }
-  template<std::ranges::contiguous_range R>
-    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
-  constexpr SpanRef(R&& range)
-    : SpanRef(std::begin(range), std::end(range))
-  {
-  }
-
-  constexpr size_t size() const { return value.size(); }
-
-  constexpr T* data() const { return value.data(); }
-};
-
-} // namespace SDL
-
-#endif /* SDL3PP_SPAN_REF_H_ */
-
-
-// end --- SDL3pp_spanRef.h --- 
-
-
 
 namespace SDL {
 

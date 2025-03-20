@@ -63,12 +63,12 @@ Category               | Header
 
 Category                     | Header
 ---------------------------- | ------------------------
+@ref CategoryCallbackWrapper | SDL3pp_callbackWrapper.h
 @ref CategoryObjectWrapper   | SDL3pp_objectWrapper.h
 @ref CategoryOptionalRef     | SDL3pp_optionalRef.h
-@ref CategoryStringParam     | SDL3pp_stringParam.h
-@ref CategorySpanRef         | SDL3pp_spanRef.h
 @ref CategoryOwnPtr          | SDL3pp_ownPtr.h
-@ref CategoryCallbackWrapper | SDL3pp_callbackWrapper.h
+@ref CategorySpanRef         | SDL3pp_spanRef.h
+@ref CategoryStringParam     | SDL3pp_stringParam.h
 
 @defgroup Categories Categories
 
@@ -127,12 +127,12 @@ You probably want to see @ref ApiByCategory
 
 @defgroup CategoriesCppSupport C++ Support
 @{
+@addtogroup CategoryCallbackWrapper
 @addtogroup CategoryObjectWrapper
 @addtogroup CategoryOptionalRef
-@addtogroup CategoryStringParam
-@addtogroup CategorySpanRef
 @addtogroup CategoryOwnPtr
-@addtogroup CategoryCallbackWrapper
+@addtogroup CategorySpanRef
+@addtogroup CategoryStringParam
 @}
 
 @}
