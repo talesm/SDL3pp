@@ -2,10 +2,8 @@
 #define SDL3PP_PROPERTIES_H_
 
 #include <SDL3/SDL_properties.h>
-#include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_stringParam.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 

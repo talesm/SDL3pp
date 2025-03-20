@@ -2,7 +2,7 @@
 #define SDL3PP_LOCALE_H_
 
 #include <SDL3/SDL_locale.h>
-#include "SDL3pp_ownPtr.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 /**

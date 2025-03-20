@@ -1,829 +1,23 @@
-
-
-// begin --- SDL3pp.h --- 
-
-/**
- * Main include header for the SDL3pp library
- *
- * It is almost always best to include just this one header instead of
- * picking out individual headers included here. There are exceptions to
- * this rule--SDL3pp_main.h is special and not included here--but usually
- * letting SDL3pp.h include the kitchen sink for you is the correct approach.
- */
+// Amalgamated SDL3pp
 #ifndef SDL3PP_H_
 #define SDL3PP_H_
 
-#include <SDL3/SDL.h>
-
-// begin --- SDL3pp_assert.h --- 
-
-#ifndef SDL3PP_ASSERT_H_
-#define SDL3PP_ASSERT_H_
-
-#include <SDL3/SDL_assert.h>
-
-// begin --- SDL3pp_stringParam.h --- 
-
-#ifndef SDL3PP_STRING_PARAM_H_
-#define SDL3PP_STRING_PARAM_H_
-
-#include <string>
-#include <string_view>
-#include <variant>
-
-namespace SDL {
-
-#ifndef SDL3PP_ENABLE_STRING_PARAM
-
-#ifndef SDL3PP_DISABLE_STRING_PARAM
-#define SDL3PP_ENABLE_STRING_PARAM
-#endif // SDL3PP_DISABLE_STRING_PARAM
-
-#endif // SDL3PP_ENABLE_STRING_PARAM''
-
-/**
- * @brief A safe and mostly efficient wrapper to std::string and
- * std::string_view parameters
- *
- * This should only be declared in [function
- * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
- * using it otherwise is to ask for undefined behavior
- */
-class StringParamImpl
-{
-  std::variant<std::monostate, const char*, std::string> data;
-
-public:
-  constexpr StringParamImpl(std::nullptr_t = nullptr) {}
-  constexpr StringParamImpl(const char* str)
-    : data(str)
-  {
-  }
-
-  StringParamImpl(const std::string& str)
-    : StringParamImpl(str.c_str())
-  {
-  }
-
-  StringParamImpl(std::string&& str)
-    : data(std::move(str))
-  {
-  }
-
-  StringParamImpl(std::string_view str)
-    : StringParamImpl(std::string{str})
-  {
-  }
-
-  StringParamImpl(const StringParamImpl&) = delete;
-  StringParamImpl(StringParamImpl&&) = default;
-  StringParamImpl& operator=(const StringParamImpl&) = delete;
-  StringParamImpl& operator=(StringParamImpl&&) = default;
-
-  operator const char*() const
-  {
-    struct Visitor
-    {
-      const char* operator()(const char* a) const { return a; }
-      const char* operator()(const std::string& s) const { return s.c_str(); }
-      const char* operator()(std::monostate) const { return ""; }
-    };
-    return std::visit(Visitor{}, data);
-  }
-};
-
-#ifdef SDL3PP_ENABLE_STRING_PARAM
-using StringParam = StringParamImpl;
-#else  // SDL3PP_ENABLE_STRING_PARAM
-using StringParam = const char*;
-#endif // SDL3PP_ENABLE_STRING_PARAM
-
-} // namespace SDL
-
-#endif /* SDL3PP_STRING_PARAM_H_ */
-
-
-// end --- SDL3pp_stringParam.h --- 
-
-
-
-namespace SDL {
-
-/**
- * @defgroup CategoryAssert Assertions
- *
- * A helpful assertion macro!
- *
- * SDL assertions operate like your usual `assert` macro, but with some added
- * features:
- *
- * - It uses a trick with the `sizeof` operator, so disabled assertions
- *   vaporize out of the compiled code, but variables only referenced in the
- *   assertion won't trigger compiler warnings about being unused.
- * - It is safe to use with a dangling-else: `if (x) SDL_assert(y); else
- *   do_something();`
- * - It works the same everywhere, instead of counting on various platforms'
- *   compiler and C runtime to behave.
- * - It provides multiple levels of assertion (SDL_assert, SDL_assert_release,
- *   SDL_assert_paranoid) instead of a single all-or-nothing option.
- * - It offers a variety of responses when an assertion fails (retry, trigger
- *   the debugger, abort the program, ignore the failure once, ignore it for
- *   the rest of the program's run).
- * - It tries to show the user a dialog by default, if possible, but the app
- *   can provide a callback to handle assertion failures however they like.
- * - It lets failed assertions be retried. Perhaps you had a network failure
- *   and just want to retry the test after plugging your network cable back
- *   in? You can.
- * - It lets the user ignore an assertion failure, if there's a harmless
- *   problem that one can continue past.
- * - It lets the user mark an assertion as ignored for the rest of the
- *   program's run; if there's a harmless problem that keeps popping up.
- * - It provides statistics and data on all failed assertions to the app.
- * - It allows the default assertion handler to be controlled with environment
- *   variables, in case an automated script needs to control it.
- * - It can be used as an aid to Clang's static analysis; it will treat SDL
- *   assertions as universally true (under the assumption that you are serious
- *   about the asserted claims and that your debug builds will detect when
- *   these claims were wrong). This can help the analyzer avoid false
- *   positives.
- *
- * To use it: compile a debug build and just sprinkle around tests to check
- * your code!
- *
- * @{
- */
-
-/**
- * Possible outcomes from a triggered assertion.
- *
- * When an enabled assertion triggers, it may call the assertion handler
- * (possibly one provided by the app via SDL_SetAssertionHandler), which will
- * return one of these values, possibly after asking the user.
- *
- * Then SDL will respond based on this outcome (loop around to retry the
- * condition, try to break in a debugger, kill the program, or ignore the
- * problem).
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AssertState = SDL_AssertState;
-
-/**
- * Retry the assert immediately.
- */
-constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
-
-/**
- * Make the debugger trigger a breakpoint.
- */
-constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
-
-/**
- * Terminate the program.
- */
-constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
-
-/**
- * Ignore the assert.
- */
-constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
-
-/**
- * Ignore the assert from now on.
- */
-constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
-
-/**
- * Information about an assertion failure.
- *
- * This structure is filled in with information about a triggered assertion,
- * used by the assertion handler, then added to the assertion report. This is
- * returned as a linked list from SDL_GetAssertionReport().
- *
- * @since This struct is available since SDL 3.2.0.
- */
-using AssertData = SDL_AssertData;
-
-/**
- * Never call this directly.
- *
- * Use the SDL_assert macros instead.
- *
- * @param data assert data structure.
- * @param func function name.
- * @param file file name.
- * @param line line number.
- * @returns assert state.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline AssertState ReportAssertion(AssertData* data,
-                                   StringParam func,
-                                   StringParam file,
-                                   int line)
-{
-  return SDL_ReportAssertion(data, func, file, line);
-}
-
-/**
- * A @ref callback that fires when an SDL assertion fails.
- *
- * @param data a pointer to the SDL_AssertData structure corresponding to the
- *             current assertion.
- * @param userdata what was passed as `userdata` to SDL_SetAssertionHandler().
- * @returns an SDL_AssertState value indicating how to handle the failure.
- *
- * @threadsafety This callback may be called from any thread that triggers an
- *               assert at any time.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AssertionHandler = SDL_AssertionHandler;
-
-/**
- * Set an application-defined assertion handler.
- *
- * This function allows an application to show its own assertion UI and/or
- * force the response to an assertion failure. If the application doesn't
- * provide this, SDL will try to do the right thing, popping up a
- * system-specific GUI dialog, and probably minimizing any fullscreen windows.
- *
- * This callback may fire from any thread, but it runs wrapped in a mutex, so
- * it will only fire from one thread at a time.
- *
- * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
- *
- * @param handler the SDL_AssertionHandler function to call when an assertion
- *                fails or NULL for the default handler.
- * @param userdata a pointer that is passed to `handler`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetAssertionHandler
- */
-inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
-{
-  return SDL_SetAssertionHandler(handler, userdata);
-}
-
-/**
- * Get the default assertion handler.
- *
- * This returns the function pointer that is called by default when an
- * assertion is triggered. This is an internal function provided by SDL, that
- * is used for assertions when SDL_SetAssertionHandler() hasn't been used to
- * provide a different function.
- *
- * @returns the default SDL_AssertionHandler that is called when an assert
- *          triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetAssertionHandler
- */
-inline AssertionHandler GetDefaultAssertionHandler()
-{
-  return SDL_GetDefaultAssertionHandler();
-}
-
-/**
- * Get the current assertion handler.
- *
- * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to
- * SDL_SetAssertionHandler(), or if no application-specified function is set,
- * is equivalent to calling SDL_GetDefaultAssertionHandler().
- *
- * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value
- * will always be NULL for the default handler. If you don't care about this
- * data, it is safe to pass a NULL pointer to this function to ignore it.
- *
- * @param puserdata pointer which is filled with the "userdata" pointer that
- *                  was passed to SDL_SetAssertionHandler().
- * @returns the SDL_AssertionHandler that is called when an assert triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SetAssertionHandler
- */
-inline AssertionHandler GetAssertionHandler(void** puserdata)
-{
-  return SDL_GetAssertionHandler(puserdata);
-}
-
-/**
- * Get a list of all assertion failures.
- *
- * This function gets all assertions triggered since the last call to
- * SDL_ResetAssertionReport(), or the start of the program.
- *
- * The proper way to examine this data looks something like this:
- *
- * ```c
- * const SDL_AssertData *item = SDL_GetAssertionReport();
- * while (item) {
- *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
- *           item->condition, item->function, item->filename,
- *           item->linenum, item->trigger_count,
- *           item->always_ignore ? "yes" : "no");
- *    item = item->next;
- * }
- * ```
- *
- * @returns a list of all failed assertions or NULL if the list is empty. This
- *          memory should not be modified or freed by the application. This
- *          pointer remains valid until the next call to SDL_Quit() or
- *          SDL_ResetAssertionReport().
- *
- * @threadsafety This function is not thread safe. Other threads calling
- *               SDL_ResetAssertionReport() simultaneously, may render the
- *               returned pointer invalid.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_ResetAssertionReport
- */
-inline const AssertData* GetAssertionReport()
-{
-  return SDL_GetAssertionReport();
-}
-
-/**
- * Clear the list of all assertion failures.
- *
- * This function will clear the list of all assertions triggered up to that
- * point. Immediately following this call, SDL_GetAssertionReport will return
- * no items. In addition, any previously-triggered assertions will be reset to
- * a trigger_count of zero, and their always_ignore state will be false.
- *
- * @threadsafety This function is not thread safe. Other threads triggering an
- *               assertion, or simultaneously calling this function may cause
- *               memory leaks or crashes.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetAssertionReport
- */
-inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_ASSERT_H_ */
-
-
-// end --- SDL3pp_assert.h --- 
-
-
-//
-//
-//
-//
-
-// begin --- SDL3pp_blendmode.h --- 
-
-#ifndef SDL3PP_BLENDMODE_H_
-#define SDL3PP_BLENDMODE_H_
-
-#include <SDL3/SDL_blendmode.h>
-
-namespace SDL {
-/**
- * @defgroup CategoryBlendmode Blend modes
- *
- * Blend modes decide how two colors will mix together. There are both
- * standard modes for basic needs and a means to create custom modes,
- * dictating what sort of math to do on what color components.
- *
- * @{
- */
-
-/**
- * @brief  A set of blend modes used in drawing operations.
- *
- * These predefined blend modes are supported everywhere.
- *
- * Additional values may be obtained from ComposeCustomBlendMode().
- */
-using BlendMode = SDL_BlendMode;
-
-/**
- * @brief The blend operation used when combining source and destination pixel
- * components.
- *
- */
-using BlendOperation = SDL_BlendOperation;
-
-/**
- * dst + src: supported by all renderers
- */
-constexpr BlendOperation BLENDOPERATION_ADD = SDL_BLENDOPERATION_ADD;
-
-/**
- * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
-
-/**
- * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
-  SDL_BLENDOPERATION_REV_SUBTRACT;
-
-/**
- * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
-
-/**
- * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
-
-/**
- * @brief The normalized factor used to multiply pixel components.
- *
- * The blend factors are multiplied with the pixels from a drawing operation
- * (src) and the pixels from the render target (dst) before the blend
- * operation. The comma-separated factors listed above are always applied in
- * the component order red, green, blue, and alpha.
- *
- */
-using BlendFactor = SDL_BlendFactor;
-
-/**
- * 0, 0, 0, 0
- */
-constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO;
-
-/**
- * 1, 1, 1, 1
- */
-constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE;
-
-/**
- * srcR, srcG, srcB, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_COLOR = SDL_BLENDFACTOR_SRC_COLOR;
-
-/**
- * 1-srcR, 1-srcG, 1-srcB, 1-srcA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR;
-
-/**
- * srcA, srcA, srcA, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_ALPHA = SDL_BLENDFACTOR_SRC_ALPHA;
-
-/**
- * 1-srcA, 1-srcA, 1-srcA, 1-srcA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
-
-/**
- * dstR, dstG, dstB, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_COLOR = SDL_BLENDFACTOR_DST_COLOR;
-
-/**
- * 1-dstR, 1-dstG, 1-dstB, 1-dstA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR;
-
-/**
- * dstA, dstA, dstA, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_ALPHA = SDL_BLENDFACTOR_DST_ALPHA;
-
-/**
- * 1-dstA, 1-dstA, 1-dstA, 1-dstA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA;
-
-/**
- * @brief Compose a custom blend mode for renderers.
- *
- * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
- * the SDL_BlendMode returned by this function if the renderer supports it.
- *
- * A blend mode controls how the pixels from a drawing operation (source) get
- * combined with the pixels from the render target (destination). First, the
- * components of the source and destination pixels get multiplied with their
- * blend factors. Then, the blend operation takes the two products and
- * calculates the result that will get stored in the render target.
- *
- * Expressed in pseudocode, it would look like this:
- *
- * ```c
- * dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);
- * dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);
- * ```
- *
- * Where the functions `colorOperation(src, dst)` and `alphaOperation(src,
- * dst)` can return one of the following:
- *
- * - `src + dst`
- * - `src - dst`
- * - `dst - src`
- * - `min(src, dst)`
- * - `max(src, dst)`
- *
- * The red, green, and blue components are always multiplied with the first,
- * second, and third components of the SDL_BlendFactor, respectively. The
- * fourth component is not used.
- *
- * The alpha component is always multiplied with the fourth component of the
- * SDL_BlendFactor. The other components are not used in the alpha
- * calculation.
- *
- * Support for these blend modes varies for each renderer. To check if a
- * specific SDL_BlendMode is supported, create a renderer and pass it to
- * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
- * return with an error if the blend mode is not supported.
- *
- * This list describes the support of custom blend modes for each renderer.
- * All renderers support the four blend modes listed in the SDL_BlendMode
- * enumeration.
- *
- * - **direct3d**: Supports all operations with all factors. However, some
- *   factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and
- *   `SDL_BLENDOPERATION_MAXIMUM`.
- * - **direct3d11**: Same as Direct3D 9.
- * - **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all
- *   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
- * - **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,
- *   `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`
- *   operations with all factors.
- * - **psp**: No custom blend mode support.
- * - **software**: No custom blend mode support.
- *
- * Some renderers do not provide an alpha component for the default render
- * target. The `SDL_BLENDFACTOR_DST_ALPHA` and
- * `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
- * case.
- *
- * @param srcColorFactor the SDL_BlendFactor applied to the red, green, and
- *                       blue components of the source pixels.
- * @param dstColorFactor the SDL_BlendFactor applied to the red, green, and
- *                       blue components of the destination pixels.
- * @param colorOperation the SDL_BlendOperation used to combine the red,
- *                       green, and blue components of the source and
- *                       destination pixels.
- * @param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of
- *                       the source pixels.
- * @param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of
- *                       the destination pixels.
- * @param alphaOperation the SDL_BlendOperation used to combine the alpha
- *                       component of the source and destination pixels.
- * @returns an SDL_BlendMode that represents the chosen factors and
- *          operations.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- */
-inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
-                                        BlendFactor dstColorFactor,
-                                        BlendOperation colorOperation,
-                                        BlendFactor srcAlphaFactor,
-                                        BlendFactor dstAlphaFactor,
-                                        BlendOperation alphaOperation)
-{
-  return SDL_ComposeCustomBlendMode(srcColorFactor,
-                                    dstColorFactor,
-                                    colorOperation,
-                                    srcAlphaFactor,
-                                    dstAlphaFactor,
-                                    alphaOperation);
-}
-/** @} */
-
-} // namespace SDL
-
-#endif /* SDL3PP_BLENDMODE_H_ */
-
-
-// end --- SDL3pp_blendmode.h --- 
-
-
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_error.h --- 
-
-#ifndef SDL3PP_ERROR_H_
-#define SDL3PP_ERROR_H_
-
-#include <format>
-#include <string>
-#include <string_view>
-#include <SDL3/SDL_error.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryError Error Handling
- *
- * Simple error message routines for SDL.
- *
- * Most apps will interface with these APIs in exactly one function: when
- * almost any SDL function call reports failure, you can get a human-readable
- * string of the problem from GetError().
- *
- * These strings are maintained per-thread, and apps are welcome to set their
- * own errors, which is popular when building libraries on top of SDL for
- * other apps to consume. These strings are set by calling SDL_SetError().
- *
- * A common usage pattern is to have a function that returns true for success
- * and false for failure, and do this when something fails:
- *
- * ```c
- * if (something_went_wrong) {
- *    return SetError("The thing broke in this specific way: %d", errcode);
- * }
- * ```
- *
- * It's also common to just return `false` in this case if the failing thing
- * is known to call SetError(), so errors simply propagate through.
- *
- * @{
- */
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @param message the error message
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- */
-inline bool SetErrorUnformatted(StringParam message)
-{
-  return SDL_SetError("%s", static_cast<const char*>(message));
-}
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @tparam ARGS the formatting parameters
- * @param fmt a
- * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
- * style message format string
- * @param args additional parameters matching the `{}` tokens in the format
- * string, if any.
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat formatted-string
- *
- * @sa formatted-string
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- * @return false
- */
-template<class... ARGS>
-inline bool SetError(std::string_view fmt, ARGS... args)
-{
-  return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
-}
-
-/**
- * Set an error indicating that memory allocation failed.
- *
- * This function does not do any memory allocation.
- *
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OutOfMemory() { return SDL_OutOfMemory(); }
-
-/**
- * @brief Retrieve a message about the last error that occurred on the current
- * thread.
- *
- * It is possible for multiple errors to occur before calling GetError().
- * Only the last error is returned.
- *
- * The message is only applicable when an SDL function has signaled an error.
- * You must check the return values of SDL function calls to determine when to
- * appropriately call GetError(). You should *not* use the results of
- * GetError() to decide if an error has occurred! Sometimes SDL will set
- * an error string even when reporting success.
- *
- * SDL will *not* clear the error string for successful API calls. You *must*
- * check return values for failure cases before you can assume the error
- * string applies.
- *
- * Error strings are set per-thread, so an error set in a different thread
- * will not interfere with the current thread's operation.
- *
- * The returned value is a thread-local string which will remain valid until
- * the current thread's error string is changed. The caller should make a copy
- * if the value is needed after the next SDL API call.
- *
- * @return a message with information about the specific error that occurred,
- *          or an empty string if there hasn't been an error message set since
- *          the last call to ClearError().
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @sa ClearError()
- */
-inline const char* GetError() { return SDL_GetError(); }
-
-/**
- * @brief Clear any previous error message for this thread.
- *
- * @returns true.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @sa GetError()
- */
-inline bool ClearError() { return SDL_ClearError(); }
-
-/** @} */
-
-} // namespace SDL
-
-#endif /* SDL3PP_ERROR_H_ */
-
-
-// end --- SDL3pp_error.h --- 
-
-
-
-// begin --- SDL3pp_events.h --- 
-
-#ifndef SDL3PP_EVENTS_H_
-#define SDL3PP_EVENTS_H_
-
 #include <atomic>
 #include <chrono>
-#include <SDL3/SDL_events.h>
-
-// begin --- SDL3pp_callbackWrapper.h --- 
-
-#ifndef SDL3PP_CALLBACK_WRAPPER_H_
-#define SDL3PP_CALLBACK_WRAPPER_H_
-
+#include <concepts>
+#include <format>
 #include <functional>
 #include <memory>
+#include <optional>
+#include <ranges>
+#include <span>
+#include <string>
+#include <string_view>
+#include <type_traits>
 #include <unordered_map>
-#include <SDL3/SDL_assert.h>
+#include <variant>
+#include <vector>
+#include <SDL3/SDL.h>
 
 namespace SDL {
 
@@ -1022,33 +216,6 @@ private:
 
 /// @}
 
-} // namespace SDL
-
-#endif /* SDL3PP_CALLBACK_WRAPPER_H_ */
-
-
-// end --- SDL3pp_callbackWrapper.h --- 
-
-
-
-// begin --- SDL3pp_stdinc.h --- 
-
-#ifndef SDL3PP_STDINC_H_
-#define SDL3PP_STDINC_H_
-
-#include <SDL3/SDL_stdinc.h>
-
-// begin --- SDL3pp_objectWrapper.h --- 
-
-#ifndef SDL3PP_OBJECT_WRAPPER_H_
-#define SDL3PP_OBJECT_WRAPPER_H_
-
-#include <concepts>
-#include <memory>
-#include <type_traits>
-
-namespace SDL {
-
 /**
  * @defgroup CategoryObjectWrapper Helpers for Resource type wrapping
  *
@@ -1192,42 +359,6 @@ public:
 
 /// @}
 
-} // namespace SDL
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-template<class T, class POINTER>
-void std::swap(SDL::ObjectRef<T, POINTER>& left,
-               SDL::ObjectRef<T, POINTER>& right)
-{
-  left.swap(right);
-}
-
-template<class T, class DELETER>
-void std::swap(SDL::ObjectUnique<T, DELETER>& left,
-               SDL::ObjectUnique<T, DELETER>& right)
-{
-  left.swap(right);
-}
-
-#endif // DOXYGEN_SHOULD_SKIP_THIS
-
-#endif /* SDL3PP_OBJECT_WRAPPER_H_ */
-
-
-// end --- SDL3pp_objectWrapper.h --- 
-
-
-
-// begin --- SDL3pp_optionalRef.h --- 
-
-#ifndef SDL3PP_OPTIONAL_REF_H_
-#define SDL3PP_OPTIONAL_REF_H_
-
-#include <optional>
-
-namespace SDL {
-
 /**
  * @brief Shim to get optional-like interface for references
  *
@@ -1273,21 +404,124 @@ constexpr OptionalRef<T> fromNullable(T* ptr)
   return std::nullopt;
 }
 
-} // namespace SDL
+template<class T, class BASE>
+concept DerivedWrapper =
+  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
 
-#endif /* SDL3PP_OPTIONAL_REF_H_ */
+/**
+ * A wrapper around span that works for out derived-wrapper pattern
+ * (eg, Rect, Color)
+ *
+ */
+template<class T>
+class SpanRef
+{
+  std::span<T> value;
 
+public:
+  constexpr SpanRef() = default;
 
-// end --- SDL3pp_optionalRef.h --- 
+  template<DerivedWrapper<T> U, size_t N>
+  constexpr SpanRef(U (&other)[N])
+    : value(static_cast<T*>(other), N)
+  {
+  }
 
+  template<DerivedWrapper<T> U>
+  constexpr SpanRef(const std::span<U>& other)
+    : value(other.data(), other.size())
+  {
+  }
 
+  template<std::contiguous_iterator It>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, size_t count)
+    : value((T*)(&*first), count)
+  {
+  }
 
-// begin --- SDL3pp_ownPtr.h --- 
+  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, End last)
+    : value((T*)(&*first), size_t(last - first))
+  {
+  }
+  template<std::ranges::contiguous_range R>
+    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
+  constexpr SpanRef(R&& range)
+    : SpanRef(std::begin(range), std::end(range))
+  {
+  }
 
-#ifndef SDL3PP_OWN_PTR_H_
-#define SDL3PP_OWN_PTR_H_
+  constexpr size_t size() const { return value.size(); }
 
-namespace SDL {
+  constexpr T* data() const { return value.data(); }
+};
+
+#ifndef SDL3PP_ENABLE_STRING_PARAM
+
+#ifndef SDL3PP_DISABLE_STRING_PARAM
+#define SDL3PP_ENABLE_STRING_PARAM
+#endif // SDL3PP_DISABLE_STRING_PARAM
+
+#endif // SDL3PP_ENABLE_STRING_PARAM''
+
+/**
+ * @brief A safe and mostly efficient wrapper to std::string and
+ * std::string_view parameters
+ *
+ * This should only be declared in [function
+ * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
+ * using it otherwise is to ask for undefined behavior
+ */
+class StringParamImpl
+{
+  std::variant<std::monostate, const char*, std::string> data;
+
+public:
+  constexpr StringParamImpl(std::nullptr_t = nullptr) {}
+  constexpr StringParamImpl(const char* str)
+    : data(str)
+  {
+  }
+
+  StringParamImpl(const std::string& str)
+    : StringParamImpl(str.c_str())
+  {
+  }
+
+  StringParamImpl(std::string&& str)
+    : data(std::move(str))
+  {
+  }
+
+  StringParamImpl(std::string_view str)
+    : StringParamImpl(std::string{str})
+  {
+  }
+
+  StringParamImpl(const StringParamImpl&) = delete;
+  StringParamImpl(StringParamImpl&&) = default;
+  StringParamImpl& operator=(const StringParamImpl&) = delete;
+  StringParamImpl& operator=(StringParamImpl&&) = default;
+
+  operator const char*() const
+  {
+    struct Visitor
+    {
+      const char* operator()(const char* a) const { return a; }
+      const char* operator()(const std::string& s) const { return s.c_str(); }
+      const char* operator()(std::monostate) const { return ""; }
+    };
+    return std::visit(Visitor{}, data);
+  }
+};
+
+#ifdef SDL3PP_ENABLE_STRING_PARAM
+using StringParam = StringParamImpl;
+#else  // SDL3PP_ENABLE_STRING_PARAM
+using StringParam = const char*;
+#endif // SDL3PP_ENABLE_STRING_PARAM
 
 /**
  * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()
@@ -1427,90 +661,6 @@ template<class T>
 using OwnArray = ArrayBase<ObjectUnique<T[], PtrDeleter<T[]>>>;
 
 /// @}
-
-} // namespace SDL
-#endif /* SDL3PP_OWN_PTR_H_ */
-
-
-// end --- SDL3pp_ownPtr.h --- 
-
-
-
-// begin --- SDL3pp_spanRef.h --- 
-
-#ifndef SDL3PP_SPAN_REF_H_
-#define SDL3PP_SPAN_REF_H_
-
-#include <concepts>
-#include <ranges>
-#include <span>
-
-namespace SDL {
-
-template<class T, class BASE>
-concept DerivedWrapper =
-  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
-
-/**
- * A wrapper around span that works for out derived-wrapper pattern
- * (eg, Rect, Color)
- *
- */
-template<class T>
-class SpanRef
-{
-  std::span<T> value;
-
-public:
-  constexpr SpanRef() = default;
-
-  template<DerivedWrapper<T> U, size_t N>
-  constexpr SpanRef(U (&other)[N])
-    : value(static_cast<T*>(other), N)
-  {
-  }
-
-  template<DerivedWrapper<T> U>
-  constexpr SpanRef(const std::span<U>& other)
-    : value(other.data(), other.size())
-  {
-  }
-
-  template<std::contiguous_iterator It>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, size_t count)
-    : value((T*)(&*first), count)
-  {
-  }
-
-  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, End last)
-    : value((T*)(&*first), size_t(last - first))
-  {
-  }
-  template<std::ranges::contiguous_range R>
-    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
-  constexpr SpanRef(R&& range)
-    : SpanRef(std::begin(range), std::end(range))
-  {
-  }
-
-  constexpr size_t size() const { return value.size(); }
-
-  constexpr T* data() const { return value.data(); }
-};
-
-} // namespace SDL
-
-#endif /* SDL3PP_SPAN_REF_H_ */
-
-
-// end --- SDL3pp_spanRef.h --- 
-
-
-
-namespace SDL {
 
 /**
  * @defgroup CategoryStdinc Standard Library Functionality
@@ -6406,2956 +5556,1852 @@ inline void ObjectDeleter<SDL_iconv_data_t>::operator()(IConvRef iconv) const
 
 #pragma endregion impl
 
-} // namespace SDL
-
-#endif /* SDL3PP_STDINC_H_ */
-
-
-// end --- SDL3pp_stdinc.h --- 
-
-
-
-// begin --- SDL3pp_video.h --- 
-
-#ifndef SDL3PP_VIDEO_H_
-#define SDL3PP_VIDEO_H_
-
-#include <memory>
-#include <optional>
-#include <vector>
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_video.h>
-
-// begin --- SDL3pp_properties.h --- 
-
-#ifndef SDL3PP_PROPERTIES_H_
-#define SDL3PP_PROPERTIES_H_
-
-#include <SDL3/SDL_properties.h>
-
-namespace SDL {
-
 /**
- * @defgroup CategoryProperties Object Properties
+ * @defgroup CategoryAssert Assertions
  *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
+ * A helpful assertion macro!
  *
- * All properties are part of a property group (SDL_PropertiesID). A property
- * group can be created with the SDL_CreateProperties function and destroyed
- * with the SDL_DestroyProperties function.
+ * SDL assertions operate like your usual `assert` macro, but with some added
+ * features:
  *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
+ * - It uses a trick with the `sizeof` operator, so disabled assertions
+ *   vaporize out of the compiled code, but variables only referenced in the
+ *   assertion won't trigger compiler warnings about being unused.
+ * - It is safe to use with a dangling-else: `if (x) SDL_assert(y); else
+ *   do_something();`
+ * - It works the same everywhere, instead of counting on various platforms'
+ *   compiler and C runtime to behave.
+ * - It provides multiple levels of assertion (SDL_assert, SDL_assert_release,
+ *   SDL_assert_paranoid) instead of a single all-or-nothing option.
+ * - It offers a variety of responses when an assertion fails (retry, trigger
+ *   the debugger, abort the program, ignore the failure once, ignore it for
+ *   the rest of the program's run).
+ * - It tries to show the user a dialog by default, if possible, but the app
+ *   can provide a callback to handle assertion failures however they like.
+ * - It lets failed assertions be retried. Perhaps you had a network failure
+ *   and just want to retry the test after plugging your network cable back
+ *   in? You can.
+ * - It lets the user ignore an assertion failure, if there's a harmless
+ *   problem that one can continue past.
+ * - It lets the user mark an assertion as ignored for the rest of the
+ *   program's run; if there's a harmless problem that keeps popping up.
+ * - It provides statistics and data on all failed assertions to the app.
+ * - It allows the default assertion handler to be controlled with environment
+ *   variables, in case an automated script needs to control it.
+ * - It can be used as an aid to Clang's static analysis; it will treat SDL
+ *   assertions as universally true (under the assumption that you are serious
+ *   about the asserted claims and that your debug builds will detect when
+ *   these claims were wrong). This can help the analyzer avoid false
+ *   positives.
  *
- * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
- * `void*` pointer types.
- * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
- * types.
- * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
- * 64-bit integer types.
- * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
- * point types.
- * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
- * boolean types.
+ * To use it: compile a debug build and just sprinkle around tests to check
+ * your code!
  *
- * Properties can be removed from a group by using PropertiesBase.Clear().
  * @{
  */
 
-// Forward decl
-template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-struct PropertiesBase;
-
 /**
- * Handle to a non owned properties
+ * Possible outcomes from a triggered assertion.
  *
- * To create a new property group use CreateProperties()
+ * When an enabled assertion triggers, it may call the assertion handler
+ * (possibly one provided by the app via SDL_SetAssertionHandler), which will
+ * return one of these values, possibly after asking the user.
  *
- * @cat resource
- *
- * @sa resource
- * @sa PropertiesBase
- * @sa Properties
- * @sa CreateProperties()
- */
-using PropertiesRef =
-  PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
-
-struct PropertiesDeleter
-{
-  using pointer = FancyPointer<SDL_PropertiesID>;
-  inline void operator()(PropertiesRef props) const;
-};
-
-/**
- * Handle to an owned properties
- *
- * @cat resource
- *
- * @sa resource
- * @sa PropertiesBase
- * @sa PropertiesRef
- */
-using Properties =
-  PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
-
-/**
- * SDL property type
+ * Then SDL will respond based on this outcome (loop around to retry the
+ * condition, try to break in a debugger, kill the program, or ignore the
+ * problem).
  *
  * @since This enum is available since SDL 3.2.0.
  */
-using PropertyType = SDL_PropertyType;
+using AssertState = SDL_AssertState;
 
 /**
- * @name Callbacks for PropertiesBase.SetPointerWithCleanup()
- * @{
+ * Retry the assert immediately.
  */
+constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
 
 /**
- * A callback used to free resources when a property is deleted.
- *
- * This should release any resources associated with `value` that are no
- * longer needed.
- *
- * This callback is set per-property. Different properties in the same group
- * can have different cleanup callbacks.
- *
- * This callback will be called _during_ SetPointerWithCleanup() if
- * the function fails for any reason.
- *
- * @param userdata an app-defined pointer passed to the callback.
- * @param value the pointer assigned to the property to clean up.
- *
- * @threadsafety This callback may fire without any locks held; if this is a
- *               concern, the app should provide its own locking.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa PropertiesBase.SetPointerWithCleanup()
+ * Make the debugger trigger a breakpoint.
  */
-using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
 
 /**
- * A callback used to free resources when a property is deleted.
- *
- * @sa PropertiesRef.CleanupPropertyCallback
- * @sa PropertiesBase.SetPointerWithCleanup()
- * @sa result-callback
- *
- * @cat result-callback
+ * Terminate the program.
  */
-using CleanupPropertyCB = std::function<void(void*)>;
-
-/// @}
-/**
- * @name Callbacks for PropertiesBase.Enumerate()
- * @{
- */
+constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
 
 /**
- * A callback used to enumerate all the properties in a group of properties.
- *
- * This callback is called from PropertiesBase::Enumerate(), and is called once
- * per property in the set.
- *
- * @param userdata an app-defined pointer passed to the callback.
- * @param props the SDL_PropertiesID that is being enumerated.
- * @param name the next property name in the enumeration.
- *
- * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
- *               callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa PropertiesBase::Enumerate()
+ * Ignore the assert.
  */
-using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
 
 /**
- * A callback used to enumerate all the properties in a group of properties.
- *
- * This callback is called from PropertiesBase::Enumerate(), and is called once
- * per property in the set.
- *
- * @sa EnumeratePropertyCallback
- * @sa PropertiesBase::Enumerate()
- * @sa immediate-callback
- *
- * @cat immediate-callback
+ * Ignore the assert from now on.
  */
-using EnumeratePropertiesCB =
-  std::function<void(PropertiesRef props, const char* name)>;
-
-/// @}
-
-// Forward decl
-struct PropertiesLock;
+constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
 
 /**
- * Wrap properties id
+ * Information about an assertion failure.
  *
- * A property is a variable that can be created and retrieved by name at
- * runtime.
+ * This structure is filled in with information about a triggered assertion,
+ * used by the assertion handler, then added to the assertion report. This is
+ * returned as a linked list from SDL_GetAssertionReport().
  *
- * All properties are part of a property group (Properties). A property
- * group can be created with the Properties constructor and destroyed
- * with this goes out of scope.
- *
- * Properties can be added to and retrieved from a property group through the
- * following functions:
- *
- * - SetPointer() and GetPointer() operate on `void*`
- *   pointer types.
- * - SetString() and GetString() operate on string types.
- * - SetNumber() and GetNumber() operate on signed 64-bit
- *   integer types.
- * - SetFloat() and GetFloat() operate on floating point
- *   types.
- * - SetBoolean() and GetBoolean() operate on boolean
- *   types.
- *
- * Properties can be removed from a group by using SDL_ClearProperty.
- *
- * To create a new properties group use CreateProperties().
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat resource
- *
- * @sa resource
- * @sa CreateProperties()
- * @sa Properties
- * @sa PropertiesRef
+ * @since This struct is available since SDL 3.2.0.
  */
-template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-struct PropertiesBase : T
+using AssertData = SDL_AssertData;
+
+/**
+ * Never call this directly.
+ *
+ * Use the SDL_assert macros instead.
+ *
+ * @param data assert data structure.
+ * @param func function name.
+ * @param file file name.
+ * @param line line number.
+ * @returns assert state.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline AssertState ReportAssertion(AssertData* data,
+                                   StringParam func,
+                                   StringParam file,
+                                   int line)
 {
-  using T::T;
-
-  /**
-   * Copy a group of properties.
-   *
-   * Copy all the properties from one group of properties to another, with the
-   * exception of properties requiring cleanup (set using
-   * SetPointerWithCleanup()), which will not be copied. Any
-   * property that already exists on `dst` will be overwritten.
-   *
-   * @param dst the destination properties.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool CopyPropertiesTo(PropertiesRef dst) const
-  {
-    return SDL_CopyProperties(T::get(), dst.get());
-  }
-
-  /**
-   * Lock a group of properties.
-   *
-   * Obtain a multi-threaded lock for these properties. Other threads will wait
-   * while trying to lock these properties until they are unlocked. Properties
-   * must be unlocked before they are destroyed.
-   *
-   * The lock is automatically taken when setting individual properties, this
-   * function is only needed when you want to set several properties atomically
-   * or want to guarantee that properties being queried aren't freed in another
-   * thread.
-   *
-   * @returns PropertiesLock on success or false on failure; call GetError() for
-   * more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesLock.UnlockProperties()
-   */
-  PropertiesLock Lock() &;
-
-  /**
-   * Set a pointer property in a group of properties with a cleanup
-   * function that is called when the property is deleted.
-   *
-   * The cleanup function is also called if setting the property fails for any
-   * reason.
-   *
-   * For simply setting basic data types, like numbers, bools, or strings, use
-   * SetNumber(), SetBoolean(), or SetString()
-   * instead, as those functions will handle cleanup on your behalf. This
-   * function is only for more complex, custom data.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @param cleanup the function to call when this property is deleted.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @sa result-callback
-   *
-   * @cat result-callback
-   *
-   */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             CleanupPropertyCB cleanup)
-  {
-    using Wrapper = CallbackWrapper<CleanupPropertyCB>;
-
-    return SetPointerWithCleanup(std::move(name),
-                                 value,
-                                 &Wrapper::CallOnce,
-                                 Wrapper::Wrap(std::move(cleanup)));
-  }
-
-  /**
-   * Set a pointer property in a group of properties with a cleanup function
-   * that is called when the property is deleted.
-   *
-   * The cleanup function is also called if setting the property fails for any
-   * reason.
-   *
-   * For simply setting basic data types, like numbers, bools, or strings, use
-   * SetNumber(), SetBoolean(), or SetString()
-   * instead, as those functions will handle cleanup on your behalf. This
-   * function is only for more complex, custom data.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @param cleanup the function to call when this property is deleted, or NULL
-   *                if no cleanup is necessary.
-   * @param userdata a pointer that is passed to the cleanup function.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.GetPointer
-   * @sa PropertiesRef.SetPointer
-   * @sa PropertiesRef.CleanupCallback
-   */
-  bool SetPointerWithCleanup(StringParam name,
-                             void* value,
-                             CleanupPropertyCallback cleanup,
-                             void* userdata)
-  {
-    return SDL_SetPointerPropertyWithCleanup(
-      T::get(), name, value, cleanup, userdata);
-  }
-
-  /**
-   * Set a pointer property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetPointer()
-   * @sa Has()
-   * @sa SetBoolean()
-   * @sa SetFloat()
-   * @sa SetNumber()
-   * @sa SetPointerWithCleanup()
-   * @sa SetString()
-   */
-  bool SetPointer(StringParam name, void* value)
-  {
-    return SDL_SetPointerProperty(T::get(), name, value);
-  }
-
-  /**
-   * Set a string property in a group of properties.
-   *
-   * This function makes a copy of the string; the caller does not have to
-   * preserve the data after this call completes.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property, or NULL to delete the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetString()
-   */
-  bool SetString(StringParam name, StringParam value)
-  {
-    return SDL_SetStringProperty(T::get(), name, value);
-  }
-
-  /**
-   * Set an integer property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetNumber()
-   */
-  bool SetNumber(StringParam name, Sint64 value)
-  {
-    return SDL_SetNumberProperty(T::get(), name, value);
-  }
-
-  /**
-   * Set a floating point property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetFloat()
-   */
-  bool SetFloat(StringParam name, float value)
-  {
-    return SDL_SetFloatProperty(T::get(), name, value);
-  }
-
-  /**
-   * Set a boolean property in a group of properties.
-   *
-   * @param name the name of the property to modify.
-   * @param value the new value of the property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetBoolean()
-   */
-  bool SetBoolean(StringParam name, bool value)
-  {
-    return SDL_SetBooleanProperty(T::get(), name, value);
-  }
-
-  /**
-   * Return whether a property exists.
-   *
-   * @param name the name of the property to query.
-   * @returns true if the property exists, or false if it doesn't.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetType()
-   */
-  bool Has(StringParam name) const { return SDL_HasProperty(T::get(), name); }
-
-  /**
-   * Get the type of a property.
-   *
-   * @param name the name of the property to query.
-   * @returns the type of the property, or SDL_PROPERTY_TYPE_INVALID if it is
-   *          not set.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Has()
-   */
-  PropertyType GetType(StringParam name) const
-  {
-    return SDL_GetPropertyType(T::get(), name);
-  }
-
-  /**
-   * Get a pointer property from a group of properties.
-   *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a pointer property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a pointer property.
-   *
-   * @threadsafety It is safe to call this function from any thread, although
-   *               the data returned is not protected and could potentially be
-   *               freed if you call SetProperty() or
-   *               ClearProperty() on these properties from another thread.
-   *               If you need to avoid this, use SDL_LockProperties() and
-   *               SDL_UnlockProperties().
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetBoolean()
-   * @sa GetFloat()
-   * @sa GetNumber()
-   * @sa GetType()
-   * @sa GetString()
-   * @sa Has()
-   * @sa SetPointer()
-   */
-  void* GetPointer(StringParam name, void* default_value) const
-  {
-    return SDL_GetPointerProperty(T::get(), name, default_value);
-  }
-
-  /**
-   * Get a string property from a group of properties.
-   *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a string property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a string property.
-   *
-   * @threadsafety It is safe to call this function from any thread, although
-   *               the data returned is not protected and could potentially be
-   *               freed if you call SetString() or
-   *               ClearProperty() on these properties from another thread.
-   *               If you need to avoid this, use SDL_LockProperties() and
-   *               SDL_UnlockProperties().
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesRef.GetType()
-   * @sa PropertiesRef.Has()
-   * @sa PropertiesRef.SetString()
-   */
-  const char* GetString(StringParam name, StringParam default_value) const
-  {
-    return SDL_GetStringProperty(T::get(), name, default_value);
-  }
-
-  /**
-   * Get a number property from a group of properties.
-   *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a number property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a number property.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetType()
-   * @sa Has()
-   * @sa SetNumber()
-   */
-  Sint64 GetNumber(StringParam name, Sint64 default_value) const
-  {
-    return SDL_GetNumberProperty(T::get(), name, default_value);
-  }
-
-  /**
-   * Get a floating point property from a group of properties.
-   *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a floating point property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a float property.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetType()
-   * @sa Has()
-   * @sa SetFloat()
-   */
-  float GetFloat(StringParam name, float default_value) const
-  {
-    return SDL_GetFloatProperty(T::get(), name, default_value);
-  }
-
-  /**
-   * Get a boolean property from a group of properties.
-   *
-   * You can use SDL_GetPropertyType() to query whether the property exists and
-   * is a boolean property.
-   *
-   * By convention, the names of properties that SDL exposes on objects will
-   * start with "SDL.", and properties that SDL uses internally will start with
-   * "SDL.internal.". These should be considered read-only and should not be
-   * modified by applications.
-   *
-   * @param name the name of the property to query.
-   * @param default_value the default value of the property.
-   * @returns the value of the property, or `default_value` if it is not set or
-   *          not a boolean property.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetType()
-   * @sa Has()
-   * @sa SetBoolean()
-   */
-  bool GetBoolean(StringParam name, bool default_value) const
-  {
-    return SDL_GetBooleanProperty(T::get(), name, default_value);
-  }
-
-  /**
-   * Clear a property from a group of properties.
-   *
-   * @param name the name of the property to clear.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * @param outputIter an output iterator to be assigned to each property name
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  template<std::output_iterator<const char*> IT>
-  bool Enumerate(IT outputIter) const
-  {
-    return Enumerate(
-      [&outputIter](auto props, const char name) { *outputIter++ = name; });
-  }
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * The callback function is called for each property in the group of
-   * properties. The properties are locked during enumeration.
-   *
-   * @param callback the function to call for each property.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @cat immediate-callback
-   *
-   * @sa immediate-callback
-   */
-  bool Enumerate(EnumeratePropertiesCB callback) const
-  {
-    return Enumerate(
-      [](void* userdata, SDL_PropertiesID props, const char* name) {
-        auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
-        f({props}, name);
-      },
-      &callback);
-  }
-
-  /**
-   * Enumerate the properties contained in a group of properties.
-   *
-   * The callback function is called for each property in the group of
-   * properties. The properties are locked during enumeration.
-   *
-   * @param callback the function to call for each property.
-   * @param userdata a pointer that is passed to `callback`.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
-  {
-    return SDL_EnumerateProperties(T::get(), callback, userdata);
-  }
-
-  /**
-   * Destroy a group of properties.
-   *
-   * All properties are deleted and their cleanup functions will be called, if
-   * any.
-   *
-   * @post This object becomes empty after the call.
-   *
-   * @threadsafety This function should not be called while these properties are
-   *               locked or other threads might be setting or getting values
-   *               from these properties.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Destroy() { return SDL_DestroyProperties(T::release()); }
-
-  /**
-   * Returns the number of properties this has
-   *
-   * This uses Enumerate() internally, so might not be so fast
-   */
-  Uint64 GetCount() const
-  {
-    Uint64 count = 0;
-    if (Enumerate([&](SDL_PropertiesID, const char*) { count++; })) {
-      return count;
-    }
-    return 0;
-  }
-};
-
-/**
- * Wrap the lock state for PropertiesBase
- *
- */
-class PropertiesLock
-{
-  PropertiesRef properties;
-
-  /**
-   * @sa PropertiesBase.Lock()
-   */
-  explicit PropertiesLock(PropertiesRef properties)
-    : properties(properties)
-  {
-  }
-
-public:
-  /// Default ctor
-  PropertiesLock()
-    : properties(nullptr)
-  {
-  }
-
-  PropertiesLock(const PropertiesLock& other) = delete;
-
-  /// Move ctor
-  PropertiesLock(PropertiesLock&& other)
-    : properties(std::move(other.properties))
-  {
-  }
-
-  /**
-   * @sa Unlock()
-   */
-  ~PropertiesLock() { Unlock(); }
-
-  PropertiesLock& operator=(PropertiesLock other)
-  {
-    std::swap(properties, other.properties);
-    return *this;
-  }
-
-  /**
-   * Returns true if lock is active
-   */
-  constexpr operator bool() const { return bool(properties); }
-
-  /**
-   * Unlock a group of properties.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PropertiesBase.Lock()
-   */
-  void Unlock() { return SDL_UnlockProperties(properties.release()); }
-
-  template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-  friend class PropertiesBase;
-};
-
-constexpr PropertyType PROPERTY_TYPE_INVALID = SDL_PROPERTY_TYPE_INVALID;
-
-constexpr PropertyType PROPERTY_TYPE_POINTER = SDL_PROPERTY_TYPE_POINTER;
-
-constexpr PropertyType PROPERTY_TYPE_STRING = SDL_PROPERTY_TYPE_STRING;
-
-constexpr PropertyType PROPERTY_TYPE_NUMBER = SDL_PROPERTY_TYPE_NUMBER;
-
-constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT;
-
-constexpr PropertyType PROPERTY_TYPE_BOOLEAN = SDL_PROPERTY_TYPE_BOOLEAN;
-
-/**
- * Get the global SDL properties.
- *
- * @returns a valid property ID on success or 0 on failure; call
- *          GetError() for more information.
- */
-inline PropertiesRef GetGlobalProperties()
-{
-  return FancyPointer{SDL_GetGlobalProperties()};
+  return SDL_ReportAssertion(data, func, file, line);
 }
 
 /**
- * Create a group of properties.
+ * A @ref callback that fires when an SDL assertion fails.
  *
- * All properties are automatically destroyed when Quit() is called.
+ * @param data a pointer to the SDL_AssertData structure corresponding to the
+ *             current assertion.
+ * @param userdata what was passed as `userdata` to SDL_SetAssertionHandler().
+ * @returns an SDL_AssertState value indicating how to handle the failure.
  *
- * @returns a valid Properties for a new group of properties, or false on
- * failure; call GetError() for more information.
+ * @threadsafety This callback may be called from any thread that triggers an
+ *               assert at any time.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AssertionHandler = SDL_AssertionHandler;
+
+/**
+ * Set an application-defined assertion handler.
+ *
+ * This function allows an application to show its own assertion UI and/or
+ * force the response to an assertion failure. If the application doesn't
+ * provide this, SDL will try to do the right thing, popping up a
+ * system-specific GUI dialog, and probably minimizing any fullscreen windows.
+ *
+ * This callback may fire from any thread, but it runs wrapped in a mutex, so
+ * it will only fire from one thread at a time.
+ *
+ * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
+ *
+ * @param handler the SDL_AssertionHandler function to call when an assertion
+ *                fails or NULL for the default handler.
+ * @param userdata a pointer that is passed to `handler`.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Properties
+ * @sa SDL_GetAssertionHandler
  */
-inline Properties CreateProperties()
+inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
 {
-  return Properties{SDL_CreateProperties()};
+  return SDL_SetAssertionHandler(handler, userdata);
 }
-
-#pragma region impl
-/// @}
-
-inline void PropertiesDeleter::operator()(PropertiesRef props) const
-{
-  props.Destroy();
-}
-
-template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
-PropertiesLock PropertiesBase<T>::Lock() &
-{
-  if (SDL_LockProperties(T::get())) return {*this};
-  return {nullptr};
-}
-
-#pragma endregion impl
-
-} // namespace SDL
-
-#endif /* SDL3PP_PROPERTIES_H_ */
-
-
-// end --- SDL3pp_properties.h --- 
-
-
-
-// begin --- SDL3pp_rect.h --- 
-
-#ifndef SDL3PP_RECT_H_
-#define SDL3PP_RECT_H_
-
-#include <optional>
-#include <span>
-#include <SDL3/SDL_rect.h>
-
-namespace SDL {
 
 /**
- * @defgroup CategoryRect Rectangle Functions
+ * Get the default assertion handler.
  *
- * Some helper functions for managing rectangles and 2D points, in both
- * integer and floating point versions.
+ * This returns the function pointer that is called by default when an
+ * assertion is triggered. This is an internal function provided by SDL, that
+ * is used for assertions when SDL_SetAssertionHandler() hasn't been used to
+ * provide a different function.
+ *
+ * @returns the default SDL_AssertionHandler that is called when an assert
+ *          triggers.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionHandler
+ */
+inline AssertionHandler GetDefaultAssertionHandler()
+{
+  return SDL_GetDefaultAssertionHandler();
+}
+
+/**
+ * Get the current assertion handler.
+ *
+ * This returns the function pointer that is called when an assertion is
+ * triggered. This is either the value last passed to
+ * SDL_SetAssertionHandler(), or if no application-specified function is set,
+ * is equivalent to calling SDL_GetDefaultAssertionHandler().
+ *
+ * The parameter `puserdata` is a pointer to a void*, which will store the
+ * "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value
+ * will always be NULL for the default handler. If you don't care about this
+ * data, it is safe to pass a NULL pointer to this function to ignore it.
+ *
+ * @param puserdata pointer which is filled with the "userdata" pointer that
+ *                  was passed to SDL_SetAssertionHandler().
+ * @returns the SDL_AssertionHandler that is called when an assert triggers.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetAssertionHandler
+ */
+inline AssertionHandler GetAssertionHandler(void** puserdata)
+{
+  return SDL_GetAssertionHandler(puserdata);
+}
+
+/**
+ * Get a list of all assertion failures.
+ *
+ * This function gets all assertions triggered since the last call to
+ * SDL_ResetAssertionReport(), or the start of the program.
+ *
+ * The proper way to examine this data looks something like this:
+ *
+ * ```c
+ * const SDL_AssertData *item = SDL_GetAssertionReport();
+ * while (item) {
+ *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
+ *           item->condition, item->function, item->filename,
+ *           item->linenum, item->trigger_count,
+ *           item->always_ignore ? "yes" : "no");
+ *    item = item->next;
+ * }
+ * ```
+ *
+ * @returns a list of all failed assertions or NULL if the list is empty. This
+ *          memory should not be modified or freed by the application. This
+ *          pointer remains valid until the next call to SDL_Quit() or
+ *          SDL_ResetAssertionReport().
+ *
+ * @threadsafety This function is not thread safe. Other threads calling
+ *               SDL_ResetAssertionReport() simultaneously, may render the
+ *               returned pointer invalid.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_ResetAssertionReport
+ */
+inline const AssertData* GetAssertionReport()
+{
+  return SDL_GetAssertionReport();
+}
+
+/**
+ * Clear the list of all assertion failures.
+ *
+ * This function will clear the list of all assertions triggered up to that
+ * point. Immediately following this call, SDL_GetAssertionReport will return
+ * no items. In addition, any previously-triggered assertions will be reset to
+ * a trigger_count of zero, and their always_ignore state will be false.
+ *
+ * @threadsafety This function is not thread safe. Other threads triggering an
+ *               assertion, or simultaneously calling this function may cause
+ *               memory leaks or crashes.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionReport
+ */
+inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+
+/// @}
+
+/**
+ * @defgroup CategoryBlendmode Blend modes
+ *
+ * Blend modes decide how two colors will mix together. There are both
+ * standard modes for basic needs and a means to create custom modes,
+ * dictating what sort of math to do on what color components.
+ *
  * @{
  */
 
-// Forward decl
-struct FPoint;
-
-// Forward decl
-struct Rect;
-
-// Forward decl
-struct FRect;
+/**
+ * @brief  A set of blend modes used in drawing operations.
+ *
+ * These predefined blend modes are supported everywhere.
+ *
+ * Additional values may be obtained from ComposeCustomBlendMode().
+ */
+using BlendMode = SDL_BlendMode;
 
 /**
- * @brief The structure that defines a point (using integers)
+ * @brief The blend operation used when combining source and destination pixel
+ * components.
  *
- * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ */
+using BlendOperation = SDL_BlendOperation;
+
+/**
+ * dst + src: supported by all renderers
+ */
+constexpr BlendOperation BLENDOPERATION_ADD = SDL_BLENDOPERATION_ADD;
+
+/**
+ * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
+
+/**
+ * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
+  SDL_BLENDOPERATION_REV_SUBTRACT;
+
+/**
+ * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
+
+/**
+ * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
+
+/**
+ * @brief The normalized factor used to multiply pixel components.
+ *
+ * The blend factors are multiplied with the pixels from a drawing operation
+ * (src) and the pixels from the render target (dst) before the blend
+ * operation. The comma-separated factors listed above are always applied in
+ * the component order red, green, blue, and alpha.
+ *
+ */
+using BlendFactor = SDL_BlendFactor;
+
+/**
+ * 0, 0, 0, 0
+ */
+constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO;
+
+/**
+ * 1, 1, 1, 1
+ */
+constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE;
+
+/**
+ * srcR, srcG, srcB, srcA
+ */
+constexpr BlendFactor BLENDFACTOR_SRC_COLOR = SDL_BLENDFACTOR_SRC_COLOR;
+
+/**
+ * 1-srcR, 1-srcG, 1-srcB, 1-srcA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_COLOR =
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR;
+
+/**
+ * srcA, srcA, srcA, srcA
+ */
+constexpr BlendFactor BLENDFACTOR_SRC_ALPHA = SDL_BLENDFACTOR_SRC_ALPHA;
+
+/**
+ * 1-srcA, 1-srcA, 1-srcA, 1-srcA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_ALPHA =
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+
+/**
+ * dstR, dstG, dstB, dstA
+ */
+constexpr BlendFactor BLENDFACTOR_DST_COLOR = SDL_BLENDFACTOR_DST_COLOR;
+
+/**
+ * 1-dstR, 1-dstG, 1-dstB, 1-dstA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_COLOR =
+  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR;
+
+/**
+ * dstA, dstA, dstA, dstA
+ */
+constexpr BlendFactor BLENDFACTOR_DST_ALPHA = SDL_BLENDFACTOR_DST_ALPHA;
+
+/**
+ * 1-dstA, 1-dstA, 1-dstA, 1-dstA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
+  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA;
+
+/**
+ * @brief Compose a custom blend mode for renderers.
+ *
+ * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
+ * the SDL_BlendMode returned by this function if the renderer supports it.
+ *
+ * A blend mode controls how the pixels from a drawing operation (source) get
+ * combined with the pixels from the render target (destination). First, the
+ * components of the source and destination pixels get multiplied with their
+ * blend factors. Then, the blend operation takes the two products and
+ * calculates the result that will get stored in the render target.
+ *
+ * Expressed in pseudocode, it would look like this:
+ *
+ * ```c
+ * dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);
+ * dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);
+ * ```
+ *
+ * Where the functions `colorOperation(src, dst)` and `alphaOperation(src,
+ * dst)` can return one of the following:
+ *
+ * - `src + dst`
+ * - `src - dst`
+ * - `dst - src`
+ * - `min(src, dst)`
+ * - `max(src, dst)`
+ *
+ * The red, green, and blue components are always multiplied with the first,
+ * second, and third components of the SDL_BlendFactor, respectively. The
+ * fourth component is not used.
+ *
+ * The alpha component is always multiplied with the fourth component of the
+ * SDL_BlendFactor. The other components are not used in the alpha
+ * calculation.
+ *
+ * Support for these blend modes varies for each renderer. To check if a
+ * specific SDL_BlendMode is supported, create a renderer and pass it to
+ * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
+ * return with an error if the blend mode is not supported.
+ *
+ * This list describes the support of custom blend modes for each renderer.
+ * All renderers support the four blend modes listed in the SDL_BlendMode
+ * enumeration.
+ *
+ * - **direct3d**: Supports all operations with all factors. However, some
+ *   factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and
+ *   `SDL_BLENDOPERATION_MAXIMUM`.
+ * - **direct3d11**: Same as Direct3D 9.
+ * - **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all
+ *   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
+ * - **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,
+ *   `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`
+ *   operations with all factors.
+ * - **psp**: No custom blend mode support.
+ * - **software**: No custom blend mode support.
+ *
+ * Some renderers do not provide an alpha component for the default render
+ * target. The `SDL_BLENDFACTOR_DST_ALPHA` and
+ * `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
+ * case.
+ *
+ * @param srcColorFactor the SDL_BlendFactor applied to the red, green, and
+ *                       blue components of the source pixels.
+ * @param dstColorFactor the SDL_BlendFactor applied to the red, green, and
+ *                       blue components of the destination pixels.
+ * @param colorOperation the SDL_BlendOperation used to combine the red,
+ *                       green, and blue components of the source and
+ *                       destination pixels.
+ * @param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ *                       the source pixels.
+ * @param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ *                       the destination pixels.
+ * @param alphaOperation the SDL_BlendOperation used to combine the alpha
+ *                       component of the source and destination pixels.
+ * @returns an SDL_BlendMode that represents the chosen factors and
+ *          operations.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ */
+inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
+                                        BlendFactor dstColorFactor,
+                                        BlendOperation colorOperation,
+                                        BlendFactor srcAlphaFactor,
+                                        BlendFactor dstAlphaFactor,
+                                        BlendOperation alphaOperation)
+{
+  return SDL_ComposeCustomBlendMode(srcColorFactor,
+                                    dstColorFactor,
+                                    colorOperation,
+                                    srcAlphaFactor,
+                                    dstAlphaFactor,
+                                    alphaOperation);
+}
+/** @} */
+
+/**
+ * @defgroup CategoryError Error Handling
+ *
+ * Simple error message routines for SDL.
+ *
+ * Most apps will interface with these APIs in exactly one function: when
+ * almost any SDL function call reports failure, you can get a human-readable
+ * string of the problem from GetError().
+ *
+ * These strings are maintained per-thread, and apps are welcome to set their
+ * own errors, which is popular when building libraries on top of SDL for
+ * other apps to consume. These strings are set by calling SDL_SetError().
+ *
+ * A common usage pattern is to have a function that returns true for success
+ * and false for failure, and do this when something fails:
+ *
+ * ```c
+ * if (something_went_wrong) {
+ *    return SetError("The thing broke in this specific way: %d", errcode);
+ * }
+ * ```
+ *
+ * It's also common to just return `false` in this case if the failing thing
+ * is known to call SetError(), so errors simply propagate through.
+ *
+ * @{
+ */
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @param message the error message
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ */
+inline bool SetErrorUnformatted(StringParam message)
+{
+  return SDL_SetError("%s", static_cast<const char*>(message));
+}
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @tparam ARGS the formatting parameters
+ * @param fmt a
+ * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ * style message format string
+ * @param args additional parameters matching the `{}` tokens in the format
+ * string, if any.
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat formatted-string
+ *
+ * @sa formatted-string
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ * @return false
+ */
+template<class... ARGS>
+inline bool SetError(std::string_view fmt, ARGS... args)
+{
+  return SetError(
+    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+}
+
+/**
+ * Set an error indicating that memory allocation failed.
+ *
+ * This function does not do any memory allocation.
+ *
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OutOfMemory() { return SDL_OutOfMemory(); }
+
+/**
+ * @brief Retrieve a message about the last error that occurred on the current
+ * thread.
+ *
+ * It is possible for multiple errors to occur before calling GetError().
+ * Only the last error is returned.
+ *
+ * The message is only applicable when an SDL function has signaled an error.
+ * You must check the return values of SDL function calls to determine when to
+ * appropriately call GetError(). You should *not* use the results of
+ * GetError() to decide if an error has occurred! Sometimes SDL will set
+ * an error string even when reporting success.
+ *
+ * SDL will *not* clear the error string for successful API calls. You *must*
+ * check return values for failure cases before you can assume the error
+ * string applies.
+ *
+ * Error strings are set per-thread, so an error set in a different thread
+ * will not interfere with the current thread's operation.
+ *
+ * The returned value is a thread-local string which will remain valid until
+ * the current thread's error string is changed. The caller should make a copy
+ * if the value is needed after the next SDL API call.
+ *
+ * @return a message with information about the specific error that occurred,
+ *          or an empty string if there hasn't been an error message set since
+ *          the last call to ClearError().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @sa ClearError()
+ */
+inline const char* GetError() { return SDL_GetError(); }
+
+/**
+ * @brief Clear any previous error message for this thread.
+ *
+ * @returns true.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @sa GetError()
+ */
+inline bool ClearError() { return SDL_ClearError(); }
+
+/** @} */
+
+/**
+ * @defgroup CategoryGUID GUIDs
+ *
+ * A GUID is a 128-bit value that represents something that is uniquely
+ * identifiable by this value: "globally unique."
+ *
+ * SDL provides functions to convert a GUID to/from a string.
+ * @{
+ */
+
+/**
+ * An SDL_GUID is a 128-bit identifier for an input device that identifies
+ * that device across runs of SDL programs on the same platform.
+ *
+ * If the device is detached and then re-attached to a different port, or if
+ * the base system is rebooted, the device should still report the same GUID.
+ *
+ * GUIDs are as precise as possible but are not guaranteed to distinguish
+ * physically distinct but equivalent devices. For example, two game
+ * controllers from the same vendor with the same product ID and revision may
+ * have the same GUID.
+ *
+ * GUIDs may be platform-dependent (i.e., the same device may report different
+ * GUIDs on different operating systems).
+ *
+ * @since This struct is available since SDL 3.2.0.
  *
  * @cat wrap-extending-struct
  *
  * @sa wrap-extending-struct
  */
-struct Point : SDL_Point
+struct GUID : SDL_GUID
 {
-  constexpr Point(const SDL_Point& point)
-    : SDL_Point(point)
-  {
-  }
-  constexpr Point()
-    : Point({0})
+  constexpr GUID()
+    : SDL_GUID({0})
   {
   }
 
-  constexpr Point(int x, int y)
-    : SDL_Point{x, y}
+  constexpr GUID(SDL_GUID guid)
+    : SDL_GUID(guid)
   {
   }
 
   /**
-   * @brief Get X coordinate of the point
+   * Convert a GUID string into a SDL_GUID structure.
    *
-   * @returns X coordinate of the point
+   * Performs no error checking. If this function is given a string containing
+   * an invalid GUID, the function will silently succeed, but the GUID generated
+   * will not be useful.
    *
-   */
-  constexpr int GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the point
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& SetX(int nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the point
-   *
-   * @returns Y coordinate of the point
-   *
-   */
-  constexpr int GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the point
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& SetY(int ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * Determine whether a point resides inside a rectangle.
-   *
-   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
-   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
-   * and < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)
-   * as "inside" and (0,1) as not.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param r the rectangle to test.
-   * @returns true if this is contained by `r`, false otherwise.
+   * @param pchGUID string containing an ASCII representation of a GUID.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GUIDToString
    */
-  constexpr bool IsInRect(const Rect& r) const;
-
-  /**
-   * @brief Get point's memberwise negation
-   *
-   * @returns New Point representing memberwise negation
-   *
-   */
-  constexpr Point operator-() const { return Point(-x, -y); }
-
-  /**
-   * @brief Get point's memberwise addition with another point
-   *
-   * @param[in] other Point to add
-   *
-   * @returns New Point representing memberwise addition with another point
-   *
-   */
-  constexpr Point operator+(const Point& other) const
-  {
-    return Point(x + other.x, y + other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise subtraction with another point
-   *
-   * @param[in] other Point to subtract
-   *
-   * @returns New Point representing memberwise subtraction of another point
-   *
-   */
-  constexpr Point operator-(const Point& other) const
-  {
-    return Point(x - other.x, y - other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise division by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by an integer
-   *
-   */
-  constexpr Point operator/(int value) const
-  {
-    return Point(x / value, y / value);
-  }
-
-  /**
-   * @brief Get point's memberwise division by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by another point
-   *
-   */
-  constexpr Point operator/(const Point& other) const
-  {
-    return Point(x / other.x, y / other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise remainder from division
-   *        by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise remainder
-   *          from division by an integer
-   *
-   */
-  constexpr Point operator%(int value) const
-  {
-    return Point(x % value, y % value);
-  }
-
-  /**
-   * @brief Get point's memberwise remainder from division
-   *        by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise remainder
-   *          from division by another point
-   *
-   */
-  constexpr Point operator%(const Point& other) const
-  {
-    return Point(x % other.x, y % other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by an
-   *        integer
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by an integer
-   *
-   */
-  constexpr Point operator*(int value) const
-  {
-    return Point(x * value, y * value);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by another
-   *        point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by another point
-   *
-   */
-  constexpr Point operator*(const Point& other) const
-  {
-    return Point(x * other.x, y * other.y);
-  }
-
-  /**
-   * @brief Memberwise add another point
-   *
-   * @param[in] other Point to add to the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator+=(const Point& other)
-  {
-    x += other.x;
-    y += other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise subtract another point
-   *
-   * @param[in] other Point to subtract from the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator-=(const Point& other)
-  {
-    x -= other.x;
-    y -= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator/=(int value)
-  {
-    x /= value;
-    y /= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator/=(const Point& other)
-  {
-    x /= other.x;
-    y /= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise remainder from division by an integer
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator%=(int value)
-  {
-    x %= value;
-    y %= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise remainder from division by another
-   *        point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator%=(const Point& other)
-  {
-    x %= other.x;
-    y %= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by an integer
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator*=(int value)
-  {
-    x *= value;
-    y *= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by another point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& operator*=(const Point& other)
-  {
-    x *= other.x;
-    y *= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Get a point with coordinates modified so it fits
-   *        into a given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Clamped point
-   *
-   */
-  constexpr Point GetClamped(const Rect& rect) const;
-
-  /**
-   * @brief Clamp point coordinates to make it fit into a
-   *        given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& Clamp(const Rect& rect);
-
-  /**
-   * @brief Get a point wrapped within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Wrapped point
-   *
-   */
-  constexpr Point GetWrapped(const Rect& rect) const;
-
-  /**
-   * @brief Wrap point coordinates within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Point& Wrap(const Rect& rect);
-
-  // Auto comparison operator
-  constexpr auto operator<=>(const Point&) const = default;
-
-  /**
-   * @brief Converts to FPoint
-   *
-   * @return FPoint
-   */
-  constexpr operator FPoint() const;
-};
-
-/**
- * @brief The structure that defines a point (using floating point values).
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct FPoint : SDL_FPoint
-{
-  constexpr FPoint(const SDL_FPoint& point)
-    : SDL_FPoint(point)
-  {
-  }
-  constexpr FPoint()
-    : FPoint({0})
-  {
-  }
-
-  constexpr FPoint(float x, float y)
-    : SDL_FPoint{x, y}
+  GUID(StringParam pchGUID)
+    : SDL_GUID(SDL_StringToGUID(pchGUID))
   {
   }
 
   /**
-   * @brief Get X coordinate of the point
+   * Get an ASCII string representation for a given SDL_GUID.
    *
-   * @returns X coordinate of the point
-   *
-   */
-  constexpr int GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the point
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& SetX(int nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the point
-   *
-   * @returns Y coordinate of the point
-   *
-   */
-  constexpr int GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the point
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& SetY(int ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * Determine whether a point resides inside a floating point rectangle.
-   *
-   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
-   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
-   * and <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point
-   * (0,0) and (0,1) as "inside" and (0,2) as not.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param r the rectangle to test.
-   * @returns true if this is contained by `r`, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool IsInRect(const FRect& r) const;
-
-  /**
-   * @brief Get point's memberwise negation
-   *
-   * @returns New Point representing memberwise negation
-   *
-   */
-  constexpr FPoint operator-() const { return FPoint(-x, -y); }
-
-  /**
-   * @brief Get point's memberwise addition with another point
-   *
-   * @param[in] other Point to add
-   *
-   * @returns New Point representing memberwise addition with another point
-   *
-   */
-  constexpr FPoint operator+(const FPoint& other) const
-  {
-    return FPoint(x + other.x, y + other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise subtraction with another point
-   *
-   * @param[in] other Point to subtract
-   *
-   * @returns New Point representing memberwise subtraction of another point
-   *
-   */
-  constexpr FPoint operator-(const FPoint& other) const
-  {
-    return FPoint(x - other.x, y - other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise division by an float
-   *
-   * @param[in] value Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by an float
-   *
-   */
-  constexpr FPoint operator/(float value) const
-  {
-    return FPoint(x / value, y / value);
-  }
-
-  /**
-   * @brief Get point's memberwise division by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns New Point representing memberwise division of
-   *          point by another point
-   *
-   */
-  constexpr FPoint operator/(const FPoint& other) const
-  {
-    return FPoint(x / other.x, y / other.y);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by an
-   *        float
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by an float
-   *
-   */
-  constexpr FPoint operator*(float value) const
-  {
-    return FPoint(x * value, y * value);
-  }
-
-  /**
-   * @brief Get point's memberwise multiplication by another
-   *        point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns New Point representing memberwise multiplication
-   *          of point by another point
-   *
-   */
-  constexpr FPoint operator*(const FPoint& other) const
-  {
-    return FPoint(x * other.x, y * other.y);
-  }
-
-  /**
-   * @brief Memberwise add another point
-   *
-   * @param[in] other Point to add to the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator+=(const Point& other)
-  {
-    x += other.x;
-    y += other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise subtract another point
-   *
-   * @param[in] other Point to subtract from the current one
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator-=(const Point& other)
-  {
-    x -= other.x;
-    y -= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by an float
-   *
-   * @param[in] value Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator/=(float value)
-  {
-    x /= value;
-    y /= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise divide by another point
-   *
-   * @param[in] other Divisor
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator/=(const Point& other)
-  {
-    x /= other.x;
-    y /= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by an float
-   *
-   * @param[in] value Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator*=(float value)
-  {
-    x *= value;
-    y *= value;
-    return *this;
-  }
-
-  /**
-   * @brief Memberwise multiply by another point
-   *
-   * @param[in] other Multiplier
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& operator*=(const FPoint& other)
-  {
-    x *= other.x;
-    y *= other.y;
-    return *this;
-  }
-
-  /**
-   * @brief Get a point with coordinates modified so it fits
-   *        into a given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Clamped point
-   *
-   */
-  constexpr FPoint GetClamped(const FRect& rect) const;
-
-  /**
-   * @brief Clamp point coordinates to make it fit into a
-   *        given rect
-   *
-   * @param[in] rect Rectangle to clamp with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& Clamp(const FRect& rect);
-
-  /**
-   * @brief Get a point wrapped within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Wrapped point
-   *
-   */
-  constexpr FPoint GetWrapped(const FRect& rect) const;
-
-  /**
-   * @brief Wrap point coordinates within a specified rect
-   *
-   * @param[in] rect Rectangle to wrap with
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FPoint& Wrap(const FRect& rect);
-
-  // Auto comparison operator
-  constexpr auto operator<=>(const FPoint&) const = default;
-};
-
-/**
- * @brief A rectangle, with the origin at the upper left (using integers).
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct Rect : SDL_Rect
-{
-  constexpr Rect(const SDL_Rect& rect = {0})
-    : SDL_Rect(rect)
-  {
-  }
-
-  constexpr Rect(int x, int y, int w, int h)
-    : SDL_Rect({x, y, w, h})
-  {
-  }
-
-  constexpr Rect(const SDL_Point& corner, const SDL_Point& size)
-    : Rect{corner.x, corner.y, size.x, size.y}
-  {
-  }
-
-  /**
-   * Calculate a minimal rectangle enclosing a set of points.
-   *
-   * If `clip` is not NULL then only points inside of the clipping rectangle are
-   * considered.
-   *
-   * @param points a span of SDL_Point structures representing points to be
-   *               enclosed.
-   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
-   *             points.
-   * @returns a SDL_Rect structure filled in with the minimal enclosing
-   * rectangle or std::nullopt if all the points were outside of the
-   * clipping rectangle.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static std::optional<Rect> GetEnclosingPoints(
-    SpanRef<const SDL_Point> points,
-    OptionalRef<const SDL_Rect> clip = std::nullopt)
-  {
-    Rect result;
-    if (SDL_GetRectEnclosingPoints(
-          points.data(), points.size(), clip, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates, width and height
-   *
-   * @param[in] cx X coordinate of the rectangle center
-   * @param[in] cy Y coordinate of the rectangle center
-   * @param[in] w Width of the rectangle
-   * @param[in] h Height of the rectangle
-   *
-   */
-  static constexpr Rect FromCenter(int cx, int cy, int w, int h)
-  {
-    return Rect(cx - w / 2, cy - h / 2, w, h);
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates and size
-   *
-   * @param[in] center Coordinates of the rectangle center
-   * @param[in] size Dimensions of the rectangle
-   *
-   */
-  static constexpr Rect FromCenter(const Point& center, const Point& size)
-  {
-    return Rect(center - size / 2, size);
-  }
-
-  /**
-   * @brief Construct the rect from given corners coordinates
-   *
-   * @param[in] x1 X coordinate of the top left rectangle corner
-   * @param[in] y1 Y coordinate of the top left rectangle corner
-   * @param[in] x2 X coordinate of the bottom right rectangle corner
-   * @param[in] y2 Y coordinate of the bottom right rectangle corner
-   *
-   */
-  static constexpr Rect FromCorners(int x1, int y1, int x2, int y2)
-  {
-    return Rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-  }
-
-  /**
-   * @brief Construct the rect from given centers coordinates
-   *
-   * @param[in] p1 Coordinates of the top left rectangle corner
-   * @param[in] p2 Coordinates of the bottom right rectangle corner
-   *
-   */
-  static constexpr Rect FromCorners(const Point& p1, const Point& p2)
-  {
-    return Rect(p1, p2 - p1 + Point(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect corner
-   *
-   * @returns X coordinate of the rect corner
-   *
-   */
-  constexpr int GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the rect corner
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetX(int nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect corner
-   *
-   * @returns Y coordinate of the rect corner
-   *
-   */
-  constexpr int GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the rect corner
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetY(int ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr int GetW() const { return w; }
-
-  /**
-   * @brief Set width of the rect
-   *
-   * @param[in] nw New width of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetW(int nw)
-  {
-    w = nw;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr int GetH() const { return h; }
-
-  /**
-   * @brief Set height of the rect
-   *
-   * @param[in] nh New height of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetH(int nh)
-  {
-    h = nh;
-    return *this;
-  }
-
-  /**
-   * @brief Get X coordinate of the rect second corner
-   *
-   * @returns X coordinate of the rect second corner
-   *
-   */
-  constexpr int GetX2() const { return x + w - 1; }
-
-  /**
-   * @brief Set X coordinate of the rect second corner
-   *
-   * @param[in] x2 New X coordinate value
-   *
-   * This modifies rectangle width internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetX2(int x2)
-  {
-    w = x2 - x + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect second corner
-   *
-   * @returns Y coordinate of the rect second corner
-   *
-   */
-  constexpr int GetY2() const { return y + h - 1; }
-
-  /**
-   * @brief Set Y coordinate of the rect second corner
-   *
-   * @param[in] y2 New Y coordinate value
-   *
-   * This modifies rectangle height internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetY2(int y2)
-  {
-    h = y2 - y + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get top left corner of the rect
-   *
-   * @returns Top left corner of the rect
-   *
-   */
-  constexpr Point GetTopLeft() const { return Point(x, y); }
-
-  /**
-   * @brief Get top right corner of the rect
-   *
-   * @returns Top right corner of the rect
-   *
-   */
-  constexpr Point GetTopRight() const { return Point(GetX2(), y); }
-
-  /**
-   * @brief Get bottom left corner of the rect
-   *
-   * @returns bottom left corner of the rect
-   *
-   */
-  constexpr Point GetBottomLeft() const { return Point(x, GetY2()); }
-
-  /**
-   * @brief Get bottom right corner of the rect
-   *
-   * @returns Bottom right corner of the rect
-   *
-   */
-  constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
-
-  /**
-   * @brief Get size of the rect
-   *
-   * @returns Size of the rect
-   *
-   */
-  constexpr Point GetSize() const { return Point(w, h); }
-
-  /**
-   * @brief Get centroid of the rect
-   *
-   * @returns Centroid of the rect
-   *
-   */
-  constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
-
-  /**
-   * Calculate the intersection of a rectangle and line segment.
-   *
-   * This function is used to clip a line segment to a rectangle. A line segment
-   * contained entirely within the rectangle or that does not intersect will
-   * remain unchanged. A line segment that crosses the rectangle at either or
-   * both ends will be clipped to the boundary of the rectangle and the new
-   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
-   *
-   * @param X1 a pointer to the starting X-coordinate of the line.
-   * @param Y1 a pointer to the starting Y-coordinate of the line.
-   * @param X2 a pointer to the ending X-coordinate of the line.
-   * @param Y2 a pointer to the ending Y-coordinate of the line.
-   * @returns true if there is an intersection, false otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool IntersectLine(int* X1, int* Y1, int* X2, int* Y2) const
-  {
-    return SDL_GetRectAndLineIntersection(this, X1, Y1, X2, Y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(Point* p1, Point* p2) const
-  {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
-  }
-
-  /**
-   * Convert an SDL_Rect to SDL_FRect
-   *
-   * @return A FRect filled in with the floating point representation of
-   *              `rect`.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr operator FRect() const;
-
-  /**
-   * @sa operator FRect()
-   */
-  constexpr operator SDL_FRect() const { return operator SDL_FRect(); }
-
-  /**
-   * Determine whether a rectangle has no area.
-   *
-   * A rectangle is considered "empty" for this function if `r` is NULL, or if
-   * `r`'s width and/or height are <= 0.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @returns true if the rectangle is "empty", false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Empty() const { return SDL_RectEmpty(this); }
-
-  /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
-   * Determine whether two rectangles are equal.
-   *
-   * Rectangles are considered equal if both are not NULL and each of their x,
-   * y, width and height match.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param other the second rectangle to test.
-   * @returns true if the rectangles are equal, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Equal(const Rect& other) const
-  {
-    return SDL_RectsEqual(this, &other);
-  }
-
-  /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const Rect& other) const { return Equal(other); }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param point Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const Point& point) const
-  {
-    return SDL_PointInRect(&point, this);
-  }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param other Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const Rect& other) const
-  {
-    return GetUnion(other) == *this;
-  }
-
-  /**
-   * Determine whether two rectangles intersect.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns true if there is an intersection, false otherwise.
+   * @returns pszGUID the ASCII string representation for
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetIntersection()
+   * @sa SDL_StringToGUID
    */
-  bool HasIntersection(const Rect& other) const
+  std::string ToString() const
   {
-    return SDL_HasRectIntersection(this, &other);
-  }
-
-  /**
-   * Calculate the intersection of two rectangles.
-   *
-   * If `result` is NULL then this function will return false.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
-   *               if there is intersection, std::nullopt otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa HasIntersection()
-   */
-  constexpr std::optional<Rect> GetIntersection(const Rect& other) const
-  {
-    if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * Calculate the union of two rectangles.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns Rect representing union of two rectangles
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr std::optional<Rect> GetUnion(const Rect& other) const
-  {
-    if (Rect result; SDL_GetRectUnion(this, &other, &result)) return result;
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr Rect GetExtension(unsigned int amount) const
-  {
-    Rect r = *this;
-    r.Extend(amount);
-    return r;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr Rect GetExtension(unsigned int hAmount, unsigned int vAmount) const
-  {
-    Rect r = *this;
-    r.Extend(hAmount, vAmount);
-    return r;
-  }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& Extend(unsigned int amount) { return Extend(amount, amount); }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& Extend(unsigned int hAmount, unsigned int vAmount)
-  {
-    x -= hAmount;
-    y -= vAmount;
-    w += hAmount * 2;
-    h += vAmount * 2;
-    return *this;
-  }
-
-  /**
-   * @brief Get rectangle moved by a given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr Rect operator+(const Point& offset) const
-  {
-    return Rect(x + offset.x, y + offset.y, w, h);
-  }
-
-  /**
-   * @brief Get rectangle moved by an opposite of given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr Rect operator-(const Point& offset) const
-  {
-    return Rect(x - offset.x, y - offset.y, w, h);
-  }
-
-  /**
-   * @brief Move by then given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& operator+=(const Point& offset)
-  {
-    x += offset.x;
-    y += offset.y;
-    return *this;
-  }
-
-  /**
-   * @brief Move by an opposite of the given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& operator-=(const Point& offset)
-  {
-    x -= offset.x;
-    y -= offset.y;
-    return *this;
+    std::string result(32, ' ');
+    SDL_GUIDToString(*this, result.data(), 33);
+    return result;
   }
 };
 
 /**
- * @brief A rectangle, with the origin at the upper left (using floats).
+ * Get an ASCII string representation for a given SDL_GUID.
  *
- * @cat wrap-extending-struct
+ * @param guid the SDL_GUID you wish to convert to string.
+ * @param pszGUID buffer in which to write the ASCII string.
+ * @param cbGUID the size of pszGUID, should be at least 33 bytes.
  *
- * @sa wrap-extending-struct
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_StringToGUID
  */
-struct FRect : SDL_FRect
+inline void GUIDToString(SDL_GUID guid, char* pszGUID, int cbGUID)
 {
-  constexpr FRect(const SDL_FRect& rect = {0})
-    : SDL_FRect(rect)
-  {
-  }
+  return SDL_GUIDToString(guid, pszGUID, cbGUID);
+}
 
-  constexpr FRect(float x, float y, float w, float h)
-    : SDL_FRect({x, y, w, h})
-  {
-  }
+/**
+ * Convert a GUID string into a SDL_GUID structure.
+ *
+ * Performs no error checking. If this function is given a string containing
+ * an invalid GUID, the function will silently succeed, but the GUID generated
+ * will not be useful.
+ *
+ * @param pchGUID string containing an ASCII representation of a GUID.
+ * @returns a SDL_GUID structure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GUIDToString
+ */
+inline SDL_GUID StringToGUID(StringParam pchGUID)
+{
+  return SDL_StringToGUID(pchGUID);
+}
 
-  constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
-    : FRect{corner.x, corner.y, size.x, size.y}
-  {
-  }
-
-  /**
-   * Calculate a minimal rectangle enclosing a set of points.
-   *
-   * If `clip` is not NULL then only points inside of the clipping rectangle are
-   * considered.
-   *
-   * @param points a span of SDL_Point structures representing points to be
-   *               enclosed.
-   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
-   *             points.
-   * @returns a FRect structure filled in with the minimal enclosing
-   *          rectangle or std::nullopt if all the points were outside of
-   * the clipping rectangle.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  static std::optional<FRect> GetEnclosingPoints(
-    SpanRef<const SDL_FPoint> points,
-    OptionalRef<const SDL_FRect> clip = std::nullopt)
-  {
-    FRect result;
-    if (SDL_GetRectEnclosingPointsFloat(
-          points.data(), points.size(), clip, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates, width and height
-   *
-   * @param[in] cx X coordinate of the rectangle center
-   * @param[in] cy Y coordinate of the rectangle center
-   * @param[in] w Width of the rectangle
-   * @param[in] h Height of the rectangle
-   *
-   */
-  static constexpr FRect FromCenter(float cx, float cy, float w, float h)
-  {
-    return FRect(cx - w / 2, cy - h / 2, w, h);
-  }
-
-  /**
-   * @brief Construct the rect from given center coordinates and size
-   *
-   * @param[in] center Coordinates of the rectangle center
-   * @param[in] size Dimensions of the rectangle
-   *
-   */
-  static constexpr FRect FromCenter(const FPoint& center, const FPoint& size)
-  {
-    return FRect(center - size / 2, size);
-  }
-
-  /**
-   * @brief Construct the rect from given corners coordinates
-   *
-   * @param[in] x1 X coordinate of the top left rectangle corner
-   * @param[in] y1 Y coordinate of the top left rectangle corner
-   * @param[in] x2 X coordinate of the bottom right rectangle corner
-   * @param[in] y2 Y coordinate of the bottom right rectangle corner
-   *
-   */
-  static constexpr FRect FromCorners(float x1, float y1, float x2, float y2)
-  {
-    return FRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-  }
-
-  /**
-   * @brief Construct the rect from given centers coordinates
-   *
-   * @param[in] p1 Coordinates of the top left rectangle corner
-   * @param[in] p2 Coordinates of the bottom right rectangle corner
-   *
-   */
-  static constexpr FRect FromCorners(const FPoint& p1, const FPoint& p2)
-  {
-    return FRect(p1, p2 - p1 + FPoint(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect corner
-   *
-   * @returns X coordinate of the rect corner
-   *
-   */
-  constexpr float GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the rect corner
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetX(float nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect corner
-   *
-   * @returns Y coordinate of the rect corner
-   *
-   */
-  constexpr float GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the rect corner
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetY(float ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr float GetW() const { return w; }
-
-  /**
-   * @brief Set width of the rect
-   *
-   * @param[in] nw New width of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetW(float nw)
-  {
-    w = nw;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr float GetH() const { return h; }
-
-  /**
-   * @brief Set height of the rect
-   *
-   * @param[in] nh New height of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetH(float nh)
-  {
-    h = nh;
-    return *this;
-  }
-
-  /**
-   * @brief Get X coordinate of the rect second corner
-   *
-   * @returns X coordinate of the rect second corner
-   *
-   */
-  constexpr float GetX2() const { return x + w - 1; }
-
-  /**
-   * @brief Set X coordinate of the rect second corner
-   *
-   * @param[in] x2 New X coordinate value
-   *
-   * This modifies rectangle width internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetX2(float x2)
-  {
-    w = x2 - x + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect second corner
-   *
-   * @returns Y coordinate of the rect second corner
-   *
-   */
-  constexpr float GetY2() const { return y + h - 1; }
-
-  /**
-   * @brief Set Y coordinate of the rect second corner
-   *
-   * @param[in] y2 New Y coordinate value
-   *
-   * This modifies rectangle height internally
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetY2(float y2)
-  {
-    h = y2 - y + 1;
-    return *this;
-  }
-
-  /**
-   * @brief Get top left corner of the rect
-   *
-   * @returns Top left corner of the rect
-   *
-   */
-  constexpr FPoint GetTopLeft() const { return FPoint(x, y); }
-
-  /**
-   * @brief Get top right corner of the rect
-   *
-   * @returns Top right corner of the rect
-   *
-   */
-  constexpr FPoint GetTopRight() const { return FPoint(GetX2(), y); }
-
-  /**
-   * @brief Get bottom left corner of the rect
-   *
-   * @returns bottom left corner of the rect
-   *
-   */
-  constexpr FPoint GetBottomLeft() const { return FPoint(x, GetY2()); }
-
-  /**
-   * @brief Get bottom right corner of the rect
-   *
-   * @returns Bottom right corner of the rect
-   *
-   */
-  constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
-
-  /**
-   * @brief Get size of the rect
-   *
-   * @returns Size of the rect
-   *
-   */
-  constexpr FPoint GetSize() const { return FPoint(w, h); }
-
-  /**
-   * @brief Get centroid of the rect
-   *
-   * @returns Centroid of the rect
-   *
-   */
-  constexpr FPoint GetCentroid() const { return FPoint(x + w / 2, y + h / 2); }
-
-  /**
-   * Calculate the intersection of a rectangle and line segment with float
-   * precision.
-   *
-   * This function is used to clip a line segment to a rectangle. A line segment
-   * contained entirely within the rectangle or that does not intersect will
-   * remain unchanged. A line segment that crosses the rectangle at either or
-   * both ends will be clipped to the boundary of the rectangle and the new
-   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
-   *
-   * @param X1 a pointer to the starting X-coordinate of the line.
-   * @param Y1 a pointer to the starting Y-coordinate of the line.
-   * @param X2 a pointer to the ending X-coordinate of the line.
-   * @param Y2 a pointer to the ending Y-coordinate of the line.
-   * @returns true if there is an intersection, false otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool IntersectLine(float* X1, float* Y1, float* X2, float* Y2) const
-  {
-    return SDL_GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
-  }
-
-  /**
-   * @brief Calculate the intersection of a rectangle and line segment
-   *
-   * @param[in,out] p1 Starting coordinates of the line
-   * @param[in,out] p2 Ending coordinates of the line
-   *
-   * @returns True if there is an intersection, false otherwise
-   *
-   * This function is used to clip a line segment to a
-   * rectangle. A line segment contained entirely within the
-   * rectangle or that does not intersect will remain unchanged.
-   * A line segment that crosses the rectangle at either or both
-   * ends will be clipped to the boundary of the rectangle and
-   * the new coordinates saved in p1 and/or p2 as necessary.
-   *
-   */
-  bool IntersectLine(FPoint* p1, FPoint* p2) const
-  {
-    return IntersectLine(p1 ? &p1->x : nullptr,
-                         p1 ? &p1->y : nullptr,
-                         p2 ? &p2->x : nullptr,
-                         p2 ? &p2->y : nullptr);
-  }
-
-  /**
-   * Determine whether a rectangle has no area.
-   *
-   * A rectangle is considered "empty" for this function if `r` is NULL, or if
-   * `r`'s width and/or height are <= 0.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @returns true if the rectangle is "empty", false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
-
-  /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
-   * Determine whether two floating point rectangles are equal, within some
-   * given epsilon.
-   *
-   * Rectangles are considered equal if both are not NULL and each of their x,
-   * y, width and height are within `epsilon` of each other. If you don't know
-   * what value to use for `epsilon`, you should call the SDL_RectsEqualFloat
-   * function instead.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param other the second rectangle to test.
-   * @param epsilon the epsilon value for comparison.
-   * @returns true if the rectangles are equal, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa Equal()
-   */
-  constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
-  {
-    return SDL_RectsEqualEpsilon(this, &other, epsilon);
-  }
-
-  /**
-   * Determine whether two rectangles are equal.
-   *
-   * Rectangles are considered equal if both are not NULL and each of their x,
-   * y, width and height match.
-   *
-   * Note that this is a forced-inline function in a header, and not a public
-   * API function available in the SDL library (which is to say, the code is
-   * embedded in the calling program and the linker and dynamic loader will not
-   * be able to find this function inside SDL itself).
-   *
-   * @param other the second rectangle to test.
-   * @returns true if the rectangles are equal, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  constexpr bool Equal(const FRect& other) const
-  {
-    return SDL_RectsEqualFloat(this, &other);
-  }
-
-  /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const FRect& other) const { return Equal(other); }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param point Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const FPoint& point) const
-  {
-    return SDL_PointInRectFloat(&point, this);
-  }
-
-  /**
-   * @brief Check whether the rect contains given point
-   *
-   * @param other Point to check
-   *
-   * @returns True if the point is contained in the rect
-   *
-   */
-  constexpr bool Contains(const FRect& other) const
-  {
-    return GetUnion(other) == *this;
-  }
-
-  /**
-   * Determine whether two rectangles intersect.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns true if there is an intersection, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetIntersection()
-   */
-  bool HasIntersection(const FRect& other) const
-  {
-    return SDL_HasRectIntersectionFloat(this, &other);
-  }
-
-  /**
-   * Calculate the intersection of two rectangles.
-   *
-   * If `result` is NULL then this function will return false.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns an SDL_Rect structure filled in with the intersection of
-   *               if there is intersection, std::nullopt otherwise.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa HasIntersection()
-   */
-  constexpr std::optional<FRect> GetIntersection(const FRect& other) const
-  {
-    if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
-      return result;
-    }
-    return std::nullopt;
-  }
-
-  /**
-   * Calculate the union of two rectangles with float precision.
-   *
-   * @param other an SDL_Rect structure representing the second rectangle.
-   * @returns Rect representing union of two rectangles
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  inline std::optional<FRect> GetUnion(const FRect& other) const
-  {
-    if (FRect result; SDL_GetRectUnionFloat(this, &other, &result))
-      return result;
-    return std::nullopt;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr FRect GetExtension(unsigned int amount) const
-  {
-    FRect r = *this;
-    r.Extend(amount);
-    return r;
-  }
-
-  /**
-   * @brief Get a rect extended by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Extended rect
-   *
-   */
-  constexpr FRect GetExtension(float hAmount, float vAmount) const
-  {
-    FRect r = *this;
-    r.Extend(hAmount, vAmount);
-    return r;
-  }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] amount Number of pixels to extend by
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& Extend(float amount) { return Extend(amount, amount); }
-
-  /**
-   * @brief Extend a rect by specified amount of pixels
-   *
-   * @param[in] hAmount Number of pixels to extend by
-   *                    in horizontal direction
-   * @param[in] vAmount Number of pixels to extend by
-   *                    in vertical direction
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& Extend(float hAmount, float vAmount)
-  {
-    x -= hAmount;
-    y -= vAmount;
-    w += hAmount * 2;
-    h += vAmount * 2;
-    return *this;
-  }
-
-  /**
-   * @brief Get rectangle moved by a given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr FRect operator+(const FPoint& offset) const
-  {
-    return FRect(x + offset.x, y + offset.y, w, h);
-  }
-
-  /**
-   * @brief Get rectangle moved by an opposite of given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Moved rectangle
-   *
-   */
-  constexpr FRect operator-(const FPoint& offset) const
-  {
-    return FRect(x - offset.x, y - offset.y, w, h);
-  }
-
-  /**
-   * @brief Move by then given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& operator+=(const FPoint& offset)
-  {
-    x += offset.x;
-    y += offset.y;
-    return *this;
-  }
-
-  /**
-   * @brief Move by an opposite of the given offset
-   *
-   * @param[in] offset Point specifying an offset
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& operator-=(const FPoint& offset)
-  {
-    x -= offset.x;
-    y -= offset.y;
-    return *this;
-  }
-};
-
-#pragma region impl
 /// @}
 
-constexpr bool Point::IsInRect(const Rect& r) const
+/**
+ * @defgroup CategoryHints Configuration Variables
+ *
+ * This file contains functions to set and get configuration hints, as well as
+ * listing each of them alphabetically.
+ *
+ * The convention for naming hints is SDL_HINT_X, where "SDL_X" is the
+ * environment variable that can be used to override the default.
+ *
+ * In general these hints are just that - they may or may not be supported or
+ * applicable on any given platform, but they provide a way for an application
+ * or user to give the library a hint as to how they would like the library to
+ * work.
+ *
+ * @{
+ */
+
+/**
+ * An enumeration of hint priorities.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using HintPriority = SDL_HintPriority;
+
+constexpr HintPriority HINT_DEFAULT = SDL_HINT_DEFAULT;
+
+constexpr HintPriority HINT_NORMAL = SDL_HINT_NORMAL;
+
+constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE;
+
+/**
+ * Set a hint with a specific priority.
+ *
+ * The priority controls the behavior when setting a hint that already has a
+ * value. Hints will replace existing hints of their priority and lower.
+ * Environment variables are considered to have override priority.
+ *
+ * @param name the hint to set.
+ * @param value the value of the hint variable.
+ * @param priority the SDL_HintPriority level for the hint.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_ResetHint
+ * @sa SDL_SetHint
+ */
+inline bool SetHintWithPriority(StringParam name,
+                                StringParam value,
+                                HintPriority priority)
 {
-  return r.Contains(*this);
+  return SDL_SetHintWithPriority(name, value, priority);
 }
 
-constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
-
-constexpr Point Point::GetClamped(const Rect& rect) const
+/**
+ * Set a hint with normal priority.
+ *
+ * Hints will not be set if there is an existing override hint or environment
+ * variable that takes precedence. You can use SDL_SetHintWithPriority() to
+ * set the hint with override priority instead.
+ *
+ * @param name the hint to set.
+ * @param value the value of the hint variable.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_ResetHint
+ * @sa SDL_SetHintWithPriority
+ */
+inline bool SetHint(StringParam name, StringParam value)
 {
-  Point p = *this;
-  p.Clamp(rect);
-  return p;
+  return SDL_SetHint(name, value);
 }
 
-constexpr Point& Point::Clamp(const Rect& rect)
+/**
+ * Reset a hint to the default value.
+ *
+ * This will reset a hint to the value of the environment variable, or NULL if
+ * the environment isn't set. Callbacks will be called normally with this
+ * change.
+ *
+ * @param name the hint to set.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHint
+ * @sa SDL_ResetHints
+ */
+inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
+
+/**
+ * Reset all hints to the default values.
+ *
+ * This will reset all hints to the value of the associated environment
+ * variable, or NULL if the environment isn't set. Callbacks will be called
+ * normally with this change.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_ResetHint
+ */
+inline void ResetHints() { return SDL_ResetHints(); }
+
+/**
+ * Get the value of a hint.
+ *
+ * @param name the hint to query.
+ * @returns the string value of a hint or NULL if the hint isn't set.
+ *
+ * @threadsafety It is safe to call this function from any thread, however the
+ *               return value only remains valid until the hint is changed; if
+ *               another thread might do so, the app should supply locks
+ *               and/or make a copy of the string. Note that using a hint
+ *               callback instead is always thread-safe, as SDL holds a lock
+ *               on the thread subsystem during the callback.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHint
+ * @sa SDL_SetHintWithPriority
+ */
+inline const char* GetHint(StringParam name) { return SDL_GetHint(name); }
+
+/**
+ * Get the boolean value of a hint variable.
+ *
+ * @param name the name of the hint to get the boolean value from.
+ * @param default_value the value to return if the hint does not exist.
+ * @returns the boolean value of a hint or the provided default value if the
+ *          hint does not exist.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_SetHint
+ */
+inline bool GetHintBoolean(StringParam name, bool default_value)
 {
-  if (x < rect.x) x = rect.x;
-  if (x > rect.GetX2()) x = rect.GetX2();
-  if (y < rect.y) y = rect.y;
-  if (y > rect.GetY2()) y = rect.GetY2();
-  return *this;
+  return SDL_GetHintBoolean(name, default_value);
 }
 
-constexpr Point Point::GetWrapped(const Rect& rect) const
+/**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during SDL_AddHintCallback with the hint's
+ * current value, and then again each time the hint's value changes.
+ *
+ * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
+ * @param name what was passed as `name` to SDL_AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when
+ *               calling this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddHintCallback
+ */
+using HintCallback = SDL_HintCallback;
+
+/**
+ * Add a function to watch a particular hint.
+ *
+ * The callback function is called _during_ this function, to provide it an
+ * initial value, and again each time the hint's value changes.
+ *
+ * @param name the hint to watch.
+ * @param callback An SDL_HintCallback function that will be called when the
+ *                 hint value changes.
+ * @param userdata a pointer to pass to the callback function.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_RemoveHintCallback
+ */
+inline bool AddHintCallback(StringParam name,
+                            HintCallback callback,
+                            void* userdata)
 {
-  Point p = *this;
-  p.Wrap(rect);
-  return p;
+  return SDL_AddHintCallback(name, callback, userdata);
 }
 
-constexpr Point& Point::Wrap(const Rect& rect)
+/**
+ * Remove a function watching a particular hint.
+ *
+ * @param name the hint being watched.
+ * @param callback an SDL_HintCallback function that will be called when the
+ *                 hint value changes.
+ * @param userdata a pointer being passed to the callback function.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddHintCallback
+ */
+inline void RemoveHintCallback(StringParam name,
+                               HintCallback callback,
+                               void* userdata)
 {
-  if (x < rect.x)
-    x = rect.x + rect.w - 1 - (rect.x - x + rect.w - 1) % rect.w;
-  else if (x >= rect.x + rect.w)
-    x = rect.x + (x - rect.x - rect.w) % rect.w;
-
-  if (y < rect.y)
-    y = rect.y + rect.h - 1 - (rect.y - y + rect.h - 1) % rect.h;
-  else if (y >= rect.y + rect.h)
-    y = rect.y + (y - rect.y - rect.h) % rect.h;
-
-  return *this;
+  return SDL_RemoveHintCallback(name, callback, userdata);
 }
 
-constexpr bool FPoint::IsInRect(const FRect& r) const
+/// @}
+
+/**
+ * @defgroup CategoryLocale Locale Info
+ *
+ * SDL locale services.
+ *
+ * This provides a way to get a list of preferred locales (language plus
+ * country) for the user. There is exactly one function:
+ * GetPreferredLocales(), which handles all the heavy lifting, and offers
+ * documentation on all the strange ways humans might have configured their
+ * language settings.
+ *
+ * @{
+ */
+
+/**
+ * A struct to provide locale data.
+ *
+ * Locale data is split into a spoken language, like English, and an optional
+ * country, like Canada. The language will be in ISO-639 format (so English
+ * would be "en"), and the country, if not NULL, will be an ISO-3166 country
+ * code (so Canada would be "CA").
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPreferredLocales()
+ */
+using Locale = SDL_Locale;
+
+/**
+ * Report the user's preferred locale.
+ *
+ * Returned language strings are in the format xx, where 'xx' is an ISO-639
+ * language specifier (such as "en" for English, "de" for German, etc).
+ * Country strings are in the format YY, where "YY" is an ISO-3166 country
+ * code (such as "US" for the United States, "CA" for Canada, etc). Country
+ * might be NULL if there's no specific guidance on them (so you might get {
+ * "en", "US" } for American English, but { "en", NULL } means "English
+ * language, generically"). Language strings are never NULL, except to
+ * terminate the array.
+ *
+ * Please note that not all of these strings are 2 characters; some are three
+ * or more.
+ *
+ * The returned list of locales are in the order of the user's preference. For
+ * example, a German citizen that is fluent in US English and knows enough
+ * Japanese to navigate around Tokyo might have a list like: { "de", "en_US",
+ * "jp", NULL }. Someone from England might prefer British English (where
+ * "color" is spelled "colour", etc), but will settle for anything like it: {
+ * "en_GB", "en", NULL }.
+ *
+ * This function returns NULL on error, including when the platform does not
+ * supply this information at all.
+ *
+ * This might be a "slow" call that has to query the operating system. It's
+ * best to ask for this once and save the results. However, this list can
+ * change, usually because the user has changed a system preference outside of
+ * your program; SDL will send an SDL::EVENT_LOCALE_CHANGED event in this case,
+ * if possible, and you can call this function again to get an updated copy of
+ * preferred locales.
+ *
+ * @param count a pointer filled in with the number of locales returned, may
+ *              be NULL.
+ * @returns a std::nullptr terminated array of locale pointers, or std::nullptr
+ * on failure; call GetError() for more information. This is a single allocation
+ *          that should be freed with free() when it is no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline OwnArray<Locale*> GetPreferredLocales()
 {
-  return r.Contains(*this);
+  int count = 0;
+  auto data = SDL_GetPreferredLocales(&count);
+  return OwnArray<Locale*>{data, size_t(count)};
 }
 
-constexpr FPoint FPoint::GetClamped(const FRect& rect) const
+/// @}
+
+/**
+ * @defgroup CategoryLog Log Handling
+ *
+ * Simple log messages with priorities and categories. A message's
+ * LogPriority signifies how important the message is. A message's
+ * LogCategory signifies from what domain it belongs to. Every category
+ * has a minimum priority specified: when a message belongs to that category,
+ * it will only be sent out if it has that minimum priority or higher.
+ *
+ * SDL's own logs are sent below the default priority threshold, so they are
+ * quiet by default.
+ *
+ * You can change the log verbosity programmatically using
+ * LogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or
+ * with the "SDL_LOGGING" environment variable. This variable is a comma
+ * separated set of category=level tokens that define the default logging levels
+ * for SDL applications.
+ *
+ * The category can be a numeric category, one of "app", "error", "assert",
+ * "system", "audio", "video", "render", "input", "test", or `*` for any
+ * unspecified category.
+ *
+ * The level can be a numeric level, one of "trace", "verbose", "debug",
+ * "info", "warn", "error", "critical", or "quiet" to disable that category.
+ *
+ * You can omit the category if you want to set the logging level for all
+ * categories.
+ *
+ * If this hint isn't set, the default log levels are equivalent to:
+ *
+ * `app=info,assert=warn,test=verbose,*=error`
+ *
+ * Here's where the messages go on different platforms:
+ *
+ * - Windows: debug output stream
+ * - Android: log output
+ * - Others: standard error output (stderr)
+ *
+ * You don't need to have a newline (`@n`) on the end of messages, the
+ * functions will do that for you. For consistent behavior cross-platform, you
+ * shouldn't have any newlines in messages, such as to log multiple lines in
+ * one call; unusual platform-specific behavior can be observed in such usage.
+ * Do one log call per line instead, with no newlines in messages.
+ *
+ * Each log call is atomic, so you won't see log messages cut off one another
+ * when logging from multiple threads.
+ *
+ * @{
+ */
+
+/**
+ * @name LogPriorities
+ *
+ * The priorities assignable for a LogCategory.
+ *
+ * @{
+ */
+
+/**
+ * The predefined log priorities
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using LogPriority = SDL_LogPriority;
+
+/// @}
+
+/**
+ * @name LogCategories
+ *
+ * The logging categories. see LogCategory for more info
+ *
+ * @{
+ */
+
+/**
+ * The predefined log categories
+ *
+ * By default the application and gpu categories are enabled at the INFO
+ * level, the assert category is enabled at the WARN level, test is enabled at
+ * the VERBOSE level and all other categories are enabled at the ERROR level.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @cat wrap-state
+ *
+ * @sa wrap-state
+ */
+class LogCategory
 {
-  FPoint p = *this;
-  p.Clamp(rect);
-  return p;
+  int m_category;
+
+public:
+  constexpr explicit LogCategory(int category)
+    : m_category(category)
+  {
+  }
+
+  constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
+    : m_category(category)
+  {
+  }
+
+  constexpr operator int() { return m_category; }
+
+  constexpr operator SDL_LogCategory() { return SDL_LogCategory(m_category); }
+
+  constexpr auto operator<=>(const LogCategory& other) const = default;
+
+  /**
+   * Set the priority of all log categories.
+   *
+   * @param priority the LogPriority to assign.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ResetLogPriorities()
+   * @sa SetLogPriority()
+   */
+  static void SetLogPriorities(LogPriority priority)
+  {
+    return SDL_SetLogPriorities(priority);
+  }
+
+  /**
+   * Set the priority of a particular log category.
+   *
+   * @param priority the SDL_LogPriority to assign.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetLogPriority()
+   * @sa ResetLogPriorities()
+   * @sa SetLogPriorities()
+   */
+  void SetLogPriority(LogPriority priority)
+  {
+    return SDL_SetLogPriority(m_category, priority);
+  }
+
+  /**
+   * Get the priority of a particular log category.
+   *
+   * @returns the LogPriority for the requested category.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetLogPriority()
+   */
+  LogPriority GetLogPriority() const { return SDL_GetLogPriority(m_category); }
+
+  /**
+   * Reset all priorities to default.
+   *
+   * This is called by SDL_Quit().
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetLogPriorities
+   * @sa SetLogPriority
+   */
+  static void ResetLogPriorities() { return SDL_ResetLogPriorities(); }
+
+  /**
+   * Log an unformatted message with the specified priority.
+   *
+   * @param priority the priority of the message.
+   * @param message string to output.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL::Log()
+   * @sa Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  void LogUnformatted(LogPriority priority, StringParam message) const
+  {
+    return SDL_LogMessage(m_category, priority, "%s", (const char*)(message));
+  }
+
+  /**
+   * Log a message with the specified priority.
+   *
+   * @param priority the priority of the message.
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogUnformatted()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void Log(LogPriority priority, std::string_view fmt, ARGS... args) const
+  {
+    return LogUnformatted(priority,
+                          std::vformat(fmt, std::make_format_args(args...)));
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_TRACE.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogTrace(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_TRACE, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_VERBOSE.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogVerbose(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_VERBOSE, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_DEBUG.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogDebug(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_DEBUG, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_INFO.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogInfo(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_WARN.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   */
+  template<class... ARGS>
+  void LogWarn(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_WARN, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_ERROR.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogError(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_ERROR, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_CRITICAL.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogCritical(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_CRITICAL, fmt, std::forward<ARGS>(args)...);
+  }
+};
+
+constexpr LogCategory LOG_CATEGORY_APPLICATION = SDL_LOG_CATEGORY_APPLICATION;
+
+constexpr LogCategory LOG_CATEGORY_ERROR = SDL_LOG_CATEGORY_ERROR;
+
+constexpr LogCategory LOG_CATEGORY_ASSERT = SDL_LOG_CATEGORY_ASSERT;
+
+constexpr LogCategory LOG_CATEGORY_SYSTEM = SDL_LOG_CATEGORY_SYSTEM;
+
+constexpr LogCategory LOG_CATEGORY_AUDIO = SDL_LOG_CATEGORY_AUDIO;
+
+constexpr LogCategory LOG_CATEGORY_VIDEO = SDL_LOG_CATEGORY_VIDEO;
+
+constexpr LogCategory LOG_CATEGORY_RENDER = SDL_LOG_CATEGORY_RENDER;
+
+constexpr LogCategory LOG_CATEGORY_INPUT = SDL_LOG_CATEGORY_INPUT;
+
+constexpr LogCategory LOG_CATEGORY_TEST = SDL_LOG_CATEGORY_TEST;
+
+constexpr LogCategory LOG_CATEGORY_GPU = SDL_LOG_CATEGORY_GPU;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED2 = SDL_LOG_CATEGORY_RESERVED2;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED3 = SDL_LOG_CATEGORY_RESERVED3;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED4 = SDL_LOG_CATEGORY_RESERVED4;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED5 = SDL_LOG_CATEGORY_RESERVED5;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED6 = SDL_LOG_CATEGORY_RESERVED6;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED7 = SDL_LOG_CATEGORY_RESERVED7;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED8 = SDL_LOG_CATEGORY_RESERVED8;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED9 = SDL_LOG_CATEGORY_RESERVED9;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED10 = SDL_LOG_CATEGORY_RESERVED10;
+
+constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM;
+
+/// @}
+
+/**
+ * @name LogPriorities
+ * @{
+ */
+
+constexpr LogPriority LOG_PRIORITY_INVALID = SDL_LOG_PRIORITY_INVALID;
+
+constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE;
+
+constexpr LogPriority LOG_PRIORITY_VERBOSE = SDL_LOG_PRIORITY_VERBOSE;
+
+constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG;
+
+constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO;
+
+constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN;
+
+constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR;
+
+constexpr LogPriority LOG_PRIORITY_CRITICAL = SDL_LOG_PRIORITY_CRITICAL;
+
+constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT;
+
+/// @}
+
+/**
+ * Set the text prepended to log messages of a given priority.
+ *
+ * By default LOG_PRIORITY_INFO and below have no prefix, and
+ * LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
+ * "WARNING: ".
+ *
+ * @param priority the LogPriority to modify.
+ * @param prefix the prefix to use for that log priority, or NULL to use no
+ *               prefix.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa LogCategory::SetLogPriorities()
+ * @sa LogCategory::SetLogPriority()
+ */
+inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
+{
+  return SDL_SetLogPriorityPrefix(priority, prefix);
 }
 
-constexpr FPoint& FPoint::Clamp(const FRect& rect)
+/**
+ * Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.
+ *
+ * @param fmt a
+ *            [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ *            style message format string.
+ * @param args additional parameters matching the `{}` tokens in the format
+ *             string, if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat formatted-string
+ *
+ * @sa formatted-string
+ * @sa LogUnformatted()
+ * @sa LogCategory.LogCritical()
+ * @sa LogCategory.LogDebug()
+ * @sa LogCategory.LogError()
+ * @sa LogCategory.LogInfo()
+ * @sa LogCategory.Log()
+ * @sa LogCategory.LogUnformatted()
+ * @sa LogCategory.LogTrace()
+ * @sa LogCategory.LogVerbose()
+ * @sa LogCategory.LogWarn()
+ */
+template<class... ARGS>
+inline void Log(std::string_view fmt, ARGS&&... args)
 {
-  if (x < rect.x) x = rect.x;
-  if (x > rect.GetX2()) x = rect.GetX2();
-  if (y < rect.y) y = rect.y;
-  if (y > rect.GetY2()) y = rect.GetY2();
-  return *this;
+  LOG_CATEGORY_APPLICATION.Log(
+    LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
 }
 
-constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
+/**
+ * Log an unformatted message with LOG_CATEGORY_APPLICATION and
+ * LOG_PRIORITY_INFO.
+ *
+ * @param message string to output.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log()
+ * @sa LogCategory.LogCritical()
+ * @sa LogCategory.LogDebug()
+ * @sa LogCategory.LogError()
+ * @sa LogCategory.LogInfo()
+ * @sa LogCategory.Log()
+ * @sa LogCategory.LogUnformatted()
+ * @sa LogCategory.LogTrace()
+ * @sa LogCategory.LogVerbose()
+ * @sa LogCategory.LogWarn()
+ */
+inline void LogUnformatted(StringParam message)
 {
-  FPoint p = *this;
-  p.Wrap(rect);
-  return p;
+  SDL_Log("%s", static_cast<const char*>(message));
 }
 
-constexpr FPoint& FPoint::Wrap(const FRect& rect)
+/**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param userdata what was passed as `userdata` to
+ *                 SetLogOutputFunction().
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using LogOutputFunction = SDL_LogOutputFunction;
+
+/**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa LogOutputFunction
+ */
+using LogOutputFunctionCB =
+  std::function<void(LogCategory, LogPriority, StringParam)>;
+
+/**
+ * Get the default log output function.
+ *
+ * @returns the default log output callback.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ */
+inline LogOutputFunction GetDefaultLogOutputFunction()
 {
-  if (x < rect.x)
-    x = rect.x + rect.w - 1 - fmod(rect.x - x + rect.w - 1, rect.w);
-  else if (x >= rect.x + rect.w)
-    x = rect.x + fmod(x - rect.x - rect.w, rect.w);
-
-  if (y < rect.y)
-    y = rect.y + rect.h - 1 - fmod(rect.y - y + rect.h - 1, rect.h);
-  else if (y >= rect.y + rect.h)
-    y = rect.y + fmod(y - rect.y - rect.h, rect.h);
-
-  return *this;
+  return SDL_GetDefaultLogOutputFunction();
 }
 
-constexpr Rect::operator FRect() const
+/**
+ * Get the current log output function.
+ *
+ * @param callback an LogOutputFunction filled in with the current log callback.
+ * @param userdata a pointer filled in with the pointer that is passed to
+ *                 `callback`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction()
+ * @sa SetLogOutputFunction()
+ */
+inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
 {
-  return {float(x), float(y), float(w), float(h)};
+  return SDL_GetLogOutputFunction(callback, userdata);
 }
 
-#pragma endregion impl
+/**
+ * Get the current log output function.
+ *
+ * @returns the LogOutputFunctionCB currently set
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa GetDefaultLogOutputFunction()
+ * @sa SetLogOutputFunction()
+ */
+inline LogOutputFunctionCB GetLogOutputFunction()
+{
+  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  LogOutputFunction cb;
+  void* userdata;
+  if (userdata == nullptr) {
+    return [cb](LogCategory c, LogPriority p, StringParam m) {
+      cb(nullptr, c, p, m);
+    };
+  }
+  GetLogOutputFunction(&cb, &userdata);
+  if (!Wrapper::contains(userdata)) {
+    return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
+      cb(userdata, c, p, m);
+    };
+  }
+  return Wrapper::at(userdata);
+}
 
-} // namespace SDL
+/**
+ * Replace the default log output function with one of your own.
+ *
+ * @param callback an LogOutputFunction to call instead of the default.
+ * @param userdata a pointer that is passed to `callback`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ * @sa ResetLogOutputFunction()
+ */
+inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
+{
+  UniqueWrapper<LogOutputFunctionCB>::erase();
+  return SDL_SetLogOutputFunction(callback, userdata);
+}
 
-#endif /* SDL3PP_RECT_H_ */
+/**
+ * Replace the default log output function with one of your own.
+ *
+ * @param callback an LogOutputFunction to call instead of the default.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa GetDefaultLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ * @sa ResetLogOutputFunction()
+ */
+inline void SetLogOutputFunction(LogOutputFunctionCB callback)
+{
+  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  SDL_SetLogOutputFunction(
+    [](
+      void* userdata, int category, LogPriority priority, const char* message) {
+      return Wrapper::at(userdata)(LogCategory{category}, priority, message);
+    },
+    Wrapper::Wrap(std::move(callback)));
+}
 
+/**
+ * Replace the current log output function with the default one
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ */
+inline void ResetLogOutputFunction()
+{
+  return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);
+}
 
-// end --- SDL3pp_rect.h --- 
-
-
-
-// begin --- SDL3pp_surface.h --- 
-
-#ifndef SDL3PP_SURFACE_H_
-#define SDL3PP_SURFACE_H_
-
-#include <SDL3/SDL_surface.h>
-#include <SDL3/SDL_version.h>
-
-// begin --- SDL3pp_pixels.h --- 
-
-#ifndef SDL3PP_PIXELS_H_
-#define SDL3PP_PIXELS_H_
-
-#include <span>
-#include <SDL3/SDL_assert.h>
-#include <SDL3/SDL_pixels.h>
-#include <SDL3/SDL_version.h>
-
-namespace SDL {
+/// @}
 
 /**
  * @defgroup CategoryPixels Pixel Formats and Conversion Routines
@@ -11430,16 +9476,5409 @@ inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
 
 #pragma endregion impl
 
-} // namespace SDL
+/**
+ * @defgroup CategoryInit Initialization and Shutdown
+ *
+ * All SDL programs need to initialize the library before starting to work
+ * with it.
+ *
+ * Almost everything can simply call SDL_Init() near startup, with a handful
+ * of flags to specify subsystems to touch. These are here to make sure SDL
+ * does not even attempt to touch low-level pieces of the operating system
+ * that you don't intend to use. For example, you might be using SDL for video
+ * and input but chose an external library for audio, and in this case you
+ * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
+ * external library has complete control.
+ *
+ * Most apps, when terminating, should call SDL_Quit(). This will clean up
+ * (nearly) everything that SDL might have allocated, and crucially, it'll
+ * make sure that the display's resolution is back to what the user expects if
+ * you had previously changed it for your game.
+ *
+ * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
+ * to fill in details about the program. This is completely optional, but it
+ * helps in small ways (we can provide an About dialog box for the macOS menu,
+ * we can name the app in the system's audio mixer, etc). Those that want to
+ * provide a _lot_ of information should look at the more-detailed
+ * SDL_SetAppMetadataProperty().
+ *
+ * @{
+ */
 
-#endif /* SDL3PP_PIXELS_H_ */
+/**
+ * @name InitFlags
+ *
+ * Initialization flags
+ *
+ * @{
+ */
 
+/**
+ * @brief Initialization flags for SDL
+ */
+using InitFlags = SDL_InitFlags;
 
-// end --- SDL3pp_pixels.h --- 
+/**
+ * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
 
+/**
+ * `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main
+ * thread
+ */
+constexpr inline InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
 
+/**
+ * `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the
+ * same thread as SDL_INIT_VIDEO on Windows if you don't set
+ * SDL_HINT_JOYSTICK_THREAD
+ */
+constexpr inline InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
 
-namespace SDL {
+constexpr inline InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC;
+
+/**
+ * `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`
+ */
+constexpr inline InitFlags INIT_GAMEPAD = SDL_INIT_GAMEPAD;
+
+constexpr inline InitFlags INIT_EVENTS = SDL_INIT_EVENTS;
+
+/**
+ * `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_SENSOR = SDL_INIT_SENSOR;
+
+/**
+ * `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_CAMERA = SDL_INIT_CAMERA;
+
+/// @}
+
+/**
+ * @name AppResult
+ * App result for Main callback
+ * @{
+ */
+
+/**
+ * Return values for optional main callbacks.
+ *
+ * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
+ * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
+ * success/failure to the operating system. What that means is
+ * platform-dependent. On Unix, for example, on success, the process error
+ * code will be zero, and on failure it will be 1. This interface doesn't
+ * allow you to return specific exit codes, just whether there was an error
+ * generally or not.
+ *
+ * Returning SDL_APP_CONTINUE from these functions will let the app continue
+ * to run.
+ *
+ * See
+ * [Main callbacks in
+ * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
+ * for complete details.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AppResult = SDL_AppResult;
+
+/**
+ * Value that requests that the app continue from the main callbacks.
+ */
+constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
+
+/**
+ * Value that requests termination with success from the main callbacks.
+ */
+constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
+
+/**
+ * Value that requests termination with error from the main callbacks.
+ */
+constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/// @}
+
+/**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
+ * Function pointer typedef for SDL_AppInit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppInit directly.
+ *
+ * @param appstate a place where the app can optionally store a pointer for
+ *                 future use.
+ * @param argc the standard ANSI C main's argc; number of elements in `argv`.
+ * @param argv the standard ANSI C main's argv; array of command line
+ *             arguments.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppInit_func = SDL_AppInit_func;
+
+/**
+ * Function pointer typedef for SDL_AppIterate.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppIterate directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppIterate_func = SDL_AppIterate_func;
+
+/**
+ * Function pointer typedef for SDL_AppEvent.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param event the new event for the app to examine.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppEvent_func = SDL_AppEvent_func;
+
+/**
+ * Function pointer typedef for SDL_AppQuit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param result the result code that terminated the app (success or failure).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppQuit_func = SDL_AppQuit_func;
+
+/// @}
+
+/**
+ * Initialize the SDL library.
+ *
+ * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
+ * two may be used interchangeably. Though for readability of your code
+ * SDL_InitSubSystem() might be preferred.
+ *
+ * The file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)
+ * subsystems are initialized by default. Message boxes
+ * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * SDL_Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as SDL_Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `SDL_INIT_EVENTS`: events subsystem
+ * - `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
+ * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling SDL_Init, using either SDL_SetAppMetadata() or
+ * SDL_SetAppMetadataProperty().
+ *
+ * @param flags subsystem initialization flags.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
+ * @sa Quit()
+ * @sa SetMainReady()
+ * @sa WasInit()
+ */
+inline bool Init(InitFlags flags) { return SDL_Init(flags); }
+
+/**
+ * Compatibility function to initialize the SDL library.
+ *
+ * This function and SDL_Init() are interchangeable.
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa Quit()
+ * @sa QuitSubSystem()
+ */
+inline bool InitSubSystem(InitFlags flags) { return SDL_InitSubSystem(flags); }
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call SDL_Quit() even if you close all open subsystems
+ * with SDL_QuitSubSystem().
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa InitSubSystem()
+ * @sa Quit()
+ */
+inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
+
+/**
+ * Get a mask of the specified subsystems which are currently initialized.
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
+ *          returns the initialization status of the specified subsystems.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa InitSubSystem()
+ */
+inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
+
+/**
+ * Clean up all initialized subsystems.
+ *
+ * You should call this function even if you have already shutdown each
+ * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
+ * function even in the case of errors in initialization.
+ *
+ * You can use this function with atexit() to ensure that it is run when your
+ * application is shutdown, but it is not wise to do this from a library or
+ * other dynamically loaded code.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa QuitSubSystem()
+ */
+inline void Quit() { return SDL_Quit(); }
+
+/**
+ * @brief Initialize the SDL library.
+ *
+ * Also init any subsystem passed as InitFlags
+ *
+ * This might be called multiple times, it keeps a ref count and calls SDL_Quit
+ * only on the last one.
+ *
+ * The SubSystems are out of the refCount, as SDL itself already keep track
+ * internally.
+ */
+struct SDL
+{
+
+  /**
+   * @brief Init given subsystems
+   * @param flags
+   *
+   * This uses a refCount internally, so it is safe to call
+   * this multiple times, the quit will be called only on the last call.
+   */
+  SDL(InitFlags flags)
+    : flags(flags)
+  {
+    refCount(+1, true);
+  }
+
+  // Copy ctor
+  SDL(const SDL& other)
+    : flags(other.flags)
+    , active(other.active)
+  {
+    if (active) refCount(+1);
+  }
+
+  // Move ctor
+  SDL(SDL&& other)
+    : flags(other.flags)
+    , active(other.active)
+  {
+    other.active = false;
+  }
+
+  // Dtor
+  ~SDL()
+  {
+    if (active) refCount(-1);
+  }
+
+  SDL& operator=(SDL rhs)
+  {
+    std::swap(active, rhs.active);
+    std::swap(flags, rhs.flags);
+    return *this;
+  }
+
+  /**
+   * @brief Check if given subSystems are initialized
+   * @param flags the flags to test or 0 to test all
+   * @return Which subsystem are active
+   */
+  static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
+
+  /**
+   * @brief release locking such as reset() does, but never calls SDL_Quit() or
+   * SDL_QuitSubSystem()
+   * @return false if there are still other locks, true if this was last one
+   *
+   * When this returns true it is safe to call SDL_Quit()
+   */
+  bool release()
+  {
+    flags = 0;
+    return refCount(-1, false) == 0;
+  }
+
+  /**
+   * @brief reset the value of this instance, acts like it was destroyed and
+   * then newly instantiated
+   * @return false if there are still other locks, true if this was last one
+   */
+  bool reset() { return refCount(-1) == 0; }
+
+  /// @brief returns true if active and has no errors
+  operator bool() const { return active; }
+
+  InitFlags GetCurrentFlags() const { return flags; }
+
+private:
+  InitFlags flags = 0;
+  bool active = true;
+
+  int refCount(int delta, bool autoQuit = true);
+};
+
+/**
+ * Return whether this is the main thread.
+ *
+ * On Apple platforms, the main thread is the thread that runs your program's
+ * main() entry point. On other platforms, the main thread is the one that
+ * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
+ * your program's main() entry point. If you are using the main callbacks,
+ * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
+ * main thread.
+ *
+ * @returns true if this thread is the main thread, or false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+inline bool IsMainThread() { return SDL_IsMainThread(); }
+
+/**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
+ * Callback run on the main thread.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+using MainThreadCallback = SDL_MainThreadCallback;
+
+/**
+ * @sa PropertiesRef.MainThreadCallback
+ * @sa result-callback
+ *
+ * @cat result-callback
+ *
+ */
+using MainThreadCB = std::function<void()>;
+
+/// @}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param userdata a pointer that is passed to `callback`.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread()
+ */
+inline bool RunOnMainThread(MainThreadCallback callback,
+                            void* userdata,
+                            bool wait_complete)
+{
+  return SDL_RunOnMainThread(callback, userdata, wait_complete);
+}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread()
+ * @sa result-callback
+ *
+ * @cat result-callback
+ */
+inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
+{
+  using Wrapper = CallbackWrapper<MainThreadCB>;
+  return RunOnMainThread(
+    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
+}
+
+/**
+ * Specify basic metadata about your app.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left as NULL, if a specific
+ * detail doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before SDL_Init.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Passing a NULL removes any previous metadata.
+ *
+ * This is a simplified interface for the most important information. You can
+ * supply significantly more detailed metadata with
+ * SDL_SetAppMetadataProperty().
+ *
+ * @param appname The name of the application ("My Game 2: Bad Guy's
+ *                Revenge!").
+ * @param appversion The version of the application ("1.0.0beta5" or a git
+ *                   hash, or whatever makes sense).
+ * @param appidentifier A unique string in reverse-domain format that
+ *                      identifies this app ("com.example.mygame2").
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadataProperty()
+ */
+inline bool SetAppMetadata(StringParam appname,
+                           StringParam appversion,
+                           StringParam appidentifier)
+{
+  return SDL_SetAppMetadata(appname, appversion, appidentifier);
+}
+
+/**
+ * Specify metadata about your app through a set of properties.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left out, if a specific detail
+ * doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before SDL_Init.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
+ *
+ * These are the supported properties:
+ *
+ * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
+ *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
+ *   anywhere the OS shows the name of the application separately from window
+ *   titles, such as volume control applets, etc. This defaults to "SDL
+ *   Application".
+ * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
+ *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
+ *   2024" and a git hash are all valid options. This has no default.
+ * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
+ *   identifies this app. This must be in reverse-domain format, like
+ *   "com.example.mygame2". This string is used by desktop compositors to
+ *   identify and group windows together, as well as match applications with
+ *   associated desktop settings and icons. If you plan to package your
+ *   application in a container such as Flatpak, the app ID should match the
+ *   name of your Flatpak container as well. This has no default.
+ * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
+ *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
+ * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
+ *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
+ *   to one line, don't paste a copy of a whole software license in here. This
+ *   has no default.
+ * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
+ *   product page, or a storefront, or even a GitHub repository, for user's
+ *   further information This has no default.
+ * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
+ *   Currently this string can be "game" for a video game, "mediaplayer" for a
+ *   media player, or generically "application" if nothing else applies.
+ *   Future versions of SDL might add new types. This defaults to
+ *   "application".
+ *
+ * @param name the name of the metadata property to set.
+ * @param value the value of the property, or NULL to remove that property.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAppMetadataProperty()
+ * @sa SetAppMetadata()
+ */
+inline bool SetAppMetadataProperty(StringParam name, StringParam value)
+{
+  return SDL_SetAppMetadataProperty(name, value);
+}
+
+/**
+ * Get metadata about your app.
+ *
+ * This returns metadata previously set using SDL_SetAppMetadata() or
+ * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
+ * of available properties and their meanings.
+ *
+ * @param name the name of the metadata property to get.
+ * @returns the current value of the metadata property, or the default if it
+ *          is not set, NULL for properties with no default.
+ *
+ * @threadsafety It is safe to call this function from any thread, although
+ *               the string returned is not protected and could potentially be
+ *               freed if you call SDL_SetAppMetadataProperty() to set that
+ *               property from another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ */
+inline const char* GetAppMetadataProperty(StringParam name)
+{
+  return SDL_GetAppMetadataProperty(name);
+}
+
+/// @}
+
+#pragma region impl
+
+inline int SDL::refCount(int delta, bool autoQuit)
+{
+  // TODO Locking these?
+  static int refCount = 0;
+  if (delta && active) {
+    if (delta > 0) {
+      refCount += 1;
+      if (flags) active = SDL_InitSubSystem(flags);
+    } else {
+      SDL_assert_always(refCount > 0);
+      active = false;
+      refCount -= 1;
+
+      if (autoQuit) {
+        if (refCount <= 0) {
+          // TODO Make this under FLAG
+          SDL_Quit();
+        } else if (flags) {
+          SDL_QuitSubSystem(flags);
+        }
+      }
+    }
+  }
+  return refCount;
+}
+
+#pragma endregion
+
+/**
+ * @defgroup CategoryMisc Miscellaneous
+ *
+ * SDL API functions that don't fit elsewhere.
+ *
+ * @{
+ */
+
+/**
+ * Open a URL/URI in the browser or other appropriate external application.
+ *
+ * Open a URL in a separate, system-provided application. How this works will
+ * vary wildly depending on the platform. This will likely launch what makes
+ * sense to handle a specific URL's protocol (a web browser for `http://`,
+ * etc), but it might also be able to launch file managers for directories and
+ * other things.
+ *
+ * What happens when you open a URL varies wildly as well: your game window
+ * may lose focus (and may or may not lose focus if your game was fullscreen
+ * or grabbing input at the time). On mobile devices, your app will likely
+ * move to the background or your process might be paused. Any given platform
+ * may or may not handle a given URL.
+ *
+ * If this is unimplemented (or simply unavailable) for a platform, this will
+ * fail with an error. A successful result does not mean the URL loaded, just
+ * that we launched _something_ to handle it (or at least believe we did).
+ *
+ * All this to say: this function can be useful, but you should definitely
+ * test it on every platform you target.
+ *
+ * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
+ *            local files, if supported.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
+
+/// @}
+
+/**
+ * @defgroup CategoryProperties Object Properties
+ *
+ * A property is a variable that can be created and retrieved by name at
+ * runtime.
+ *
+ * All properties are part of a property group (SDL_PropertiesID). A property
+ * group can be created with the SDL_CreateProperties function and destroyed
+ * with the SDL_DestroyProperties function.
+ *
+ * Properties can be added to and retrieved from a property group through the
+ * following functions:
+ *
+ * - PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on
+ * `void*` pointer types.
+ * - PropertiesBase.SetString() and PropertiesBase.GetString() operate on string
+ * types.
+ * - PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed
+ * 64-bit integer types.
+ * - PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating
+ * point types.
+ * - PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on
+ * boolean types.
+ *
+ * Properties can be removed from a group by using PropertiesBase.Clear().
+ * @{
+ */
+
+// Forward decl
+template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
+struct PropertiesBase;
+
+/**
+ * Handle to a non owned properties
+ *
+ * To create a new property group use CreateProperties()
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa PropertiesBase
+ * @sa Properties
+ * @sa CreateProperties()
+ */
+using PropertiesRef =
+  PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
+
+struct PropertiesDeleter
+{
+  using pointer = FancyPointer<SDL_PropertiesID>;
+  inline void operator()(PropertiesRef props) const;
+};
+
+/**
+ * Handle to an owned properties
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa PropertiesBase
+ * @sa PropertiesRef
+ */
+using Properties =
+  PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
+
+/**
+ * SDL property type
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PropertyType = SDL_PropertyType;
+
+/**
+ * @name Callbacks for PropertiesBase.SetPointerWithCleanup()
+ * @{
+ */
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * This should release any resources associated with `value` that are no
+ * longer needed.
+ *
+ * This callback is set per-property. Different properties in the same group
+ * can have different cleanup callbacks.
+ *
+ * This callback will be called _during_ SetPointerWithCleanup() if
+ * the function fails for any reason.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param value the pointer assigned to the property to clean up.
+ *
+ * @threadsafety This callback may fire without any locks held; if this is a
+ *               concern, the app should provide its own locking.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase.SetPointerWithCleanup()
+ */
+using CleanupPropertyCallback = SDL_CleanupPropertyCallback;
+
+/**
+ * A callback used to free resources when a property is deleted.
+ *
+ * @sa PropertiesRef.CleanupPropertyCallback
+ * @sa PropertiesBase.SetPointerWithCleanup()
+ * @sa result-callback
+ *
+ * @cat result-callback
+ */
+using CleanupPropertyCB = std::function<void(void*)>;
+
+/// @}
+/**
+ * @name Callbacks for PropertiesBase.Enumerate()
+ * @{
+ */
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @param userdata an app-defined pointer passed to the callback.
+ * @param props the SDL_PropertiesID that is being enumerated.
+ * @param name the next property name in the enumeration.
+ *
+ * @threadsafety SDL_EnumerateProperties holds a lock on `props` during this
+ *               callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa PropertiesBase::Enumerate()
+ */
+using EnumeratePropertiesCallback = SDL_EnumeratePropertiesCallback;
+
+/**
+ * A callback used to enumerate all the properties in a group of properties.
+ *
+ * This callback is called from PropertiesBase::Enumerate(), and is called once
+ * per property in the set.
+ *
+ * @sa EnumeratePropertyCallback
+ * @sa PropertiesBase::Enumerate()
+ * @sa immediate-callback
+ *
+ * @cat immediate-callback
+ */
+using EnumeratePropertiesCB =
+  std::function<void(PropertiesRef props, const char* name)>;
+
+/// @}
+
+// Forward decl
+struct PropertiesLock;
+
+/**
+ * Wrap properties id
+ *
+ * A property is a variable that can be created and retrieved by name at
+ * runtime.
+ *
+ * All properties are part of a property group (Properties). A property
+ * group can be created with the Properties constructor and destroyed
+ * with this goes out of scope.
+ *
+ * Properties can be added to and retrieved from a property group through the
+ * following functions:
+ *
+ * - SetPointer() and GetPointer() operate on `void*`
+ *   pointer types.
+ * - SetString() and GetString() operate on string types.
+ * - SetNumber() and GetNumber() operate on signed 64-bit
+ *   integer types.
+ * - SetFloat() and GetFloat() operate on floating point
+ *   types.
+ * - SetBoolean() and GetBoolean() operate on boolean
+ *   types.
+ *
+ * Properties can be removed from a group by using SDL_ClearProperty.
+ *
+ * To create a new properties group use CreateProperties().
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa CreateProperties()
+ * @sa Properties
+ * @sa PropertiesRef
+ */
+template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
+struct PropertiesBase : T
+{
+  using T::T;
+
+  /**
+   * Copy a group of properties.
+   *
+   * Copy all the properties from one group of properties to another, with the
+   * exception of properties requiring cleanup (set using
+   * SetPointerWithCleanup()), which will not be copied. Any
+   * property that already exists on `dst` will be overwritten.
+   *
+   * @param dst the destination properties.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool CopyPropertiesTo(PropertiesRef dst) const
+  {
+    return SDL_CopyProperties(T::get(), dst.get());
+  }
+
+  /**
+   * Lock a group of properties.
+   *
+   * Obtain a multi-threaded lock for these properties. Other threads will wait
+   * while trying to lock these properties until they are unlocked. Properties
+   * must be unlocked before they are destroyed.
+   *
+   * The lock is automatically taken when setting individual properties, this
+   * function is only needed when you want to set several properties atomically
+   * or want to guarantee that properties being queried aren't freed in another
+   * thread.
+   *
+   * @returns PropertiesLock on success or false on failure; call GetError() for
+   * more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesLock.UnlockProperties()
+   */
+  PropertiesLock Lock() &;
+
+  /**
+   * Set a pointer property in a group of properties with a cleanup
+   * function that is called when the property is deleted.
+   *
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
+   *
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * SetNumber(), SetBoolean(), or SetString()
+   * instead, as those functions will handle cleanup on your behalf. This
+   * function is only for more complex, custom data.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or NULL to delete the property.
+   * @param cleanup the function to call when this property is deleted.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @sa result-callback
+   *
+   * @cat result-callback
+   *
+   */
+  bool SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupPropertyCB cleanup)
+  {
+    using Wrapper = CallbackWrapper<CleanupPropertyCB>;
+
+    return SetPointerWithCleanup(std::move(name),
+                                 value,
+                                 &Wrapper::CallOnce,
+                                 Wrapper::Wrap(std::move(cleanup)));
+  }
+
+  /**
+   * Set a pointer property in a group of properties with a cleanup function
+   * that is called when the property is deleted.
+   *
+   * The cleanup function is also called if setting the property fails for any
+   * reason.
+   *
+   * For simply setting basic data types, like numbers, bools, or strings, use
+   * SetNumber(), SetBoolean(), or SetString()
+   * instead, as those functions will handle cleanup on your behalf. This
+   * function is only for more complex, custom data.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or NULL to delete the property.
+   * @param cleanup the function to call when this property is deleted, or NULL
+   *                if no cleanup is necessary.
+   * @param userdata a pointer that is passed to the cleanup function.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesRef.GetPointer
+   * @sa PropertiesRef.SetPointer
+   * @sa PropertiesRef.CleanupCallback
+   */
+  bool SetPointerWithCleanup(StringParam name,
+                             void* value,
+                             CleanupPropertyCallback cleanup,
+                             void* userdata)
+  {
+    return SDL_SetPointerPropertyWithCleanup(
+      T::get(), name, value, cleanup, userdata);
+  }
+
+  /**
+   * Set a pointer property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or NULL to delete the property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPointer()
+   * @sa Has()
+   * @sa SetBoolean()
+   * @sa SetFloat()
+   * @sa SetNumber()
+   * @sa SetPointerWithCleanup()
+   * @sa SetString()
+   */
+  bool SetPointer(StringParam name, void* value)
+  {
+    return SDL_SetPointerProperty(T::get(), name, value);
+  }
+
+  /**
+   * Set a string property in a group of properties.
+   *
+   * This function makes a copy of the string; the caller does not have to
+   * preserve the data after this call completes.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property, or NULL to delete the property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetString()
+   */
+  bool SetString(StringParam name, StringParam value)
+  {
+    return SDL_SetStringProperty(T::get(), name, value);
+  }
+
+  /**
+   * Set an integer property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetNumber()
+   */
+  bool SetNumber(StringParam name, Sint64 value)
+  {
+    return SDL_SetNumberProperty(T::get(), name, value);
+  }
+
+  /**
+   * Set a floating point property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetFloat()
+   */
+  bool SetFloat(StringParam name, float value)
+  {
+    return SDL_SetFloatProperty(T::get(), name, value);
+  }
+
+  /**
+   * Set a boolean property in a group of properties.
+   *
+   * @param name the name of the property to modify.
+   * @param value the new value of the property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetBoolean()
+   */
+  bool SetBoolean(StringParam name, bool value)
+  {
+    return SDL_SetBooleanProperty(T::get(), name, value);
+  }
+
+  /**
+   * Return whether a property exists.
+   *
+   * @param name the name of the property to query.
+   * @returns true if the property exists, or false if it doesn't.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   */
+  bool Has(StringParam name) const { return SDL_HasProperty(T::get(), name); }
+
+  /**
+   * Get the type of a property.
+   *
+   * @param name the name of the property to query.
+   * @returns the type of the property, or SDL_PROPERTY_TYPE_INVALID if it is
+   *          not set.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Has()
+   */
+  PropertyType GetType(StringParam name) const
+  {
+    return SDL_GetPropertyType(T::get(), name);
+  }
+
+  /**
+   * Get a pointer property from a group of properties.
+   *
+   * You can use SDL_GetPropertyType() to query whether the property exists and
+   * is a pointer property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a pointer property.
+   *
+   * @threadsafety It is safe to call this function from any thread, although
+   *               the data returned is not protected and could potentially be
+   *               freed if you call SetProperty() or
+   *               ClearProperty() on these properties from another thread.
+   *               If you need to avoid this, use SDL_LockProperties() and
+   *               SDL_UnlockProperties().
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetBoolean()
+   * @sa GetFloat()
+   * @sa GetNumber()
+   * @sa GetType()
+   * @sa GetString()
+   * @sa Has()
+   * @sa SetPointer()
+   */
+  void* GetPointer(StringParam name, void* default_value) const
+  {
+    return SDL_GetPointerProperty(T::get(), name, default_value);
+  }
+
+  /**
+   * Get a string property from a group of properties.
+   *
+   * You can use SDL_GetPropertyType() to query whether the property exists and
+   * is a string property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a string property.
+   *
+   * @threadsafety It is safe to call this function from any thread, although
+   *               the data returned is not protected and could potentially be
+   *               freed if you call SetString() or
+   *               ClearProperty() on these properties from another thread.
+   *               If you need to avoid this, use SDL_LockProperties() and
+   *               SDL_UnlockProperties().
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesRef.GetType()
+   * @sa PropertiesRef.Has()
+   * @sa PropertiesRef.SetString()
+   */
+  const char* GetString(StringParam name, StringParam default_value) const
+  {
+    return SDL_GetStringProperty(T::get(), name, default_value);
+  }
+
+  /**
+   * Get a number property from a group of properties.
+   *
+   * You can use SDL_GetPropertyType() to query whether the property exists and
+   * is a number property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a number property.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   * @sa Has()
+   * @sa SetNumber()
+   */
+  Sint64 GetNumber(StringParam name, Sint64 default_value) const
+  {
+    return SDL_GetNumberProperty(T::get(), name, default_value);
+  }
+
+  /**
+   * Get a floating point property from a group of properties.
+   *
+   * You can use SDL_GetPropertyType() to query whether the property exists and
+   * is a floating point property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a float property.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   * @sa Has()
+   * @sa SetFloat()
+   */
+  float GetFloat(StringParam name, float default_value) const
+  {
+    return SDL_GetFloatProperty(T::get(), name, default_value);
+  }
+
+  /**
+   * Get a boolean property from a group of properties.
+   *
+   * You can use SDL_GetPropertyType() to query whether the property exists and
+   * is a boolean property.
+   *
+   * By convention, the names of properties that SDL exposes on objects will
+   * start with "SDL.", and properties that SDL uses internally will start with
+   * "SDL.internal.". These should be considered read-only and should not be
+   * modified by applications.
+   *
+   * @param name the name of the property to query.
+   * @param default_value the default value of the property.
+   * @returns the value of the property, or `default_value` if it is not set or
+   *          not a boolean property.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetType()
+   * @sa Has()
+   * @sa SetBoolean()
+   */
+  bool GetBoolean(StringParam name, bool default_value) const
+  {
+    return SDL_GetBooleanProperty(T::get(), name, default_value);
+  }
+
+  /**
+   * Clear a property from a group of properties.
+   *
+   * @param name the name of the property to clear.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool Clear(StringParam name) { return SDL_ClearProperty(T::get(), name); }
+
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * @param outputIter an output iterator to be assigned to each property name
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  template<std::output_iterator<const char*> IT>
+  bool Enumerate(IT outputIter) const
+  {
+    return Enumerate(
+      [&outputIter](auto props, const char name) { *outputIter++ = name; });
+  }
+
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @cat immediate-callback
+   *
+   * @sa immediate-callback
+   */
+  bool Enumerate(EnumeratePropertiesCB callback) const
+  {
+    return Enumerate(
+      [](void* userdata, SDL_PropertiesID props, const char* name) {
+        auto& f = *static_cast<EnumeratePropertiesCB*>(userdata);
+        f({props}, name);
+      },
+      &callback);
+  }
+
+  /**
+   * Enumerate the properties contained in a group of properties.
+   *
+   * The callback function is called for each property in the group of
+   * properties. The properties are locked during enumeration.
+   *
+   * @param callback the function to call for each property.
+   * @param userdata a pointer that is passed to `callback`.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool Enumerate(EnumeratePropertiesCallback callback, void* userdata) const
+  {
+    return SDL_EnumerateProperties(T::get(), callback, userdata);
+  }
+
+  /**
+   * Destroy a group of properties.
+   *
+   * All properties are deleted and their cleanup functions will be called, if
+   * any.
+   *
+   * @post This object becomes empty after the call.
+   *
+   * @threadsafety This function should not be called while these properties are
+   *               locked or other threads might be setting or getting values
+   *               from these properties.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { return SDL_DestroyProperties(T::release()); }
+
+  /**
+   * Returns the number of properties this has
+   *
+   * This uses Enumerate() internally, so might not be so fast
+   */
+  Uint64 GetCount() const
+  {
+    Uint64 count = 0;
+    if (Enumerate([&](SDL_PropertiesID, const char*) { count++; })) {
+      return count;
+    }
+    return 0;
+  }
+};
+
+/**
+ * Wrap the lock state for PropertiesBase
+ *
+ */
+class PropertiesLock
+{
+  PropertiesRef properties;
+
+  /**
+   * @sa PropertiesBase.Lock()
+   */
+  explicit PropertiesLock(PropertiesRef properties)
+    : properties(properties)
+  {
+  }
+
+public:
+  /// Default ctor
+  PropertiesLock()
+    : properties(nullptr)
+  {
+  }
+
+  PropertiesLock(const PropertiesLock& other) = delete;
+
+  /// Move ctor
+  PropertiesLock(PropertiesLock&& other)
+    : properties(std::move(other.properties))
+  {
+  }
+
+  /**
+   * @sa Unlock()
+   */
+  ~PropertiesLock() { Unlock(); }
+
+  PropertiesLock& operator=(PropertiesLock other)
+  {
+    std::swap(properties, other.properties);
+    return *this;
+  }
+
+  /**
+   * Returns true if lock is active
+   */
+  constexpr operator bool() const { return bool(properties); }
+
+  /**
+   * Unlock a group of properties.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PropertiesBase.Lock()
+   */
+  void Unlock() { return SDL_UnlockProperties(properties.release()); }
+
+  template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
+  friend class PropertiesBase;
+};
+
+constexpr PropertyType PROPERTY_TYPE_INVALID = SDL_PROPERTY_TYPE_INVALID;
+
+constexpr PropertyType PROPERTY_TYPE_POINTER = SDL_PROPERTY_TYPE_POINTER;
+
+constexpr PropertyType PROPERTY_TYPE_STRING = SDL_PROPERTY_TYPE_STRING;
+
+constexpr PropertyType PROPERTY_TYPE_NUMBER = SDL_PROPERTY_TYPE_NUMBER;
+
+constexpr PropertyType PROPERTY_TYPE_FLOAT = SDL_PROPERTY_TYPE_FLOAT;
+
+constexpr PropertyType PROPERTY_TYPE_BOOLEAN = SDL_PROPERTY_TYPE_BOOLEAN;
+
+/**
+ * Get the global SDL properties.
+ *
+ * @returns a valid property ID on success or 0 on failure; call
+ *          GetError() for more information.
+ */
+inline PropertiesRef GetGlobalProperties()
+{
+  return FancyPointer{SDL_GetGlobalProperties()};
+}
+
+/**
+ * Create a group of properties.
+ *
+ * All properties are automatically destroyed when Quit() is called.
+ *
+ * @returns a valid Properties for a new group of properties, or false on
+ * failure; call GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Properties
+ */
+inline Properties CreateProperties()
+{
+  return Properties{SDL_CreateProperties()};
+}
+
+#pragma region impl
+/// @}
+
+inline void PropertiesDeleter::operator()(PropertiesRef props) const
+{
+  props.Destroy();
+}
+
+template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
+PropertiesLock PropertiesBase<T>::Lock() &
+{
+  if (SDL_LockProperties(T::get())) return {*this};
+  return {nullptr};
+}
+
+#pragma endregion impl
+
+/**
+ * @defgroup CategoryRect Rectangle Functions
+ *
+ * Some helper functions for managing rectangles and 2D points, in both
+ * integer and floating point versions.
+ * @{
+ */
+
+// Forward decl
+struct FPoint;
+
+// Forward decl
+struct Rect;
+
+// Forward decl
+struct FRect;
+
+/**
+ * @brief The structure that defines a point (using integers)
+ *
+ * Based on https://github.com/libSDL2pp/libSDL2pp/blob/master/SDL2pp/Point.hh
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct Point : SDL_Point
+{
+  constexpr Point(const SDL_Point& point)
+    : SDL_Point(point)
+  {
+  }
+  constexpr Point()
+    : Point({0})
+  {
+  }
+
+  constexpr Point(int x, int y)
+    : SDL_Point{x, y}
+  {
+  }
+
+  /**
+   * @brief Get X coordinate of the point
+   *
+   * @returns X coordinate of the point
+   *
+   */
+  constexpr int GetX() const { return x; }
+
+  /**
+   * @brief Set X coordinate of the point
+   *
+   * @param[in] nx New X coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& SetX(int nx)
+  {
+    x = nx;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the point
+   *
+   * @returns Y coordinate of the point
+   *
+   */
+  constexpr int GetY() const { return y; }
+
+  /**
+   * @brief Set Y coordinate of the point
+   *
+   * @param[in] ny New Y coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& SetY(int ny)
+  {
+    y = ny;
+    return *this;
+  }
+
+  /**
+   * Determine whether a point resides inside a rectangle.
+   *
+   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
+   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
+   * and < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)
+   * as "inside" and (0,1) as not.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param r the rectangle to test.
+   * @returns true if this is contained by `r`, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsInRect(const Rect& r) const;
+
+  /**
+   * @brief Get point's memberwise negation
+   *
+   * @returns New Point representing memberwise negation
+   *
+   */
+  constexpr Point operator-() const { return Point(-x, -y); }
+
+  /**
+   * @brief Get point's memberwise addition with another point
+   *
+   * @param[in] other Point to add
+   *
+   * @returns New Point representing memberwise addition with another point
+   *
+   */
+  constexpr Point operator+(const Point& other) const
+  {
+    return Point(x + other.x, y + other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise subtraction with another point
+   *
+   * @param[in] other Point to subtract
+   *
+   * @returns New Point representing memberwise subtraction of another point
+   *
+   */
+  constexpr Point operator-(const Point& other) const
+  {
+    return Point(x - other.x, y - other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise division by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by an integer
+   *
+   */
+  constexpr Point operator/(int value) const
+  {
+    return Point(x / value, y / value);
+  }
+
+  /**
+   * @brief Get point's memberwise division by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by another point
+   *
+   */
+  constexpr Point operator/(const Point& other) const
+  {
+    return Point(x / other.x, y / other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise remainder from division
+   *        by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns New Point representing memberwise remainder
+   *          from division by an integer
+   *
+   */
+  constexpr Point operator%(int value) const
+  {
+    return Point(x % value, y % value);
+  }
+
+  /**
+   * @brief Get point's memberwise remainder from division
+   *        by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns New Point representing memberwise remainder
+   *          from division by another point
+   *
+   */
+  constexpr Point operator%(const Point& other) const
+  {
+    return Point(x % other.x, y % other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by an
+   *        integer
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by an integer
+   *
+   */
+  constexpr Point operator*(int value) const
+  {
+    return Point(x * value, y * value);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by another
+   *        point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by another point
+   *
+   */
+  constexpr Point operator*(const Point& other) const
+  {
+    return Point(x * other.x, y * other.y);
+  }
+
+  /**
+   * @brief Memberwise add another point
+   *
+   * @param[in] other Point to add to the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator+=(const Point& other)
+  {
+    x += other.x;
+    y += other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise subtract another point
+   *
+   * @param[in] other Point to subtract from the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator-=(const Point& other)
+  {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator/=(int value)
+  {
+    x /= value;
+    y /= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator/=(const Point& other)
+  {
+    x /= other.x;
+    y /= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise remainder from division by an integer
+   *
+   * @param[in] value Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator%=(int value)
+  {
+    x %= value;
+    y %= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise remainder from division by another
+   *        point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator%=(const Point& other)
+  {
+    x %= other.x;
+    y %= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by an integer
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator*=(int value)
+  {
+    x *= value;
+    y *= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by another point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& operator*=(const Point& other)
+  {
+    x *= other.x;
+    y *= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Get a point with coordinates modified so it fits
+   *        into a given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Clamped point
+   *
+   */
+  constexpr Point GetClamped(const Rect& rect) const;
+
+  /**
+   * @brief Clamp point coordinates to make it fit into a
+   *        given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& Clamp(const Rect& rect);
+
+  /**
+   * @brief Get a point wrapped within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Wrapped point
+   *
+   */
+  constexpr Point GetWrapped(const Rect& rect) const;
+
+  /**
+   * @brief Wrap point coordinates within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Point& Wrap(const Rect& rect);
+
+  // Auto comparison operator
+  constexpr auto operator<=>(const Point&) const = default;
+
+  /**
+   * @brief Converts to FPoint
+   *
+   * @return FPoint
+   */
+  constexpr operator FPoint() const;
+};
+
+/**
+ * @brief The structure that defines a point (using floating point values).
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct FPoint : SDL_FPoint
+{
+  constexpr FPoint(const SDL_FPoint& point)
+    : SDL_FPoint(point)
+  {
+  }
+  constexpr FPoint()
+    : FPoint({0})
+  {
+  }
+
+  constexpr FPoint(float x, float y)
+    : SDL_FPoint{x, y}
+  {
+  }
+
+  /**
+   * @brief Get X coordinate of the point
+   *
+   * @returns X coordinate of the point
+   *
+   */
+  constexpr int GetX() const { return x; }
+
+  /**
+   * @brief Set X coordinate of the point
+   *
+   * @param[in] nx New X coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& SetX(int nx)
+  {
+    x = nx;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the point
+   *
+   * @returns Y coordinate of the point
+   *
+   */
+  constexpr int GetY() const { return y; }
+
+  /**
+   * @brief Set Y coordinate of the point
+   *
+   * @param[in] ny New Y coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& SetY(int ny)
+  {
+    y = ny;
+    return *this;
+  }
+
+  /**
+   * Determine whether a point resides inside a floating point rectangle.
+   *
+   * A point is considered part of a rectangle if both `p` and `r` are not NULL,
+   * and `p`'s x and y coordinates are >= to the rectangle's top left corner,
+   * and <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point
+   * (0,0) and (0,1) as "inside" and (0,2) as not.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param r the rectangle to test.
+   * @returns true if this is contained by `r`, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool IsInRect(const FRect& r) const;
+
+  /**
+   * @brief Get point's memberwise negation
+   *
+   * @returns New Point representing memberwise negation
+   *
+   */
+  constexpr FPoint operator-() const { return FPoint(-x, -y); }
+
+  /**
+   * @brief Get point's memberwise addition with another point
+   *
+   * @param[in] other Point to add
+   *
+   * @returns New Point representing memberwise addition with another point
+   *
+   */
+  constexpr FPoint operator+(const FPoint& other) const
+  {
+    return FPoint(x + other.x, y + other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise subtraction with another point
+   *
+   * @param[in] other Point to subtract
+   *
+   * @returns New Point representing memberwise subtraction of another point
+   *
+   */
+  constexpr FPoint operator-(const FPoint& other) const
+  {
+    return FPoint(x - other.x, y - other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise division by an float
+   *
+   * @param[in] value Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by an float
+   *
+   */
+  constexpr FPoint operator/(float value) const
+  {
+    return FPoint(x / value, y / value);
+  }
+
+  /**
+   * @brief Get point's memberwise division by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns New Point representing memberwise division of
+   *          point by another point
+   *
+   */
+  constexpr FPoint operator/(const FPoint& other) const
+  {
+    return FPoint(x / other.x, y / other.y);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by an
+   *        float
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by an float
+   *
+   */
+  constexpr FPoint operator*(float value) const
+  {
+    return FPoint(x * value, y * value);
+  }
+
+  /**
+   * @brief Get point's memberwise multiplication by another
+   *        point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns New Point representing memberwise multiplication
+   *          of point by another point
+   *
+   */
+  constexpr FPoint operator*(const FPoint& other) const
+  {
+    return FPoint(x * other.x, y * other.y);
+  }
+
+  /**
+   * @brief Memberwise add another point
+   *
+   * @param[in] other Point to add to the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator+=(const Point& other)
+  {
+    x += other.x;
+    y += other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise subtract another point
+   *
+   * @param[in] other Point to subtract from the current one
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator-=(const Point& other)
+  {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by an float
+   *
+   * @param[in] value Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator/=(float value)
+  {
+    x /= value;
+    y /= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise divide by another point
+   *
+   * @param[in] other Divisor
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator/=(const Point& other)
+  {
+    x /= other.x;
+    y /= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by an float
+   *
+   * @param[in] value Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator*=(float value)
+  {
+    x *= value;
+    y *= value;
+    return *this;
+  }
+
+  /**
+   * @brief Memberwise multiply by another point
+   *
+   * @param[in] other Multiplier
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& operator*=(const FPoint& other)
+  {
+    x *= other.x;
+    y *= other.y;
+    return *this;
+  }
+
+  /**
+   * @brief Get a point with coordinates modified so it fits
+   *        into a given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Clamped point
+   *
+   */
+  constexpr FPoint GetClamped(const FRect& rect) const;
+
+  /**
+   * @brief Clamp point coordinates to make it fit into a
+   *        given rect
+   *
+   * @param[in] rect Rectangle to clamp with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& Clamp(const FRect& rect);
+
+  /**
+   * @brief Get a point wrapped within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Wrapped point
+   *
+   */
+  constexpr FPoint GetWrapped(const FRect& rect) const;
+
+  /**
+   * @brief Wrap point coordinates within a specified rect
+   *
+   * @param[in] rect Rectangle to wrap with
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FPoint& Wrap(const FRect& rect);
+
+  // Auto comparison operator
+  constexpr auto operator<=>(const FPoint&) const = default;
+};
+
+/**
+ * @brief A rectangle, with the origin at the upper left (using integers).
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct Rect : SDL_Rect
+{
+  constexpr Rect(const SDL_Rect& rect = {0})
+    : SDL_Rect(rect)
+  {
+  }
+
+  constexpr Rect(int x, int y, int w, int h)
+    : SDL_Rect({x, y, w, h})
+  {
+  }
+
+  constexpr Rect(const SDL_Point& corner, const SDL_Point& size)
+    : Rect{corner.x, corner.y, size.x, size.y}
+  {
+  }
+
+  /**
+   * Calculate a minimal rectangle enclosing a set of points.
+   *
+   * If `clip` is not NULL then only points inside of the clipping rectangle are
+   * considered.
+   *
+   * @param points a span of SDL_Point structures representing points to be
+   *               enclosed.
+   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
+   *             points.
+   * @returns a SDL_Rect structure filled in with the minimal enclosing
+   * rectangle or std::nullopt if all the points were outside of the
+   * clipping rectangle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static std::optional<Rect> GetEnclosingPoints(
+    SpanRef<const SDL_Point> points,
+    OptionalRef<const SDL_Rect> clip = std::nullopt)
+  {
+    Rect result;
+    if (SDL_GetRectEnclosingPoints(
+          points.data(), points.size(), clip, &result)) {
+      return result;
+    }
+    return std::nullopt;
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates, width and height
+   *
+   * @param[in] cx X coordinate of the rectangle center
+   * @param[in] cy Y coordinate of the rectangle center
+   * @param[in] w Width of the rectangle
+   * @param[in] h Height of the rectangle
+   *
+   */
+  static constexpr Rect FromCenter(int cx, int cy, int w, int h)
+  {
+    return Rect(cx - w / 2, cy - h / 2, w, h);
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates and size
+   *
+   * @param[in] center Coordinates of the rectangle center
+   * @param[in] size Dimensions of the rectangle
+   *
+   */
+  static constexpr Rect FromCenter(const Point& center, const Point& size)
+  {
+    return Rect(center - size / 2, size);
+  }
+
+  /**
+   * @brief Construct the rect from given corners coordinates
+   *
+   * @param[in] x1 X coordinate of the top left rectangle corner
+   * @param[in] y1 Y coordinate of the top left rectangle corner
+   * @param[in] x2 X coordinate of the bottom right rectangle corner
+   * @param[in] y2 Y coordinate of the bottom right rectangle corner
+   *
+   */
+  static constexpr Rect FromCorners(int x1, int y1, int x2, int y2)
+  {
+    return Rect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+  }
+
+  /**
+   * @brief Construct the rect from given centers coordinates
+   *
+   * @param[in] p1 Coordinates of the top left rectangle corner
+   * @param[in] p2 Coordinates of the bottom right rectangle corner
+   *
+   */
+  static constexpr Rect FromCorners(const Point& p1, const Point& p2)
+  {
+    return Rect(p1, p2 - p1 + Point(1, 1));
+  }
+
+  /**
+   * @brief Get X coordinate of the rect corner
+   *
+   * @returns X coordinate of the rect corner
+   *
+   */
+  constexpr int GetX() const { return x; }
+
+  /**
+   * @brief Set X coordinate of the rect corner
+   *
+   * @param[in] nx New X coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetX(int nx)
+  {
+    x = nx;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the rect corner
+   *
+   * @returns Y coordinate of the rect corner
+   *
+   */
+  constexpr int GetY() const { return y; }
+
+  /**
+   * @brief Set Y coordinate of the rect corner
+   *
+   * @param[in] ny New Y coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetY(int ny)
+  {
+    y = ny;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr int GetW() const { return w; }
+
+  /**
+   * @brief Set width of the rect
+   *
+   * @param[in] nw New width of the rect
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetW(int nw)
+  {
+    w = nw;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr int GetH() const { return h; }
+
+  /**
+   * @brief Set height of the rect
+   *
+   * @param[in] nh New height of the rect
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetH(int nh)
+  {
+    h = nh;
+    return *this;
+  }
+
+  /**
+   * @brief Get X coordinate of the rect second corner
+   *
+   * @returns X coordinate of the rect second corner
+   *
+   */
+  constexpr int GetX2() const { return x + w - 1; }
+
+  /**
+   * @brief Set X coordinate of the rect second corner
+   *
+   * @param[in] x2 New X coordinate value
+   *
+   * This modifies rectangle width internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetX2(int x2)
+  {
+    w = x2 - x + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the rect second corner
+   *
+   * @returns Y coordinate of the rect second corner
+   *
+   */
+  constexpr int GetY2() const { return y + h - 1; }
+
+  /**
+   * @brief Set Y coordinate of the rect second corner
+   *
+   * @param[in] y2 New Y coordinate value
+   *
+   * This modifies rectangle height internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& SetY2(int y2)
+  {
+    h = y2 - y + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get top left corner of the rect
+   *
+   * @returns Top left corner of the rect
+   *
+   */
+  constexpr Point GetTopLeft() const { return Point(x, y); }
+
+  /**
+   * @brief Get top right corner of the rect
+   *
+   * @returns Top right corner of the rect
+   *
+   */
+  constexpr Point GetTopRight() const { return Point(GetX2(), y); }
+
+  /**
+   * @brief Get bottom left corner of the rect
+   *
+   * @returns bottom left corner of the rect
+   *
+   */
+  constexpr Point GetBottomLeft() const { return Point(x, GetY2()); }
+
+  /**
+   * @brief Get bottom right corner of the rect
+   *
+   * @returns Bottom right corner of the rect
+   *
+   */
+  constexpr Point GetBottomRight() const { return Point(GetX2(), GetY2()); }
+
+  /**
+   * @brief Get size of the rect
+   *
+   * @returns Size of the rect
+   *
+   */
+  constexpr Point GetSize() const { return Point(w, h); }
+
+  /**
+   * @brief Get centroid of the rect
+   *
+   * @returns Centroid of the rect
+   *
+   */
+  constexpr Point GetCentroid() const { return Point(x + w / 2, y + h / 2); }
+
+  /**
+   * Calculate the intersection of a rectangle and line segment.
+   *
+   * This function is used to clip a line segment to a rectangle. A line segment
+   * contained entirely within the rectangle or that does not intersect will
+   * remain unchanged. A line segment that crosses the rectangle at either or
+   * both ends will be clipped to the boundary of the rectangle and the new
+   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
+   *
+   * @param X1 a pointer to the starting X-coordinate of the line.
+   * @param Y1 a pointer to the starting Y-coordinate of the line.
+   * @param X2 a pointer to the ending X-coordinate of the line.
+   * @param Y2 a pointer to the ending Y-coordinate of the line.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool IntersectLine(int* X1, int* Y1, int* X2, int* Y2) const
+  {
+    return SDL_GetRectAndLineIntersection(this, X1, Y1, X2, Y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
+   *
+   */
+  bool IntersectLine(Point* p1, Point* p2) const
+  {
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
+  }
+
+  /**
+   * Convert an SDL_Rect to SDL_FRect
+   *
+   * @return A FRect filled in with the floating point representation of
+   *              `rect`.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr operator FRect() const;
+
+  /**
+   * @sa operator FRect()
+   */
+  constexpr operator SDL_FRect() const { return operator SDL_FRect(); }
+
+  /**
+   * Determine whether a rectangle has no area.
+   *
+   * A rectangle is considered "empty" for this function if `r` is NULL, or if
+   * `r`'s width and/or height are <= 0.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @returns true if the rectangle is "empty", false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Empty() const { return SDL_RectEmpty(this); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * Determine whether two rectangles are equal.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height match.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Equal(const Rect& other) const
+  {
+    return SDL_RectsEqual(this, &other);
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const Rect& other) const { return Equal(other); }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param point Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const Point& point) const
+  {
+    return SDL_PointInRect(&point, this);
+  }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param other Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const Rect& other) const
+  {
+    return GetUnion(other) == *this;
+  }
+
+  /**
+   * Determine whether two rectangles intersect.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetIntersection()
+   */
+  bool HasIntersection(const Rect& other) const
+  {
+    return SDL_HasRectIntersection(this, &other);
+  }
+
+  /**
+   * Calculate the intersection of two rectangles.
+   *
+   * If `result` is NULL then this function will return false.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns an SDL_Rect structure filled in with the intersection of
+   *               if there is intersection, std::nullopt otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa HasIntersection()
+   */
+  constexpr std::optional<Rect> GetIntersection(const Rect& other) const
+  {
+    if (Rect result; SDL_GetRectIntersection(this, &other, &result)) {
+      return result;
+    }
+    return std::nullopt;
+  }
+
+  /**
+   * Calculate the union of two rectangles.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns Rect representing union of two rectangles
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr std::optional<Rect> GetUnion(const Rect& other) const
+  {
+    if (Rect result; SDL_GetRectUnion(this, &other, &result)) return result;
+    return std::nullopt;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr Rect GetExtension(unsigned int amount) const
+  {
+    Rect r = *this;
+    r.Extend(amount);
+    return r;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr Rect GetExtension(unsigned int hAmount, unsigned int vAmount) const
+  {
+    Rect r = *this;
+    r.Extend(hAmount, vAmount);
+    return r;
+  }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& Extend(unsigned int amount) { return Extend(amount, amount); }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& Extend(unsigned int hAmount, unsigned int vAmount)
+  {
+    x -= hAmount;
+    y -= vAmount;
+    w += hAmount * 2;
+    h += vAmount * 2;
+    return *this;
+  }
+
+  /**
+   * @brief Get rectangle moved by a given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr Rect operator+(const Point& offset) const
+  {
+    return Rect(x + offset.x, y + offset.y, w, h);
+  }
+
+  /**
+   * @brief Get rectangle moved by an opposite of given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr Rect operator-(const Point& offset) const
+  {
+    return Rect(x - offset.x, y - offset.y, w, h);
+  }
+
+  /**
+   * @brief Move by then given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& operator+=(const Point& offset)
+  {
+    x += offset.x;
+    y += offset.y;
+    return *this;
+  }
+
+  /**
+   * @brief Move by an opposite of the given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Rect& operator-=(const Point& offset)
+  {
+    x -= offset.x;
+    y -= offset.y;
+    return *this;
+  }
+};
+
+/**
+ * @brief A rectangle, with the origin at the upper left (using floats).
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct FRect : SDL_FRect
+{
+  constexpr FRect(const SDL_FRect& rect = {0})
+    : SDL_FRect(rect)
+  {
+  }
+
+  constexpr FRect(float x, float y, float w, float h)
+    : SDL_FRect({x, y, w, h})
+  {
+  }
+
+  constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
+    : FRect{corner.x, corner.y, size.x, size.y}
+  {
+  }
+
+  /**
+   * Calculate a minimal rectangle enclosing a set of points.
+   *
+   * If `clip` is not NULL then only points inside of the clipping rectangle are
+   * considered.
+   *
+   * @param points a span of SDL_Point structures representing points to be
+   *               enclosed.
+   * @param clip an SDL_Rect used for clipping or std::nullopt to enclose all
+   *             points.
+   * @returns a FRect structure filled in with the minimal enclosing
+   *          rectangle or std::nullopt if all the points were outside of
+   * the clipping rectangle.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  static std::optional<FRect> GetEnclosingPoints(
+    SpanRef<const SDL_FPoint> points,
+    OptionalRef<const SDL_FRect> clip = std::nullopt)
+  {
+    FRect result;
+    if (SDL_GetRectEnclosingPointsFloat(
+          points.data(), points.size(), clip, &result)) {
+      return result;
+    }
+    return std::nullopt;
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates, width and height
+   *
+   * @param[in] cx X coordinate of the rectangle center
+   * @param[in] cy Y coordinate of the rectangle center
+   * @param[in] w Width of the rectangle
+   * @param[in] h Height of the rectangle
+   *
+   */
+  static constexpr FRect FromCenter(float cx, float cy, float w, float h)
+  {
+    return FRect(cx - w / 2, cy - h / 2, w, h);
+  }
+
+  /**
+   * @brief Construct the rect from given center coordinates and size
+   *
+   * @param[in] center Coordinates of the rectangle center
+   * @param[in] size Dimensions of the rectangle
+   *
+   */
+  static constexpr FRect FromCenter(const FPoint& center, const FPoint& size)
+  {
+    return FRect(center - size / 2, size);
+  }
+
+  /**
+   * @brief Construct the rect from given corners coordinates
+   *
+   * @param[in] x1 X coordinate of the top left rectangle corner
+   * @param[in] y1 Y coordinate of the top left rectangle corner
+   * @param[in] x2 X coordinate of the bottom right rectangle corner
+   * @param[in] y2 Y coordinate of the bottom right rectangle corner
+   *
+   */
+  static constexpr FRect FromCorners(float x1, float y1, float x2, float y2)
+  {
+    return FRect(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+  }
+
+  /**
+   * @brief Construct the rect from given centers coordinates
+   *
+   * @param[in] p1 Coordinates of the top left rectangle corner
+   * @param[in] p2 Coordinates of the bottom right rectangle corner
+   *
+   */
+  static constexpr FRect FromCorners(const FPoint& p1, const FPoint& p2)
+  {
+    return FRect(p1, p2 - p1 + FPoint(1, 1));
+  }
+
+  /**
+   * @brief Get X coordinate of the rect corner
+   *
+   * @returns X coordinate of the rect corner
+   *
+   */
+  constexpr float GetX() const { return x; }
+
+  /**
+   * @brief Set X coordinate of the rect corner
+   *
+   * @param[in] nx New X coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetX(float nx)
+  {
+    x = nx;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the rect corner
+   *
+   * @returns Y coordinate of the rect corner
+   *
+   */
+  constexpr float GetY() const { return y; }
+
+  /**
+   * @brief Set Y coordinate of the rect corner
+   *
+   * @param[in] ny New Y coordinate value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetY(float ny)
+  {
+    y = ny;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr float GetW() const { return w; }
+
+  /**
+   * @brief Set width of the rect
+   *
+   * @param[in] nw New width of the rect
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetW(float nw)
+  {
+    w = nw;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr float GetH() const { return h; }
+
+  /**
+   * @brief Set height of the rect
+   *
+   * @param[in] nh New height of the rect
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetH(float nh)
+  {
+    h = nh;
+    return *this;
+  }
+
+  /**
+   * @brief Get X coordinate of the rect second corner
+   *
+   * @returns X coordinate of the rect second corner
+   *
+   */
+  constexpr float GetX2() const { return x + w - 1; }
+
+  /**
+   * @brief Set X coordinate of the rect second corner
+   *
+   * @param[in] x2 New X coordinate value
+   *
+   * This modifies rectangle width internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetX2(float x2)
+  {
+    w = x2 - x + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get Y coordinate of the rect second corner
+   *
+   * @returns Y coordinate of the rect second corner
+   *
+   */
+  constexpr float GetY2() const { return y + h - 1; }
+
+  /**
+   * @brief Set Y coordinate of the rect second corner
+   *
+   * @param[in] y2 New Y coordinate value
+   *
+   * This modifies rectangle height internally
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& SetY2(float y2)
+  {
+    h = y2 - y + 1;
+    return *this;
+  }
+
+  /**
+   * @brief Get top left corner of the rect
+   *
+   * @returns Top left corner of the rect
+   *
+   */
+  constexpr FPoint GetTopLeft() const { return FPoint(x, y); }
+
+  /**
+   * @brief Get top right corner of the rect
+   *
+   * @returns Top right corner of the rect
+   *
+   */
+  constexpr FPoint GetTopRight() const { return FPoint(GetX2(), y); }
+
+  /**
+   * @brief Get bottom left corner of the rect
+   *
+   * @returns bottom left corner of the rect
+   *
+   */
+  constexpr FPoint GetBottomLeft() const { return FPoint(x, GetY2()); }
+
+  /**
+   * @brief Get bottom right corner of the rect
+   *
+   * @returns Bottom right corner of the rect
+   *
+   */
+  constexpr FPoint GetBottomRight() const { return FPoint(GetX2(), GetY2()); }
+
+  /**
+   * @brief Get size of the rect
+   *
+   * @returns Size of the rect
+   *
+   */
+  constexpr FPoint GetSize() const { return FPoint(w, h); }
+
+  /**
+   * @brief Get centroid of the rect
+   *
+   * @returns Centroid of the rect
+   *
+   */
+  constexpr FPoint GetCentroid() const { return FPoint(x + w / 2, y + h / 2); }
+
+  /**
+   * Calculate the intersection of a rectangle and line segment with float
+   * precision.
+   *
+   * This function is used to clip a line segment to a rectangle. A line segment
+   * contained entirely within the rectangle or that does not intersect will
+   * remain unchanged. A line segment that crosses the rectangle at either or
+   * both ends will be clipped to the boundary of the rectangle and the new
+   * coordinates saved in `X1`, `Y1`, `X2`, and/or `Y2` as necessary.
+   *
+   * @param X1 a pointer to the starting X-coordinate of the line.
+   * @param Y1 a pointer to the starting Y-coordinate of the line.
+   * @param X2 a pointer to the ending X-coordinate of the line.
+   * @param Y2 a pointer to the ending Y-coordinate of the line.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool IntersectLine(float* X1, float* Y1, float* X2, float* Y2) const
+  {
+    return SDL_GetRectAndLineIntersectionFloat(this, X1, Y1, X2, Y2);
+  }
+
+  /**
+   * @brief Calculate the intersection of a rectangle and line segment
+   *
+   * @param[in,out] p1 Starting coordinates of the line
+   * @param[in,out] p2 Ending coordinates of the line
+   *
+   * @returns True if there is an intersection, false otherwise
+   *
+   * This function is used to clip a line segment to a
+   * rectangle. A line segment contained entirely within the
+   * rectangle or that does not intersect will remain unchanged.
+   * A line segment that crosses the rectangle at either or both
+   * ends will be clipped to the boundary of the rectangle and
+   * the new coordinates saved in p1 and/or p2 as necessary.
+   *
+   */
+  bool IntersectLine(FPoint* p1, FPoint* p2) const
+  {
+    return IntersectLine(p1 ? &p1->x : nullptr,
+                         p1 ? &p1->y : nullptr,
+                         p2 ? &p2->x : nullptr,
+                         p2 ? &p2->y : nullptr);
+  }
+
+  /**
+   * Determine whether a rectangle has no area.
+   *
+   * A rectangle is considered "empty" for this function if `r` is NULL, or if
+   * `r`'s width and/or height are <= 0.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @returns true if the rectangle is "empty", false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * Determine whether two floating point rectangles are equal, within some
+   * given epsilon.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height are within `epsilon` of each other. If you don't know
+   * what value to use for `epsilon`, you should call the SDL_RectsEqualFloat
+   * function instead.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @param epsilon the epsilon value for comparison.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Equal()
+   */
+  constexpr bool EqualEpsilon(const FRect& other, const float epsilon) const
+  {
+    return SDL_RectsEqualEpsilon(this, &other, epsilon);
+  }
+
+  /**
+   * Determine whether two rectangles are equal.
+   *
+   * Rectangles are considered equal if both are not NULL and each of their x,
+   * y, width and height match.
+   *
+   * Note that this is a forced-inline function in a header, and not a public
+   * API function available in the SDL library (which is to say, the code is
+   * embedded in the calling program and the linker and dynamic loader will not
+   * be able to find this function inside SDL itself).
+   *
+   * @param other the second rectangle to test.
+   * @returns true if the rectangles are equal, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  constexpr bool Equal(const FRect& other) const
+  {
+    return SDL_RectsEqualFloat(this, &other);
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const FRect& other) const { return Equal(other); }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param point Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const FPoint& point) const
+  {
+    return SDL_PointInRectFloat(&point, this);
+  }
+
+  /**
+   * @brief Check whether the rect contains given point
+   *
+   * @param other Point to check
+   *
+   * @returns True if the point is contained in the rect
+   *
+   */
+  constexpr bool Contains(const FRect& other) const
+  {
+    return GetUnion(other) == *this;
+  }
+
+  /**
+   * Determine whether two rectangles intersect.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns true if there is an intersection, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetIntersection()
+   */
+  bool HasIntersection(const FRect& other) const
+  {
+    return SDL_HasRectIntersectionFloat(this, &other);
+  }
+
+  /**
+   * Calculate the intersection of two rectangles.
+   *
+   * If `result` is NULL then this function will return false.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns an SDL_Rect structure filled in with the intersection of
+   *               if there is intersection, std::nullopt otherwise.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa HasIntersection()
+   */
+  constexpr std::optional<FRect> GetIntersection(const FRect& other) const
+  {
+    if (FRect result; SDL_GetRectIntersectionFloat(this, &other, &result)) {
+      return result;
+    }
+    return std::nullopt;
+  }
+
+  /**
+   * Calculate the union of two rectangles with float precision.
+   *
+   * @param other an SDL_Rect structure representing the second rectangle.
+   * @returns Rect representing union of two rectangles
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  inline std::optional<FRect> GetUnion(const FRect& other) const
+  {
+    if (FRect result; SDL_GetRectUnionFloat(this, &other, &result))
+      return result;
+    return std::nullopt;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr FRect GetExtension(unsigned int amount) const
+  {
+    FRect r = *this;
+    r.Extend(amount);
+    return r;
+  }
+
+  /**
+   * @brief Get a rect extended by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Extended rect
+   *
+   */
+  constexpr FRect GetExtension(float hAmount, float vAmount) const
+  {
+    FRect r = *this;
+    r.Extend(hAmount, vAmount);
+    return r;
+  }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] amount Number of pixels to extend by
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& Extend(float amount) { return Extend(amount, amount); }
+
+  /**
+   * @brief Extend a rect by specified amount of pixels
+   *
+   * @param[in] hAmount Number of pixels to extend by
+   *                    in horizontal direction
+   * @param[in] vAmount Number of pixels to extend by
+   *                    in vertical direction
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& Extend(float hAmount, float vAmount)
+  {
+    x -= hAmount;
+    y -= vAmount;
+    w += hAmount * 2;
+    h += vAmount * 2;
+    return *this;
+  }
+
+  /**
+   * @brief Get rectangle moved by a given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr FRect operator+(const FPoint& offset) const
+  {
+    return FRect(x + offset.x, y + offset.y, w, h);
+  }
+
+  /**
+   * @brief Get rectangle moved by an opposite of given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Moved rectangle
+   *
+   */
+  constexpr FRect operator-(const FPoint& offset) const
+  {
+    return FRect(x - offset.x, y - offset.y, w, h);
+  }
+
+  /**
+   * @brief Move by then given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& operator+=(const FPoint& offset)
+  {
+    x += offset.x;
+    y += offset.y;
+    return *this;
+  }
+
+  /**
+   * @brief Move by an opposite of the given offset
+   *
+   * @param[in] offset Point specifying an offset
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FRect& operator-=(const FPoint& offset)
+  {
+    x -= offset.x;
+    y -= offset.y;
+    return *this;
+  }
+};
+
+#pragma region impl
+/// @}
+
+constexpr bool Point::IsInRect(const Rect& r) const
+{
+  return r.Contains(*this);
+}
+
+constexpr Point::operator FPoint() const { return {float(x), float(y)}; }
+
+constexpr Point Point::GetClamped(const Rect& rect) const
+{
+  Point p = *this;
+  p.Clamp(rect);
+  return p;
+}
+
+constexpr Point& Point::Clamp(const Rect& rect)
+{
+  if (x < rect.x) x = rect.x;
+  if (x > rect.GetX2()) x = rect.GetX2();
+  if (y < rect.y) y = rect.y;
+  if (y > rect.GetY2()) y = rect.GetY2();
+  return *this;
+}
+
+constexpr Point Point::GetWrapped(const Rect& rect) const
+{
+  Point p = *this;
+  p.Wrap(rect);
+  return p;
+}
+
+constexpr Point& Point::Wrap(const Rect& rect)
+{
+  if (x < rect.x)
+    x = rect.x + rect.w - 1 - (rect.x - x + rect.w - 1) % rect.w;
+  else if (x >= rect.x + rect.w)
+    x = rect.x + (x - rect.x - rect.w) % rect.w;
+
+  if (y < rect.y)
+    y = rect.y + rect.h - 1 - (rect.y - y + rect.h - 1) % rect.h;
+  else if (y >= rect.y + rect.h)
+    y = rect.y + (y - rect.y - rect.h) % rect.h;
+
+  return *this;
+}
+
+constexpr bool FPoint::IsInRect(const FRect& r) const
+{
+  return r.Contains(*this);
+}
+
+constexpr FPoint FPoint::GetClamped(const FRect& rect) const
+{
+  FPoint p = *this;
+  p.Clamp(rect);
+  return p;
+}
+
+constexpr FPoint& FPoint::Clamp(const FRect& rect)
+{
+  if (x < rect.x) x = rect.x;
+  if (x > rect.GetX2()) x = rect.GetX2();
+  if (y < rect.y) y = rect.y;
+  if (y > rect.GetY2()) y = rect.GetY2();
+  return *this;
+}
+
+constexpr FPoint FPoint::GetWrapped(const FRect& rect) const
+{
+  FPoint p = *this;
+  p.Wrap(rect);
+  return p;
+}
+
+constexpr FPoint& FPoint::Wrap(const FRect& rect)
+{
+  if (x < rect.x)
+    x = rect.x + rect.w - 1 - fmod(rect.x - x + rect.w - 1, rect.w);
+  else if (x >= rect.x + rect.w)
+    x = rect.x + fmod(x - rect.x - rect.w, rect.w);
+
+  if (y < rect.y)
+    y = rect.y + rect.h - 1 - fmod(rect.y - y + rect.h - 1, rect.h);
+  else if (y >= rect.y + rect.h)
+    y = rect.y + fmod(y - rect.y - rect.h, rect.h);
+
+  return *this;
+}
+
+constexpr Rect::operator FRect() const
+{
+  return {float(x), float(y), float(w), float(h)};
+}
+
+#pragma endregion impl
+
+/**
+ * @defgroup CategoryTimer Timer Support
+ *
+ * SDL provides time management functionality. It is useful for dealing with
+ * (usually) small durations of time.
+ *
+ * This is not to be confused with _calendar time_ management, which is
+ * provided by [CategoryTime](#CategoryTime).
+ *
+ * This category covers measuring time elapsed (GetTicks(),
+ * GetPerformanceCounter()), putting a thread to sleep for a certain
+ * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
+ * a callback function after a certain amount of time has elapsed
+ * (AddTimer(), etc).
+ *
+ * @{
+ */
+
+/**
+ * Get the time elapsed since SDL library initialization.
+ *
+ * @returns a std::chrono::nanoseconds value representing the number of
+ * nanoseconds since the SDL library initialized.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline std::chrono::nanoseconds GetTicks()
+{
+  return std::chrono::nanoseconds{SDL_GetTicksNS()};
+}
+
+/**
+ * Get the current value of the high resolution counter.
+ *
+ * This function is typically used for profiling.
+ *
+ * The counter values are only meaningful relative to each other. Differences
+ * between values can be converted to times by using
+ * SDL_GetPerformanceFrequency().
+ *
+ * @returns the current counter value.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPerformanceFrequency()
+ */
+inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
+
+/**
+ * Get the count per second of the high resolution counter.
+ *
+ * @returns a platform-specific count per second.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPerformanceCounter()
+ */
+inline Uint64 GetPerformanceFrequency()
+{
+  return SDL_GetPerformanceFrequency();
+}
+
+/**
+ * Wait a specified duration before returning.
+ *
+ * This function waits a specified duration before returning. It
+ * waits at least the specified time, but possibly longer due to OS
+ * scheduling.
+ *
+ * @param duration the duration to delay, with max precision in ns.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ */
+inline void Delay(std::chrono::nanoseconds duration)
+{
+  SDL_DelayNS(duration.count());
+}
+
+/**
+ * Wait a specified duration before returning.
+ *
+ * This function waits a specified duration before returning. It
+ * will attempt to wait as close to the requested time as possible, busy
+ * waiting if necessary, but could return later due to OS scheduling.
+ *
+ * @param duration the duration to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay()
+ * @sa DelayNS()
+ */
+inline void DelayPrecise(std::chrono::nanoseconds duration)
+{
+  SDL_DelayPrecise(duration.count());
+}
+/**
+ * Definition of the timer ID type.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using TimerID = SDL_TimerID;
+
+/**
+ * Function prototype for the millisecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in milliseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 SDL_AddTimer, for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddTimer()
+ */
+using TimerCallback = SDL_TimerCallback;
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 AddTimer(), for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddTimer()
+ */
+using NSTimerCallback = SDL_NSTimerCallback;
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa AddTimer(TimerCB)
+ */
+using TimerCB =
+  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimer() call and should return the next
+ * timer interval. If the value returned from the callback is 0, the timer is
+ * canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ms to execute and returned
+ * 1000 (ms), the timer would only wait another 750 ms before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in milliseconds, passed to `callback`.
+ * @param callback the TimerCallback function to call when the specified
+ *                 `interval` elapses.
+ * @param userdata a pointer that is passed to `callback`.
+ * @returns a timer ID or 0 on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::milliseconds interval,
+                        TimerCallback callback,
+                        void* userdata)
+{
+  return SDL_AddTimer(interval.count(), callback, userdata);
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimerNS() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ * `callback`.
+ * @param callback the NSTimerCallback function to call when the specified
+ *                 `interval` elapses.
+ * @param userdata a pointer that is passed to `callback`.
+ * @returns a timer ID or 0 on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval,
+                        NSTimerCallback callback,
+                        void* userdata)
+{
+  return SDL_AddTimerNS(interval.count(), callback, userdata);
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimerNS() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ * `callback`.
+ * @param callback the TimerCB function to call when the specified
+ *                 `interval` elapses.
+ * @returns a timer ID or 0 on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
+{
+  using Wrapper = CallbackWrapper<TimerCB>;
+  using Store = KeyValueWrapper<TimerID, TimerCB*>;
+
+  auto cb = Wrapper::Wrap(std::move(callback));
+
+  if (TimerID id = SDL_AddTimerNS(
+        interval.count(),
+        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
+          auto& f = *static_cast<TimerCB*>(userdata);
+          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
+          // If ask to removal, then remove it
+          if (next == 0) delete Store::release(timerID);
+          return next;
+        },
+        cb)) {
+    Store::Wrap(id, std::move(cb));
+    return id;
+  }
+  delete cb;
+  return TimerID{0};
+}
+
+/**
+ * Remove a timer created with AddTimer().
+ *
+ * @param id the ID of the timer to remove.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddTimer()
+ */
+inline bool RemoveTimer(TimerID id)
+{
+  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
+  return SDL_RemoveTimer(id);
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryVersion Querying SDL Version
+ *
+ * Functionality to query the current SDL version, both as headers the app was
+ * compiled against, and a library the app is linked to.
+ *
+ * @{
+ */
+
+/**
+ * Get the version of SDL that is linked against your program.
+ *
+ * If you are linking to SDL dynamically, then it is possible that the current
+ * version will be different than the version you compiled against. This
+ * function returns the current version, while SDL_VERSION is the version you
+ * compiled with.
+ *
+ * This function may be called safely at any time, even before SDL_Init().
+ *
+ * @returns the version of the linked library.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetRevision
+ */
+inline int GetVersion() { return SDL_GetVersion(); }
+
+/**
+ * Get the code revision of SDL that is linked against your program.
+ *
+ * This value is the revision of the code you are linked with and may be
+ * different from the code you are compiling with, which is found in the
+ * constant SDL_REVISION.
+ *
+ * The revision is arbitrary string (a hash value) uniquely identifying the
+ * exact revision of the SDL library in use, and is only useful in comparing
+ * against other revisions. It is NOT an incrementing number.
+ *
+ * If SDL wasn't built from a git repository with the appropriate tools, this
+ * will return an empty string.
+ *
+ * You shouldn't use this function for anything but logging it for debugging
+ * purposes. The string is not intended to be reliable in any way.
+ *
+ * @returns an arbitrary string, uniquely identifying the exact revision of
+ *          the SDL library in use.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetVersion
+ */
+inline const char* GetRevision() { return SDL_GetRevision(); }
+
+/// @}
+
+/**
+ * @defgroup CategoryIOStream I/O Streams
+ *
+ * SDL provides an abstract interface for reading and writing data streams. It
+ * offers implementations for files, memory, etc, and the app can provide
+ * their own implementations, too.
+ *
+ * SDL_IOStream is not related to the standard C++ iostream class, other than
+ * both are abstract interfaces to read/write data.
+ *
+ * @{
+ */
+
+// Forward decl
+template<ObjectBox<SDL_IOStream*> T>
+struct IOStreamBase;
+
+/**
+ * Handle to a non owned stream
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa IOStreamBase
+ * @sa IOStream
+ */
+using IOStreamRef = IOStreamBase<ObjectRef<SDL_IOStream>>;
+
+template<>
+struct ObjectDeleter<SDL_IOStream>
+{
+  void operator()(IOStreamRef stream) const;
+};
+
+/**
+ * Handle to an owned stream
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa IOStreamBase
+ * @sa IOStreamRef
+ */
+using IOStream = IOStreamBase<ObjectUnique<SDL_IOStream>>;
+
+/**
+ * @cat constructor-tag
+ */
+constexpr struct IOFromDynamicMem_CtorTag
+{
+} IOFromDynamicMem;
+
+/**
+ * SDL_IOStream status, set by a read or write operation.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using IOStatus = SDL_IOStatus;
+
+/**
+ * Everything is ready (no errors and not EOF).
+ */
+constexpr IOStatus IO_STATUS_READY = SDL_IO_STATUS_READY;
+
+/**
+ * Read or write I/O error
+ */
+constexpr IOStatus IO_STATUS_ERROR = SDL_IO_STATUS_ERROR;
+
+/**
+ * End of file
+ */
+constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF;
+
+/**
+ * Non blocking I/O, not ready
+ */
+constexpr IOStatus IO_STATUS_NOT_READY = SDL_IO_STATUS_NOT_READY;
+
+/**
+ * Tried to write a read-only buffer
+ */
+constexpr IOStatus IO_STATUS_READONLY = SDL_IO_STATUS_READONLY;
+
+/**
+ * Tried to read a write-only buffer
+ */
+constexpr IOStatus IO_STATUS_WRITEONLY = SDL_IO_STATUS_WRITEONLY;
+
+/**
+ * Possible `whence` values for SDL_IOStream seeking.
+ *
+ * These map to the same "whence" concept that `fseek` or `lseek` use in the
+ * standard C runtime.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using IOWhence = SDL_IOWhence;
+
+/**
+ * Seek from the beginning of data
+ */
+constexpr IOWhence IO_SEEK_SET = SDL_IO_SEEK_SET;
+
+/**
+ * Seek relative to current read point
+ */
+constexpr IOWhence IO_SEEK_CUR = SDL_IO_SEEK_CUR;
+
+/**
+ * Seek relative to the end of data
+ */
+constexpr IOWhence IO_SEEK_END = SDL_IO_SEEK_END;
+
+/**
+ * The function pointers that drive an SDL_IOStream.
+ *
+ * Applications can provide this struct to SDL_OpenIO() to create their own
+ * implementation of SDL_IOStream. This is not necessarily required, as SDL
+ * already offers several common types of I/O streams, via functions like
+ * SDL_IOFromFile() and SDL_IOFromMem().
+ *
+ * This structure should be initialized using SDL_INIT_INTERFACE()
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @sa SDL_INIT_INTERFACE
+ */
+using IOStreamInterface = SDL_IOStreamInterface;
+
+/**
+ * The read/write operation structure.
+ *
+ * This operates as an opaque handle. There are several APIs to create various
+ * types of I/O streams, or an app can supply an SDL_IOStreamInterface to
+ * SDL_OpenIO() to provide their own stream implementation behind this
+ * struct's abstract interface.
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat resource
+ */
+template<ObjectBox<SDL_IOStream*> T>
+struct IOStreamBase : T
+{
+  using T::T;
+
+  /**
+   * Use this function to create a new SDL_IOStream structure for reading from
+   * and/or writing to a named file.
+   *
+   * The `mode` string is treated roughly the same as in a call to the C
+   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
+   * scenes.
+   *
+   * Available `mode` strings:
+   *
+   * - "r": Open a file for reading. The file must exist.
+   * - "w": Create an empty file for writing. If a file with the same name
+   *   already exists its content is erased and the file is treated as a new
+   *   empty file.
+   * - "a": Append to a file. Writing operations append data at the end of the
+   *   file. The file is created if it does not exist.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   * - "a+": Open a file for reading and appending. All writing operations are
+   *   performed at the end of the file, protecting the previous content to be
+   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+   *   anywhere in the file for reading, but writing operations will move it
+   *   back to the end of file. The file is created if it does not exist.
+   *
+   * **NOTE**: In order to open a file as a binary file, a "b" character has to
+   * be included in the `mode` string. This additional "b" character can either
+   * be appended at the end of the string (thus making the following compound
+   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
+   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
+   * Additional characters may follow the sequence, although they should have no
+   * effect. For example, "t" is sometimes appended to make explicit the file is
+   * a text file.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * In Android, SDL_IOFromFile() can be used to open content:// URIs. As a
+   * fallback, SDL_IOFromFile() will transparently open a matching filename in
+   * the app's `assets`.
+   *
+   * Closing the SDL_IOStream will close SDL's internal file handle.
+   *
+   * The following properties may be set at creation time by SDL:
+   *
+   * - `SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
+   *   to a win32 `HANDLE`, that this SDL_IOStream is using to access the
+   *   filesystem. If the program isn't running on Windows, or SDL used some
+   *   other method to access the filesystem, this property will not be set.
+   * - `SDL_PROP_IOSTREAM_STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this SDL_IOStream is using to access the filesystem.
+   *   If SDL used some other method to access the filesystem, this property
+   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
+   *   than your app, trying to use this pointer will almost certainly result in
+   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   your app with the same compiler and settings to avoid it.
+   * - `SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   SDL_IOStream is using to access the filesystem.
+   * - `SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER`: a pointer, that can be cast
+   *   to an Android NDK `AAsset *`, that this SDL_IOStream is using to access
+   *   the filesystem. If SDL used some other method to access the filesystem,
+   *   this property will not be set.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @returns a pointer to the SDL_IOStream structure that is created or NULL on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CloseIO
+   * @sa SDL_FlushIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   * @sa SDL_WriteIO
+   */
+  IOStreamBase(StringParam file, StringParam mode)
+    : T(SDL_IOFromFile(file, mode))
+  {
+  }
+
+  /**
+   * Use this function to prepare a read-write memory buffer for use with
+   * SDL_IOStream.
+   *
+   * This function sets up an SDL_IOStream struct based on a memory area of a
+   * certain size, for both read and write access.
+   *
+   * This memory buffer is not copied by the SDL_IOStream; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to make sure the SDL_IOStream never writes to the memory
+   * buffer, you should use SDL_IOFromConstMem() with a read-only buffer of
+   * memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a pointer to a buffer to feed an SDL_IOStream stream.
+   * @param size the buffer size, in bytes.
+   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOFromConstMem
+   * @sa SDL_CloseIO
+   * @sa SDL_FlushIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   * @sa SDL_WriteIO
+   */
+  IOStreamBase(void* mem, size_t size)
+    : T(SDL_IOFromMem(mem, size))
+  {
+  }
+
+  /**
+   * Use this function to prepare a read-only memory buffer for use with
+   * SDL_IOStream.
+   *
+   * This function sets up an SDL_IOStream struct based on a memory area of a
+   * certain size. It assumes the memory area is not writable.
+   *
+   * Attempting to write to this SDL_IOStream stream will report an error
+   * without writing to the memory buffer.
+   *
+   * This memory buffer is not copied by the SDL_IOStream; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to write to a memory buffer, you should use SDL_IOFromMem()
+   * with a writable buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.
+   * @param size the buffer size, in bytes.
+   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOFromMem
+   * @sa SDL_CloseIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   */
+  IOStreamBase(const void* mem, size_t size)
+    : T(SDL_IOFromConstMem(mem, size))
+  {
+  }
+
+  /**
+   * Use this function to create an SDL_IOStream that is backed by dynamically
+   * allocated memory.
+   *
+   * This supports the following properties to provide access to the memory and
+   * control over allocations:
+   *
+   * - `SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER`: a pointer to the internal
+   *   memory of the stream. This can be set to NULL to transfer ownership of
+   *   the memory to the application, which should free the memory with
+   *   SDL_free(). If this is done, the next operation on the stream must be
+   *   SDL_CloseIO().
+   * - `SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   *   multiples of this size, defaulting to 1024.
+   *
+   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CloseIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   * @sa SDL_WriteIO
+   */
+  IOStreamBase(IOFromDynamicMem_CtorTag)
+    : T(SDL_IOFromDynamicMem())
+  {
+  }
+
+  /**
+   * Create a custom SDL_IOStream.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own SDL_IOStream implementation. If you just need an SDL_IOStream to
+   * read/write a common data source, you should use the built-in
+   * implementations in SDL, like SDL_IOFromFile() or SDL_IOFromMem(), etc.
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this SDL_IOStream, initialized
+   *              using SDL_INIT_INTERFACE().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @returns a pointer to the allocated memory on success or NULL on failure;
+   *          call SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CloseIO
+   * @sa SDL_INIT_INTERFACE
+   * @sa SDL_IOFromConstMem
+   * @sa SDL_IOFromFile
+   * @sa SDL_IOFromMem
+   */
+  IOStreamBase(const IOStreamInterface* iface, void* userdata)
+    : T(SDL_OpenIO(iface, userdata))
+  {
+  }
+
+  template<class U>
+  IOStreamBase(std::span<U> mem)
+    : IOStreamBase(mem.data(), mem.size_bytes())
+  {
+    static_assert(false, "Not implemented");
+  }
+
+  /**
+   * Close and free an allocated SDL_IOStream structure.
+   *
+   * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
+   * resources used by the stream and frees the SDL_IOStream itself. This
+   * returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the SDL_IOStream is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call SDL_FlushIO() before closing. Note that flushing takes time and
+   * makes the system and your app operate less efficiently, so do so sparingly.
+   *
+   * @param context SDL_IOStream structure to close.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_OpenIO
+   */
+  bool Close() { return SDL_CloseIO(T::release()); }
+
+  /**
+   * Get the properties associated with an SDL_IOStream.
+   *
+   * @param context a pointer to an SDL_IOStream structure.
+   * @returns a valid property ID on success or 0 on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  PropertiesRef GetProperties() const { return SDL_GetIOProperties(T::get()); }
+
+  /**
+   * Query the stream status of an SDL_IOStream.
+   *
+   * This information can be useful to decide if a short read or write was due
+   * to an error, an EOF, or a non-blocking operation that isn't yet ready to
+   * complete.
+   *
+   * An SDL_IOStream's status is only expected to change after a SDL_ReadIO or
+   * SDL_WriteIO call; don't expect it to change if you just call this query
+   * function in a tight loop.
+   *
+   * @param context the SDL_IOStream to query.
+   * @returns an SDL_IOStatus enum with the current state.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  IOStatus GetStatus() const { return SDL_GetIOStatus(T::get()); }
+
+  /**
+   * Use this function to get the size of the data stream in an SDL_IOStream.
+   *
+   * @param context the SDL_IOStream to get the size of the data stream from.
+   * @returns the size of the data stream in the SDL_IOStream on success or a
+   *          negative error code on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint64 GetSize() const { return SDL_GetIOSize(T::get()); }
+
+  /**
+   * Seek within an SDL_IOStream data stream.
+   *
+   * This function seeks to byte `offset`, relative to `whence`.
+   *
+   * `whence` may be any of the following values:
+   *
+   * - `SDL_IO_SEEK_SET`: seek from the beginning of data
+   * - `SDL_IO_SEEK_CUR`: seek relative to current read point
+   * - `SDL_IO_SEEK_END`: seek relative to the end of data
+   *
+   * If this stream can not seek, it will return -1.
+   *
+   * @param context a pointer to an SDL_IOStream structure.
+   * @param offset an offset in bytes, relative to `whence` location; can be
+   *               negative.
+   * @param whence any of `SDL_IO_SEEK_SET`, `SDL_IO_SEEK_CUR`,
+   *               `SDL_IO_SEEK_END`.
+   * @returns the final offset in the data stream after the seek or -1 on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_TellIO
+   */
+  Sint64 Seek(Sint64 offset, IOWhence whence)
+  {
+    return SDL_SeekIO(T::get(), offset, whence);
+  }
+
+  /**
+   * Determine the current read/write offset in an SDL_IOStream data stream.
+   *
+   * SDL_TellIO is actually a wrapper function that calls the SDL_IOStream's
+   * `seek` method, with an offset of 0 bytes from `SDL_IO_SEEK_CUR`, to
+   * simplify application development.
+   *
+   * @param context an SDL_IOStream data stream object from which to get the
+   *                current offset.
+   * @returns the current offset in the stream, or -1 if the information can not
+   *          be determined.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_SeekIO
+   */
+  Sint64 Tell() const { return SDL_TellIO(T::get()); }
+
+  /**
+   * Read from a data source.
+   *
+   * This function reads up `size` bytes from the data source to the area
+   * pointed at by `ptr`. This function may read less bytes than requested.
+   *
+   * This function will return zero when the data stream is completely read, and
+   * SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, SDL_GetIOStatus() will return a different error
+   * value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param context a pointer to an SDL_IOStream structure.
+   * @param ptr a pointer to a buffer to read data into.
+   * @param size the number of bytes to read from the data source.
+   * @returns the number of bytes read, or 0 on end of file or other failure;
+   *          call SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_WriteIO
+   * @sa SDL_GetIOStatus
+   */
+  size_t Read(void* ptr, size_t size)
+  {
+    return SDL_ReadIO(T::get(), ptr, size);
+  }
+
+  template<class U>
+  size_t Write(std::span<U> data)
+  {
+    return Write(data.data(), data.size_bytes());
+  }
+
+  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
+
+  /**
+   * Write to an SDL_IOStream data stream.
+   *
+   * This function writes exactly `size` bytes from the area pointed at by `ptr`
+   * to the stream. If this fails for any reason, it'll return less than `size`
+   * to demonstrate how far the write progressed. On success, it returns `size`.
+   *
+   * On error, this function still attempts to write as much as possible, so it
+   * might return a positive value less than the requested write size.
+   *
+   * The caller can use SDL_GetIOStatus() to determine if the problem is
+   * recoverable, such as a non-blocking write that can simply be retried later,
+   * or a fatal error.
+   *
+   * @param context a pointer to an SDL_IOStream structure.
+   * @param ptr a pointer to a buffer containing data to write.
+   * @param size the number of bytes to write.
+   * @returns the number of bytes written, which will be less than `size` on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOprintf
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_FlushIO
+   * @sa SDL_GetIOStatus
+   */
+  size_t Write(const void* ptr, size_t size)
+  {
+    return SDL_WriteIO(T::get(), ptr, size);
+  }
+
+  /**
+   * @cat formatted-string
+   */
+  size_t print(std::string_view fmt, auto... args)
+  {
+    return Write(std::vformat(fmt, std::make_format_args(args...)));
+  }
+
+  /**
+   * @cat formatted-string
+   */
+  size_t println(std::string_view fmt, auto... args)
+  {
+    std::string result =
+      std::vformat(fmt, std::make_format_args(args...)) + "\n";
+    return Write(result);
+  }
+
+  /**
+   * Print to an SDL_IOStream data stream.
+   *
+   * @warning this is not typesafe! Prefer using print() and println()
+   *
+   * This function does formatted printing to the stream.
+   *
+   * @param context a pointer to an SDL_IOStream structure.
+   * @param fmt a printf() style format string.
+   * @param ... additional parameters matching % tokens in the `fmt` string, if
+   *            any.
+   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOvprintf
+   * @sa SDL_WriteIO
+   */
+  size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
+  {
+    va_list ap;
+    size_t result;
+
+    va_start(ap, fmt);
+    result = vprintf(fmt, ap);
+    va_end(ap);
+
+    return result;
+  }
+
+  /**
+   * Print to an SDL_IOStream data stream.
+   *
+   * @warning this is not typesafe! Prefer using print() and println()
+   *
+   * This function does formatted printing to the stream.
+   *
+   * @param context a pointer to an SDL_IOStream structure.
+   * @param fmt a printf() style format string.
+   * @param ap a variable argument list.
+   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOprintf
+   * @sa SDL_WriteIO
+   */
+  size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
+  {
+    return SDL_IOvprintf(T::get(), fmt, ap);
+  }
+
+  /**
+   * Flush any buffered data in the stream.
+   *
+   * This function makes sure that any buffered data is written to the stream.
+   * Normally this isn't necessary but if the stream is a pipe or socket it
+   * guarantees that any pending data is sent.
+   *
+   * @param context SDL_IOStream structure to flush.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_OpenIO
+   * @sa SDL_WriteIO
+   */
+  bool Flush() { return SDL_FlushIO(T::get()); }
+
+  /**
+   * Load all the data from an SDL data stream.
+   *
+   * The data is allocated with a zero byte at the end (null terminated) for
+   * convenience. This extra byte is not included in the value reported via
+   * `datasize`.
+   *
+   * @param src the SDL_IOStream to read all available data from.
+   * @returns the data or NULL on failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_LoadFile
+   * @sa SDL_SaveFile_IO
+   */
+  OwnArray<std::byte> LoadFile()
+  {
+    size_t datasize = 0;
+    auto data =
+      static_cast<std::byte*>(SDL_LoadFile_IO(T::get(), &datasize, false));
+    return OwnArray<std::byte>{data, datasize};
+  }
+
+  template<class U>
+  bool SaveFile(std::span<U> data)
+  {
+    return SaveFile(data.data(), data.size_bytes());
+  }
+
+  bool SaveFile(std::string_view str)
+  {
+    return SaveFile(str.data(), str.size());
+  }
+
+  /**
+   * Save all the data into an SDL data stream.
+   *
+   * @param src the SDL_IOStream to write all data to.
+   * @param data the data to be written. If datasize is 0, may be NULL or a
+   *             invalid pointer.
+   * @param datasize the number of bytes to be written.
+   * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
+   *                in the case of an error.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_SaveFile
+   * @sa SDL_LoadFile_IO
+   */
+  bool SaveFile(const void* data, size_t datasize)
+  {
+    return SDL_SaveFile_IO(T::get(), data, datasize);
+  }
+  /**
+   * Use this function to read a byte from an SDL_IOStream.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the SDL_IOStream to read from.
+   * @param value a pointer filled in with the data read.
+   * @returns true on success or false on failure or EOF; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU8(Uint8* value) { return SDL_ReadU8(T::get(), value); }
+
+  /**
+   * Use this function to read a signed byte from an SDL_IOStream.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the SDL_IOStream to read from.
+   * @param value a pointer filled in with the data read.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS8(Sint8* value) { return SDL_ReadS8(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU16LE(Uint16* value) { return SDL_ReadU16LE(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS16LE(Sint16* value) { return SDL_ReadS16LE(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU16BE(Uint16* value) { return SDL_ReadU16BE(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS16BE(Sint16* value) { return SDL_ReadS16BE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU32LE(Uint32* value) { return SDL_ReadU32LE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS32LE(Sint32* value) { return SDL_ReadS32LE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU32BE(Uint32* value) { return SDL_ReadU32BE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS32BE(Sint32* value) { return SDL_ReadS32BE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU64LE(Uint64* value) { return SDL_ReadU64LE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS64LE(Sint64* value) { return SDL_ReadS64LE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU64BE(Uint64* value) { return SDL_ReadU64BE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param src the stream from which to read data.
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS64BE(Sint64* value) { return SDL_ReadS64BE(T::get(), value); }
+
+  /**
+   * Use this function to write a byte to an SDL_IOStream.
+   *
+   * @param dst the SDL_IOStream to write to.
+   * @param value the byte value to write.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU8(Uint8 value) { return SDL_WriteU8(T::get(), value); }
+
+  /**
+   * Use this function to write a signed byte to an SDL_IOStream.
+   *
+   * @param dst the SDL_IOStream to write to.
+   * @param value the byte value to write.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS8(Sint8 value) { return SDL_WriteS8(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU16LE(Uint16 value) { return SDL_WriteU16LE(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS16LE(Sint16 value) { return SDL_WriteS16LE(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU16BE(Uint16 value) { return SDL_WriteU16BE(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS16BE(Sint16 value) { return SDL_WriteS16BE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU32LE(Uint32 value) { return SDL_WriteU32LE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS32LE(Sint32 value) { return SDL_WriteS32LE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU32BE(Uint32 value) { return SDL_WriteU32BE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS32BE(Sint32 value) { return SDL_WriteS32BE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU64LE(Uint64 value) { return SDL_WriteU64LE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS64LE(Sint64 value) { return SDL_WriteS64LE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU64BE(Uint64 value) { return SDL_WriteU64BE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param dst the stream to which data will be written.
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(T::get(), value); }
+};
+
+/**
+ * Load all the data from a file path.
+ *
+ * The data is allocated with a zero byte at the end (null terminated) for
+ * convenience. This extra byte is not included in the value reported via
+ * `datasize`.
+ *
+ * The data should be freed with SDL_free().
+ *
+ * @param file the path to read all available data from.
+ * @param datasize if not NULL, will store the number of bytes read.
+ * @returns the data or NULL on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_LoadFile_IO
+ * @sa SDL_SaveFile
+ */
+inline OwnArray<std::byte> LoadFile(StringParam file)
+{
+  size_t datasize = 0;
+  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
+  return OwnArray<std::byte>{data, datasize};
+}
+
+/**
+ * Save all the data into a file path.
+ *
+ * @param file the path to write all available data into.
+ * @param data the data to be written. If datasize is 0, may be NULL or a
+ *             invalid pointer.
+ * @param datasize the number of bytes to be written.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SaveFile_IO
+ * @sa SDL_LoadFile
+ */
+inline bool SaveFile(StringParam file, const void* data, size_t datasize)
+{
+  return SDL_SaveFile(file, data, datasize);
+}
+
+template<class T>
+inline bool SaveFile(StringParam file, std::span<T> data)
+{
+  return SaveFile(file, data.data(), data.size_bytes());
+}
+
+inline bool SaveFile(StringParam file, std::string_view str)
+{
+  return SaveFile(std::move(file), str.data(), str.size());
+}
+
+#pragma region impl
+/// @}
+
+inline void ObjectDeleter<SDL_IOStream>::operator()(IOStreamRef stream) const
+{
+  stream.Close();
+}
+
+#pragma endregion impl
 
 /**
  * @defgroup CategorySurface Surface Creation and Simple Drawing
@@ -13532,16 +16971,6 @@ SurfaceLock SurfaceBase<T>::Lock() &
 
 #pragma endregion impl
 
-} // namespace SDL
-
-#endif /* SDL3PP_SURFACE_H_ */
-
-
-// end --- SDL3pp_surface.h --- 
-
-
-
-namespace SDL {
 /**
  * @defgroup CategoryVideo Display and Window Management
  *
@@ -17130,17 +20559,6 @@ inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
 
 #pragma endregion impl
 
-} // namespace SDL
-
-#endif /* SDL3PP_VIDEO_H_ */
-
-
-// end --- SDL3pp_video.h --- 
-
-
-
-namespace SDL {
-
 /**
  * @defgroup CategoryEvents Category Events
  *
@@ -19070,3499 +22488,6 @@ inline WindowRef GetWindowFromEvent(const Event* event)
 }
 
 /// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_EVENTS_H_ */
-
-
-// end --- SDL3pp_events.h --- 
-
-
-//
-//
-//
-
-// begin --- SDL3pp_guid.h --- 
-
-#ifndef SDL3PP_GUID_H_
-#define SDL3PP_GUID_H_
-
-#include <SDL3/SDL_guid.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryGUID GUIDs
- *
- * A GUID is a 128-bit value that represents something that is uniquely
- * identifiable by this value: "globally unique."
- *
- * SDL provides functions to convert a GUID to/from a string.
- * @{
- */
-
-/**
- * An SDL_GUID is a 128-bit identifier for an input device that identifies
- * that device across runs of SDL programs on the same platform.
- *
- * If the device is detached and then re-attached to a different port, or if
- * the base system is rebooted, the device should still report the same GUID.
- *
- * GUIDs are as precise as possible but are not guaranteed to distinguish
- * physically distinct but equivalent devices. For example, two game
- * controllers from the same vendor with the same product ID and revision may
- * have the same GUID.
- *
- * GUIDs may be platform-dependent (i.e., the same device may report different
- * GUIDs on different operating systems).
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct GUID : SDL_GUID
-{
-  constexpr GUID()
-    : SDL_GUID({0})
-  {
-  }
-
-  constexpr GUID(SDL_GUID guid)
-    : SDL_GUID(guid)
-  {
-  }
-
-  /**
-   * Convert a GUID string into a SDL_GUID structure.
-   *
-   * Performs no error checking. If this function is given a string containing
-   * an invalid GUID, the function will silently succeed, but the GUID generated
-   * will not be useful.
-   *
-   * @param pchGUID string containing an ASCII representation of a GUID.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_GUIDToString
-   */
-  GUID(StringParam pchGUID)
-    : SDL_GUID(SDL_StringToGUID(pchGUID))
-  {
-  }
-
-  /**
-   * Get an ASCII string representation for a given SDL_GUID.
-   *
-   * @returns pszGUID the ASCII string representation for
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_StringToGUID
-   */
-  std::string ToString() const
-  {
-    std::string result(32, ' ');
-    SDL_GUIDToString(*this, result.data(), 33);
-    return result;
-  }
-};
-
-/**
- * Get an ASCII string representation for a given SDL_GUID.
- *
- * @param guid the SDL_GUID you wish to convert to string.
- * @param pszGUID buffer in which to write the ASCII string.
- * @param cbGUID the size of pszGUID, should be at least 33 bytes.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_StringToGUID
- */
-inline void GUIDToString(SDL_GUID guid, char* pszGUID, int cbGUID)
-{
-  return SDL_GUIDToString(guid, pszGUID, cbGUID);
-}
-
-/**
- * Convert a GUID string into a SDL_GUID structure.
- *
- * Performs no error checking. If this function is given a string containing
- * an invalid GUID, the function will silently succeed, but the GUID generated
- * will not be useful.
- *
- * @param pchGUID string containing an ASCII representation of a GUID.
- * @returns a SDL_GUID structure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GUIDToString
- */
-inline SDL_GUID StringToGUID(StringParam pchGUID)
-{
-  return SDL_StringToGUID(pchGUID);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_GUID_H_ */
-
-
-// end --- SDL3pp_guid.h --- 
-
-
-//
-//
-
-// begin --- SDL3pp_hints.h --- 
-
-#ifndef SDL3PP_HINTS_H_
-#define SDL3PP_HINTS_H_
-
-#include <SDL3/SDL_hints.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryHints Configuration Variables
- *
- * This file contains functions to set and get configuration hints, as well as
- * listing each of them alphabetically.
- *
- * The convention for naming hints is SDL_HINT_X, where "SDL_X" is the
- * environment variable that can be used to override the default.
- *
- * In general these hints are just that - they may or may not be supported or
- * applicable on any given platform, but they provide a way for an application
- * or user to give the library a hint as to how they would like the library to
- * work.
- *
- * @{
- */
-
-/**
- * An enumeration of hint priorities.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using HintPriority = SDL_HintPriority;
-
-constexpr HintPriority HINT_DEFAULT = SDL_HINT_DEFAULT;
-
-constexpr HintPriority HINT_NORMAL = SDL_HINT_NORMAL;
-
-constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE;
-
-/**
- * Set a hint with a specific priority.
- *
- * The priority controls the behavior when setting a hint that already has a
- * value. Hints will replace existing hints of their priority and lower.
- * Environment variables are considered to have override priority.
- *
- * @param name the hint to set.
- * @param value the value of the hint variable.
- * @param priority the SDL_HintPriority level for the hint.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetHint
- * @sa SDL_ResetHint
- * @sa SDL_SetHint
- */
-inline bool SetHintWithPriority(StringParam name,
-                                StringParam value,
-                                HintPriority priority)
-{
-  return SDL_SetHintWithPriority(name, value, priority);
-}
-
-/**
- * Set a hint with normal priority.
- *
- * Hints will not be set if there is an existing override hint or environment
- * variable that takes precedence. You can use SDL_SetHintWithPriority() to
- * set the hint with override priority instead.
- *
- * @param name the hint to set.
- * @param value the value of the hint variable.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetHint
- * @sa SDL_ResetHint
- * @sa SDL_SetHintWithPriority
- */
-inline bool SetHint(StringParam name, StringParam value)
-{
-  return SDL_SetHint(name, value);
-}
-
-/**
- * Reset a hint to the default value.
- *
- * This will reset a hint to the value of the environment variable, or NULL if
- * the environment isn't set. Callbacks will be called normally with this
- * change.
- *
- * @param name the hint to set.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SetHint
- * @sa SDL_ResetHints
- */
-inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
-
-/**
- * Reset all hints to the default values.
- *
- * This will reset all hints to the value of the associated environment
- * variable, or NULL if the environment isn't set. Callbacks will be called
- * normally with this change.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_ResetHint
- */
-inline void ResetHints() { return SDL_ResetHints(); }
-
-/**
- * Get the value of a hint.
- *
- * @param name the hint to query.
- * @returns the string value of a hint or NULL if the hint isn't set.
- *
- * @threadsafety It is safe to call this function from any thread, however the
- *               return value only remains valid until the hint is changed; if
- *               another thread might do so, the app should supply locks
- *               and/or make a copy of the string. Note that using a hint
- *               callback instead is always thread-safe, as SDL holds a lock
- *               on the thread subsystem during the callback.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SetHint
- * @sa SDL_SetHintWithPriority
- */
-inline const char* GetHint(StringParam name) { return SDL_GetHint(name); }
-
-/**
- * Get the boolean value of a hint variable.
- *
- * @param name the name of the hint to get the boolean value from.
- * @param default_value the value to return if the hint does not exist.
- * @returns the boolean value of a hint or the provided default value if the
- *          hint does not exist.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetHint
- * @sa SDL_SetHint
- */
-inline bool GetHintBoolean(StringParam name, bool default_value)
-{
-  return SDL_GetHintBoolean(name, default_value);
-}
-
-/**
- * A callback used to send notifications of hint value changes.
- *
- * This is called an initial time during SDL_AddHintCallback with the hint's
- * current value, and then again each time the hint's value changes.
- *
- * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
- * @param name what was passed as `name` to SDL_AddHintCallback().
- * @param oldValue the previous hint value.
- * @param newValue the new value hint is to be set to.
- *
- * @threadsafety This callback is fired from whatever thread is setting a new
- *               hint value. SDL holds a lock on the hint subsystem when
- *               calling this callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SDL_AddHintCallback
- */
-using HintCallback = SDL_HintCallback;
-
-/**
- * Add a function to watch a particular hint.
- *
- * The callback function is called _during_ this function, to provide it an
- * initial value, and again each time the hint's value changes.
- *
- * @param name the hint to watch.
- * @param callback An SDL_HintCallback function that will be called when the
- *                 hint value changes.
- * @param userdata a pointer to pass to the callback function.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_RemoveHintCallback
- */
-inline bool AddHintCallback(StringParam name,
-                            HintCallback callback,
-                            void* userdata)
-{
-  return SDL_AddHintCallback(name, callback, userdata);
-}
-
-/**
- * Remove a function watching a particular hint.
- *
- * @param name the hint being watched.
- * @param callback an SDL_HintCallback function that will be called when the
- *                 hint value changes.
- * @param userdata a pointer being passed to the callback function.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_AddHintCallback
- */
-inline void RemoveHintCallback(StringParam name,
-                               HintCallback callback,
-                               void* userdata)
-{
-  return SDL_RemoveHintCallback(name, callback, userdata);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_HINTS_H_ */
-
-
-// end --- SDL3pp_hints.h --- 
-
-
-
-// begin --- SDL3pp_init.h --- 
-
-#ifndef SDL3PP_INIT_H_
-#define SDL3PP_INIT_H_
-
-#include <SDL3/SDL_init.h>
-
-/**
- * @namespace SDL
- * @brief the main namespace where all SDL3pp public functions and types live
- */
-namespace SDL {
-
-/**
- * @defgroup CategoryInit Initialization and Shutdown
- *
- * All SDL programs need to initialize the library before starting to work
- * with it.
- *
- * Almost everything can simply call SDL_Init() near startup, with a handful
- * of flags to specify subsystems to touch. These are here to make sure SDL
- * does not even attempt to touch low-level pieces of the operating system
- * that you don't intend to use. For example, you might be using SDL for video
- * and input but chose an external library for audio, and in this case you
- * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
- * external library has complete control.
- *
- * Most apps, when terminating, should call SDL_Quit(). This will clean up
- * (nearly) everything that SDL might have allocated, and crucially, it'll
- * make sure that the display's resolution is back to what the user expects if
- * you had previously changed it for your game.
- *
- * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
- * to fill in details about the program. This is completely optional, but it
- * helps in small ways (we can provide an About dialog box for the macOS menu,
- * we can name the app in the system's audio mixer, etc). Those that want to
- * provide a _lot_ of information should look at the more-detailed
- * SDL_SetAppMetadataProperty().
- *
- * @{
- */
-
-/**
- * @name InitFlags
- *
- * Initialization flags
- *
- * @{
- */
-
-/**
- * @brief Initialization flags for SDL
- */
-using InitFlags = SDL_InitFlags;
-
-/**
- * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
-
-/**
- * `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main
- * thread
- */
-constexpr inline InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
-
-/**
- * `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the
- * same thread as SDL_INIT_VIDEO on Windows if you don't set
- * SDL_HINT_JOYSTICK_THREAD
- */
-constexpr inline InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
-
-constexpr inline InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC;
-
-/**
- * `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`
- */
-constexpr inline InitFlags INIT_GAMEPAD = SDL_INIT_GAMEPAD;
-
-constexpr inline InitFlags INIT_EVENTS = SDL_INIT_EVENTS;
-
-/**
- * `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_SENSOR = SDL_INIT_SENSOR;
-
-/**
- * `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_CAMERA = SDL_INIT_CAMERA;
-
-/// @}
-
-/**
- * @name AppResult
- * App result for Main callback
- * @{
- */
-
-/**
- * Return values for optional main callbacks.
- *
- * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
- * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
- * success/failure to the operating system. What that means is
- * platform-dependent. On Unix, for example, on success, the process error
- * code will be zero, and on failure it will be 1. This interface doesn't
- * allow you to return specific exit codes, just whether there was an error
- * generally or not.
- *
- * Returning SDL_APP_CONTINUE from these functions will let the app continue
- * to run.
- *
- * See
- * [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
- * for complete details.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AppResult = SDL_AppResult;
-
-/**
- * Value that requests that the app continue from the main callbacks.
- */
-constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
-
-/**
- * Value that requests termination with success from the main callbacks.
- */
-constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
-
-/**
- * Value that requests termination with error from the main callbacks.
- */
-constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
-
-/// @}
-
-/**
- * @name Callbacks for EnterAppMainCallbacks()
- *
- * @{
- */
-
-/**
- * Function pointer typedef for SDL_AppInit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppInit directly.
- *
- * @param appstate a place where the app can optionally store a pointer for
- *                 future use.
- * @param argc the standard ANSI C main's argc; number of elements in `argv`.
- * @param argv the standard ANSI C main's argv; array of command line
- *             arguments.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppInit_func = SDL_AppInit_func;
-
-/**
- * Function pointer typedef for SDL_AppIterate.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppIterate directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppIterate_func = SDL_AppIterate_func;
-
-/**
- * Function pointer typedef for SDL_AppEvent.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param event the new event for the app to examine.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppEvent_func = SDL_AppEvent_func;
-
-/**
- * Function pointer typedef for SDL_AppQuit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param result the result code that terminated the app (success or failure).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppQuit_func = SDL_AppQuit_func;
-
-/// @}
-
-/**
- * Initialize the SDL library.
- *
- * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
- * two may be used interchangeably. Though for readability of your code
- * SDL_InitSubSystem() might be preferred.
- *
- * The file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)
- * subsystems are initialized by default. Message boxes
- * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * SDL_Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
- *
- * Logging (such as SDL_Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
- *   events subsystem
- * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
- *   joystick subsystem
- * - `SDL_INIT_EVENTS`: events subsystem
- * - `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- *
- * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
- * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
- * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
- * this call will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before
- * calling SDL_Init, using either SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty().
- *
- * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
- */
-inline bool Init(InitFlags flags) { return SDL_Init(flags); }
-
-/**
- * Compatibility function to initialize the SDL library.
- *
- * This function and SDL_Init() are interchangeable.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa Quit()
- * @sa QuitSubSystem()
- */
-inline bool InitSubSystem(InitFlags flags) { return SDL_InitSubSystem(flags); }
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call SDL_Quit() even if you close all open subsystems
- * with SDL_QuitSubSystem().
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa InitSubSystem()
- * @sa Quit()
- */
-inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
-
-/**
- * Get a mask of the specified subsystems which are currently initialized.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
- *          returns the initialization status of the specified subsystems.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa InitSubSystem()
- */
-inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
-
-/**
- * Clean up all initialized subsystems.
- *
- * You should call this function even if you have already shutdown each
- * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
- * function even in the case of errors in initialization.
- *
- * You can use this function with atexit() to ensure that it is run when your
- * application is shutdown, but it is not wise to do this from a library or
- * other dynamically loaded code.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa QuitSubSystem()
- */
-inline void Quit() { return SDL_Quit(); }
-
-/**
- * @brief Initialize the SDL library.
- *
- * Also init any subsystem passed as InitFlags
- *
- * This might be called multiple times, it keeps a ref count and calls SDL_Quit
- * only on the last one.
- *
- * The SubSystems are out of the refCount, as SDL itself already keep track
- * internally.
- */
-struct SDL
-{
-
-  /**
-   * @brief Init given subsystems
-   * @param flags
-   *
-   * This uses a refCount internally, so it is safe to call
-   * this multiple times, the quit will be called only on the last call.
-   */
-  SDL(InitFlags flags)
-    : flags(flags)
-  {
-    refCount(+1, true);
-  }
-
-  // Copy ctor
-  SDL(const SDL& other)
-    : flags(other.flags)
-    , active(other.active)
-  {
-    if (active) refCount(+1);
-  }
-
-  // Move ctor
-  SDL(SDL&& other)
-    : flags(other.flags)
-    , active(other.active)
-  {
-    other.active = false;
-  }
-
-  // Dtor
-  ~SDL()
-  {
-    if (active) refCount(-1);
-  }
-
-  SDL& operator=(SDL rhs)
-  {
-    std::swap(active, rhs.active);
-    std::swap(flags, rhs.flags);
-    return *this;
-  }
-
-  /**
-   * @brief Check if given subSystems are initialized
-   * @param flags the flags to test or 0 to test all
-   * @return Which subsystem are active
-   */
-  static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
-
-  /**
-   * @brief release locking such as reset() does, but never calls SDL_Quit() or
-   * SDL_QuitSubSystem()
-   * @return false if there are still other locks, true if this was last one
-   *
-   * When this returns true it is safe to call SDL_Quit()
-   */
-  bool release()
-  {
-    flags = 0;
-    return refCount(-1, false) == 0;
-  }
-
-  /**
-   * @brief reset the value of this instance, acts like it was destroyed and
-   * then newly instantiated
-   * @return false if there are still other locks, true if this was last one
-   */
-  bool reset() { return refCount(-1) == 0; }
-
-  /// @brief returns true if active and has no errors
-  operator bool() const { return active; }
-
-  InitFlags GetCurrentFlags() const { return flags; }
-
-private:
-  InitFlags flags = 0;
-  bool active = true;
-
-  int refCount(int delta, bool autoQuit = true);
-};
-
-/**
- * Return whether this is the main thread.
- *
- * On Apple platforms, the main thread is the thread that runs your program's
- * main() entry point. On other platforms, the main thread is the one that
- * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
- * your program's main() entry point. If you are using the main callbacks,
- * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
- * main thread.
- *
- * @returns true if this thread is the main thread, or false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-inline bool IsMainThread() { return SDL_IsMainThread(); }
-
-/**
- * @name Callbacks for RunOnMainThread()
- * @{
- */
-
-/**
- * Callback run on the main thread.
- *
- * @param userdata an app-controlled pointer that is passed to the callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-using MainThreadCallback = SDL_MainThreadCallback;
-
-/**
- * @sa PropertiesRef.MainThreadCallback
- * @sa result-callback
- *
- * @cat result-callback
- *
- */
-using MainThreadCB = std::function<void()>;
-
-/// @}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param userdata a pointer that is passed to `callback`.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- */
-inline bool RunOnMainThread(MainThreadCallback callback,
-                            void* userdata,
-                            bool wait_complete)
-{
-  return SDL_RunOnMainThread(callback, userdata, wait_complete);
-}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- * @sa result-callback
- *
- * @cat result-callback
- */
-inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
-{
-  using Wrapper = CallbackWrapper<MainThreadCB>;
-  return RunOnMainThread(
-    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
-}
-
-/**
- * Specify basic metadata about your app.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left as NULL, if a specific
- * detail doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Passing a NULL removes any previous metadata.
- *
- * This is a simplified interface for the most important information. You can
- * supply significantly more detailed metadata with
- * SDL_SetAppMetadataProperty().
- *
- * @param appname The name of the application ("My Game 2: Bad Guy's
- *                Revenge!").
- * @param appversion The version of the application ("1.0.0beta5" or a git
- *                   hash, or whatever makes sense).
- * @param appidentifier A unique string in reverse-domain format that
- *                      identifies this app ("com.example.mygame2").
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadataProperty()
- */
-inline bool SetAppMetadata(StringParam appname,
-                           StringParam appversion,
-                           StringParam appidentifier)
-{
-  return SDL_SetAppMetadata(appname, appversion, appidentifier);
-}
-
-/**
- * Specify metadata about your app through a set of properties.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left out, if a specific detail
- * doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
- *
- * These are the supported properties:
- *
- * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
- *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
- *   anywhere the OS shows the name of the application separately from window
- *   titles, such as volume control applets, etc. This defaults to "SDL
- *   Application".
- * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
- *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
- *   2024" and a git hash are all valid options. This has no default.
- * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
- *   identifies this app. This must be in reverse-domain format, like
- *   "com.example.mygame2". This string is used by desktop compositors to
- *   identify and group windows together, as well as match applications with
- *   associated desktop settings and icons. If you plan to package your
- *   application in a container such as Flatpak, the app ID should match the
- *   name of your Flatpak container as well. This has no default.
- * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
- *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
- *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
- *   to one line, don't paste a copy of a whole software license in here. This
- *   has no default.
- * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
- *   product page, or a storefront, or even a GitHub repository, for user's
- *   further information This has no default.
- * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
- *   Currently this string can be "game" for a video game, "mediaplayer" for a
- *   media player, or generically "application" if nothing else applies.
- *   Future versions of SDL might add new types. This defaults to
- *   "application".
- *
- * @param name the name of the metadata property to set.
- * @param value the value of the property, or NULL to remove that property.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetAppMetadataProperty()
- * @sa SetAppMetadata()
- */
-inline bool SetAppMetadataProperty(StringParam name, StringParam value)
-{
-  return SDL_SetAppMetadataProperty(name, value);
-}
-
-/**
- * Get metadata about your app.
- *
- * This returns metadata previously set using SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
- * of available properties and their meanings.
- *
- * @param name the name of the metadata property to get.
- * @returns the current value of the metadata property, or the default if it
- *          is not set, NULL for properties with no default.
- *
- * @threadsafety It is safe to call this function from any thread, although
- *               the string returned is not protected and could potentially be
- *               freed if you call SDL_SetAppMetadataProperty() to set that
- *               property from another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- */
-inline const char* GetAppMetadataProperty(StringParam name)
-{
-  return SDL_GetAppMetadataProperty(name);
-}
-
-/// @}
-
-#pragma region impl
-
-inline int SDL::refCount(int delta, bool autoQuit)
-{
-  // TODO Locking these?
-  static int refCount = 0;
-  if (delta && active) {
-    if (delta > 0) {
-      refCount += 1;
-      if (flags) active = SDL_InitSubSystem(flags);
-    } else {
-      SDL_assert_always(refCount > 0);
-      active = false;
-      refCount -= 1;
-
-      if (autoQuit) {
-        if (refCount <= 0) {
-          // TODO Make this under FLAG
-          SDL_Quit();
-        } else if (flags) {
-          SDL_QuitSubSystem(flags);
-        }
-      }
-    }
-  }
-  return refCount;
-}
-
-#pragma endregion
-
-} // namespace SDL
-
-#endif /* SDL3PP_INIT_H_ */
-
-
-// end --- SDL3pp_init.h --- 
-
-
-
-// begin --- SDL3pp_iostream.h --- 
-
-#ifndef SDL3PP_IOSTREAM_H_
-#define SDL3PP_IOSTREAM_H_
-
-#include <SDL3/SDL_iostream.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryIOStream I/O Streams
- *
- * SDL provides an abstract interface for reading and writing data streams. It
- * offers implementations for files, memory, etc, and the app can provide
- * their own implementations, too.
- *
- * SDL_IOStream is not related to the standard C++ iostream class, other than
- * both are abstract interfaces to read/write data.
- *
- * @{
- */
-
-// Forward decl
-template<ObjectBox<SDL_IOStream*> T>
-struct IOStreamBase;
-
-/**
- * Handle to a non owned stream
- *
- * @cat resource
- *
- * @sa resource
- * @sa IOStreamBase
- * @sa IOStream
- */
-using IOStreamRef = IOStreamBase<ObjectRef<SDL_IOStream>>;
-
-template<>
-struct ObjectDeleter<SDL_IOStream>
-{
-  void operator()(IOStreamRef stream) const;
-};
-
-/**
- * Handle to an owned stream
- *
- * @cat resource
- *
- * @sa resource
- * @sa IOStreamBase
- * @sa IOStreamRef
- */
-using IOStream = IOStreamBase<ObjectUnique<SDL_IOStream>>;
-
-/**
- * @cat constructor-tag
- */
-constexpr struct IOFromDynamicMem_CtorTag
-{
-} IOFromDynamicMem;
-
-/**
- * SDL_IOStream status, set by a read or write operation.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using IOStatus = SDL_IOStatus;
-
-/**
- * Everything is ready (no errors and not EOF).
- */
-constexpr IOStatus IO_STATUS_READY = SDL_IO_STATUS_READY;
-
-/**
- * Read or write I/O error
- */
-constexpr IOStatus IO_STATUS_ERROR = SDL_IO_STATUS_ERROR;
-
-/**
- * End of file
- */
-constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF;
-
-/**
- * Non blocking I/O, not ready
- */
-constexpr IOStatus IO_STATUS_NOT_READY = SDL_IO_STATUS_NOT_READY;
-
-/**
- * Tried to write a read-only buffer
- */
-constexpr IOStatus IO_STATUS_READONLY = SDL_IO_STATUS_READONLY;
-
-/**
- * Tried to read a write-only buffer
- */
-constexpr IOStatus IO_STATUS_WRITEONLY = SDL_IO_STATUS_WRITEONLY;
-
-/**
- * Possible `whence` values for SDL_IOStream seeking.
- *
- * These map to the same "whence" concept that `fseek` or `lseek` use in the
- * standard C runtime.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using IOWhence = SDL_IOWhence;
-
-/**
- * Seek from the beginning of data
- */
-constexpr IOWhence IO_SEEK_SET = SDL_IO_SEEK_SET;
-
-/**
- * Seek relative to current read point
- */
-constexpr IOWhence IO_SEEK_CUR = SDL_IO_SEEK_CUR;
-
-/**
- * Seek relative to the end of data
- */
-constexpr IOWhence IO_SEEK_END = SDL_IO_SEEK_END;
-
-/**
- * The function pointers that drive an SDL_IOStream.
- *
- * Applications can provide this struct to SDL_OpenIO() to create their own
- * implementation of SDL_IOStream. This is not necessarily required, as SDL
- * already offers several common types of I/O streams, via functions like
- * SDL_IOFromFile() and SDL_IOFromMem().
- *
- * This structure should be initialized using SDL_INIT_INTERFACE()
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @sa SDL_INIT_INTERFACE
- */
-using IOStreamInterface = SDL_IOStreamInterface;
-
-/**
- * The read/write operation structure.
- *
- * This operates as an opaque handle. There are several APIs to create various
- * types of I/O streams, or an app can supply an SDL_IOStreamInterface to
- * SDL_OpenIO() to provide their own stream implementation behind this
- * struct's abstract interface.
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat resource
- */
-template<ObjectBox<SDL_IOStream*> T>
-struct IOStreamBase : T
-{
-  using T::T;
-
-  /**
-   * Use this function to create a new SDL_IOStream structure for reading from
-   * and/or writing to a named file.
-   *
-   * The `mode` string is treated roughly the same as in a call to the C
-   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
-   * scenes.
-   *
-   * Available `mode` strings:
-   *
-   * - "r": Open a file for reading. The file must exist.
-   * - "w": Create an empty file for writing. If a file with the same name
-   *   already exists its content is erased and the file is treated as a new
-   *   empty file.
-   * - "a": Append to a file. Writing operations append data at the end of the
-   *   file. The file is created if it does not exist.
-   * - "r+": Open a file for update both reading and writing. The file must
-   *   exist.
-   * - "w+": Create an empty file for both reading and writing. If a file with
-   *   the same name already exists its content is erased and the file is
-   *   treated as a new empty file.
-   * - "a+": Open a file for reading and appending. All writing operations are
-   *   performed at the end of the file, protecting the previous content to be
-   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
-   *   anywhere in the file for reading, but writing operations will move it
-   *   back to the end of file. The file is created if it does not exist.
-   *
-   * **NOTE**: In order to open a file as a binary file, a "b" character has to
-   * be included in the `mode` string. This additional "b" character can either
-   * be appended at the end of the string (thus making the following compound
-   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
-   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
-   * Additional characters may follow the sequence, although they should have no
-   * effect. For example, "t" is sometimes appended to make explicit the file is
-   * a text file.
-   *
-   * This function supports Unicode filenames, but they must be encoded in UTF-8
-   * format, regardless of the underlying operating system.
-   *
-   * In Android, SDL_IOFromFile() can be used to open content:// URIs. As a
-   * fallback, SDL_IOFromFile() will transparently open a matching filename in
-   * the app's `assets`.
-   *
-   * Closing the SDL_IOStream will close SDL's internal file handle.
-   *
-   * The following properties may be set at creation time by SDL:
-   *
-   * - `SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
-   *   to a win32 `HANDLE`, that this SDL_IOStream is using to access the
-   *   filesystem. If the program isn't running on Windows, or SDL used some
-   *   other method to access the filesystem, this property will not be set.
-   * - `SDL_PROP_IOSTREAM_STDIO_FILE_POINTER`: a pointer, that can be cast to a
-   *   stdio `FILE *`, that this SDL_IOStream is using to access the filesystem.
-   *   If SDL used some other method to access the filesystem, this property
-   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
-   *   than your app, trying to use this pointer will almost certainly result in
-   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
-   *   your app with the same compiler and settings to avoid it.
-   * - `SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
-   *   SDL_IOStream is using to access the filesystem.
-   * - `SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER`: a pointer, that can be cast
-   *   to an Android NDK `AAsset *`, that this SDL_IOStream is using to access
-   *   the filesystem. If SDL used some other method to access the filesystem,
-   *   this property will not be set.
-   *
-   * @param file a UTF-8 string representing the filename to open.
-   * @param mode an ASCII string representing the mode to be used for opening
-   *             the file.
-   * @returns a pointer to the SDL_IOStream structure that is created or NULL on
-   *          failure; call SDL_GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CloseIO
-   * @sa SDL_FlushIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
-   * @sa SDL_WriteIO
-   */
-  IOStreamBase(StringParam file, StringParam mode)
-    : T(SDL_IOFromFile(file, mode))
-  {
-  }
-
-  /**
-   * Use this function to prepare a read-write memory buffer for use with
-   * SDL_IOStream.
-   *
-   * This function sets up an SDL_IOStream struct based on a memory area of a
-   * certain size, for both read and write access.
-   *
-   * This memory buffer is not copied by the SDL_IOStream; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
-   *
-   * If you need to make sure the SDL_IOStream never writes to the memory
-   * buffer, you should use SDL_IOFromConstMem() with a read-only buffer of
-   * memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * @param mem a pointer to a buffer to feed an SDL_IOStream stream.
-   * @param size the buffer size, in bytes.
-   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
-   *          SDL_GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_IOFromConstMem
-   * @sa SDL_CloseIO
-   * @sa SDL_FlushIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
-   * @sa SDL_WriteIO
-   */
-  IOStreamBase(void* mem, size_t size)
-    : T(SDL_IOFromMem(mem, size))
-  {
-  }
-
-  /**
-   * Use this function to prepare a read-only memory buffer for use with
-   * SDL_IOStream.
-   *
-   * This function sets up an SDL_IOStream struct based on a memory area of a
-   * certain size. It assumes the memory area is not writable.
-   *
-   * Attempting to write to this SDL_IOStream stream will report an error
-   * without writing to the memory buffer.
-   *
-   * This memory buffer is not copied by the SDL_IOStream; the pointer you
-   * provide must remain valid until you close the stream. Closing the stream
-   * will not free the original buffer.
-   *
-   * If you need to write to a memory buffer, you should use SDL_IOFromMem()
-   * with a writable buffer of memory instead.
-   *
-   * The following properties will be set at creation time by SDL:
-   *
-   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
-   *   was passed to this function.
-   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
-   *   that was passed to this function.
-   *
-   * @param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.
-   * @param size the buffer size, in bytes.
-   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
-   *          SDL_GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_IOFromMem
-   * @sa SDL_CloseIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
-   */
-  IOStreamBase(const void* mem, size_t size)
-    : T(SDL_IOFromConstMem(mem, size))
-  {
-  }
-
-  /**
-   * Use this function to create an SDL_IOStream that is backed by dynamically
-   * allocated memory.
-   *
-   * This supports the following properties to provide access to the memory and
-   * control over allocations:
-   *
-   * - `SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER`: a pointer to the internal
-   *   memory of the stream. This can be set to NULL to transfer ownership of
-   *   the memory to the application, which should free the memory with
-   *   SDL_free(). If this is done, the next operation on the stream must be
-   *   SDL_CloseIO().
-   * - `SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
-   *   multiples of this size, defaulting to 1024.
-   *
-   * @returns a pointer to a new SDL_IOStream structure or NULL on failure; call
-   *          SDL_GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CloseIO
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_TellIO
-   * @sa SDL_WriteIO
-   */
-  IOStreamBase(IOFromDynamicMem_CtorTag)
-    : T(SDL_IOFromDynamicMem())
-  {
-  }
-
-  /**
-   * Create a custom SDL_IOStream.
-   *
-   * Applications do not need to use this function unless they are providing
-   * their own SDL_IOStream implementation. If you just need an SDL_IOStream to
-   * read/write a common data source, you should use the built-in
-   * implementations in SDL, like SDL_IOFromFile() or SDL_IOFromMem(), etc.
-   *
-   * This function makes a copy of `iface` and the caller does not need to keep
-   * it around after this call.
-   *
-   * @param iface the interface that implements this SDL_IOStream, initialized
-   *              using SDL_INIT_INTERFACE().
-   * @param userdata the pointer that will be passed to the interface functions.
-   * @returns a pointer to the allocated memory on success or NULL on failure;
-   *          call SDL_GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CloseIO
-   * @sa SDL_INIT_INTERFACE
-   * @sa SDL_IOFromConstMem
-   * @sa SDL_IOFromFile
-   * @sa SDL_IOFromMem
-   */
-  IOStreamBase(const IOStreamInterface* iface, void* userdata)
-    : T(SDL_OpenIO(iface, userdata))
-  {
-  }
-
-  template<class U>
-  IOStreamBase(std::span<U> mem)
-    : IOStreamBase(mem.data(), mem.size_bytes())
-  {
-    static_assert(false, "Not implemented");
-  }
-
-  /**
-   * Close and free an allocated SDL_IOStream structure.
-   *
-   * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
-   * resources used by the stream and frees the SDL_IOStream itself. This
-   * returns true on success, or false if the stream failed to flush to its
-   * output (e.g. to disk).
-   *
-   * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the SDL_IOStream is still invalid once this function
-   * returns.
-   *
-   * This call flushes any buffered writes to the operating system, but there
-   * are no guarantees that those writes have gone to physical media; they might
-   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
-   * crucial that writes go to disk immediately, so they are definitely stored
-   * even if the power fails before the file cache would have caught up, one
-   * should call SDL_FlushIO() before closing. Note that flushing takes time and
-   * makes the system and your app operate less efficiently, so do so sparingly.
-   *
-   * @param context SDL_IOStream structure to close.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_OpenIO
-   */
-  bool Close() { return SDL_CloseIO(T::release()); }
-
-  /**
-   * Get the properties associated with an SDL_IOStream.
-   *
-   * @param context a pointer to an SDL_IOStream structure.
-   * @returns a valid property ID on success or 0 on failure; call
-   *          SDL_GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  PropertiesRef GetProperties() const { return SDL_GetIOProperties(T::get()); }
-
-  /**
-   * Query the stream status of an SDL_IOStream.
-   *
-   * This information can be useful to decide if a short read or write was due
-   * to an error, an EOF, or a non-blocking operation that isn't yet ready to
-   * complete.
-   *
-   * An SDL_IOStream's status is only expected to change after a SDL_ReadIO or
-   * SDL_WriteIO call; don't expect it to change if you just call this query
-   * function in a tight loop.
-   *
-   * @param context the SDL_IOStream to query.
-   * @returns an SDL_IOStatus enum with the current state.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  IOStatus GetStatus() const { return SDL_GetIOStatus(T::get()); }
-
-  /**
-   * Use this function to get the size of the data stream in an SDL_IOStream.
-   *
-   * @param context the SDL_IOStream to get the size of the data stream from.
-   * @returns the size of the data stream in the SDL_IOStream on success or a
-   *          negative error code on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  Sint64 GetSize() const { return SDL_GetIOSize(T::get()); }
-
-  /**
-   * Seek within an SDL_IOStream data stream.
-   *
-   * This function seeks to byte `offset`, relative to `whence`.
-   *
-   * `whence` may be any of the following values:
-   *
-   * - `SDL_IO_SEEK_SET`: seek from the beginning of data
-   * - `SDL_IO_SEEK_CUR`: seek relative to current read point
-   * - `SDL_IO_SEEK_END`: seek relative to the end of data
-   *
-   * If this stream can not seek, it will return -1.
-   *
-   * @param context a pointer to an SDL_IOStream structure.
-   * @param offset an offset in bytes, relative to `whence` location; can be
-   *               negative.
-   * @param whence any of `SDL_IO_SEEK_SET`, `SDL_IO_SEEK_CUR`,
-   *               `SDL_IO_SEEK_END`.
-   * @returns the final offset in the data stream after the seek or -1 on
-   *          failure; call SDL_GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_TellIO
-   */
-  Sint64 Seek(Sint64 offset, IOWhence whence)
-  {
-    return SDL_SeekIO(T::get(), offset, whence);
-  }
-
-  /**
-   * Determine the current read/write offset in an SDL_IOStream data stream.
-   *
-   * SDL_TellIO is actually a wrapper function that calls the SDL_IOStream's
-   * `seek` method, with an offset of 0 bytes from `SDL_IO_SEEK_CUR`, to
-   * simplify application development.
-   *
-   * @param context an SDL_IOStream data stream object from which to get the
-   *                current offset.
-   * @returns the current offset in the stream, or -1 if the information can not
-   *          be determined.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_SeekIO
-   */
-  Sint64 Tell() const { return SDL_TellIO(T::get()); }
-
-  /**
-   * Read from a data source.
-   *
-   * This function reads up `size` bytes from the data source to the area
-   * pointed at by `ptr`. This function may read less bytes than requested.
-   *
-   * This function will return zero when the data stream is completely read, and
-   * SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If zero is returned and
-   * the stream is not at EOF, SDL_GetIOStatus() will return a different error
-   * value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param context a pointer to an SDL_IOStream structure.
-   * @param ptr a pointer to a buffer to read data into.
-   * @param size the number of bytes to read from the data source.
-   * @returns the number of bytes read, or 0 on end of file or other failure;
-   *          call SDL_GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_WriteIO
-   * @sa SDL_GetIOStatus
-   */
-  size_t Read(void* ptr, size_t size)
-  {
-    return SDL_ReadIO(T::get(), ptr, size);
-  }
-
-  template<class U>
-  size_t Write(std::span<U> data)
-  {
-    return Write(data.data(), data.size_bytes());
-  }
-
-  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
-
-  /**
-   * Write to an SDL_IOStream data stream.
-   *
-   * This function writes exactly `size` bytes from the area pointed at by `ptr`
-   * to the stream. If this fails for any reason, it'll return less than `size`
-   * to demonstrate how far the write progressed. On success, it returns `size`.
-   *
-   * On error, this function still attempts to write as much as possible, so it
-   * might return a positive value less than the requested write size.
-   *
-   * The caller can use SDL_GetIOStatus() to determine if the problem is
-   * recoverable, such as a non-blocking write that can simply be retried later,
-   * or a fatal error.
-   *
-   * @param context a pointer to an SDL_IOStream structure.
-   * @param ptr a pointer to a buffer containing data to write.
-   * @param size the number of bytes to write.
-   * @returns the number of bytes written, which will be less than `size` on
-   *          failure; call SDL_GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_IOprintf
-   * @sa SDL_ReadIO
-   * @sa SDL_SeekIO
-   * @sa SDL_FlushIO
-   * @sa SDL_GetIOStatus
-   */
-  size_t Write(const void* ptr, size_t size)
-  {
-    return SDL_WriteIO(T::get(), ptr, size);
-  }
-
-  /**
-   * @cat formatted-string
-   */
-  size_t print(std::string_view fmt, auto... args)
-  {
-    return Write(std::vformat(fmt, std::make_format_args(args...)));
-  }
-
-  /**
-   * @cat formatted-string
-   */
-  size_t println(std::string_view fmt, auto... args)
-  {
-    std::string result =
-      std::vformat(fmt, std::make_format_args(args...)) + "\n";
-    return Write(result);
-  }
-
-  /**
-   * Print to an SDL_IOStream data stream.
-   *
-   * @warning this is not typesafe! Prefer using print() and println()
-   *
-   * This function does formatted printing to the stream.
-   *
-   * @param context a pointer to an SDL_IOStream structure.
-   * @param fmt a printf() style format string.
-   * @param ... additional parameters matching % tokens in the `fmt` string, if
-   *            any.
-   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_IOvprintf
-   * @sa SDL_WriteIO
-   */
-  size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
-  {
-    va_list ap;
-    size_t result;
-
-    va_start(ap, fmt);
-    result = vprintf(fmt, ap);
-    va_end(ap);
-
-    return result;
-  }
-
-  /**
-   * Print to an SDL_IOStream data stream.
-   *
-   * @warning this is not typesafe! Prefer using print() and println()
-   *
-   * This function does formatted printing to the stream.
-   *
-   * @param context a pointer to an SDL_IOStream structure.
-   * @param fmt a printf() style format string.
-   * @param ap a variable argument list.
-   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_IOprintf
-   * @sa SDL_WriteIO
-   */
-  size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
-  {
-    return SDL_IOvprintf(T::get(), fmt, ap);
-  }
-
-  /**
-   * Flush any buffered data in the stream.
-   *
-   * This function makes sure that any buffered data is written to the stream.
-   * Normally this isn't necessary but if the stream is a pipe or socket it
-   * guarantees that any pending data is sent.
-   *
-   * @param context SDL_IOStream structure to flush.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_OpenIO
-   * @sa SDL_WriteIO
-   */
-  bool Flush() { return SDL_FlushIO(T::get()); }
-
-  /**
-   * Load all the data from an SDL data stream.
-   *
-   * The data is allocated with a zero byte at the end (null terminated) for
-   * convenience. This extra byte is not included in the value reported via
-   * `datasize`.
-   *
-   * @param src the SDL_IOStream to read all available data from.
-   * @returns the data or NULL on failure; call GetError() for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_LoadFile
-   * @sa SDL_SaveFile_IO
-   */
-  OwnArray<std::byte> LoadFile()
-  {
-    size_t datasize = 0;
-    auto data =
-      static_cast<std::byte*>(SDL_LoadFile_IO(T::get(), &datasize, false));
-    return OwnArray<std::byte>{data, datasize};
-  }
-
-  template<class U>
-  bool SaveFile(std::span<U> data)
-  {
-    return SaveFile(data.data(), data.size_bytes());
-  }
-
-  bool SaveFile(std::string_view str)
-  {
-    return SaveFile(str.data(), str.size());
-  }
-
-  /**
-   * Save all the data into an SDL data stream.
-   *
-   * @param src the SDL_IOStream to write all data to.
-   * @param data the data to be written. If datasize is 0, may be NULL or a
-   *             invalid pointer.
-   * @param datasize the number of bytes to be written.
-   * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
-   *                in the case of an error.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_SaveFile
-   * @sa SDL_LoadFile_IO
-   */
-  bool SaveFile(const void* data, size_t datasize)
-  {
-    return SDL_SaveFile_IO(T::get(), data, datasize);
-  }
-  /**
-   * Use this function to read a byte from an SDL_IOStream.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the SDL_IOStream to read from.
-   * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure or EOF; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU8(Uint8* value) { return SDL_ReadU8(T::get(), value); }
-
-  /**
-   * Use this function to read a signed byte from an SDL_IOStream.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the SDL_IOStream to read from.
-   * @param value a pointer filled in with the data read.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS8(Sint8* value) { return SDL_ReadS8(T::get(), value); }
-
-  /**
-   * Use this function to read 16 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU16LE(Uint16* value) { return SDL_ReadU16LE(T::get(), value); }
-
-  /**
-   * Use this function to read 16 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS16LE(Sint16* value) { return SDL_ReadS16LE(T::get(), value); }
-
-  /**
-   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU16BE(Uint16* value) { return SDL_ReadU16BE(T::get(), value); }
-
-  /**
-   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS16BE(Sint16* value) { return SDL_ReadS16BE(T::get(), value); }
-
-  /**
-   * Use this function to read 32 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU32LE(Uint32* value) { return SDL_ReadU32LE(T::get(), value); }
-
-  /**
-   * Use this function to read 32 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS32LE(Sint32* value) { return SDL_ReadS32LE(T::get(), value); }
-
-  /**
-   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU32BE(Uint32* value) { return SDL_ReadU32BE(T::get(), value); }
-
-  /**
-   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS32BE(Sint32* value) { return SDL_ReadS32BE(T::get(), value); }
-
-  /**
-   * Use this function to read 64 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU64LE(Uint64* value) { return SDL_ReadU64LE(T::get(), value); }
-
-  /**
-   * Use this function to read 64 bits of little-endian data from an
-   * SDL_IOStream and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS64LE(Sint64* value) { return SDL_ReadS64LE(T::get(), value); }
-
-  /**
-   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadU64BE(Uint64* value) { return SDL_ReadU64BE(T::get(), value); }
-
-  /**
-   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
-   * and return in native format.
-   *
-   * SDL byteswaps the data only if necessary, so the data returned will be in
-   * the native byte order.
-   *
-   * This function will return false when the data stream is completely read,
-   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
-   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
-   * error value and SDL_GetError() will offer a human-readable message.
-   *
-   * @param src the stream from which to read data.
-   * @param value a pointer filled in with the data read.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool ReadS64BE(Sint64* value) { return SDL_ReadS64BE(T::get(), value); }
-
-  /**
-   * Use this function to write a byte to an SDL_IOStream.
-   *
-   * @param dst the SDL_IOStream to write to.
-   * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU8(Uint8 value) { return SDL_WriteU8(T::get(), value); }
-
-  /**
-   * Use this function to write a signed byte to an SDL_IOStream.
-   *
-   * @param dst the SDL_IOStream to write to.
-   * @param value the byte value to write.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS8(Sint8 value) { return SDL_WriteS8(T::get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU16LE(Uint16 value) { return SDL_WriteU16LE(T::get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS16LE(Sint16 value) { return SDL_WriteS16LE(T::get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU16BE(Uint16 value) { return SDL_WriteU16BE(T::get(), value); }
-
-  /**
-   * Use this function to write 16 bits in native format to an SDL_IOStream as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS16BE(Sint16 value) { return SDL_WriteS16BE(T::get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU32LE(Uint32 value) { return SDL_WriteU32LE(T::get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS32LE(Sint32 value) { return SDL_WriteS32LE(T::get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU32BE(Uint32 value) { return SDL_WriteU32BE(T::get(), value); }
-
-  /**
-   * Use this function to write 32 bits in native format to an SDL_IOStream as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS32BE(Sint32 value) { return SDL_WriteS32BE(T::get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU64LE(Uint64 value) { return SDL_WriteU64LE(T::get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
-   * little-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in little-endian
-   * format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS64LE(Sint64 value) { return SDL_WriteS64LE(T::get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteU64BE(Uint64 value) { return SDL_WriteU64BE(T::get(), value); }
-
-  /**
-   * Use this function to write 64 bits in native format to an SDL_IOStream as
-   * big-endian data.
-   *
-   * SDL byteswaps the data only if necessary, so the application always
-   * specifies native format, and the data written will be in big-endian format.
-   *
-   * @param dst the stream to which data will be written.
-   * @param value the data to be written, in native format.
-   * @returns true on successful write or false on failure; call SDL_GetError()
-   *          for more information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(T::get(), value); }
-};
-
-/**
- * Load all the data from a file path.
- *
- * The data is allocated with a zero byte at the end (null terminated) for
- * convenience. This extra byte is not included in the value reported via
- * `datasize`.
- *
- * The data should be freed with SDL_free().
- *
- * @param file the path to read all available data from.
- * @param datasize if not NULL, will store the number of bytes read.
- * @returns the data or NULL on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_LoadFile_IO
- * @sa SDL_SaveFile
- */
-inline OwnArray<std::byte> LoadFile(StringParam file)
-{
-  size_t datasize = 0;
-  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
-  return OwnArray<std::byte>{data, datasize};
-}
-
-/**
- * Save all the data into a file path.
- *
- * @param file the path to write all available data into.
- * @param data the data to be written. If datasize is 0, may be NULL or a
- *             invalid pointer.
- * @param datasize the number of bytes to be written.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety This function is not thread safe.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SaveFile_IO
- * @sa SDL_LoadFile
- */
-inline bool SaveFile(StringParam file, const void* data, size_t datasize)
-{
-  return SDL_SaveFile(file, data, datasize);
-}
-
-template<class T>
-inline bool SaveFile(StringParam file, std::span<T> data)
-{
-  return SaveFile(file, data.data(), data.size_bytes());
-}
-
-inline bool SaveFile(StringParam file, std::string_view str)
-{
-  return SaveFile(std::move(file), str.data(), str.size());
-}
-
-#pragma region impl
-/// @}
-
-inline void ObjectDeleter<SDL_IOStream>::operator()(IOStreamRef stream) const
-{
-  stream.Close();
-}
-
-#pragma endregion impl
-
-} // namespace SDL
-
-#endif /* SDL3PP_IOSTREAM_H_ */
-
-
-// end --- SDL3pp_iostream.h --- 
-
-
-//
-//
-//
-//
-
-// begin --- SDL3pp_locale.h --- 
-
-#ifndef SDL3PP_LOCALE_H_
-#define SDL3PP_LOCALE_H_
-
-#include <SDL3/SDL_locale.h>
-
-namespace SDL {
-/**
- * @defgroup CategoryLocale Locale Info
- *
- * SDL locale services.
- *
- * This provides a way to get a list of preferred locales (language plus
- * country) for the user. There is exactly one function:
- * GetPreferredLocales(), which handles all the heavy lifting, and offers
- * documentation on all the strange ways humans might have configured their
- * language settings.
- *
- * @{
- */
-
-/**
- * A struct to provide locale data.
- *
- * Locale data is split into a spoken language, like English, and an optional
- * country, like Canada. The language will be in ISO-639 format (so English
- * would be "en"), and the country, if not NULL, will be an ISO-3166 country
- * code (so Canada would be "CA").
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPreferredLocales()
- */
-using Locale = SDL_Locale;
-
-/**
- * Report the user's preferred locale.
- *
- * Returned language strings are in the format xx, where 'xx' is an ISO-639
- * language specifier (such as "en" for English, "de" for German, etc).
- * Country strings are in the format YY, where "YY" is an ISO-3166 country
- * code (such as "US" for the United States, "CA" for Canada, etc). Country
- * might be NULL if there's no specific guidance on them (so you might get {
- * "en", "US" } for American English, but { "en", NULL } means "English
- * language, generically"). Language strings are never NULL, except to
- * terminate the array.
- *
- * Please note that not all of these strings are 2 characters; some are three
- * or more.
- *
- * The returned list of locales are in the order of the user's preference. For
- * example, a German citizen that is fluent in US English and knows enough
- * Japanese to navigate around Tokyo might have a list like: { "de", "en_US",
- * "jp", NULL }. Someone from England might prefer British English (where
- * "color" is spelled "colour", etc), but will settle for anything like it: {
- * "en_GB", "en", NULL }.
- *
- * This function returns NULL on error, including when the platform does not
- * supply this information at all.
- *
- * This might be a "slow" call that has to query the operating system. It's
- * best to ask for this once and save the results. However, this list can
- * change, usually because the user has changed a system preference outside of
- * your program; SDL will send an SDL::EVENT_LOCALE_CHANGED event in this case,
- * if possible, and you can call this function again to get an updated copy of
- * preferred locales.
- *
- * @param count a pointer filled in with the number of locales returned, may
- *              be NULL.
- * @returns a std::nullptr terminated array of locale pointers, or std::nullptr
- * on failure; call GetError() for more information. This is a single allocation
- *          that should be freed with free() when it is no longer needed.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline OwnArray<Locale*> GetPreferredLocales()
-{
-  int count = 0;
-  auto data = SDL_GetPreferredLocales(&count);
-  return OwnArray<Locale*>{data, size_t(count)};
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_LOCALE_H_ */
-
-
-// end --- SDL3pp_locale.h --- 
-
-
-
-// begin --- SDL3pp_log.h --- 
-
-#ifndef SDL3PP_LOG_H_
-#define SDL3PP_LOG_H_
-
-#include <format>
-#include <SDL3/SDL_log.h>
-
-namespace SDL {
-/**
- * @defgroup CategoryLog Log Handling
- *
- * Simple log messages with priorities and categories. A message's
- * LogPriority signifies how important the message is. A message's
- * LogCategory signifies from what domain it belongs to. Every category
- * has a minimum priority specified: when a message belongs to that category,
- * it will only be sent out if it has that minimum priority or higher.
- *
- * SDL's own logs are sent below the default priority threshold, so they are
- * quiet by default.
- *
- * You can change the log verbosity programmatically using
- * LogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or
- * with the "SDL_LOGGING" environment variable. This variable is a comma
- * separated set of category=level tokens that define the default logging levels
- * for SDL applications.
- *
- * The category can be a numeric category, one of "app", "error", "assert",
- * "system", "audio", "video", "render", "input", "test", or `*` for any
- * unspecified category.
- *
- * The level can be a numeric level, one of "trace", "verbose", "debug",
- * "info", "warn", "error", "critical", or "quiet" to disable that category.
- *
- * You can omit the category if you want to set the logging level for all
- * categories.
- *
- * If this hint isn't set, the default log levels are equivalent to:
- *
- * `app=info,assert=warn,test=verbose,*=error`
- *
- * Here's where the messages go on different platforms:
- *
- * - Windows: debug output stream
- * - Android: log output
- * - Others: standard error output (stderr)
- *
- * You don't need to have a newline (`@n`) on the end of messages, the
- * functions will do that for you. For consistent behavior cross-platform, you
- * shouldn't have any newlines in messages, such as to log multiple lines in
- * one call; unusual platform-specific behavior can be observed in such usage.
- * Do one log call per line instead, with no newlines in messages.
- *
- * Each log call is atomic, so you won't see log messages cut off one another
- * when logging from multiple threads.
- *
- * @{
- */
-
-/**
- * @name LogPriorities
- *
- * The priorities assignable for a LogCategory.
- *
- * @{
- */
-
-/**
- * The predefined log priorities
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using LogPriority = SDL_LogPriority;
-
-/// @}
-
-/**
- * @name LogCategories
- *
- * The logging categories. see LogCategory for more info
- *
- * @{
- */
-
-/**
- * The predefined log categories
- *
- * By default the application and gpu categories are enabled at the INFO
- * level, the assert category is enabled at the WARN level, test is enabled at
- * the VERBOSE level and all other categories are enabled at the ERROR level.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @cat wrap-state
- *
- * @sa wrap-state
- */
-class LogCategory
-{
-  int m_category;
-
-public:
-  constexpr explicit LogCategory(int category)
-    : m_category(category)
-  {
-  }
-
-  constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
-    : m_category(category)
-  {
-  }
-
-  constexpr operator int() { return m_category; }
-
-  constexpr operator SDL_LogCategory() { return SDL_LogCategory(m_category); }
-
-  constexpr auto operator<=>(const LogCategory& other) const = default;
-
-  /**
-   * Set the priority of all log categories.
-   *
-   * @param priority the LogPriority to assign.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ResetLogPriorities()
-   * @sa SetLogPriority()
-   */
-  static void SetLogPriorities(LogPriority priority)
-  {
-    return SDL_SetLogPriorities(priority);
-  }
-
-  /**
-   * Set the priority of a particular log category.
-   *
-   * @param priority the SDL_LogPriority to assign.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetLogPriority()
-   * @sa ResetLogPriorities()
-   * @sa SetLogPriorities()
-   */
-  void SetLogPriority(LogPriority priority)
-  {
-    return SDL_SetLogPriority(m_category, priority);
-  }
-
-  /**
-   * Get the priority of a particular log category.
-   *
-   * @returns the LogPriority for the requested category.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SetLogPriority()
-   */
-  LogPriority GetLogPriority() const { return SDL_GetLogPriority(m_category); }
-
-  /**
-   * Reset all priorities to default.
-   *
-   * This is called by SDL_Quit().
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SetLogPriorities
-   * @sa SetLogPriority
-   */
-  static void ResetLogPriorities() { return SDL_ResetLogPriorities(); }
-
-  /**
-   * Log an unformatted message with the specified priority.
-   *
-   * @param priority the priority of the message.
-   * @param message string to output.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL::Log()
-   * @sa Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  void LogUnformatted(LogPriority priority, StringParam message) const
-  {
-    return SDL_LogMessage(m_category, priority, "%s", (const char*)(message));
-  }
-
-  /**
-   * Log a message with the specified priority.
-   *
-   * @param priority the priority of the message.
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogUnformatted()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void Log(LogPriority priority, std::string_view fmt, ARGS... args) const
-  {
-    return LogUnformatted(priority,
-                          std::vformat(fmt, std::make_format_args(args...)));
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_TRACE.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogTrace(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_TRACE, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_VERBOSE.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogVerbose(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_VERBOSE, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_DEBUG.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogDebug(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_DEBUG, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_INFO.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogInfo(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_WARN.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   */
-  template<class... ARGS>
-  void LogWarn(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_WARN, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_ERROR.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogError(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_ERROR, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_CRITICAL.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogCritical(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_CRITICAL, fmt, std::forward<ARGS>(args)...);
-  }
-};
-
-constexpr LogCategory LOG_CATEGORY_APPLICATION = SDL_LOG_CATEGORY_APPLICATION;
-
-constexpr LogCategory LOG_CATEGORY_ERROR = SDL_LOG_CATEGORY_ERROR;
-
-constexpr LogCategory LOG_CATEGORY_ASSERT = SDL_LOG_CATEGORY_ASSERT;
-
-constexpr LogCategory LOG_CATEGORY_SYSTEM = SDL_LOG_CATEGORY_SYSTEM;
-
-constexpr LogCategory LOG_CATEGORY_AUDIO = SDL_LOG_CATEGORY_AUDIO;
-
-constexpr LogCategory LOG_CATEGORY_VIDEO = SDL_LOG_CATEGORY_VIDEO;
-
-constexpr LogCategory LOG_CATEGORY_RENDER = SDL_LOG_CATEGORY_RENDER;
-
-constexpr LogCategory LOG_CATEGORY_INPUT = SDL_LOG_CATEGORY_INPUT;
-
-constexpr LogCategory LOG_CATEGORY_TEST = SDL_LOG_CATEGORY_TEST;
-
-constexpr LogCategory LOG_CATEGORY_GPU = SDL_LOG_CATEGORY_GPU;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED2 = SDL_LOG_CATEGORY_RESERVED2;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED3 = SDL_LOG_CATEGORY_RESERVED3;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED4 = SDL_LOG_CATEGORY_RESERVED4;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED5 = SDL_LOG_CATEGORY_RESERVED5;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED6 = SDL_LOG_CATEGORY_RESERVED6;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED7 = SDL_LOG_CATEGORY_RESERVED7;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED8 = SDL_LOG_CATEGORY_RESERVED8;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED9 = SDL_LOG_CATEGORY_RESERVED9;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED10 = SDL_LOG_CATEGORY_RESERVED10;
-
-constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM;
-
-/// @}
-
-/**
- * @name LogPriorities
- * @{
- */
-
-constexpr LogPriority LOG_PRIORITY_INVALID = SDL_LOG_PRIORITY_INVALID;
-
-constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE;
-
-constexpr LogPriority LOG_PRIORITY_VERBOSE = SDL_LOG_PRIORITY_VERBOSE;
-
-constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG;
-
-constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO;
-
-constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN;
-
-constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR;
-
-constexpr LogPriority LOG_PRIORITY_CRITICAL = SDL_LOG_PRIORITY_CRITICAL;
-
-constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT;
-
-/// @}
-
-/**
- * Set the text prepended to log messages of a given priority.
- *
- * By default LOG_PRIORITY_INFO and below have no prefix, and
- * LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
- * "WARNING: ".
- *
- * @param priority the LogPriority to modify.
- * @param prefix the prefix to use for that log priority, or NULL to use no
- *               prefix.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa LogCategory::SetLogPriorities()
- * @sa LogCategory::SetLogPriority()
- */
-inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
-{
-  return SDL_SetLogPriorityPrefix(priority, prefix);
-}
-
-/**
- * Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.
- *
- * @param fmt a
- *            [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
- *            style message format string.
- * @param args additional parameters matching the `{}` tokens in the format
- *             string, if any.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat formatted-string
- *
- * @sa formatted-string
- * @sa LogUnformatted()
- * @sa LogCategory.LogCritical()
- * @sa LogCategory.LogDebug()
- * @sa LogCategory.LogError()
- * @sa LogCategory.LogInfo()
- * @sa LogCategory.Log()
- * @sa LogCategory.LogUnformatted()
- * @sa LogCategory.LogTrace()
- * @sa LogCategory.LogVerbose()
- * @sa LogCategory.LogWarn()
- */
-template<class... ARGS>
-inline void Log(std::string_view fmt, ARGS&&... args)
-{
-  LOG_CATEGORY_APPLICATION.Log(
-    LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
-}
-
-/**
- * Log an unformatted message with LOG_CATEGORY_APPLICATION and
- * LOG_PRIORITY_INFO.
- *
- * @param message string to output.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Log()
- * @sa LogCategory.LogCritical()
- * @sa LogCategory.LogDebug()
- * @sa LogCategory.LogError()
- * @sa LogCategory.LogInfo()
- * @sa LogCategory.Log()
- * @sa LogCategory.LogUnformatted()
- * @sa LogCategory.LogTrace()
- * @sa LogCategory.LogVerbose()
- * @sa LogCategory.LogWarn()
- */
-inline void LogUnformatted(StringParam message)
-{
-  SDL_Log("%s", static_cast<const char*>(message));
-}
-
-/**
- * The prototype for the log output callback function.
- *
- * This function is called by SDL when there is new text to be logged. A mutex
- * is held so that this function is never called by more than one thread at
- * once.
- *
- * @param userdata what was passed as `userdata` to
- *                 SetLogOutputFunction().
- * @param category the category of the message.
- * @param priority the priority of the message.
- * @param message the message being output.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using LogOutputFunction = SDL_LogOutputFunction;
-
-/**
- * The prototype for the log output callback function.
- *
- * This function is called by SDL when there is new text to be logged. A mutex
- * is held so that this function is never called by more than one thread at
- * once.
- *
- * @param category the category of the message.
- * @param priority the priority of the message.
- * @param message the message being output.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa LogOutputFunction
- */
-using LogOutputFunctionCB =
-  std::function<void(LogCategory, LogPriority, StringParam)>;
-
-/**
- * Get the default log output function.
- *
- * @returns the default log output callback.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetLogOutputFunction()
- * @sa GetLogOutputFunction()
- */
-inline LogOutputFunction GetDefaultLogOutputFunction()
-{
-  return SDL_GetDefaultLogOutputFunction();
-}
-
-/**
- * Get the current log output function.
- *
- * @param callback an LogOutputFunction filled in with the current log callback.
- * @param userdata a pointer filled in with the pointer that is passed to
- *                 `callback`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetDefaultLogOutputFunction()
- * @sa SetLogOutputFunction()
- */
-inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
-{
-  return SDL_GetLogOutputFunction(callback, userdata);
-}
-
-/**
- * Get the current log output function.
- *
- * @returns the LogOutputFunctionCB currently set
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction()
- * @sa SetLogOutputFunction()
- */
-inline LogOutputFunctionCB GetLogOutputFunction()
-{
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
-  LogOutputFunction cb;
-  void* userdata;
-  if (userdata == nullptr) {
-    return [cb](LogCategory c, LogPriority p, StringParam m) {
-      cb(nullptr, c, p, m);
-    };
-  }
-  GetLogOutputFunction(&cb, &userdata);
-  if (!Wrapper::contains(userdata)) {
-    return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-      cb(userdata, c, p, m);
-    };
-  }
-  return Wrapper::at(userdata);
-}
-
-/**
- * Replace the default log output function with one of your own.
- *
- * @param callback an LogOutputFunction to call instead of the default.
- * @param userdata a pointer that is passed to `callback`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- * @sa ResetLogOutputFunction()
- */
-inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
-{
-  UniqueWrapper<LogOutputFunctionCB>::erase();
-  return SDL_SetLogOutputFunction(callback, userdata);
-}
-
-/**
- * Replace the default log output function with one of your own.
- *
- * @param callback an LogOutputFunction to call instead of the default.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- * @sa ResetLogOutputFunction()
- */
-inline void SetLogOutputFunction(LogOutputFunctionCB callback)
-{
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
-  SDL_SetLogOutputFunction(
-    [](
-      void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::at(userdata)(LogCategory{category}, priority, message);
-    },
-    Wrapper::Wrap(std::move(callback)));
-}
-
-/**
- * Replace the current log output function with the default one
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- */
-inline void ResetLogOutputFunction()
-{
-  return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_LOG_H_ */
-
-
-// end --- SDL3pp_log.h --- 
-
-
-//
-//
-
-// begin --- SDL3pp_misc.h --- 
-
-
-#ifndef SDL3PP_MISC_H_
-#define SDL3PP_MISC_H_
-
-#include <SDL3/SDL_misc.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryMisc Miscellaneous
- *
- * SDL API functions that don't fit elsewhere.
- *
- * @{
- */
-
-/**
- * Open a URL/URI in the browser or other appropriate external application.
- *
- * Open a URL in a separate, system-provided application. How this works will
- * vary wildly depending on the platform. This will likely launch what makes
- * sense to handle a specific URL's protocol (a web browser for `http://`,
- * etc), but it might also be able to launch file managers for directories and
- * other things.
- *
- * What happens when you open a URL varies wildly as well: your game window
- * may lose focus (and may or may not lose focus if your game was fullscreen
- * or grabbing input at the time). On mobile devices, your app will likely
- * move to the background or your process might be paused. Any given platform
- * may or may not handle a given URL.
- *
- * If this is unimplemented (or simply unavailable) for a platform, this will
- * fail with an error. A successful result does not mean the URL loaded, just
- * that we launched _something_ to handle it (or at least believe we did).
- *
- * All this to say: this function can be useful, but you should definitely
- * test it on every platform you target.
- *
- * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
- *            local files, if supported.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_MISC_H_ */
-
-
-// end --- SDL3pp_misc.h --- 
-
-
-//
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_render.h --- 
-
-#ifndef SDL3PP_RENDER_H_
-#define SDL3PP_RENDER_H_
-
-#include <SDL3/SDL_render.h>
-
-namespace SDL {
 
 /**
  * @defgroup CategoryRender 2D Accelerated Rendering
@@ -25543,476 +25468,6 @@ TextureLock TextureBase<T>::Lock(OptionalRef<const SDL_Rect> rect) &
 #pragma endregion impl
 
 } // namespace SDL
-
-#endif /* SDL3PP_RENDER_H_ */
-
-
-// end --- SDL3pp_render.h --- 
-
-
-//
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_timer.h --- 
-
-#ifndef SDL3PP_TIMER_H_
-#define SDL3PP_TIMER_H_
-
-#include <chrono>
-#include <functional>
-#include <SDL3/SDL_timer.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryTimer Timer Support
- *
- * SDL provides time management functionality. It is useful for dealing with
- * (usually) small durations of time.
- *
- * This is not to be confused with _calendar time_ management, which is
- * provided by [CategoryTime](#CategoryTime).
- *
- * This category covers measuring time elapsed (GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain
- * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elapsed
- * (AddTimer(), etc).
- *
- * @{
- */
-
-/**
- * Get the time elapsed since SDL library initialization.
- *
- * @returns a std::chrono::nanoseconds value representing the number of
- * nanoseconds since the SDL library initialized.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline std::chrono::nanoseconds GetTicks()
-{
-  return std::chrono::nanoseconds{SDL_GetTicksNS()};
-}
-
-/**
- * Get the current value of the high resolution counter.
- *
- * This function is typically used for profiling.
- *
- * The counter values are only meaningful relative to each other. Differences
- * between values can be converted to times by using
- * SDL_GetPerformanceFrequency().
- *
- * @returns the current counter value.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPerformanceFrequency()
- */
-inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
-
-/**
- * Get the count per second of the high resolution counter.
- *
- * @returns a platform-specific count per second.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPerformanceCounter()
- */
-inline Uint64 GetPerformanceFrequency()
-{
-  return SDL_GetPerformanceFrequency();
-}
-
-/**
- * Wait a specified duration before returning.
- *
- * This function waits a specified duration before returning. It
- * waits at least the specified time, but possibly longer due to OS
- * scheduling.
- *
- * @param duration the duration to delay, with max precision in ns.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- */
-inline void Delay(std::chrono::nanoseconds duration)
-{
-  SDL_DelayNS(duration.count());
-}
-
-/**
- * Wait a specified duration before returning.
- *
- * This function waits a specified duration before returning. It
- * will attempt to wait as close to the requested time as possible, busy
- * waiting if necessary, but could return later due to OS scheduling.
- *
- * @param duration the duration to delay.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Delay()
- * @sa DelayNS()
- */
-inline void DelayPrecise(std::chrono::nanoseconds duration)
-{
-  SDL_DelayPrecise(duration.count());
-}
-/**
- * Definition of the timer ID type.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using TimerID = SDL_TimerID;
-
-/**
- * Function prototype for the millisecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in milliseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param userdata an arbitrary pointer provided by the app through
- *                 SDL_AddTimer, for its own use.
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-using TimerCallback = SDL_TimerCallback;
-
-/**
- * Function prototype for the nanosecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param userdata an arbitrary pointer provided by the app through
- *                 AddTimer(), for its own use.
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-using NSTimerCallback = SDL_NSTimerCallback;
-
-/**
- * Function prototype for the nanosecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa AddTimer(TimerCB)
- */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimer() call and should return the next
- * timer interval. If the value returned from the callback is 0, the timer is
- * canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ms to execute and returned
- * 1000 (ms), the timer would only wait another 750 ms before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in milliseconds, passed to `callback`.
- * @param callback the TimerCallback function to call when the specified
- *                 `interval` elapses.
- * @param userdata a pointer that is passed to `callback`.
- * @returns a timer ID or 0 on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::milliseconds interval,
-                        TimerCallback callback,
-                        void* userdata)
-{
-  return SDL_AddTimer(interval.count(), callback, userdata);
-}
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in std::chrono::nanoseconds, passed to
- * `callback`.
- * @param callback the NSTimerCallback function to call when the specified
- *                 `interval` elapses.
- * @param userdata a pointer that is passed to `callback`.
- * @returns a timer ID or 0 on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                        NSTimerCallback callback,
-                        void* userdata)
-{
-  return SDL_AddTimerNS(interval.count(), callback, userdata);
-}
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in std::chrono::nanoseconds, passed to
- * `callback`.
- * @param callback the TimerCB function to call when the specified
- *                 `interval` elapses.
- * @returns a timer ID or 0 on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
-{
-  using Wrapper = CallbackWrapper<TimerCB>;
-  using Store = KeyValueWrapper<TimerID, TimerCB*>;
-
-  auto cb = Wrapper::Wrap(std::move(callback));
-
-  if (TimerID id = SDL_AddTimerNS(
-        interval.count(),
-        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerCB*>(userdata);
-          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
-          // If ask to removal, then remove it
-          if (next == 0) delete Store::release(timerID);
-          return next;
-        },
-        cb)) {
-    Store::Wrap(id, std::move(cb));
-    return id;
-  }
-  delete cb;
-  return TimerID{0};
-}
-
-/**
- * Remove a timer created with AddTimer().
- *
- * @param id the ID of the timer to remove.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-inline bool RemoveTimer(TimerID id)
-{
-  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
-  return SDL_RemoveTimer(id);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_TIMER_H_ */
-
-
-// end --- SDL3pp_timer.h --- 
-
-
-//
-//
-
-// begin --- SDL3pp_version.h --- 
-
-#ifndef SDL3PP_VERSION_H_
-#define SDL3PP_VERSION_H_
-
-#include <SDL3/SDL_version.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryVersion Querying SDL Version
- *
- * Functionality to query the current SDL version, both as headers the app was
- * compiled against, and a library the app is linked to.
- *
- * @{
- */
-
-/**
- * Get the version of SDL that is linked against your program.
- *
- * If you are linking to SDL dynamically, then it is possible that the current
- * version will be different than the version you compiled against. This
- * function returns the current version, while SDL_VERSION is the version you
- * compiled with.
- *
- * This function may be called safely at any time, even before SDL_Init().
- *
- * @returns the version of the linked library.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetRevision
- */
-inline int GetVersion() { return SDL_GetVersion(); }
-
-/**
- * Get the code revision of SDL that is linked against your program.
- *
- * This value is the revision of the code you are linked with and may be
- * different from the code you are compiling with, which is found in the
- * constant SDL_REVISION.
- *
- * The revision is arbitrary string (a hash value) uniquely identifying the
- * exact revision of the SDL library in use, and is only useful in comparing
- * against other revisions. It is NOT an incrementing number.
- *
- * If SDL wasn't built from a git repository with the appropriate tools, this
- * will return an empty string.
- *
- * You shouldn't use this function for anything but logging it for debugging
- * purposes. The string is not intended to be reliable in any way.
- *
- * @returns an arbitrary string, uniquely identifying the exact revision of
- *          the SDL library in use.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetVersion
- */
-inline const char* GetRevision() { return SDL_GetRevision(); }
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_VERSION_H_ */
-
-
-// end --- SDL3pp_version.h --- 
-
-
-
-// Here we have additional "satellite" libraries
-
-// begin --- SDL3pp_image.h --- 
-
-#ifndef SDL3PP_IMAGE_H_
-#define SDL3PP_IMAGE_H_
-
 #if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
   __has_include(<SDL3_image/SDL_image.h>)
 #define SDL3PP_ENABLE_IMAGE
@@ -28067,7 +27522,7 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 
 } // namespace SDL
 
-#else // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
+#else // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 namespace SDL {
 
@@ -28085,17 +27540,6 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 
 }
 
-#endif // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
+#endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
-#endif /* SDL3PP_IMAGE_H_ */
-
-
-// end --- SDL3pp_image.h --- 
-
-
-
-#endif /* SDL3PP_H_ */
-
-
-// end --- SDL3pp.h --- 
-
+#endif // SDL3PP_H_

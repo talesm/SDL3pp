@@ -2,10 +2,8 @@
 #define SDL3PP_IOSTREAM_H_
 
 #include <SDL3/SDL_iostream.h>
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_properties.h"
-#include "SDL3pp_stringParam.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 

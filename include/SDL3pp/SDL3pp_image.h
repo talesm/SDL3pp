@@ -1,6 +1,12 @@
 #ifndef SDL3PP_IMAGE_H_
 #define SDL3PP_IMAGE_H_
 
+#include "SDL3pp_error.h"
+#include "SDL3pp_render.h"
+#include "SDL3pp_surface.h"
+#include "SDL3pp_version.h"
+#include "SDL3pp_video.h"
+
 #if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
   __has_include(<SDL3_image/SDL_image.h>)
 #define SDL3PP_ENABLE_IMAGE
@@ -9,11 +15,6 @@
 #if defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #include <SDL3_image/SDL_image.h>
-#include "SDL3pp_error.h"
-#include "SDL3pp_render.h"
-#include "SDL3pp_surface.h"
-#include "SDL3pp_version.h"
-#include "SDL3pp_video.h"
 
 namespace SDL {
 
@@ -2060,7 +2061,7 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 
 } // namespace SDL
 
-#else // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
+#else // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 namespace SDL {
 
@@ -2078,6 +2079,6 @@ TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
 
 }
 
-#endif // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
+#endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #endif /* SDL3PP_IMAGE_H_ */
