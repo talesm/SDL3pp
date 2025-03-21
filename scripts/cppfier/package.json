@@ -1,0 +1,29 @@
+{
+  "name": "cppfier",
+  "version": "1.0.0",
+  "description": "turns c API into c++",
+  "main": "src/index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "parse": "node src/index.js parse",
+    "update": "node src/index.js update",
+    "transform": "node src/index.js transform",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talesm/cppfier.git"
+  },
+  "author": "talesm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/talesm/cppfier/issues"
+  },
+  "homepage": "https://github.com/talesm/cppfier#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0"
+  }
+}

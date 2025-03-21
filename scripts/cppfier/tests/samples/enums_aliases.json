@@ -1,0 +1,64 @@
+{
+  "files": {
+    "enums_aliases.h": {
+      "name": "enums_aliases.h",
+      "doc": "",
+      "entries": {
+        "Enum": {
+          "doc": "@brief My enum one",
+          "name": "Enum",
+          "kind": "alias",
+          "type": "MyEnum"
+        },
+        "ENUM_VALUE0": {
+          "doc": "",
+          "name": "ENUM_VALUE0",
+          "kind": "var",
+          "type": "Enum",
+          "constexpr": true
+        },
+        "ENUM_VALUE1": {
+          "doc": "",
+          "name": "ENUM_VALUE1",
+          "kind": "var",
+          "type": "Enum",
+          "constexpr": true
+        },
+        "ENUM_VALUE_N": {
+          "doc": "",
+          "name": "ENUM_VALUE_N",
+          "kind": "var",
+          "type": "Enum",
+          "constexpr": true
+        },
+        "EnumBit": {
+          "doc": "@brief My enum 2",
+          "name": "EnumBit",
+          "kind": "alias",
+          "type": "MyEnumBit"
+        },
+        "BIT_VALUE0": {
+          "doc": "",
+          "name": "BIT_VALUE0",
+          "kind": "var",
+          "type": "EnumBit",
+          "constexpr": true
+        },
+        "BIT_VALUE1": {
+          "doc": "",
+          "name": "BIT_VALUE1",
+          "kind": "var",
+          "type": "EnumBit",
+          "constexpr": true
+        },
+        "BIT_VALUE2": {
+          "doc": "",
+          "name": "BIT_VALUE2",
+          "kind": "var",
+          "type": "EnumBit",
+          "constexpr": true
+        }
+      }
+    }
+  }
+}

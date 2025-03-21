@@ -1,0 +1,112 @@
+{
+  "files": {
+    "structs_aliases.h": {
+      "name": "structs_aliases.h",
+      "doc": "",
+      "entries": {
+        "Type1": {
+          "doc": "",
+          "name": "Type1",
+          "kind": "alias",
+          "type": "MyType1"
+        },
+        "Type1Check": {
+          "doc": "",
+          "name": "Type1Check",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const Type1 *"
+            }
+          ]
+        },
+        "GetType1Var1": {
+          "doc": "",
+          "name": "GetType1Var1",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const Type1 *"
+            }
+          ]
+        },
+        "SetType1Var1": {
+          "doc": "",
+          "name": "SetType1Var1",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "Type1 *"
+            },
+            {
+              "name": "var1",
+              "type": "int"
+            }
+          ]
+        },
+        "Type1GetVar2": {
+          "doc": "",
+          "name": "Type1GetVar2",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const Type1 *"
+            }
+          ]
+        },
+        "Type1SetVar2": {
+          "doc": "",
+          "name": "Type1SetVar2",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "Type1 *"
+            },
+            {
+              "name": "var2",
+              "type": "const char *"
+            }
+          ]
+        },
+        "CreateType1": {
+          "doc": "",
+          "name": "CreateType1",
+          "kind": "function",
+          "type": "Type1 *",
+          "parameters": [
+            {
+              "name": "var1",
+              "type": "int"
+            },
+            {
+              "name": "var2",
+              "type": "const char *"
+            }
+          ]
+        },
+        "Byte": {
+          "doc": "",
+          "name": "Byte",
+          "kind": "alias",
+          "type": "MyByte"
+        },
+        "Type2": {
+          "doc": "",
+          "name": "Type2",
+          "kind": "alias",
+          "type": "MyType2"
+        }
+      }
+    }
+  }
+}

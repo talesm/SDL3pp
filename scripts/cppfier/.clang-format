@@ -1,0 +1,26 @@
+BasedOnStyle: Mozilla
+BinPackParameters: false
+Cpp11BracedListStyle: true
+IncludeCategories:
+  - Regex: '^("|<)catch\.hpp'
+    Priority: 0
+  - Regex: '^(<[a-z0-9_]*>)'
+    Priority: 1
+  - Regex: '^<.*'
+    Priority: 2
+  - Regex: '.*'
+    Priority: 3
+IndentCaseLabels: false
+
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: 'true'
+
+AllowShortBlocksOnASingleLine: 'true'
+AllowShortCaseLabelsOnASingleLine: 'true'
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: 'true'
+

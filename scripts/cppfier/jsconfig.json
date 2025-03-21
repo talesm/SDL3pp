@@ -1,0 +1,13 @@
+{
+  "include": [
+    "src/*.js",
+    "tests/*.js",
+  ],
+  "compilerOptions": {
+    "lib": [
+      "ES2024"
+    ],
+    "resolveJsonModule": true,
+    "checkJs": true
+  }
+}

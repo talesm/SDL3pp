@@ -1,0 +1,7 @@
+{
+  "sources": [
+    "empty.h"
+  ],
+  "api": "tests/samples/empty.json",
+  "baseDir": "tests/samples/"
+}
