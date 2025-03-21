@@ -94,6 +94,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Display.html">SDL::Display</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a display for the time it is connected to the system, and is never reused for the lifetime of the application.  <a href="structSDL_1_1Display.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1GLContextBase.html">SDL::GLContextBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle to an OpenGL context.  <a href="structSDL_1_1GLContextBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ObjectDeleter_3_01SDL__GLContextState_01_4.html">SDL::ObjectDeleter&lt; SDL_GLContextState &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -118,9 +123,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga8ea0dc352d3237a35b3e2bf4c6ebe7e3" id="r_ga8ea0dc352d3237a35b3e2bf4c6ebe7e3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga8ea0dc352d3237a35b3e2bf4c6ebe7e3">SDL::WindowID</a> = SDL_WindowID</td></tr>
 <tr class="memdesc:ga8ea0dc352d3237a35b3e2bf4c6ebe7e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a unique ID for a window.  <br /></td></tr>
 <tr class="separator:ga8ea0dc352d3237a35b3e2bf4c6ebe7e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad50ad467b53fb76f67ee1b64d6df44bd" id="r_gad50ad467b53fb76f67ee1b64d6df44bd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">SDL::GLContext</a> = SDL_GLContext</td></tr>
-<tr class="memdesc:gad50ad467b53fb76f67ee1b64d6df44bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle to an OpenGL context.  <br /></td></tr>
-<tr class="separator:gad50ad467b53fb76f67ee1b64d6df44bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaec080e4bfa115925104a25efb472415" id="r_gaaec080e4bfa115925104a25efb472415"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaaec080e4bfa115925104a25efb472415">SDL::GLContextRef</a> = <a class="el" href="structSDL_1_1GLContextBase.html">GLContextBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_GLContextState &gt; &gt;</td></tr>
+<tr class="separator:gaaec080e4bfa115925104a25efb472415"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab71b57e7c11429fe1953f1ecdb4c41ac" id="r_gab71b57e7c11429fe1953f1ecdb4c41ac"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gab71b57e7c11429fe1953f1ecdb4c41ac">SDL::GLContext</a> = <a class="el" href="structSDL_1_1GLContextBase.html">GLContextBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_GLContextState &gt; &gt;</td></tr>
+<tr class="separator:gab71b57e7c11429fe1953f1ecdb4c41ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa6734aa07cf0f9cf89fae6f9adb803dd" id="r_gaa6734aa07cf0f9cf89fae6f9adb803dd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaa6734aa07cf0f9cf89fae6f9adb803dd">SDL::EGLDisplay</a> = SDL_EGLDisplay</td></tr>
 <tr class="memdesc:gaa6734aa07cf0f9cf89fae6f9adb803dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opaque type for an EGL display.  <br /></td></tr>
 <tr class="separator:gaa6734aa07cf0f9cf89fae6f9adb803dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,18 +217,12 @@ Functions</h2></td></tr>
 <tr class="memitem:gad2029dd2ccc426f487626d173b620d42" id="r_gad2029dd2ccc426f487626d173b620d42"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gad2029dd2ccc426f487626d173b620d42">SDL::GL_GetAttribute</a> (<a class="el" href="group__CategoryVideo.html#ga0d0be084fde91e69e872fed589df6985">GLAttr</a> attr, int *value)</td></tr>
 <tr class="memdesc:gad2029dd2ccc426f487626d173b620d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the actual value for an attribute from the current context.  <br /></td></tr>
 <tr class="separator:gad2029dd2ccc426f487626d173b620d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafea461a2637f3b290bdc3c7bc2d2ae1f" id="r_gafea461a2637f3b290bdc3c7bc2d2ae1f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f">SDL::GL_CreateContext</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window)</td></tr>
-<tr class="memdesc:gafea461a2637f3b290bdc3c7bc2d2ae1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create an OpenGL context for an OpenGL window, and make it current.  <br /></td></tr>
-<tr class="separator:gafea461a2637f3b290bdc3c7bc2d2ae1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gade711297cbb015a4e6a132fc3b5170ca" id="r_gade711297cbb015a4e6a132fc3b5170ca"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gade711297cbb015a4e6a132fc3b5170ca">SDL::GL_MakeCurrent</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, <a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> context)</td></tr>
-<tr class="memdesc:gade711297cbb015a4e6a132fc3b5170ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set up an OpenGL context for rendering into an OpenGL window.  <br /></td></tr>
-<tr class="separator:gade711297cbb015a4e6a132fc3b5170ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4e2d4a2ad628eef60c793a8485b1e8ee" id="r_ga4e2d4a2ad628eef60c793a8485b1e8ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga4e2d4a2ad628eef60c793a8485b1e8ee">SDL::GL_GetCurrentWindow</a> ()</td></tr>
 <tr class="memdesc:ga4e2d4a2ad628eef60c793a8485b1e8ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active OpenGL window.  <br /></td></tr>
 <tr class="separator:ga4e2d4a2ad628eef60c793a8485b1e8ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace8e279d9cc20d1ee8cbe219b2067a3b" id="r_gace8e279d9cc20d1ee8cbe219b2067a3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gace8e279d9cc20d1ee8cbe219b2067a3b">SDL::GL_GetCurrentContext</a> ()</td></tr>
-<tr class="memdesc:gace8e279d9cc20d1ee8cbe219b2067a3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active OpenGL context.  <br /></td></tr>
-<tr class="separator:gace8e279d9cc20d1ee8cbe219b2067a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b7ab77b7e61bdd53e28da8e5c845909" id="r_ga5b7ab77b7e61bdd53e28da8e5c845909"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gaaec080e4bfa115925104a25efb472415">GLContextRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga5b7ab77b7e61bdd53e28da8e5c845909">SDL::GL_GetCurrentContext</a> ()</td></tr>
+<tr class="memdesc:ga5b7ab77b7e61bdd53e28da8e5c845909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active OpenGL context.  <br /></td></tr>
+<tr class="separator:ga5b7ab77b7e61bdd53e28da8e5c845909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf7a215247d95db258fcef5ea80e54fe2" id="r_gaf7a215247d95db258fcef5ea80e54fe2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#gaa6734aa07cf0f9cf89fae6f9adb803dd">EGLDisplay</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaf7a215247d95db258fcef5ea80e54fe2">SDL::EGL_GetCurrentDisplay</a> ()</td></tr>
 <tr class="memdesc:gaf7a215247d95db258fcef5ea80e54fe2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the currently active EGL display.  <br /></td></tr>
 <tr class="separator:gaf7a215247d95db258fcef5ea80e54fe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,9 +244,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gaae2523c0aac87c096f778d2b8fec8dd6" id="r_gaae2523c0aac87c096f778d2b8fec8dd6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaae2523c0aac87c096f778d2b8fec8dd6">SDL::GL_SwapWindow</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window)</td></tr>
 <tr class="memdesc:gaae2523c0aac87c096f778d2b8fec8dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a window with OpenGL rendering.  <br /></td></tr>
 <tr class="separator:gaae2523c0aac87c096f778d2b8fec8dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf833bd4032dd8bf56d22ea4651de0e7b" id="r_gaf833bd4032dd8bf56d22ea4651de0e7b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#gaf833bd4032dd8bf56d22ea4651de0e7b">SDL::GL_DestroyContext</a> (<a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> context)</td></tr>
-<tr class="memdesc:gaf833bd4032dd8bf56d22ea4651de0e7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete an OpenGL context.  <br /></td></tr>
-<tr class="separator:gaf833bd4032dd8bf56d22ea4651de0e7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">DisplayOrientations</h2></td></tr>
 <tr class="memitem:ga0576b193a1d4adcb648fc1242fbc5cb8" id="r_ga0576b193a1d4adcb648fc1242fbc5cb8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVideo.html#ga0576b193a1d4adcb648fc1242fbc5cb8">SDL::DisplayOrientation</a> = SDL_DisplayOrientation</td></tr>
@@ -521,7 +518,7 @@ Functions</h2></td></tr>
 <p>An EGL attribute, used when creating an EGL context. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02704">2704</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02783">2783</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +549,7 @@ Functions</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683" title="Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.">EGL_SetAttributeCallbacks()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02736">2736</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02815">2815</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -571,7 +568,7 @@ Functions</h2></td></tr>
 <p>Opaque type for an EGL config. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02690">2690</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02769">2769</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -590,7 +587,7 @@ Functions</h2></td></tr>
 <p>Opaque type for an EGL display. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02683">2683</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02762">2762</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -609,7 +606,7 @@ Functions</h2></td></tr>
 <p>An EGL integer attribute, used when creating an EGL surface. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02711">2711</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02790">2790</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -643,7 +640,7 @@ Functions</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga65f2527b910460aa479e4b1d4b372683" title="Sets the callbacks for defining custom EGLAttrib arrays for EGL initialization.">EGL_SetAttributeCallbacks()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02767">2767</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02846">2846</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -662,7 +659,7 @@ Functions</h2></td></tr>
 <p>Opaque type for an EGL surface. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02697">2697</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02776">2776</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -707,27 +704,23 @@ Functions</h2></td></tr>
 <p>In some cases, these attributes are minimum requests; the GL does not promise to give you exactly what you asked for. It's possible to ask for a 16-bit depth buffer and get a 24-bit one instead, for example, or to ask for no stencil buffer and still have one available. Context creation should fail if the GL can't provide your requested attributes at a minimum, but you should check to see exactly what you got.</p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02791">2791</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02870">2870</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
-<a id="gad50ad467b53fb76f67ee1b64d6df44bd" name="gad50ad467b53fb76f67ee1b64d6df44bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad50ad467b53fb76f67ee1b64d6df44bd">&#9670;&#160;</a></span>GLContext</h2>
+<a id="gab71b57e7c11429fe1953f1ecdb4c41ac" name="gab71b57e7c11429fe1953f1ecdb4c41ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab71b57e7c11429fe1953f1ecdb4c41ac">&#9670;&#160;</a></span>GLContext</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">SDL::GLContext</a> = typedef SDL_GLContext</td>
+          <td class="memname">using <a class="el" href="group__CategoryVideo.html#gab71b57e7c11429fe1953f1ecdb4c41ac">SDL::GLContext</a> = typedef <a class="el" href="structSDL_1_1GLContextBase.html">GLContextBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_GLContextState&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>An opaque handle to an OpenGL context. </p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f" title="Create an OpenGL context for an OpenGL window, and make it current.">GL_CreateContext()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02676">2676</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02681">2681</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -746,7 +739,23 @@ Functions</h2></td></tr>
 <p>Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02955">2955</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03034">3034</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+
+</div>
+</div>
+<a id="gaaec080e4bfa115925104a25efb472415" name="gaaec080e4bfa115925104a25efb472415"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaaec080e4bfa115925104a25efb472415">&#9670;&#160;</a></span>GLContextRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategoryVideo.html#gaaec080e4bfa115925104a25efb472415">SDL::GLContextRef</a> = typedef <a class="el" href="structSDL_1_1GLContextBase.html">GLContextBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_GLContextState&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02673">2673</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -765,7 +774,7 @@ Functions</h2></td></tr>
 <p>Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR attribute. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02963">2963</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03042">3042</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -784,7 +793,7 @@ Functions</h2></td></tr>
 <p>Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02970">2970</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03049">3049</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -803,7 +812,7 @@ Functions</h2></td></tr>
 <p>Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute. </p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02948">2948</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03027">3027</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1049,7 +1058,7 @@ listener-callback</dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga5b189494af97eef6bd5e65ecb6724f0a" title="Check whether the screensaver is currently enabled.">ScreenSaverEnabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03142">3142</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03221">3221</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1081,7 +1090,7 @@ listener-callback</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03446">3446</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03480">3480</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1113,7 +1122,7 @@ listener-callback</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03431">3431</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03465">3465</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1163,7 @@ listener-callback</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gaf7a215247d95db258fcef5ea80e54fe2" title="Get the currently active EGL display.">EGL_GetCurrentDisplay()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03246">3246</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03325">3325</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1193,7 +1202,7 @@ listener-callback</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03459">3459</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03493">3493</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1258,7 +1267,7 @@ listener-callback</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03484">3484</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03518">3518</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1292,7 +1301,7 @@ listener-callback</dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga5b189494af97eef6bd5e65ecb6724f0a" title="Check whether the screensaver is currently enabled.">ScreenSaverEnabled()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03123">3123</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03202">3202</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1328,7 +1337,7 @@ listener-callback</dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga985da34084f8a457e819f2ecd4ea0ecd" title="Get the name of a built in video driver.">GetVideoDriver()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03026">3026</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03105">3105</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1363,7 +1372,7 @@ listener-callback</dd></dl>
 <dd>
 SetKeyboardGrab() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03094">3094</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03173">3173</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1396,7 +1405,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga985da34084f8a457e819f2ecd4ea0ecd" title="Get the name of a built in video driver.">GetVideoDriver()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02983">2983</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03062">3062</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1428,7 +1437,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03040">3040</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03119">3119</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1470,7 +1479,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga8658ccfa53a23c29d5b8a2401495f83a" title="Get the number of video drivers compiled into SDL.">GetNumVideoDrivers()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03004">3004</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03083">3083</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1511,7 +1520,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetID() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03077">3077</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03156">3156</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1543,91 +1552,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03054">3054</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
-</div>
-</div>
-<a id="gafea461a2637f3b290bdc3c7bc2d2ae1f" name="gafea461a2637f3b290bdc3c7bc2d2ae1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafea461a2637f3b290bdc3c7bc2d2ae1f">&#9670;&#160;</a></span>GL_CreateContext()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> SDL::GL_CreateContext </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td>
-          <td class="paramname"><em>window</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create an OpenGL context for an OpenGL window, and make it current. </p>
-<p>Windows users new to OpenGL should note that, for historical reasons, GL functions added after OpenGL version 1.1 are not available by default. Those functions must be loaded at run-time, either with an OpenGL extension-handling library or with SDL_GL_GetProcAddress() and its related functions.</p>
-<p>SDL_GLContext is opaque to the application.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">window</td><td>the window to associate with the context. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the OpenGL context associated with <code>window</code> or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gaf833bd4032dd8bf56d22ea4651de0e7b" title="Delete an OpenGL context.">GL_DestroyContext()</a> </dd>
-<dd>
-<a class="el" href="group__CategoryVideo.html#gade711297cbb015a4e6a132fc3b5170ca" title="Set up an OpenGL context for rendering into an OpenGL window.">GL_MakeCurrent()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03369">3369</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
-</div>
-</div>
-<a id="gaf833bd4032dd8bf56d22ea4651de0e7b" name="gaf833bd4032dd8bf56d22ea4651de0e7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf833bd4032dd8bf56d22ea4651de0e7b">&#9670;&#160;</a></span>GL_DestroyContext()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GL_DestroyContext </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td>
-          <td class="paramname"><em>context</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Delete an OpenGL context. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">context</td><td>the OpenGL context to be deleted. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f" title="Create an OpenGL context for an OpenGL window, and make it current.">GL_CreateContext()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03590">3590</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03133">3133</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1668,7 +1593,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03283">3283</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03362">3362</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1721,12 +1646,12 @@ SetKeyboardGrab() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga340dd324c6cab8966f1b17252bfe459e" title="Set an OpenGL window attribute before window creation.">GL_SetAttribute()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03342">3342</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03421">3421</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
-<a id="gace8e279d9cc20d1ee8cbe219b2067a3b" name="gace8e279d9cc20d1ee8cbe219b2067a3b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gace8e279d9cc20d1ee8cbe219b2067a3b">&#9670;&#160;</a></span>GL_GetCurrentContext()</h2>
+<a id="ga5b7ab77b7e61bdd53e28da8e5c845909" name="ga5b7ab77b7e61bdd53e28da8e5c845909"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5b7ab77b7e61bdd53e28da8e5c845909">&#9670;&#160;</a></span>GL_GetCurrentContext()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1735,7 +1660,7 @@ SetKeyboardGrab() </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a> SDL::GL_GetCurrentContext </td>
+          <td class="memname"><a class="el" href="group__CategoryVideo.html#gaaec080e4bfa115925104a25efb472415">GLContextRef</a> SDL::GL_GetCurrentContext </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1752,9 +1677,9 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>the currently active OpenGL context or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gade711297cbb015a4e6a132fc3b5170ca" title="Set up an OpenGL context for rendering into an OpenGL window.">GL_MakeCurrent()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GLContextBase.html#ab6bc8c2c2c6a8d18f3f4453310ecfdc5" title="Set up an OpenGL context for rendering into an OpenGL window.">GLContextBase.MakeCurrent()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03419">3419</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03450">3450</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1786,7 +1711,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03405">3405</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03436">3436</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1839,7 +1764,7 @@ SetKeyboardGrab() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga56627e0f78cccbee26396ab2a8cb25bf" title="Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().">GL_UnloadLibrary()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03224">3224</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03303">3303</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1880,7 +1805,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga1c5bebf0f995860615026664c2731ccd" title="Set the swap interval for the current OpenGL context.">GL_SetSwapInterval()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03549">3549</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03583">3583</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1924,59 +1849,7 @@ SetKeyboardGrab() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga56627e0f78cccbee26396ab2a8cb25bf" title="Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().">GL_UnloadLibrary()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03166">3166</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
-</div>
-</div>
-<a id="gade711297cbb015a4e6a132fc3b5170ca" name="gade711297cbb015a4e6a132fc3b5170ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gade711297cbb015a4e6a132fc3b5170ca">&#9670;&#160;</a></span>GL_MakeCurrent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GL_MakeCurrent </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a>&#160;</td>
-          <td class="paramname"><em>window</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategoryVideo.html#gad50ad467b53fb76f67ee1b64d6df44bd">GLContext</a>&#160;</td>
-          <td class="paramname"><em>context</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Set up an OpenGL context for rendering into an OpenGL window. </p>
-<p>The context must have been created with a compatible window.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">window</td><td>the window to associate with the context. </td></tr>
-    <tr><td class="paramname">context</td><td>the OpenGL context to associate with the window. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gafea461a2637f3b290bdc3c7bc2d2ae1f" title="Create an OpenGL context for an OpenGL window, and make it current.">GL_CreateContext()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03390">3390</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03245">3245</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2010,7 +1883,7 @@ SetKeyboardGrab() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga340dd324c6cab8966f1b17252bfe459e" title="Set an OpenGL window attribute before window creation.">GL_SetAttribute()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03298">3298</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03377">3377</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2064,7 +1937,7 @@ SetKeyboardGrab() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#gad70dbbf26da876c869b6af3cefc2dde7" title="Reset all previously set OpenGL context attributes to their default values.">GL_ResetAttributes()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03321">3321</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03400">3400</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2107,7 +1980,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#ga9eb54b44b7749c792e0bf01ee3289aa0" title="Get the swap interval for the current OpenGL context.">GL_GetSwapInterval()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03525">3525</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03559">3559</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2148,7 +2021,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03572">3572</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03606">3606</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2180,7 +2053,7 @@ SetKeyboardGrab() </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryVideo.html#gae056a6a66a12ae4bfc7ae53273273e51" title="Dynamically load an OpenGL library.">GL_LoadLibrary()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03260">3260</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03339">3339</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2216,7 +2089,7 @@ SetKeyboardGrab() </dd></dl>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga881c12afac49a4ab69332d736885dfc2" title="Allow the screen to be blanked by a screen saver.">EnableScreenSaver()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03110">3110</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03189">3189</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2321,7 +2194,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>set to 1 to require hardware acceleration, set to 0 to force software rendering; defaults to allow either. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02882">2882</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02961">2961</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2347,7 +2220,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the alpha channel of the accumulation buffer; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02860">2860</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02939">2939</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2373,7 +2246,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the blue channel of the accumulation buffer; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02854">2854</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02933">2933</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2399,7 +2272,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the green channel of the accumulation buffer; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02848">2848</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02927">2927</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2425,7 +2298,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the red channel of the accumulation buffer; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02842">2842</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02921">2921</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2451,7 +2324,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the alpha channel of the color buffer; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02815">2815</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02894">2894</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2477,7 +2350,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the blue channel of the color buffer; defaults to 2. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02809">2809</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02888">2888</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2503,7 +2376,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for frame buffer size; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02820">2820</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02899">2899</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2529,7 +2402,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>some combination of 0 or more of elements of the SDL_GLContextFlag enumeration; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02903">2903</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02982">2982</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2555,7 +2428,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>OpenGL context major version. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02892">2892</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02971">2971</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2581,7 +2454,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>OpenGL context minor version. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02897">2897</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02976">2976</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2605,7 +2478,7 @@ SetKeyboardGrab() </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02935">2935</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03014">3014</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2632,7 +2505,7 @@ SetKeyboardGrab() </dd></dl>
 <p>type of GL context (Core, Compatibility, ES). </p>
 <p>See SDL_GLProfile; default value depends on platform. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02909">2909</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02988">2988</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2659,7 +2532,7 @@ SetKeyboardGrab() </dd></dl>
 <p>sets context the release behavior. </p>
 <p>See SDL_GLContextReleaseFlag; defaults to FLUSH. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02926">2926</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03005">3005</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2688,7 +2561,7 @@ SetKeyboardGrab() </dd></dl>
 <p>set context reset notification. </p>
 <p>See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02932">2932</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03011">3011</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2714,7 +2587,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits in the depth buffer; defaults to 16. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02831">2831</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02910">2910</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2740,7 +2613,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>whether the output is single or double buffered; defaults to double buffering on. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02826">2826</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02905">2905</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2764,7 +2637,7 @@ SetKeyboardGrab() </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02939">2939</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03018">3018</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2788,7 +2661,7 @@ SetKeyboardGrab() </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02937">2937</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l03016">3016</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2814,7 +2687,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>requests sRGB capable visual; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02920">2920</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02999">2999</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2840,7 +2713,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the green channel of the color buffer; defaults to 3. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02803">2803</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02882">2882</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2866,7 +2739,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the number of buffers used for multisample anti-aliasing; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02870">2870</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02949">2949</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2892,7 +2765,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the number of samples used around the current pixel used for multisample anti-aliasing. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02876">2876</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02955">2955</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2918,7 +2791,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits for the red channel of the color buffer; defaults to 3. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02797">2797</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02876">2876</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2944,7 +2817,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>not used (deprecated). </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02887">2887</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02966">2966</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2972,7 +2845,7 @@ SetKeyboardGrab() </dd></dl>
 </div><!-- fragment -->
 <p>OpenGL context sharing; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02914">2914</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02993">2993</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2998,7 +2871,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>the minimum number of bits in the stencil buffer; defaults to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02836">2836</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02915">2915</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3024,7 +2897,7 @@ SetKeyboardGrab() </dd></dl>
 
 <p>whether the output is stereo 3D; defaults to off. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02865">2865</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02944">2944</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>

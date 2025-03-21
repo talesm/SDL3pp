@@ -25,6 +25,7 @@
     "const SDL_FRect *": "const SDL_FRect &",
     "SDL_Surface *": "SurfaceRef",
     "SDL_Window *": "WindowRef",
+    "SDL_GLContext": "GLContextRef",
     "SDL_Renderer *": "RendererRef",
     "SDL_Texture *": "TextureRef"
   },
@@ -35,6 +36,7 @@
     "SDL_Palette *": "PaletteRef",
     "SDL_Surface *": "SurfaceRef",
     "SDL_Window *": "WindowRef",
+    "SDL_GLContext": "GLContextRef",
     "SDL_Renderer *": "RendererRef",
     "SDL_Texture *": "TextureRef"
   },
@@ -3319,6 +3321,47 @@
             "name": "HitTestCB",
             "doc": "@sa HitTest"
           }
+        ],
+        "SDL_FlashOperation": [
+          {
+            "name": "GLContextBase",
+            "kind": "forward",
+            "template": [
+              {
+                "name": "T",
+                "type": "ObjectBox<SDL_GLContext>"
+              }
+            ]
+          },
+          {
+            "name": "GLContextRef",
+            "kind": "alias",
+            "type": "GLContextBase<ObjectRef<SDL_GLContextState>>"
+          },
+          {
+            "name": "ObjectDeleter<SDL_GLContextState>",
+            "kind": "struct",
+            "template": [],
+            "entries": {
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "GLContextRef",
+                    "name": "context"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "GLContext",
+            "kind": "alias",
+            "type": "GLContextBase<ObjectUnique<SDL_GLContextState>>"
+          }
         ]
       },
       "transform": {
@@ -3672,6 +3715,34 @@
           "kind": "function",
           "type": "OwnArray<WindowRef>",
           "parameters": []
+        },
+        "SDL_GLContext": {
+          "name": "GLContextBase",
+          "kind": "struct",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_GLContext>",
+              "name": "T"
+            }
+          ],
+          "type": "T",
+          "entries": {
+            "T::T": "alias",
+            "SDL_GL_CreateContext": "ctor",
+            "SDL_GL_MakeCurrent": {
+              "name": "MakeCurrent",
+              "static": false,
+              "parameters": [
+                {
+                  "type": "WindowRef",
+                  "name": "window"
+                }
+              ]
+            },
+            "SDL_GL_DestroyContext": {
+              "name": "Destroy"
+            }
+          }
         }
       }
     },

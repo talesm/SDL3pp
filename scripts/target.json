@@ -12325,12 +12325,105 @@
             }
           }
         },
+        "GLContextBase-forward": {
+          "name": "GLContextBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "ObjectBox<SDL_GLContext>"
+            }
+          ],
+          "doc": ""
+        },
+        "GLContextRef": {
+          "name": "GLContextRef",
+          "kind": "alias",
+          "type": "GLContextBase<ObjectRef<SDL_GLContextState>>",
+          "doc": ""
+        },
+        "ObjectDeleter<SDL_GLContextState>": {
+          "name": "ObjectDeleter<SDL_GLContextState>",
+          "kind": "struct",
+          "template": [],
+          "entries": {
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "GLContextRef",
+                  "name": "context"
+                }
+              ],
+              "doc": ""
+            }
+          },
+          "doc": ""
+        },
         "GLContext": {
-          "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
           "name": "GLContext",
           "kind": "alias",
-          "type": "SDL_GLContext",
-          "sourceName": "SDL_GLContext"
+          "type": "GLContextBase<ObjectUnique<SDL_GLContextState>>",
+          "doc": ""
+        },
+        "GLContextBase": {
+          "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
+          "name": "GLContextBase",
+          "kind": "struct",
+          "type": "T",
+          "sourceName": "SDL_GLContext",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_GLContext>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "GLContextBase": {
+              "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with SDL_GL_GetProcAddress() and its related\nfunctions.\n\nSDL_GLContext is opaque to the application.\n\n@param window the window to associate with the context.\n@returns the OpenGL context associated with `window` or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_DestroyContext\n@sa SDL_GL_MakeCurrent",
+              "name": "GLContextBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "window",
+                  "type": "WindowRef"
+                }
+              ],
+              "sourceName": "SDL_GL_CreateContext",
+              "static": false
+            },
+            "MakeCurrent": {
+              "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
+              "name": "MakeCurrent",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "window",
+                  "type": "WindowRef"
+                }
+              ],
+              "sourceName": "SDL_GL_MakeCurrent",
+              "static": false
+            },
+            "Destroy": {
+              "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_GL_DestroyContext"
+            }
+          }
         },
         "EGLDisplay": {
           "doc": "Opaque type for an EGL display.\n\n@since This datatype is available since SDL 3.2.0.",
@@ -12832,36 +12925,6 @@
           ],
           "sourceName": "SDL_GL_GetAttribute"
         },
-        "GL_CreateContext": {
-          "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with SDL_GL_GetProcAddress() and its related\nfunctions.\n\nSDL_GLContext is opaque to the application.\n\n@param window the window to associate with the context.\n@returns the OpenGL context associated with `window` or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_DestroyContext\n@sa SDL_GL_MakeCurrent",
-          "name": "GL_CreateContext",
-          "kind": "function",
-          "type": "GLContext",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            }
-          ],
-          "sourceName": "SDL_GL_CreateContext"
-        },
-        "GL_MakeCurrent": {
-          "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
-          "name": "GL_MakeCurrent",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
-              "name": "context",
-              "type": "GLContext"
-            }
-          ],
-          "sourceName": "SDL_GL_MakeCurrent"
-        },
         "GL_GetCurrentWindow": {
           "doc": "Get the currently active OpenGL window.\n\n@returns the currently active OpenGL window on success or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GL_GetCurrentWindow",
@@ -12874,7 +12937,7 @@
           "doc": "Get the currently active OpenGL context.\n\n@returns the currently active OpenGL context or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_MakeCurrent",
           "name": "GL_GetCurrentContext",
           "kind": "function",
-          "type": "GLContext",
+          "type": "GLContextRef",
           "parameters": [],
           "sourceName": "SDL_GL_GetCurrentContext"
         },
@@ -12970,19 +13033,6 @@
             }
           ],
           "sourceName": "SDL_GL_SwapWindow"
-        },
-        "GL_DestroyContext": {
-          "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
-          "name": "GL_DestroyContext",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "context",
-              "type": "GLContext"
-            }
-          ],
-          "sourceName": "SDL_GL_DestroyContext"
         }
       }
     },

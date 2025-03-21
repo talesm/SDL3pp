@@ -19569,14 +19569,93 @@ struct WindowBase : T
   }
 };
 
+// Forward decl
+template<ObjectBox<SDL_GLContext> T>
+struct GLContextBase;
+
+using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
+
+template<>
+struct ObjectDeleter<SDL_GLContextState>
+{
+  void operator()(GLContextRef context) const;
+};
+
+using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
+
 /**
  * An opaque handle to an OpenGL context.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GL_CreateContext()
+ * @cat resource
  */
-using GLContext = SDL_GLContext;
+template<ObjectBox<SDL_GLContext> T>
+struct GLContextBase : T
+{
+  using T::T;
+
+  /**
+   * Create an OpenGL context for an OpenGL window, and make it current.
+   *
+   * Windows users new to OpenGL should note that, for historical reasons, GL
+   * functions added after OpenGL version 1.1 are not available by default.
+   * Those functions must be loaded at run-time, either with an OpenGL
+   * extension-handling library or with SDL_GL_GetProcAddress() and its related
+   * functions.
+   *
+   * SDL_GLContext is opaque to the application.
+   *
+   * @param window the window to associate with the context.
+   * @post the OpenGL context associated with `window` or NULL on failure;
+   *          call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Destroy()
+   * @sa MakeCurrent()
+   */
+  GLContextBase(WindowRef window)
+    : T(SDL_GL_CreateContext(window.get()))
+  {
+  }
+
+  /**
+   * Set up an OpenGL context for rendering into an OpenGL window.
+   *
+   * The context must have been created with a compatible window.
+   *
+   * @param window the window to associate with the context.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GL_CreateContext
+   */
+  bool MakeCurrent(WindowRef window)
+  {
+    return SDL_GL_MakeCurrent(window.get(), T::get());
+  }
+
+  /**
+   * Delete an OpenGL context.
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GL_CreateContext
+   */
+  bool Destroy() { return SDL_GL_DestroyContext(T::release()); }
+};
 
 /**
  * Opaque type for an EGL display.
@@ -20248,54 +20327,6 @@ inline bool GL_GetAttribute(GLAttr attr, int* value)
 }
 
 /**
- * Create an OpenGL context for an OpenGL window, and make it current.
- *
- * Windows users new to OpenGL should note that, for historical reasons, GL
- * functions added after OpenGL version 1.1 are not available by default.
- * Those functions must be loaded at run-time, either with an OpenGL
- * extension-handling library or with SDL_GL_GetProcAddress() and its related
- * functions.
- *
- * SDL_GLContext is opaque to the application.
- *
- * @param window the window to associate with the context.
- * @returns the OpenGL context associated with `window` or NULL on failure;
- *          call GetError() for more information.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GL_DestroyContext()
- * @sa GL_MakeCurrent()
- */
-inline GLContext GL_CreateContext(WindowRef window)
-{
-  return SDL_GL_CreateContext(window.get());
-}
-
-/**
- * Set up an OpenGL context for rendering into an OpenGL window.
- *
- * The context must have been created with a compatible window.
- *
- * @param window the window to associate with the context.
- * @param context the OpenGL context to associate with the window.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GL_CreateContext()
- */
-inline bool GL_MakeCurrent(WindowRef window, GLContext context)
-{
-  return SDL_GL_MakeCurrent(window.get(), context);
-}
-
-/**
  * Get the currently active OpenGL window.
  *
  * @returns the currently active OpenGL window on success or NULL on failure;
@@ -20317,9 +20348,12 @@ inline WindowRef GL_GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GL_MakeCurrent()
+ * @sa GLContextBase.MakeCurrent()
  */
-inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
+inline GLContextRef GL_GetCurrentContext()
+{
+  return SDL_GL_GetCurrentContext();
+}
 
 /**
  * Get the currently active EGL display.
@@ -20477,24 +20511,6 @@ inline bool GL_SwapWindow(WindowRef window)
   return SDL_GL_SwapWindow(window.get());
 }
 
-/**
- * Delete an OpenGL context.
- *
- * @param context the OpenGL context to be deleted.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GL_CreateContext()
- */
-inline bool GL_DestroyContext(GLContext context)
-{
-  return SDL_GL_DestroyContext(context);
-}
-
 #pragma region impl
 
 /// @}
@@ -20502,6 +20518,12 @@ inline bool GL_DestroyContext(GLContext context)
 inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
 {
   window.Destroy();
+}
+
+inline void ObjectDeleter<SDL_GLContextState>::operator()(
+  GLContextRef context) const
+{
+  context.Destroy();
 }
 
 #pragma endregion impl
