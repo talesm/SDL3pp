@@ -110,18 +110,18 @@ endif (DOXYGEN_FOUND)
 
 # Refresh the headers
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND node scripts/ parse ${SDL3PP_PARSE_DIR_PARAMS} scripts/config.json 
+    COMMAND node scripts/cppfier parse ${SDL3PP_PARSE_DIR_PARAMS} scripts/config.json 
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
-    COMMAND node scripts/ transform scripts/config.json
+    COMMAND node scripts/cppfier transform scripts/config.json
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json  ${PROJECT_SOURCE_DIR}/scripts/transform.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 add_custom_target(SDL3pp_refresh
-    COMMAND node scripts/ update scripts/config.json
+    COMMAND node scripts/cppfier update scripts/config.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
