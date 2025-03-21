@@ -46,13 +46,6 @@ namespace SDL {
  * @{
  */
 
-/**  Deleter */
-template<>
-struct ObjectDeleter<SDL_Renderer>
-{
-  void operator()(RendererRef renderer) const;
-};
-
 /**
  * Handle to an owned renderer
  *
@@ -78,12 +71,6 @@ struct TextureBase;
  * @sa Texture
  */
 using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
-
-template<>
-struct ObjectDeleter<SDL_Texture>
-{
-  void operator()(TextureRef texture) const;
-};
 
 /**
  * Handle to an owned texture
@@ -1615,20 +1602,6 @@ struct RendererBase : T
   bool Present() { return SDL_RenderPresent(T::get()); }
 
   /**
-   * Destroy the rendering context for a window and free all associated
-   * textures.
-   *
-   * This object becomes empty after the call.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CreateRenderer
-   */
-  void Destroy() { return SDL_DestroyRenderer(T::release()); }
-
-  /**
    * Force the rendering context to flush any pending commands and state.
    *
    * You do not need to (and in fact, shouldn't) call this function unless you
@@ -1746,6 +1719,20 @@ struct RendererBase : T
   }
 
   // TODO RenderDebugTextFormat
+
+  /**
+   * Destroy the rendering context for a window and free all associated
+   * textures.
+   *
+   * This object becomes empty after the call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreateRenderer
+   */
+  void Destroy() { return SDL_DestroyRenderer(T::release()); }
 };
 
 /**
@@ -2732,6 +2719,45 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 }
 
 /**
+ * Destroy the texture.
+ *
+ * This object becomes empty after the call.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Texture
+ * @sa TextureBase
+ */
+template<>
+inline void ObjectRef<SDL_Texture>::doFree(SDL_Texture* resource)
+{
+  return SDL_DestroyTexture(resource);
+}
+
+/**
+ * Destroy the rendering context for a window and free all associated
+ * textures.
+ *
+ * This should be called before destroying the associated window.
+ *
+ * @param renderer the rendering context.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer
+ * @sa RendererBase
+ */
+template<>
+inline void ObjectRef<SDL_Renderer>::doFree(SDL_Renderer* resource)
+{
+  return SDL_DestroyRenderer(resource);
+}
+
+/**
  * Get the CAMetalLayer associated with the given Metal renderer.
  *
  * This function returns `void *`, so SDL doesn't have to include Metal's
@@ -2974,16 +3000,6 @@ bool RendererBase<T>::RenderGeometryRaw(TextureRef texture,
                                indices,
                                num_indices,
                                size_indices);
-}
-
-inline void ObjectDeleter<SDL_Renderer>::operator()(RendererRef renderer) const
-{
-  renderer.Destroy();
-}
-
-inline void ObjectDeleter<SDL_Texture>::operator()(TextureRef texture) const
-{
-  texture.Destroy();
 }
 
 template<ObjectBox<SDL_Texture*> T>

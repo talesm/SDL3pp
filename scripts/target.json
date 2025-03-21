@@ -21,27 +21,6 @@
           "type": "EnvironmentBase<ObjectRef<SDL_Environment>>",
           "doc": ""
         },
-        "ObjectDeleter<SDL_Environment>": {
-          "name": "ObjectDeleter<SDL_Environment>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "EnvironmentRef",
-                  "name": "environment"
-                }
-              ],
-              "doc": ""
-            }
-          },
-          "doc": ""
-        },
         "Environment": {
           "name": "Environment",
           "kind": "alias",
@@ -63,27 +42,6 @@
           "name": "IConvRef",
           "kind": "alias",
           "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>",
-          "doc": ""
-        },
-        "ObjectDeleter<SDL_iconv_data_t>": {
-          "name": "ObjectDeleter<SDL_iconv_data_t>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "IConvRef",
-                  "name": "iconv"
-                }
-              ],
-              "doc": ""
-            }
-          },
           "doc": ""
         },
         "IConv": {
@@ -419,14 +377,6 @@
                 }
               ],
               "sourceName": "SDL_UnsetEnvironmentVariable"
-            },
-            "Destroy": {
-              "doc": "Destroy a set of environment variables.\n\n@param env the environment to destroy.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateEnvironment",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyEnvironment"
             }
           }
         },
@@ -437,6 +387,20 @@
           "type": "EnvironmentRef",
           "parameters": [],
           "sourceName": "SDL_GetEnvironment"
+        },
+        "ObjectRef<SDL_Environment>::doFree": {
+          "doc": "Destroy a set of environment variables.\n\n@param env the environment to destroy.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateEnvironment",
+          "name": "ObjectRef<SDL_Environment>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_Environment *"
+            }
+          ],
+          "sourceName": "SDL_DestroyEnvironment",
+          "template": []
         },
         "getenv": {
           "doc": "Get the value of a variable in the environment.\n\nThis function uses SDL's cached copy of the environment and is thread-safe.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2923,16 +2887,22 @@
                 }
               ],
               "sourceName": "SDL_iconv"
-            },
-            "close": {
-              "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_open\n@sa SDL_iconv_string",
-              "name": "close",
-              "kind": "function",
-              "type": "int",
-              "parameters": [],
-              "sourceName": "SDL_iconv_close"
             }
           }
+        },
+        "ObjectRef<SDL_iconv_data_t>::doFree": {
+          "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_open\n@sa SDL_iconv_string",
+          "name": "ObjectRef<SDL_iconv_data_t>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_iconv_t"
+            }
+          ],
+          "sourceName": "SDL_iconv_close",
+          "template": []
         },
         "iconv_string": {
           "doc": "Helper function to convert a string's encoding in one call.\n\nThis function converts a buffer or string between encodings in one pass.\n\nThe string does not need to be NULL-terminated; this function operates on\nthe number of bytes specified in `inbytesleft` whether there is a NULL\ncharacter anywhere in the buffer.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param tocode the character encoding of the output string. Examples are\n              \"UTF-8\", \"UCS-4\", etc.\n@param fromcode the character encoding of data in `inbuf`.\n@param inbuf the string to convert to a different encoding.\n@param inbytesleft the size of the input string _in bytes_.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv",
@@ -4086,27 +4056,6 @@
           "type": "IOStreamBase<ObjectRef<SDL_IOStream>>",
           "doc": ""
         },
-        "ObjectDeleter<SDL_IOStream>": {
-          "name": "ObjectDeleter<SDL_IOStream>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "IOStreamRef",
-                  "name": "stream"
-                }
-              ],
-              "doc": ""
-            }
-          },
-          "doc": ""
-        },
         "IOStream": {
           "name": "IOStream",
           "kind": "alias",
@@ -4333,14 +4282,6 @@
                 "doc": ""
               }
             ],
-            "Close": {
-              "doc": "Close and free an allocated SDL_IOStream structure.\n\nSDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any\nresources used by the stream and frees the SDL_IOStream itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the SDL_IOStream is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call SDL_FlushIO() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context SDL_IOStream structure to close.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_OpenIO",
-              "name": "Close",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_CloseIO"
-            },
             "GetProperties": {
               "doc": "Get the properties associated with an SDL_IOStream.\n\n@param context a pointer to an SDL_IOStream structure.\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
@@ -4955,6 +4896,20 @@
             }
           }
         },
+        "ObjectRef<SDL_IOStream>::doFree": {
+          "doc": "Close and free an allocated SDL_IOStream structure.\n\nSDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any\nresources used by the stream and frees the SDL_IOStream itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the SDL_IOStream is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call SDL_FlushIO() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context SDL_IOStream structure to close.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_OpenIO",
+          "name": "ObjectRef<SDL_IOStream>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_IOStream *"
+            }
+          ],
+          "sourceName": "SDL_CloseIO",
+          "template": []
+        },
         "LoadFile": {
           "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with SDL_free().\n\n@param file the path to read all available data from.\n@param datasize if not NULL, will store the number of bytes read.\n@returns the data or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LoadFile_IO\n@sa SDL_SaveFile",
           "name": "LoadFile",
@@ -5050,27 +5005,6 @@
           "name": "PaletteRef",
           "kind": "alias",
           "type": "PaletteBase<ObjectRef<SDL_Palette>>",
-          "doc": ""
-        },
-        "ObjectDeleter<SDL_Palette>": {
-          "name": "ObjectDeleter<SDL_Palette>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "PaletteRef",
-                  "name": "palette"
-                }
-              ],
-              "doc": ""
-            }
-          },
           "doc": ""
         },
         "Palette": {
@@ -7377,16 +7311,22 @@
                 ],
                 "doc": ""
               }
-            ],
-            "Destroy": {
-              "doc": "Free a palette created with SDL_CreatePalette().\n\n@param palette the SDL_Palette structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePalette",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyPalette"
-            }
+            ]
           }
+        },
+        "ObjectRef<SDL_Palette>::doFree": {
+          "doc": "Free a palette created with SDL_CreatePalette().\n\n@param palette the SDL_Palette structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePalette",
+          "name": "ObjectRef<SDL_Palette>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_Palette *"
+            }
+          ],
+          "sourceName": "SDL_DestroyPalette",
+          "template": []
         },
         "MapRGB": {
           "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGB\n@sa SDL_MapRGBA\n@sa SDL_MapSurfaceRGB",
@@ -9284,27 +9224,6 @@
           "type": "SurfaceBase<ObjectRef<SDL_Surface>>",
           "doc": ""
         },
-        "ObjectDeleter<SDL_Surface>": {
-          "name": "ObjectDeleter<SDL_Surface>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "SurfaceRef",
-                  "name": "Surface"
-                }
-              ],
-              "doc": ""
-            }
-          },
-          "doc": ""
-        },
         "Surface": {
           "name": "Surface",
           "kind": "alias",
@@ -9469,14 +9388,6 @@
                 "static": false
               }
             ],
-            "Destroy": {
-              "doc": "Free a surface.\n\nIt is safe to pass NULL to this function.\n\n@param surface the SDL_Surface to free.\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateSurface\n@sa SDL_CreateSurfaceFrom",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroySurface"
-            },
             "GetProperties": {
               "doc": "Get the properties associated with a surface.\n\nThe following properties are understood by SDL:\n\n- `SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 203 for HDR10 surfaces and 1.0 for floating point surfaces.\n- `SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT`: for HDR10 and floating point\n  surfaces, this defines the maximum dynamic range used by the content, in\n  terms of the SDR white point. This defaults to 0.0, which disables tone\n  mapping.\n- `SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING`: the tone mapping operator\n  used when compressing from a surface with high dynamic range to another\n  with lower dynamic range. Currently this supports \"chrome\", which uses\n  the same tone mapping that Chrome uses for HDR content, the form \"*=N\",\n  where N is a floating point scale factor applied in linear space, and\n  \"none\", which disables tone mapping. This defaults to \"chrome\".\n- `SDL_PROP_SURFACE_HOTSPOT_X_NUMBER`: the hotspot pixel offset from the\n  left edge of the image, if this surface is being used as a cursor.\n- `SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER`: the hotspot pixel offset from the\n  top edge of the image, if this surface is being used as a cursor.\n\n@param surface the SDL_Surface structure to query.\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetProperties",
@@ -10733,6 +10644,20 @@
           },
           "doc": ""
         },
+        "ObjectRef<SDL_Surface>::doFree": {
+          "doc": "Free a surface.\n\nIt is safe to pass NULL to this function.\n\n@param surface the SDL_Surface to free.\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateSurface\n@sa SDL_CreateSurfaceFrom",
+          "name": "ObjectRef<SDL_Surface>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_Surface *"
+            }
+          ],
+          "sourceName": "SDL_DestroySurface",
+          "template": []
+        },
         "LoadBMP": [
           {
             "doc": "Load a BMP image from a seekable SDL data stream.\n\nThe new surface should be freed with SDL_DestroySurface(). Not doing so\nwill result in a memory leak.\n\n@param src the data stream for the surface.\n@param closeio if true, calls SDL_CloseIO() on `src` before returning, even\n               in the case of an error.\n@returns a pointer to a new SDL_Surface structure or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroySurface\n@sa SDL_LoadBMP\n@sa SDL_SaveBMP_IO",
@@ -10961,27 +10886,6 @@
           "name": "WindowRef",
           "kind": "alias",
           "type": "WindowBase<ObjectRef<SDL_Window>>",
-          "doc": ""
-        },
-        "ObjectDeleter<SDL_Window>": {
-          "name": "ObjectDeleter<SDL_Window>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "WindowRef",
-                  "name": "window"
-                }
-              ],
-              "doc": ""
-            }
-          },
           "doc": ""
         },
         "Window": {
@@ -12514,14 +12418,6 @@
                 }
               ],
               "sourceName": "SDL_FlashWindow"
-            },
-            "Destroy": {
-              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@param window the window to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePopupWindow\n@sa SDL_CreateWindow\n@sa SDL_CreateWindowWithProperties",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyWindow"
             }
           }
         },
@@ -12540,27 +12436,6 @@
           "name": "GLContextRef",
           "kind": "alias",
           "type": "GLContextBase<ObjectRef<SDL_GLContextState>>",
-          "doc": ""
-        },
-        "ObjectDeleter<SDL_GLContextState>": {
-          "name": "ObjectDeleter<SDL_GLContextState>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "GLContextRef",
-                  "name": "context"
-                }
-              ],
-              "doc": ""
-            }
-          },
           "doc": ""
         },
         "GLContext": {
@@ -12614,14 +12489,6 @@
               ],
               "sourceName": "SDL_GL_MakeCurrent",
               "static": false
-            },
-            "Destroy": {
-              "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "sourceName": "SDL_GL_DestroyContext"
             }
           }
         },
@@ -12999,6 +12866,20 @@
           "parameters": [],
           "sourceName": "SDL_GetGrabbedWindow"
         },
+        "ObjectRef<SDL_Window>::doFree": {
+          "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@param window the window to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePopupWindow\n@sa SDL_CreateWindow\n@sa SDL_CreateWindowWithProperties",
+          "name": "ObjectRef<SDL_Window>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_Window *"
+            }
+          ],
+          "sourceName": "SDL_DestroyWindow",
+          "template": []
+        },
         "ScreenSaverEnabled": {
           "doc": "Check whether the screensaver is currently enabled.\n\nThe screensaver is disabled by default.\n\nThe default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`.\n\n@returns true if the screensaver is enabled, false if it is disabled.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DisableScreenSaver\n@sa SDL_EnableScreenSaver",
           "name": "ScreenSaverEnabled",
@@ -13233,6 +13114,20 @@
             }
           ],
           "sourceName": "SDL_GL_SwapWindow"
+        },
+        "ObjectRef<SDL_GLContextState>::doFree": {
+          "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
+          "name": "ObjectRef<SDL_GLContextState>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_GLContext"
+            }
+          ],
+          "sourceName": "SDL_GL_DestroyContext",
+          "template": []
         }
       }
     },
@@ -13240,27 +13135,6 @@
       "name": "SDL3pp_render.h",
       "doc": "@defgroup CategoryRender Category Render\n\nHeader file for SDL 2D rendering functions.\n\nThis API supports the following features:\n\n- single pixel points\n- single pixel lines\n- filled rectangles\n- texture images\n- 2D polygons\n\nThe primitives may be drawn in opaque, blended, or additive modes.\n\nThe texture images may be drawn in opaque, blended, or additive modes. They\ncan have an additional color tint or alpha modulation applied to them, and\nmay also be stretched with linear interpolation.\n\nThis API is designed to accelerate simple 2D operations. You may want more\nfunctionality such as polygons and particle effects and in that case you\nshould use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the\nmany good 3D engines.\n\nThese functions must be called from the main thread. See this bug for\ndetails: https://github.com/libsdl-org/SDL/issues/986",
       "entries": {
-        "ObjectDeleter<SDL_Renderer>": {
-          "name": "ObjectDeleter<SDL_Renderer>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "RendererRef",
-                  "name": "renderer"
-                }
-              ],
-              "doc": ""
-            }
-          },
-          "doc": ""
-        },
         "Renderer": {
           "name": "Renderer",
           "kind": "alias",
@@ -13282,27 +13156,6 @@
           "name": "TextureRef",
           "kind": "alias",
           "type": "TextureBase<ObjectRef<SDL_Texture>>",
-          "doc": ""
-        },
-        "ObjectDeleter<SDL_Texture>": {
-          "name": "ObjectDeleter<SDL_Texture>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "TextureRef",
-                  "name": "texture"
-                }
-              ],
-              "doc": ""
-            }
-          },
           "doc": ""
         },
         "Texture": {
@@ -14410,14 +14263,6 @@
               "parameters": [],
               "sourceName": "SDL_RenderPresent"
             },
-            "Destroy": {
-              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyRenderer"
-            },
             "Flush": {
               "doc": "Force the rendering context to flush any pending commands and state.\n\nYou do not need to (and in fact, shouldn't) call this function unless you\nare planning to call into OpenGL/Direct3D/Metal/whatever directly, in\naddition to using an SDL_Renderer.\n\nThis is for a very-specific case: if you are using SDL's render API, and\nyou plan to make OpenGL/D3D/whatever calls in addition to SDL render API\ncalls. If this applies, you should call this function between calls to\nSDL's render API and the low-level API you're using in cooperation.\n\nIn all other cases, you can ignore this function.\n\nThis call makes SDL flush any pending rendering work it was queueing up to\ndo later in a single batch, and marks any internal cached state as invalid,\nso it'll prepare all its state again later, from scratch.\n\nThis means you do not need to save state in your rendering code to protect\nthe SDL renderer. However, there lots of arbitrary pieces of Direct3D and\nOpenGL state that can confuse things; you should use your best judgment and\nbe prepared to make changes if specific state needs to be protected.\n\n@param renderer the rendering context.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Flush",
@@ -14991,14 +14836,6 @@
               "sourceName": "SDL_LockTexture",
               "static": false,
               "reference": 1
-            },
-            "Destroy": {
-              "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyTexture"
             }
           }
         },
@@ -15172,6 +15009,34 @@
             }
           ],
           "sourceName": "SDL_CreateWindowAndRenderer"
+        },
+        "ObjectRef<SDL_Texture>::doFree": {
+          "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",
+          "name": "ObjectRef<SDL_Texture>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_Texture *"
+            }
+          ],
+          "sourceName": "SDL_DestroyTexture",
+          "template": []
+        },
+        "ObjectRef<SDL_Renderer>::doFree": {
+          "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer",
+          "name": "ObjectRef<SDL_Renderer>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_Renderer *"
+            }
+          ],
+          "sourceName": "SDL_DestroyRenderer",
+          "template": []
         },
         "GetRenderMetalLayer": {
           "doc": "Get the CAMetalLayer associated with the given Metal renderer.\n\nThis function returns `void *`, so SDL doesn't have to include Metal's\nheaders, but it can be safely cast to a `CAMetalLayer *`.\n\n@param renderer the renderer to query.\n@returns a `CAMetalLayer *` on success, or NULL if the renderer isn't a\n         Metal renderer.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderMetalCommandEncoder",
@@ -17520,27 +17385,6 @@
           "type": "AnimationBase<ObjectRef<IMG_Animation>>",
           "doc": ""
         },
-        "ObjectDeleter<IMG_Animation>": {
-          "name": "ObjectDeleter<IMG_Animation>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "AnimationRef",
-                  "name": "texture"
-                }
-              ],
-              "doc": ""
-            }
-          },
-          "doc": ""
-        },
         "Animation": {
           "name": "Animation",
           "kind": "alias",
@@ -18361,16 +18205,22 @@
                 "sourceName": "IMG_LoadAnimationTyped_IO",
                 "static": false
               }
-            ],
-            "Free": {
-              "doc": "Dispose of an IMG_Animation and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim IMG_Animation to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO",
-              "name": "Free",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "IMG_FreeAnimation"
-            }
+            ]
           }
+        },
+        "ObjectRef<IMG_Animation>::doFree": {
+          "doc": "Dispose of an IMG_Animation and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim IMG_Animation to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO",
+          "name": "ObjectRef<IMG_Animation>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "IMG_Animation *"
+            }
+          ],
+          "sourceName": "IMG_FreeAnimation",
+          "template": []
         },
         "LoadGIFAnimation": {
           "doc": "Load a GIF animation directly.\n\nIf you know you definitely have a GIF image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an SDL_IOStream\ninterface available here.\n\n@param src an SDL_IOStream that data will be read from.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO\n@sa IMG_FreeAnimation",

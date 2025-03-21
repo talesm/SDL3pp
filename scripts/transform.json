@@ -68,25 +68,6 @@
             "type": "EnvironmentBase<ObjectRef<SDL_Environment>>"
           },
           {
-            "name": "ObjectDeleter<SDL_Environment>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "EnvironmentRef",
-                    "name": "environment"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Environment",
             "kind": "alias",
             "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>"
@@ -105,25 +86,6 @@
             "name": "IConvRef",
             "kind": "alias",
             "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_iconv_data_t>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "IConvRef",
-                    "name": "iconv"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "IConv",
@@ -237,9 +199,19 @@
               "parameters": []
             },
             "SDL_SetEnvironmentVariable": "function",
-            "SDL_UnsetEnvironmentVariable": "function",
-            "SDL_DestroyEnvironment": "function"
+            "SDL_UnsetEnvironmentVariable": "function"
           }
+        },
+        "SDL_DestroyEnvironment": {
+          "name": "ObjectRef<SDL_Environment>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Environment *",
+              "name": "resource"
+            }
+          ]
         },
         "SDL_iconv_t": {
           "name": "IConvBase",
@@ -257,11 +229,19 @@
               "name": "T::T"
             },
             "SDL_iconv_open": "ctor",
-            "SDL_iconv": "function",
-            "SDL_iconv_close": {
-              "name": "close"
-            }
+            "SDL_iconv": "function"
           }
+        },
+        "SDL_iconv_close": {
+          "name": "ObjectRef<SDL_iconv_data_t>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_iconv_t",
+              "name": "resource"
+            }
+          ]
         }
       }
     },
@@ -698,25 +678,6 @@
             "type": "IOStreamBase<ObjectRef<SDL_IOStream>>"
           },
           {
-            "name": "ObjectDeleter<SDL_IOStream>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "IOStreamRef",
-                    "name": "stream"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "IOStream",
             "kind": "alias",
             "type": "IOStreamBase<ObjectUnique<SDL_IOStream>>"
@@ -825,9 +786,6 @@
                   "name": "userdata"
                 }
               ]
-            },
-            "SDL_CloseIO": {
-              "name": "Close"
             },
             "SDL_GetIOProperties": {
               "name": "GetProperties",
@@ -993,6 +951,17 @@
             "SDL_WriteS64BE": "function"
           }
         },
+        "SDL_CloseIO": {
+          "name": "ObjectRef<SDL_IOStream>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_IOStream *",
+              "name": "resource"
+            }
+          ]
+        },
         "SDL_LoadFile": {
           "type": "OwnArray<std::byte>",
           "parameters": [
@@ -1018,25 +987,6 @@
             "name": "PaletteRef",
             "kind": "alias",
             "type": "PaletteBase<ObjectRef<SDL_Palette>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_Palette>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "PaletteRef",
-                    "name": "palette"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "Palette",
@@ -1573,9 +1523,19 @@
                 }
               ]
             },
-            "SDL_SetPaletteColors": "function",
-            "SDL_DestroyPalette": "function"
+            "SDL_SetPaletteColors": "function"
           }
+        },
+        "SDL_DestroyPalette": {
+          "name": "ObjectRef<SDL_Palette>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Palette *",
+              "name": "resource"
+            }
+          ]
         }
       }
     },
@@ -2335,25 +2295,6 @@
             "type": "SurfaceBase<ObjectRef<SDL_Surface>>"
           },
           {
-            "name": "ObjectDeleter<SDL_Surface>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "SurfaceRef",
-                    "name": "Surface"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Surface",
             "kind": "alias",
             "type": "SurfaceBase<ObjectUnique<SDL_Surface>>"
@@ -2482,7 +2423,6 @@
             },
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
-            "SDL_DestroySurface": "function",
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
             "SDL_GetSurfaceColorspace": "immutable",
@@ -3134,6 +3074,17 @@
             }
           }
         },
+        "SDL_DestroySurface": {
+          "name": "ObjectRef<SDL_Surface>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Surface *",
+              "name": "resource"
+            }
+          ]
+        },
         "SDL_LoadBMP_IO": {
           "name": "LoadBMP",
           "type": "Surface",
@@ -3174,25 +3125,6 @@
             "name": "WindowRef",
             "kind": "alias",
             "type": "WindowBase<ObjectRef<SDL_Window>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_Window>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "WindowRef",
-                    "name": "window"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "Window",
@@ -3439,25 +3371,6 @@
             "name": "GLContextRef",
             "kind": "alias",
             "type": "GLContextBase<ObjectRef<SDL_GLContextState>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_GLContextState>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "GLContextRef",
-                    "name": "context"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "GLContext",
@@ -3809,9 +3722,19 @@
             },
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
-            "SDL_FlashWindow": "function",
-            "SDL_DestroyWindow": "function"
+            "SDL_FlashWindow": "function"
           }
+        },
+        "SDL_DestroyWindow": {
+          "name": "ObjectRef<SDL_Window>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Window *",
+              "name": "resource"
+            }
+          ]
         },
         "SDL_GetWindows": {
           "kind": "function",
@@ -3965,11 +3888,19 @@
                   "name": "window"
                 }
               ]
-            },
-            "SDL_GL_DestroyContext": {
-              "name": "Destroy"
             }
           }
+        },
+        "SDL_GL_DestroyContext": {
+          "name": "ObjectRef<SDL_GLContextState>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_GLContext",
+              "name": "resource"
+            }
+          ]
         }
       }
     },
@@ -3981,25 +3912,6 @@
       ],
       "includeAfter": {
         "__begin": [
-          {
-            "name": "ObjectDeleter<SDL_Renderer>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "RendererRef",
-                    "name": "renderer"
-                  }
-                ]
-              }
-            }
-          },
           {
             "name": "Renderer",
             "kind": "alias",
@@ -4019,25 +3931,6 @@
             "name": "TextureRef",
             "kind": "alias",
             "type": "TextureBase<ObjectRef<SDL_Texture>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_Texture>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "TextureRef",
-                    "name": "texture"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "Texture",
@@ -4710,7 +4603,6 @@
               "kind": "function",
               "name": "Present"
             },
-            "SDL_DestroyRenderer": "function",
             "SDL_FlushRenderer": "function",
             "SDL_SetRenderVSync": {
               "kind": "function",
@@ -4739,6 +4631,17 @@
               ]
             }
           }
+        },
+        "SDL_DestroyRenderer": {
+          "name": "ObjectRef<SDL_Renderer>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Renderer *",
+              "name": "resource"
+            }
+          ]
         },
         "SDL_Texture": {
           "name": "TextureBase",
@@ -4923,9 +4826,19 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ]
-            },
-            "SDL_DestroyTexture": "function"
+            }
           }
+        },
+        "SDL_DestroyTexture": {
+          "name": "ObjectRef<SDL_Texture>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Texture *",
+              "name": "resource"
+            }
+          ]
         },
         "SDL_CreateWindowAndRenderer": {
           "type": "std::pair<Window, Renderer>",
@@ -5339,25 +5252,6 @@
             "type": "AnimationBase<ObjectRef<IMG_Animation>>"
           },
           {
-            "name": "ObjectDeleter<IMG_Animation>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "AnimationRef",
-                    "name": "texture"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Animation",
             "kind": "alias",
             "type": "AnimationBase<ObjectUnique<IMG_Animation>>"
@@ -5403,11 +5297,19 @@
                   "type": "StringParam"
                 }
               ]
-            },
-            "IMG_FreeAnimation": {
-              "name": "Free"
             }
           }
+        },
+        "IMG_FreeAnimation": {
+          "name": "ObjectRef<IMG_Animation>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "IMG_Animation *",
+              "name": "resource"
+            }
+          ]
         },
         "IMG_Version": {
           "name": "IMG_Version"

@@ -113,15 +113,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a36a7981920efa8afba9577f2a3b96d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a526a3bc20034b15c51079b03bf62f992" id="r_a526a3bc20034b15c51079b03bf62f992"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectUnique.html#a526a3bc20034b15c51079b03bf62f992">swap</a> (<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a> &amp;other)</td></tr>
 <tr class="separator:a526a3bc20034b15c51079b03bf62f992"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a560c5f873967b7f817f71f9040ea3eb8" id="r_a560c5f873967b7f817f71f9040ea3eb8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectUnique.html#a560c5f873967b7f817f71f9040ea3eb8">free</a> ()</td></tr>
+<tr class="separator:a560c5f873967b7f817f71f9040ea3eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7a55ab70c7ad9c9e2b903a0048fa248" id="r_ae7a55ab70c7ad9c9e2b903a0048fa248"><td class="memItemLeft" align="right" valign="top">auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectUnique.html#ae7a55ab70c7ad9c9e2b903a0048fa248">operator[]</a> (ptrdiff_t index)</td></tr>
 <tr class="separator:ae7a55ab70c7ad9c9e2b903a0048fa248"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38163379e55d3086a650045945d598e1" id="r_a38163379e55d3086a650045945d598e1"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1ObjectUnique.html#a38163379e55d3086a650045945d598e1">operator[]</a> (ptrdiff_t index) const</td></tr>
 <tr class="separator:a38163379e55d3086a650045945d598e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class T, class DELETER = ObjectDeleter&lt;T&gt;&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;class T, class DELETER = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt;<br />
 class SDL::ObjectUnique&lt; T, DELETER &gt;</div>
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00083">83</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00091">91</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a1c89429cb2cb299135194c60f1f44805" name="a1c89429cb2cb299135194c60f1f44805"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c89429cb2cb299135194c60f1f44805">&#9670;&#160;</a></span>pointer</h2>
@@ -129,7 +131,7 @@ class SDL::ObjectUnique&lt; T, DELETER &gt;</div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="classSDL_1_1ObjectUnique.html">SDL::ObjectUnique</a>&lt; T, DELETER &gt;::pointer =  std::unique_ptr&lt;T, DELETER&gt;::pointer</td>
@@ -137,7 +139,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00088">88</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00096">96</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -148,7 +150,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -168,7 +170,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00090">90</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00098">98</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -178,7 +180,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -198,18 +200,47 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00095">95</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00103">103</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a560c5f873967b7f817f71f9040ea3eb8" name="a560c5f873967b7f817f71f9040ea3eb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a560c5f873967b7f817f71f9040ea3eb8">&#9670;&#160;</a></span>free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classSDL_1_1ObjectUnique.html">SDL::ObjectUnique</a>&lt; T, DELETER &gt;::free </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00121">121</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+
+</div>
+</div>
 <a id="af03f97e653901e7d3dbd06a75c392430" name="af03f97e653901e7d3dbd06a75c392430"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af03f97e653901e7d3dbd06a75c392430">&#9670;&#160;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -228,7 +259,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00100">100</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00108">108</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -238,7 +269,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -257,7 +288,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00101">101</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00109">109</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -267,7 +298,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -286,7 +317,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00106">106</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00114">114</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -296,7 +327,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -315,7 +346,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00105">105</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00113">113</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -325,7 +356,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -344,7 +375,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00104">104</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00112">112</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +385,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -373,7 +404,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00103">103</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00111">111</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +414,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -403,7 +434,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00108">108</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00116">116</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -413,7 +444,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -433,7 +464,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00114">114</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00123">123</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -443,7 +474,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -463,7 +494,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00119">119</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00128">128</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -473,7 +504,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -492,7 +523,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00110">110</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00118">118</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -502,7 +533,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -522,7 +553,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00111">111</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00119">119</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>
@@ -532,7 +563,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
+template&lt;class T , class DELETER  = ObjectDeleter&lt;ObjectRef&lt;T&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -552,7 +583,7 @@ template&lt;class T , class DELETER  = ObjectDeleter&lt;T&gt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00112">112</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__objectWrapper_8h_source.html#l00120">120</a> of file <a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>.</p>
 
 </div>
 </div>

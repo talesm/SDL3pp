@@ -57,12 +57,6 @@ struct WindowBase;
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 
-template<>
-struct ObjectDeleter<SDL_Window>
-{
-  void operator()(WindowRef window) const;
-};
-
 /**
  * Handle to an owned window
  *
@@ -2795,12 +2789,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy()
-  {
-    auto window = T::release();
-    KeyValueWrapper<SDL_Window*, HitTestCB>::erase(window);
-    return SDL_DestroyWindow(window);
-  }
+  void Destroy() { return T::free(); }
 };
 
 // Forward decl
@@ -2808,12 +2797,6 @@ template<ObjectBox<SDL_GLContext> T>
 struct GLContextBase;
 
 using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
-
-template<>
-struct ObjectDeleter<SDL_GLContextState>
-{
-  void operator()(GLContextRef context) const;
-};
 
 using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
 
@@ -3310,6 +3293,32 @@ inline WindowRef GetWindowFromID(WindowID id)
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
 /**
+ * Destroy a window.
+ *
+ * Any child windows owned by the window will be recursively destroyed as
+ * well.
+ *
+ * Note that on some platforms, the visible window may not actually be removed
+ * from the screen until the SDL event loop is pumped again, even though the
+ * SDL_Window is no longer valid after this call.
+ *
+ * @param resource the window to destroy.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window
+ * @sa WindowBase
+ */
+template<>
+inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
+{
+  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
+  SDL_DestroyWindow(resource);
+}
+
+/**
  * @brief  Check whether the screensaver is currently enabled.
  *
  * The screensaver is disabled by default.
@@ -3745,20 +3754,27 @@ inline bool GL_SwapWindow(WindowRef window)
   return SDL_GL_SwapWindow(window.get());
 }
 
+/**
+ * Delete an OpenGL context.
+ *
+ * @param resource the OpenGL context to be deleted.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GLContext
+ * @sa GLContextBase
+ */
+template<>
+inline void ObjectRef<SDL_GLContextState>::doFree(SDL_GLContext resource)
+{
+  SDL_GL_DestroyContext(resource);
+}
+
 #pragma region impl
 
 /// @}
-
-inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
-{
-  window.Destroy();
-}
-
-inline void ObjectDeleter<SDL_GLContextState>::operator()(
-  GLContextRef context) const
-{
-  context.Destroy();
-}
 
 #pragma endregion impl
 

@@ -81,13 +81,13 @@ private:
   static void doFree(pointer p);
 };
 
-template<class T>
+template<class REF>
 struct ObjectDeleter
 {
-  const void operator()(ObjectRef<T> resource) const { resource.free(); }
+  const void operator()(REF resource) const { resource.free(); }
 };
 
-template<class T, class DELETER = ObjectDeleter<T>>
+template<class T, class DELETER = ObjectDeleter<ObjectRef<T>>>
 class ObjectUnique
 {
   std::unique_ptr<T, DELETER> m_value;

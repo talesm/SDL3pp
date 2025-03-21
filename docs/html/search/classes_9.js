@@ -1,17 +1,7 @@
 var searchData=
 [
   ['objectdeleter_0',['ObjectDeleter',['../structSDL_1_1ObjectDeleter.html',1,'SDL']]],
-  ['objectdeleter_3c_20img_5fanimation_20_3e_1',['ObjectDeleter&lt; IMG_Animation &gt;',['../structSDL_1_1ObjectDeleter_3_01IMG__Animation_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fenvironment_20_3e_2',['ObjectDeleter&lt; SDL_Environment &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Environment_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fglcontextstate_20_3e_3',['ObjectDeleter&lt; SDL_GLContextState &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__GLContextState_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5ficonv_5fdata_5ft_20_3e_4',['ObjectDeleter&lt; SDL_iconv_data_t &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__iconv__data__t_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fiostream_20_3e_5',['ObjectDeleter&lt; SDL_IOStream &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__IOStream_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fpalette_20_3e_6',['ObjectDeleter&lt; SDL_Palette &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Palette_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5frenderer_20_3e_7',['ObjectDeleter&lt; SDL_Renderer &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Renderer_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fsurface_20_3e_8',['ObjectDeleter&lt; SDL_Surface &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Surface_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5ftexture_20_3e_9',['ObjectDeleter&lt; SDL_Texture &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Texture_01_4.html',1,'SDL']]],
-  ['objectdeleter_3c_20sdl_5fwindow_20_3e_10',['ObjectDeleter&lt; SDL_Window &gt;',['../structSDL_1_1ObjectDeleter_3_01SDL__Window_01_4.html',1,'SDL']]],
-  ['objectref_11',['ObjectRef',['../classSDL_1_1ObjectRef.html',1,'SDL']]],
-  ['objectunique_12',['ObjectUnique',['../classSDL_1_1ObjectUnique.html',1,'SDL']]],
-  ['optionalref_13',['OptionalRef',['../classSDL_1_1OptionalRef.html',1,'SDL']]]
+  ['objectref_1',['ObjectRef',['../classSDL_1_1ObjectRef.html',1,'SDL']]],
+  ['objectunique_2',['ObjectUnique',['../classSDL_1_1ObjectUnique.html',1,'SDL']]],
+  ['optionalref_3',['OptionalRef',['../classSDL_1_1OptionalRef.html',1,'SDL']]]
 ];
