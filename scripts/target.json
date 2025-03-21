@@ -11075,6 +11075,206 @@
           "type": "SDL_WindowFlags",
           "sourceName": "SDL_WindowFlags"
         },
+        "WINDOW_FULLSCREEN": {
+          "doc": "window is in fullscreen mode",
+          "name": "WINDOW_FULLSCREEN",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_FULLSCREEN",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_OPENGL": {
+          "doc": "window usable with OpenGL context",
+          "name": "WINDOW_OPENGL",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_OPENGL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_OCCLUDED": {
+          "doc": "window is occluded",
+          "name": "WINDOW_OCCLUDED",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_OCCLUDED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_HIDDEN": {
+          "doc": "window is neither mapped onto the desktop nor shown in the taskbar/dock/window list; SDL_ShowWindow() is required for it to become visible",
+          "name": "WINDOW_HIDDEN",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_HIDDEN",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_BORDERLESS": {
+          "doc": "no window decoration",
+          "name": "WINDOW_BORDERLESS",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_BORDERLESS",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_RESIZABLE": {
+          "doc": "window can be resized",
+          "name": "WINDOW_RESIZABLE",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_RESIZABLE",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MINIMIZED": {
+          "doc": "window is minimized",
+          "name": "WINDOW_MINIMIZED",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_MINIMIZED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MAXIMIZED": {
+          "doc": "window is maximized",
+          "name": "WINDOW_MAXIMIZED",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_MAXIMIZED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_GRABBED": {
+          "doc": "window has grabbed mouse input",
+          "name": "WINDOW_MOUSE_GRABBED",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_MOUSE_GRABBED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_INPUT_FOCUS": {
+          "doc": "window has input focus",
+          "name": "WINDOW_INPUT_FOCUS",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_INPUT_FOCUS",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_FOCUS": {
+          "doc": "window has mouse focus",
+          "name": "WINDOW_MOUSE_FOCUS",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_MOUSE_FOCUS",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_EXTERNAL": {
+          "doc": "window not created by SDL",
+          "name": "WINDOW_EXTERNAL",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_EXTERNAL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MODAL": {
+          "doc": "window is modal",
+          "name": "WINDOW_MODAL",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_MODAL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_HIGH_PIXEL_DENSITY": {
+          "doc": "window uses high pixel density back buffer if possible",
+          "name": "WINDOW_HIGH_PIXEL_DENSITY",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_HIGH_PIXEL_DENSITY",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_CAPTURE": {
+          "doc": "window has mouse captured (unrelated to MOUSE_GRABBED)",
+          "name": "WINDOW_MOUSE_CAPTURE",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_MOUSE_CAPTURE",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_MOUSE_RELATIVE_MODE": {
+          "doc": "window has relative mode enabled",
+          "name": "WINDOW_MOUSE_RELATIVE_MODE",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_MOUSE_RELATIVE_MODE",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_ALWAYS_ON_TOP": {
+          "doc": "window should always be above others",
+          "name": "WINDOW_ALWAYS_ON_TOP",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_ALWAYS_ON_TOP",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_UTILITY": {
+          "doc": "window should be treated as a utility window, not showing in the task bar and window list",
+          "name": "WINDOW_UTILITY",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_UTILITY",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_TOOLTIP": {
+          "doc": "window should be treated as a tooltip and does not get mouse or keyboard focus, requires a parent window",
+          "name": "WINDOW_TOOLTIP",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_TOOLTIP",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_POPUP_MENU": {
+          "doc": "window should be treated as a popup menu, requires a parent window",
+          "name": "WINDOW_POPUP_MENU",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_POPUP_MENU",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_KEYBOARD_GRABBED": {
+          "doc": "window has grabbed keyboard input",
+          "name": "WINDOW_KEYBOARD_GRABBED",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_KEYBOARD_GRABBED",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_VULKAN": {
+          "doc": "window usable for Vulkan surface",
+          "name": "WINDOW_VULKAN",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_VULKAN",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_METAL": {
+          "doc": "window usable for Metal view",
+          "name": "WINDOW_METAL",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_METAL",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_TRANSPARENT": {
+          "doc": "window with transparent buffer",
+          "name": "WINDOW_TRANSPARENT",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_TRANSPARENT",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "WINDOW_NOT_FOCUSABLE": {
+          "doc": "window should not be focusable",
+          "name": "WINDOW_NOT_FOCUSABLE",
+          "kind": "var",
+          "sourceName": "SDL_WINDOW_NOT_FOCUSABLE",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
         "FlashOperation": {
           "doc": "Window flash operation.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "FlashOperation",

@@ -3253,6 +3253,106 @@
             "kind": "placeholder"
           },
           {
+            "name": "WINDOW_FULLSCREEN",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_OPENGL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_OCCLUDED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_HIDDEN",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_BORDERLESS",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_RESIZABLE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MINIMIZED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MAXIMIZED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_GRABBED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_INPUT_FOCUS",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_FOCUS",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_EXTERNAL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MODAL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_HIGH_PIXEL_DENSITY",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_CAPTURE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_RELATIVE_MODE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_ALWAYS_ON_TOP",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_UTILITY",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_TOOLTIP",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_POPUP_MENU",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_KEYBOARD_GRABBED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_VULKAN",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_METAL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_TRANSPARENT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_NOT_FOCUSABLE",
+            "kind": "placeholder"
+          },
+          {
             "name": "FlashOperation",
             "kind": "placeholder"
           },
@@ -3715,6 +3815,131 @@
           "kind": "function",
           "type": "OwnArray<WindowRef>",
           "parameters": []
+        },
+        "SDL_WINDOW_FULLSCREEN": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_OPENGL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_OCCLUDED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_HIDDEN": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_BORDERLESS": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_RESIZABLE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MINIMIZED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MAXIMIZED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_GRABBED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_INPUT_FOCUS": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_FOCUS": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_EXTERNAL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MODAL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_HIGH_PIXEL_DENSITY": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_CAPTURE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_RELATIVE_MODE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_ALWAYS_ON_TOP": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_UTILITY": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_TOOLTIP": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_POPUP_MENU": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_KEYBOARD_GRABBED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_VULKAN": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_METAL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_TRANSPARENT": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_NOT_FOCUSABLE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
         },
         "SDL_GLContext": {
           "name": "GLContextBase",

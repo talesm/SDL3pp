@@ -17062,6 +17062,11 @@ using DisplayModeData = SDL_DisplayModeData;
 using DisplayMode = SDL_DisplayMode;
 
 /**
+ * @name WindowFlags
+ * @{
+ */
+
+/**
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
@@ -17074,6 +17079,138 @@ using DisplayMode = SDL_DisplayMode;
  * @sa WindowBase.GetFlags()
  */
 using WindowFlags = SDL_WindowFlags;
+
+/**
+ * window is in fullscreen mode
+ */
+constexpr WindowFlags WINDOW_FULLSCREEN = SDL_WINDOW_FULLSCREEN;
+
+/**
+ * window usable with OpenGL context
+ */
+constexpr WindowFlags WINDOW_OPENGL = SDL_WINDOW_OPENGL;
+
+/**
+ * window is occluded
+ */
+constexpr WindowFlags WINDOW_OCCLUDED = SDL_WINDOW_OCCLUDED;
+
+/**
+ * window is neither mapped onto the desktop nor shown in the
+ * taskbar/dock/window list; SDL_ShowWindow() is required for it to become
+ * visible
+ */
+constexpr WindowFlags WINDOW_HIDDEN = SDL_WINDOW_HIDDEN;
+
+/**
+ * no window decoration
+ */
+constexpr WindowFlags WINDOW_BORDERLESS = SDL_WINDOW_BORDERLESS;
+
+/**
+ * window can be resized
+ */
+constexpr WindowFlags WINDOW_RESIZABLE = SDL_WINDOW_RESIZABLE;
+
+/**
+ * window is minimized
+ */
+constexpr WindowFlags WINDOW_MINIMIZED = SDL_WINDOW_MINIMIZED;
+
+/**
+ * window is maximized
+ */
+constexpr WindowFlags WINDOW_MAXIMIZED = SDL_WINDOW_MAXIMIZED;
+
+/**
+ * window has grabbed mouse input
+ */
+constexpr WindowFlags WINDOW_MOUSE_GRABBED = SDL_WINDOW_MOUSE_GRABBED;
+
+/**
+ * window has input focus
+ */
+constexpr WindowFlags WINDOW_INPUT_FOCUS = SDL_WINDOW_INPUT_FOCUS;
+
+/**
+ * window has mouse focus
+ */
+constexpr WindowFlags WINDOW_MOUSE_FOCUS = SDL_WINDOW_MOUSE_FOCUS;
+
+/**
+ * window not created by SDL
+ */
+constexpr WindowFlags WINDOW_EXTERNAL = SDL_WINDOW_EXTERNAL;
+
+/**
+ * window is modal
+ */
+constexpr WindowFlags WINDOW_MODAL = SDL_WINDOW_MODAL;
+
+/**
+ * window uses high pixel density back buffer if possible
+ */
+constexpr WindowFlags WINDOW_HIGH_PIXEL_DENSITY = SDL_WINDOW_HIGH_PIXEL_DENSITY;
+
+/**
+ * window has mouse captured (unrelated to MOUSE_GRABBED)
+ */
+constexpr WindowFlags WINDOW_MOUSE_CAPTURE = SDL_WINDOW_MOUSE_CAPTURE;
+
+/**
+ * window has relative mode enabled
+ */
+constexpr WindowFlags WINDOW_MOUSE_RELATIVE_MODE =
+  SDL_WINDOW_MOUSE_RELATIVE_MODE;
+
+/**
+ * window should always be above others
+ */
+constexpr WindowFlags WINDOW_ALWAYS_ON_TOP = SDL_WINDOW_ALWAYS_ON_TOP;
+
+/**
+ * window should be treated as a utility window, not showing in the task bar and
+ * window list
+ */
+constexpr WindowFlags WINDOW_UTILITY = SDL_WINDOW_UTILITY;
+
+/**
+ * window should be treated as a tooltip and does not get mouse or keyboard
+ * focus, requires a parent window
+ */
+constexpr WindowFlags WINDOW_TOOLTIP = SDL_WINDOW_TOOLTIP;
+
+/**
+ * window should be treated as a popup menu, requires a parent window
+ */
+constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
+
+/**
+ * window has grabbed keyboard input
+ */
+constexpr WindowFlags WINDOW_KEYBOARD_GRABBED = SDL_WINDOW_KEYBOARD_GRABBED;
+
+/**
+ * window usable for Vulkan surface
+ */
+constexpr WindowFlags WINDOW_VULKAN = SDL_WINDOW_VULKAN;
+
+/**
+ * window usable for Metal view
+ */
+constexpr WindowFlags WINDOW_METAL = SDL_WINDOW_METAL;
+
+/**
+ * window with transparent buffer
+ */
+constexpr WindowFlags WINDOW_TRANSPARENT = SDL_WINDOW_TRANSPARENT;
+
+/**
+ * window should not be focusable
+ */
+constexpr WindowFlags WINDOW_NOT_FOCUSABLE = SDL_WINDOW_NOT_FOCUSABLE;
+
+/// @}
 
 /**
  * @name FlashOperations
