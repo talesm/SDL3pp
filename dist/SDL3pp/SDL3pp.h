@@ -270,8 +270,10 @@ public:
     std::swap(m_value, p);
     return p;
   }
+
   void reset(pointer other = nullptr) { return std::swap(m_value, other); }
   void swap(ObjectRef& other) { return std::swap(m_value, other.m_value); }
+  void free() { doFree(release()); }
 
   auto& operator[](ptrdiff_t index)
   {
@@ -283,10 +285,16 @@ public:
     static_assert(std::is_array_v<T>, "T must be an array");
     return m_value[index];
   }
+
+private:
+  static void doFree(pointer p);
 };
 
 template<class T>
-struct ObjectDeleter;
+struct ObjectDeleter
+{
+  const void operator()(ObjectRef<T> resource) const { resource.free(); }
+};
 
 template<class T, class DELETER = ObjectDeleter<T>>
 class ObjectUnique
@@ -319,6 +327,7 @@ public:
   pointer release() { return m_value.release(); }
   void reset(pointer other = nullptr) { return m_value.reset(other); }
   void swap(ObjectUnique& other) { return std::swap(m_value, other.m_value); }
+  void free() { reset(); }
 
   auto& operator[](ptrdiff_t index)
   {

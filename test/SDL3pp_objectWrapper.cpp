@@ -47,13 +47,11 @@ struct DummyBase : DummyConstBase<T>
   void SetContent(int content) const { T::get()->content = content; }
 };
 
-namespace SDL {
 template<>
-struct ObjectDeleter<Dummy>
+void SDL::ObjectRef<Dummy>::doFree(Dummy* dummy)
 {
-  void operator()(Dummy* dummy) { delete dummy; }
-};
-};
+  delete dummy;
+}
 
 using DummyUnique = DummyBase<SDL::ObjectUnique<Dummy>>;
 
@@ -65,19 +63,19 @@ TEST_CASE("ObjectUnique")
   CHECK(result == 42);
 }
 
-using DummyWrapper = DummyBase<SDL::ObjectRef<Dummy>>;
-using DummyConstWrapper = DummyConstBase<SDL::ObjectRef<const Dummy>>;
+using DummyRef = DummyBase<SDL::ObjectRef<Dummy>>;
+using DummyConstRef = DummyConstBase<SDL::ObjectRef<const Dummy>>;
 
 TEST_CASE("ObjectRef")
 {
-  CHECK(SDL::ObjectBox<DummyWrapper, Dummy*>);
+  CHECK(SDL::ObjectBox<DummyRef, Dummy*>);
 
   SUBCASE("Non-const")
   {
     SUBCASE("From stack")
     {
       Dummy dummy{42};
-      DummyWrapper wrapper = &dummy;
+      DummyRef wrapper = &dummy;
       CHECK(wrapper.get() == &dummy);
       CHECK(wrapper.GetContent() == 42);
       CHECK(wrapper->content == 42);
@@ -91,7 +89,7 @@ TEST_CASE("ObjectRef")
     SUBCASE("From unique")
     {
       DummyUnique owner{new Dummy{42}};
-      DummyWrapper wrapper{owner};
+      DummyRef wrapper{owner};
       CHECK(wrapper->content == 42);
     }
   }
@@ -100,7 +98,7 @@ TEST_CASE("ObjectRef")
     SUBCASE("From stack")
     {
       Dummy dummy{42};
-      DummyConstWrapper wrapper = &dummy;
+      DummyConstRef wrapper = &dummy;
       CHECK(wrapper.get() == &dummy);
       CHECK(wrapper.GetContent() == 42);
       CHECK(wrapper->content == 42);
@@ -111,7 +109,7 @@ TEST_CASE("ObjectRef")
     SUBCASE("From unique")
     {
       DummyUnique owner{new Dummy{42}};
-      DummyConstWrapper wrapper{owner};
+      DummyConstRef wrapper{owner};
       CHECK(wrapper->content == 42);
     }
   }
