@@ -27,7 +27,8 @@
     "SDL_Window *": "WindowRef",
     "SDL_GLContext": "GLContextRef",
     "SDL_Renderer *": "RendererRef",
-    "SDL_Texture *": "TextureRef"
+    "SDL_Texture *": "TextureRef",
+    "IMG_Animation *": "AnimationRef"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
@@ -38,7 +39,8 @@
     "SDL_Window *": "WindowRef",
     "SDL_GLContext": "GLContextRef",
     "SDL_Renderer *": "RendererRef",
-    "SDL_Texture *": "TextureRef"
+    "SDL_Texture *": "TextureRef",
+    "IMG_Animation *": "Animation"
   },
   "files": {
     "SDL_stdinc.h": {
@@ -5317,11 +5319,96 @@
         "IMG_LoadBMP_IO"
       ],
       "includeAfter": {
-        "__begin": {
-          "name": "SDL3PP_ENABLE_IMAGE"
-        }
+        "__begin": [
+          {
+            "name": "SDL3PP_ENABLE_IMAGE"
+          },
+          {
+            "name": "AnimationBase",
+            "kind": "forward",
+            "template": [
+              {
+                "type": "ObjectBox<IMG_Animation *>",
+                "name": "T"
+              }
+            ]
+          },
+          {
+            "name": "AnimationRef",
+            "kind": "alias",
+            "type": "AnimationBase<ObjectRef<IMG_Animation>>"
+          },
+          {
+            "name": "ObjectDeleter<IMG_Animation>",
+            "kind": "struct",
+            "template": [],
+            "entries": {
+              "operator()": {
+                "name": "operator()",
+                "kind": "function",
+                "type": "void",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "AnimationRef",
+                    "name": "texture"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Animation",
+            "kind": "alias",
+            "type": "AnimationBase<ObjectUnique<IMG_Animation>>"
+          }
+        ]
       },
       "transform": {
+        "IMG_Animation": {
+          "name": "AnimationBase",
+          "kind": "struct",
+          "template": [
+            {
+              "type": "ObjectBox<IMG_Animation *>",
+              "name": "T"
+            }
+          ],
+          "type": "T",
+          "entries": {
+            "T::T": "alias",
+            "IMG_LoadAnimation": "ctor",
+            "IMG_LoadAnimation_IO": {
+              "name": "AnimationBase",
+              "type": "",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "src",
+                  "type": "ObjectBox<SDL_IOStream> auto &&"
+                }
+              ]
+            },
+            "IMG_LoadAnimationTyped_IO": {
+              "name": "AnimationBase",
+              "type": "",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "src",
+                  "type": "ObjectBox<SDL_IOStream> auto &&"
+                },
+                {
+                  "name": "type",
+                  "type": "StringParam"
+                }
+              ]
+            },
+            "IMG_FreeAnimation": {
+              "name": "Free"
+            }
+          }
+        },
         "IMG_Version": {
           "name": "IMG_Version"
         },
@@ -5519,27 +5606,11 @@
             }
           ]
         },
-        "IMG_LoadAnimation_IO": {
-          "name": "LoadAnimation",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
-            }
-          ]
+        "IMG_LoadGIFAnimation_IO": {
+          "name": "LoadGIFAnimation"
         },
-        "IMG_LoadAnimationTyped_IO": {
-          "name": "LoadAnimation",
-          "parameters": [
-            {
-              "name": "src",
-              "type": "ObjectBox<SDL_IOStream> auto &&"
-            },
-            {
-              "name": "type",
-              "type": "StringParam"
-            }
-          ]
+        "IMG_LoadWEBPAnimation_IO": {
+          "name": "LoadWEBPAnimation"
         }
       }
     }

@@ -27,6 +27,38 @@ namespace SDL {
  * @{
  */
 
+// Forward decl
+template<ObjectBox<IMG_Animation*> T>
+struct AnimationBase;
+
+/**
+ * Handle to a non owned animation
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa AnimationBase
+ * @sa Animation
+ */
+using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
+
+template<>
+struct ObjectDeleter<IMG_Animation>
+{
+  void operator()(AnimationRef texture) const;
+};
+
+/**
+ * Handle to an owned animation
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa AnimationBase
+ * @sa AnimationRef
+ */
+using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
+
 /**
  * This function gets the version of the dynamically linked SDL_image library.
  *
@@ -34,7 +66,7 @@ namespace SDL {
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline int IMG_Version() { return IMG_Version(); }
+inline int IMG_Version() { return ::IMG_Version(); }
 
 /**
  * Load an image from an SDL data source into a software surface.
@@ -1913,86 +1945,78 @@ inline bool SaveJPG(SurfaceRef surface,
  * Animated image support
  *
  * Currently only animated GIFs and WEBP images are supported.
+ *
+ * @cat resource
+ *
+ * @sa Animation
+ * @sa AnimationRef
  */
-using Animation = IMG_Animation;
-
-/**
- * Load an animation from a file.
- *
- * When done with the returned animation, the app should dispose of it with a
- * call to IMG_FreeAnimation().
- *
- * @param file path on the filesystem containing an animated image.
- * @returns a new IMG_Animation, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa FreeAnimation
- */
-inline Animation* LoadAnimation(StringParam file)
+template<ObjectBox<IMG_Animation*> T>
+struct AnimationBase : T
 {
-  return IMG_LoadAnimation(file);
-}
+  using T::T;
 
-/**
- * Load an animation from an SDL_IOStream.
- *
- * When done with the returned animation, the app should dispose of it with a
- * call to IMG_FreeAnimation().
- *
- * @param src an SDL_IOStream that data will be read from.
- * @returns a new IMG_Animation, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa FreeAnimation()
- */
-inline Animation* LoadAnimation(ObjectBox<SDL_IOStream> auto&& src)
-{
-  return IMG_LoadAnimation_IO(src, false);
-}
+  /**
+   * Load an animation from a file.
+   *
+   * @param file path on the filesystem containing an animated image.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa FreeAnimation()
+   */
+  AnimationBase(StringParam file)
+    : T(IMG_LoadAnimation(file))
+  {
+  }
 
-/**
- * Load an animation from an SDL datasource
- *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
- *
- * When done with the returned animation, the app should dispose of it with a
- * call to IMG_FreeAnimation().
- *
- * @param src an SDL_IOStream that data will be read from.
- * @param type a filename extension that represent this data ("GIF", etc).
- * @returns a new IMG_Animation, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadAnimation()
- * @sa FreeAnimation()
- */
-inline Animation* LoadAnimation(ObjectBox<SDL_IOStream> auto&& src,
-                                StringParam type)
-{
-  return IMG_LoadAnimationTyped_IO(src, false, type);
-}
+  /**
+   * Load an animation from an SDL_IOStream.
+   *
+   * @param src an SDL_IOStream that data will be read from.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa FreeAnimation()
+   */
+  AnimationBase(ObjectBox<SDL_IOStream> auto&& src)
+    : T(IMG_LoadAnimation_IO(src.get(), false))
+  {
+  }
 
-/**
- * Dispose of an IMG_Animation and free its resources.
- *
- * The provided `anim` pointer is not valid once this call returns.
- *
- * @param anim IMG_Animation to dispose of.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadAnimation
- * @sa LoadAnimation()
- * @sa LoadAnimationTyped()
- */
-inline void FreeAnimation(Animation* anim) { return IMG_FreeAnimation(anim); }
+  /**
+   * Load an animation from an SDL datasource
+   *
+   * Even though this function accepts a file type, SDL_image may still try
+   * other decoders that are capable of detecting file type from the contents of
+   * the image data, but may rely on the caller-provided type string for formats
+   * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
+   * on its ability to guess the format.
+   *
+   * @param src an SDL_IOStream that data will be read from.
+   * @param type a filename extension that represent this data ("GIF", etc).
+   * @post a new IMG_Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa FreeAnimation()
+   */
+  AnimationBase(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
+    : T(IMG_LoadAnimationTyped_IO(src.get(), false, type))
+  {
+  }
+
+  /**
+   * Dispose of an IMG_Animation and free its resources.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa LoadAnimation()
+   */
+  void Free() { return IMG_FreeAnimation(T::release()); }
+};
 
 /**
  * Load a GIF animation directly.
@@ -2012,9 +2036,9 @@ inline void FreeAnimation(Animation* anim) { return IMG_FreeAnimation(anim); }
  * @sa LoadAnimationTyped()
  * @sa FreeAnimation
  */
-inline Animation* LoadGIFAnimation_IO(ObjectBox<SDL_IOStream> auto&& src)
+inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return IMG_LoadGIFAnimation_IO(src);
+  return Animation{IMG_LoadGIFAnimation_IO(src.get())};
 }
 
 /**
@@ -2030,14 +2054,11 @@ inline Animation* LoadGIFAnimation_IO(ObjectBox<SDL_IOStream> auto&& src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAnimation
- * @sa LoadAnimation()
- * @sa LoadAnimationTyped()
- * @sa FreeAnimation
+ * @sa Animation
  */
-inline Animation* LoadWEBPAnimation_IO(ObjectBox<SDL_IOStream> auto&& src)
+inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return IMG_LoadWEBPAnimation_IO(src);
+  return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
 }
 
 #pragma region impl

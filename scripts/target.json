@@ -17503,6 +17503,50 @@
           "name": "SDL3PP_ENABLE_IMAGE",
           "doc": ""
         },
+        "AnimationBase-forward": {
+          "name": "AnimationBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<IMG_Animation *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "AnimationRef": {
+          "name": "AnimationRef",
+          "kind": "alias",
+          "type": "AnimationBase<ObjectRef<IMG_Animation>>",
+          "doc": ""
+        },
+        "ObjectDeleter<IMG_Animation>": {
+          "name": "ObjectDeleter<IMG_Animation>",
+          "kind": "struct",
+          "template": [],
+          "entries": {
+            "operator()": {
+              "name": "operator()",
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "AnimationRef",
+                  "name": "texture"
+                }
+              ],
+              "doc": ""
+            }
+          },
+          "doc": ""
+        },
+        "Animation": {
+          "name": "Animation",
+          "kind": "alias",
+          "type": "AnimationBase<ObjectUnique<IMG_Animation>>",
+          "doc": ""
+        },
         "IMG_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_image library.\n\n@returns SDL_image version.\n\n@since This function is available since SDL_image 3.0.0.",
           "name": "IMG_Version",
@@ -18252,76 +18296,87 @@
             "sourceName": "IMG_SaveJPG_IO"
           }
         ],
-        "Animation": {
+        "AnimationBase": {
           "doc": "Animated image support\n\nCurrently only animated GIFs and WEBP images are supported.",
-          "name": "Animation",
-          "kind": "alias",
+          "name": "AnimationBase",
+          "kind": "struct",
           "sourceName": "IMG_Animation",
-          "type": "IMG_Animation"
-        },
-        "LoadAnimation": [
-          {
-            "doc": "Load an animation from a file.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to IMG_FreeAnimation().\n\n@param file path on the filesystem containing an animated image.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_FreeAnimation",
-            "name": "LoadAnimation",
-            "kind": "function",
-            "type": "Animation *",
-            "parameters": [
-              {
-                "name": "file",
-                "type": "StringParam"
-              }
-            ],
-            "sourceName": "IMG_LoadAnimation"
-          },
-          {
-            "doc": "Load an animation from an SDL_IOStream.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to IMG_FreeAnimation().\n\n@param src an SDL_IOStream that data will be read from.\n@param closeio true to close/free the SDL_IOStream before returning, false\n               to leave it open.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_FreeAnimation",
-            "name": "LoadAnimation",
-            "kind": "function",
-            "type": "Animation *",
-            "parameters": [
-              {
-                "name": "src",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
-              }
-            ],
-            "sourceName": "IMG_LoadAnimation_IO"
-          },
-          {
-            "doc": "Load an animation from an SDL datasource\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is NULL, SDL_image will rely solely on\nits ability to guess the format.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to IMG_FreeAnimation().\n\n@param src an SDL_IOStream that data will be read from.\n@param closeio true to close/free the SDL_IOStream before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"GIF\", etc).\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_FreeAnimation",
-            "name": "LoadAnimation",
-            "kind": "function",
-            "type": "Animation *",
-            "parameters": [
-              {
-                "name": "src",
-                "type": "ObjectBox<SDL_IOStream> auto &&"
-              },
-              {
-                "name": "type",
-                "type": "StringParam"
-              }
-            ],
-            "sourceName": "IMG_LoadAnimationTyped_IO"
-          }
-        ],
-        "FreeAnimation": {
-          "doc": "Dispose of an IMG_Animation and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim IMG_Animation to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO",
-          "name": "FreeAnimation",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
+          "type": "T",
+          "template": [
             {
-              "name": "anim",
-              "type": "Animation *"
+              "type": "ObjectBox<IMG_Animation *>",
+              "name": "T"
             }
           ],
-          "sourceName": "IMG_FreeAnimation"
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "AnimationBase": [
+              {
+                "doc": "Load an animation from a file.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to IMG_FreeAnimation().\n\n@param file path on the filesystem containing an animated image.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_FreeAnimation",
+                "name": "AnimationBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "file",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "IMG_LoadAnimation",
+                "static": false
+              },
+              {
+                "doc": "Load an animation from an SDL_IOStream.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to IMG_FreeAnimation().\n\n@param src an SDL_IOStream that data will be read from.\n@param closeio true to close/free the SDL_IOStream before returning, false\n               to leave it open.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_FreeAnimation",
+                "name": "AnimationBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "src",
+                    "type": "ObjectBox<SDL_IOStream> auto &&"
+                  }
+                ],
+                "sourceName": "IMG_LoadAnimation_IO",
+                "static": false
+              },
+              {
+                "doc": "Load an animation from an SDL datasource\n\nEven though this function accepts a file type, SDL_image may still try\nother decoders that are capable of detecting file type from the contents of\nthe image data, but may rely on the caller-provided type string for formats\nthat it cannot autodetect. If `type` is NULL, SDL_image will rely solely on\nits ability to guess the format.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to IMG_FreeAnimation().\n\n@param src an SDL_IOStream that data will be read from.\n@param closeio true to close/free the SDL_IOStream before returning, false\n               to leave it open.\n@param type a filename extension that represent this data (\"GIF\", etc).\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_FreeAnimation",
+                "name": "AnimationBase",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "src",
+                    "type": "ObjectBox<SDL_IOStream> auto &&"
+                  },
+                  {
+                    "name": "type",
+                    "type": "StringParam"
+                  }
+                ],
+                "sourceName": "IMG_LoadAnimationTyped_IO",
+                "static": false
+              }
+            ],
+            "Free": {
+              "doc": "Dispose of an IMG_Animation and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim IMG_Animation to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO",
+              "name": "Free",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "IMG_FreeAnimation"
+            }
+          }
         },
-        "LoadGIFAnimation_IO": {
+        "LoadGIFAnimation": {
           "doc": "Load a GIF animation directly.\n\nIf you know you definitely have a GIF image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an SDL_IOStream\ninterface available here.\n\n@param src an SDL_IOStream that data will be read from.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO\n@sa IMG_FreeAnimation",
-          "name": "LoadGIFAnimation_IO",
+          "name": "LoadGIFAnimation",
           "kind": "function",
-          "type": "Animation *",
+          "type": "Animation",
           "parameters": [
             {
               "name": "src",
@@ -18330,11 +18385,11 @@
           ],
           "sourceName": "IMG_LoadGIFAnimation_IO"
         },
-        "LoadWEBPAnimation_IO": {
+        "LoadWEBPAnimation": {
           "doc": "Load a WEBP animation directly.\n\nIf you know you definitely have a WEBP image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an SDL_IOStream\ninterface available here.\n\n@param src an SDL_IOStream that data will be read from.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO\n@sa IMG_FreeAnimation",
-          "name": "LoadWEBPAnimation_IO",
+          "name": "LoadWEBPAnimation",
           "kind": "function",
-          "type": "Animation *",
+          "type": "Animation",
           "parameters": [
             {
               "name": "src",

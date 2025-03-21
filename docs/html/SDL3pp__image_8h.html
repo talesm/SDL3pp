@@ -75,6 +75,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -100,6 +101,14 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 <p><a href="SDL3pp__image_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ObjectDeleter_3_01IMG__Animation_01_4.html">SDL::ObjectDeleter&lt; IMG_Animation &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationBase.html">SDL::AnimationBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animated image support.  <a href="structSDL_1_1AnimationBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceSDL" id="r_namespaceSDL"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceSDL.html">SDL</a></td></tr>
@@ -108,9 +117,12 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga4ae280d2cd24bfcd186b4ec1ed104abc" id="r_ga4ae280d2cd24bfcd186b4ec1ed104abc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">SDL::Animation</a> = IMG_Animation</td></tr>
-<tr class="memdesc:ga4ae280d2cd24bfcd186b4ec1ed104abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animated image support.  <br /></td></tr>
-<tr class="separator:ga4ae280d2cd24bfcd186b4ec1ed104abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga076597abc3760ab8519a885bf53c077c" id="r_ga076597abc3760ab8519a885bf53c077c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga076597abc3760ab8519a885bf53c077c">SDL::AnimationRef</a> = <a class="el" href="structSDL_1_1AnimationBase.html">AnimationBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; IMG_Animation &gt; &gt;</td></tr>
+<tr class="memdesc:ga076597abc3760ab8519a885bf53c077c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned animation.  <br /></td></tr>
+<tr class="separator:ga076597abc3760ab8519a885bf53c077c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6d77ce339fdb6401c79506081bd4c973" id="r_ga6d77ce339fdb6401c79506081bd4c973"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">SDL::Animation</a> = <a class="el" href="structSDL_1_1AnimationBase.html">AnimationBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; IMG_Animation &gt; &gt;</td></tr>
+<tr class="memdesc:ga6d77ce339fdb6401c79506081bd4c973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned animation.  <br /></td></tr>
+<tr class="separator:ga6d77ce339fdb6401c79506081bd4c973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -270,24 +282,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ga31f57d58b395a284a521deae98e0f40e" id="r_ga31f57d58b395a284a521deae98e0f40e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga31f57d58b395a284a521deae98e0f40e">SDL::SaveJPG</a> (<a class="el" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2">SurfaceRef</a> surface, ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;dst, int quality)</td></tr>
 <tr class="memdesc:ga31f57d58b395a284a521deae98e0f40e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save an SDL_Surface into JPEG image data, via an SDL_IOStream.  <br /></td></tr>
 <tr class="separator:ga31f57d58b395a284a521deae98e0f40e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga573884956736ef8be58267eedd707c76" id="r_ga573884956736ef8be58267eedd707c76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76">SDL::LoadAnimation</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file)</td></tr>
-<tr class="memdesc:ga573884956736ef8be58267eedd707c76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from a file.  <br /></td></tr>
-<tr class="separator:ga573884956736ef8be58267eedd707c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadccd23a3c8fbbc7c57b3b1494eb440ae" id="r_gadccd23a3c8fbbc7c57b3b1494eb440ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gadccd23a3c8fbbc7c57b3b1494eb440ae">SDL::LoadAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
-<tr class="memdesc:gadccd23a3c8fbbc7c57b3b1494eb440ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an SDL_IOStream.  <br /></td></tr>
-<tr class="separator:gadccd23a3c8fbbc7c57b3b1494eb440ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3d53eb9244126011158692d461f53bc8" id="r_ga3d53eb9244126011158692d461f53bc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga3d53eb9244126011158692d461f53bc8">SDL::LoadAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> type)</td></tr>
-<tr class="memdesc:ga3d53eb9244126011158692d461f53bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> datasource.  <br /></td></tr>
-<tr class="separator:ga3d53eb9244126011158692d461f53bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6883d59b08fb9d085c7cf2ad6abb79f0" id="r_ga6883d59b08fb9d085c7cf2ad6abb79f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0">SDL::FreeAnimation</a> (<a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *anim)</td></tr>
-<tr class="memdesc:ga6883d59b08fb9d085c7cf2ad6abb79f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an IMG_Animation and free its resources.  <br /></td></tr>
-<tr class="separator:ga6883d59b08fb9d085c7cf2ad6abb79f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6e20341465428e37bb7bb6472d4e6f55" id="r_ga6e20341465428e37bb7bb6472d4e6f55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga6e20341465428e37bb7bb6472d4e6f55">SDL::LoadGIFAnimation_IO</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
-<tr class="memdesc:ga6e20341465428e37bb7bb6472d4e6f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a GIF animation directly.  <br /></td></tr>
-<tr class="separator:ga6e20341465428e37bb7bb6472d4e6f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga86d15d2a73c0e7e6a23cb8fe8cf684d4" id="r_ga86d15d2a73c0e7e6a23cb8fe8cf684d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga86d15d2a73c0e7e6a23cb8fe8cf684d4">SDL::LoadWEBPAnimation_IO</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
-<tr class="memdesc:ga86d15d2a73c0e7e6a23cb8fe8cf684d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a WEBP animation directly.  <br /></td></tr>
-<tr class="separator:ga86d15d2a73c0e7e6a23cb8fe8cf684d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaba0ec4998ab10ae77400f9eadad60e5a" id="r_gaba0ec4998ab10ae77400f9eadad60e5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a">SDL::LoadGIFAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
+<tr class="memdesc:gaba0ec4998ab10ae77400f9eadad60e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a GIF animation directly.  <br /></td></tr>
+<tr class="separator:gaba0ec4998ab10ae77400f9eadad60e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga356c020deb78e7a3b790e2e3f9deee87" id="r_ga356c020deb78e7a3b790e2e3f9deee87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87">SDL::LoadWEBPAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
+<tr class="memdesc:ga356c020deb78e7a3b790e2e3f9deee87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a WEBP animation directly.  <br /></td></tr>
+<tr class="separator:ga356c020deb78e7a3b790e2e3f9deee87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

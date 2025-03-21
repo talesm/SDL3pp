@@ -71,6 +71,7 @@ $(function() {
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Load images from several formats<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesLibs.html">Satellite Libraries</a></div></div></div>
@@ -80,11 +81,22 @@ $(function() {
 <p>Header file for SDL_image library.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1AnimationBase.html">SDL::AnimationBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animated image support.  <a href="structSDL_1_1AnimationBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ObjectDeleter_3_01IMG__Animation_01_4.html">SDL::ObjectDeleter&lt; IMG_Animation &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga4ae280d2cd24bfcd186b4ec1ed104abc" id="r_ga4ae280d2cd24bfcd186b4ec1ed104abc"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">SDL::Animation</a> = IMG_Animation</td></tr>
-<tr class="memdesc:ga4ae280d2cd24bfcd186b4ec1ed104abc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Animated image support.  <br /></td></tr>
-<tr class="separator:ga4ae280d2cd24bfcd186b4ec1ed104abc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga076597abc3760ab8519a885bf53c077c" id="r_ga076597abc3760ab8519a885bf53c077c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga076597abc3760ab8519a885bf53c077c">SDL::AnimationRef</a> = <a class="el" href="structSDL_1_1AnimationBase.html">AnimationBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; IMG_Animation &gt; &gt;</td></tr>
+<tr class="memdesc:ga076597abc3760ab8519a885bf53c077c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned animation.  <br /></td></tr>
+<tr class="separator:ga076597abc3760ab8519a885bf53c077c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6d77ce339fdb6401c79506081bd4c973" id="r_ga6d77ce339fdb6401c79506081bd4c973"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">SDL::Animation</a> = <a class="el" href="structSDL_1_1AnimationBase.html">AnimationBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; IMG_Animation &gt; &gt;</td></tr>
+<tr class="memdesc:ga6d77ce339fdb6401c79506081bd4c973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned animation.  <br /></td></tr>
+<tr class="separator:ga6d77ce339fdb6401c79506081bd4c973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -244,92 +256,66 @@ Functions</h2></td></tr>
 <tr class="memitem:ga31f57d58b395a284a521deae98e0f40e" id="r_ga31f57d58b395a284a521deae98e0f40e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga31f57d58b395a284a521deae98e0f40e">SDL::SaveJPG</a> (<a class="el" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2">SurfaceRef</a> surface, ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;dst, int quality)</td></tr>
 <tr class="memdesc:ga31f57d58b395a284a521deae98e0f40e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save an SDL_Surface into JPEG image data, via an SDL_IOStream.  <br /></td></tr>
 <tr class="separator:ga31f57d58b395a284a521deae98e0f40e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga573884956736ef8be58267eedd707c76" id="r_ga573884956736ef8be58267eedd707c76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76">SDL::LoadAnimation</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file)</td></tr>
-<tr class="memdesc:ga573884956736ef8be58267eedd707c76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from a file.  <br /></td></tr>
-<tr class="separator:ga573884956736ef8be58267eedd707c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadccd23a3c8fbbc7c57b3b1494eb440ae" id="r_gadccd23a3c8fbbc7c57b3b1494eb440ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gadccd23a3c8fbbc7c57b3b1494eb440ae">SDL::LoadAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
-<tr class="memdesc:gadccd23a3c8fbbc7c57b3b1494eb440ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an SDL_IOStream.  <br /></td></tr>
-<tr class="separator:gadccd23a3c8fbbc7c57b3b1494eb440ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3d53eb9244126011158692d461f53bc8" id="r_ga3d53eb9244126011158692d461f53bc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga3d53eb9244126011158692d461f53bc8">SDL::LoadAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> type)</td></tr>
-<tr class="memdesc:ga3d53eb9244126011158692d461f53bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an animation from an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> datasource.  <br /></td></tr>
-<tr class="separator:ga3d53eb9244126011158692d461f53bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6883d59b08fb9d085c7cf2ad6abb79f0" id="r_ga6883d59b08fb9d085c7cf2ad6abb79f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0">SDL::FreeAnimation</a> (<a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *anim)</td></tr>
-<tr class="memdesc:ga6883d59b08fb9d085c7cf2ad6abb79f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dispose of an IMG_Animation and free its resources.  <br /></td></tr>
-<tr class="separator:ga6883d59b08fb9d085c7cf2ad6abb79f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6e20341465428e37bb7bb6472d4e6f55" id="r_ga6e20341465428e37bb7bb6472d4e6f55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga6e20341465428e37bb7bb6472d4e6f55">SDL::LoadGIFAnimation_IO</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
-<tr class="memdesc:ga6e20341465428e37bb7bb6472d4e6f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a GIF animation directly.  <br /></td></tr>
-<tr class="separator:ga6e20341465428e37bb7bb6472d4e6f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga86d15d2a73c0e7e6a23cb8fe8cf684d4" id="r_ga86d15d2a73c0e7e6a23cb8fe8cf684d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga86d15d2a73c0e7e6a23cb8fe8cf684d4">SDL::LoadWEBPAnimation_IO</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
-<tr class="memdesc:ga86d15d2a73c0e7e6a23cb8fe8cf684d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a WEBP animation directly.  <br /></td></tr>
-<tr class="separator:ga86d15d2a73c0e7e6a23cb8fe8cf684d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaba0ec4998ab10ae77400f9eadad60e5a" id="r_gaba0ec4998ab10ae77400f9eadad60e5a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a">SDL::LoadGIFAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
+<tr class="memdesc:gaba0ec4998ab10ae77400f9eadad60e5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a GIF animation directly.  <br /></td></tr>
+<tr class="separator:gaba0ec4998ab10ae77400f9eadad60e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga356c020deb78e7a3b790e2e3f9deee87" id="r_ga356c020deb78e7a3b790e2e3f9deee87"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">Animation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87">SDL::LoadWEBPAnimation</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
+<tr class="memdesc:ga356c020deb78e7a3b790e2e3f9deee87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a WEBP animation directly.  <br /></td></tr>
+<tr class="separator:ga356c020deb78e7a3b790e2e3f9deee87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Header file for SDL_image library. </p>
 <p>A simple library to load images of various formats as <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surfaces </p>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga4ae280d2cd24bfcd186b4ec1ed104abc" name="ga4ae280d2cd24bfcd186b4ec1ed104abc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4ae280d2cd24bfcd186b4ec1ed104abc">&#9670;&#160;</a></span>Animation</h2>
+<a id="ga6d77ce339fdb6401c79506081bd4c973" name="ga6d77ce339fdb6401c79506081bd4c973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6d77ce339fdb6401c79506081bd4c973">&#9670;&#160;</a></span>Animation</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">SDL::Animation</a> = typedef IMG_Animation</td>
+          <td class="memname">using <a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">SDL::Animation</a> = typedef <a class="el" href="structSDL_1_1AnimationBase.html">AnimationBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;IMG_Animation&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Animated image support. </p>
-<p>Currently only animated GIFs and WEBP images are supported. </p>
+<p>Handle to an owned animation. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd>resource </dd>
+<dd>
+<a class="el" href="structSDL_1_1AnimationBase.html" title="Animated image support.">AnimationBase</a> </dd>
+<dd>
+<a class="el" href="group__CategorySDLImage.html#ga076597abc3760ab8519a885bf53c077c" title="Handle to a non owned animation.">AnimationRef</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01917">1917</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00060">60</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+
+</div>
+</div>
+<a id="ga076597abc3760ab8519a885bf53c077c" name="ga076597abc3760ab8519a885bf53c077c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga076597abc3760ab8519a885bf53c077c">&#9670;&#160;</a></span>AnimationRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategorySDLImage.html#ga076597abc3760ab8519a885bf53c077c">SDL::AnimationRef</a> = typedef <a class="el" href="structSDL_1_1AnimationBase.html">AnimationBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;IMG_Animation&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle to a non owned animation. </p>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd>resource </dd>
+<dd>
+<a class="el" href="structSDL_1_1AnimationBase.html" title="Animated image support.">AnimationBase</a> </dd>
+<dd>
+<a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973" title="Handle to an owned animation.">Animation</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00043">43</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga6883d59b08fb9d085c7cf2ad6abb79f0" name="ga6883d59b08fb9d085c7cf2ad6abb79f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6883d59b08fb9d085c7cf2ad6abb79f0">&#9670;&#160;</a></span>FreeAnimation()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::FreeAnimation </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> *&#160;</td>
-          <td class="paramname"><em>anim</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Dispose of an IMG_Animation and free its resources. </p>
-<p>The provided <code>anim</code> pointer is not valid once this call returns.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">anim</td><td>IMG_Animation to dispose of.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76" title="Load an animation from a file.">LoadAnimation</a> </dd>
-<dd>
-<a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76" title="Load an animation from a file.">LoadAnimation()</a> </dd>
-<dd>
-LoadAnimationTyped() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01995">1995</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
-
-</div>
-</div>
 <a id="ga1e0107db9eb6bcb7870bb7863a82c89b" name="ga1e0107db9eb6bcb7870bb7863a82c89b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga1e0107db9eb6bcb7870bb7863a82c89b">&#9670;&#160;</a></span>IMG_Version()</h2>
 
@@ -357,7 +343,7 @@ LoadAnimationTyped() </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>SDL_image version.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00037">37</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00069">69</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -434,7 +420,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00311">311</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00343">343</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -509,7 +495,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00443">443</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00475">475</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -584,7 +570,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00400">400</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00432">432</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -659,7 +645,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00486">486</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00518">518</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -734,7 +720,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00357">357</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00389">389</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -809,7 +795,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00529">529</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00561">561</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -884,7 +870,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00572">572</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00604">604</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -959,7 +945,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00615">615</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00647">647</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1034,7 +1020,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00658">658</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00690">690</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1109,7 +1095,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00701">701</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00733">733</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1184,7 +1170,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00744">744</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00776">776</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1259,7 +1245,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00830">830</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00862">862</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1334,7 +1320,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00787">787</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00819">819</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1409,7 +1395,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00873">873</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00905">905</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1484,7 +1470,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga3621316a40f47372866d08e08be4703f" title="Detect XV image data on a readable/seekable SDL_IOStream.">isXV</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01045">1045</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01077">1077</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1559,7 +1545,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00916">916</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00948">948</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1634,7 +1620,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00959">959</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00991">991</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1709,141 +1695,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#gaf472bda5156d6de9e5ff2cf2bb4bf394" title="Detect WEBP image data on a readable/seekable SDL_IOStream.">isWEBP</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01002">1002</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
-
-</div>
-</div>
-<a id="gadccd23a3c8fbbc7c57b3b1494eb440ae" name="gadccd23a3c8fbbc7c57b3b1494eb440ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadccd23a3c8fbbc7c57b3b1494eb440ae">&#9670;&#160;</a></span>LoadAnimation() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> * SDL::LoadAnimation </td>
-          <td>(</td>
-          <td class="paramtype">ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;&#160;</td>
-          <td class="paramname"><em>src</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Load an animation from an SDL_IOStream. </p>
-<p>When done with the returned animation, the app should dispose of it with a call to IMG_FreeAnimation().</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>an SDL_IOStream that data will be read from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a new IMG_Animation, or nullptr on error.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0" title="Dispose of an IMG_Animation and free its resources.">FreeAnimation()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01950">1950</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
-
-</div>
-</div>
-<a id="ga3d53eb9244126011158692d461f53bc8" name="ga3d53eb9244126011158692d461f53bc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3d53eb9244126011158692d461f53bc8">&#9670;&#160;</a></span>LoadAnimation() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> * SDL::LoadAnimation </td>
-          <td>(</td>
-          <td class="paramtype">ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Load an animation from an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> datasource. </p>
-<p>Even though this function accepts a file type, SDL_image may still try other decoders that are capable of detecting file type from the contents of the image data, but may rely on the caller-provided type string for formats that it cannot autodetect. If <code>type</code> is nullptr, SDL_image will rely solely on its ability to guess the format.</p>
-<p>When done with the returned animation, the app should dispose of it with a call to IMG_FreeAnimation().</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">src</td><td>an SDL_IOStream that data will be read from. </td></tr>
-    <tr><td class="paramname">type</td><td>a filename extension that represent this data ("GIF", etc). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a new IMG_Animation, or nullptr on error.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76" title="Load an animation from a file.">LoadAnimation()</a> </dd>
-<dd>
-<a class="el" href="group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0" title="Dispose of an IMG_Animation and free its resources.">FreeAnimation()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01976">1976</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
-
-</div>
-</div>
-<a id="ga573884956736ef8be58267eedd707c76" name="ga573884956736ef8be58267eedd707c76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga573884956736ef8be58267eedd707c76">&#9670;&#160;</a></span>LoadAnimation() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> * SDL::LoadAnimation </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Load an animation from a file. </p>
-<p>When done with the returned animation, the app should dispose of it with a call to IMG_FreeAnimation().</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">file</td><td>path on the filesystem containing an animated image. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a new IMG_Animation, or nullptr on error.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0" title="Dispose of an IMG_Animation and free its resources.">FreeAnimation</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01932">1932</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01034">1034</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1917,7 +1769,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01082">1082</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01114">1114</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -1991,7 +1843,7 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01156">1156</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01188">1188</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2065,12 +1917,12 @@ LoadAnimationTyped() </dd></dl>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01193">1193</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01225">1225</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
-<a id="ga6e20341465428e37bb7bb6472d4e6f55" name="ga6e20341465428e37bb7bb6472d4e6f55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6e20341465428e37bb7bb6472d4e6f55">&#9670;&#160;</a></span>LoadGIFAnimation_IO()</h2>
+<a id="gaba0ec4998ab10ae77400f9eadad60e5a" name="gaba0ec4998ab10ae77400f9eadad60e5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaba0ec4998ab10ae77400f9eadad60e5a">&#9670;&#160;</a></span>LoadGIFAnimation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2079,7 +1931,7 @@ LoadAnimationTyped() </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> * SDL::LoadGIFAnimation_IO </td>
+          <td class="memname"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">Animation</a> SDL::LoadGIFAnimation </td>
           <td>(</td>
           <td class="paramtype">ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
@@ -2103,15 +1955,15 @@ LoadAnimationTyped() </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new IMG_Animation, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76" title="Load an animation from a file.">LoadAnimation</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>LoadAnimation </dd>
 <dd>
-<a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76" title="Load an animation from a file.">LoadAnimation()</a> </dd>
+LoadAnimation() </dd>
 <dd>
 LoadAnimationTyped() </dd>
 <dd>
-<a class="el" href="group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0" title="Dispose of an IMG_Animation and free its resources.">FreeAnimation</a> </dd></dl>
+FreeAnimation </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l02015">2015</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l02039">2039</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2185,7 +2037,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01119">1119</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01151">1151</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2259,7 +2111,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01230">1230</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01262">1262</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2333,7 +2185,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01267">1267</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01299">1299</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2407,7 +2259,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01304">1304</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01336">1336</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2481,7 +2333,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01341">1341</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01373">1373</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2555,7 +2407,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01378">1378</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01410">1410</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2629,7 +2481,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01415">1415</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01447">1447</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2703,7 +2555,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01489">1489</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01521">1521</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2762,7 +2614,7 @@ LoadAnimationTyped() </dd>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surface, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01735">1735</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01767">1767</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2806,7 +2658,7 @@ LoadAnimationTyped() </dd>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surface, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00162">162</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00194">194</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2861,7 +2713,7 @@ LoadAnimationTyped() </dd>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surface, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00082">82</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00114">114</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2904,7 +2756,7 @@ LoadAnimationTyped() </dd>
 <dl class="section return"><dt>Returns</dt><dd>a new <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surface, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00121">121</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00153">153</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -2978,7 +2830,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01452">1452</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01484">1484</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3031,7 +2883,7 @@ LoadAnimationTyped() </dd>
 <dl class="section return"><dt>Returns</dt><dd>a new texture, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00222">222</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00254">254</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3092,7 +2944,7 @@ LoadAnimationTyped() </dd>
 <dl class="section return"><dt>Returns</dt><dd>a new texture, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00262">262</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00294">294</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3144,7 +2996,7 @@ LoadAnimationTyped() </dd>
 <dl class="section return"><dt>Returns</dt><dd>a new texture, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00190">190</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l00222">222</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3218,7 +3070,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01526">1526</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01558">1558</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3292,7 +3144,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01563">1563</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01595">1595</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3366,12 +3218,12 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga6b7f7e38fcf1ba2e7f6ff41b2cb8f0fa" title="Load a XV image directly.">LoadXV()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01711">1711</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01743">1743</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
-<a id="ga86d15d2a73c0e7e6a23cb8fe8cf684d4" name="ga86d15d2a73c0e7e6a23cb8fe8cf684d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga86d15d2a73c0e7e6a23cb8fe8cf684d4">&#9670;&#160;</a></span>LoadWEBPAnimation_IO()</h2>
+<a id="ga356c020deb78e7a3b790e2e3f9deee87" name="ga356c020deb78e7a3b790e2e3f9deee87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga356c020deb78e7a3b790e2e3f9deee87">&#9670;&#160;</a></span>LoadWEBPAnimation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3380,7 +3232,7 @@ LoadAnimationTyped() </dd>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLImage.html#ga4ae280d2cd24bfcd186b4ec1ed104abc">Animation</a> * SDL::LoadWEBPAnimation_IO </td>
+          <td class="memname"><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973">Animation</a> SDL::LoadWEBPAnimation </td>
           <td>(</td>
           <td class="paramtype">ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;&#160;</td>
           <td class="paramname"><em>src</em></td><td>)</td>
@@ -3404,15 +3256,9 @@ LoadAnimationTyped() </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new IMG_Animation, or nullptr on error.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76" title="Load an animation from a file.">LoadAnimation</a> </dd>
-<dd>
-<a class="el" href="group__CategorySDLImage.html#ga573884956736ef8be58267eedd707c76" title="Load an animation from a file.">LoadAnimation()</a> </dd>
-<dd>
-LoadAnimationTyped() </dd>
-<dd>
-<a class="el" href="group__CategorySDLImage.html#ga6883d59b08fb9d085c7cf2ad6abb79f0" title="Dispose of an IMG_Animation and free its resources.">FreeAnimation</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga6d77ce339fdb6401c79506081bd4c973" title="Handle to an owned animation.">Animation</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l02038">2038</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l02059">2059</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3486,7 +3332,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01600">1600</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01632">1632</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3560,7 +3406,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01637">1637</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01669">1669</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3634,7 +3480,7 @@ LoadAnimationTyped() </dd>
 <dd>
 <a class="el" href="group__CategorySDLImage.html#ga9c71d40c940b26e6040c852b50bc296e" title="Load a WEBP image directly.">LoadWEBP()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01674">1674</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01706">1706</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3675,7 +3521,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga012fc8c7e9aab6f423c37b784fec7d43" title="Load an XPM image from a memory array.">ReadXPMFromArrayToRGB888</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01759">1759</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01791">1791</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3716,7 +3562,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga0bf5a06c59eae3ea0c4361822cf28049" title="Load an XPM image from a memory array.">ReadXPMFromArray</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01781">1781</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01813">1813</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3774,7 +3620,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gafb85006ddaaff2ca5e1e209f96c9d53d" title="Save an SDL_Surface into a AVIF image file.">SaveAVIF</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01823">1823</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01855">1855</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3832,7 +3678,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SaveAVIF_IO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01802">1802</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01834">1834</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3890,7 +3736,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga9cdc56c01dab60431bf3f84708a366c3" title="Save an SDL_Surface into a JPEG image file.">SaveJPG</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01905">1905</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01937">1937</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3948,7 +3794,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SaveJPG_IO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01884">1884</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01916">1916</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -3999,7 +3845,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#ga4565bb2de11ec36afa8a0f5ac36e1688" title="Save an SDL_Surface into a PNG image file.">SavePNG</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01863">1863</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01895">1895</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -4050,7 +3896,7 @@ LoadAnimationTyped() </dd>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_image 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SavePNG_IO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01844">1844</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l01876">1876</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
