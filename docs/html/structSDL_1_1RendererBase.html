@@ -301,6 +301,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf5f20990f4aa8ab99b8bd7639b665dc" id="r_abf5f20990f4aa8ab99b8bd7639b665dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc">RenderDebugText</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> str)</td></tr>
 <tr class="memdesc:abf5f20990f4aa8ab99b8bd7639b665dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw debug text to an SDL_Renderer.  <br /></td></tr>
 <tr class="separator:abf5f20990f4aa8ab99b8bd7639b665dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a561ff5daacc18b6a372bcc62324d33e7" id="r_a561ff5daacc18b6a372bcc62324d33e7"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:a561ff5daacc18b6a372bcc62324d33e7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7">RenderDebugTextFormat</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> fmt, ARGS... args)</td></tr>
+<tr class="memdesc:a561ff5daacc18b6a372bcc62324d33e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw debug text to an SDL_Renderer.  <br /></td></tr>
+<tr class="separator:a561ff5daacc18b6a372bcc62324d33e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e5798bee1abea5a16b88b6ab0667c76" id="r_a8e5798bee1abea5a16b88b6ab0667c76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a8e5798bee1abea5a16b88b6ab0667c76">Destroy</a> ()</td></tr>
 <tr class="memdesc:a8e5798bee1abea5a16b88b6ab0667c76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the rendering context for a window and free all associated textures.  <br /></td></tr>
 <tr class="separator:a8e5798bee1abea5a16b88b6ab0667c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -607,7 +611,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_CreateRenderer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01735">1735</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01769">1769</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1642,7 +1646,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a00f6fe44be445493f8ee9384bf764c87" title="Set a texture as the current rendering target.">SetTarget()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02894">2894</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02928">2928</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2094,6 +2098,73 @@ SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE </dd></dl>
 
 </div>
 </div>
+<a id="a561ff5daacc18b6a372bcc62324d33e7" name="a561ff5daacc18b6a372bcc62324d33e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a561ff5daacc18b6a372bcc62324d33e7">&#9670;&#160;</a></span>RenderDebugTextFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
+<div class="memtemplate">
+template&lt;class... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::RenderDebugTextFormat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a>&#160;</td>
+          <td class="paramname"><em>p</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramname"><em>fmt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ARGS...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draw debug text to an SDL_Renderer. </p>
+<p>This function will render a std::format()-style format string to a renderer. Note that this is a convenience function for debugging, with severe limitations, and is not intended to be used for production apps and games.</p>
+<p>For the full list of limitations and other useful information, see SDL_RenderDebugText.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the x coordinate where the top-left corner of the text will draw. </td></tr>
+    <tr><td class="paramname">y</td><td>the y coordinate where the top-left corner of the text will draw. </td></tr>
+    <tr><td class="paramname">fmt</td><td>the format string to draw. </td></tr>
+    <tr><td class="paramname">args</td><td>additional parameters matching {} tokens in the <code>fmt</code> string, if any. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc" title="Draw debug text to an SDL_Renderer.">RenderDebugText()</a> </dd>
+<dd>
+SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01748">1748</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+
+</div>
+</div>
 <a id="a18cf4e2266ac4aebb2cbe9578f019aa8" name="a18cf4e2266ac4aebb2cbe9578f019aa8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18cf4e2266ac4aebb2cbe9578f019aa8">&#9670;&#160;</a></span>RenderFillRect()</h2>
 
@@ -2226,7 +2297,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderGeometryRaw </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02962">2962</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02996">2996</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2334,7 +2405,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderGeometry </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02979">2979</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l03013">3013</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2693,7 +2764,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dd>
 SDL_RenderTextureTiled </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02900">2900</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02934">2934</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2781,7 +2852,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02941">2941</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02975">2975</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2847,7 +2918,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02920">2920</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02954">2954</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2920,7 +2991,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02908">2908</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02942">2942</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2980,7 +3051,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02931">2931</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02965">2965</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3429,7 +3500,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a0a08906b9ff3d00e0ad75107e991f5d1" title="Get the current render target.">GetTarget()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02888">2888</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02922">2922</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>

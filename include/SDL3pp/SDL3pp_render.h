@@ -1718,7 +1718,41 @@ struct RendererBase : T
     return SDL_RenderDebugText(T::get(), p.x, p.y, str);
   }
 
-  // TODO RenderDebugTextFormat
+  /**
+   * Draw debug text to an SDL_Renderer.
+   *
+   * This function will render a std::format()-style format string to a
+   * renderer. Note that this is a convenience function for debugging, with
+   * severe limitations, and is not intended to be used for production apps and
+   * games.
+   *
+   * For the full list of limitations and other useful information, see
+   * SDL_RenderDebugText.
+   *
+   * @param x the x coordinate where the top-left corner of the text will draw.
+   * @param y the y coordinate where the top-left corner of the text will draw.
+   * @param fmt the format string to draw.
+   * @param args additional parameters matching {} tokens in the `fmt` string,
+   * if any.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa RenderDebugText()
+   * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+   */
+  template<class... ARGS>
+  bool RenderDebugTextFormat(FPoint p, StringParam fmt, ARGS... args)
+  {
+    return SDL_RenderDebugText(
+      T::get(),
+      p.x,
+      p.y,
+      std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+  }
 
   /**
    * Destroy the rendering context for a window and free all associated

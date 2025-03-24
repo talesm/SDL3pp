@@ -17,15 +17,12 @@ int main(int argc, char** argv)
     SDL::LogUnformatted(SDL::GetError());
     return 1;
   }
-
-  SDL::Texture characterTexture{
-    SDL::LoadTexture(renderer, "assets/smiley.png")};
-  if (!characterTexture) {
-    SDL::LogUnformatted(SDL::GetError());
-    return 1;
-  }
-  SDL::FRect characterRect(SDL::FPoint(WINDOW_SZ) / 2 - SDL::FPoint{64, 64},
-                           {128, 128});
+  const char clickString[] = "Click anywhere to open URL";
+  SDL::FPoint stringPos(
+    (SDL::FPoint(WINDOW_SZ) -
+     SDL::FPoint{SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE * sizeof(clickString),
+                 SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE}) /
+    2);
 
   bool running = true;
   while (running) {
@@ -42,7 +39,8 @@ int main(int argc, char** argv)
     renderer.RenderClear();
     renderer.SetDrawColor(SDL::FColor{0.f, 0.725f, 0.f, 1.f});
     renderer.RenderFillRect(SDL::FRect{10, 10, 380, 380});
-    renderer.RenderTexture(characterTexture, {}, characterRect);
+    renderer.SetDrawColor(SDL::FColor{1.f, 0.125f, 1.f, 1.f});
+    renderer.RenderDebugText(stringPos, clickString);
 
     renderer.Present();
     SDL::Delay(1ns);
