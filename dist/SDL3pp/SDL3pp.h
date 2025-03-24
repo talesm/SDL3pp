@@ -29725,6 +29725,8 @@ struct FontBase : T
  */
 inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
 
+constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
+
 /**
  * Normal hinting applies standard grid-fitting.
  */

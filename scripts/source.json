@@ -20978,6 +20978,12 @@
           "name": "TTF_HintingFlags",
           "kind": "enum",
           "entries": {
+            "TTF_HINTING_INVALID": {
+              "doc": "",
+              "name": "TTF_HINTING_INVALID",
+              "kind": "var",
+              "type": ""
+            },
             "TTF_HINTING_NORMAL": {
               "doc": "Normal hinting applies standard grid-fitting.",
               "name": "TTF_HINTING_NORMAL",
@@ -21039,7 +21045,7 @@
           ]
         },
         "TTF_GetFontHinting": {
-          "doc": "Query a font's current FreeType hinter setting.\n\nThe hinter setting is a single value:\n\n- `TTF_HINTING_NORMAL`\n- `TTF_HINTING_LIGHT`\n- `TTF_HINTING_MONO`\n- `TTF_HINTING_NONE`\n- `TTF_HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)\n\n\\param font the font to query.\n\\returns the font's current hinter value.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL_ttf 3.0.0.\n\n\\sa TTF_SetFontHinting",
+          "doc": "Query a font's current FreeType hinter setting.\n\nThe hinter setting is a single value:\n\n- `TTF_HINTING_NORMAL`\n- `TTF_HINTING_LIGHT`\n- `TTF_HINTING_MONO`\n- `TTF_HINTING_NONE`\n- `TTF_HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)\n\n\\param font the font to query.\n\\returns the font's current hinter value, or TTF_HINTING_INVALID if the\n         font is invalid.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL_ttf 3.0.0.\n\n\\sa TTF_SetFontHinting",
           "name": "TTF_GetFontHinting",
           "kind": "function",
           "type": "TTF_HintingFlags",
