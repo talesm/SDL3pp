@@ -227,6 +227,7 @@ template<class T, class POINTER>
 concept ObjectBox = requires(const T a, T b) {
   { a.get() } -> std::convertible_to<POINTER>;
   { b.release() } -> std::convertible_to<POINTER>;
+  { b.free() };
 };
 
 template<class T, class POINTER = std::remove_extent_t<T>*>

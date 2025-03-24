@@ -13,6 +13,7 @@ TEST_CASE("ObjectBox")
     Dummy* dummy;
     Dummy* get() const;
     Dummy* release() const;
+    void free();
   };
   CHECK(SDL::ObjectBox<DummyBox, Dummy*>);
   CHECK(SDL::ObjectBox<DummyBox, const Dummy*>);
@@ -21,6 +22,7 @@ TEST_CASE("ObjectBox")
     const Dummy* dummy;
     const Dummy* get() const;
     const Dummy* release() const;
+    void free();
   };
   CHECK(SDL::ObjectBox<ConstDummyBox, const Dummy*>);
   CHECK_FALSE(SDL::ObjectBox<ConstDummyBox, Dummy*>);
