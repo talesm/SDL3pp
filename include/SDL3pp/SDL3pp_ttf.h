@@ -45,12 +45,6 @@ struct FontBase;
  */
 using FontRef = FontBase<ObjectRef<TTF_Font>>;
 
-template<>
-struct ObjectDeleter<TTF_Font>
-{
-  void operator()(FontRef font) const;
-};
-
 /**
  * Handle to an owned font
  *
@@ -1773,7 +1767,7 @@ struct FontBase : T
    * @sa TTF_OpenFont
    * @sa TTF_OpenFontIO
    */
-  void Destroy() { return TTF_CloseFont(T::get()); }
+  void Close() { T::free(); }
 };
 
 /**
@@ -3084,6 +3078,34 @@ inline bool UpdateText(Text* text) { return TTF_UpdateText(text); }
 inline void DestroyText(Text* text) { return TTF_DestroyText(text); }
 
 /**
+ * Dispose of a previously-created font.
+ *
+ * Call this when done with a font. This function will free any resources
+ * associated with it. It is safe to call this function on NULL, for example
+ * on the result of a failed call to FontBase::FontBase().
+ *
+ * The font is not valid after being passed to this function. String pointers
+ * from functions that return information on this font, such as
+ * FontBase::GetFamilyName() andFontBase::GetStyleName(), are no longer valid
+ * after this call, as well.
+ *
+ * @param resource the font to dispose of.
+ *
+ * @threadsafety This function should not be called while any other thread is
+ *               using the font.
+ *
+ * @since This function is available since SDL_ttf 3.0.0.
+ *
+ * @sa TTF_Font
+ * @sa TTF_FontBase
+ */
+template<>
+inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
+{
+  return TTF_CloseFont(resource);
+}
+
+/**
  * Deinitialize SDL_ttf.
  *
  * You must call this when done with the library, to free internal resources.
@@ -3130,12 +3152,6 @@ inline void TTF_Quit() { return ::TTF_Quit(); }
 inline int TTF_WasInit() { return ::TTF_WasInit(); }
 
 /// @}
-
-#pragma region impl
-
-void ObjectDeleter<TTF_Font>::operator()(FontRef font) const { font.Destroy(); }
-
-#pragma endregion impl
 
 } // namespace SDL
 

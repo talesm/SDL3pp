@@ -5532,25 +5532,6 @@
             "type": "FontBase<ObjectRef<TTF_Font>>"
           },
           {
-            "name": "ObjectDeleter<TTF_Font>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "FontRef",
-                    "name": "font"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Font",
             "kind": "alias",
             "type": "FontBase<ObjectUnique<TTF_Font>>"
@@ -5894,11 +5875,19 @@
             "TTF_RenderGlyph_LCD": {
               "immutable": true,
               "type": "Surface"
-            },
-            "TTF_CloseFont": {
-              "name": "Destroy"
             }
           }
+        },
+        "TTF_CloseFont": {
+          "name": "ObjectRef<TTF_Font>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "TTF_Font *",
+              "name": "resource"
+            }
+          ]
         },
         "TTF_Init": {
           "name": "TTF_Init"

@@ -18241,27 +18241,6 @@
           "type": "FontBase<ObjectRef<TTF_Font>>",
           "doc": ""
         },
-        "ObjectDeleter<TTF_Font>": {
-          "name": "ObjectDeleter<TTF_Font>",
-          "kind": "struct",
-          "template": [],
-          "entries": {
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "FontRef",
-                  "name": "font"
-                }
-              ],
-              "doc": ""
-            }
-          },
-          "doc": ""
-        },
         "Font": {
           "name": "Font",
           "kind": "alias",
@@ -19322,14 +19301,6 @@
               ],
               "sourceName": "TTF_RenderGlyph_LCD",
               "immutable": true
-            },
-            "Destroy": {
-              "doc": "Dispose of a previously-created font.\n\nCall this when done with a font. This function will free any resources\nassociated with it. It is safe to call this function on NULL, for example\non the result of a failed call to TTF_OpenFont().\n\nThe font is not valid after being passed to this function. String pointers\nfrom functions that return information on this font, such as\nTTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid\nafter this call, as well.\n\n@param font the font to dispose of.\n\n@threadsafety This function should not be called while any other thread is\n              using the font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_OpenFont\n@sa TTF_OpenFontIO",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "TTF_CloseFont"
             }
           }
         },
@@ -20428,6 +20399,20 @@
             }
           ],
           "sourceName": "TTF_DestroyText"
+        },
+        "ObjectRef<TTF_Font>::doFree": {
+          "doc": "Dispose of a previously-created font.\n\nCall this when done with a font. This function will free any resources\nassociated with it. It is safe to call this function on NULL, for example\non the result of a failed call to TTF_OpenFont().\n\nThe font is not valid after being passed to this function. String pointers\nfrom functions that return information on this font, such as\nTTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid\nafter this call, as well.\n\n@param font the font to dispose of.\n\n@threadsafety This function should not be called while any other thread is\n              using the font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_OpenFont\n@sa TTF_OpenFontIO",
+          "name": "ObjectRef<TTF_Font>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "TTF_Font *"
+            }
+          ],
+          "sourceName": "TTF_CloseFont",
+          "template": []
         },
         "TTF_Quit": {
           "doc": "Deinitialize SDL_ttf.\n\nYou must call this when done with the library, to free internal resources.\nIt is safe to call this when the library isn't initialized, as it will just\nreturn immediately.\n\nOnce you have as many quit calls as you have had successful calls to\nTTF_Init, the library will actually deinitialize.\n\nPlease note that this does not automatically close any fonts that are still\nopen at the time of deinitialization, and it is possibly not safe to close\nthem afterwards, as parts of the library will no longer be initialized to\ndeal with it. A well-written program should call TTF_CloseFont() on any\nopen fonts before calling this function!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.",
