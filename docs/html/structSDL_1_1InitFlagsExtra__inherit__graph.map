@@ -1,0 +1,5 @@
+<map id="SDL::InitFlagsExtra" name="SDL::InitFlagsExtra">
+<area shape="rect" id="Node000001" title="Initialization flags for SDL satellite libraries." alt="" coords="5,5,151,31"/>
+<area shape="rect" id="Node000002" href="$structSDL_1_1TtfInitFlag.html" title="Flag to init TTF." alt="" coords="17,79,139,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="81,44,81,79,75,79,75,44"/>
+</map>

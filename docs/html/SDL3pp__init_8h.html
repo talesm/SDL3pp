@@ -85,15 +85,17 @@ $(function() {
 <code>#include &quot;<a class="el" href="SDL3pp__callbackWrapper_8h_source.html">SDL3pp_callbackWrapper.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="SDL3pp__stringParam_8h_source.html">SDL3pp_stringParam.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="SDL3pp__init_8h__dep__incl.png" border="0" usemap="#aSDL3pp_2SDL3pp__init_8hdep" alt=""/></div>
 <map name="aSDL3pp_2SDL3pp__init_8hdep" id="aSDL3pp_2SDL3pp__init_8hdep">
 <area shape="rect" title=" " alt="" coords="5,5,169,31"/>
-<area shape="rect" href="SDL3pp_8h.html" title=" " alt="" coords="19,79,155,104"/>
-<area shape="poly" title=" " alt="" coords="90,44,90,79,85,79,85,44"/>
+<area shape="rect" href="SDL3pp_8h.html" title=" " alt="" coords="19,152,155,177"/>
+<area shape="poly" title=" " alt="" coords="74,43,58,79,57,99,62,118,80,150,76,153,57,120,52,99,53,78,69,41"/>
+<area shape="rect" href="SDL3pp__ttf_8h.html" title=" " alt="" coords="67,79,225,104"/>
+<area shape="poly" title=" " alt="" coords="108,40,139,77,134,80,104,43"/>
+<area shape="poly" title=" " alt="" coords="130,116,99,154,95,150,126,113"/>
 </map>
 </div>
 </div>
@@ -101,6 +103,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1InitFlagsExtra.html">SDL::InitFlagsExtra</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization flags for <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> satellite libraries.  <a href="structSDL_1_1InitFlagsExtra.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SDL.html">SDL::SDL</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library.  <a href="structSDL_1_1SDL.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,9 +143,16 @@ Functions</h2></td></tr>
 <tr class="memitem:gab53d2dea05d627f11cb7a8c24a8e1a44" id="r_gab53d2dea05d627f11cb7a8c24a8e1a44"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gab53d2dea05d627f11cb7a8c24a8e1a44">SDL::Init</a> (<a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</td></tr>
 <tr class="memdesc:gab53d2dea05d627f11cb7a8c24a8e1a44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
 <tr class="separator:gab53d2dea05d627f11cb7a8c24a8e1a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7621ccbf8a8e81e8ff90b14397f87c1e" id="r_ga7621ccbf8a8e81e8ff90b14397f87c1e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e">SDL::InitSubSystem</a> (<a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</td></tr>
-<tr class="memdesc:ga7621ccbf8a8e81e8ff90b14397f87c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compatibility function to initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
-<tr class="separator:ga7621ccbf8a8e81e8ff90b14397f87c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa358f7751ab03b6aa56af25435806340" id="r_gaa358f7751ab03b6aa56af25435806340"><td class="memTemplParams" colspan="2">template&lt;class FLAG0 , class FLAG1 , class... FLAGS&gt; </td></tr>
+<tr class="memitem:gaa358f7751ab03b6aa56af25435806340"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gaa358f7751ab03b6aa56af25435806340">SDL::Init</a> (FLAG0 flag0, FLAG1 flag1, FLAGS... flags)</td></tr>
+<tr class="separator:gaa358f7751ab03b6aa56af25435806340"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac4d2f98814fd7e13e52cc24952fcb3a0" id="r_gac4d2f98814fd7e13e52cc24952fcb3a0"><td class="memTemplParams" colspan="2">template&lt;class FLAG , class... FLAGS&gt; </td></tr>
+<tr class="memitem:gac4d2f98814fd7e13e52cc24952fcb3a0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac4d2f98814fd7e13e52cc24952fcb3a0">SDL::Init</a> (FLAG flag0, FLAG flag1, FLAGS... flags)</td></tr>
+<tr class="separator:gac4d2f98814fd7e13e52cc24952fcb3a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga19d65c70342dc0f6309583a2f91aaeb7" id="r_ga19d65c70342dc0f6309583a2f91aaeb7"><td class="memTemplParams" colspan="2">template&lt;class... FLAGS&gt; </td></tr>
+<tr class="memitem:ga19d65c70342dc0f6309583a2f91aaeb7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#ga19d65c70342dc0f6309583a2f91aaeb7">SDL::InitSubSystem</a> (FLAGS... flags)</td></tr>
+<tr class="memdesc:ga19d65c70342dc0f6309583a2f91aaeb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compatibility function to initialize the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library.  <br /></td></tr>
+<tr class="separator:ga19d65c70342dc0f6309583a2f91aaeb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6d7bd19a4918a51d2a4fc0501f77da5" id="r_gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryInit.html#gac6d7bd19a4918a51d2a4fc0501f77da5">SDL::QuitSubSystem</a> (<a class="el" href="group__CategoryInit.html#gafd0701244620c6298147fe6cc25a4771">InitFlags</a> flags)</td></tr>
 <tr class="memdesc:gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shut down specific <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> subsystems.  <br /></td></tr>
 <tr class="separator:gac6d7bd19a4918a51d2a4fc0501f77da5"><td class="memSeparator" colspan="2">&#160;</td></tr>

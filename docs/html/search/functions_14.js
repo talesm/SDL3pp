@@ -2,7 +2,7 @@ var searchData=
 [
   ['waitevent_0',['waitevent',['../group__CategoryEvents.html#gade3c59ad119ec95a0955d1a6c55f5866',1,'SDL::WaitEvent(Event *event)'],['../group__CategoryEvents.html#gab6c50dc878f420b06aa3e72b6e1510bf',1,'SDL::WaitEvent()']]],
   ['waiteventtimeout_1',['waiteventtimeout',['../group__CategoryEvents.html#ga8467dfac03ec857a6a2cdbb1d7527fbe',1,'SDL::WaitEventTimeout(Event *event, Sint32 timeoutMS)'],['../group__CategoryEvents.html#ga62511fbcf1263d4eee3b30bacd525675',1,'SDL::WaitEventTimeout(Sint32 timeoutMS)'],['../group__CategoryEvents.html#gaf2b888795aed6796e4430117e151715b',1,'SDL::WaitEventTimeout(Event *event, std::chrono::milliseconds timeoutDuration)'],['../group__CategoryEvents.html#ga4d3e0ed917e3d94f111caf68569e3f2a',1,'SDL::WaitEventTimeout(std::chrono::milliseconds timeoutDuration)']]],
-  ['wasinit_2',['wasinit',['../structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e',1,'SDL::SDL::WasInit()'],['../group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44',1,'SDL::WasInit(InitFlags flags)']]],
+  ['wasinit_2',['wasinit',['../structSDL_1_1SDL.html#a14c88fafe1a191c18be8793b289e906e',1,'SDL::SDL::WasInit()'],['../group__CategoryInit.html#ga2d9c710ec219aa2818bfdc55e4115f44',1,'SDL::WasInit(InitFlags flags)'],['../group__CategorySDLTTF.html#ga4f6e3dc8998aa487925f6a7a006162f6',1,'SDL::WasInit(TtfInitFlag _)']]],
   ['wcscasecmp_3',['wcscasecmp',['../group__CategoryStdinc.html#gae24c494fab206e9aa27dfd9c04b35e81',1,'SDL']]],
   ['wcscmp_4',['wcscmp',['../group__CategoryStdinc.html#ga9edc1299fb56e51101501e09aaaa5b1f',1,'SDL']]],
   ['wcsdup_5',['wcsdup',['../group__CategoryStdinc.html#ga26f89af82ddb65cb934e2c3dc6abb807',1,'SDL']]],

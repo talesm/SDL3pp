@@ -9545,6 +9545,16 @@ inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
 using InitFlags = SDL_InitFlags;
 
 /**
+ * @brief Initialization flags for SDL satellite libraries
+ *
+ *
+ * Each satellite lib that needs initialization should extend this class and
+ * provide an overload of Init() with accepting it.
+ */
+struct InitFlagsExtra
+{};
+
+/**
  * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
  */
 constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
@@ -9704,44 +9714,44 @@ using AppQuit_func = SDL_AppQuit_func;
 /**
  * Initialize the SDL library.
  *
- * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
+ * Init() simply forwards to calling InitSubSystem(). Therefore, the
  * two may be used interchangeably. Though for readability of your code
- * SDL_InitSubSystem() might be preferred.
+ * InitSubSystem() might be preferred.
  *
- * The file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)
+ * The file I/O (for example: IOFromFile) and threading (CreateThread)
  * subsystems are initialized by default. Message boxes
- * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
+ * (ShowSimpleMessageBox) also attempt to work without initializing the
  * video subsystem, in hopes of being useful in showing an error dialog when
- * SDL_Init fails. You must specifically initialize other subsystems if you
+ * Init fails. You must specifically initialize other subsystems if you
  * use them in your application.
  *
- * Logging (such as SDL_Log) works without initialization, too.
+ * Logging (such as Log) works without initialization, too.
  *
  * `flags` may be any of the following OR'd together:
  *
- * - `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
  *   subsystem
- * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
  *   subsystem, should be initialized on the main thread.
- * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
  *   events subsystem
- * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
  *   joystick subsystem
- * - `SDL_INIT_EVENTS`: events subsystem
- * - `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
  *   subsystem
- * - `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
  *   subsystem
  *
- * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
- * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
- * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem()
+ * for each InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call Quit() to force shutdown). If a subsystem is already loaded then
  * this call will increase the ref-count and return.
  *
  * Consider reporting some basic metadata about your application before
- * calling SDL_Init, using either SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty().
+ * calling Init, using either SetAppMetadata() or
+ * SetAppMetadataProperty().
  *
  * @param flags subsystem initialization flags.
  * @returns true on success or false on failure; call SDL_GetError() for more
@@ -9758,13 +9768,24 @@ using AppQuit_func = SDL_AppQuit_func;
  */
 inline bool Init(InitFlags flags) { return SDL_Init(flags); }
 
+template<class FLAG0, class FLAG1, class... FLAGS>
+inline bool Init(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
+{
+  if (Init(flag0)) return Init(flag1, flags...);
+  return false;
+}
+
+template<class FLAG, class... FLAGS>
+inline bool Init(FLAG flag0, FLAG flag1, FLAGS... flags)
+{
+  return Init(flag0 | flag1, flags...);
+}
+
 /**
  * Compatibility function to initialize the SDL library.
  *
- * This function and SDL_Init() are interchangeable.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @param flags any of the flags used by Init(); see Init for details.
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL 3.2.0.
@@ -9773,7 +9794,11 @@ inline bool Init(InitFlags flags) { return SDL_Init(flags); }
  * @sa Quit()
  * @sa QuitSubSystem()
  */
-inline bool InitSubSystem(InitFlags flags) { return SDL_InitSubSystem(flags); }
+template<class... FLAGS>
+inline bool InitSubSystem(FLAGS... flags)
+{
+  return SDL_Init(flags...);
+}
 
 /**
  * Shut down specific SDL subsystems.
@@ -27833,6 +27858,14 @@ using FontRef = FontBase<ObjectRef<TTF_Font>>;
 using Font = FontBase<ObjectUnique<TTF_Font>>;
 
 /**
+ * Flag to init TTF
+ *
+ */
+constexpr struct TtfInitFlag : InitFlagsExtra
+{
+} INIT_TTF;
+
+/**
  * Font style flags for TTF_Font
  *
  * These are the flags which can be used to set the style of a font in
@@ -29563,7 +29596,7 @@ struct FontBase : T
  *
  * @sa TTF_Quit
  */
-inline bool TTF_Init() { return ::TTF_Init(); }
+inline bool Init(TtfInitFlag _) { return TTF_Init(); }
 
 /**
  * Normal hinting applies standard grid-fitting.
@@ -30902,7 +30935,7 @@ inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void TTF_Quit() { return ::TTF_Quit(); }
+inline void QuitSubSystem(TtfInitFlag _) { TTF_Quit(); }
 
 /**
  * Check if SDL_ttf is initialized.
@@ -30926,7 +30959,7 @@ inline void TTF_Quit() { return ::TTF_Quit(); }
  * @sa TTF_Init
  * @sa TTF_Quit
  */
-inline int TTF_WasInit() { return ::TTF_WasInit(); }
+inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 
 /// @}
 

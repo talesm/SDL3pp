@@ -84,6 +84,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="SDL3pp__error_8h_source.html">SDL3pp_error.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="SDL3pp__init_8h_source.html">SDL3pp_init.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__objectWrapper_8h_source.html">SDL3pp_objectWrapper.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>&quot;</code><br />
@@ -106,6 +107,9 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to init TTF.  <a href="structSDL_1_1TtfInitFlag.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal structure containing font information.  <a href="structSDL_1_1FontBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,9 +176,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga53fae27b8ce171ef679ffcc3b27f9327" id="r_ga53fae27b8ce171ef679ffcc3b27f9327"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga53fae27b8ce171ef679ffcc3b27f9327">SDL::GetHarfBuzzVersion</a> (int *major, int *minor, int *patch)</td></tr>
 <tr class="memdesc:ga53fae27b8ce171ef679ffcc3b27f9327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the version of the HarfBuzz library in use.  <br /></td></tr>
 <tr class="separator:ga53fae27b8ce171ef679ffcc3b27f9327"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga23adb1a80ce9f99ed81e3008feb923d7" id="r_ga23adb1a80ce9f99ed81e3008feb923d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7">SDL::TTF_Init</a> ()</td></tr>
-<tr class="memdesc:ga23adb1a80ce9f99ed81e3008feb923d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize SDL_ttf.  <br /></td></tr>
-<tr class="separator:ga23adb1a80ce9f99ed81e3008feb923d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea266ac89de6e948ef6b15c29dec7a0e" id="r_gaea266ac89de6e948ef6b15c29dec7a0e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaea266ac89de6e948ef6b15c29dec7a0e">SDL::Init</a> (<a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a> _)</td></tr>
+<tr class="memdesc:gaea266ac89de6e948ef6b15c29dec7a0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize SDL_ttf.  <br /></td></tr>
+<tr class="separator:gaea266ac89de6e948ef6b15c29dec7a0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3d037554b35e623b087cc4b24d247e18" id="r_ga3d037554b35e623b087cc4b24d247e18"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3d037554b35e623b087cc4b24d247e18">SDL::StringToTag</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> string)</td></tr>
 <tr class="memdesc:ga3d037554b35e623b087cc4b24d247e18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a 4 character string to a 32-bit tag.  <br /></td></tr>
 <tr class="separator:ga3d037554b35e623b087cc4b24d247e18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -319,15 +323,17 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0d3ed35907f459110e0e47d636d83db2" id="r_ga0d3ed35907f459110e0e47d636d83db2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga0d3ed35907f459110e0e47d636d83db2">SDL::DestroyText</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
 <tr class="memdesc:ga0d3ed35907f459110e0e47d636d83db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text object created by a text engine.  <br /></td></tr>
 <tr class="separator:ga0d3ed35907f459110e0e47d636d83db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40ee1b9a3344c5692703948c1412abca" id="r_ga40ee1b9a3344c5692703948c1412abca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca">SDL::TTF_Quit</a> ()</td></tr>
-<tr class="memdesc:ga40ee1b9a3344c5692703948c1412abca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitialize SDL_ttf.  <br /></td></tr>
-<tr class="separator:ga40ee1b9a3344c5692703948c1412abca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5b5fba9933c655ef199609b1c13ecfef" id="r_ga5b5fba9933c655ef199609b1c13ecfef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga5b5fba9933c655ef199609b1c13ecfef">SDL::TTF_WasInit</a> ()</td></tr>
-<tr class="memdesc:ga5b5fba9933c655ef199609b1c13ecfef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if SDL_ttf is initialized.  <br /></td></tr>
-<tr class="separator:ga5b5fba9933c655ef199609b1c13ecfef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82f9e1056eeaa39c50c5cf5408dde405" id="r_ga82f9e1056eeaa39c50c5cf5408dde405"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga82f9e1056eeaa39c50c5cf5408dde405">SDL::QuitSubSystem</a> (<a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a> _)</td></tr>
+<tr class="memdesc:ga82f9e1056eeaa39c50c5cf5408dde405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitialize SDL_ttf.  <br /></td></tr>
+<tr class="separator:ga82f9e1056eeaa39c50c5cf5408dde405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f6e3dc8998aa487925f6a7a006162f6" id="r_ga4f6e3dc8998aa487925f6a7a006162f6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga4f6e3dc8998aa487925f6a7a006162f6">SDL::WasInit</a> (<a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a> _)</td></tr>
+<tr class="memdesc:ga4f6e3dc8998aa487925f6a7a006162f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if SDL_ttf is initialized.  <br /></td></tr>
+<tr class="separator:ga4f6e3dc8998aa487925f6a7a006162f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:gaa30f945c03b7abc08b5436d6369d1486" id="r_gaa30f945c03b7abc08b5436d6369d1486"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaa30f945c03b7abc08b5436d6369d1486">SDL::INIT_TTF</a></td></tr>
+<tr class="separator:gaa30f945c03b7abc08b5436d6369d1486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa3488933d07a8c78c4a67c3fc49c1587" id="r_gaa3488933d07a8c78c4a67c3fc49c1587"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaa3488933d07a8c78c4a67c3fc49c1587">SDL::HINTING_NORMAL</a> = TTF_HINTING_NORMAL</td></tr>
 <tr class="memdesc:gaa3488933d07a8c78c4a67c3fc49c1587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normal hinting applies standard grid-fitting.  <br /></td></tr>
 <tr class="separator:gaa3488933d07a8c78c4a67c3fc49c1587"><td class="memSeparator" colspan="2">&#160;</td></tr>

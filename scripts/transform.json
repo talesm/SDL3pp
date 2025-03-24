@@ -5156,6 +5156,74 @@
             ]
           }
         },
+        "SDL_InitFlags": {
+          "kind": "struct",
+          "name": "InitFlagsExtra"
+        },
+        "SDL_Init": [
+          {
+            "kind": "function",
+            "name": "Init",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG0"
+              },
+              {
+                "type": "class",
+                "name": "FLAG1"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG0",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG1",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "Init",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          }
+        ],
         "SDL_MainThreadCallback": {
           "kind": "alias",
           "name": "MainThreadCB",
@@ -5217,6 +5285,20 @@
           "kind": "var",
           "constexpr": true,
           "type": "InitFlags"
+        },
+        "SDL_InitSubSystem": {
+          "template": [
+            {
+              "type": "class...",
+              "name": "FLAGS"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "FLAGS...",
+              "name": "flags"
+            }
+          ]
         }
       }
     },
@@ -5535,6 +5617,11 @@
             "name": "Font",
             "kind": "alias",
             "type": "FontBase<ObjectUnique<TTF_Font>>"
+          },
+          {
+            "kind": "struct",
+            "name": "TtfInitFlag",
+            "type": "InitFlagsExtra"
           },
           {
             "name": "FontStyleFlags",
@@ -5890,13 +5977,31 @@
           ]
         },
         "TTF_Init": {
-          "name": "TTF_Init"
+          "name": "Init",
+          "parameters": [
+            {
+              "type": "TtfInitFlag",
+              "name": "_"
+            }
+          ]
         },
         "TTF_Quit": {
-          "name": "TTF_Quit"
+          "name": "QuitSubSystem",
+          "parameters": [
+            {
+              "type": "TtfInitFlag",
+              "name": "_"
+            }
+          ]
         },
         "TTF_WasInit": {
-          "name": "TTF_WasInit"
+          "name": "WasInit",
+          "parameters": [
+            {
+              "type": "TtfInitFlag",
+              "name": "_"
+            }
+          ]
         }
       }
     }

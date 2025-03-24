@@ -16984,6 +16984,12 @@
           "type": "SDL_InitFlags",
           "sourceName": "SDL_InitFlags"
         },
+        "InitFlagsExtra": {
+          "kind": "struct",
+          "name": "InitFlagsExtra",
+          "doc": "",
+          "entries": {}
+        },
         "INIT_AUDIO": {
           "doc": "`SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`",
           "name": "INIT_AUDIO",
@@ -17107,19 +17113,85 @@
           "type": "SDL_AppQuit_func",
           "sourceName": "SDL_AppQuit_func"
         },
-        "Init": {
-          "doc": "Initialize the SDL library.\n\nSDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nSDL_Init fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as SDL_Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem\n- `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `SDL_INIT_EVENTS`: events subsystem\n- `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call SDL_QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall SDL_Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling SDL_Init, using either SDL_SetAppMetadata() or\nSDL_SetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAppMetadata\n@sa SDL_SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa SDL_Quit\n@sa SDL_SetMainReady\n@sa SDL_WasInit",
-          "name": "Init",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "flags",
-              "type": "InitFlags"
-            }
-          ],
-          "sourceName": "SDL_Init"
-        },
+        "Init": [
+          {
+            "doc": "Initialize the SDL library.\n\nSDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nSDL_Init fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as SDL_Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem\n- `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `SDL_INIT_EVENTS`: events subsystem\n- `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call SDL_QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall SDL_Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling SDL_Init, using either SDL_SetAppMetadata() or\nSDL_SetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAppMetadata\n@sa SDL_SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa SDL_Quit\n@sa SDL_SetMainReady\n@sa SDL_WasInit",
+            "name": "Init",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "flags",
+                "type": "InitFlags"
+              }
+            ],
+            "sourceName": "SDL_Init"
+          },
+          {
+            "kind": "function",
+            "name": "Init",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG0"
+              },
+              {
+                "type": "class",
+                "name": "FLAG1"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG0",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG1",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "kind": "function",
+            "name": "Init",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "InitSubSystem": {
           "doc": "Compatibility function to initialize the SDL library.\n\nThis function and SDL_Init() are interchangeable.\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_Quit\n@sa SDL_QuitSubSystem",
           "name": "InitSubSystem",
@@ -17128,10 +17200,16 @@
           "parameters": [
             {
               "name": "flags",
-              "type": "InitFlags"
+              "type": "FLAGS..."
             }
           ],
-          "sourceName": "SDL_InitSubSystem"
+          "sourceName": "SDL_InitSubSystem",
+          "template": [
+            {
+              "type": "class...",
+              "name": "FLAGS"
+            }
+          ]
         },
         "QuitSubSystem": {
           "doc": "Shut down specific SDL subsystems.\n\nYou still need to call SDL_Quit() even if you close all open subsystems\nwith SDL_QuitSubSystem().\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_InitSubSystem\n@sa SDL_Quit",
@@ -18247,6 +18325,13 @@
           "type": "FontBase<ObjectUnique<TTF_Font>>",
           "doc": ""
         },
+        "TtfInitFlag": {
+          "kind": "struct",
+          "name": "TtfInitFlag",
+          "type": "InitFlagsExtra",
+          "doc": "",
+          "entries": {}
+        },
         "FontStyleFlags": {
           "doc": "Font style flags for TTF_Font\n\nThese are the flags which can be used to set the style of a font in\nSDL_ttf. A combination of these flags can be used with functions that set\nor query font style, such as TTF_SetFontStyle or TTF_GetFontStyle.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetFontStyle\n@sa TTF_GetFontStyle",
           "name": "FontStyleFlags",
@@ -19304,13 +19389,18 @@
             }
           }
         },
-        "TTF_Init": {
+        "Init": {
           "doc": "Initialize SDL_ttf.\n\nYou must successfully call this function before it is safe to call any\nother function in this library.\n\nIt is safe to call this more than once, and each successful TTF_Init() call\nshould be paired with a matching TTF_Quit() call.\n\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_Quit",
-          "name": "TTF_Init",
+          "name": "Init",
           "kind": "function",
           "type": "bool",
-          "parameters": [],
-          "sourceName": "::TTF_Init"
+          "parameters": [
+            {
+              "type": "TtfInitFlag",
+              "name": "_"
+            }
+          ],
+          "sourceName": "TTF_Init"
         },
         "HINTING_NORMAL": {
           "doc": "Normal hinting applies standard grid-fitting.",
@@ -20414,21 +20504,31 @@
           "sourceName": "TTF_CloseFont",
           "template": []
         },
-        "TTF_Quit": {
+        "QuitSubSystem": {
           "doc": "Deinitialize SDL_ttf.\n\nYou must call this when done with the library, to free internal resources.\nIt is safe to call this when the library isn't initialized, as it will just\nreturn immediately.\n\nOnce you have as many quit calls as you have had successful calls to\nTTF_Init, the library will actually deinitialize.\n\nPlease note that this does not automatically close any fonts that are still\nopen at the time of deinitialization, and it is possibly not safe to close\nthem afterwards, as parts of the library will no longer be initialized to\ndeal with it. A well-written program should call TTF_CloseFont() on any\nopen fonts before calling this function!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "TTF_Quit",
+          "name": "QuitSubSystem",
           "kind": "function",
           "type": "void",
-          "parameters": [],
-          "sourceName": "::TTF_Quit"
+          "parameters": [
+            {
+              "type": "TtfInitFlag",
+              "name": "_"
+            }
+          ],
+          "sourceName": "TTF_Quit"
         },
-        "TTF_WasInit": {
+        "WasInit": {
           "doc": "Check if SDL_ttf is initialized.\n\nThis reports the number of times the library has been initialized by a call\nto TTF_Init(), without a paired deinitialization request from TTF_Quit().\n\nIn short: if it's greater than zero, the library is currently initialized\nand ready to work. If zero, it is not initialized.\n\nDespite the return value being a signed integer, this function should not\nreturn a negative number.\n\n@returns the current number of initialization calls, that need to\n         eventually be paired with this many calls to TTF_Quit().\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_Init\n@sa TTF_Quit",
-          "name": "TTF_WasInit",
+          "name": "WasInit",
           "kind": "function",
           "type": "int",
-          "parameters": [],
-          "sourceName": "::TTF_WasInit"
+          "parameters": [
+            {
+              "type": "TtfInitFlag",
+              "name": "_"
+            }
+          ],
+          "sourceName": "TTF_WasInit"
         }
       }
     }

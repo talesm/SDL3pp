@@ -21,7 +21,7 @@ var searchData=
   ['texturelock_18',['texturelock',['../classSDL_1_1TextureLock.html#a3a52d759047dc1b3e33aca59be646261',1,'SDL::TextureLock::TextureLock(TextureLock &amp;&amp;other)'],['../classSDL_1_1TextureLock.html#a7514e0bc1900826f7044a85661784fc5',1,'SDL::TextureLock::TextureLock(const TextureLock &amp;other)=delete'],['../classSDL_1_1TextureLock.html#ac3cd459f3b03edcae5451417253c0444',1,'SDL::TextureLock::TextureLock()'],['../classSDL_1_1TextureLock.html',1,'SDL::TextureLock']]],
   ['textureref_19',['TextureRef',['../group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7',1,'SDL']]],
   ['textwrapwhitespacevisible_20',['TextWrapWhitespaceVisible',['../group__CategorySDLTTF.html#gac3a6495bcdc192e819665f8426200798',1,'SDL']]],
-  ['time_21',['time',['../group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f',1,'SDL::Time'],['../group__CategoriesTime.html',1,'Time'],['../ApiByCategory.html#time',1,'Time']]],
+  ['time_21',['time',['../ApiByCategory.html#time',1,'Time'],['../group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f',1,'SDL::Time'],['../group__CategoriesTime.html',1,'Time']]],
   ['timer_20support_22',['Timer Support',['../group__CategoryTimer.html',1,'']]],
   ['timercallback_23',['TimerCallback',['../group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea',1,'SDL']]],
   ['timercb_24',['TimerCB',['../group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
@@ -58,12 +58,10 @@ var searchData=
   ['true_20type_20font_20support_55',['True type font support',['../group__CategorySDLTTF.html',1,'']]],
   ['trunc_56',['trunc',['../group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
   ['truncf_57',['truncf',['../group__CategoryStdinc.html#gae6b046a5844394a19061a8544376ffac',1,'SDL']]],
-  ['ttf_5finit_58',['TTF_Init',['../group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7',1,'SDL']]],
-  ['ttf_5fquit_59',['TTF_Quit',['../group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca',1,'SDL']]],
-  ['ttf_5fversion_60',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]],
-  ['ttf_5fwasinit_61',['TTF_WasInit',['../group__CategorySDLTTF.html#ga5b5fba9933c655ef199609b1c13ecfef',1,'SDL']]],
-  ['type_20font_20support_62',['True type font support',['../group__CategorySDLTTF.html',1,'']]],
-  ['type_20rules_63',['Type rules',['../transformations.html#type-rules',1,'']]],
-  ['type_20wrapping_64',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
-  ['types_65',['Event Types',['../group__EventTypes.html',1,'']]]
+  ['ttf_5fversion_58',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]],
+  ['ttfinitflag_59',['TtfInitFlag',['../structSDL_1_1TtfInitFlag.html',1,'SDL']]],
+  ['type_20font_20support_60',['True type font support',['../group__CategorySDLTTF.html',1,'']]],
+  ['type_20rules_61',['Type rules',['../transformations.html#type-rules',1,'']]],
+  ['type_20wrapping_62',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
+  ['types_63',['Event Types',['../group__EventTypes.html',1,'']]]
 ];

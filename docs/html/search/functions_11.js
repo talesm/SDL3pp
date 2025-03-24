@@ -12,8 +12,5 @@ var searchData=
   ['toupper_9',['toupper',['../group__CategoryStdinc.html#gaa66528bfccd7f5a86ed7554d049d1930',1,'SDL']]],
   ['trunc_10',['trunc',['../group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
   ['truncf_11',['truncf',['../group__CategoryStdinc.html#gae6b046a5844394a19061a8544376ffac',1,'SDL']]],
-  ['ttf_5finit_12',['TTF_Init',['../group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7',1,'SDL']]],
-  ['ttf_5fquit_13',['TTF_Quit',['../group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca',1,'SDL']]],
-  ['ttf_5fversion_14',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]],
-  ['ttf_5fwasinit_15',['TTF_WasInit',['../group__CategorySDLTTF.html#ga5b5fba9933c655ef199609b1c13ecfef',1,'SDL']]]
+  ['ttf_5fversion_12',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]]
 ];

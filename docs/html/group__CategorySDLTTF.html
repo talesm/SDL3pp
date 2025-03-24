@@ -87,6 +87,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal structure containing font information.  <a href="structSDL_1_1FontBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to init TTF.  <a href="structSDL_1_1TtfInitFlag.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -144,9 +147,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga53fae27b8ce171ef679ffcc3b27f9327" id="r_ga53fae27b8ce171ef679ffcc3b27f9327"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga53fae27b8ce171ef679ffcc3b27f9327">SDL::GetHarfBuzzVersion</a> (int *major, int *minor, int *patch)</td></tr>
 <tr class="memdesc:ga53fae27b8ce171ef679ffcc3b27f9327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query the version of the HarfBuzz library in use.  <br /></td></tr>
 <tr class="separator:ga53fae27b8ce171ef679ffcc3b27f9327"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga23adb1a80ce9f99ed81e3008feb923d7" id="r_ga23adb1a80ce9f99ed81e3008feb923d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7">SDL::TTF_Init</a> ()</td></tr>
-<tr class="memdesc:ga23adb1a80ce9f99ed81e3008feb923d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize SDL_ttf.  <br /></td></tr>
-<tr class="separator:ga23adb1a80ce9f99ed81e3008feb923d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea266ac89de6e948ef6b15c29dec7a0e" id="r_gaea266ac89de6e948ef6b15c29dec7a0e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaea266ac89de6e948ef6b15c29dec7a0e">SDL::Init</a> (<a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a> _)</td></tr>
+<tr class="memdesc:gaea266ac89de6e948ef6b15c29dec7a0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize SDL_ttf.  <br /></td></tr>
+<tr class="separator:gaea266ac89de6e948ef6b15c29dec7a0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3d037554b35e623b087cc4b24d247e18" id="r_ga3d037554b35e623b087cc4b24d247e18"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3d037554b35e623b087cc4b24d247e18">SDL::StringToTag</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> string)</td></tr>
 <tr class="memdesc:ga3d037554b35e623b087cc4b24d247e18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a 4 character string to a 32-bit tag.  <br /></td></tr>
 <tr class="separator:ga3d037554b35e623b087cc4b24d247e18"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,15 +294,17 @@ Functions</h2></td></tr>
 <tr class="memitem:ga0d3ed35907f459110e0e47d636d83db2" id="r_ga0d3ed35907f459110e0e47d636d83db2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga0d3ed35907f459110e0e47d636d83db2">SDL::DestroyText</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
 <tr class="memdesc:ga0d3ed35907f459110e0e47d636d83db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text object created by a text engine.  <br /></td></tr>
 <tr class="separator:ga0d3ed35907f459110e0e47d636d83db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40ee1b9a3344c5692703948c1412abca" id="r_ga40ee1b9a3344c5692703948c1412abca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca">SDL::TTF_Quit</a> ()</td></tr>
-<tr class="memdesc:ga40ee1b9a3344c5692703948c1412abca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitialize SDL_ttf.  <br /></td></tr>
-<tr class="separator:ga40ee1b9a3344c5692703948c1412abca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5b5fba9933c655ef199609b1c13ecfef" id="r_ga5b5fba9933c655ef199609b1c13ecfef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga5b5fba9933c655ef199609b1c13ecfef">SDL::TTF_WasInit</a> ()</td></tr>
-<tr class="memdesc:ga5b5fba9933c655ef199609b1c13ecfef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if SDL_ttf is initialized.  <br /></td></tr>
-<tr class="separator:ga5b5fba9933c655ef199609b1c13ecfef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82f9e1056eeaa39c50c5cf5408dde405" id="r_ga82f9e1056eeaa39c50c5cf5408dde405"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga82f9e1056eeaa39c50c5cf5408dde405">SDL::QuitSubSystem</a> (<a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a> _)</td></tr>
+<tr class="memdesc:ga82f9e1056eeaa39c50c5cf5408dde405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitialize SDL_ttf.  <br /></td></tr>
+<tr class="separator:ga82f9e1056eeaa39c50c5cf5408dde405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f6e3dc8998aa487925f6a7a006162f6" id="r_ga4f6e3dc8998aa487925f6a7a006162f6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga4f6e3dc8998aa487925f6a7a006162f6">SDL::WasInit</a> (<a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a> _)</td></tr>
+<tr class="memdesc:ga4f6e3dc8998aa487925f6a7a006162f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if SDL_ttf is initialized.  <br /></td></tr>
+<tr class="separator:ga4f6e3dc8998aa487925f6a7a006162f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
+<tr class="memitem:gaa30f945c03b7abc08b5436d6369d1486" id="r_gaa30f945c03b7abc08b5436d6369d1486"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaa30f945c03b7abc08b5436d6369d1486">SDL::INIT_TTF</a></td></tr>
+<tr class="separator:gaa30f945c03b7abc08b5436d6369d1486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa3488933d07a8c78c4a67c3fc49c1587" id="r_gaa3488933d07a8c78c4a67c3fc49c1587"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaa3488933d07a8c78c4a67c3fc49c1587">SDL::HINTING_NORMAL</a> = TTF_HINTING_NORMAL</td></tr>
 <tr class="memdesc:gaa3488933d07a8c78c4a67c3fc49c1587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Normal hinting applies standard grid-fitting.  <br /></td></tr>
 <tr class="separator:gaa3488933d07a8c78c4a67c3fc49c1587"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -375,7 +380,7 @@ Variables</h2></td></tr>
 <p>The values here are chosen to match <a href="https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t">hb_direction_t</a> </p><dl class="section since"><dt>Since</dt><dd>This enum is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontDirection </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00104">104</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00113">113</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -397,7 +402,7 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960" title="Handle to a non owned font.">FontRef</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00056">56</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00057">57</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -419,7 +424,7 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__CategorySDLTTF.html#ga4dd382dc093e6f59f96c32663e22a20e" title="Handle to an owned font.">Font</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00046">46</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00047">47</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -442,7 +447,7 @@ Variables</h2></td></tr>
 <dd>
 TTF_GetFontStyle </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00070">70</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00079">79</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -462,7 +467,7 @@ TTF_GetFontStyle </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetGPUTextDrawData </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02164">2164</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02173">2173</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -481,7 +486,7 @@ TTF_GetFontStyle </dd></dl>
 <p>The winding order of the vertices returned by TTF_GetGPUTextDrawData. </p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02224">2224</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02233">2233</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -504,7 +509,7 @@ TTF_GetFontStyle </dd></dl>
 <dd>
 TTF_GetFontHinting </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00084">84</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00093">93</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -523,7 +528,7 @@ TTF_GetFontHinting </dd></dl>
 <p>The horizontal alignment used when rendering wrapped text. </p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00091">91</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00100">100</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -542,7 +547,7 @@ TTF_GetFontHinting </dd></dl>
 <p>The type of data in a glyph image. </p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00111">111</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00120">120</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -572,7 +577,7 @@ TTF_GetTextSubStringForPoint </dd>
 <dd>
 TTF_GetTextSubStringsForRange </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02892">2892</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02901">2901</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +597,7 @@ TTF_GetTextSubStringsForRange </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SubString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02878">2878</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02887">2887</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -616,7 +621,7 @@ TTF_GetTextProperties </dd>
 <dd>
 TTF_DestroyText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01938">1938</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01947">1947</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -635,7 +640,7 @@ TTF_DestroyText </dd></dl>
 <p>Internal data for TTF_Text. </p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01927">1927</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01936">1936</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +666,7 @@ TTF_DestroyText </dd></dl>
 </ul>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01920">1920</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01929">1929</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -725,7 +730,7 @@ TTF_InsertTextString </dd>
 <dd>
 TTF_SetTextString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02813">2813</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02822">2822</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -769,7 +774,7 @@ TTF_DestroyGPUTextEngine </dd>
 <dd>
 TTF_GetGPUTextDrawData </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02123">2123</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02132">2132</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -818,7 +823,7 @@ TTF_DestroyGPUTextEngine </dd>
 <dd>
 TTF_GetGPUTextDrawData </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02152">2152</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02161">2161</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -862,7 +867,7 @@ TTF_DrawRendererText </dd>
 <dd>
 TTF_CreateRendererTextEngineWithProperties </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02023">2023</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02032">2032</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -911,7 +916,7 @@ TTF_DestroyRendererTextEngine </dd>
 <dd>
 TTF_DrawRendererText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02052">2052</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02061">2061</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -946,7 +951,7 @@ TTF_DrawRendererText </dd></dl>
 <dd>
 TTF_DrawSurfaceText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01953">1953</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01962">1962</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1011,7 +1016,7 @@ TTF_DrawSurfaceText </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_DestroyText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02296">2296</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02305">2305</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1079,7 @@ TTF_InsertTextString </dd>
 <dd>
 TTF_SetTextString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02842">2842</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02851">2851</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1114,7 +1119,7 @@ TTF_SetTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CreateGPUTextEngine </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02214">2214</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02223">2223</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1159,7 @@ TTF_SetTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CreateRendererTextEngine </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02101">2101</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02110">2110</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1194,7 +1199,7 @@ TTF_SetTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CreateSurfaceTextEngine </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02002">2002</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02011">2011</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1233,7 +1238,7 @@ TTF_SetTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CreateText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03078">3078</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03087">3087</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1294,7 +1299,7 @@ TTF_SetTextString </dd></dl>
 <dd>
 TTF_CreateText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02080">2080</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02089">2089</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1362,7 +1367,7 @@ TTF_CreateText </dd></dl>
 <dd>
 TTF_CreateText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01981">1981</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01990">1990</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1407,7 +1412,7 @@ TTF_CreateText </dd></dl>
 </div><div class="memdoc">
 
 <p>Query the version of the FreeType library in use. </p>
-<p><a class="el" href="group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7" title="Initialize SDL_ttf.">TTF_Init()</a> should be called before calling this function.</p>
+<p>TTF_Init() should be called before calling this function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">major</td><td>to be filled in with the major version number. Can be NULL. </td></tr>
@@ -1418,9 +1423,9 @@ TTF_CreateText </dd></dl>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7" title="Initialize SDL_ttf.">TTF_Init</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd>TTF_Init </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00139">139</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00148">148</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1465,7 +1470,7 @@ TTF_CreateText </dd></dl>
 <dd>
 TTF_CreateText </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02193">2193</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02202">2202</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1505,7 +1510,7 @@ TTF_CreateText </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetGPUTextEngineWinding </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02272">2272</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02281">2281</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1562,7 +1567,7 @@ TTF_CreateText </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00157">157</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00166">166</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1620,7 +1625,7 @@ TTF_CreateText </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03041">3041</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03050">3050</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1677,7 +1682,7 @@ TTF_CreateText </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03017">3017</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03026">3026</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1751,7 +1756,7 @@ TTF_CreateText </dd></dl>
 <dd>
 TTF_SetTextColor </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02560">2560</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02569">2569</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1825,7 +1830,7 @@ TTF_SetTextColor </dd></dl>
 <dd>
 TTF_SetTextColorFloat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02588">2588</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02597">2597</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1865,7 +1870,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02435">2435</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02444">2444</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1905,7 +1910,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetTextEngine </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02357">2357</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02366">2366</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1945,7 +1950,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetTextFont </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02399">2399</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02408">2408</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2002,7 +2007,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetTextPosition </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02637">2637</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02646">2646</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2041,7 +2046,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02316">2316</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02325">2325</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2082,7 +2087,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_TagToString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02483">2483</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02492">2492</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2140,7 +2145,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02866">2866</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02875">2875</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2198,7 +2203,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02915">2915</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02924">2924</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2256,7 +2261,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02941">2941</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02950">2950</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2321,7 +2326,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02993">2993</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03002">3002</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2385,7 +2390,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02965">2965</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02974">2974</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2436,7 +2441,42 @@ TTF_SetTextColorFloat </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetTextWrapWidth </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02681">2681</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02690">2690</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+
+</div>
+</div>
+<a id="gaea266ac89de6e948ef6b15c29dec7a0e" name="gaea266ac89de6e948ef6b15c29dec7a0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaea266ac89de6e948ef6b15c29dec7a0e">&#9670;&#160;</a></span>Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SDL::Init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a>&#160;</td>
+          <td class="paramname"><em>_</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize SDL_ttf. </p>
+<p>You must successfully call this function before it is safe to call any other function in this library.</p>
+<p>It is safe to call this more than once, and each successful TTF_Init() call should be paired with a matching TTF_Quit() call.</p>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>TTF_Quit </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01798">1798</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2506,7 +2546,42 @@ TTF_DeleteTextString </dd>
 <dd>
 TTF_SetTextString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02784">2784</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02793">2793</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+
+</div>
+</div>
+<a id="ga82f9e1056eeaa39c50c5cf5408dde405" name="ga82f9e1056eeaa39c50c5cf5408dde405"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga82f9e1056eeaa39c50c5cf5408dde405">&#9670;&#160;</a></span>QuitSubSystem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::QuitSubSystem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a>&#160;</td>
+          <td class="paramname"><em>_</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deinitialize SDL_ttf. </p>
+<p>You must call this when done with the library, to free internal resources. It is safe to call this when the library isn't initialized, as it will just return immediately.</p>
+<p>Once you have as many quit calls as you have had successful calls to TTF_Init, the library will actually deinitialize.</p>
+<p>Please note that this does not automatically close any fonts that are still open at the time of deinitialization, and it is possibly not safe to close them afterwards, as parts of the library will no longer be initialized to deal with it. A well-written program should call TTF_CloseFont() on any open fonts before calling this function!</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03137">3137</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2556,7 +2631,7 @@ TTF_SetTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetGPUTextEngineWinding </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02250">2250</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02259">2259</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2631,7 +2706,7 @@ TTF_SetTextString </dd></dl>
 <dd>
 TTF_SetTextColorFloat </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02506">2506</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02515">2515</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2706,7 +2781,7 @@ TTF_SetTextColorFloat </dd></dl>
 <dd>
 TTF_SetTextColor </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02532">2532</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02541">2541</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2757,7 +2832,7 @@ TTF_SetTextColor </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02417">2417</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02426">2426</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2809,7 +2884,7 @@ TTF_SetTextColor </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetTextEngine </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02338">2338</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02347">2347</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2862,7 +2937,7 @@ TTF_SetTextColor </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetTextFont </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02380">2380</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02389">2389</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2921,7 +2996,7 @@ TTF_SetTextColor </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetTextPosition </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02616">2616</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02625">2625</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2973,7 +3048,7 @@ TTF_SetTextColor </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_StringToTag </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02460">2460</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02469">2469</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3036,7 +3111,7 @@ TTF_DeleteTextString </dd>
 <dd>
 TTF_InsertTextString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02754">2754</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02763">2763</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3089,7 +3164,7 @@ TTF_InsertTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_TextWrapWhitespaceVisible </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02709">2709</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02718">2718</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3141,7 +3216,7 @@ TTF_InsertTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetTextWrapWidth </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02660">2660</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02669">2669</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3181,7 +3256,7 @@ TTF_InsertTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_TagToString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01862">1862</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01871">1871</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3238,7 +3313,7 @@ TTF_InsertTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_TagToString </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01882">1882</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01891">1891</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3278,75 +3353,7 @@ TTF_InsertTextString </dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetTextWrapWhitespaceVisible </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02728">2728</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
-
-</div>
-</div>
-<a id="ga23adb1a80ce9f99ed81e3008feb923d7" name="ga23adb1a80ce9f99ed81e3008feb923d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga23adb1a80ce9f99ed81e3008feb923d7">&#9670;&#160;</a></span>TTF_Init()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::TTF_Init </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Initialize SDL_ttf. </p>
-<p>You must successfully call this function before it is safe to call any other function in this library.</p>
-<p>It is safe to call this more than once, and each successful <a class="el" href="group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7" title="Initialize SDL_ttf.">TTF_Init()</a> call should be paired with a matching <a class="el" href="group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca" title="Deinitialize SDL_ttf.">TTF_Quit()</a> call.</p>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca" title="Deinitialize SDL_ttf.">TTF_Quit</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01789">1789</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
-
-</div>
-</div>
-<a id="ga40ee1b9a3344c5692703948c1412abca" name="ga40ee1b9a3344c5692703948c1412abca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga40ee1b9a3344c5692703948c1412abca">&#9670;&#160;</a></span>TTF_Quit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::TTF_Quit </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Deinitialize SDL_ttf. </p>
-<p>You must call this when done with the library, to free internal resources. It is safe to call this when the library isn't initialized, as it will just return immediately.</p>
-<p>Once you have as many quit calls as you have had successful calls to TTF_Init, the library will actually deinitialize.</p>
-<p>Please note that this does not automatically close any fonts that are still open at the time of deinitialization, and it is possibly not safe to close them afterwards, as parts of the library will no longer be initialized to deal with it. A well-written program should call TTF_CloseFont() on any open fonts before calling this function!</p>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03128">3128</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02737">2737</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3378,45 +3385,7 @@ TTF_InsertTextString </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00122">122</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
-
-</div>
-</div>
-<a id="ga5b5fba9933c655ef199609b1c13ecfef" name="ga5b5fba9933c655ef199609b1c13ecfef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5b5fba9933c655ef199609b1c13ecfef">&#9670;&#160;</a></span>TTF_WasInit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int SDL::TTF_WasInit </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Check if SDL_ttf is initialized. </p>
-<p>This reports the number of times the library has been initialized by a call to <a class="el" href="group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7" title="Initialize SDL_ttf.">TTF_Init()</a>, without a paired deinitialization request from <a class="el" href="group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca" title="Deinitialize SDL_ttf.">TTF_Quit()</a>.</p>
-<p>In short: if it's greater than zero, the library is currently initialized and ready to work. If zero, it is not initialized.</p>
-<p>Despite the return value being a signed integer, this function should not return a negative number.</p>
-<dl class="section return"><dt>Returns</dt><dd>the current number of initialization calls, that need to eventually be paired with this many calls to <a class="el" href="group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca" title="Deinitialize SDL_ttf.">TTF_Quit()</a>.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga23adb1a80ce9f99ed81e3008feb923d7" title="Initialize SDL_ttf.">TTF_Init</a> </dd>
-<dd>
-<a class="el" href="group__CategorySDLTTF.html#ga40ee1b9a3344c5692703948c1412abca" title="Deinitialize SDL_ttf.">TTF_Quit</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03152">3152</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00131">131</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3456,7 +3425,46 @@ TTF_InsertTextString </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03064">3064</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03073">3073</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4f6e3dc8998aa487925f6a7a006162f6" name="ga4f6e3dc8998aa487925f6a7a006162f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4f6e3dc8998aa487925f6a7a006162f6">&#9670;&#160;</a></span>WasInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SDL::WasInit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a>&#160;</td>
+          <td class="paramname"><em>_</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if SDL_ttf is initialized. </p>
+<p>This reports the number of times the library has been initialized by a call to TTF_Init(), without a paired deinitialization request from TTF_Quit().</p>
+<p>In short: if it's greater than zero, the library is currently initialized and ready to work. If zero, it is not initialized.</p>
+<p>Despite the return value being a signed integer, this function should not return a negative number.</p>
+<dl class="section return"><dt>Returns</dt><dd>the current number of initialization calls, that need to eventually be paired with this many calls to TTF_Quit().</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>TTF_Init </dd>
+<dd>
+TTF_Quit </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l03161">3161</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3483,7 +3491,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Bottom to Top. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01848">1848</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01857">1857</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3507,7 +3515,7 @@ TTF_InsertTextString </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01828">1828</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01837">1837</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3533,7 +3541,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Left to Right. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01833">1833</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01842">1842</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3559,7 +3567,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Right to Left. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01838">1838</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01847">1847</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3585,7 +3593,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Top to Bottom. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01843">1843</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01852">1852</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3611,7 +3619,7 @@ TTF_InsertTextString </dd></dl>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02229">2229</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02238">2238</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3637,7 +3645,7 @@ TTF_InsertTextString </dd></dl>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02232">2232</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02241">2241</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3663,7 +3671,7 @@ TTF_InsertTextString </dd></dl>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  TTF_GPU_TEXTENGINE_WINDING_INVALID</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02226">2226</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l02235">2235</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3689,7 +3697,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Light hinting applies subtle adjustments to improve rendering. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01799">1799</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01808">1808</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3715,7 +3723,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Light hinting with subpixel rendering for more precise font edges. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01815">1815</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01824">1824</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3741,7 +3749,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Monochrome hinting adjusts the font for better rendering at lower resolutions. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01805">1805</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01814">1814</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3767,7 +3775,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>No hinting, the font is rendered without any grid-fitting. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01810">1810</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01819">1819</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3793,7 +3801,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>Normal hinting applies standard grid-fitting. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01794">1794</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01803">1803</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3819,7 +3827,7 @@ TTF_InsertTextString </dd></dl>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  TTF_HORIZONTAL_ALIGN_CENTER</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01822">1822</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01831">1831</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3845,7 +3853,7 @@ TTF_InsertTextString </dd></dl>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  TTF_HORIZONTAL_ALIGN_INVALID</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01817">1817</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01826">1826</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3869,7 +3877,7 @@ TTF_InsertTextString </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01820">1820</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01829">1829</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3895,7 +3903,7 @@ TTF_InsertTextString </dd></dl>
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  TTF_HORIZONTAL_ALIGN_RIGHT</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01825">1825</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01834">1834</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3921,7 +3929,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>The color channels are white. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01892">1892</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01901">1901</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3947,7 +3955,7 @@ TTF_InsertTextString </dd></dl>
 
 <p>The color channels have image data. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01897">1897</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01906">1906</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3971,7 +3979,7 @@ TTF_InsertTextString </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01887">1887</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01896">1896</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3997,7 +4005,21 @@ TTF_InsertTextString </dd></dl>
 
 <p>The alpha channel has signed distance field information. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01902">1902</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01911">1911</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+
+</div>
+</div>
+<a id="gaa30f945c03b7abc08b5436d6369d1486" name="gaa30f945c03b7abc08b5436d6369d1486"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa30f945c03b7abc08b5436d6369d1486">&#9670;&#160;</a></span>INIT_TTF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a> SDL::INIT_TTF</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

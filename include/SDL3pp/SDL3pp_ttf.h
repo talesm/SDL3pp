@@ -2,6 +2,7 @@
 #define SDL3PP_TTF_H_
 
 #include "SDL3pp_error.h"
+#include "SDL3pp_init.h"
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_rect.h"
 #include "SDL3pp_render.h"
@@ -54,6 +55,14 @@ using FontRef = FontBase<ObjectRef<TTF_Font>>;
  * @sa FontRef
  */
 using Font = FontBase<ObjectUnique<TTF_Font>>;
+
+/**
+ * Flag to init TTF
+ *
+ */
+constexpr struct TtfInitFlag : InitFlagsExtra
+{
+} INIT_TTF;
 
 /**
  * Font style flags for TTF_Font
@@ -1786,7 +1795,7 @@ struct FontBase : T
  *
  * @sa TTF_Quit
  */
-inline bool TTF_Init() { return ::TTF_Init(); }
+inline bool Init(TtfInitFlag _) { return TTF_Init(); }
 
 /**
  * Normal hinting applies standard grid-fitting.
@@ -3125,7 +3134,7 @@ inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  */
-inline void TTF_Quit() { return ::TTF_Quit(); }
+inline void QuitSubSystem(TtfInitFlag _) { TTF_Quit(); }
 
 /**
  * Check if SDL_ttf is initialized.
@@ -3149,7 +3158,7 @@ inline void TTF_Quit() { return ::TTF_Quit(); }
  * @sa TTF_Init
  * @sa TTF_Quit
  */
-inline int TTF_WasInit() { return ::TTF_WasInit(); }
+inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 
 /// @}
 
