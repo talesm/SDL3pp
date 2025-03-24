@@ -11,5 +11,7 @@ var searchData=
   ['glcontextref_8',['GLContextRef',['../group__CategoryVideo.html#gaaec080e4bfa115925104a25efb472415',1,'SDL']]],
   ['glcontextreleaseflag_9',['GLContextReleaseFlag',['../group__CategoryVideo.html#ga33c8016456aeb990424fd973dd6ca833',1,'SDL']]],
   ['glcontextresetnotification_10',['GLContextResetNotification',['../group__CategoryVideo.html#ga26ce7467913703fa1f7828bec5aa264d',1,'SDL']]],
-  ['glprofile_11',['GLProfile',['../group__CategoryVideo.html#gadefdc979b086832fc622f980c11c02c1',1,'SDL']]]
+  ['glprofile_11',['GLProfile',['../group__CategoryVideo.html#gadefdc979b086832fc622f980c11c02c1',1,'SDL']]],
+  ['gpuatlasdrawsequence_12',['GPUAtlasDrawSequence',['../group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1',1,'SDL']]],
+  ['gputextenginewinding_13',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a',1,'SDL']]]
 ];
