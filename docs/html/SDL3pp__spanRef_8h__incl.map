@@ -1,9 +1,0 @@
-<map id="SDL3pp/SDL3pp_spanRef.h" name="SDL3pp/SDL3pp_spanRef.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="45,5,240,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,85,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,33,74,72,71,68,125,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="109,79,176,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,31,145,65,140,65,140,31"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="200,79,253,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="158,29,204,67,201,72,154,33"/>
-</map>

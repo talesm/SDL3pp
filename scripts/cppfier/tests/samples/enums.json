@@ -1,0 +1,60 @@
+{
+  "files": {
+    "enums.h": {
+      "name": "enums.h",
+      "doc": "",
+      "entries": {
+        "MyEnum": {
+          "doc": "@brief My enum one",
+          "name": "MyEnum",
+          "kind": "enum",
+          "entries": {
+            "MyENUM_VALUE0": {
+              "doc": "",
+              "name": "MyENUM_VALUE0",
+              "kind": "var",
+              "type": ""
+            },
+            "MyENUM_VALUE1": {
+              "doc": "",
+              "name": "MyENUM_VALUE1",
+              "kind": "var",
+              "type": ""
+            },
+            "MyENUM_VALUE_N": {
+              "doc": "",
+              "name": "MyENUM_VALUE_N",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        },
+        "MyEnumBit": {
+          "doc": "@brief My enum 2",
+          "name": "MyEnumBit",
+          "kind": "enum",
+          "entries": {
+            "MyBIT_VALUE0": {
+              "doc": "",
+              "name": "MyBIT_VALUE0",
+              "kind": "var",
+              "type": ""
+            },
+            "MyBIT_VALUE1": {
+              "doc": "",
+              "name": "MyBIT_VALUE1",
+              "kind": "var",
+              "type": ""
+            },
+            "MyBIT_VALUE2": {
+              "doc": "",
+              "name": "MyBIT_VALUE2",
+              "kind": "var",
+              "type": ""
+            }
+          }
+        }
+      }
+    }
+  }
+}

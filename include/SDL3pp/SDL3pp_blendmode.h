@@ -2,6 +2,7 @@
 #define SDL3PP_BLENDMODE_H_
 
 #include <SDL3/SDL_blendmode.h>
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 /**

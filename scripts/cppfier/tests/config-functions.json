@@ -1,0 +1,7 @@
+{
+  "sources": [
+    "functions.h"
+  ],
+  "api": "tests/samples/functions.json",
+  "baseDir": "tests/samples/"
+}

@@ -1,0 +1,7 @@
+{
+  "sources": [
+    "vars.h"
+  ],
+  "api": "tests/samples/vars.json",
+  "baseDir": "tests/samples/"
+}

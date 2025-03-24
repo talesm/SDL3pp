@@ -1,10 +1,8 @@
-
-
 #ifndef SDL3PP_LOCALE_H_
 #define SDL3PP_LOCALE_H_
 
 #include <SDL3/SDL_locale.h>
-#include "SDL3pp_freeWrapper.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 /**
@@ -67,17 +65,17 @@ using Locale = SDL_Locale;
  * if possible, and you can call this function again to get an updated copy of
  * preferred locales.
  *
- * @param count a pointer filled in with the number of locales returned, may
- *              be NULL.
- * @returns a NULL terminated array of locale pointers, or NULL on failure;
- *          call GetError() for more information. This is a single allocation
+ * @returns a std::nullptr terminated array of locale pointers, or std::nullptr
+ * on failure; call GetError() for more information. This is a single allocation
  *          that should be freed with free() when it is no longer needed.
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline FreeWrapper<Locale*[]> GetPreferredLocales(int* count)
+inline OwnArray<Locale*> GetPreferredLocales()
 {
-  return wrapArray(SDL_GetPreferredLocales(count));
+  int count = 0;
+  auto data = SDL_GetPreferredLocales(&count);
+  return OwnArray<Locale*>{data, size_t(count)};
 }
 
 /// @}

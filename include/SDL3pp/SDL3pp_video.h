@@ -7,8 +7,8 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 #include "SDL3pp_error.h"
-#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
 #include "SDL3pp_stringParam.h"
@@ -56,12 +56,6 @@ struct WindowBase;
  * @sa WindowBase
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
-
-template<>
-struct ObjectDeleter<SDL_Window>
-{
-  void operator()(WindowRef window) const;
-};
 
 /**
  * Handle to an owned window
@@ -159,6 +153,11 @@ using DisplayModeData = SDL_DisplayModeData;
 using DisplayMode = SDL_DisplayMode;
 
 /**
+ * @name WindowFlags
+ * @{
+ */
+
+/**
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
@@ -171,6 +170,138 @@ using DisplayMode = SDL_DisplayMode;
  * @sa WindowBase.GetFlags()
  */
 using WindowFlags = SDL_WindowFlags;
+
+/**
+ * window is in fullscreen mode
+ */
+constexpr WindowFlags WINDOW_FULLSCREEN = SDL_WINDOW_FULLSCREEN;
+
+/**
+ * window usable with OpenGL context
+ */
+constexpr WindowFlags WINDOW_OPENGL = SDL_WINDOW_OPENGL;
+
+/**
+ * window is occluded
+ */
+constexpr WindowFlags WINDOW_OCCLUDED = SDL_WINDOW_OCCLUDED;
+
+/**
+ * window is neither mapped onto the desktop nor shown in the
+ * taskbar/dock/window list; SDL_ShowWindow() is required for it to become
+ * visible
+ */
+constexpr WindowFlags WINDOW_HIDDEN = SDL_WINDOW_HIDDEN;
+
+/**
+ * no window decoration
+ */
+constexpr WindowFlags WINDOW_BORDERLESS = SDL_WINDOW_BORDERLESS;
+
+/**
+ * window can be resized
+ */
+constexpr WindowFlags WINDOW_RESIZABLE = SDL_WINDOW_RESIZABLE;
+
+/**
+ * window is minimized
+ */
+constexpr WindowFlags WINDOW_MINIMIZED = SDL_WINDOW_MINIMIZED;
+
+/**
+ * window is maximized
+ */
+constexpr WindowFlags WINDOW_MAXIMIZED = SDL_WINDOW_MAXIMIZED;
+
+/**
+ * window has grabbed mouse input
+ */
+constexpr WindowFlags WINDOW_MOUSE_GRABBED = SDL_WINDOW_MOUSE_GRABBED;
+
+/**
+ * window has input focus
+ */
+constexpr WindowFlags WINDOW_INPUT_FOCUS = SDL_WINDOW_INPUT_FOCUS;
+
+/**
+ * window has mouse focus
+ */
+constexpr WindowFlags WINDOW_MOUSE_FOCUS = SDL_WINDOW_MOUSE_FOCUS;
+
+/**
+ * window not created by SDL
+ */
+constexpr WindowFlags WINDOW_EXTERNAL = SDL_WINDOW_EXTERNAL;
+
+/**
+ * window is modal
+ */
+constexpr WindowFlags WINDOW_MODAL = SDL_WINDOW_MODAL;
+
+/**
+ * window uses high pixel density back buffer if possible
+ */
+constexpr WindowFlags WINDOW_HIGH_PIXEL_DENSITY = SDL_WINDOW_HIGH_PIXEL_DENSITY;
+
+/**
+ * window has mouse captured (unrelated to MOUSE_GRABBED)
+ */
+constexpr WindowFlags WINDOW_MOUSE_CAPTURE = SDL_WINDOW_MOUSE_CAPTURE;
+
+/**
+ * window has relative mode enabled
+ */
+constexpr WindowFlags WINDOW_MOUSE_RELATIVE_MODE =
+  SDL_WINDOW_MOUSE_RELATIVE_MODE;
+
+/**
+ * window should always be above others
+ */
+constexpr WindowFlags WINDOW_ALWAYS_ON_TOP = SDL_WINDOW_ALWAYS_ON_TOP;
+
+/**
+ * window should be treated as a utility window, not showing in the task bar and
+ * window list
+ */
+constexpr WindowFlags WINDOW_UTILITY = SDL_WINDOW_UTILITY;
+
+/**
+ * window should be treated as a tooltip and does not get mouse or keyboard
+ * focus, requires a parent window
+ */
+constexpr WindowFlags WINDOW_TOOLTIP = SDL_WINDOW_TOOLTIP;
+
+/**
+ * window should be treated as a popup menu, requires a parent window
+ */
+constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
+
+/**
+ * window has grabbed keyboard input
+ */
+constexpr WindowFlags WINDOW_KEYBOARD_GRABBED = SDL_WINDOW_KEYBOARD_GRABBED;
+
+/**
+ * window usable for Vulkan surface
+ */
+constexpr WindowFlags WINDOW_VULKAN = SDL_WINDOW_VULKAN;
+
+/**
+ * window usable for Metal view
+ */
+constexpr WindowFlags WINDOW_METAL = SDL_WINDOW_METAL;
+
+/**
+ * window with transparent buffer
+ */
+constexpr WindowFlags WINDOW_TRANSPARENT = SDL_WINDOW_TRANSPARENT;
+
+/**
+ * window should not be focusable
+ */
+constexpr WindowFlags WINDOW_NOT_FOCUSABLE = SDL_WINDOW_NOT_FOCUSABLE;
+
+/// @}
 
 /**
  * @name FlashOperations
@@ -335,8 +466,6 @@ struct Display
   /**
    * Get a list of currently connected displays.
    *
-   * @param count a pointer filled in with the number of displays returned, may
-   *              be NULL.
    * @returns a 0 terminated array of display instance IDs or NULL on failure;
    *          call GetError() for more information. This should be freed
    *          with SDL_free() when it is no longer needed.
@@ -345,9 +474,11 @@ struct Display
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static FreeWrapper<Display[]> GetAll(int* count)
+  static OwnArray<Display> GetAll()
   {
-    return wrapArray(reinterpret_cast<Display*>(SDL_GetDisplays(count)));
+    int count = 0;
+    auto data = reinterpret_cast<Display*>(SDL_GetDisplays(&count));
+    return OwnArray<Display>{data, size_t(count)};
   }
 
   /**
@@ -496,7 +627,7 @@ struct Display
   }
 
   /**
-   * @brief Get a list of fullscreen display modes available on a display.
+   * Get a list of fullscreen display modes available on a display.
    *
    * The display modes are sorted in this priority:
    *
@@ -507,8 +638,6 @@ struct Display
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param count a pointer filled in with the number of display modes returned,
-   *              may be NULL.
    * @returns a NULL terminated array of display mode pointers or NULL on
    *          failure; call GetError() for more information.
    *
@@ -516,12 +645,16 @@ struct Display
    *
    * This automatically calls SDL_free after result is out of scope.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
    * @sa Display.GetAll()
    * @sa GetDisplays()
    */
-  FreeWrapper<DisplayMode*[]> GetFullscreenModes(int* count = nullptr) const
+  OwnArray<DisplayMode*> GetFullscreenModes() const
   {
-    return wrapArray(SDL_GetFullscreenDisplayModes(displayID, count));
+    int count = 0;
+    auto data = SDL_GetFullscreenDisplayModes(displayID, &count);
+    return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
   /**
@@ -1096,9 +1229,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  FreeWrapper<void*> GetICCProfile(size_t* size) const
+  OwnPtr<void> GetICCProfile(size_t* size) const
   {
-    return {SDL_GetWindowICCProfile(T::get(), size)};
+    return OwnPtr<void>{SDL_GetWindowICCProfile(T::get(), size)};
   }
 
   /**
@@ -2656,22 +2789,90 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy()
-  {
-    auto window = T::release();
-    KeyValueWrapper<SDL_Window*, HitTestCB>::erase(window);
-    return SDL_DestroyWindow(window);
-  }
+  void Destroy() { return T::free(); }
 };
+
+// Forward decl
+template<ObjectBox<SDL_GLContext> T>
+struct GLContextBase;
+
+using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
+
+using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
 
 /**
  * An opaque handle to an OpenGL context.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GL_CreateContext()
+ * @cat resource
  */
-using GLContext = SDL_GLContext;
+template<ObjectBox<SDL_GLContext> T>
+struct GLContextBase : T
+{
+  using T::T;
+
+  /**
+   * Create an OpenGL context for an OpenGL window, and make it current.
+   *
+   * Windows users new to OpenGL should note that, for historical reasons, GL
+   * functions added after OpenGL version 1.1 are not available by default.
+   * Those functions must be loaded at run-time, either with an OpenGL
+   * extension-handling library or with SDL_GL_GetProcAddress() and its related
+   * functions.
+   *
+   * SDL_GLContext is opaque to the application.
+   *
+   * @param window the window to associate with the context.
+   * @post the OpenGL context associated with `window` or NULL on failure;
+   *          call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Destroy()
+   * @sa MakeCurrent()
+   */
+  GLContextBase(WindowRef window)
+    : T(SDL_GL_CreateContext(window.get()))
+  {
+  }
+
+  /**
+   * Set up an OpenGL context for rendering into an OpenGL window.
+   *
+   * The context must have been created with a compatible window.
+   *
+   * @param window the window to associate with the context.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GL_CreateContext
+   */
+  bool MakeCurrent(WindowRef window)
+  {
+    return SDL_GL_MakeCurrent(window.get(), T::get());
+  }
+
+  /**
+   * Delete an OpenGL context.
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GL_CreateContext
+   */
+  bool Destroy() { return SDL_GL_DestroyContext(T::release()); }
+};
 
 /**
  * Opaque type for an EGL display.
@@ -3040,8 +3241,6 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 /**
  * Get a list of valid windows.
  *
- * @param count a pointer filled in with the number of windows returned, may
- *              be NULL.
  * @returns a NULL terminated array of SDL_Window pointers or NULL on failure;
  *          call GetError() for more information. This is a single
  *          allocation that should be freed with SDL_free() when it is no
@@ -3051,9 +3250,11 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline FreeWrapper<WindowRef[]> GetWindows(int* count)
+inline OwnArray<WindowRef> GetWindows()
 {
-  return wrapArray(reinterpret_cast<WindowRef*>(SDL_GetWindows(count)));
+  int count = 0;
+  auto data = reinterpret_cast<WindowRef*>(SDL_GetWindows(&count));
+  return OwnArray<WindowRef>{data, size_t(count)};
 }
 
 /**
@@ -3090,6 +3291,32 @@ inline WindowRef GetWindowFromID(WindowID id)
  * @sa SetKeyboardGrab()
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
+
+/**
+ * Destroy a window.
+ *
+ * Any child windows owned by the window will be recursively destroyed as
+ * well.
+ *
+ * Note that on some platforms, the visible window may not actually be removed
+ * from the screen until the SDL event loop is pumped again, even though the
+ * SDL_Window is no longer valid after this call.
+ *
+ * @param resource the window to destroy.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window
+ * @sa WindowBase
+ */
+template<>
+inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
+{
+  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
+  SDL_DestroyWindow(resource);
+}
 
 /**
  * @brief  Check whether the screensaver is currently enabled.
@@ -3343,54 +3570,6 @@ inline bool GL_GetAttribute(GLAttr attr, int* value)
 }
 
 /**
- * Create an OpenGL context for an OpenGL window, and make it current.
- *
- * Windows users new to OpenGL should note that, for historical reasons, GL
- * functions added after OpenGL version 1.1 are not available by default.
- * Those functions must be loaded at run-time, either with an OpenGL
- * extension-handling library or with SDL_GL_GetProcAddress() and its related
- * functions.
- *
- * SDL_GLContext is opaque to the application.
- *
- * @param window the window to associate with the context.
- * @returns the OpenGL context associated with `window` or NULL on failure;
- *          call GetError() for more information.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GL_DestroyContext()
- * @sa GL_MakeCurrent()
- */
-inline GLContext GL_CreateContext(WindowRef window)
-{
-  return SDL_GL_CreateContext(window.get());
-}
-
-/**
- * Set up an OpenGL context for rendering into an OpenGL window.
- *
- * The context must have been created with a compatible window.
- *
- * @param window the window to associate with the context.
- * @param context the OpenGL context to associate with the window.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GL_CreateContext()
- */
-inline bool GL_MakeCurrent(WindowRef window, GLContext context)
-{
-  return SDL_GL_MakeCurrent(window.get(), context);
-}
-
-/**
  * Get the currently active OpenGL window.
  *
  * @returns the currently active OpenGL window on success or NULL on failure;
@@ -3412,9 +3591,12 @@ inline WindowRef GL_GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GL_MakeCurrent()
+ * @sa GLContextBase.MakeCurrent()
  */
-inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
+inline GLContextRef GL_GetCurrentContext()
+{
+  return SDL_GL_GetCurrentContext();
+}
 
 /**
  * Get the currently active EGL display.
@@ -3575,29 +3757,24 @@ inline bool GL_SwapWindow(WindowRef window)
 /**
  * Delete an OpenGL context.
  *
- * @param context the OpenGL context to be deleted.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @param resource the OpenGL context to be deleted.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GL_CreateContext()
+ * @sa GLContext
+ * @sa GLContextBase
  */
-inline bool GL_DestroyContext(GLContext context)
+template<>
+inline void ObjectRef<SDL_GLContextState>::doFree(SDL_GLContext resource)
 {
-  return SDL_GL_DestroyContext(context);
+  SDL_GL_DestroyContext(resource);
 }
 
 #pragma region impl
 
 /// @}
-
-inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
-{
-  window.Destroy();
-}
 
 #pragma endregion impl
 

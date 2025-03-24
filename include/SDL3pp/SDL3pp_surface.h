@@ -5,9 +5,9 @@
 #include <SDL3/SDL_version.h>
 #include "SDL3pp_blendmode.h"
 #include "SDL3pp_error.h"
-#include "SDL3pp_freeWrapper.h"
 #include "SDL3pp_objectWrapper.h"
 #include "SDL3pp_optionalRef.h"
+#include "SDL3pp_ownPtr.h"
 #include "SDL3pp_pixels.h"
 #include "SDL3pp_properties.h"
 #include "SDL3pp_rect.h"
@@ -50,12 +50,6 @@ struct SurfaceBase;
  * @sa Surface
  */
 using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
-
-template<>
-struct ObjectDeleter<SDL_Surface>
-{
-  void operator()(SurfaceRef Surface) const;
-};
 
 /**
  * Handle to an owned surface
@@ -160,6 +154,21 @@ struct SurfaceBase : T
   using T::T;
 
   /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param file a path on the filesystem to load an image from.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call GetError() for more information.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
+  SurfaceBase(StringParam file);
+
+  /**
    * Allocate a new surface with a specific pixel format.
    *
    * The pixels of the new surface are initialized to zero.
@@ -168,8 +177,7 @@ struct SurfaceBase : T
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
+   * or convertible to false on failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -197,8 +205,7 @@ struct SurfaceBase : T
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
    * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
+   * or convertible to false on failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -210,15 +217,6 @@ struct SurfaceBase : T
     : T(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
   {
   }
-
-  /**
-   * Free a surface.
-   *
-   * This makes this object empty
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Destroy() { return SDL_DestroySurface(T::release()); }
 
   /**
    * Get the properties associated with a surface.
@@ -391,11 +389,11 @@ struct SurfaceBase : T
    * They are still referenced by the surface being queried and will be cleaned
    * up normally.
    *
-   * @param count a pointer filled in with the number of surface pointers
-   *              returned, may be NULL.
    * @returns a NULL terminated array of SDL_Surface pointers or NULL on
    *          failure; call SDL_GetError() for more information. This should be
    *          freed with SDL_free() when it is no longer needed.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -403,9 +401,12 @@ struct SurfaceBase : T
    * @sa RemoveAlternateImages()
    * @sa HasAlternateImages()
    */
-  FreeWrapper<SurfaceRef*[]> GetImages(int* count = nullptr) const
+  OwnArray<SurfaceRef*> GetImages() const
   {
-    return SDL_GetSurfaceImages(T::get(), count);
+    int count = 0;
+    auto data =
+      reinterpret_cast<SurfaceRef*>(SDL_GetSurfaceImages(T::get(), &count));
+    return OwnArray<SurfaceRef*>{data, size_t(count)};
   }
 
   /**
@@ -1781,6 +1782,15 @@ struct SurfaceBase : T
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
   PixelFormat GetFormat() const { return T::get()->format; }
+
+  /**
+   * Free a surface.
+   *
+   * This makes this object empty
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { return T::free(); }
 };
 
 /**
@@ -1864,21 +1874,41 @@ public:
 };
 
 /**
+ * Free a surface.
+ *
+ * It is safe to pass NULL to this function.
+ *
+ * @param surface the SDL_Surface to free.
+ *
+ * @threadsafety No other thread should be using the surface when it is freed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface
+ * @sa SurfaceBase
+ */
+template<>
+inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
+{
+  return SDL_DestroySurface(resource);
+}
+
+/**
  * Load a BMP image from a seekable SDL data stream.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
- *                in the case of an error.
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SaveBMP()
  */
-inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
+inline Surface LoadBMP(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return Surface{SDL_LoadBMP_IO(src, closeio)};
+  return Surface{SDL_LoadBMP_IO(src, false)};
 }
 
 /**
@@ -1887,6 +1917,8 @@ inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
  * @param file the BMP file to load.
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -1905,18 +1937,18 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @param surface the SDL_Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
- *                in the case of an error.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SaveBMP()
+ * @sa LoadBMP()
  */
-inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
+inline bool SaveBMP(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
 {
-  return SDL_SaveBMP_IO(surface.get(), dst, closeio);
+  return SDL_SaveBMP_IO(surface.get(), dst, false);
 }
 
 /**
@@ -2070,11 +2102,6 @@ inline bool PremultiplyAlpha(int width,
 
 #pragma region impl
 /// @}
-
-inline void ObjectDeleter<SDL_Surface>::operator()(SurfaceRef surface) const
-{
-  surface.Destroy();
-}
 
 template<ObjectBox<SDL_Surface*> T>
 SurfaceLock SurfaceBase<T>::Lock() &

@@ -1,6 +1,14 @@
 #ifndef SDL3PP_TTF_H_
 #define SDL3PP_TTF_H_
 
+#include "SDL3pp_error.h"
+#include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_rect.h"
+#include "SDL3pp_render.h"
+#include "SDL3pp_stringParam.h"
+#include "SDL3pp_surface.h"
+#include "SDL3pp_version.h"
+
 #if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
   __has_include(<SDL3_ttf/SDL_ttf.h>)
 #define SDL3PP_ENABLE_TTF
@@ -9,13 +17,6 @@
 #if defined(SDL3PP_ENABLE_TTF) || defined(SDL3PP_DOC)
 
 #include <SDL3_ttf/SDL_ttf.h>
-#include "SDL3pp_error.h"
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_rect.h"
-#include "SDL3pp_render.h"
-#include "SDL3pp_stringParam.h"
-#include "SDL3pp_surface.h"
-#include "SDL3pp_version.h"
 
 namespace SDL {
 
@@ -225,7 +226,7 @@ struct FontBase : T
    *
    * @sa TTF_CloseFont
    */
-  FontBase(SDL_IOStream* src, bool closeio, float ptsize)
+  FontBase(ObjectBox<SDL_IOStream> auto&& src, bool closeio, float ptsize)
     : T(TTF_OpenFontIO(src, closeio, ptsize))
   {
   }

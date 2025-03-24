@@ -18,8 +18,7 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  SDL::Texture characterTexture{
-    SDL::LoadTexture(renderer, "assets/smiley.png")};
+  SDL::Texture characterTexture{renderer, "assets/smiley.png"};
   if (!characterTexture) {
     SDL::LogUnformatted(SDL::GetError());
     return 1;

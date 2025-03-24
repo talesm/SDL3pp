@@ -2,10 +2,8 @@
 #define SDL3PP_PROPERTIES_H_
 
 #include <SDL3/SDL_properties.h>
-#include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
-#include "SDL3pp_objectWrapper.h"
-#include "SDL3pp_stringParam.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -56,12 +54,6 @@ struct PropertiesBase;
 using PropertiesRef =
   PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
 
-struct PropertiesDeleter
-{
-  using pointer = FancyPointer<SDL_PropertiesID>;
-  inline void operator()(PropertiesRef props) const;
-};
-
 /**
  * Handle to an owned properties
  *
@@ -71,8 +63,9 @@ struct PropertiesDeleter
  * @sa PropertiesBase
  * @sa PropertiesRef
  */
-using Properties =
-  PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
+using Properties = PropertiesBase<ObjectUnique<
+  SDL_PropertiesID,
+  ObjectDeleter<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>>>;
 
 /**
  * SDL property type
@@ -709,7 +702,7 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy() { return SDL_DestroyProperties(T::release()); }
+  void Destroy() { T::free(); }
 
   /**
    * Returns the number of properties this has
@@ -830,13 +823,31 @@ inline Properties CreateProperties()
   return Properties{SDL_CreateProperties()};
 }
 
+/**
+ * Destroy a group of properties.
+ *
+ * All properties are deleted and their cleanup functions will be called, if
+ * any.
+ *
+ * @param resource the properties to destroy.
+ *
+ * @threadsafety This function should not be called while these properties are
+ *               locked or other threads might be setting or getting values
+ *               from these properties.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa CreateProperties
+ */
+template<>
+inline void ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree(
+  FancyPointer<SDL_PropertiesID> resource)
+{
+  return SDL_DestroyProperties(resource);
+}
+
 #pragma region impl
 /// @}
-
-inline void PropertiesDeleter::operator()(PropertiesRef props) const
-{
-  props.Destroy();
-}
 
 template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 PropertiesLock PropertiesBase<T>::Lock() &

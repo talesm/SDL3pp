@@ -1,7 +1,6 @@
 #ifndef SDL3PP_RECT_H_
 #define SDL3PP_RECT_H_
 
-#include <cmath>
 #include <optional>
 #include <span>
 #include <SDL3/SDL_rect.h>

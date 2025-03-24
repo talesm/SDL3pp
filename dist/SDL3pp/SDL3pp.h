@@ -1,829 +1,23 @@
-
-
-// begin --- SDL3pp.h --- 
-
-/**
- * Main include header for the SDL3pp library
- *
- * It is almost always best to include just this one header instead of
- * picking out individual headers included here. There are exceptions to
- * this rule--SDL3pp_main.h is special and not included here--but usually
- * letting SDL3pp.h include the kitchen sink for you is the correct approach.
- */
+// Amalgamated SDL3pp
 #ifndef SDL3PP_H_
 #define SDL3PP_H_
 
-#include <SDL3/SDL.h>
-
-// begin --- SDL3pp_assert.h --- 
-
-#ifndef SDL3PP_ASSERT_H_
-#define SDL3PP_ASSERT_H_
-
-#include <SDL3/SDL_assert.h>
-
-// begin --- SDL3pp_stringParam.h --- 
-
-#ifndef SDL3PP_STRING_PARAM_H_
-#define SDL3PP_STRING_PARAM_H_
-
-#include <string>
-#include <string_view>
-#include <variant>
-
-namespace SDL {
-
-#ifndef SDL3PP_ENABLE_STRING_PARAM
-
-#ifndef SDL3PP_DISABLE_STRING_PARAM
-#define SDL3PP_ENABLE_STRING_PARAM
-#endif // SDL3PP_DISABLE_STRING_PARAM
-
-#endif // SDL3PP_ENABLE_STRING_PARAM''
-
-/**
- * @brief A safe and mostly efficient wrapper to std::string and
- * std::string_view parameters
- *
- * This should only be declared in [function
- * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
- * using it otherwise is to ask for undefined behavior
- */
-class StringParamImpl
-{
-  std::variant<std::monostate, const char*, std::string> data;
-
-public:
-  constexpr StringParamImpl(std::nullptr_t = nullptr) {}
-  constexpr StringParamImpl(const char* str)
-    : data(str)
-  {
-  }
-
-  StringParamImpl(const std::string& str)
-    : StringParamImpl(str.c_str())
-  {
-  }
-
-  StringParamImpl(std::string&& str)
-    : data(std::move(str))
-  {
-  }
-
-  StringParamImpl(std::string_view str)
-    : StringParamImpl(std::string{str})
-  {
-  }
-
-  StringParamImpl(const StringParamImpl&) = delete;
-  StringParamImpl(StringParamImpl&&) = default;
-  StringParamImpl& operator=(const StringParamImpl&) = delete;
-  StringParamImpl& operator=(StringParamImpl&&) = default;
-
-  operator const char*() const
-  {
-    struct Visitor
-    {
-      const char* operator()(const char* a) const { return a; }
-      const char* operator()(const std::string& s) const { return s.c_str(); }
-      const char* operator()(std::monostate) const { return ""; }
-    };
-    return std::visit(Visitor{}, data);
-  }
-};
-
-#ifdef SDL3PP_ENABLE_STRING_PARAM
-using StringParam = StringParamImpl;
-#else  // SDL3PP_ENABLE_STRING_PARAM
-using StringParam = const char*;
-#endif // SDL3PP_ENABLE_STRING_PARAM
-
-} // namespace SDL
-
-#endif /* SDL3PP_STRING_PARAM_H_ */
-
-
-// end --- SDL3pp_stringParam.h --- 
-
-
-
-namespace SDL {
-
-/**
- * @defgroup CategoryAssert Assertions
- *
- * A helpful assertion macro!
- *
- * SDL assertions operate like your usual `assert` macro, but with some added
- * features:
- *
- * - It uses a trick with the `sizeof` operator, so disabled assertions
- *   vaporize out of the compiled code, but variables only referenced in the
- *   assertion won't trigger compiler warnings about being unused.
- * - It is safe to use with a dangling-else: `if (x) SDL_assert(y); else
- *   do_something();`
- * - It works the same everywhere, instead of counting on various platforms'
- *   compiler and C runtime to behave.
- * - It provides multiple levels of assertion (SDL_assert, SDL_assert_release,
- *   SDL_assert_paranoid) instead of a single all-or-nothing option.
- * - It offers a variety of responses when an assertion fails (retry, trigger
- *   the debugger, abort the program, ignore the failure once, ignore it for
- *   the rest of the program's run).
- * - It tries to show the user a dialog by default, if possible, but the app
- *   can provide a callback to handle assertion failures however they like.
- * - It lets failed assertions be retried. Perhaps you had a network failure
- *   and just want to retry the test after plugging your network cable back
- *   in? You can.
- * - It lets the user ignore an assertion failure, if there's a harmless
- *   problem that one can continue past.
- * - It lets the user mark an assertion as ignored for the rest of the
- *   program's run; if there's a harmless problem that keeps popping up.
- * - It provides statistics and data on all failed assertions to the app.
- * - It allows the default assertion handler to be controlled with environment
- *   variables, in case an automated script needs to control it.
- * - It can be used as an aid to Clang's static analysis; it will treat SDL
- *   assertions as universally true (under the assumption that you are serious
- *   about the asserted claims and that your debug builds will detect when
- *   these claims were wrong). This can help the analyzer avoid false
- *   positives.
- *
- * To use it: compile a debug build and just sprinkle around tests to check
- * your code!
- *
- * @{
- */
-
-/**
- * Possible outcomes from a triggered assertion.
- *
- * When an enabled assertion triggers, it may call the assertion handler
- * (possibly one provided by the app via SDL_SetAssertionHandler), which will
- * return one of these values, possibly after asking the user.
- *
- * Then SDL will respond based on this outcome (loop around to retry the
- * condition, try to break in a debugger, kill the program, or ignore the
- * problem).
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AssertState = SDL_AssertState;
-
-/**
- * Retry the assert immediately.
- */
-constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
-
-/**
- * Make the debugger trigger a breakpoint.
- */
-constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
-
-/**
- * Terminate the program.
- */
-constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
-
-/**
- * Ignore the assert.
- */
-constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
-
-/**
- * Ignore the assert from now on.
- */
-constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
-
-/**
- * Information about an assertion failure.
- *
- * This structure is filled in with information about a triggered assertion,
- * used by the assertion handler, then added to the assertion report. This is
- * returned as a linked list from SDL_GetAssertionReport().
- *
- * @since This struct is available since SDL 3.2.0.
- */
-using AssertData = SDL_AssertData;
-
-/**
- * Never call this directly.
- *
- * Use the SDL_assert macros instead.
- *
- * @param data assert data structure.
- * @param func function name.
- * @param file file name.
- * @param line line number.
- * @returns assert state.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline AssertState ReportAssertion(AssertData* data,
-                                   StringParam func,
-                                   StringParam file,
-                                   int line)
-{
-  return SDL_ReportAssertion(data, func, file, line);
-}
-
-/**
- * A @ref callback that fires when an SDL assertion fails.
- *
- * @param data a pointer to the SDL_AssertData structure corresponding to the
- *             current assertion.
- * @param userdata what was passed as `userdata` to SDL_SetAssertionHandler().
- * @returns an SDL_AssertState value indicating how to handle the failure.
- *
- * @threadsafety This callback may be called from any thread that triggers an
- *               assert at any time.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AssertionHandler = SDL_AssertionHandler;
-
-/**
- * Set an application-defined assertion handler.
- *
- * This function allows an application to show its own assertion UI and/or
- * force the response to an assertion failure. If the application doesn't
- * provide this, SDL will try to do the right thing, popping up a
- * system-specific GUI dialog, and probably minimizing any fullscreen windows.
- *
- * This callback may fire from any thread, but it runs wrapped in a mutex, so
- * it will only fire from one thread at a time.
- *
- * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
- *
- * @param handler the SDL_AssertionHandler function to call when an assertion
- *                fails or NULL for the default handler.
- * @param userdata a pointer that is passed to `handler`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetAssertionHandler
- */
-inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
-{
-  return SDL_SetAssertionHandler(handler, userdata);
-}
-
-/**
- * Get the default assertion handler.
- *
- * This returns the function pointer that is called by default when an
- * assertion is triggered. This is an internal function provided by SDL, that
- * is used for assertions when SDL_SetAssertionHandler() hasn't been used to
- * provide a different function.
- *
- * @returns the default SDL_AssertionHandler that is called when an assert
- *          triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetAssertionHandler
- */
-inline AssertionHandler GetDefaultAssertionHandler()
-{
-  return SDL_GetDefaultAssertionHandler();
-}
-
-/**
- * Get the current assertion handler.
- *
- * This returns the function pointer that is called when an assertion is
- * triggered. This is either the value last passed to
- * SDL_SetAssertionHandler(), or if no application-specified function is set,
- * is equivalent to calling SDL_GetDefaultAssertionHandler().
- *
- * The parameter `puserdata` is a pointer to a void*, which will store the
- * "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value
- * will always be NULL for the default handler. If you don't care about this
- * data, it is safe to pass a NULL pointer to this function to ignore it.
- *
- * @param puserdata pointer which is filled with the "userdata" pointer that
- *                  was passed to SDL_SetAssertionHandler().
- * @returns the SDL_AssertionHandler that is called when an assert triggers.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SetAssertionHandler
- */
-inline AssertionHandler GetAssertionHandler(void** puserdata)
-{
-  return SDL_GetAssertionHandler(puserdata);
-}
-
-/**
- * Get a list of all assertion failures.
- *
- * This function gets all assertions triggered since the last call to
- * SDL_ResetAssertionReport(), or the start of the program.
- *
- * The proper way to examine this data looks something like this:
- *
- * ```c
- * const SDL_AssertData *item = SDL_GetAssertionReport();
- * while (item) {
- *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
- *           item->condition, item->function, item->filename,
- *           item->linenum, item->trigger_count,
- *           item->always_ignore ? "yes" : "no");
- *    item = item->next;
- * }
- * ```
- *
- * @returns a list of all failed assertions or NULL if the list is empty. This
- *          memory should not be modified or freed by the application. This
- *          pointer remains valid until the next call to SDL_Quit() or
- *          SDL_ResetAssertionReport().
- *
- * @threadsafety This function is not thread safe. Other threads calling
- *               SDL_ResetAssertionReport() simultaneously, may render the
- *               returned pointer invalid.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_ResetAssertionReport
- */
-inline const AssertData* GetAssertionReport()
-{
-  return SDL_GetAssertionReport();
-}
-
-/**
- * Clear the list of all assertion failures.
- *
- * This function will clear the list of all assertions triggered up to that
- * point. Immediately following this call, SDL_GetAssertionReport will return
- * no items. In addition, any previously-triggered assertions will be reset to
- * a trigger_count of zero, and their always_ignore state will be false.
- *
- * @threadsafety This function is not thread safe. Other threads triggering an
- *               assertion, or simultaneously calling this function may cause
- *               memory leaks or crashes.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetAssertionReport
- */
-inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_ASSERT_H_ */
-
-
-// end --- SDL3pp_assert.h --- 
-
-
-//
-//
-//
-//
-
-// begin --- SDL3pp_blendmode.h --- 
-
-#ifndef SDL3PP_BLENDMODE_H_
-#define SDL3PP_BLENDMODE_H_
-
-#include <SDL3/SDL_blendmode.h>
-
-namespace SDL {
-/**
- * @defgroup CategoryBlendmode Blend modes
- *
- * Blend modes decide how two colors will mix together. There are both
- * standard modes for basic needs and a means to create custom modes,
- * dictating what sort of math to do on what color components.
- *
- * @{
- */
-
-/**
- * @brief  A set of blend modes used in drawing operations.
- *
- * These predefined blend modes are supported everywhere.
- *
- * Additional values may be obtained from ComposeCustomBlendMode().
- */
-using BlendMode = SDL_BlendMode;
-
-/**
- * @brief The blend operation used when combining source and destination pixel
- * components.
- *
- */
-using BlendOperation = SDL_BlendOperation;
-
-/**
- * dst + src: supported by all renderers
- */
-constexpr BlendOperation BLENDOPERATION_ADD = SDL_BLENDOPERATION_ADD;
-
-/**
- * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
-
-/**
- * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
-  SDL_BLENDOPERATION_REV_SUBTRACT;
-
-/**
- * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
-
-/**
- * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
- */
-constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
-
-/**
- * @brief The normalized factor used to multiply pixel components.
- *
- * The blend factors are multiplied with the pixels from a drawing operation
- * (src) and the pixels from the render target (dst) before the blend
- * operation. The comma-separated factors listed above are always applied in
- * the component order red, green, blue, and alpha.
- *
- */
-using BlendFactor = SDL_BlendFactor;
-
-/**
- * 0, 0, 0, 0
- */
-constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO;
-
-/**
- * 1, 1, 1, 1
- */
-constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE;
-
-/**
- * srcR, srcG, srcB, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_COLOR = SDL_BLENDFACTOR_SRC_COLOR;
-
-/**
- * 1-srcR, 1-srcG, 1-srcB, 1-srcA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR;
-
-/**
- * srcA, srcA, srcA, srcA
- */
-constexpr BlendFactor BLENDFACTOR_SRC_ALPHA = SDL_BLENDFACTOR_SRC_ALPHA;
-
-/**
- * 1-srcA, 1-srcA, 1-srcA, 1-srcA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
-
-/**
- * dstR, dstG, dstB, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_COLOR = SDL_BLENDFACTOR_DST_COLOR;
-
-/**
- * 1-dstR, 1-dstG, 1-dstB, 1-dstA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_COLOR =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR;
-
-/**
- * dstA, dstA, dstA, dstA
- */
-constexpr BlendFactor BLENDFACTOR_DST_ALPHA = SDL_BLENDFACTOR_DST_ALPHA;
-
-/**
- * 1-dstA, 1-dstA, 1-dstA, 1-dstA
- */
-constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
-  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA;
-
-/**
- * @brief Compose a custom blend mode for renderers.
- *
- * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
- * the SDL_BlendMode returned by this function if the renderer supports it.
- *
- * A blend mode controls how the pixels from a drawing operation (source) get
- * combined with the pixels from the render target (destination). First, the
- * components of the source and destination pixels get multiplied with their
- * blend factors. Then, the blend operation takes the two products and
- * calculates the result that will get stored in the render target.
- *
- * Expressed in pseudocode, it would look like this:
- *
- * ```c
- * dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);
- * dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);
- * ```
- *
- * Where the functions `colorOperation(src, dst)` and `alphaOperation(src,
- * dst)` can return one of the following:
- *
- * - `src + dst`
- * - `src - dst`
- * - `dst - src`
- * - `min(src, dst)`
- * - `max(src, dst)`
- *
- * The red, green, and blue components are always multiplied with the first,
- * second, and third components of the SDL_BlendFactor, respectively. The
- * fourth component is not used.
- *
- * The alpha component is always multiplied with the fourth component of the
- * SDL_BlendFactor. The other components are not used in the alpha
- * calculation.
- *
- * Support for these blend modes varies for each renderer. To check if a
- * specific SDL_BlendMode is supported, create a renderer and pass it to
- * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
- * return with an error if the blend mode is not supported.
- *
- * This list describes the support of custom blend modes for each renderer.
- * All renderers support the four blend modes listed in the SDL_BlendMode
- * enumeration.
- *
- * - **direct3d**: Supports all operations with all factors. However, some
- *   factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and
- *   `SDL_BLENDOPERATION_MAXIMUM`.
- * - **direct3d11**: Same as Direct3D 9.
- * - **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all
- *   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
- * - **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,
- *   `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`
- *   operations with all factors.
- * - **psp**: No custom blend mode support.
- * - **software**: No custom blend mode support.
- *
- * Some renderers do not provide an alpha component for the default render
- * target. The `SDL_BLENDFACTOR_DST_ALPHA` and
- * `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
- * case.
- *
- * @param srcColorFactor the SDL_BlendFactor applied to the red, green, and
- *                       blue components of the source pixels.
- * @param dstColorFactor the SDL_BlendFactor applied to the red, green, and
- *                       blue components of the destination pixels.
- * @param colorOperation the SDL_BlendOperation used to combine the red,
- *                       green, and blue components of the source and
- *                       destination pixels.
- * @param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of
- *                       the source pixels.
- * @param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of
- *                       the destination pixels.
- * @param alphaOperation the SDL_BlendOperation used to combine the alpha
- *                       component of the source and destination pixels.
- * @returns an SDL_BlendMode that represents the chosen factors and
- *          operations.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- */
-inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
-                                        BlendFactor dstColorFactor,
-                                        BlendOperation colorOperation,
-                                        BlendFactor srcAlphaFactor,
-                                        BlendFactor dstAlphaFactor,
-                                        BlendOperation alphaOperation)
-{
-  return SDL_ComposeCustomBlendMode(srcColorFactor,
-                                    dstColorFactor,
-                                    colorOperation,
-                                    srcAlphaFactor,
-                                    dstAlphaFactor,
-                                    alphaOperation);
-}
-/** @} */
-
-} // namespace SDL
-
-#endif /* SDL3PP_BLENDMODE_H_ */
-
-
-// end --- SDL3pp_blendmode.h --- 
-
-
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_error.h --- 
-
-#ifndef SDL3PP_ERROR_H_
-#define SDL3PP_ERROR_H_
-
-#include <format>
-#include <string>
-#include <string_view>
-#include <SDL3/SDL_error.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryError Error Handling
- *
- * Simple error message routines for SDL.
- *
- * Most apps will interface with these APIs in exactly one function: when
- * almost any SDL function call reports failure, you can get a human-readable
- * string of the problem from GetError().
- *
- * These strings are maintained per-thread, and apps are welcome to set their
- * own errors, which is popular when building libraries on top of SDL for
- * other apps to consume. These strings are set by calling SDL_SetError().
- *
- * A common usage pattern is to have a function that returns true for success
- * and false for failure, and do this when something fails:
- *
- * ```c
- * if (something_went_wrong) {
- *    return SetError("The thing broke in this specific way: %d", errcode);
- * }
- * ```
- *
- * It's also common to just return `false` in this case if the failing thing
- * is known to call SetError(), so errors simply propagate through.
- *
- * @{
- */
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @param message the error message
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- */
-inline bool SetErrorUnformatted(StringParam message)
-{
-  return SDL_SetError("%s", static_cast<const char*>(message));
-}
-
-/**
- * Set the SDL error message for the current thread.
- *
- * Calling this function will replace any previous error message that was set.
- *
- * This function always returns false, since SDL frequently uses false to
- * signify a failing result, leading to this idiom:
- *
- * ```c
- * if (error_code) {
- *     return SetError("This operation has failed: {}", error_code);
- * }
- * ```
- *
- * @tparam ARGS the formatting parameters
- * @param fmt a
- * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
- * style message format string
- * @param args additional parameters matching the `{}` tokens in the format
- * string, if any.
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat formatted-string
- *
- * @sa formatted-string
- * @sa ClearError
- * @sa GetError
- * @sa SetError
- * @return false
- */
-template<class... ARGS>
-inline bool SetError(std::string_view fmt, ARGS... args)
-{
-  return SetError(
-    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
-}
-
-/**
- * Set an error indicating that memory allocation failed.
- *
- * This function does not do any memory allocation.
- *
- * @returns false.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OutOfMemory() { return SDL_OutOfMemory(); }
-
-/**
- * @brief Retrieve a message about the last error that occurred on the current
- * thread.
- *
- * It is possible for multiple errors to occur before calling GetError().
- * Only the last error is returned.
- *
- * The message is only applicable when an SDL function has signaled an error.
- * You must check the return values of SDL function calls to determine when to
- * appropriately call GetError(). You should *not* use the results of
- * GetError() to decide if an error has occurred! Sometimes SDL will set
- * an error string even when reporting success.
- *
- * SDL will *not* clear the error string for successful API calls. You *must*
- * check return values for failure cases before you can assume the error
- * string applies.
- *
- * Error strings are set per-thread, so an error set in a different thread
- * will not interfere with the current thread's operation.
- *
- * The returned value is a thread-local string which will remain valid until
- * the current thread's error string is changed. The caller should make a copy
- * if the value is needed after the next SDL API call.
- *
- * @return a message with information about the specific error that occurred,
- *          or an empty string if there hasn't been an error message set since
- *          the last call to ClearError().
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @sa ClearError()
- */
-inline const char* GetError() { return SDL_GetError(); }
-
-/**
- * @brief Clear any previous error message for this thread.
- *
- * @returns true.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @sa GetError()
- */
-inline bool ClearError() { return SDL_ClearError(); }
-
-/** @} */
-
-} // namespace SDL
-
-#endif /* SDL3PP_ERROR_H_ */
-
-
-// end --- SDL3pp_error.h --- 
-
-
-
-// begin --- SDL3pp_events.h --- 
-
-#ifndef SDL3PP_EVENTS_H_
-#define SDL3PP_EVENTS_H_
-
 #include <atomic>
 #include <chrono>
-#include <SDL3/SDL_events.h>
-
-// begin --- SDL3pp_callbackWrapper.h --- 
-
-#ifndef SDL3PP_CALLBACK_WRAPPER_H_
-#define SDL3PP_CALLBACK_WRAPPER_H_
-
+#include <concepts>
+#include <format>
 #include <functional>
 #include <memory>
+#include <optional>
+#include <ranges>
+#include <span>
+#include <string>
+#include <string_view>
+#include <type_traits>
 #include <unordered_map>
-#include <SDL3/SDL_assert.h>
+#include <variant>
+#include <vector>
+#include <SDL3/SDL.h>
 
 namespace SDL {
 
@@ -1022,75 +216,6 @@ private:
 
 /// @}
 
-} // namespace SDL
-
-#endif /* SDL3PP_CALLBACK_WRAPPER_H_ */
-
-
-// end --- SDL3pp_callbackWrapper.h --- 
-
-
-
-// begin --- SDL3pp_stdinc.h --- 
-
-#ifndef SDL3PP_STDINC_H_
-#define SDL3PP_STDINC_H_
-
-#include <SDL3/SDL_stdinc.h>
-
-// begin --- SDL3pp_freeWrapper.h --- 
-
-#ifndef SDL3PP_FREE_WRAPPER_H_
-#define SDL3PP_FREE_WRAPPER_H_
-
-#include <memory>
-#include <SDL3/SDL_stdinc.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryFreeWrapper Pointer wrapper to SDL::free()
- *
- * Wraps SDL generated pointers to automatically freeing them.
- * @{
- */
-
-/**
- * @brief Wraps around SDL alloced pointers to automatically free them
- *
- */
-struct FreeWrapperDeleter
-{
-  void operator()(void* mem) const { SDL_free(mem); }
-};
-
-template<class T>
-using FreeWrapper = std::unique_ptr<T, FreeWrapperDeleter>;
-
-template<class T>
-FreeWrapper<T[]> wrapArray(T* array)
-{
-  return FreeWrapper<T[]>{array};
-}
-} // namespace SDL
-
-#endif /* SDL3PP_FREE_WRAPPER_H_ */
-
-
-// end --- SDL3pp_freeWrapper.h --- 
-
-
-
-// begin --- SDL3pp_objectWrapper.h --- 
-
-#ifndef SDL3PP_OBJECT_WRAPPER_H_
-#define SDL3PP_OBJECT_WRAPPER_H_
-
-#include <concepts>
-#include <memory>
-
-namespace SDL {
-
 /**
  * @defgroup CategoryObjectWrapper Helpers for Resource type wrapping
  *
@@ -1102,33 +227,34 @@ template<class T, class POINTER>
 concept ObjectBox = requires(const T a, T b) {
   { a.get() } -> std::convertible_to<POINTER>;
   { b.release() } -> std::convertible_to<POINTER>;
+  { b.free() };
 };
 
-template<class T, class POINTER = T*>
+template<class T, class POINTER = std::remove_extent_t<T>*>
 class ObjectRef
 {
-  POINTER value;
+  POINTER m_value;
 
 public:
   using pointer = POINTER;
 
   constexpr ObjectRef(pointer value = nullptr)
-    : value(value)
+    : m_value(value)
   {
   }
 
   template<ObjectBox<POINTER> BOX>
   ObjectRef(BOX&& box)
-    : value(std::is_reference_v<BOX> ? box.get() : box.release())
+    : m_value(std::is_reference_v<BOX> ? box.get() : box.release())
   {
   }
 
   constexpr ObjectRef(std::nullptr_t)
-    : value{0}
+    : m_value{0}
   {
   }
 
-  constexpr pointer get() const { return value; }
+  constexpr pointer get() const { return m_value; }
 
   constexpr operator bool() const { return bool(get()); }
 
@@ -1137,48 +263,84 @@ public:
   const T& operator*() const { return *get(); }
   T& operator*() { return *get(); }
 
+  constexpr bool operator==(std::nullptr_t) const { return !m_value; }
+
   pointer release()
   {
     pointer p;
-    std::swap(value, p);
+    std::swap(m_value, p);
     return p;
   }
-  void reset(pointer other = nullptr) { return std::swap(value, other); }
-  void swap(ObjectRef& other) { return std::swap(value, other.value); }
+
+  void reset(pointer other = nullptr) { return std::swap(m_value, other); }
+  void swap(ObjectRef& other) { return std::swap(m_value, other.m_value); }
+  void free() { doFree(release()); }
+
+  auto& operator[](ptrdiff_t index)
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
+  const auto& operator[](ptrdiff_t index) const
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
+
+private:
+  static void doFree(pointer p);
 };
 
-template<class T>
-struct ObjectDeleter;
+template<class REF>
+struct ObjectDeleter
+{
+  using pointer = REF::pointer;
+  const void operator()(REF resource) const { resource.free(); }
+};
 
-template<class T, class DELETER = ObjectDeleter<T>>
+template<class T, class DELETER = ObjectDeleter<ObjectRef<T>>>
 class ObjectUnique
 {
-  std::unique_ptr<T, DELETER> value;
+  std::unique_ptr<T, DELETER> m_value;
 
 public:
   using pointer = std::unique_ptr<T, DELETER>::pointer;
 
   explicit ObjectUnique(pointer value = nullptr)
-    : value(value)
+    : m_value(value)
   {
   }
 
   constexpr ObjectUnique(std::nullptr_t)
-    : value{}
+    : m_value{}
   {
   }
 
-  pointer get() const { return value.get(); }
+  pointer get() const { return m_value.get(); }
   operator bool() const { return bool(get()); }
 
   const pointer operator->() const { return get(); }
   pointer operator->() { return get(); }
-  const T& operator*() const { return *value; }
-  T& operator*() { return *value; }
+  const auto& operator*() const { return *m_value; }
+  auto& operator*() { return *m_value; }
 
-  pointer release() { return value.release(); }
-  void reset(pointer other = nullptr) { return value.reset(other); }
-  void swap(ObjectUnique& other) { return std::swap(value, other.value); }
+  constexpr bool operator==(std::nullptr_t) const { return !m_value; }
+
+  pointer release() { return m_value.release(); }
+  void reset(pointer other = nullptr) { return m_value.reset(other); }
+  void swap(ObjectUnique& other) { return std::swap(m_value, other.m_value); }
+  void free() { reset(); }
+
+  auto& operator[](ptrdiff_t index)
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
+  const auto& operator[](ptrdiff_t index) const
+  {
+    static_assert(std::is_array_v<T>, "T must be an array");
+    return m_value[index];
+  }
 };
 
 template<class T, T defaultValue = 0>
@@ -1208,34 +370,308 @@ public:
 
 /// @}
 
-} // namespace SDL
-
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-
-template<class T, class POINTER>
-void std::swap(SDL::ObjectRef<T, POINTER>& left,
-               SDL::ObjectRef<T, POINTER>& right)
+/**
+ * @brief Shim to get optional-like interface for references
+ *
+ * @tparam T
+ */
+template<class T>
+class OptionalRef
 {
-  left.swap(right);
+  T* ptr;
+
+public:
+  constexpr OptionalRef(std::nullopt_t = std::nullopt)
+    : ptr(nullptr)
+  {
+  }
+
+  constexpr OptionalRef(T& value)
+    : ptr(&value)
+  {
+  }
+
+  constexpr auto operator<=>(const OptionalRef&) const = default;
+
+  constexpr bool has_value() const { return ptr != nullptr; }
+
+  constexpr const T& value() const { return *ptr; }
+  constexpr T& value() { return *ptr; }
+
+  constexpr operator T*() const { return ptr; }
+
+  constexpr bool operator==(std::nullopt_t) const { return ptr == nullptr; }
+
+  constexpr T& operator*() { return *ptr; }
+  constexpr const T& operator*() const { return *ptr; }
+  constexpr T* operator->() { return ptr; }
+  constexpr const T* operator->() const { return ptr; }
+};
+
+template<class T>
+constexpr OptionalRef<T> fromNullable(T* ptr)
+{
+  if (ptr) return {*ptr};
+  return std::nullopt;
 }
 
-template<class T, class DELETER>
-void std::swap(SDL::ObjectUnique<T, DELETER> left,
-               SDL::ObjectUnique<T, DELETER>& right)
+template<class T, class BASE>
+concept DerivedWrapper =
+  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
+
+/**
+ * A wrapper around span that works for out derived-wrapper pattern
+ * (eg, Rect, Color)
+ *
+ */
+template<class T>
+class SpanRef
 {
-  left.swap(right);
-}
+  std::span<T> value;
 
-#endif // DOXYGEN_SHOULD_SKIP_THIS
+public:
+  constexpr SpanRef() = default;
 
-#endif /* SDL3PP_OBJECT_WRAPPER_H_ */
+  template<DerivedWrapper<T> U, size_t N>
+  constexpr SpanRef(U (&other)[N])
+    : value(static_cast<T*>(other), N)
+  {
+  }
 
+  template<DerivedWrapper<T> U>
+  constexpr SpanRef(const std::span<U>& other)
+    : value(other.data(), other.size())
+  {
+  }
 
-// end --- SDL3pp_objectWrapper.h --- 
+  template<std::contiguous_iterator It>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, size_t count)
+    : value((T*)(&*first), count)
+  {
+  }
 
+  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
+    requires DerivedWrapper<std::iter_value_t<It>, T>
+  constexpr SpanRef(It first, End last)
+    : value((T*)(&*first), size_t(last - first))
+  {
+  }
+  template<std::ranges::contiguous_range R>
+    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
+  constexpr SpanRef(R&& range)
+    : SpanRef(std::begin(range), std::end(range))
+  {
+  }
 
+  constexpr size_t size() const { return value.size(); }
 
-namespace SDL {
+  constexpr T* data() const { return value.data(); }
+};
+
+#ifndef SDL3PP_ENABLE_STRING_PARAM
+
+#ifndef SDL3PP_DISABLE_STRING_PARAM
+#define SDL3PP_ENABLE_STRING_PARAM
+#endif // SDL3PP_DISABLE_STRING_PARAM
+
+#endif // SDL3PP_ENABLE_STRING_PARAM''
+
+/**
+ * @brief A safe and mostly efficient wrapper to std::string and
+ * std::string_view parameters
+ *
+ * This should only be declared in [function
+ * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
+ * using it otherwise is to ask for undefined behavior
+ */
+class StringParamImpl
+{
+  std::variant<std::monostate, const char*, std::string> data;
+
+public:
+  constexpr StringParamImpl(std::nullptr_t = nullptr) {}
+  constexpr StringParamImpl(const char* str)
+    : data(str)
+  {
+  }
+
+  StringParamImpl(const std::string& str)
+    : StringParamImpl(str.c_str())
+  {
+  }
+
+  StringParamImpl(std::string&& str)
+    : data(std::move(str))
+  {
+  }
+
+  StringParamImpl(std::string_view str)
+    : StringParamImpl(std::string{str})
+  {
+  }
+
+  StringParamImpl(const StringParamImpl&) = delete;
+  StringParamImpl(StringParamImpl&&) = default;
+  StringParamImpl& operator=(const StringParamImpl&) = delete;
+  StringParamImpl& operator=(StringParamImpl&&) = default;
+
+  operator const char*() const
+  {
+    struct Visitor
+    {
+      const char* operator()(const char* a) const { return a; }
+      const char* operator()(const std::string& s) const { return s.c_str(); }
+      const char* operator()(std::monostate) const { return ""; }
+    };
+    return std::visit(Visitor{}, data);
+  }
+};
+
+#ifdef SDL3PP_ENABLE_STRING_PARAM
+using StringParam = StringParamImpl;
+#else  // SDL3PP_ENABLE_STRING_PARAM
+using StringParam = const char*;
+#endif // SDL3PP_ENABLE_STRING_PARAM
+
+/**
+ * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()
+ *
+ * Wraps SDL generated pointers to automatically freeing them.
+ * @{
+ */
+
+/**
+ * Base class for SDL memory allocated pointer wrap
+ *
+ * @tparam T the wrapped type
+ *
+ * @cat resource
+ */
+template<class T>
+struct PtrBase : T
+{
+  using T::T;
+
+  void free();
+};
+
+/**
+ * Handle to a non owned SDL memory allocated pointer
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa SurfaceBase
+ * @sa Surface
+ */
+template<class T>
+using RefPtr = PtrBase<ObjectRef<T>>;
+
+template<class T>
+struct PtrDeleter
+{
+  void operator()(RefPtr<T> ptr) const { ptr.free(); }
+};
+
+/**
+ * Handle to an owned SDL memory allocated pointer
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa PtrBase
+ * @sa RefPtr
+ */
+template<class T>
+using OwnPtr = PtrBase<ObjectUnique<T, PtrDeleter<T>>>;
+
+/**
+ * Base class for SDL memory allocated array wrap
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ */
+template<class T>
+class ArrayBase : public PtrBase<T>
+{
+  size_t m_size = 0;
+
+public:
+  using PtrBase<T>::PtrBase;
+
+  constexpr explicit ArrayBase(PtrBase<T>::pointer ptr, size_t size)
+    : PtrBase<T>{ptr}
+    , m_size(size)
+  {
+  }
+
+  constexpr explicit ArrayBase(PtrBase<T>::pointer ptr)
+    : PtrBase<T>{ptr}
+    , m_size(0)
+  {
+    if (ptr) {
+      auto endPtr = ptr;
+      while (*endPtr) ++endPtr;
+      m_size = endPtr - ptr;
+    }
+  }
+
+  constexpr size_t size() const { return m_size; }
+
+  /**
+   * @{
+   *
+   * Get iterator to first element
+   */
+  PtrBase<T>::pointer begin() { return PtrBase<T>::get(); }
+  const PtrBase<T>::pointer begin() const { return PtrBase<T>::get(); }
+  const PtrBase<T>::pointer cbegin() const { return begin(); }
+  /// @}
+
+  /**
+   * @{
+   *
+   * Get iterator to one past end element
+   */
+  PtrBase<T>::pointer end() { return begin() + size(); }
+  const PtrBase<T>::pointer end() const { return begin() + size(); }
+  const PtrBase<T>::pointer cend() const { return begin() + size(); }
+  /// @}
+};
+
+/**
+ * Handle to an owned SDL memory allocated array
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa ArrayBase
+ * @sa OwnArray
+ * @sa RefPtr
+ */
+template<class T>
+using RefArray = ArrayBase<ObjectRef<T[]>>;
+
+/**
+ * Handle to an owned SDL memory allocated array
+ *
+ * @tparam T the wrapped array type, without the []
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa ArrayBase
+ * @sa RefArray
+ * @sa OwnPtr
+ */
+template<class T>
+using OwnArray = ArrayBase<ObjectUnique<T[], PtrDeleter<T[]>>>;
+
+/// @}
 
 /**
  * @defgroup CategoryStdinc Standard Library Functionality
@@ -1278,12 +714,6 @@ struct EnvironmentBase;
  */
 using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 
-template<>
-struct ObjectDeleter<SDL_Environment>
-{
-  inline void operator()(EnvironmentRef environment) const;
-};
-
 /**
  * Handle to an owning environment
  *
@@ -1309,12 +739,6 @@ struct IConvBase;
  * @sa IConv
  */
 using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
-
-template<>
-struct ObjectDeleter<SDL_iconv_data_t>
-{
-  inline void operator()(IConvRef iconv) const;
-};
 
 /**
  * Handle to an owning iconv
@@ -1768,9 +1192,9 @@ struct EnvironmentBase : T
    * @sa SDL_SetEnvironmentVariable
    * @sa SDL_UnsetEnvironmentVariable
    **/
-  inline FreeWrapper<char*[]> GetVariables()
+  inline OwnArray<char*> GetVariables()
   {
-    return wrapArray(SDL_GetEnvironmentVariables(T::get()));
+    return OwnArray<char*>{SDL_GetEnvironmentVariables(T::get())};
   }
 
   /**
@@ -1872,6 +1296,25 @@ struct EnvironmentBase : T
  * @sa UnsetVariable()
  **/
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
+
+/**
+ * Destroy a set of environment variables.
+ *
+ * @param resource the environment to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the environment is no longer in use.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Environment
+ * @sa EnvironmentBase
+ */
+template<>
+inline void ObjectRef<SDL_Environment>::doFree(SDL_Environment* resource)
+{
+  return SDL_DestroyEnvironment(resource);
+}
 
 /**
  * Get the value of a variable in the environment.
@@ -6016,6 +5459,22 @@ struct IConvBase : T
 };
 
 /**
+ * This function frees a context used for character set conversion.
+ *
+ * @param resource The character set conversion handle.
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IConv
+ * @sa IConvBase
+ * @sa iconv_string()
+ */
+template<>
+inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_t resource)
+{
+  SDL_iconv_close(resource);
+}
+
+/**
  * Helper function to convert a string's encoding in one call.
  *
  * This function converts a buffer or string between encodings in one pass.
@@ -6112,47 +5571,4670 @@ using FunctionPointer = SDL_FunctionPointer;
 #pragma region impl
 /// @}
 
-inline void ObjectDeleter<SDL_Environment>::operator()(
-  EnvironmentRef environment) const
+template<class T>
+void PtrBase<T>::free()
 {
-  environment.Destroy();
-}
-
-inline void ObjectDeleter<SDL_iconv_data_t>::operator()(IConvRef iconv) const
-{
-  iconv.close();
+  SDL::free(T::release());
 }
 
 #pragma endregion impl
 
-} // namespace SDL
+/**
+ * @defgroup CategoryAssert Assertions
+ *
+ * A helpful assertion macro!
+ *
+ * SDL assertions operate like your usual `assert` macro, but with some added
+ * features:
+ *
+ * - It uses a trick with the `sizeof` operator, so disabled assertions
+ *   vaporize out of the compiled code, but variables only referenced in the
+ *   assertion won't trigger compiler warnings about being unused.
+ * - It is safe to use with a dangling-else: `if (x) SDL_assert(y); else
+ *   do_something();`
+ * - It works the same everywhere, instead of counting on various platforms'
+ *   compiler and C runtime to behave.
+ * - It provides multiple levels of assertion (SDL_assert, SDL_assert_release,
+ *   SDL_assert_paranoid) instead of a single all-or-nothing option.
+ * - It offers a variety of responses when an assertion fails (retry, trigger
+ *   the debugger, abort the program, ignore the failure once, ignore it for
+ *   the rest of the program's run).
+ * - It tries to show the user a dialog by default, if possible, but the app
+ *   can provide a callback to handle assertion failures however they like.
+ * - It lets failed assertions be retried. Perhaps you had a network failure
+ *   and just want to retry the test after plugging your network cable back
+ *   in? You can.
+ * - It lets the user ignore an assertion failure, if there's a harmless
+ *   problem that one can continue past.
+ * - It lets the user mark an assertion as ignored for the rest of the
+ *   program's run; if there's a harmless problem that keeps popping up.
+ * - It provides statistics and data on all failed assertions to the app.
+ * - It allows the default assertion handler to be controlled with environment
+ *   variables, in case an automated script needs to control it.
+ * - It can be used as an aid to Clang's static analysis; it will treat SDL
+ *   assertions as universally true (under the assumption that you are serious
+ *   about the asserted claims and that your debug builds will detect when
+ *   these claims were wrong). This can help the analyzer avoid false
+ *   positives.
+ *
+ * To use it: compile a debug build and just sprinkle around tests to check
+ * your code!
+ *
+ * @{
+ */
 
-#endif /* SDL3PP_STDINC_H_ */
+/**
+ * Possible outcomes from a triggered assertion.
+ *
+ * When an enabled assertion triggers, it may call the assertion handler
+ * (possibly one provided by the app via SDL_SetAssertionHandler), which will
+ * return one of these values, possibly after asking the user.
+ *
+ * Then SDL will respond based on this outcome (loop around to retry the
+ * condition, try to break in a debugger, kill the program, or ignore the
+ * problem).
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AssertState = SDL_AssertState;
 
+/**
+ * Retry the assert immediately.
+ */
+constexpr AssertState ASSERTION_RETRY = SDL_ASSERTION_RETRY;
 
-// end --- SDL3pp_stdinc.h --- 
+/**
+ * Make the debugger trigger a breakpoint.
+ */
+constexpr AssertState ASSERTION_BREAK = SDL_ASSERTION_BREAK;
 
+/**
+ * Terminate the program.
+ */
+constexpr AssertState ASSERTION_ABORT = SDL_ASSERTION_ABORT;
 
+/**
+ * Ignore the assert.
+ */
+constexpr AssertState ASSERTION_IGNORE = SDL_ASSERTION_IGNORE;
 
-// begin --- SDL3pp_video.h --- 
+/**
+ * Ignore the assert from now on.
+ */
+constexpr AssertState ASSERTION_ALWAYS_IGNORE = SDL_ASSERTION_ALWAYS_IGNORE;
 
-#ifndef SDL3PP_VIDEO_H_
-#define SDL3PP_VIDEO_H_
+/**
+ * Information about an assertion failure.
+ *
+ * This structure is filled in with information about a triggered assertion,
+ * used by the assertion handler, then added to the assertion report. This is
+ * returned as a linked list from SDL_GetAssertionReport().
+ *
+ * @since This struct is available since SDL 3.2.0.
+ */
+using AssertData = SDL_AssertData;
 
-#include <memory>
-#include <optional>
-#include <vector>
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_video.h>
+/**
+ * Never call this directly.
+ *
+ * Use the SDL_assert macros instead.
+ *
+ * @param data assert data structure.
+ * @param func function name.
+ * @param file file name.
+ * @param line line number.
+ * @returns assert state.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline AssertState ReportAssertion(AssertData* data,
+                                   StringParam func,
+                                   StringParam file,
+                                   int line)
+{
+  return SDL_ReportAssertion(data, func, file, line);
+}
 
-// begin --- SDL3pp_properties.h --- 
+/**
+ * A @ref callback that fires when an SDL assertion fails.
+ *
+ * @param data a pointer to the SDL_AssertData structure corresponding to the
+ *             current assertion.
+ * @param userdata what was passed as `userdata` to SDL_SetAssertionHandler().
+ * @returns an SDL_AssertState value indicating how to handle the failure.
+ *
+ * @threadsafety This callback may be called from any thread that triggers an
+ *               assert at any time.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AssertionHandler = SDL_AssertionHandler;
 
-#ifndef SDL3PP_PROPERTIES_H_
-#define SDL3PP_PROPERTIES_H_
+/**
+ * Set an application-defined assertion handler.
+ *
+ * This function allows an application to show its own assertion UI and/or
+ * force the response to an assertion failure. If the application doesn't
+ * provide this, SDL will try to do the right thing, popping up a
+ * system-specific GUI dialog, and probably minimizing any fullscreen windows.
+ *
+ * This callback may fire from any thread, but it runs wrapped in a mutex, so
+ * it will only fire from one thread at a time.
+ *
+ * This callback is NOT reset to SDL's internal handler upon SDL_Quit()!
+ *
+ * @param handler the SDL_AssertionHandler function to call when an assertion
+ *                fails or NULL for the default handler.
+ * @param userdata a pointer that is passed to `handler`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionHandler
+ */
+inline void SetAssertionHandler(AssertionHandler handler, void* userdata)
+{
+  return SDL_SetAssertionHandler(handler, userdata);
+}
 
-#include <SDL3/SDL_properties.h>
+/**
+ * Get the default assertion handler.
+ *
+ * This returns the function pointer that is called by default when an
+ * assertion is triggered. This is an internal function provided by SDL, that
+ * is used for assertions when SDL_SetAssertionHandler() hasn't been used to
+ * provide a different function.
+ *
+ * @returns the default SDL_AssertionHandler that is called when an assert
+ *          triggers.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionHandler
+ */
+inline AssertionHandler GetDefaultAssertionHandler()
+{
+  return SDL_GetDefaultAssertionHandler();
+}
 
-namespace SDL {
+/**
+ * Get the current assertion handler.
+ *
+ * This returns the function pointer that is called when an assertion is
+ * triggered. This is either the value last passed to
+ * SDL_SetAssertionHandler(), or if no application-specified function is set,
+ * is equivalent to calling SDL_GetDefaultAssertionHandler().
+ *
+ * The parameter `puserdata` is a pointer to a void*, which will store the
+ * "userdata" pointer that was passed to SDL_SetAssertionHandler(). This value
+ * will always be NULL for the default handler. If you don't care about this
+ * data, it is safe to pass a NULL pointer to this function to ignore it.
+ *
+ * @param puserdata pointer which is filled with the "userdata" pointer that
+ *                  was passed to SDL_SetAssertionHandler().
+ * @returns the SDL_AssertionHandler that is called when an assert triggers.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetAssertionHandler
+ */
+inline AssertionHandler GetAssertionHandler(void** puserdata)
+{
+  return SDL_GetAssertionHandler(puserdata);
+}
+
+/**
+ * Get a list of all assertion failures.
+ *
+ * This function gets all assertions triggered since the last call to
+ * SDL_ResetAssertionReport(), or the start of the program.
+ *
+ * The proper way to examine this data looks something like this:
+ *
+ * ```c
+ * const SDL_AssertData *item = SDL_GetAssertionReport();
+ * while (item) {
+ *    printf("'%s', %s (%s:%d), triggered %u times, always ignore: %s.\@n",
+ *           item->condition, item->function, item->filename,
+ *           item->linenum, item->trigger_count,
+ *           item->always_ignore ? "yes" : "no");
+ *    item = item->next;
+ * }
+ * ```
+ *
+ * @returns a list of all failed assertions or NULL if the list is empty. This
+ *          memory should not be modified or freed by the application. This
+ *          pointer remains valid until the next call to SDL_Quit() or
+ *          SDL_ResetAssertionReport().
+ *
+ * @threadsafety This function is not thread safe. Other threads calling
+ *               SDL_ResetAssertionReport() simultaneously, may render the
+ *               returned pointer invalid.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_ResetAssertionReport
+ */
+inline const AssertData* GetAssertionReport()
+{
+  return SDL_GetAssertionReport();
+}
+
+/**
+ * Clear the list of all assertion failures.
+ *
+ * This function will clear the list of all assertions triggered up to that
+ * point. Immediately following this call, SDL_GetAssertionReport will return
+ * no items. In addition, any previously-triggered assertions will be reset to
+ * a trigger_count of zero, and their always_ignore state will be false.
+ *
+ * @threadsafety This function is not thread safe. Other threads triggering an
+ *               assertion, or simultaneously calling this function may cause
+ *               memory leaks or crashes.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetAssertionReport
+ */
+inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+
+/// @}
+
+/**
+ * @defgroup CategoryBlendmode Blend modes
+ *
+ * Blend modes decide how two colors will mix together. There are both
+ * standard modes for basic needs and a means to create custom modes,
+ * dictating what sort of math to do on what color components.
+ *
+ * @{
+ */
+
+/**
+ * @brief  A set of blend modes used in drawing operations.
+ *
+ * These predefined blend modes are supported everywhere.
+ *
+ * Additional values may be obtained from ComposeCustomBlendMode().
+ */
+using BlendMode = SDL_BlendMode;
+
+/**
+ * @brief The blend operation used when combining source and destination pixel
+ * components.
+ *
+ */
+using BlendOperation = SDL_BlendOperation;
+
+/**
+ * dst + src: supported by all renderers
+ */
+constexpr BlendOperation BLENDOPERATION_ADD = SDL_BLENDOPERATION_ADD;
+
+/**
+ * src - dst : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_SUBTRACT = SDL_BLENDOPERATION_SUBTRACT;
+
+/**
+ * dst - src : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_REV_SUBTRACT =
+  SDL_BLENDOPERATION_REV_SUBTRACT;
+
+/**
+ * min(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_MINIMUM = SDL_BLENDOPERATION_MINIMUM;
+
+/**
+ * max(dst, src) : supported by D3D, OpenGL, OpenGLES, and Vulkan
+ */
+constexpr BlendOperation BLENDOPERATION_MAXIMUM = SDL_BLENDOPERATION_MAXIMUM;
+
+/**
+ * @brief The normalized factor used to multiply pixel components.
+ *
+ * The blend factors are multiplied with the pixels from a drawing operation
+ * (src) and the pixels from the render target (dst) before the blend
+ * operation. The comma-separated factors listed above are always applied in
+ * the component order red, green, blue, and alpha.
+ *
+ */
+using BlendFactor = SDL_BlendFactor;
+
+/**
+ * 0, 0, 0, 0
+ */
+constexpr BlendFactor BLENDFACTOR_ZERO = SDL_BLENDFACTOR_ZERO;
+
+/**
+ * 1, 1, 1, 1
+ */
+constexpr BlendFactor BLENDFACTOR_ONE = SDL_BLENDFACTOR_ONE;
+
+/**
+ * srcR, srcG, srcB, srcA
+ */
+constexpr BlendFactor BLENDFACTOR_SRC_COLOR = SDL_BLENDFACTOR_SRC_COLOR;
+
+/**
+ * 1-srcR, 1-srcG, 1-srcB, 1-srcA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_COLOR =
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR;
+
+/**
+ * srcA, srcA, srcA, srcA
+ */
+constexpr BlendFactor BLENDFACTOR_SRC_ALPHA = SDL_BLENDFACTOR_SRC_ALPHA;
+
+/**
+ * 1-srcA, 1-srcA, 1-srcA, 1-srcA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_SRC_ALPHA =
+  SDL_BLENDFACTOR_ONE_MINUS_SRC_ALPHA;
+
+/**
+ * dstR, dstG, dstB, dstA
+ */
+constexpr BlendFactor BLENDFACTOR_DST_COLOR = SDL_BLENDFACTOR_DST_COLOR;
+
+/**
+ * 1-dstR, 1-dstG, 1-dstB, 1-dstA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_COLOR =
+  SDL_BLENDFACTOR_ONE_MINUS_DST_COLOR;
+
+/**
+ * dstA, dstA, dstA, dstA
+ */
+constexpr BlendFactor BLENDFACTOR_DST_ALPHA = SDL_BLENDFACTOR_DST_ALPHA;
+
+/**
+ * 1-dstA, 1-dstA, 1-dstA, 1-dstA
+ */
+constexpr BlendFactor BLENDFACTOR_ONE_MINUS_DST_ALPHA =
+  SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA;
+
+/**
+ * @brief Compose a custom blend mode for renderers.
+ *
+ * The functions SDL_SetRenderDrawBlendMode and SDL_SetTextureBlendMode accept
+ * the SDL_BlendMode returned by this function if the renderer supports it.
+ *
+ * A blend mode controls how the pixels from a drawing operation (source) get
+ * combined with the pixels from the render target (destination). First, the
+ * components of the source and destination pixels get multiplied with their
+ * blend factors. Then, the blend operation takes the two products and
+ * calculates the result that will get stored in the render target.
+ *
+ * Expressed in pseudocode, it would look like this:
+ *
+ * ```c
+ * dstRGB = colorOperation(srcRGB * srcColorFactor, dstRGB * dstColorFactor);
+ * dstA = alphaOperation(srcA * srcAlphaFactor, dstA * dstAlphaFactor);
+ * ```
+ *
+ * Where the functions `colorOperation(src, dst)` and `alphaOperation(src,
+ * dst)` can return one of the following:
+ *
+ * - `src + dst`
+ * - `src - dst`
+ * - `dst - src`
+ * - `min(src, dst)`
+ * - `max(src, dst)`
+ *
+ * The red, green, and blue components are always multiplied with the first,
+ * second, and third components of the SDL_BlendFactor, respectively. The
+ * fourth component is not used.
+ *
+ * The alpha component is always multiplied with the fourth component of the
+ * SDL_BlendFactor. The other components are not used in the alpha
+ * calculation.
+ *
+ * Support for these blend modes varies for each renderer. To check if a
+ * specific SDL_BlendMode is supported, create a renderer and pass it to
+ * either SDL_SetRenderDrawBlendMode or SDL_SetTextureBlendMode. They will
+ * return with an error if the blend mode is not supported.
+ *
+ * This list describes the support of custom blend modes for each renderer.
+ * All renderers support the four blend modes listed in the SDL_BlendMode
+ * enumeration.
+ *
+ * - **direct3d**: Supports all operations with all factors. However, some
+ *   factors produce unexpected results with `SDL_BLENDOPERATION_MINIMUM` and
+ *   `SDL_BLENDOPERATION_MAXIMUM`.
+ * - **direct3d11**: Same as Direct3D 9.
+ * - **opengl**: Supports the `SDL_BLENDOPERATION_ADD` operation with all
+ *   factors. OpenGL versions 1.1, 1.2, and 1.3 do not work correctly here.
+ * - **opengles2**: Supports the `SDL_BLENDOPERATION_ADD`,
+ *   `SDL_BLENDOPERATION_SUBTRACT`, `SDL_BLENDOPERATION_REV_SUBTRACT`
+ *   operations with all factors.
+ * - **psp**: No custom blend mode support.
+ * - **software**: No custom blend mode support.
+ *
+ * Some renderers do not provide an alpha component for the default render
+ * target. The `SDL_BLENDFACTOR_DST_ALPHA` and
+ * `SDL_BLENDFACTOR_ONE_MINUS_DST_ALPHA` factors do not have an effect in this
+ * case.
+ *
+ * @param srcColorFactor the SDL_BlendFactor applied to the red, green, and
+ *                       blue components of the source pixels.
+ * @param dstColorFactor the SDL_BlendFactor applied to the red, green, and
+ *                       blue components of the destination pixels.
+ * @param colorOperation the SDL_BlendOperation used to combine the red,
+ *                       green, and blue components of the source and
+ *                       destination pixels.
+ * @param srcAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ *                       the source pixels.
+ * @param dstAlphaFactor the SDL_BlendFactor applied to the alpha component of
+ *                       the destination pixels.
+ * @param alphaOperation the SDL_BlendOperation used to combine the alpha
+ *                       component of the source and destination pixels.
+ * @returns an SDL_BlendMode that represents the chosen factors and
+ *          operations.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ */
+inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
+                                        BlendFactor dstColorFactor,
+                                        BlendOperation colorOperation,
+                                        BlendFactor srcAlphaFactor,
+                                        BlendFactor dstAlphaFactor,
+                                        BlendOperation alphaOperation)
+{
+  return SDL_ComposeCustomBlendMode(srcColorFactor,
+                                    dstColorFactor,
+                                    colorOperation,
+                                    srcAlphaFactor,
+                                    dstAlphaFactor,
+                                    alphaOperation);
+}
+/** @} */
+
+/**
+ * @defgroup CategoryError Error Handling
+ *
+ * Simple error message routines for SDL.
+ *
+ * Most apps will interface with these APIs in exactly one function: when
+ * almost any SDL function call reports failure, you can get a human-readable
+ * string of the problem from GetError().
+ *
+ * These strings are maintained per-thread, and apps are welcome to set their
+ * own errors, which is popular when building libraries on top of SDL for
+ * other apps to consume. These strings are set by calling SDL_SetError().
+ *
+ * A common usage pattern is to have a function that returns true for success
+ * and false for failure, and do this when something fails:
+ *
+ * ```c
+ * if (something_went_wrong) {
+ *    return SetError("The thing broke in this specific way: %d", errcode);
+ * }
+ * ```
+ *
+ * It's also common to just return `false` in this case if the failing thing
+ * is known to call SetError(), so errors simply propagate through.
+ *
+ * @{
+ */
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @param message the error message
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ */
+inline bool SetErrorUnformatted(StringParam message)
+{
+  return SDL_SetError("%s", static_cast<const char*>(message));
+}
+
+/**
+ * Set the SDL error message for the current thread.
+ *
+ * Calling this function will replace any previous error message that was set.
+ *
+ * This function always returns false, since SDL frequently uses false to
+ * signify a failing result, leading to this idiom:
+ *
+ * ```c
+ * if (error_code) {
+ *     return SetError("This operation has failed: {}", error_code);
+ * }
+ * ```
+ *
+ * @tparam ARGS the formatting parameters
+ * @param fmt a
+ * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ * style message format string
+ * @param args additional parameters matching the `{}` tokens in the format
+ * string, if any.
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat formatted-string
+ *
+ * @sa formatted-string
+ * @sa ClearError
+ * @sa GetError
+ * @sa SetError
+ * @return false
+ */
+template<class... ARGS>
+inline bool SetError(std::string_view fmt, ARGS... args)
+{
+  return SetError(
+    std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+}
+
+/**
+ * Set an error indicating that memory allocation failed.
+ *
+ * This function does not do any memory allocation.
+ *
+ * @returns false.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OutOfMemory() { return SDL_OutOfMemory(); }
+
+/**
+ * @brief Retrieve a message about the last error that occurred on the current
+ * thread.
+ *
+ * It is possible for multiple errors to occur before calling GetError().
+ * Only the last error is returned.
+ *
+ * The message is only applicable when an SDL function has signaled an error.
+ * You must check the return values of SDL function calls to determine when to
+ * appropriately call GetError(). You should *not* use the results of
+ * GetError() to decide if an error has occurred! Sometimes SDL will set
+ * an error string even when reporting success.
+ *
+ * SDL will *not* clear the error string for successful API calls. You *must*
+ * check return values for failure cases before you can assume the error
+ * string applies.
+ *
+ * Error strings are set per-thread, so an error set in a different thread
+ * will not interfere with the current thread's operation.
+ *
+ * The returned value is a thread-local string which will remain valid until
+ * the current thread's error string is changed. The caller should make a copy
+ * if the value is needed after the next SDL API call.
+ *
+ * @return a message with information about the specific error that occurred,
+ *          or an empty string if there hasn't been an error message set since
+ *          the last call to ClearError().
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @sa ClearError()
+ */
+inline const char* GetError() { return SDL_GetError(); }
+
+/**
+ * @brief Clear any previous error message for this thread.
+ *
+ * @returns true.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @sa GetError()
+ */
+inline bool ClearError() { return SDL_ClearError(); }
+
+/** @} */
+
+/**
+ * @defgroup CategoryGUID GUIDs
+ *
+ * A GUID is a 128-bit value that represents something that is uniquely
+ * identifiable by this value: "globally unique."
+ *
+ * SDL provides functions to convert a GUID to/from a string.
+ * @{
+ */
+
+/**
+ * An SDL_GUID is a 128-bit identifier for an input device that identifies
+ * that device across runs of SDL programs on the same platform.
+ *
+ * If the device is detached and then re-attached to a different port, or if
+ * the base system is rebooted, the device should still report the same GUID.
+ *
+ * GUIDs are as precise as possible but are not guaranteed to distinguish
+ * physically distinct but equivalent devices. For example, two game
+ * controllers from the same vendor with the same product ID and revision may
+ * have the same GUID.
+ *
+ * GUIDs may be platform-dependent (i.e., the same device may report different
+ * GUIDs on different operating systems).
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct GUID : SDL_GUID
+{
+  constexpr GUID()
+    : SDL_GUID({0})
+  {
+  }
+
+  constexpr GUID(SDL_GUID guid)
+    : SDL_GUID(guid)
+  {
+  }
+
+  /**
+   * Convert a GUID string into a SDL_GUID structure.
+   *
+   * Performs no error checking. If this function is given a string containing
+   * an invalid GUID, the function will silently succeed, but the GUID generated
+   * will not be useful.
+   *
+   * @param pchGUID string containing an ASCII representation of a GUID.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GUIDToString
+   */
+  GUID(StringParam pchGUID)
+    : SDL_GUID(SDL_StringToGUID(pchGUID))
+  {
+  }
+
+  /**
+   * Get an ASCII string representation for a given SDL_GUID.
+   *
+   * @returns pszGUID the ASCII string representation for
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_StringToGUID
+   */
+  std::string ToString() const
+  {
+    std::string result(32, ' ');
+    SDL_GUIDToString(*this, result.data(), 33);
+    return result;
+  }
+};
+
+/**
+ * Get an ASCII string representation for a given SDL_GUID.
+ *
+ * @param guid the SDL_GUID you wish to convert to string.
+ * @param pszGUID buffer in which to write the ASCII string.
+ * @param cbGUID the size of pszGUID, should be at least 33 bytes.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_StringToGUID
+ */
+inline void GUIDToString(SDL_GUID guid, char* pszGUID, int cbGUID)
+{
+  return SDL_GUIDToString(guid, pszGUID, cbGUID);
+}
+
+/**
+ * Convert a GUID string into a SDL_GUID structure.
+ *
+ * Performs no error checking. If this function is given a string containing
+ * an invalid GUID, the function will silently succeed, but the GUID generated
+ * will not be useful.
+ *
+ * @param pchGUID string containing an ASCII representation of a GUID.
+ * @returns a SDL_GUID structure.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GUIDToString
+ */
+inline SDL_GUID StringToGUID(StringParam pchGUID)
+{
+  return SDL_StringToGUID(pchGUID);
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryHints Configuration Variables
+ *
+ * This file contains functions to set and get configuration hints, as well as
+ * listing each of them alphabetically.
+ *
+ * The convention for naming hints is SDL_HINT_X, where "SDL_X" is the
+ * environment variable that can be used to override the default.
+ *
+ * In general these hints are just that - they may or may not be supported or
+ * applicable on any given platform, but they provide a way for an application
+ * or user to give the library a hint as to how they would like the library to
+ * work.
+ *
+ * @{
+ */
+
+/**
+ * An enumeration of hint priorities.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using HintPriority = SDL_HintPriority;
+
+constexpr HintPriority HINT_DEFAULT = SDL_HINT_DEFAULT;
+
+constexpr HintPriority HINT_NORMAL = SDL_HINT_NORMAL;
+
+constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE;
+
+/**
+ * Set a hint with a specific priority.
+ *
+ * The priority controls the behavior when setting a hint that already has a
+ * value. Hints will replace existing hints of their priority and lower.
+ * Environment variables are considered to have override priority.
+ *
+ * @param name the hint to set.
+ * @param value the value of the hint variable.
+ * @param priority the SDL_HintPriority level for the hint.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_ResetHint
+ * @sa SDL_SetHint
+ */
+inline bool SetHintWithPriority(StringParam name,
+                                StringParam value,
+                                HintPriority priority)
+{
+  return SDL_SetHintWithPriority(name, value, priority);
+}
+
+/**
+ * Set a hint with normal priority.
+ *
+ * Hints will not be set if there is an existing override hint or environment
+ * variable that takes precedence. You can use SDL_SetHintWithPriority() to
+ * set the hint with override priority instead.
+ *
+ * @param name the hint to set.
+ * @param value the value of the hint variable.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_ResetHint
+ * @sa SDL_SetHintWithPriority
+ */
+inline bool SetHint(StringParam name, StringParam value)
+{
+  return SDL_SetHint(name, value);
+}
+
+/**
+ * Reset a hint to the default value.
+ *
+ * This will reset a hint to the value of the environment variable, or NULL if
+ * the environment isn't set. Callbacks will be called normally with this
+ * change.
+ *
+ * @param name the hint to set.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHint
+ * @sa SDL_ResetHints
+ */
+inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
+
+/**
+ * Reset all hints to the default values.
+ *
+ * This will reset all hints to the value of the associated environment
+ * variable, or NULL if the environment isn't set. Callbacks will be called
+ * normally with this change.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_ResetHint
+ */
+inline void ResetHints() { return SDL_ResetHints(); }
+
+/**
+ * Get the value of a hint.
+ *
+ * @param name the hint to query.
+ * @returns the string value of a hint or NULL if the hint isn't set.
+ *
+ * @threadsafety It is safe to call this function from any thread, however the
+ *               return value only remains valid until the hint is changed; if
+ *               another thread might do so, the app should supply locks
+ *               and/or make a copy of the string. Note that using a hint
+ *               callback instead is always thread-safe, as SDL holds a lock
+ *               on the thread subsystem during the callback.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_SetHint
+ * @sa SDL_SetHintWithPriority
+ */
+inline const char* GetHint(StringParam name) { return SDL_GetHint(name); }
+
+/**
+ * Get the boolean value of a hint variable.
+ *
+ * @param name the name of the hint to get the boolean value from.
+ * @param default_value the value to return if the hint does not exist.
+ * @returns the boolean value of a hint or the provided default value if the
+ *          hint does not exist.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetHint
+ * @sa SDL_SetHint
+ */
+inline bool GetHintBoolean(StringParam name, bool default_value)
+{
+  return SDL_GetHintBoolean(name, default_value);
+}
+
+/**
+ * A callback used to send notifications of hint value changes.
+ *
+ * This is called an initial time during SDL_AddHintCallback with the hint's
+ * current value, and then again each time the hint's value changes.
+ *
+ * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
+ * @param name what was passed as `name` to SDL_AddHintCallback().
+ * @param oldValue the previous hint value.
+ * @param newValue the new value hint is to be set to.
+ *
+ * @threadsafety This callback is fired from whatever thread is setting a new
+ *               hint value. SDL holds a lock on the hint subsystem when
+ *               calling this callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddHintCallback
+ */
+using HintCallback = SDL_HintCallback;
+
+/**
+ * Add a function to watch a particular hint.
+ *
+ * The callback function is called _during_ this function, to provide it an
+ * initial value, and again each time the hint's value changes.
+ *
+ * @param name the hint to watch.
+ * @param callback An SDL_HintCallback function that will be called when the
+ *                 hint value changes.
+ * @param userdata a pointer to pass to the callback function.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_RemoveHintCallback
+ */
+inline bool AddHintCallback(StringParam name,
+                            HintCallback callback,
+                            void* userdata)
+{
+  return SDL_AddHintCallback(name, callback, userdata);
+}
+
+/**
+ * Remove a function watching a particular hint.
+ *
+ * @param name the hint being watched.
+ * @param callback an SDL_HintCallback function that will be called when the
+ *                 hint value changes.
+ * @param userdata a pointer being passed to the callback function.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_AddHintCallback
+ */
+inline void RemoveHintCallback(StringParam name,
+                               HintCallback callback,
+                               void* userdata)
+{
+  return SDL_RemoveHintCallback(name, callback, userdata);
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryLocale Locale Info
+ *
+ * SDL locale services.
+ *
+ * This provides a way to get a list of preferred locales (language plus
+ * country) for the user. There is exactly one function:
+ * GetPreferredLocales(), which handles all the heavy lifting, and offers
+ * documentation on all the strange ways humans might have configured their
+ * language settings.
+ *
+ * @{
+ */
+
+/**
+ * A struct to provide locale data.
+ *
+ * Locale data is split into a spoken language, like English, and an optional
+ * country, like Canada. The language will be in ISO-639 format (so English
+ * would be "en"), and the country, if not NULL, will be an ISO-3166 country
+ * code (so Canada would be "CA").
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPreferredLocales()
+ */
+using Locale = SDL_Locale;
+
+/**
+ * Report the user's preferred locale.
+ *
+ * Returned language strings are in the format xx, where 'xx' is an ISO-639
+ * language specifier (such as "en" for English, "de" for German, etc).
+ * Country strings are in the format YY, where "YY" is an ISO-3166 country
+ * code (such as "US" for the United States, "CA" for Canada, etc). Country
+ * might be NULL if there's no specific guidance on them (so you might get {
+ * "en", "US" } for American English, but { "en", NULL } means "English
+ * language, generically"). Language strings are never NULL, except to
+ * terminate the array.
+ *
+ * Please note that not all of these strings are 2 characters; some are three
+ * or more.
+ *
+ * The returned list of locales are in the order of the user's preference. For
+ * example, a German citizen that is fluent in US English and knows enough
+ * Japanese to navigate around Tokyo might have a list like: { "de", "en_US",
+ * "jp", NULL }. Someone from England might prefer British English (where
+ * "color" is spelled "colour", etc), but will settle for anything like it: {
+ * "en_GB", "en", NULL }.
+ *
+ * This function returns NULL on error, including when the platform does not
+ * supply this information at all.
+ *
+ * This might be a "slow" call that has to query the operating system. It's
+ * best to ask for this once and save the results. However, this list can
+ * change, usually because the user has changed a system preference outside of
+ * your program; SDL will send an SDL::EVENT_LOCALE_CHANGED event in this case,
+ * if possible, and you can call this function again to get an updated copy of
+ * preferred locales.
+ *
+ * @returns a std::nullptr terminated array of locale pointers, or std::nullptr
+ * on failure; call GetError() for more information. This is a single allocation
+ *          that should be freed with free() when it is no longer needed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline OwnArray<Locale*> GetPreferredLocales()
+{
+  int count = 0;
+  auto data = SDL_GetPreferredLocales(&count);
+  return OwnArray<Locale*>{data, size_t(count)};
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryLog Log Handling
+ *
+ * Simple log messages with priorities and categories. A message's
+ * LogPriority signifies how important the message is. A message's
+ * LogCategory signifies from what domain it belongs to. Every category
+ * has a minimum priority specified: when a message belongs to that category,
+ * it will only be sent out if it has that minimum priority or higher.
+ *
+ * SDL's own logs are sent below the default priority threshold, so they are
+ * quiet by default.
+ *
+ * You can change the log verbosity programmatically using
+ * LogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or
+ * with the "SDL_LOGGING" environment variable. This variable is a comma
+ * separated set of category=level tokens that define the default logging levels
+ * for SDL applications.
+ *
+ * The category can be a numeric category, one of "app", "error", "assert",
+ * "system", "audio", "video", "render", "input", "test", or `*` for any
+ * unspecified category.
+ *
+ * The level can be a numeric level, one of "trace", "verbose", "debug",
+ * "info", "warn", "error", "critical", or "quiet" to disable that category.
+ *
+ * You can omit the category if you want to set the logging level for all
+ * categories.
+ *
+ * If this hint isn't set, the default log levels are equivalent to:
+ *
+ * `app=info,assert=warn,test=verbose,*=error`
+ *
+ * Here's where the messages go on different platforms:
+ *
+ * - Windows: debug output stream
+ * - Android: log output
+ * - Others: standard error output (stderr)
+ *
+ * You don't need to have a newline (`@n`) on the end of messages, the
+ * functions will do that for you. For consistent behavior cross-platform, you
+ * shouldn't have any newlines in messages, such as to log multiple lines in
+ * one call; unusual platform-specific behavior can be observed in such usage.
+ * Do one log call per line instead, with no newlines in messages.
+ *
+ * Each log call is atomic, so you won't see log messages cut off one another
+ * when logging from multiple threads.
+ *
+ * @{
+ */
+
+/**
+ * @name LogPriorities
+ *
+ * The priorities assignable for a LogCategory.
+ *
+ * @{
+ */
+
+/**
+ * The predefined log priorities
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using LogPriority = SDL_LogPriority;
+
+/// @}
+
+/**
+ * @name LogCategories
+ *
+ * The logging categories. see LogCategory for more info
+ *
+ * @{
+ */
+
+/**
+ * The predefined log categories
+ *
+ * By default the application and gpu categories are enabled at the INFO
+ * level, the assert category is enabled at the WARN level, test is enabled at
+ * the VERBOSE level and all other categories are enabled at the ERROR level.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @cat wrap-state
+ *
+ * @sa wrap-state
+ */
+class LogCategory
+{
+  int m_category;
+
+public:
+  constexpr explicit LogCategory(int category)
+    : m_category(category)
+  {
+  }
+
+  constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
+    : m_category(category)
+  {
+  }
+
+  constexpr operator int() { return m_category; }
+
+  constexpr operator SDL_LogCategory() { return SDL_LogCategory(m_category); }
+
+  constexpr auto operator<=>(const LogCategory& other) const = default;
+
+  /**
+   * Set the priority of all log categories.
+   *
+   * @param priority the LogPriority to assign.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ResetLogPriorities()
+   * @sa SetLogPriority()
+   */
+  static void SetLogPriorities(LogPriority priority)
+  {
+    return SDL_SetLogPriorities(priority);
+  }
+
+  /**
+   * Set the priority of a particular log category.
+   *
+   * @param priority the SDL_LogPriority to assign.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetLogPriority()
+   * @sa ResetLogPriorities()
+   * @sa SetLogPriorities()
+   */
+  void SetLogPriority(LogPriority priority)
+  {
+    return SDL_SetLogPriority(m_category, priority);
+  }
+
+  /**
+   * Get the priority of a particular log category.
+   *
+   * @returns the LogPriority for the requested category.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetLogPriority()
+   */
+  LogPriority GetLogPriority() const { return SDL_GetLogPriority(m_category); }
+
+  /**
+   * Reset all priorities to default.
+   *
+   * This is called by SDL_Quit().
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetLogPriorities
+   * @sa SetLogPriority
+   */
+  static void ResetLogPriorities() { return SDL_ResetLogPriorities(); }
+
+  /**
+   * Log an unformatted message with the specified priority.
+   *
+   * @param priority the priority of the message.
+   * @param message string to output.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL::Log()
+   * @sa Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  void LogUnformatted(LogPriority priority, StringParam message) const
+  {
+    return SDL_LogMessage(m_category, priority, "%s", (const char*)(message));
+  }
+
+  /**
+   * Log a message with the specified priority.
+   *
+   * @param priority the priority of the message.
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogUnformatted()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void Log(LogPriority priority, std::string_view fmt, ARGS... args) const
+  {
+    return LogUnformatted(priority,
+                          std::vformat(fmt, std::make_format_args(args...)));
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_TRACE.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogTrace(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_TRACE, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_VERBOSE.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogVerbose(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_VERBOSE, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_DEBUG.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogDebug(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_DEBUG, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_INFO.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogInfo(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_WARN.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   */
+  template<class... ARGS>
+  void LogWarn(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_WARN, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_ERROR.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogCritical()
+   * @sa LogDebug()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogError(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_ERROR, fmt, std::forward<ARGS>(args)...);
+  }
+
+  /**
+   * Log a message with SDL_LOG_PRIORITY_CRITICAL.
+   *
+   * @param fmt a
+   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+   * style message format string.
+   * @param args additional parameters matching the `{}` tokens in the format
+   * string, if any.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @cat formatted-string
+   *
+   * @sa formatted-string
+   * @sa SDL::Log()
+   * @sa LogDebug()
+   * @sa LogError()
+   * @sa LogInfo()
+   * @sa Log()
+   * @sa LogUnformatted()
+   * @sa LogTrace()
+   * @sa LogVerbose()
+   * @sa LogWarn()
+   */
+  template<class... ARGS>
+  void LogCritical(std::string_view fmt, ARGS&&... args) const
+  {
+    return Log(SDL_LOG_PRIORITY_CRITICAL, fmt, std::forward<ARGS>(args)...);
+  }
+};
+
+constexpr LogCategory LOG_CATEGORY_APPLICATION = SDL_LOG_CATEGORY_APPLICATION;
+
+constexpr LogCategory LOG_CATEGORY_ERROR = SDL_LOG_CATEGORY_ERROR;
+
+constexpr LogCategory LOG_CATEGORY_ASSERT = SDL_LOG_CATEGORY_ASSERT;
+
+constexpr LogCategory LOG_CATEGORY_SYSTEM = SDL_LOG_CATEGORY_SYSTEM;
+
+constexpr LogCategory LOG_CATEGORY_AUDIO = SDL_LOG_CATEGORY_AUDIO;
+
+constexpr LogCategory LOG_CATEGORY_VIDEO = SDL_LOG_CATEGORY_VIDEO;
+
+constexpr LogCategory LOG_CATEGORY_RENDER = SDL_LOG_CATEGORY_RENDER;
+
+constexpr LogCategory LOG_CATEGORY_INPUT = SDL_LOG_CATEGORY_INPUT;
+
+constexpr LogCategory LOG_CATEGORY_TEST = SDL_LOG_CATEGORY_TEST;
+
+constexpr LogCategory LOG_CATEGORY_GPU = SDL_LOG_CATEGORY_GPU;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED2 = SDL_LOG_CATEGORY_RESERVED2;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED3 = SDL_LOG_CATEGORY_RESERVED3;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED4 = SDL_LOG_CATEGORY_RESERVED4;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED5 = SDL_LOG_CATEGORY_RESERVED5;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED6 = SDL_LOG_CATEGORY_RESERVED6;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED7 = SDL_LOG_CATEGORY_RESERVED7;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED8 = SDL_LOG_CATEGORY_RESERVED8;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED9 = SDL_LOG_CATEGORY_RESERVED9;
+
+constexpr LogCategory LOG_CATEGORY_RESERVED10 = SDL_LOG_CATEGORY_RESERVED10;
+
+constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM;
+
+/// @}
+
+/**
+ * @name LogPriorities
+ * @{
+ */
+
+constexpr LogPriority LOG_PRIORITY_INVALID = SDL_LOG_PRIORITY_INVALID;
+
+constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE;
+
+constexpr LogPriority LOG_PRIORITY_VERBOSE = SDL_LOG_PRIORITY_VERBOSE;
+
+constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG;
+
+constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO;
+
+constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN;
+
+constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR;
+
+constexpr LogPriority LOG_PRIORITY_CRITICAL = SDL_LOG_PRIORITY_CRITICAL;
+
+constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT;
+
+/// @}
+
+/**
+ * Set the text prepended to log messages of a given priority.
+ *
+ * By default LOG_PRIORITY_INFO and below have no prefix, and
+ * LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
+ * "WARNING: ".
+ *
+ * @param priority the LogPriority to modify.
+ * @param prefix the prefix to use for that log priority, or NULL to use no
+ *               prefix.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa LogCategory::SetLogPriorities()
+ * @sa LogCategory::SetLogPriority()
+ */
+inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
+{
+  return SDL_SetLogPriorityPrefix(priority, prefix);
+}
+
+/**
+ * Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.
+ *
+ * @param fmt a
+ *            [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
+ *            style message format string.
+ * @param args additional parameters matching the `{}` tokens in the format
+ *             string, if any.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat formatted-string
+ *
+ * @sa formatted-string
+ * @sa LogUnformatted()
+ * @sa LogCategory.LogCritical()
+ * @sa LogCategory.LogDebug()
+ * @sa LogCategory.LogError()
+ * @sa LogCategory.LogInfo()
+ * @sa LogCategory.Log()
+ * @sa LogCategory.LogUnformatted()
+ * @sa LogCategory.LogTrace()
+ * @sa LogCategory.LogVerbose()
+ * @sa LogCategory.LogWarn()
+ */
+template<class... ARGS>
+inline void Log(std::string_view fmt, ARGS&&... args)
+{
+  LOG_CATEGORY_APPLICATION.Log(
+    LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
+}
+
+/**
+ * Log an unformatted message with LOG_CATEGORY_APPLICATION and
+ * LOG_PRIORITY_INFO.
+ *
+ * @param message string to output.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Log()
+ * @sa LogCategory.LogCritical()
+ * @sa LogCategory.LogDebug()
+ * @sa LogCategory.LogError()
+ * @sa LogCategory.LogInfo()
+ * @sa LogCategory.Log()
+ * @sa LogCategory.LogUnformatted()
+ * @sa LogCategory.LogTrace()
+ * @sa LogCategory.LogVerbose()
+ * @sa LogCategory.LogWarn()
+ */
+inline void LogUnformatted(StringParam message)
+{
+  SDL_Log("%s", static_cast<const char*>(message));
+}
+
+/**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param userdata what was passed as `userdata` to
+ *                 SetLogOutputFunction().
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using LogOutputFunction = SDL_LogOutputFunction;
+
+/**
+ * The prototype for the log output callback function.
+ *
+ * This function is called by SDL when there is new text to be logged. A mutex
+ * is held so that this function is never called by more than one thread at
+ * once.
+ *
+ * @param category the category of the message.
+ * @param priority the priority of the message.
+ * @param message the message being output.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa LogOutputFunction
+ */
+using LogOutputFunctionCB =
+  std::function<void(LogCategory, LogPriority, StringParam)>;
+
+/**
+ * Get the default log output function.
+ *
+ * @returns the default log output callback.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ */
+inline LogOutputFunction GetDefaultLogOutputFunction()
+{
+  return SDL_GetDefaultLogOutputFunction();
+}
+
+/**
+ * Get the current log output function.
+ *
+ * @param callback an LogOutputFunction filled in with the current log callback.
+ * @param userdata a pointer filled in with the pointer that is passed to
+ *                 `callback`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction()
+ * @sa SetLogOutputFunction()
+ */
+inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
+{
+  return SDL_GetLogOutputFunction(callback, userdata);
+}
+
+/**
+ * Get the current log output function.
+ *
+ * @returns the LogOutputFunctionCB currently set
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa GetDefaultLogOutputFunction()
+ * @sa SetLogOutputFunction()
+ */
+inline LogOutputFunctionCB GetLogOutputFunction()
+{
+  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  LogOutputFunction cb;
+  void* userdata;
+  if (userdata == nullptr) {
+    return [cb](LogCategory c, LogPriority p, StringParam m) {
+      cb(nullptr, c, p, m);
+    };
+  }
+  GetLogOutputFunction(&cb, &userdata);
+  if (!Wrapper::contains(userdata)) {
+    return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
+      cb(userdata, c, p, m);
+    };
+  }
+  return Wrapper::at(userdata);
+}
+
+/**
+ * Replace the default log output function with one of your own.
+ *
+ * @param callback an LogOutputFunction to call instead of the default.
+ * @param userdata a pointer that is passed to `callback`.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ * @sa ResetLogOutputFunction()
+ */
+inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
+{
+  UniqueWrapper<LogOutputFunctionCB>::erase();
+  return SDL_SetLogOutputFunction(callback, userdata);
+}
+
+/**
+ * Replace the default log output function with one of your own.
+ *
+ * @param callback an LogOutputFunction to call instead of the default.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa GetDefaultLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ * @sa ResetLogOutputFunction()
+ */
+inline void SetLogOutputFunction(LogOutputFunctionCB callback)
+{
+  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
+  SDL_SetLogOutputFunction(
+    [](
+      void* userdata, int category, LogPriority priority, const char* message) {
+      return Wrapper::at(userdata)(LogCategory{category}, priority, message);
+    },
+    Wrapper::Wrap(std::move(callback)));
+}
+
+/**
+ * Replace the current log output function with the default one
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetDefaultLogOutputFunction()
+ * @sa GetLogOutputFunction()
+ */
+inline void ResetLogOutputFunction()
+{
+  return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryPixels Pixel Formats and Conversion Routines
+ *
+ * SDL offers facilities for pixel management.
+ *
+ * Largely these facilities deal with pixel _format_: what does this set of
+ * bits represent?
+ *
+ * If you mostly want to think of a pixel as some combination of red, green,
+ * blue, and maybe alpha intensities, this is all pretty straightforward, and
+ * in many cases, is enough information to build a perfectly fine game.
+ *
+ * However, the actual definition of a pixel is more complex than that:
+ *
+ * Pixels are a representation of a color in a particular color space.
+ *
+ * The first characteristic of a color space is the color type. SDL
+ * understands two different color types, RGB and YCbCr, or in SDL also
+ * referred to as YUV.
+ *
+ * RGB colors consist of red, green, and blue channels of color that are added
+ * together to represent the colors we see on the screen.
+ *
+ * https://en.wikipedia.org/wiki/RGB_color_model
+ *
+ * YCbCr colors represent colors as a Y luma brightness component and red and
+ * blue chroma color offsets. This color representation takes advantage of the
+ * fact that the human eye is more sensitive to brightness than the color in
+ * an image. The Cb and Cr components are often compressed and have lower
+ * resolution than the luma component.
+ *
+ * https://en.wikipedia.org/wiki/YCbCr
+ *
+ * When the color information in YCbCr is compressed, the Y pixels are left at
+ * full resolution and each Cr and Cb pixel represents an average of the color
+ * information in a block of Y pixels. The chroma location determines where in
+ * that block of pixels the color information is coming from.
+ *
+ * The color range defines how much of the pixel to use when converting a
+ * pixel into a color on the display. When the full color range is used, the
+ * entire numeric range of the pixel bits is significant. When narrow color
+ * range is used, for historical reasons, the pixel uses only a portion of the
+ * numeric range to represent colors.
+ *
+ * The color primaries and white point are a definition of the colors in the
+ * color space relative to the standard XYZ color space.
+ *
+ * https://en.wikipedia.org/wiki/CIE_1931_color_space
+ *
+ * The transfer characteristic, or opto-electrical transfer function (OETF),
+ * is the way a color is converted from mathematically linear space into a
+ * non-linear output signals.
+ *
+ * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
+ *
+ * The matrix coefficients are used to convert between YCbCr and RGB colors.
+ *
+ * @{
+ */
+
+// Forward decl
+template<class T>
+struct PaletteBase;
+
+/**
+ * Handle to a non owned surface
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa PaletteBase
+ * @sa Palette
+ */
+using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
+
+/**
+ * Handle to an owned surface
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa PaletteBase
+ * @sa PaletteRef
+ */
+using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
+
+// Forward decl
+struct Color;
+
+/**
+ * @name PixelTypes
+ * @{
+ */
+
+/**
+ * Pixel type.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PixelType = SDL_PixelType;
+
+constexpr PixelType PIXELTYPE_UNKNOWN = SDL_PIXELTYPE_UNKNOWN;
+
+constexpr PixelType PIXELTYPE_INDEX1 = SDL_PIXELTYPE_INDEX1;
+
+constexpr PixelType PIXELTYPE_INDEX4 = SDL_PIXELTYPE_INDEX4;
+
+constexpr PixelType PIXELTYPE_INDEX8 = SDL_PIXELTYPE_INDEX8;
+
+constexpr PixelType PIXELTYPE_PACKED8 = SDL_PIXELTYPE_PACKED8;
+
+constexpr PixelType PIXELTYPE_PACKED16 = SDL_PIXELTYPE_PACKED16;
+
+constexpr PixelType PIXELTYPE_PACKED32 = SDL_PIXELTYPE_PACKED32;
+
+constexpr PixelType PIXELTYPE_ARRAYU8 = SDL_PIXELTYPE_ARRAYU8;
+
+constexpr PixelType PIXELTYPE_ARRAYU16 = SDL_PIXELTYPE_ARRAYU16;
+
+constexpr PixelType PIXELTYPE_ARRAYU32 = SDL_PIXELTYPE_ARRAYU32;
+
+constexpr PixelType PIXELTYPE_ARRAYF16 = SDL_PIXELTYPE_ARRAYF16;
+
+constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32;
+
+constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2;
+
+/// @}
+
+/**
+ * @name BitmapOrders
+ * @{
+ */
+
+/**
+ * Bitmap pixel order, high bit -> low bit.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using BitmapOrder = SDL_BitmapOrder;
+
+constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE;
+
+constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321;
+
+constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234;
+
+/// @}
+
+/**
+ * @name PackedOrders
+ * @{
+ */
+
+/**
+ * Packed component order, high bit -> low bit.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PackedOrder = SDL_PackedOrder;
+
+constexpr PackedOrder PACKEDORDER_NONE = SDL_PACKEDORDER_NONE;
+
+constexpr PackedOrder PACKEDORDER_XRGB = SDL_PACKEDORDER_XRGB;
+
+constexpr PackedOrder PACKEDORDER_RGBX = SDL_PACKEDORDER_RGBX;
+
+constexpr PackedOrder PACKEDORDER_ARGB = SDL_PACKEDORDER_ARGB;
+
+constexpr PackedOrder PACKEDORDER_RGBA = SDL_PACKEDORDER_RGBA;
+
+constexpr PackedOrder PACKEDORDER_XBGR = SDL_PACKEDORDER_XBGR;
+
+constexpr PackedOrder PACKEDORDER_BGRX = SDL_PACKEDORDER_BGRX;
+
+constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR;
+
+constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA;
+
+/// @}
+
+/**
+ * @name ArrayOrders
+ * @{
+ */
+
+/**
+ * Array component order, low byte -> high byte.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ArrayOrder = SDL_ArrayOrder;
+
+constexpr ArrayOrder ARRAYORDER_NONE = SDL_ARRAYORDER_NONE;
+
+constexpr ArrayOrder ARRAYORDER_RGB = SDL_ARRAYORDER_RGB;
+
+constexpr ArrayOrder ARRAYORDER_RGBA = SDL_ARRAYORDER_RGBA;
+
+constexpr ArrayOrder ARRAYORDER_ARGB = SDL_ARRAYORDER_ARGB;
+
+constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR;
+
+constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA;
+
+constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR;
+
+/// @}
+
+/**
+ * @name PackedLayouts
+ * @{
+ */
+
+/**
+ * Packed component layout.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using PackedLayout = SDL_PackedLayout;
+
+constexpr PackedLayout PACKEDLAYOUT_NONE = SDL_PACKEDLAYOUT_NONE;
+
+constexpr PackedLayout PACKEDLAYOUT_332 = SDL_PACKEDLAYOUT_332;
+
+constexpr PackedLayout PACKEDLAYOUT_4444 = SDL_PACKEDLAYOUT_4444;
+
+constexpr PackedLayout PACKEDLAYOUT_1555 = SDL_PACKEDLAYOUT_1555;
+
+constexpr PackedLayout PACKEDLAYOUT_5551 = SDL_PACKEDLAYOUT_5551;
+
+constexpr PackedLayout PACKEDLAYOUT_565 = SDL_PACKEDLAYOUT_565;
+
+constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888;
+
+constexpr PackedLayout PACKEDLAYOUT_2101010 = SDL_PACKEDLAYOUT_2101010;
+
+constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
+
+/// @}
+
+/**
+ * Details about the format of a pixel.
+ */
+using PixelFormatDetails = SDL_PixelFormatDetails;
+
+/**
+ * Pixel format.
+ *
+ * SDL's pixel formats have the following naming convention:
+ *
+ * - Names with a list of components and a single bit count, such as RGB24 and
+ *   ABGR32, define a platform-independent encoding into bytes in the order
+ *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
+ *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
+ *   encoded in 4 bytes alpha, blue, green, red) in that order. Use these
+ *   names if the property of a format that is important to you is the order
+ *   of the bytes in memory or on disk.
+ * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
+ *   "packed" into an appropriately-sized integer in the platform's native
+ *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in
+ *   each integer, the most significant bits are alpha, and the least
+ *   significant bits are blue. On a little-endian CPU such as x86, the least
+ *   significant bits of each integer are arranged first in memory, but on a
+ *   big-endian CPU such as s390x, the most significant bits are arranged
+ *   first. Use these names if the property of a format that is important to
+ *   you is the meaning of each bit position within a native-endianness
+ *   integer.
+ * - In indexed formats such as INDEX4LSB, each pixel is represented by
+ *   encoding an index into the palette into the indicated number of bits,
+ *   with multiple pixels packed into each byte if appropriate. In LSB
+ *   formats, the first (leftmost) pixel is stored in the least-significant
+ *   bits of the byte; in MSB formats, it's stored in the most-significant
+ *   bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly
+ *   fills one byte.
+ *
+ * The 32-bit byte-array encodings such as RGBA32 are aliases for the
+ * appropriate 8888 encoding for the current platform. For example, RGBA32 is
+ * an alias for ABGR8888 on little-endian CPUs like x86, or an alias for
+ * RGBA8888 on big-endian CPUs.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @cat wrap-state
+ *
+ * @sa wrap-state
+ * @sa PixelFormats
+ */
+struct PixelFormat
+{
+  SDL_PixelFormat format;
+
+  constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
+    : format(format)
+  {
+  }
+
+  /**
+   * Defining custom non-FourCC pixel formats.
+   *
+   * For example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:
+   *
+   * ```c
+   * PixelFormat format(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA,
+   *   SDL_PACKEDLAYOUT_8888, 32, 4);
+   * ```
+   *
+   * @param type the type of the new format, probably a SDL_PixelType value.
+   * @param order the order of the new format, probably a SDL_BitmapOrder,
+   *              SDL_PackedOrder, or SDL_ArrayOrder value.
+   * @param layout the layout of the new format, probably an SDL_PackedLayout
+   *               value or zero.
+   * @param bits the number of bits per pixel of the new format.
+   * @param bytes the number of bytes per pixel of the new format.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr PixelFormat(SDL_PixelType type,
+                        int order,
+                        SDL_PackedLayout layout,
+                        int bits,
+                        int bytes)
+    : format(SDL_PixelFormat(
+        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
+  {
+  }
+
+  constexpr operator bool() const { return format != SDL_PIXELFORMAT_UNKNOWN; }
+
+  constexpr operator SDL_PixelFormat() const { return format; }
+
+  /**
+   * Retrieve the type.
+   *
+   * @returns the type as PixelType.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr PixelType GetType() const
+  {
+    return PixelType(SDL_PIXELTYPE(format));
+  }
+
+  /**
+   * Retrieve the order.
+   *
+   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
+   * enumerations, depending on the format type.
+   *
+   * @returns the order.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr int GetOrder() const { return SDL_PIXELORDER(format); }
+
+  /**
+   * Retrieve the layout.
+   *
+   * This is usually a value from the SDL_PackedLayout enumeration, or zero if a
+   * layout doesn't make sense for the format type.
+   *
+   * @returns the layout
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr PackedLayout GetLayout() const
+  {
+    return PackedLayout(SDL_PIXELLAYOUT(format));
+  }
+
+  /**
+   * Determine this's bits per pixel.
+   *
+   * FourCC formats will report zero here, as it rarely makes sense to measure
+   * them per-pixel.
+   *
+   * @returns the bits-per-pixel.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @sa PixelFormat.GetBytesPerPixel
+   */
+  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(format); }
+
+  /**
+   * Determine this's bytes per pixel.
+   *
+   * Note that this macro double-evaluates its parameter, so do not use
+   * expressions with side-effects here.
+   *
+   * FourCC formats do their best here, but many of them don't have a meaningful
+   * measurement of bytes per pixel.
+   *
+   * @return the bytes-per-pixel.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @sa PixelFormat.GetBitsPerPixel
+   */
+  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(format); }
+
+  /**
+   * Determine if this is an indexed format.
+   *
+   * @returns true if the format is indexed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsIndexed() const { return SDL_ISPIXELFORMAT_INDEXED(format); }
+
+  /**
+   * Determine if this is a packed format.
+   *
+   * @returns true if the format is packed, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(format); }
+
+  /**
+   * Determine if this is an array format.
+   *
+   * @returns true if the format is an array, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(format); }
+
+  /**
+   * Determine if this is a 10-bit format.
+   *
+   * @returns true if the format is 10-bit, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(format); }
+
+  /**
+   * Determine if this is a floating point format.
+   *
+   * @returns true if the format is 10-bit, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(format); }
+
+  /**
+   * Determine if this has an alpha channel.
+   *
+   * @returns true if the format has alpha, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(format); }
+
+  /**
+   * Determine if this is a "FourCC" format.
+   *
+   * This covers custom and other unusual formats.
+   *
+   * @returns true if the format has alpha, false otherwise.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   */
+  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(format); }
+
+  /**
+   * Get the human readable name of a pixel format.
+   *
+   * @returns the human readable name of the specified pixel format or
+   *          "SDL_PIXELFORMAT_UNKNOWN" if the format isn't recognized.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  inline const char* GetName() const { return SDL_GetPixelFormatName(format); }
+
+  /**
+   * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
+   *
+   * @param bpp a bits per pixel value; usually 15, 16, or 32.
+   * @param Rmask a pointer filled in with the red mask for the format.
+   * @param Gmask a pointer filled in with the green mask for the format.
+   * @param Bmask a pointer filled in with the blue mask for the format.
+   * @param Amask a pointer filled in with the alpha mask for the format.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa ForMasks()
+   */
+  inline bool GetMasks(int* bpp,
+                       Uint32* Rmask,
+                       Uint32* Gmask,
+                       Uint32* Bmask,
+                       Uint32* Amask) const
+  {
+    return SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask);
+  }
+
+  /**
+   * Convert a bpp value and RGBA masks to an enumerated pixel format.
+   *
+   * This will return `SDL_PIXELFORMAT_UNKNOWN` if the conversion wasn't
+   * possible.
+   *
+   * @param bpp a bits per pixel value; usually 15, 16, or 32.
+   * @param Rmask the red mask for the format.
+   * @param Gmask the green mask for the format.
+   * @param Bmask the blue mask for the format.
+   * @param Amask the alpha mask for the format.
+   * @returns the SDL_PixelFormat value corresponding to the format masks, or
+   *          SDL_PIXELFORMAT_UNKNOWN if there isn't a match.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetMasks()
+   */
+  static inline PixelFormat ForMasks(int bpp,
+                                     Uint32 Rmask,
+                                     Uint32 Gmask,
+                                     Uint32 Bmask,
+                                     Uint32 Amask)
+  {
+    return {SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask)};
+  }
+
+  /**
+   * Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
+   *
+   * Returned structure may come from a shared global cache (i.e. not newly
+   * allocated), and hence should not be modified, especially the palette. Weird
+   * errors such as `Blit combination not supported` may occur.
+   *
+   * @returns a pointer to a SDL_PixelFormatDetails structure or NULL on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  inline const PixelFormatDetails* GetDetails() const
+  {
+    return SDL_GetPixelFormatDetails(format);
+  }
+
+  /**
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param color the color components of the pixel in the range 0-255.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa Get()
+   * @sa MapRGBA()
+   * @sa Surface.MapColor()
+   */
+  inline Uint32 Map(Color color, PaletteRef palette) const;
+
+  /**
+   * Get RGBA values from a pixel in the specified format.
+   *
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+   *
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
+   *
+   * @param pixel a pixel value.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetPixelFormatDetails()
+   * @sa GetRGBA()
+   * @sa Map()
+   */
+  inline Color Get(Uint32 pixel, PaletteRef palette) const;
+};
+
+/**
+ * @defgroup PixelFormats Pixel Formats
+ *
+ * Pixel formats
+ * @{
+ */
+constexpr PixelFormat PIXELFORMAT_UNKNOWN = SDL_PIXELFORMAT_UNKNOWN;
+
+constexpr PixelFormat PIXELFORMAT_INDEX1LSB = SDL_PIXELFORMAT_INDEX1LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX1MSB = SDL_PIXELFORMAT_INDEX1MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX2LSB = SDL_PIXELFORMAT_INDEX2LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX2MSB = SDL_PIXELFORMAT_INDEX2MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX4LSB = SDL_PIXELFORMAT_INDEX4LSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX4MSB = SDL_PIXELFORMAT_INDEX4MSB;
+
+constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8;
+
+constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332;
+
+constexpr PixelFormat PIXELFORMAT_XRGB4444 = SDL_PIXELFORMAT_XRGB4444;
+
+constexpr PixelFormat PIXELFORMAT_XBGR4444 = SDL_PIXELFORMAT_XBGR4444;
+
+constexpr PixelFormat PIXELFORMAT_XRGB1555 = SDL_PIXELFORMAT_XRGB1555;
+
+constexpr PixelFormat PIXELFORMAT_XBGR1555 = SDL_PIXELFORMAT_XBGR1555;
+
+constexpr PixelFormat PIXELFORMAT_ARGB4444 = SDL_PIXELFORMAT_ARGB4444;
+
+constexpr PixelFormat PIXELFORMAT_RGBA4444 = SDL_PIXELFORMAT_RGBA4444;
+
+constexpr PixelFormat PIXELFORMAT_ABGR4444 = SDL_PIXELFORMAT_ABGR4444;
+
+constexpr PixelFormat PIXELFORMAT_BGRA4444 = SDL_PIXELFORMAT_BGRA4444;
+
+constexpr PixelFormat PIXELFORMAT_ARGB1555 = SDL_PIXELFORMAT_ARGB1555;
+
+constexpr PixelFormat PIXELFORMAT_RGBA5551 = SDL_PIXELFORMAT_RGBA5551;
+
+constexpr PixelFormat PIXELFORMAT_ABGR1555 = SDL_PIXELFORMAT_ABGR1555;
+
+constexpr PixelFormat PIXELFORMAT_BGRA5551 = SDL_PIXELFORMAT_BGRA5551;
+
+constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565;
+
+constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565;
+
+constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24;
+
+constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24;
+
+constexpr PixelFormat PIXELFORMAT_XRGB8888 = SDL_PIXELFORMAT_XRGB8888;
+
+constexpr PixelFormat PIXELFORMAT_RGBX8888 = SDL_PIXELFORMAT_RGBX8888;
+
+constexpr PixelFormat PIXELFORMAT_XBGR8888 = SDL_PIXELFORMAT_XBGR8888;
+
+constexpr PixelFormat PIXELFORMAT_BGRX8888 = SDL_PIXELFORMAT_BGRX8888;
+
+constexpr PixelFormat PIXELFORMAT_ARGB8888 = SDL_PIXELFORMAT_ARGB8888;
+
+constexpr PixelFormat PIXELFORMAT_RGBA8888 = SDL_PIXELFORMAT_RGBA8888;
+
+constexpr PixelFormat PIXELFORMAT_ABGR8888 = SDL_PIXELFORMAT_ABGR8888;
+
+constexpr PixelFormat PIXELFORMAT_BGRA8888 = SDL_PIXELFORMAT_BGRA8888;
+
+constexpr PixelFormat PIXELFORMAT_XRGB2101010 = SDL_PIXELFORMAT_XRGB2101010;
+
+constexpr PixelFormat PIXELFORMAT_XBGR2101010 = SDL_PIXELFORMAT_XBGR2101010;
+
+constexpr PixelFormat PIXELFORMAT_ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010;
+
+constexpr PixelFormat PIXELFORMAT_ABGR2101010 = SDL_PIXELFORMAT_ABGR2101010;
+
+constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48;
+
+constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48;
+
+constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64;
+
+constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64;
+
+constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64;
+
+constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64;
+
+constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT = SDL_PIXELFORMAT_RGB48_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT = SDL_PIXELFORMAT_BGR48_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT = SDL_PIXELFORMAT_RGBA64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT = SDL_PIXELFORMAT_ARGB64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT = SDL_PIXELFORMAT_BGRA64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT = SDL_PIXELFORMAT_ABGR64_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT = SDL_PIXELFORMAT_RGB96_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT = SDL_PIXELFORMAT_BGR96_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT = SDL_PIXELFORMAT_RGBA128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT = SDL_PIXELFORMAT_ARGB128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT = SDL_PIXELFORMAT_BGRA128_FLOAT;
+
+constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT = SDL_PIXELFORMAT_ABGR128_FLOAT;
+
+/**
+ * Planar mode: Y + V + U  (3 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_YV12 = SDL_PIXELFORMAT_YV12;
+
+/**
+ * Planar mode: Y + U + V  (3 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_IYUV = SDL_PIXELFORMAT_IYUV;
+
+/**
+ * Packed mode: Y0+U0+Y1+V0 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_YUY2 = SDL_PIXELFORMAT_YUY2;
+
+/**
+ * Packed mode: U0+Y0+V0+Y1 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_UYVY = SDL_PIXELFORMAT_UYVY;
+
+/**
+ * Packed mode: Y0+V0+Y1+U0 (1 plane)
+ */
+constexpr PixelFormat PIXELFORMAT_YVYU = SDL_PIXELFORMAT_YVYU;
+
+/**
+ * Planar mode: Y + U/V interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_NV12 = SDL_PIXELFORMAT_NV12;
+
+/**
+ * Planar mode: Y + V/U interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_NV21 = SDL_PIXELFORMAT_NV21;
+
+/**
+ * Planar mode: Y + U/V interleaved  (2 planes)
+ */
+constexpr PixelFormat PIXELFORMAT_P010 = SDL_PIXELFORMAT_P010;
+
+/**
+ * Android video texture format
+ */
+constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
+
+#if SDL_VERSION_ATLEAST(3, 2, 9)
+/**
+ * Motion JPEG
+ * @since SDL 3.2.10
+ */
+constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
+
+#endif
+
+constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32;
+
+constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32;
+
+constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32;
+
+constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32;
+
+constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32;
+
+constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32;
+
+constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32;
+
+constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
+
+/// @}
+
+/**
+ * @name Colorspaces
+ * @{
+ */
+
+/**
+ * Colorspace color type.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorType = SDL_ColorType;
+
+constexpr ColorType COLOR_TYPE_UNKNOWN = SDL_COLOR_TYPE_UNKNOWN;
+
+constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB;
+
+constexpr ColorType COLOR_TYPE_YCBCR = SDL_COLOR_TYPE_YCBCR;
+
+/// @}
+
+/**
+ * @name ColorRanges
+ * @{
+ */
+
+/**
+ * Colorspace color range, as described by
+ * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorRange = SDL_ColorRange;
+
+constexpr ColorRange COLOR_RANGE_UNKNOWN = SDL_COLOR_RANGE_UNKNOWN;
+
+/**
+ * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
+ */
+constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
+
+/**
+ * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+ */
+constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
+
+/// @}
+
+/**
+ * @name ColorPrimaries
+ * @{
+ */
+
+/**
+ * Colorspace color primaries, as described by
+ * https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ColorPrimaries = SDL_ColorPrimaries;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN = SDL_COLOR_PRIMARIES_UNKNOWN;
+
+/**
+ * ITU-R BT.709-6
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT709 = SDL_COLOR_PRIMARIES_BT709;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
+  SDL_COLOR_PRIMARIES_UNSPECIFIED;
+
+/**
+ * ITU-R BT.470-6 System M
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470M = SDL_COLOR_PRIMARIES_BT470M;
+
+/**
+ * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG = SDL_COLOR_PRIMARIES_BT470BG;
+
+/**
+ * ITU-R BT.601-7 525, SMPTE 170M
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT601 = SDL_COLOR_PRIMARIES_BT601;
+
+/**
+ * SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
+  SDL_COLOR_PRIMARIES_SMPTE240;
+
+/**
+ * Generic film (color filters using Illuminant C)
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
+  SDL_COLOR_PRIMARIES_GENERIC_FILM;
+
+/**
+ * ITU-R BT.2020-2 / ITU-R BT.2100-0
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 = SDL_COLOR_PRIMARIES_BT2020;
+
+/**
+ * SMPTE ST 428-1
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_XYZ = SDL_COLOR_PRIMARIES_XYZ;
+
+/**
+ * SMPTE RP 431-2
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
+  SDL_COLOR_PRIMARIES_SMPTE431;
+
+/**
+ * SMPTE EG 432-1 / DCI P3
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
+  SDL_COLOR_PRIMARIES_SMPTE432;
+
+/**
+ * EBU Tech. 3213-E
+ */
+constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 = SDL_COLOR_PRIMARIES_EBU3213;
+
+constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM = SDL_COLOR_PRIMARIES_CUSTOM;
+
+/// @}
+
+/**
+ * @name TransferCharacteristics
+ * @{
+ */
+
+/**
+ * Colorspace transfer characteristics.
+ *
+ * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using TransferCharacteristics = SDL_TransferCharacteristics;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
+  SDL_TRANSFER_CHARACTERISTICS_UNKNOWN;
+
+/**
+ * Rec. ITU-R BT.709-6 / ITU-R BT1361
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
+  SDL_TRANSFER_CHARACTERISTICS_BT709;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
+  SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED;
+
+/**
+ * ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
+
+/**
+ * ITU-R BT.470-6 System B, G
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
+  SDL_TRANSFER_CHARACTERISTICS_GAMMA28;
+
+/**
+ * SMPTE ST 170M / ITU-R BT.601-7 525 or 625
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
+  SDL_TRANSFER_CHARACTERISTICS_BT601;
+
+/**
+ * SMPTE ST 240M
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE240;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
+  SDL_TRANSFER_CHARACTERISTICS_LINEAR;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
+  SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10;
+
+/**
+ * IEC 61966-2-4
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
+  SDL_TRANSFER_CHARACTERISTICS_IEC61966;
+
+/**
+ * ITU-R BT1361 Extended Colour Gamut
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
+  SDL_TRANSFER_CHARACTERISTICS_BT1361;
+
+/**
+ * IEC 61966-2-1 (sRGB or sYCC)
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
+  SDL_TRANSFER_CHARACTERISTICS_SRGB;
+
+/**
+ * ITU-R BT2020 for 10-bit system
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT;
+
+/**
+ * ITU-R BT2020 for 12-bit system
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
+  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT;
+
+/**
+ * SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
+  SDL_TRANSFER_CHARACTERISTICS_PQ;
+
+/**
+ * SMPTE ST 428-1
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
+  SDL_TRANSFER_CHARACTERISTICS_SMPTE428;
+
+/**
+ * ARIB STD-B67, known as "hybrid log-gamma" (HLG)
+ */
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
+  SDL_TRANSFER_CHARACTERISTICS_HLG;
+
+constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
+  SDL_TRANSFER_CHARACTERISTICS_CUSTOM;
+
+/// @}
+
+/**
+ * @name MatrixCoefficients
+ * @{
+ */
+
+/**
+ * Colorspace matrix coefficients.
+ *
+ * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using MatrixCoefficients = SDL_MatrixCoefficients;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
+  SDL_MATRIX_COEFFICIENTS_IDENTITY;
+
+/**
+ * ITU-R BT.709-6
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
+  SDL_MATRIX_COEFFICIENTS_BT709;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
+  SDL_MATRIX_COEFFICIENTS_UNSPECIFIED;
+
+/**
+ * US FCC Title 47
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
+  SDL_MATRIX_COEFFICIENTS_FCC;
+
+/**
+ * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
+ * SDL_MATRIX_COEFFICIENTS_BT601
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
+  SDL_MATRIX_COEFFICIENTS_BT470BG;
+
+/**
+ * ITU-R BT.601-7 525
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
+  SDL_MATRIX_COEFFICIENTS_BT601;
+
+/**
+ * SMPTE 240M
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE240;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
+  SDL_MATRIX_COEFFICIENTS_YCGCO;
+
+/**
+ * ITU-R BT.2020-2 non-constant luminance
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_NCL;
+
+/**
+ * ITU-R BT.2020-2 constant luminance
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
+  SDL_MATRIX_COEFFICIENTS_BT2020_CL;
+
+/**
+ * SMPTE ST 2085
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
+  SDL_MATRIX_COEFFICIENTS_SMPTE2085;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
+  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL;
+
+/**
+ * ITU-R BT.2100-0 ICTCP
+ */
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
+  SDL_MATRIX_COEFFICIENTS_ICTCP;
+
+constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
+  SDL_MATRIX_COEFFICIENTS_CUSTOM;
+
+/// @}
+
+/**
+ * @name ChromaLocations
+ * @{
+ */
+
+/**
+ * Colorspace chroma sample location.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using ChromaLocation = SDL_ChromaLocation;
+
+/**
+ * RGB, no chroma sampling
+ */
+constexpr ChromaLocation CHROMA_LOCATION_NONE = SDL_CHROMA_LOCATION_NONE;
+
+/**
+ * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
+ * of the 2x2 square. In other words, they have the same horizontal location as
+ * the top-left pixel, but is shifted one-half pixel down vertically.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
+
+/**
+ * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
+ * square. In other words, they are offset one-half pixel to the right and
+ * one-half pixel down compared to the top-left pixel.
+ */
+constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
+
+/**
+ * In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and
+ * Cr are sampled at the same location as the group's top-left Y pixel
+ * ("co-sited", "co-located").
+ */
+constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
+
+/// @}
+
+/**
+ * Colorspace definitions.
+ *
+ * Since similar colorspaces may vary in their details (matrix, transfer
+ * function, etc.), this is not an exhaustive list, but rather a
+ * representative sample of the kinds of colorspaces supported in SDL.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @cat wrap-state
+ *
+ * @sa wrap-state
+ *
+ * @sa Colorspaces
+ * @sa ColorPrimaries
+ * @sa ColorRange
+ * @sa ColorType
+ * @sa MatrixCoefficients
+ * @sa TransferCharacteristics
+ */
+class Colorspace
+{
+  SDL_Colorspace colorspace;
+
+public:
+  /**
+   * Wrap a SDL_Colorspace
+   *
+   */
+  constexpr Colorspace(SDL_Colorspace colorspace = SDL_COLORSPACE_UNKNOWN)
+    : colorspace(colorspace)
+  {
+  }
+
+  /**
+   * Define custom Colorspace formats.
+   *
+   * For example, defining SDL_COLORSPACE_SRGB looks like this:
+   *
+   * ```cpp
+   * Colorspace colorspace(SDL_COLOR_TYPE_RGB,
+   *                       SDL_COLOR_RANGE_FULL,
+   *                       SDL_COLOR_PRIMARIES_BT709,
+   *                       SDL_TRANSFER_CHARACTERISTICS_SRGB,
+   *                       SDL_MATRIX_COEFFICIENTS_IDENTITY,
+   *                       SDL_CHROMA_LOCATION_NONE)
+   * ```
+   *
+   * @param type the type of the new format, probably an ColorType value.
+   * @param range the range of the new format, probably a ColorRange value.
+   * @param primaries the primaries of the new format, probably an
+   *                  ColorPrimaries value.
+   * @param transfer the transfer characteristics of the new format, probably an
+   *                 TransferCharacteristics value.
+   * @param matrix the matrix coefficients of the new format, probably an
+   *               MatrixCoefficients value.
+   * @param chroma the chroma sample location of the new format, probably an
+   *               ChromaLocation value.
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr Colorspace(ColorType type,
+                       ColorRange range,
+                       ColorPrimaries primaries,
+                       TransferCharacteristics transfer,
+                       MatrixCoefficients matrix,
+                       ChromaLocation chroma)
+    : colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
+                                                      range,
+                                                      primaries,
+                                                      transfer,
+                                                      matrix,
+                                                      chroma)))
+  {
+  }
+
+  constexpr operator bool() const
+  {
+    return colorspace != SDL_COLORSPACE_UNKNOWN;
+  }
+
+  constexpr operator SDL_Colorspace() const { return colorspace; }
+
+  /**
+   * A macro to retrieve the type of a Colorspace.
+   *
+   * @returns the ColorType for `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(colorspace); }
+
+  /**
+   * A macro to retrieve the range of a Colorspace.
+   *
+   * @returns the ColorRange of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorRange GetRange() const
+  {
+    return SDL_COLORSPACERANGE(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the chroma sample location of a Colorspace.
+   *
+   * @returns the ChromaLocation of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ChromaLocation GetChroma() const
+  {
+    return SDL_COLORSPACECHROMA(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the primaries of a Colorspace.
+   *
+   * @returns the ColorPrimaries of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr ColorPrimaries GetPrimaries() const
+  {
+    return SDL_COLORSPACEPRIMARIES(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the transfer characteristics of a Colorspace.
+   *
+   * @returns the TransferCharacteristics of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr TransferCharacteristics GetTransfer() const
+  {
+    return SDL_COLORSPACETRANSFER(colorspace);
+  }
+
+  /**
+   * A macro to retrieve the matrix coefficients of a Colorspace.
+   *
+   * @returns the MatrixCoefficients of `cspace`.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr MatrixCoefficients GetMatrix() const
+  {
+    return SDL_COLORSPACEMATRIX(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT601 (or BT470BG) matrix
+   * coefficients.
+   *
+   * Note that this macro double-evaluates its parameter, so do not use
+   * expressions with side-effects here.
+   *
+   * @returns true if BT601 or BT470BG, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT601() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT601(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT709 matrix coefficients.
+   *
+   * @returns true if BT709, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT709() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT709(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace uses BT2020_NCL matrix
+   * coefficients.
+   *
+   * @returns true if BT2020_NCL, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsMatrixBT2020_NCL() const
+  {
+    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace has a limited range.
+   *
+   * @returns true if limited range, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsLimitedRange() const
+  {
+    return SDL_ISCOLORSPACE_LIMITED_RANGE(colorspace);
+  }
+
+  /**
+   * A macro to determine if a Colorspace has a full range.
+   *
+   * @returns true if full range, false otherwise.
+   *
+   * @threadsafety It is safe to call this macro from any thread.
+   *
+   * @since This macro is available since SDL 3.2.0.
+   */
+  constexpr bool IsFullRange() const
+  {
+    return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
+  }
+};
+
+/**
+ * @defgroup Colorspaces Colorspaces
+ * @{
+ */
+
+constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
+ */
+constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
+ */
+constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
+ */
+constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
+ */
+constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+ */
+constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
+ */
+constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+ */
+constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
+ */
+constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
+ */
+constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
+
+/**
+ * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
+ */
+constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
+
+/**
+ * The default colorspace for RGB surfaces if no colorspace is specified
+ */
+constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
+
+/**
+ * The default colorspace for YUV surfaces if no colorspace is specified
+ */
+constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
+
+/// @}
+
+/**
+ * A structure that represents a color as RGBA components.
+ *
+ * The bits of this structure can be directly reinterpreted as an
+ * integer-packed color which uses the SDL_PIXELFORMAT_RGBA32 format
+ * (SDL_PIXELFORMAT_ABGR8888 on little-endian systems and
+ * SDL_PIXELFORMAT_RGBA8888 on big-endian systems).
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct Color : SDL_Color
+{
+  constexpr Color(SDL_Color color = {0})
+    : SDL_Color(color)
+  {
+  }
+
+  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
+    : SDL_Color{r, g, b, a}
+  {
+  }
+
+  // Auto comparison operator
+  auto operator<=>(const Color& other) const = default;
+
+  /**
+   * Get the red component from the color
+   *
+   * @returns The red component from the color
+   *
+   */
+  constexpr Uint8 GetRed() const { return r; }
+
+  /**
+   * Set the red component from the color
+   *
+   * @param[in] nr New red component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetRed(Uint8 nr)
+  {
+    r = nr;
+    return *this;
+  }
+
+  /**
+   * Get the green component from the color
+   *
+   * @returns The green component from the color
+   *
+   */
+  constexpr Uint8 GetGreen() const { return g; }
+
+  /**
+   * Set the green component from the color
+   *
+   * @param[in] ng New green component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetGreen(Uint8 ng)
+  {
+    g = ng;
+    return *this;
+  }
+
+  /**
+   * Get the blue component from the color
+   *
+   * @returns The blue component from the color
+   *
+   */
+  constexpr Uint8 GetBlue() const { return b; }
+
+  /**
+   * Set the blue component from the color
+   *
+   * @param[in] nb New blue component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetBlue(Uint8 nb)
+  {
+    b = nb;
+    return *this;
+  }
+
+  /**
+   * Get the alpha component from the color
+   *
+   * @returns The alpha component from the color
+   *
+   */
+  constexpr Uint8 GetAlpha() const { return a; }
+
+  /**
+   * Set the alpha component from the color
+   *
+   * @param[in] na New alpha component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr Color& SetAlpha(Uint8 na)
+  {
+    a = na;
+    return *this;
+  }
+
+  /**
+   * Map an RGBA quadruple to a pixel value for a given pixel format.
+   *
+   * This function maps the RGBA color value to the specified pixel format and
+   * returns the pixel value best approximating the given RGBA color value for
+   * the given pixel format.
+   *
+   * If the specified pixel format has no alpha component the alpha value will
+   * be ignored (as it will be in formats with a palette).
+   *
+   * If the format has a palette (8-bit) the index of the closest matching color
+   * in the palette will be returned.
+   *
+   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+   * format the return value can be assigned to a Uint16, and similarly a Uint8
+   * for an 8-bpp format).
+   *
+   * @param format a pointer to PixelFormatDetails describing the pixel
+   *               format.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a pixel value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   */
+  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
+
+  /**
+   * Get RGBA values from a pixel in the specified format.
+   *
+   * This function uses the entire 8-bit [0..255] range when converting color
+   * components from pixel formats with less than 8-bits per RGB component
+   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+   *
+   * If the surface has no alpha component, the alpha will be returned as 0xff
+   * (100% opaque).
+   *
+   * @param pixel a pixel value.
+   * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+   *               format.
+   * @param palette an optional palette for indexed formats, may be NULL.
+   * @returns a color value.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa PixelFormat.GetDetails()
+   * @sa GetRGBA()
+   * @sa Map()
+   */
+  static Color Get(Uint32 pixel,
+                   const PixelFormatDetails* format,
+                   PaletteRef palette);
+};
+
+/**
+ * The bits of this structure can be directly reinterpreted as a float-packed
+ * color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format
+ *
+ * @since This struct is available since SDL 3.2.0.
+ *
+ * @cat wrap-extending-struct
+ *
+ * @sa wrap-extending-struct
+ */
+struct FColor : SDL_FColor
+{
+  constexpr FColor(SDL_FColor color = {0})
+    : SDL_FColor(color)
+  {
+  }
+
+  constexpr FColor(float r, float g, float b, float a = 1)
+    : SDL_FColor{r, g, b, a}
+  {
+  }
+
+  // Auto comparison operator
+  auto operator<=>(const FColor& other) const = default;
+
+  /**
+   * Get the red component from the color
+   *
+   * @returns The red component from the color
+   *
+   */
+  constexpr float GetRed() const { return r; }
+
+  /**
+   * Set the red component from the color
+   *
+   * @param[in] nr New red component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetRed(float nr)
+  {
+    r = nr;
+    return *this;
+  }
+
+  /**
+   * Get the green component from the color
+   *
+   * @returns The green component from the color
+   *
+   */
+  constexpr float GetGreen() const { return g; }
+
+  /**
+   * Set the green component from the color
+   *
+   * @param[in] ng New green component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetGreen(float ng)
+  {
+    g = ng;
+    return *this;
+  }
+
+  /**
+   * Get the blue component from the color
+   *
+   * @returns The blue component from the color
+   *
+   */
+  constexpr float GetBlue() const { return b; }
+
+  /**
+   * Set the blue component from the color
+   *
+   * @param[in] nb New blue component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetBlue(float nb)
+  {
+    b = nb;
+    return *this;
+  }
+
+  /**
+   * Get the alpha component from the color
+   *
+   * @returns The alpha component from the color
+   *
+   */
+  constexpr float GetAlpha() const { return a; }
+
+  /**
+   * Set the alpha component from the color
+   *
+   * @param[in] na New alpha component value
+   *
+   * @returns Reference to self
+   *
+   */
+  constexpr FColor& SetAlpha(float na)
+  {
+    a = na;
+    return *this;
+  }
+};
+
+/**
+ * A set of indexed colors representing a palette.
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa Palette
+ * @sa PaletteRef
+ */
+template<class T>
+struct PaletteBase : T
+{
+  // Make default ctors available
+  using T::T;
+
+  /**
+   * Create a palette structure with the specified number of color entries.
+   *
+   * The palette entries are initialized to white.
+   *
+   * @param ncolors represents the number of color entries in the color palette.
+   * @post this represents a new Palette structure convertible to true on
+   * success or converts to false on failure (e.g. if there wasn't enough
+   * memory); call GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetColors()
+   * @sa Surface.SetPalette()
+   */
+  inline PaletteBase(int ncolors)
+    : T(SDL_CreatePalette(ncolors))
+  {
+  }
+
+  constexpr int GetSize() const { return this->ncolors; }
+
+  constexpr Color operator[](int index) const { return this->colors[index]; }
+
+  /**
+   * Set a range of colors in a palette.
+   *
+   * @param colors an array of SDL_Color structures to copy into the palette.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @param ncolors the number of entries to modify.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
+  {
+    return SDL_SetPaletteColors(T::get(), colors, firstcolor, ncolors);
+  }
+
+  /**
+   * Set a range of colors in a palette.
+   *
+   * @param colors a span of SDL_Color structures to copy into the palette.
+   * @param firstcolor the index of the first palette entry to modify.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   */
+  bool SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
+  {
+    SDL_assert_paranoid(colors.size() < SDL_MAX_SINT32);
+    return SetColors(colors.data(), firstcolor, colors.size());
+  }
+
+  /**
+   * Free a palette
+   *
+   * After calling, this object becomes empty.
+   *
+   * @threadsafety It is safe to call this function from any thread, as long as
+   *               the palette is not modified or destroyed in another thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { T::free(); }
+};
+
+/**
+ * Free a palette
+ *
+ * After calling, this object becomes empty.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified or destroyed in another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+template<>
+inline void ObjectRef<SDL_Palette>::doFree(SDL_Palette* resource)
+{
+  return SDL_DestroyPalette(resource);
+}
+
+/**
+ * Map an RGB triple to an opaque pixel value for a given pixel format.
+ *
+ * This function maps the RGB color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGB color value for
+ * the given pixel format.
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the specified pixel format has an alpha component it will be returned as
+ * all 1 bits (fully opaque).
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r the red component of the pixel in the range 0-255.
+ * @param g the green component of the pixel in the range 0-255.
+ * @param b the blue component of the pixel in the range 0-255.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetPixelFormatDetails()
+ * @sa GetRGB()
+ * @sa MapRGBA()
+ * @sa Surface.MapColor()
+ */
+inline Uint32 MapRGB(const PixelFormatDetails* format,
+                     PaletteRef palette,
+                     Uint8 r,
+                     Uint8 g,
+                     Uint8 b)
+{
+  return SDL_MapRGB(format, palette.get(), r, g, b);
+}
+
+/**
+ * Map an RGBA quadruple to a pixel value for a given pixel format.
+ *
+ * This function maps the RGBA color value to the specified pixel format and
+ * returns the pixel value best approximating the given RGBA color value for
+ * the given pixel format.
+ *
+ * If the specified pixel format has no alpha component the alpha value will
+ * be ignored (as it will be in formats with a palette).
+ *
+ * If the format has a palette (8-bit) the index of the closest matching color
+ * in the palette will be returned.
+ *
+ * If the pixel format bpp (color depth) is less than 32-bpp then the unused
+ * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
+ * format the return value can be assigned to a Uint16, and similarly a Uint8
+ * for an 8-bpp format).
+ *
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r the red component of the pixel in the range 0-255.
+ * @param g the green component of the pixel in the range 0-255.
+ * @param b the blue component of the pixel in the range 0-255.
+ * @param a the alpha component of the pixel in the range 0-255.
+ * @returns a pixel value.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGBA()
+ * @sa MapRGB()
+ * @sa Surface.MapColor()
+ */
+inline Uint32 MapRGBA(const PixelFormatDetails* format,
+                      PaletteRef palette,
+                      Uint8 r,
+                      Uint8 g,
+                      Uint8 b,
+                      Uint8 a)
+{
+  return SDL_MapRGBA(format, palette.get(), r, g, b, a);
+}
+
+/**
+ * Get RGB values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component
+ * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+ * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * @param pixel a pixel value.
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r a pointer filled in with the red component, may be NULL.
+ * @param g a pointer filled in with the green component, may be NULL.
+ * @param b a pointer filled in with the blue component, may be NULL.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGBA()
+ * @sa MapRGB()
+ * @sa MapRGBA()
+ */
+inline void GetRGB(Uint32 pixel,
+                   const PixelFormatDetails* format,
+                   PaletteRef palette,
+                   Uint8* r,
+                   Uint8* g,
+                   Uint8* b)
+{
+  SDL_GetRGB(pixel, format, palette.get(), r, g, b);
+}
+
+/**
+ * Get RGBA values from a pixel in the specified format.
+ *
+ * This function uses the entire 8-bit [0..255] range when converting color
+ * components from pixel formats with less than 8-bits per RGB component
+ * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
+ * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ *
+ * If the surface has no alpha component, the alpha will be returned as 0xff
+ * (100% opaque).
+ *
+ * @param pixel a pixel value.
+ * @param format a pointer to SDL_PixelFormatDetails describing the pixel
+ *               format.
+ * @param palette an optional palette for indexed formats, may be NULL.
+ * @param r a pointer filled in with the red component, may be NULL.
+ * @param g a pointer filled in with the green component, may be NULL.
+ * @param b a pointer filled in with the blue component, may be NULL.
+ * @param a a pointer filled in with the alpha component, may be NULL.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PixelFormat.GetDetails()
+ * @sa GetRGB()
+ * @sa MapRGB()
+ * @sa MapRGBA()
+ */
+inline void GetRGBA(Uint32 pixel,
+                    const PixelFormatDetails* format,
+                    PaletteRef palette,
+                    Uint8* r,
+                    Uint8* g,
+                    Uint8* b,
+                    Uint8* a)
+{
+  SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
+}
+
+/** @} */
+
+#pragma region impl
+
+inline Uint32 Color::Map(const PixelFormatDetails* format,
+                         PaletteRef palette = nullptr) const
+{
+  return MapRGBA(format, palette.get(), r, g, b, a);
+}
+
+inline Color Get(Uint32 pixel,
+                 const PixelFormatDetails* format,
+                 PaletteRef palette = nullptr)
+{
+  Color c;
+  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
+  return c;
+}
+
+inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
+{
+  return color.Map(GetDetails(), palette);
+}
+
+inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
+{
+  return Color::Get(pixel, GetDetails(), palette);
+}
+
+#pragma endregion impl
+
+/**
+ * @defgroup CategoryInit Initialization and Shutdown
+ *
+ * All SDL programs need to initialize the library before starting to work
+ * with it.
+ *
+ * Almost everything can simply call SDL_Init() near startup, with a handful
+ * of flags to specify subsystems to touch. These are here to make sure SDL
+ * does not even attempt to touch low-level pieces of the operating system
+ * that you don't intend to use. For example, you might be using SDL for video
+ * and input but chose an external library for audio, and in this case you
+ * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
+ * external library has complete control.
+ *
+ * Most apps, when terminating, should call SDL_Quit(). This will clean up
+ * (nearly) everything that SDL might have allocated, and crucially, it'll
+ * make sure that the display's resolution is back to what the user expects if
+ * you had previously changed it for your game.
+ *
+ * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
+ * to fill in details about the program. This is completely optional, but it
+ * helps in small ways (we can provide an About dialog box for the macOS menu,
+ * we can name the app in the system's audio mixer, etc). Those that want to
+ * provide a _lot_ of information should look at the more-detailed
+ * SDL_SetAppMetadataProperty().
+ *
+ * @{
+ */
+
+/**
+ * @name InitFlags
+ *
+ * Initialization flags
+ *
+ * @{
+ */
+
+/**
+ * @brief Initialization flags for SDL
+ */
+using InitFlags = SDL_InitFlags;
+
+/**
+ * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
+
+/**
+ * `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main
+ * thread
+ */
+constexpr inline InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
+
+/**
+ * `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the
+ * same thread as SDL_INIT_VIDEO on Windows if you don't set
+ * SDL_HINT_JOYSTICK_THREAD
+ */
+constexpr inline InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
+
+constexpr inline InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC;
+
+/**
+ * `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`
+ */
+constexpr inline InitFlags INIT_GAMEPAD = SDL_INIT_GAMEPAD;
+
+constexpr inline InitFlags INIT_EVENTS = SDL_INIT_EVENTS;
+
+/**
+ * `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_SENSOR = SDL_INIT_SENSOR;
+
+/**
+ * `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`
+ */
+constexpr inline InitFlags INIT_CAMERA = SDL_INIT_CAMERA;
+
+/// @}
+
+/**
+ * @name AppResult
+ * App result for Main callback
+ * @{
+ */
+
+/**
+ * Return values for optional main callbacks.
+ *
+ * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
+ * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
+ * success/failure to the operating system. What that means is
+ * platform-dependent. On Unix, for example, on success, the process error
+ * code will be zero, and on failure it will be 1. This interface doesn't
+ * allow you to return specific exit codes, just whether there was an error
+ * generally or not.
+ *
+ * Returning SDL_APP_CONTINUE from these functions will let the app continue
+ * to run.
+ *
+ * See
+ * [Main callbacks in
+ * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
+ * for complete details.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+using AppResult = SDL_AppResult;
+
+/**
+ * Value that requests that the app continue from the main callbacks.
+ */
+constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
+
+/**
+ * Value that requests termination with success from the main callbacks.
+ */
+constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
+
+/**
+ * Value that requests termination with error from the main callbacks.
+ */
+constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
+
+/// @}
+
+/**
+ * @name Callbacks for EnterAppMainCallbacks()
+ *
+ * @{
+ */
+
+/**
+ * Function pointer typedef for SDL_AppInit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppInit directly.
+ *
+ * @param appstate a place where the app can optionally store a pointer for
+ *                 future use.
+ * @param argc the standard ANSI C main's argc; number of elements in `argv`.
+ * @param argv the standard ANSI C main's argv; array of command line
+ *             arguments.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppInit_func = SDL_AppInit_func;
+
+/**
+ * Function pointer typedef for SDL_AppIterate.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppIterate directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppIterate_func = SDL_AppIterate_func;
+
+/**
+ * Function pointer typedef for SDL_AppEvent.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param event the new event for the app to examine.
+ * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
+ *          terminate with success, SDL_APP_CONTINUE to continue.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppEvent_func = SDL_AppEvent_func;
+
+/**
+ * Function pointer typedef for SDL_AppQuit.
+ *
+ * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
+ * the scenes for apps using the optional main callbacks. Apps that want to
+ * use this should just implement SDL_AppEvent directly.
+ *
+ * @param appstate an optional pointer, provided by the app in SDL_AppInit.
+ * @param result the result code that terminated the app (success or failure).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using AppQuit_func = SDL_AppQuit_func;
+
+/// @}
+
+/**
+ * Initialize the SDL library.
+ *
+ * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
+ * two may be used interchangeably. Though for readability of your code
+ * SDL_InitSubSystem() might be preferred.
+ *
+ * The file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)
+ * subsystems are initialized by default. Message boxes
+ * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * SDL_Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as SDL_Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `SDL_INIT_EVENTS`: events subsystem
+ * - `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
+ * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling SDL_Init, using either SDL_SetAppMetadata() or
+ * SDL_SetAppMetadataProperty().
+ *
+ * @param flags subsystem initialization flags.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
+ * @sa Quit()
+ * @sa SetMainReady()
+ * @sa WasInit()
+ */
+inline bool Init(InitFlags flags) { return SDL_Init(flags); }
+
+/**
+ * Compatibility function to initialize the SDL library.
+ *
+ * This function and SDL_Init() are interchangeable.
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa Quit()
+ * @sa QuitSubSystem()
+ */
+inline bool InitSubSystem(InitFlags flags) { return SDL_InitSubSystem(flags); }
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call SDL_Quit() even if you close all open subsystems
+ * with SDL_QuitSubSystem().
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa InitSubSystem()
+ * @sa Quit()
+ */
+inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
+
+/**
+ * Get a mask of the specified subsystems which are currently initialized.
+ *
+ * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
+ *          returns the initialization status of the specified subsystems.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa InitSubSystem()
+ */
+inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
+
+/**
+ * Clean up all initialized subsystems.
+ *
+ * You should call this function even if you have already shutdown each
+ * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
+ * function even in the case of errors in initialization.
+ *
+ * You can use this function with atexit() to ensure that it is run when your
+ * application is shutdown, but it is not wise to do this from a library or
+ * other dynamically loaded code.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Init()
+ * @sa QuitSubSystem()
+ */
+inline void Quit() { return SDL_Quit(); }
+
+/**
+ * @brief Initialize the SDL library.
+ *
+ * Also init any subsystem passed as InitFlags
+ *
+ * This might be called multiple times, it keeps a ref count and calls SDL_Quit
+ * only on the last one.
+ *
+ * The SubSystems are out of the refCount, as SDL itself already keep track
+ * internally.
+ */
+struct SDL
+{
+
+  /**
+   * @brief Init given subsystems
+   * @param flags
+   *
+   * This uses a refCount internally, so it is safe to call
+   * this multiple times, the quit will be called only on the last call.
+   */
+  SDL(InitFlags flags)
+    : flags(flags)
+  {
+    refCount(+1, true);
+  }
+
+  // Copy ctor
+  SDL(const SDL& other)
+    : flags(other.flags)
+    , active(other.active)
+  {
+    if (active) refCount(+1);
+  }
+
+  // Move ctor
+  SDL(SDL&& other)
+    : flags(other.flags)
+    , active(other.active)
+  {
+    other.active = false;
+  }
+
+  // Dtor
+  ~SDL()
+  {
+    if (active) refCount(-1);
+  }
+
+  SDL& operator=(SDL rhs)
+  {
+    std::swap(active, rhs.active);
+    std::swap(flags, rhs.flags);
+    return *this;
+  }
+
+  /**
+   * @brief Check if given subSystems are initialized
+   * @param flags the flags to test or 0 to test all
+   * @return Which subsystem are active
+   */
+  static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
+
+  /**
+   * @brief release locking such as reset() does, but never calls SDL_Quit() or
+   * SDL_QuitSubSystem()
+   * @return false if there are still other locks, true if this was last one
+   *
+   * When this returns true it is safe to call SDL_Quit()
+   */
+  bool release()
+  {
+    flags = 0;
+    return refCount(-1, false) == 0;
+  }
+
+  /**
+   * @brief reset the value of this instance, acts like it was destroyed and
+   * then newly instantiated
+   * @return false if there are still other locks, true if this was last one
+   */
+  bool reset() { return refCount(-1) == 0; }
+
+  /// @brief returns true if active and has no errors
+  operator bool() const { return active; }
+
+  InitFlags GetCurrentFlags() const { return flags; }
+
+private:
+  InitFlags flags = 0;
+  bool active = true;
+
+  int refCount(int delta, bool autoQuit = true);
+};
+
+/**
+ * Return whether this is the main thread.
+ *
+ * On Apple platforms, the main thread is the thread that runs your program's
+ * main() entry point. On other platforms, the main thread is the one that
+ * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
+ * your program's main() entry point. If you are using the main callbacks,
+ * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
+ * main thread.
+ *
+ * @returns true if this thread is the main thread, or false otherwise.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+inline bool IsMainThread() { return SDL_IsMainThread(); }
+
+/**
+ * @name Callbacks for RunOnMainThread()
+ * @{
+ */
+
+/**
+ * Callback run on the main thread.
+ *
+ * @param userdata an app-controlled pointer that is passed to the callback.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa RunOnMainThread()
+ */
+using MainThreadCallback = SDL_MainThreadCallback;
+
+/**
+ * @sa PropertiesRef.MainThreadCallback
+ * @sa result-callback
+ *
+ * @cat result-callback
+ *
+ */
+using MainThreadCB = std::function<void()>;
+
+/// @}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param userdata a pointer that is passed to `callback`.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread()
+ */
+inline bool RunOnMainThread(MainThreadCallback callback,
+                            void* userdata,
+                            bool wait_complete)
+{
+  return SDL_RunOnMainThread(callback, userdata, wait_complete);
+}
+
+/**
+ * Call a function on the main thread during event processing.
+ *
+ * If this is called on the main thread, the callback is executed immediately.
+ * If this is called on another thread, this callback is queued for execution
+ * on the main thread during event processing.
+ *
+ * Be careful of deadlocks when using this functionality. You should not have
+ * the main thread wait for the current thread while this function is being
+ * called with `wait_complete` true.
+ *
+ * @param callback the callback to call on the main thread.
+ * @param wait_complete true to wait for the callback to complete, false to
+ *                      return immediately.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IsMainThread()
+ * @sa result-callback
+ *
+ * @cat result-callback
+ */
+inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
+{
+  using Wrapper = CallbackWrapper<MainThreadCB>;
+  return RunOnMainThread(
+    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
+}
+
+/**
+ * Specify basic metadata about your app.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left as NULL, if a specific
+ * detail doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before SDL_Init.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Passing a NULL removes any previous metadata.
+ *
+ * This is a simplified interface for the most important information. You can
+ * supply significantly more detailed metadata with
+ * SDL_SetAppMetadataProperty().
+ *
+ * @param appname The name of the application ("My Game 2: Bad Guy's
+ *                Revenge!").
+ * @param appversion The version of the application ("1.0.0beta5" or a git
+ *                   hash, or whatever makes sense).
+ * @param appidentifier A unique string in reverse-domain format that
+ *                      identifies this app ("com.example.mygame2").
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadataProperty()
+ */
+inline bool SetAppMetadata(StringParam appname,
+                           StringParam appversion,
+                           StringParam appidentifier)
+{
+  return SDL_SetAppMetadata(appname, appversion, appidentifier);
+}
+
+/**
+ * Specify metadata about your app through a set of properties.
+ *
+ * You can optionally provide metadata about your app to SDL. This is not
+ * required, but strongly encouraged.
+ *
+ * There are several locations where SDL can make use of metadata (an "About"
+ * box in the macOS menu bar, the name of the app can be shown on some audio
+ * mixers, etc). Any piece of metadata can be left out, if a specific detail
+ * doesn't make sense for the app.
+ *
+ * This function should be called as early as possible, before SDL_Init.
+ * Multiple calls to this function are allowed, but various state might not
+ * change once it has been set up with a previous call to this function.
+ *
+ * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
+ *
+ * These are the supported properties:
+ *
+ * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
+ *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
+ *   anywhere the OS shows the name of the application separately from window
+ *   titles, such as volume control applets, etc. This defaults to "SDL
+ *   Application".
+ * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
+ *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
+ *   2024" and a git hash are all valid options. This has no default.
+ * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
+ *   identifies this app. This must be in reverse-domain format, like
+ *   "com.example.mygame2". This string is used by desktop compositors to
+ *   identify and group windows together, as well as match applications with
+ *   associated desktop settings and icons. If you plan to package your
+ *   application in a container such as Flatpak, the app ID should match the
+ *   name of your Flatpak container as well. This has no default.
+ * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
+ *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
+ * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
+ *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
+ *   to one line, don't paste a copy of a whole software license in here. This
+ *   has no default.
+ * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
+ *   product page, or a storefront, or even a GitHub repository, for user's
+ *   further information This has no default.
+ * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
+ *   Currently this string can be "game" for a video game, "mediaplayer" for a
+ *   media player, or generically "application" if nothing else applies.
+ *   Future versions of SDL might add new types. This defaults to
+ *   "application".
+ *
+ * @param name the name of the metadata property to set.
+ * @param value the value of the property, or NULL to remove that property.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetAppMetadataProperty()
+ * @sa SetAppMetadata()
+ */
+inline bool SetAppMetadataProperty(StringParam name, StringParam value)
+{
+  return SDL_SetAppMetadataProperty(name, value);
+}
+
+/**
+ * Get metadata about your app.
+ *
+ * This returns metadata previously set using SDL_SetAppMetadata() or
+ * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
+ * of available properties and their meanings.
+ *
+ * @param name the name of the metadata property to get.
+ * @returns the current value of the metadata property, or the default if it
+ *          is not set, NULL for properties with no default.
+ *
+ * @threadsafety It is safe to call this function from any thread, although
+ *               the string returned is not protected and could potentially be
+ *               freed if you call SDL_SetAppMetadataProperty() to set that
+ *               property from another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ */
+inline const char* GetAppMetadataProperty(StringParam name)
+{
+  return SDL_GetAppMetadataProperty(name);
+}
+
+/// @}
+
+#pragma region impl
+
+inline int SDL::refCount(int delta, bool autoQuit)
+{
+  // TODO Locking these?
+  static int refCount = 0;
+  if (delta && active) {
+    if (delta > 0) {
+      refCount += 1;
+      if (flags) active = SDL_InitSubSystem(flags);
+    } else {
+      SDL_assert_always(refCount > 0);
+      active = false;
+      refCount -= 1;
+
+      if (autoQuit) {
+        if (refCount <= 0) {
+          // TODO Make this under FLAG
+          SDL_Quit();
+        } else if (flags) {
+          SDL_QuitSubSystem(flags);
+        }
+      }
+    }
+  }
+  return refCount;
+}
+
+#pragma endregion
+
+/**
+ * @defgroup CategoryMisc Miscellaneous
+ *
+ * SDL API functions that don't fit elsewhere.
+ *
+ * @{
+ */
+
+/**
+ * Open a URL/URI in the browser or other appropriate external application.
+ *
+ * Open a URL in a separate, system-provided application. How this works will
+ * vary wildly depending on the platform. This will likely launch what makes
+ * sense to handle a specific URL's protocol (a web browser for `http://`,
+ * etc), but it might also be able to launch file managers for directories and
+ * other things.
+ *
+ * What happens when you open a URL varies wildly as well: your game window
+ * may lose focus (and may or may not lose focus if your game was fullscreen
+ * or grabbing input at the time). On mobile devices, your app will likely
+ * move to the background or your process might be paused. Any given platform
+ * may or may not handle a given URL.
+ *
+ * If this is unimplemented (or simply unavailable) for a platform, this will
+ * fail with an error. A successful result does not mean the URL loaded, just
+ * that we launched _something_ to handle it (or at least believe we did).
+ *
+ * All this to say: this function can be useful, but you should definitely
+ * test it on every platform you target.
+ *
+ * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
+ *            local files, if supported.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
+
+/// @}
 
 /**
  * @defgroup CategoryProperties Object Properties
@@ -6201,12 +10283,6 @@ struct PropertiesBase;
 using PropertiesRef =
   PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
 
-struct PropertiesDeleter
-{
-  using pointer = FancyPointer<SDL_PropertiesID>;
-  inline void operator()(PropertiesRef props) const;
-};
-
 /**
  * Handle to an owned properties
  *
@@ -6216,8 +10292,9 @@ struct PropertiesDeleter
  * @sa PropertiesBase
  * @sa PropertiesRef
  */
-using Properties =
-  PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
+using Properties = PropertiesBase<ObjectUnique<
+  SDL_PropertiesID,
+  ObjectDeleter<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>>>;
 
 /**
  * SDL property type
@@ -6854,7 +10931,7 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy() { return SDL_DestroyProperties(T::release()); }
+  void Destroy() { T::free(); }
 
   /**
    * Returns the number of properties this has
@@ -6975,13 +11052,31 @@ inline Properties CreateProperties()
   return Properties{SDL_CreateProperties()};
 }
 
+/**
+ * Destroy a group of properties.
+ *
+ * All properties are deleted and their cleanup functions will be called, if
+ * any.
+ *
+ * @param resource the properties to destroy.
+ *
+ * @threadsafety This function should not be called while these properties are
+ *               locked or other threads might be setting or getting values
+ *               from these properties.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa CreateProperties
+ */
+template<>
+inline void ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree(
+  FancyPointer<SDL_PropertiesID> resource)
+{
+  return SDL_DestroyProperties(resource);
+}
+
 #pragma region impl
 /// @}
-
-inline void PropertiesDeleter::operator()(PropertiesRef props) const
-{
-  props.Destroy();
-}
 
 template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 PropertiesLock PropertiesBase<T>::Lock() &
@@ -6991,164 +11086,6 @@ PropertiesLock PropertiesBase<T>::Lock() &
 }
 
 #pragma endregion impl
-
-} // namespace SDL
-
-#endif /* SDL3PP_PROPERTIES_H_ */
-
-
-// end --- SDL3pp_properties.h --- 
-
-
-
-// begin --- SDL3pp_rect.h --- 
-
-#ifndef SDL3PP_RECT_H_
-#define SDL3PP_RECT_H_
-
-#include <cmath>
-#include <optional>
-#include <span>
-#include <SDL3/SDL_rect.h>
-
-// begin --- SDL3pp_optionalRef.h --- 
-
-#ifndef SDL3PP_OPTIONAL_REF_H_
-#define SDL3PP_OPTIONAL_REF_H_
-
-#include <optional>
-
-namespace SDL {
-
-/**
- * @brief Shim to get optional-like interface for references
- *
- * @tparam T
- */
-template<class T>
-class OptionalRef
-{
-  T* ptr;
-
-public:
-  constexpr OptionalRef(std::nullopt_t = std::nullopt)
-    : ptr(nullptr)
-  {
-  }
-
-  constexpr OptionalRef(T& value)
-    : ptr(&value)
-  {
-  }
-
-  constexpr auto operator<=>(const OptionalRef&) const = default;
-
-  constexpr bool has_value() const { return ptr != nullptr; }
-
-  constexpr const T& value() const { return *ptr; }
-  constexpr T& value() { return *ptr; }
-
-  constexpr operator T*() const { return ptr; }
-
-  constexpr bool operator==(std::nullopt_t) const { return ptr == nullptr; }
-
-  constexpr T& operator*() { return *ptr; }
-  constexpr const T& operator*() const { return *ptr; }
-  constexpr T* operator->() { return ptr; }
-  constexpr const T* operator->() const { return ptr; }
-};
-
-template<class T>
-constexpr OptionalRef<T> fromNullable(T* ptr)
-{
-  if (ptr) return {*ptr};
-  return std::nullopt;
-}
-
-} // namespace SDL
-
-#endif /* SDL3PP_OPTIONAL_REF_H_ */
-
-
-// end --- SDL3pp_optionalRef.h --- 
-
-
-
-// begin --- SDL3pp_spanRef.h --- 
-
-#ifndef SDL3PP_SPAN_REF_H_
-#define SDL3PP_SPAN_REF_H_
-
-#include <concepts>
-#include <ranges>
-#include <span>
-
-namespace SDL {
-
-template<class T, class BASE>
-concept DerivedWrapper =
-  std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
-
-/**
- * A wrapper around span that works for out derived-wrapper pattern
- * (eg, Rect, Color)
- *
- */
-template<class T>
-class SpanRef
-{
-  std::span<T> value;
-
-public:
-  constexpr SpanRef() = default;
-
-  template<DerivedWrapper<T> U, size_t N>
-  constexpr SpanRef(U (&other)[N])
-    : value(static_cast<T*>(other), N)
-  {
-  }
-
-  template<DerivedWrapper<T> U>
-  constexpr SpanRef(const std::span<U>& other)
-    : value(other.data(), other.size())
-  {
-  }
-
-  template<std::contiguous_iterator It>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, size_t count)
-    : value((T*)(&*first), count)
-  {
-  }
-
-  template<std::contiguous_iterator It, std::sized_sentinel_for<It> End>
-    requires DerivedWrapper<std::iter_value_t<It>, T>
-  constexpr SpanRef(It first, End last)
-    : value((T*)(&*first), size_t(last - first))
-  {
-  }
-  template<std::ranges::contiguous_range R>
-    requires DerivedWrapper<std::iter_value_t<std::ranges::iterator_t<R>>, T>
-  constexpr SpanRef(R&& range)
-    : SpanRef(std::begin(range), std::end(range))
-  {
-  }
-
-  constexpr size_t size() const { return value.size(); }
-
-  constexpr T* data() const { return value.data(); }
-};
-
-} // namespace SDL
-
-#endif /* SDL3PP_SPAN_REF_H_ */
-
-
-// end --- SDL3pp_spanRef.h --- 
-
-
-
-namespace SDL {
 
 /**
  * @defgroup CategoryRect Rectangle Functions
@@ -9185,2118 +13122,1782 @@ constexpr Rect::operator FRect() const
 
 #pragma endregion impl
 
-} // namespace SDL
-
-#endif /* SDL3PP_RECT_H_ */
-
-
-// end --- SDL3pp_rect.h --- 
-
-
-
-// begin --- SDL3pp_surface.h --- 
-
-#ifndef SDL3PP_SURFACE_H_
-#define SDL3PP_SURFACE_H_
-
-#include <SDL3/SDL_surface.h>
-#include <SDL3/SDL_version.h>
-
-// begin --- SDL3pp_pixels.h --- 
-
-#ifndef SDL3PP_PIXELS_H_
-#define SDL3PP_PIXELS_H_
-
-#include <span>
-#include <SDL3/SDL_assert.h>
-#include <SDL3/SDL_pixels.h>
-#include <SDL3/SDL_version.h>
-
-namespace SDL {
+/**
+ * @defgroup CategoryTimer Timer Support
+ *
+ * SDL provides time management functionality. It is useful for dealing with
+ * (usually) small durations of time.
+ *
+ * This is not to be confused with _calendar time_ management, which is
+ * provided by [CategoryTime](#CategoryTime).
+ *
+ * This category covers measuring time elapsed (GetTicks(),
+ * GetPerformanceCounter()), putting a thread to sleep for a certain
+ * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
+ * a callback function after a certain amount of time has elapsed
+ * (AddTimer(), etc).
+ *
+ * @{
+ */
 
 /**
- * @defgroup CategoryPixels Pixel Formats and Conversion Routines
+ * Get the time elapsed since SDL library initialization.
  *
- * SDL offers facilities for pixel management.
+ * @returns a std::chrono::nanoseconds value representing the number of
+ * nanoseconds since the SDL library initialized.
  *
- * Largely these facilities deal with pixel _format_: what does this set of
- * bits represent?
+ * @threadsafety It is safe to call this function from any thread.
  *
- * If you mostly want to think of a pixel as some combination of red, green,
- * blue, and maybe alpha intensities, this is all pretty straightforward, and
- * in many cases, is enough information to build a perfectly fine game.
+ * @since This function is available since SDL 3.2.0.
+ */
+inline std::chrono::nanoseconds GetTicks()
+{
+  return std::chrono::nanoseconds{SDL_GetTicksNS()};
+}
+
+/**
+ * Get the current value of the high resolution counter.
  *
- * However, the actual definition of a pixel is more complex than that:
+ * This function is typically used for profiling.
  *
- * Pixels are a representation of a color in a particular color space.
+ * The counter values are only meaningful relative to each other. Differences
+ * between values can be converted to times by using
+ * SDL_GetPerformanceFrequency().
  *
- * The first characteristic of a color space is the color type. SDL
- * understands two different color types, RGB and YCbCr, or in SDL also
- * referred to as YUV.
+ * @returns the current counter value.
  *
- * RGB colors consist of red, green, and blue channels of color that are added
- * together to represent the colors we see on the screen.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * https://en.wikipedia.org/wiki/RGB_color_model
+ * @since This function is available since SDL 3.2.0.
  *
- * YCbCr colors represent colors as a Y luma brightness component and red and
- * blue chroma color offsets. This color representation takes advantage of the
- * fact that the human eye is more sensitive to brightness than the color in
- * an image. The Cb and Cr components are often compressed and have lower
- * resolution than the luma component.
+ * @sa GetPerformanceFrequency()
+ */
+inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
+
+/**
+ * Get the count per second of the high resolution counter.
  *
- * https://en.wikipedia.org/wiki/YCbCr
+ * @returns a platform-specific count per second.
  *
- * When the color information in YCbCr is compressed, the Y pixels are left at
- * full resolution and each Cr and Cb pixel represents an average of the color
- * information in a block of Y pixels. The chroma location determines where in
- * that block of pixels the color information is coming from.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * The color range defines how much of the pixel to use when converting a
- * pixel into a color on the display. When the full color range is used, the
- * entire numeric range of the pixel bits is significant. When narrow color
- * range is used, for historical reasons, the pixel uses only a portion of the
- * numeric range to represent colors.
+ * @since This function is available since SDL 3.2.0.
  *
- * The color primaries and white point are a definition of the colors in the
- * color space relative to the standard XYZ color space.
+ * @sa GetPerformanceCounter()
+ */
+inline Uint64 GetPerformanceFrequency()
+{
+  return SDL_GetPerformanceFrequency();
+}
+
+/**
+ * Wait a specified duration before returning.
  *
- * https://en.wikipedia.org/wiki/CIE_1931_color_space
+ * This function waits a specified duration before returning. It
+ * waits at least the specified time, but possibly longer due to OS
+ * scheduling.
  *
- * The transfer characteristic, or opto-electrical transfer function (OETF),
- * is the way a color is converted from mathematically linear space into a
- * non-linear output signals.
+ * @param duration the duration to delay, with max precision in ns.
  *
- * https://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics
+ * @threadsafety It is safe to call this function from any thread.
  *
- * The matrix coefficients are used to convert between YCbCr and RGB colors.
+ */
+inline void Delay(std::chrono::nanoseconds duration)
+{
+  SDL_DelayNS(duration.count());
+}
+
+/**
+ * Wait a specified duration before returning.
+ *
+ * This function waits a specified duration before returning. It
+ * will attempt to wait as close to the requested time as possible, busy
+ * waiting if necessary, but could return later due to OS scheduling.
+ *
+ * @param duration the duration to delay.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Delay()
+ * @sa DelayNS()
+ */
+inline void DelayPrecise(std::chrono::nanoseconds duration)
+{
+  SDL_DelayPrecise(duration.count());
+}
+/**
+ * Definition of the timer ID type.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using TimerID = SDL_TimerID;
+
+/**
+ * Function prototype for the millisecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in milliseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 SDL_AddTimer, for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddTimer()
+ */
+using TimerCallback = SDL_TimerCallback;
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param userdata an arbitrary pointer provided by the app through
+ *                 AddTimer(), for its own use.
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @sa AddTimer()
+ */
+using NSTimerCallback = SDL_NSTimerCallback;
+
+/**
+ * Function prototype for the nanosecond timer callback function.
+ *
+ * The callback function is passed the current timer interval and returns the
+ * next timer interval, in nanoseconds. If the returned value is the same as
+ * the one passed in, the periodic alarm continues, otherwise a new alarm is
+ * scheduled. If the callback returns 0, the periodic alarm is canceled and
+ * will be removed.
+ *
+ * @param timerID the current timer being processed.
+ * @param interval the current callback time interval.
+ * @returns the new callback time interval, or 0 to disable further runs of
+ *          the callback.
+ *
+ * @threadsafety SDL may call this callback at any time from a background
+ *               thread; the application is responsible for locking resources
+ *               the callback touches that need to be protected.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa AddTimer(TimerCB)
+ */
+using TimerCB =
+  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimer() call and should return the next
+ * timer interval. If the value returned from the callback is 0, the timer is
+ * canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ms to execute and returned
+ * 1000 (ms), the timer would only wait another 750 ms before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in milliseconds, passed to `callback`.
+ * @param callback the TimerCallback function to call when the specified
+ *                 `interval` elapses.
+ * @param userdata a pointer that is passed to `callback`.
+ * @returns a timer ID or 0 on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::milliseconds interval,
+                        TimerCallback callback,
+                        void* userdata)
+{
+  return SDL_AddTimer(interval.count(), callback, userdata);
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimerNS() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ * `callback`.
+ * @param callback the NSTimerCallback function to call when the specified
+ *                 `interval` elapses.
+ * @param userdata a pointer that is passed to `callback`.
+ * @returns a timer ID or 0 on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval,
+                        NSTimerCallback callback,
+                        void* userdata)
+{
+  return SDL_AddTimerNS(interval.count(), callback, userdata);
+}
+
+/**
+ * Call a callback function at a future time.
+ *
+ * The callback function is passed the current timer interval and the user
+ * supplied parameter from the AddTimerNS() call and should return the
+ * next timer interval. If the value returned from the callback is 0, the
+ * timer is canceled and will be removed.
+ *
+ * The callback is run on a separate thread, and for short timeouts can
+ * potentially be called before this function returns.
+ *
+ * Timers take into account the amount of time it took to execute the
+ * callback. For example, if the callback took 250 ns to execute and returned
+ * 1000 (ns), the timer would only wait another 750 ns before its next
+ * iteration.
+ *
+ * Timing may be inexact due to OS scheduling. Be sure to note the current
+ * time with GetTicksNS() or GetPerformanceCounter() in case your
+ * callback needs to adjust for variances.
+ *
+ * @param interval the timer delay, in std::chrono::nanoseconds, passed to
+ * `callback`.
+ * @param callback the TimerCB function to call when the specified
+ *                 `interval` elapses.
+ * @returns a timer ID or 0 on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @cat listener-callback
+ *
+ * @sa listener-callback
+ * @sa RemoveTimer()
+ */
+inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
+{
+  using Wrapper = CallbackWrapper<TimerCB>;
+  using Store = KeyValueWrapper<TimerID, TimerCB*>;
+
+  auto cb = Wrapper::Wrap(std::move(callback));
+
+  if (TimerID id = SDL_AddTimerNS(
+        interval.count(),
+        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
+          auto& f = *static_cast<TimerCB*>(userdata);
+          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
+          // If ask to removal, then remove it
+          if (next == 0) delete Store::release(timerID);
+          return next;
+        },
+        cb)) {
+    Store::Wrap(id, std::move(cb));
+    return id;
+  }
+  delete cb;
+  return TimerID{0};
+}
+
+/**
+ * Remove a timer created with AddTimer().
+ *
+ * @param id the ID of the timer to remove.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa AddTimer()
+ */
+inline bool RemoveTimer(TimerID id)
+{
+  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
+  return SDL_RemoveTimer(id);
+}
+
+/// @}
+
+/**
+ * @defgroup CategoryVersion Querying SDL Version
+ *
+ * Functionality to query the current SDL version, both as headers the app was
+ * compiled against, and a library the app is linked to.
+ *
+ * @{
+ */
+
+/**
+ * Get the version of SDL that is linked against your program.
+ *
+ * If you are linking to SDL dynamically, then it is possible that the current
+ * version will be different than the version you compiled against. This
+ * function returns the current version, while SDL_VERSION is the version you
+ * compiled with.
+ *
+ * This function may be called safely at any time, even before SDL_Init().
+ *
+ * @returns the version of the linked library.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetRevision
+ */
+inline int GetVersion() { return SDL_GetVersion(); }
+
+/**
+ * Get the code revision of SDL that is linked against your program.
+ *
+ * This value is the revision of the code you are linked with and may be
+ * different from the code you are compiling with, which is found in the
+ * constant SDL_REVISION.
+ *
+ * The revision is arbitrary string (a hash value) uniquely identifying the
+ * exact revision of the SDL library in use, and is only useful in comparing
+ * against other revisions. It is NOT an incrementing number.
+ *
+ * If SDL wasn't built from a git repository with the appropriate tools, this
+ * will return an empty string.
+ *
+ * You shouldn't use this function for anything but logging it for debugging
+ * purposes. The string is not intended to be reliable in any way.
+ *
+ * @returns an arbitrary string, uniquely identifying the exact revision of
+ *          the SDL library in use.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetVersion
+ */
+inline const char* GetRevision() { return SDL_GetRevision(); }
+
+/// @}
+
+/**
+ * @defgroup CategoryIOStream I/O Streams
+ *
+ * SDL provides an abstract interface for reading and writing data streams. It
+ * offers implementations for files, memory, etc, and the app can provide
+ * their own implementations, too.
+ *
+ * SDL_IOStream is not related to the standard C++ iostream class, other than
+ * both are abstract interfaces to read/write data.
  *
  * @{
  */
 
 // Forward decl
-template<class T>
-struct PaletteBase;
+template<ObjectBox<SDL_IOStream*> T>
+struct IOStreamBase;
 
 /**
- * Handle to a non owned surface
+ * Handle to a non owned stream
  *
  * @cat resource
  *
  * @sa resource
- * @sa PaletteBase
- * @sa Palette
+ * @sa IOStreamBase
+ * @sa IOStream
  */
-using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
-
-template<>
-struct ObjectDeleter<SDL_Palette>
-{
-  void operator()(PaletteRef palette) const;
-};
+using IOStreamRef = IOStreamBase<ObjectRef<SDL_IOStream>>;
 
 /**
- * Handle to an owned surface
+ * Handle to an owned stream
  *
  * @cat resource
  *
  * @sa resource
- * @sa PaletteBase
- * @sa PaletteRef
+ * @sa IOStreamBase
+ * @sa IOStreamRef
  */
-using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
-
-// Forward decl
-struct Color;
+using IOStream = IOStreamBase<ObjectUnique<SDL_IOStream>>;
 
 /**
- * @name PixelTypes
- * @{
+ * @cat constructor-tag
  */
-
-/**
- * Pixel type.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PixelType = SDL_PixelType;
-
-constexpr PixelType PIXELTYPE_UNKNOWN = SDL_PIXELTYPE_UNKNOWN;
-
-constexpr PixelType PIXELTYPE_INDEX1 = SDL_PIXELTYPE_INDEX1;
-
-constexpr PixelType PIXELTYPE_INDEX4 = SDL_PIXELTYPE_INDEX4;
-
-constexpr PixelType PIXELTYPE_INDEX8 = SDL_PIXELTYPE_INDEX8;
-
-constexpr PixelType PIXELTYPE_PACKED8 = SDL_PIXELTYPE_PACKED8;
-
-constexpr PixelType PIXELTYPE_PACKED16 = SDL_PIXELTYPE_PACKED16;
-
-constexpr PixelType PIXELTYPE_PACKED32 = SDL_PIXELTYPE_PACKED32;
-
-constexpr PixelType PIXELTYPE_ARRAYU8 = SDL_PIXELTYPE_ARRAYU8;
-
-constexpr PixelType PIXELTYPE_ARRAYU16 = SDL_PIXELTYPE_ARRAYU16;
-
-constexpr PixelType PIXELTYPE_ARRAYU32 = SDL_PIXELTYPE_ARRAYU32;
-
-constexpr PixelType PIXELTYPE_ARRAYF16 = SDL_PIXELTYPE_ARRAYF16;
-
-constexpr PixelType PIXELTYPE_ARRAYF32 = SDL_PIXELTYPE_ARRAYF32;
-
-constexpr PixelType PIXELTYPE_INDEX2 = SDL_PIXELTYPE_INDEX2;
-
-/// @}
-
-/**
- * @name BitmapOrders
- * @{
- */
-
-/**
- * Bitmap pixel order, high bit -> low bit.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using BitmapOrder = SDL_BitmapOrder;
-
-constexpr BitmapOrder BITMAPORDER_NONE = SDL_BITMAPORDER_NONE;
-
-constexpr BitmapOrder BITMAPORDER_4321 = SDL_BITMAPORDER_4321;
-
-constexpr BitmapOrder BITMAPORDER_1234 = SDL_BITMAPORDER_1234;
-
-/// @}
-
-/**
- * @name PackedOrders
- * @{
- */
-
-/**
- * Packed component order, high bit -> low bit.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PackedOrder = SDL_PackedOrder;
-
-constexpr PackedOrder PACKEDORDER_NONE = SDL_PACKEDORDER_NONE;
-
-constexpr PackedOrder PACKEDORDER_XRGB = SDL_PACKEDORDER_XRGB;
-
-constexpr PackedOrder PACKEDORDER_RGBX = SDL_PACKEDORDER_RGBX;
-
-constexpr PackedOrder PACKEDORDER_ARGB = SDL_PACKEDORDER_ARGB;
-
-constexpr PackedOrder PACKEDORDER_RGBA = SDL_PACKEDORDER_RGBA;
-
-constexpr PackedOrder PACKEDORDER_XBGR = SDL_PACKEDORDER_XBGR;
-
-constexpr PackedOrder PACKEDORDER_BGRX = SDL_PACKEDORDER_BGRX;
-
-constexpr PackedOrder PACKEDORDER_ABGR = SDL_PACKEDORDER_ABGR;
-
-constexpr PackedOrder PACKEDORDER_BGRA = SDL_PACKEDORDER_BGRA;
-
-/// @}
-
-/**
- * @name ArrayOrders
- * @{
- */
-
-/**
- * Array component order, low byte -> high byte.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ArrayOrder = SDL_ArrayOrder;
-
-constexpr ArrayOrder ARRAYORDER_NONE = SDL_ARRAYORDER_NONE;
-
-constexpr ArrayOrder ARRAYORDER_RGB = SDL_ARRAYORDER_RGB;
-
-constexpr ArrayOrder ARRAYORDER_RGBA = SDL_ARRAYORDER_RGBA;
-
-constexpr ArrayOrder ARRAYORDER_ARGB = SDL_ARRAYORDER_ARGB;
-
-constexpr ArrayOrder ARRAYORDER_BGR = SDL_ARRAYORDER_BGR;
-
-constexpr ArrayOrder ARRAYORDER_BGRA = SDL_ARRAYORDER_BGRA;
-
-constexpr ArrayOrder ARRAYORDER_ABGR = SDL_ARRAYORDER_ABGR;
-
-/// @}
-
-/**
- * @name PackedLayouts
- * @{
- */
-
-/**
- * Packed component layout.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using PackedLayout = SDL_PackedLayout;
-
-constexpr PackedLayout PACKEDLAYOUT_NONE = SDL_PACKEDLAYOUT_NONE;
-
-constexpr PackedLayout PACKEDLAYOUT_332 = SDL_PACKEDLAYOUT_332;
-
-constexpr PackedLayout PACKEDLAYOUT_4444 = SDL_PACKEDLAYOUT_4444;
-
-constexpr PackedLayout PACKEDLAYOUT_1555 = SDL_PACKEDLAYOUT_1555;
-
-constexpr PackedLayout PACKEDLAYOUT_5551 = SDL_PACKEDLAYOUT_5551;
-
-constexpr PackedLayout PACKEDLAYOUT_565 = SDL_PACKEDLAYOUT_565;
-
-constexpr PackedLayout PACKEDLAYOUT_8888 = SDL_PACKEDLAYOUT_8888;
-
-constexpr PackedLayout PACKEDLAYOUT_2101010 = SDL_PACKEDLAYOUT_2101010;
-
-constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
-
-/// @}
-
-/**
- * Details about the format of a pixel.
- */
-using PixelFormatDetails = SDL_PixelFormatDetails;
-
-/**
- * Pixel format.
- *
- * SDL's pixel formats have the following naming convention:
- *
- * - Names with a list of components and a single bit count, such as RGB24 and
- *   ABGR32, define a platform-independent encoding into bytes in the order
- *   specified. For example, in RGB24 data, each pixel is encoded in 3 bytes
- *   (red, green, blue) in that order, and in ABGR32 data, each pixel is
- *   encoded in 4 bytes alpha, blue, green, red) in that order. Use these
- *   names if the property of a format that is important to you is the order
- *   of the bytes in memory or on disk.
- * - Names with a bit count per component, such as ARGB8888 and XRGB1555, are
- *   "packed" into an appropriately-sized integer in the platform's native
- *   endianness. For example, ARGB8888 is a sequence of 32-bit integers; in
- *   each integer, the most significant bits are alpha, and the least
- *   significant bits are blue. On a little-endian CPU such as x86, the least
- *   significant bits of each integer are arranged first in memory, but on a
- *   big-endian CPU such as s390x, the most significant bits are arranged
- *   first. Use these names if the property of a format that is important to
- *   you is the meaning of each bit position within a native-endianness
- *   integer.
- * - In indexed formats such as INDEX4LSB, each pixel is represented by
- *   encoding an index into the palette into the indicated number of bits,
- *   with multiple pixels packed into each byte if appropriate. In LSB
- *   formats, the first (leftmost) pixel is stored in the least-significant
- *   bits of the byte; in MSB formats, it's stored in the most-significant
- *   bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly
- *   fills one byte.
- *
- * The 32-bit byte-array encodings such as RGBA32 are aliases for the
- * appropriate 8888 encoding for the current platform. For example, RGBA32 is
- * an alias for ABGR8888 on little-endian CPUs like x86, or an alias for
- * RGBA8888 on big-endian CPUs.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @cat wrap-state
- *
- * @sa wrap-state
- * @sa PixelFormats
- */
-struct PixelFormat
+constexpr struct IOFromDynamicMem_CtorTag
 {
-  SDL_PixelFormat format;
-
-  constexpr PixelFormat(SDL_PixelFormat format = SDL_PIXELFORMAT_UNKNOWN)
-    : format(format)
-  {
-  }
-
-  /**
-   * Defining custom non-FourCC pixel formats.
-   *
-   * For example, defining SDL_PIXELFORMAT_RGBA8888 looks like this:
-   *
-   * ```c
-   * PixelFormat format(SDL_PIXELTYPE_PACKED32, SDL_PACKEDORDER_RGBA,
-   *   SDL_PACKEDLAYOUT_8888, 32, 4);
-   * ```
-   *
-   * @param type the type of the new format, probably a SDL_PixelType value.
-   * @param order the order of the new format, probably a SDL_BitmapOrder,
-   *              SDL_PackedOrder, or SDL_ArrayOrder value.
-   * @param layout the layout of the new format, probably an SDL_PackedLayout
-   *               value or zero.
-   * @param bits the number of bits per pixel of the new format.
-   * @param bytes the number of bytes per pixel of the new format.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr PixelFormat(SDL_PixelType type,
-                        int order,
-                        SDL_PackedLayout layout,
-                        int bits,
-                        int bytes)
-    : format(SDL_PixelFormat(
-        SDL_DEFINE_PIXELFORMAT(type, order, layout, bits, bytes)))
-  {
-  }
-
-  constexpr operator bool() const { return format != SDL_PIXELFORMAT_UNKNOWN; }
-
-  constexpr operator SDL_PixelFormat() const { return format; }
-
-  /**
-   * Retrieve the type.
-   *
-   * @returns the type as PixelType.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr PixelType GetType() const
-  {
-    return PixelType(SDL_PIXELTYPE(format));
-  }
-
-  /**
-   * Retrieve the order.
-   *
-   * This is usually a value from the BitmapOrder, PackedOrder, or ArrayOrder
-   * enumerations, depending on the format type.
-   *
-   * @returns the order.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr int GetOrder() const { return SDL_PIXELORDER(format); }
-
-  /**
-   * Retrieve the layout.
-   *
-   * This is usually a value from the SDL_PackedLayout enumeration, or zero if a
-   * layout doesn't make sense for the format type.
-   *
-   * @returns the layout
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr PackedLayout GetLayout() const
-  {
-    return PackedLayout(SDL_PIXELLAYOUT(format));
-  }
-
-  /**
-   * Determine this's bits per pixel.
-   *
-   * FourCC formats will report zero here, as it rarely makes sense to measure
-   * them per-pixel.
-   *
-   * @returns the bits-per-pixel.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @sa PixelFormat.GetBytesPerPixel
-   */
-  constexpr int GetBitsPerPixel() const { return SDL_BITSPERPIXEL(format); }
-
-  /**
-   * Determine this's bytes per pixel.
-   *
-   * Note that this macro double-evaluates its parameter, so do not use
-   * expressions with side-effects here.
-   *
-   * FourCC formats do their best here, but many of them don't have a meaningful
-   * measurement of bytes per pixel.
-   *
-   * @return the bytes-per-pixel.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @sa PixelFormat.GetBitsPerPixel
-   */
-  constexpr int GetBytesPerPixel() const { return SDL_BYTESPERPIXEL(format); }
-
-  /**
-   * Determine if this is an indexed format.
-   *
-   * @returns true if the format is indexed, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsIndexed() const { return SDL_ISPIXELFORMAT_INDEXED(format); }
-
-  /**
-   * Determine if this is a packed format.
-   *
-   * @returns true if the format is packed, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsPacked() const { return SDL_ISPIXELFORMAT_PACKED(format); }
-
-  /**
-   * Determine if this is an array format.
-   *
-   * @returns true if the format is an array, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsArray() const { return SDL_ISPIXELFORMAT_ARRAY(format); }
-
-  /**
-   * Determine if this is a 10-bit format.
-   *
-   * @returns true if the format is 10-bit, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool Is10Bit() const { return SDL_ISPIXELFORMAT_10BIT(format); }
-
-  /**
-   * Determine if this is a floating point format.
-   *
-   * @returns true if the format is 10-bit, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsFloat() const { return SDL_ISPIXELFORMAT_FLOAT(format); }
-
-  /**
-   * Determine if this has an alpha channel.
-   *
-   * @returns true if the format has alpha, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsAlpha() const { return SDL_ISPIXELFORMAT_ALPHA(format); }
-
-  /**
-   * Determine if this is a "FourCC" format.
-   *
-   * This covers custom and other unusual formats.
-   *
-   * @returns true if the format has alpha, false otherwise.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   */
-  constexpr bool IsFourCC() const { return SDL_ISPIXELFORMAT_FOURCC(format); }
-
-  /**
-   * Get the human readable name of a pixel format.
-   *
-   * @returns the human readable name of the specified pixel format or
-   *          "SDL_PIXELFORMAT_UNKNOWN" if the format isn't recognized.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  inline const char* GetName() const { return SDL_GetPixelFormatName(format); }
-
-  /**
-   * Convert one of the enumerated pixel formats to a bpp value and RGBA masks.
-   *
-   * @param bpp a bits per pixel value; usually 15, 16, or 32.
-   * @param Rmask a pointer filled in with the red mask for the format.
-   * @param Gmask a pointer filled in with the green mask for the format.
-   * @param Bmask a pointer filled in with the blue mask for the format.
-   * @param Amask a pointer filled in with the alpha mask for the format.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ForMasks()
-   */
-  inline bool GetMasks(int* bpp,
-                       Uint32* Rmask,
-                       Uint32* Gmask,
-                       Uint32* Bmask,
-                       Uint32* Amask) const
-  {
-    return SDL_GetMasksForPixelFormat(format, bpp, Rmask, Gmask, Bmask, Amask);
-  }
-
-  /**
-   * Convert a bpp value and RGBA masks to an enumerated pixel format.
-   *
-   * This will return `SDL_PIXELFORMAT_UNKNOWN` if the conversion wasn't
-   * possible.
-   *
-   * @param bpp a bits per pixel value; usually 15, 16, or 32.
-   * @param Rmask the red mask for the format.
-   * @param Gmask the green mask for the format.
-   * @param Bmask the blue mask for the format.
-   * @param Amask the alpha mask for the format.
-   * @returns the SDL_PixelFormat value corresponding to the format masks, or
-   *          SDL_PIXELFORMAT_UNKNOWN if there isn't a match.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetMasks()
-   */
-  static inline PixelFormat ForMasks(int bpp,
-                                     Uint32 Rmask,
-                                     Uint32 Gmask,
-                                     Uint32 Bmask,
-                                     Uint32 Amask)
-  {
-    return {SDL_GetPixelFormatForMasks(bpp, Rmask, Gmask, Bmask, Amask)};
-  }
-
-  /**
-   * Create an SDL_PixelFormatDetails structure corresponding to a pixel format.
-   *
-   * Returned structure may come from a shared global cache (i.e. not newly
-   * allocated), and hence should not be modified, especially the palette. Weird
-   * errors such as `Blit combination not supported` may occur.
-   *
-   * @returns a pointer to a SDL_PixelFormatDetails structure or NULL on
-   *          failure; call SDL_GetError() for more information.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  inline const PixelFormatDetails* GetDetails() const
-  {
-    return SDL_GetPixelFormatDetails(format);
-  }
-
-  /**
-   * Map an RGBA quadruple to a pixel value for a given pixel format.
-   *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
-   *
-   * If the specified pixel format has no alpha component the alpha value will
-   * be ignored (as it will be in formats with a palette).
-   *
-   * If the format has a palette (8-bit) the index of the closest matching color
-   * in the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param color the color components of the pixel in the range 0-255.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a pixel value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetPixelFormatDetails()
-   * @sa Get()
-   * @sa MapRGBA()
-   * @sa Surface.MapColor()
-   */
-  inline Uint32 Map(Color color, PaletteRef palette) const;
-
-  /**
-   * Get RGBA values from a pixel in the specified format.
-   *
-   * This function uses the entire 8-bit [0..255] range when converting color
-   * components from pixel formats with less than 8-bits per RGB component
-   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-   *
-   * If the surface has no alpha component, the alpha will be returned as 0xff
-   * (100% opaque).
-   *
-   * @param pixel a pixel value.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a color value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetPixelFormatDetails()
-   * @sa GetRGBA()
-   * @sa Map()
-   */
-  inline Color Get(Uint32 pixel, PaletteRef palette) const;
-};
+} IOFromDynamicMem;
 
 /**
- * @defgroup PixelFormats Pixel Formats
- *
- * Pixel formats
- * @{
- */
-constexpr PixelFormat PIXELFORMAT_UNKNOWN = SDL_PIXELFORMAT_UNKNOWN;
-
-constexpr PixelFormat PIXELFORMAT_INDEX1LSB = SDL_PIXELFORMAT_INDEX1LSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX1MSB = SDL_PIXELFORMAT_INDEX1MSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX2LSB = SDL_PIXELFORMAT_INDEX2LSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX2MSB = SDL_PIXELFORMAT_INDEX2MSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX4LSB = SDL_PIXELFORMAT_INDEX4LSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX4MSB = SDL_PIXELFORMAT_INDEX4MSB;
-
-constexpr PixelFormat PIXELFORMAT_INDEX8 = SDL_PIXELFORMAT_INDEX8;
-
-constexpr PixelFormat PIXELFORMAT_RGB332 = SDL_PIXELFORMAT_RGB332;
-
-constexpr PixelFormat PIXELFORMAT_XRGB4444 = SDL_PIXELFORMAT_XRGB4444;
-
-constexpr PixelFormat PIXELFORMAT_XBGR4444 = SDL_PIXELFORMAT_XBGR4444;
-
-constexpr PixelFormat PIXELFORMAT_XRGB1555 = SDL_PIXELFORMAT_XRGB1555;
-
-constexpr PixelFormat PIXELFORMAT_XBGR1555 = SDL_PIXELFORMAT_XBGR1555;
-
-constexpr PixelFormat PIXELFORMAT_ARGB4444 = SDL_PIXELFORMAT_ARGB4444;
-
-constexpr PixelFormat PIXELFORMAT_RGBA4444 = SDL_PIXELFORMAT_RGBA4444;
-
-constexpr PixelFormat PIXELFORMAT_ABGR4444 = SDL_PIXELFORMAT_ABGR4444;
-
-constexpr PixelFormat PIXELFORMAT_BGRA4444 = SDL_PIXELFORMAT_BGRA4444;
-
-constexpr PixelFormat PIXELFORMAT_ARGB1555 = SDL_PIXELFORMAT_ARGB1555;
-
-constexpr PixelFormat PIXELFORMAT_RGBA5551 = SDL_PIXELFORMAT_RGBA5551;
-
-constexpr PixelFormat PIXELFORMAT_ABGR1555 = SDL_PIXELFORMAT_ABGR1555;
-
-constexpr PixelFormat PIXELFORMAT_BGRA5551 = SDL_PIXELFORMAT_BGRA5551;
-
-constexpr PixelFormat PIXELFORMAT_RGB565 = SDL_PIXELFORMAT_RGB565;
-
-constexpr PixelFormat PIXELFORMAT_BGR565 = SDL_PIXELFORMAT_BGR565;
-
-constexpr PixelFormat PIXELFORMAT_RGB24 = SDL_PIXELFORMAT_RGB24;
-
-constexpr PixelFormat PIXELFORMAT_BGR24 = SDL_PIXELFORMAT_BGR24;
-
-constexpr PixelFormat PIXELFORMAT_XRGB8888 = SDL_PIXELFORMAT_XRGB8888;
-
-constexpr PixelFormat PIXELFORMAT_RGBX8888 = SDL_PIXELFORMAT_RGBX8888;
-
-constexpr PixelFormat PIXELFORMAT_XBGR8888 = SDL_PIXELFORMAT_XBGR8888;
-
-constexpr PixelFormat PIXELFORMAT_BGRX8888 = SDL_PIXELFORMAT_BGRX8888;
-
-constexpr PixelFormat PIXELFORMAT_ARGB8888 = SDL_PIXELFORMAT_ARGB8888;
-
-constexpr PixelFormat PIXELFORMAT_RGBA8888 = SDL_PIXELFORMAT_RGBA8888;
-
-constexpr PixelFormat PIXELFORMAT_ABGR8888 = SDL_PIXELFORMAT_ABGR8888;
-
-constexpr PixelFormat PIXELFORMAT_BGRA8888 = SDL_PIXELFORMAT_BGRA8888;
-
-constexpr PixelFormat PIXELFORMAT_XRGB2101010 = SDL_PIXELFORMAT_XRGB2101010;
-
-constexpr PixelFormat PIXELFORMAT_XBGR2101010 = SDL_PIXELFORMAT_XBGR2101010;
-
-constexpr PixelFormat PIXELFORMAT_ARGB2101010 = SDL_PIXELFORMAT_ARGB2101010;
-
-constexpr PixelFormat PIXELFORMAT_ABGR2101010 = SDL_PIXELFORMAT_ABGR2101010;
-
-constexpr PixelFormat PIXELFORMAT_RGB48 = SDL_PIXELFORMAT_RGB48;
-
-constexpr PixelFormat PIXELFORMAT_BGR48 = SDL_PIXELFORMAT_BGR48;
-
-constexpr PixelFormat PIXELFORMAT_RGBA64 = SDL_PIXELFORMAT_RGBA64;
-
-constexpr PixelFormat PIXELFORMAT_ARGB64 = SDL_PIXELFORMAT_ARGB64;
-
-constexpr PixelFormat PIXELFORMAT_BGRA64 = SDL_PIXELFORMAT_BGRA64;
-
-constexpr PixelFormat PIXELFORMAT_ABGR64 = SDL_PIXELFORMAT_ABGR64;
-
-constexpr PixelFormat PIXELFORMAT_RGB48_FLOAT = SDL_PIXELFORMAT_RGB48_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGR48_FLOAT = SDL_PIXELFORMAT_BGR48_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_RGBA64_FLOAT = SDL_PIXELFORMAT_RGBA64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ARGB64_FLOAT = SDL_PIXELFORMAT_ARGB64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGRA64_FLOAT = SDL_PIXELFORMAT_BGRA64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ABGR64_FLOAT = SDL_PIXELFORMAT_ABGR64_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_RGB96_FLOAT = SDL_PIXELFORMAT_RGB96_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGR96_FLOAT = SDL_PIXELFORMAT_BGR96_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_RGBA128_FLOAT = SDL_PIXELFORMAT_RGBA128_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ARGB128_FLOAT = SDL_PIXELFORMAT_ARGB128_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_BGRA128_FLOAT = SDL_PIXELFORMAT_BGRA128_FLOAT;
-
-constexpr PixelFormat PIXELFORMAT_ABGR128_FLOAT = SDL_PIXELFORMAT_ABGR128_FLOAT;
-
-/**
- * Planar mode: Y + V + U  (3 planes)
- */
-constexpr PixelFormat PIXELFORMAT_YV12 = SDL_PIXELFORMAT_YV12;
-
-/**
- * Planar mode: Y + U + V  (3 planes)
- */
-constexpr PixelFormat PIXELFORMAT_IYUV = SDL_PIXELFORMAT_IYUV;
-
-/**
- * Packed mode: Y0+U0+Y1+V0 (1 plane)
- */
-constexpr PixelFormat PIXELFORMAT_YUY2 = SDL_PIXELFORMAT_YUY2;
-
-/**
- * Packed mode: U0+Y0+V0+Y1 (1 plane)
- */
-constexpr PixelFormat PIXELFORMAT_UYVY = SDL_PIXELFORMAT_UYVY;
-
-/**
- * Packed mode: Y0+V0+Y1+U0 (1 plane)
- */
-constexpr PixelFormat PIXELFORMAT_YVYU = SDL_PIXELFORMAT_YVYU;
-
-/**
- * Planar mode: Y + U/V interleaved  (2 planes)
- */
-constexpr PixelFormat PIXELFORMAT_NV12 = SDL_PIXELFORMAT_NV12;
-
-/**
- * Planar mode: Y + V/U interleaved  (2 planes)
- */
-constexpr PixelFormat PIXELFORMAT_NV21 = SDL_PIXELFORMAT_NV21;
-
-/**
- * Planar mode: Y + U/V interleaved  (2 planes)
- */
-constexpr PixelFormat PIXELFORMAT_P010 = SDL_PIXELFORMAT_P010;
-
-/**
- * Android video texture format
- */
-constexpr PixelFormat PIXELFORMAT_EXTERNAL_OES = SDL_PIXELFORMAT_EXTERNAL_OES;
-
-#if SDL_VERSION_ATLEAST(3, 2, 9)
-/**
- * Motion JPEG
- * @since SDL 3.2.10
- */
-constexpr PixelFormat PIXELFORMAT_MJPG = SDL_PIXELFORMAT_MJPG;
-
-#endif
-
-constexpr PixelFormat PIXELFORMAT_RGBA32 = SDL_PIXELFORMAT_RGBA32;
-
-constexpr PixelFormat PIXELFORMAT_ARGB32 = SDL_PIXELFORMAT_ARGB32;
-
-constexpr PixelFormat PIXELFORMAT_BGRA32 = SDL_PIXELFORMAT_BGRA32;
-
-constexpr PixelFormat PIXELFORMAT_ABGR32 = SDL_PIXELFORMAT_ABGR32;
-
-constexpr PixelFormat PIXELFORMAT_RGBX32 = SDL_PIXELFORMAT_RGBX32;
-
-constexpr PixelFormat PIXELFORMAT_XRGB32 = SDL_PIXELFORMAT_XRGB32;
-
-constexpr PixelFormat PIXELFORMAT_BGRX32 = SDL_PIXELFORMAT_BGRX32;
-
-constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
-
-/// @}
-
-/**
- * @name Colorspaces
- * @{
- */
-
-/**
- * Colorspace color type.
+ * SDL_IOStream status, set by a read or write operation.
  *
  * @since This enum is available since SDL 3.2.0.
  */
-using ColorType = SDL_ColorType;
-
-constexpr ColorType COLOR_TYPE_UNKNOWN = SDL_COLOR_TYPE_UNKNOWN;
-
-constexpr ColorType COLOR_TYPE_RGB = SDL_COLOR_TYPE_RGB;
-
-constexpr ColorType COLOR_TYPE_YCBCR = SDL_COLOR_TYPE_YCBCR;
-
-/// @}
+using IOStatus = SDL_IOStatus;
 
 /**
- * @name ColorRanges
- * @{
+ * Everything is ready (no errors and not EOF).
  */
+constexpr IOStatus IO_STATUS_READY = SDL_IO_STATUS_READY;
 
 /**
- * Colorspace color range, as described by
- * https://www.itu.int/rec/R-REC-BT.2100-2-201807-I/en
+ * Read or write I/O error
+ */
+constexpr IOStatus IO_STATUS_ERROR = SDL_IO_STATUS_ERROR;
+
+/**
+ * End of file
+ */
+constexpr IOStatus IO_STATUS_EOF = SDL_IO_STATUS_EOF;
+
+/**
+ * Non blocking I/O, not ready
+ */
+constexpr IOStatus IO_STATUS_NOT_READY = SDL_IO_STATUS_NOT_READY;
+
+/**
+ * Tried to write a read-only buffer
+ */
+constexpr IOStatus IO_STATUS_READONLY = SDL_IO_STATUS_READONLY;
+
+/**
+ * Tried to read a write-only buffer
+ */
+constexpr IOStatus IO_STATUS_WRITEONLY = SDL_IO_STATUS_WRITEONLY;
+
+/**
+ * Possible `whence` values for SDL_IOStream seeking.
+ *
+ * These map to the same "whence" concept that `fseek` or `lseek` use in the
+ * standard C runtime.
  *
  * @since This enum is available since SDL 3.2.0.
  */
-using ColorRange = SDL_ColorRange;
-
-constexpr ColorRange COLOR_RANGE_UNKNOWN = SDL_COLOR_RANGE_UNKNOWN;
+using IOWhence = SDL_IOWhence;
 
 /**
- * Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma
+ * Seek from the beginning of data
  */
-constexpr ColorRange COLOR_RANGE_LIMITED = SDL_COLOR_RANGE_LIMITED;
+constexpr IOWhence IO_SEEK_SET = SDL_IO_SEEK_SET;
 
 /**
- * Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma
+ * Seek relative to current read point
  */
-constexpr ColorRange COLOR_RANGE_FULL = SDL_COLOR_RANGE_FULL;
-
-/// @}
+constexpr IOWhence IO_SEEK_CUR = SDL_IO_SEEK_CUR;
 
 /**
- * @name ColorPrimaries
- * @{
+ * Seek relative to the end of data
  */
+constexpr IOWhence IO_SEEK_END = SDL_IO_SEEK_END;
 
 /**
- * Colorspace color primaries, as described by
- * https://www.itu.int/rec/T-REC-H.273-201612-S/en
+ * The function pointers that drive an SDL_IOStream.
  *
- * @since This enum is available since SDL 3.2.0.
- */
-using ColorPrimaries = SDL_ColorPrimaries;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_UNKNOWN = SDL_COLOR_PRIMARIES_UNKNOWN;
-
-/**
- * ITU-R BT.709-6
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT709 = SDL_COLOR_PRIMARIES_BT709;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_UNSPECIFIED =
-  SDL_COLOR_PRIMARIES_UNSPECIFIED;
-
-/**
- * ITU-R BT.470-6 System M
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT470M = SDL_COLOR_PRIMARIES_BT470M;
-
-/**
- * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT470BG = SDL_COLOR_PRIMARIES_BT470BG;
-
-/**
- * ITU-R BT.601-7 525, SMPTE 170M
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT601 = SDL_COLOR_PRIMARIES_BT601;
-
-/**
- * SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE240 =
-  SDL_COLOR_PRIMARIES_SMPTE240;
-
-/**
- * Generic film (color filters using Illuminant C)
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_GENERIC_FILM =
-  SDL_COLOR_PRIMARIES_GENERIC_FILM;
-
-/**
- * ITU-R BT.2020-2 / ITU-R BT.2100-0
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_BT2020 = SDL_COLOR_PRIMARIES_BT2020;
-
-/**
- * SMPTE ST 428-1
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_XYZ = SDL_COLOR_PRIMARIES_XYZ;
-
-/**
- * SMPTE RP 431-2
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE431 =
-  SDL_COLOR_PRIMARIES_SMPTE431;
-
-/**
- * SMPTE EG 432-1 / DCI P3
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_SMPTE432 =
-  SDL_COLOR_PRIMARIES_SMPTE432;
-
-/**
- * EBU Tech. 3213-E
- */
-constexpr ColorPrimaries COLOR_PRIMARIES_EBU3213 = SDL_COLOR_PRIMARIES_EBU3213;
-
-constexpr ColorPrimaries COLOR_PRIMARIES_CUSTOM = SDL_COLOR_PRIMARIES_CUSTOM;
-
-/// @}
-
-/**
- * @name TransferCharacteristics
- * @{
- */
-
-/**
- * Colorspace transfer characteristics.
+ * Applications can provide this struct to SDL_OpenIO() to create their own
+ * implementation of SDL_IOStream. This is not necessarily required, as SDL
+ * already offers several common types of I/O streams, via functions like
+ * SDL_IOFromFile() and SDL_IOFromMem().
  *
- * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using TransferCharacteristics = SDL_TransferCharacteristics;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNKNOWN =
-  SDL_TRANSFER_CHARACTERISTICS_UNKNOWN;
-
-/**
- * Rec. ITU-R BT.709-6 / ITU-R BT1361
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT709 =
-  SDL_TRANSFER_CHARACTERISTICS_BT709;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_UNSPECIFIED =
-  SDL_TRANSFER_CHARACTERISTICS_UNSPECIFIED;
-
-/**
- * ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA22 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA22;
-
-/**
- * ITU-R BT.470-6 System B, G
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_GAMMA28 =
-  SDL_TRANSFER_CHARACTERISTICS_GAMMA28;
-
-/**
- * SMPTE ST 170M / ITU-R BT.601-7 525 or 625
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT601 =
-  SDL_TRANSFER_CHARACTERISTICS_BT601;
-
-/**
- * SMPTE ST 240M
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE240 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE240;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LINEAR =
-  SDL_TRANSFER_CHARACTERISTICS_LINEAR;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100 =
-  SDL_TRANSFER_CHARACTERISTICS_LOG100;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_LOG100_SQRT10 =
-  SDL_TRANSFER_CHARACTERISTICS_LOG100_SQRT10;
-
-/**
- * IEC 61966-2-4
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_IEC61966 =
-  SDL_TRANSFER_CHARACTERISTICS_IEC61966;
-
-/**
- * ITU-R BT1361 Extended Colour Gamut
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT1361 =
-  SDL_TRANSFER_CHARACTERISTICS_BT1361;
-
-/**
- * IEC 61966-2-1 (sRGB or sYCC)
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SRGB =
-  SDL_TRANSFER_CHARACTERISTICS_SRGB;
-
-/**
- * ITU-R BT2020 for 10-bit system
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_10BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT;
-
-/**
- * ITU-R BT2020 for 12-bit system
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_BT2020_12BIT =
-  SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT;
-
-/**
- * SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_PQ =
-  SDL_TRANSFER_CHARACTERISTICS_PQ;
-
-/**
- * SMPTE ST 428-1
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_SMPTE428 =
-  SDL_TRANSFER_CHARACTERISTICS_SMPTE428;
-
-/**
- * ARIB STD-B67, known as "hybrid log-gamma" (HLG)
- */
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_HLG =
-  SDL_TRANSFER_CHARACTERISTICS_HLG;
-
-constexpr TransferCharacteristics TRANSFER_CHARACTERISTICS_CUSTOM =
-  SDL_TRANSFER_CHARACTERISTICS_CUSTOM;
-
-/// @}
-
-/**
- * @name MatrixCoefficients
- * @{
- */
-
-/**
- * Colorspace matrix coefficients.
- *
- * These are as described by https://www.itu.int/rec/T-REC-H.273-201612-S/en
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using MatrixCoefficients = SDL_MatrixCoefficients;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_IDENTITY =
-  SDL_MATRIX_COEFFICIENTS_IDENTITY;
-
-/**
- * ITU-R BT.709-6
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT709 =
-  SDL_MATRIX_COEFFICIENTS_BT709;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_UNSPECIFIED =
-  SDL_MATRIX_COEFFICIENTS_UNSPECIFIED;
-
-/**
- * US FCC Title 47
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_FCC =
-  SDL_MATRIX_COEFFICIENTS_FCC;
-
-/**
- * ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as
- * SDL_MATRIX_COEFFICIENTS_BT601
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT470BG =
-  SDL_MATRIX_COEFFICIENTS_BT470BG;
-
-/**
- * ITU-R BT.601-7 525
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT601 =
-  SDL_MATRIX_COEFFICIENTS_BT601;
-
-/**
- * SMPTE 240M
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE240 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE240;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_YCGCO =
-  SDL_MATRIX_COEFFICIENTS_YCGCO;
-
-/**
- * ITU-R BT.2020-2 non-constant luminance
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_NCL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_NCL;
-
-/**
- * ITU-R BT.2020-2 constant luminance
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_BT2020_CL =
-  SDL_MATRIX_COEFFICIENTS_BT2020_CL;
-
-/**
- * SMPTE ST 2085
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_SMPTE2085 =
-  SDL_MATRIX_COEFFICIENTS_SMPTE2085;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL =
-  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_NCL;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL =
-  SDL_MATRIX_COEFFICIENTS_CHROMA_DERIVED_CL;
-
-/**
- * ITU-R BT.2100-0 ICTCP
- */
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_ICTCP =
-  SDL_MATRIX_COEFFICIENTS_ICTCP;
-
-constexpr MatrixCoefficients MATRIX_COEFFICIENTS_CUSTOM =
-  SDL_MATRIX_COEFFICIENTS_CUSTOM;
-
-/// @}
-
-/**
- * @name ChromaLocations
- * @{
- */
-
-/**
- * Colorspace chroma sample location.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using ChromaLocation = SDL_ChromaLocation;
-
-/**
- * RGB, no chroma sampling
- */
-constexpr ChromaLocation CHROMA_LOCATION_NONE = SDL_CHROMA_LOCATION_NONE;
-
-/**
- * In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge
- * of the 2x2 square. In other words, they have the same horizontal location as
- * the top-left pixel, but is shifted one-half pixel down vertically.
- */
-constexpr ChromaLocation CHROMA_LOCATION_LEFT = SDL_CHROMA_LOCATION_LEFT;
-
-/**
- * In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2
- * square. In other words, they are offset one-half pixel to the right and
- * one-half pixel down compared to the top-left pixel.
- */
-constexpr ChromaLocation CHROMA_LOCATION_CENTER = SDL_CHROMA_LOCATION_CENTER;
-
-/**
- * In HEVC for BT.2020 and BT.2100 content (in particular on Blu-rays), Cb and
- * Cr are sampled at the same location as the group's top-left Y pixel
- * ("co-sited", "co-located").
- */
-constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
-
-/// @}
-
-/**
- * Colorspace definitions.
- *
- * Since similar colorspaces may vary in their details (matrix, transfer
- * function, etc.), this is not an exhaustive list, but rather a
- * representative sample of the kinds of colorspaces supported in SDL.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @cat wrap-state
- *
- * @sa wrap-state
- *
- * @sa Colorspaces
- * @sa ColorPrimaries
- * @sa ColorRange
- * @sa ColorType
- * @sa MatrixCoefficients
- * @sa TransferCharacteristics
- */
-class Colorspace
-{
-  SDL_Colorspace colorspace;
-
-public:
-  /**
-   * Wrap a SDL_Colorspace
-   *
-   */
-  constexpr Colorspace(SDL_Colorspace colorspace = SDL_COLORSPACE_UNKNOWN)
-    : colorspace(colorspace)
-  {
-  }
-
-  /**
-   * Define custom Colorspace formats.
-   *
-   * For example, defining SDL_COLORSPACE_SRGB looks like this:
-   *
-   * ```cpp
-   * Colorspace colorspace(SDL_COLOR_TYPE_RGB,
-   *                       SDL_COLOR_RANGE_FULL,
-   *                       SDL_COLOR_PRIMARIES_BT709,
-   *                       SDL_TRANSFER_CHARACTERISTICS_SRGB,
-   *                       SDL_MATRIX_COEFFICIENTS_IDENTITY,
-   *                       SDL_CHROMA_LOCATION_NONE)
-   * ```
-   *
-   * @param type the type of the new format, probably an ColorType value.
-   * @param range the range of the new format, probably a ColorRange value.
-   * @param primaries the primaries of the new format, probably an
-   *                  ColorPrimaries value.
-   * @param transfer the transfer characteristics of the new format, probably an
-   *                 TransferCharacteristics value.
-   * @param matrix the matrix coefficients of the new format, probably an
-   *               MatrixCoefficients value.
-   * @param chroma the chroma sample location of the new format, probably an
-   *               ChromaLocation value.
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr Colorspace(ColorType type,
-                       ColorRange range,
-                       ColorPrimaries primaries,
-                       TransferCharacteristics transfer,
-                       MatrixCoefficients matrix,
-                       ChromaLocation chroma)
-    : colorspace(SDL_Colorspace(SDL_DEFINE_COLORSPACE(type,
-                                                      range,
-                                                      primaries,
-                                                      transfer,
-                                                      matrix,
-                                                      chroma)))
-  {
-  }
-
-  constexpr operator bool() const
-  {
-    return colorspace != SDL_COLORSPACE_UNKNOWN;
-  }
-
-  constexpr operator SDL_Colorspace() const { return colorspace; }
-
-  /**
-   * A macro to retrieve the type of a Colorspace.
-   *
-   * @returns the ColorType for `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ColorType GetType() const { return SDL_COLORSPACETYPE(colorspace); }
-
-  /**
-   * A macro to retrieve the range of a Colorspace.
-   *
-   * @returns the ColorRange of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ColorRange GetRange() const
-  {
-    return SDL_COLORSPACERANGE(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the chroma sample location of a Colorspace.
-   *
-   * @returns the ChromaLocation of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ChromaLocation GetChroma() const
-  {
-    return SDL_COLORSPACECHROMA(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the primaries of a Colorspace.
-   *
-   * @returns the ColorPrimaries of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr ColorPrimaries GetPrimaries() const
-  {
-    return SDL_COLORSPACEPRIMARIES(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the transfer characteristics of a Colorspace.
-   *
-   * @returns the TransferCharacteristics of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr TransferCharacteristics GetTransfer() const
-  {
-    return SDL_COLORSPACETRANSFER(colorspace);
-  }
-
-  /**
-   * A macro to retrieve the matrix coefficients of a Colorspace.
-   *
-   * @returns the MatrixCoefficients of `cspace`.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr MatrixCoefficients GetMatrix() const
-  {
-    return SDL_COLORSPACEMATRIX(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace uses BT601 (or BT470BG) matrix
-   * coefficients.
-   *
-   * Note that this macro double-evaluates its parameter, so do not use
-   * expressions with side-effects here.
-   *
-   * @returns true if BT601 or BT470BG, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT601() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT601(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace uses BT709 matrix coefficients.
-   *
-   * @returns true if BT709, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT709() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT709(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace uses BT2020_NCL matrix
-   * coefficients.
-   *
-   * @returns true if BT2020_NCL, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsMatrixBT2020_NCL() const
-  {
-    return SDL_ISCOLORSPACE_MATRIX_BT2020_NCL(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace has a limited range.
-   *
-   * @returns true if limited range, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsLimitedRange() const
-  {
-    return SDL_ISCOLORSPACE_LIMITED_RANGE(colorspace);
-  }
-
-  /**
-   * A macro to determine if a Colorspace has a full range.
-   *
-   * @returns true if full range, false otherwise.
-   *
-   * @threadsafety It is safe to call this macro from any thread.
-   *
-   * @since This macro is available since SDL 3.2.0.
-   */
-  constexpr bool IsFullRange() const
-  {
-    return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
-  }
-};
-
-/**
- * @defgroup Colorspaces Colorspaces
- * @{
- */
-
-constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709
- */
-constexpr Colorspace COLORSPACE_SRGB = SDL_COLORSPACE_SRGB;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709
- */
-constexpr Colorspace COLORSPACE_SRGB_LINEAR = SDL_COLORSPACE_SRGB_LINEAR;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020
- */
-constexpr Colorspace COLORSPACE_HDR10 = SDL_COLORSPACE_HDR10;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601
- */
-constexpr Colorspace COLORSPACE_JPEG = SDL_COLORSPACE_JPEG;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
- */
-constexpr Colorspace COLORSPACE_BT601_LIMITED = SDL_COLORSPACE_BT601_LIMITED;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601
- */
-constexpr Colorspace COLORSPACE_BT601_FULL = SDL_COLORSPACE_BT601_FULL;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
- */
-constexpr Colorspace COLORSPACE_BT709_LIMITED = SDL_COLORSPACE_BT709_LIMITED;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709
- */
-constexpr Colorspace COLORSPACE_BT709_FULL = SDL_COLORSPACE_BT709_FULL;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020
- */
-constexpr Colorspace COLORSPACE_BT2020_LIMITED = SDL_COLORSPACE_BT2020_LIMITED;
-
-/**
- * Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020
- */
-constexpr Colorspace COLORSPACE_BT2020_FULL = SDL_COLORSPACE_BT2020_FULL;
-
-/**
- * The default colorspace for RGB surfaces if no colorspace is specified
- */
-constexpr Colorspace COLORSPACE_RGB_DEFAULT = SDL_COLORSPACE_RGB_DEFAULT;
-
-/**
- * The default colorspace for YUV surfaces if no colorspace is specified
- */
-constexpr Colorspace COLORSPACE_YUV_DEFAULT = SDL_COLORSPACE_YUV_DEFAULT;
-
-/// @}
-
-/**
- * A structure that represents a color as RGBA components.
- *
- * The bits of this structure can be directly reinterpreted as an
- * integer-packed color which uses the SDL_PIXELFORMAT_RGBA32 format
- * (SDL_PIXELFORMAT_ABGR8888 on little-endian systems and
- * SDL_PIXELFORMAT_RGBA8888 on big-endian systems).
+ * This structure should be initialized using SDL_INIT_INTERFACE()
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
+ * @sa SDL_INIT_INTERFACE
  */
-struct Color : SDL_Color
-{
-  constexpr Color(SDL_Color color = {0})
-    : SDL_Color(color)
-  {
-  }
-
-  constexpr Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255)
-    : SDL_Color{r, g, b, a}
-  {
-  }
-
-  // Auto comparison operator
-  auto operator<=>(const Color& other) const = default;
-
-  /**
-   * Get the red component from the color
-   *
-   * @returns The red component from the color
-   *
-   */
-  constexpr Uint8 GetRed() const { return r; }
-
-  /**
-   * Set the red component from the color
-   *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetRed(Uint8 nr)
-  {
-    r = nr;
-    return *this;
-  }
-
-  /**
-   * Get the green component from the color
-   *
-   * @returns The green component from the color
-   *
-   */
-  constexpr Uint8 GetGreen() const { return g; }
-
-  /**
-   * Set the green component from the color
-   *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetGreen(Uint8 ng)
-  {
-    g = ng;
-    return *this;
-  }
-
-  /**
-   * Get the blue component from the color
-   *
-   * @returns The blue component from the color
-   *
-   */
-  constexpr Uint8 GetBlue() const { return b; }
-
-  /**
-   * Set the blue component from the color
-   *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetBlue(Uint8 nb)
-  {
-    b = nb;
-    return *this;
-  }
-
-  /**
-   * Get the alpha component from the color
-   *
-   * @returns The alpha component from the color
-   *
-   */
-  constexpr Uint8 GetAlpha() const { return a; }
-
-  /**
-   * Set the alpha component from the color
-   *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Color& SetAlpha(Uint8 na)
-  {
-    a = na;
-    return *this;
-  }
-
-  /**
-   * Map an RGBA quadruple to a pixel value for a given pixel format.
-   *
-   * This function maps the RGBA color value to the specified pixel format and
-   * returns the pixel value best approximating the given RGBA color value for
-   * the given pixel format.
-   *
-   * If the specified pixel format has no alpha component the alpha value will
-   * be ignored (as it will be in formats with a palette).
-   *
-   * If the format has a palette (8-bit) the index of the closest matching color
-   * in the palette will be returned.
-   *
-   * If the pixel format bpp (color depth) is less than 32-bpp then the unused
-   * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
-   * format the return value can be assigned to a Uint16, and similarly a Uint8
-   * for an 8-bpp format).
-   *
-   * @param format a pointer to PixelFormatDetails describing the pixel
-   *               format.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a pixel value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   */
-  Uint32 Map(const PixelFormatDetails* format, PaletteRef palette) const;
-
-  /**
-   * Get RGBA values from a pixel in the specified format.
-   *
-   * This function uses the entire 8-bit [0..255] range when converting color
-   * components from pixel formats with less than 8-bits per RGB component
-   * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
-   * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
-   *
-   * If the surface has no alpha component, the alpha will be returned as 0xff
-   * (100% opaque).
-   *
-   * @param pixel a pixel value.
-   * @param format a pointer to SDL_PixelFormatDetails describing the pixel
-   *               format.
-   * @param palette an optional palette for indexed formats, may be NULL.
-   * @returns a color value.
-   *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa PixelFormat.GetDetails()
-   * @sa GetRGBA()
-   * @sa Map()
-   */
-  static Color Get(Uint32 pixel,
-                   const PixelFormatDetails* format,
-                   PaletteRef palette);
-};
+using IOStreamInterface = SDL_IOStreamInterface;
 
 /**
- * The bits of this structure can be directly reinterpreted as a float-packed
- * color which uses the SDL_PIXELFORMAT_RGBA128_FLOAT format
+ * The read/write operation structure.
+ *
+ * This operates as an opaque handle. There are several APIs to create various
+ * types of I/O streams, or an app can supply an SDL_IOStreamInterface to
+ * SDL_OpenIO() to provide their own stream implementation behind this
+ * struct's abstract interface.
  *
  * @since This struct is available since SDL 3.2.0.
  *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct FColor : SDL_FColor
-{
-  constexpr FColor(SDL_FColor color = {0})
-    : SDL_FColor(color)
-  {
-  }
-
-  constexpr FColor(float r, float g, float b, float a = 1)
-    : SDL_FColor{r, g, b, a}
-  {
-  }
-
-  // Auto comparison operator
-  auto operator<=>(const FColor& other) const = default;
-
-  /**
-   * Get the red component from the color
-   *
-   * @returns The red component from the color
-   *
-   */
-  constexpr float GetRed() const { return r; }
-
-  /**
-   * Set the red component from the color
-   *
-   * @param[in] nr New red component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetRed(float nr)
-  {
-    r = nr;
-    return *this;
-  }
-
-  /**
-   * Get the green component from the color
-   *
-   * @returns The green component from the color
-   *
-   */
-  constexpr float GetGreen() const { return g; }
-
-  /**
-   * Set the green component from the color
-   *
-   * @param[in] ng New green component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetGreen(float ng)
-  {
-    g = ng;
-    return *this;
-  }
-
-  /**
-   * Get the blue component from the color
-   *
-   * @returns The blue component from the color
-   *
-   */
-  constexpr float GetBlue() const { return b; }
-
-  /**
-   * Set the blue component from the color
-   *
-   * @param[in] nb New blue component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetBlue(float nb)
-  {
-    b = nb;
-    return *this;
-  }
-
-  /**
-   * Get the alpha component from the color
-   *
-   * @returns The alpha component from the color
-   *
-   */
-  constexpr float GetAlpha() const { return a; }
-
-  /**
-   * Set the alpha component from the color
-   *
-   * @param[in] na New alpha component value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FColor& SetAlpha(float na)
-  {
-    a = na;
-    return *this;
-  }
-};
-
-/**
- * A set of indexed colors representing a palette.
- *
  * @cat resource
- *
- * @sa resource
- * @sa Palette
- * @sa PaletteRef
  */
-template<class T>
-struct PaletteBase : T
+template<ObjectBox<SDL_IOStream*> T>
+struct IOStreamBase : T
 {
-  // Make default ctors available
   using T::T;
 
   /**
-   * Create a palette structure with the specified number of color entries.
+   * Use this function to create a new SDL_IOStream structure for reading from
+   * and/or writing to a named file.
    *
-   * The palette entries are initialized to white.
+   * The `mode` string is treated roughly the same as in a call to the C
+   * library's fopen(), even if SDL doesn't happen to use fopen() behind the
+   * scenes.
    *
-   * @param ncolors represents the number of color entries in the color palette.
-   * @post this represents a new Palette structure convertible to true on
-   * success or converts to false on failure (e.g. if there wasn't enough
-   * memory); call GetError() for more information.
+   * Available `mode` strings:
+   *
+   * - "r": Open a file for reading. The file must exist.
+   * - "w": Create an empty file for writing. If a file with the same name
+   *   already exists its content is erased and the file is treated as a new
+   *   empty file.
+   * - "a": Append to a file. Writing operations append data at the end of the
+   *   file. The file is created if it does not exist.
+   * - "r+": Open a file for update both reading and writing. The file must
+   *   exist.
+   * - "w+": Create an empty file for both reading and writing. If a file with
+   *   the same name already exists its content is erased and the file is
+   *   treated as a new empty file.
+   * - "a+": Open a file for reading and appending. All writing operations are
+   *   performed at the end of the file, protecting the previous content to be
+   *   overwritten. You can reposition (fseek, rewind) the internal pointer to
+   *   anywhere in the file for reading, but writing operations will move it
+   *   back to the end of file. The file is created if it does not exist.
+   *
+   * **NOTE**: In order to open a file as a binary file, a "b" character has to
+   * be included in the `mode` string. This additional "b" character can either
+   * be appended at the end of the string (thus making the following compound
+   * modes: "rb", "wb", "ab", "r+b", "w+b", "a+b") or be inserted between the
+   * letter and the "+" sign for the mixed modes ("rb+", "wb+", "ab+").
+   * Additional characters may follow the sequence, although they should have no
+   * effect. For example, "t" is sometimes appended to make explicit the file is
+   * a text file.
+   *
+   * This function supports Unicode filenames, but they must be encoded in UTF-8
+   * format, regardless of the underlying operating system.
+   *
+   * In Android, SDL_IOFromFile() can be used to open content:// URIs. As a
+   * fallback, SDL_IOFromFile() will transparently open a matching filename in
+   * the app's `assets`.
+   *
+   * Closing the SDL_IOStream will close SDL's internal file handle.
+   *
+   * The following properties may be set at creation time by SDL:
+   *
+   * - `SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER`: a pointer, that can be cast
+   *   to a win32 `HANDLE`, that this SDL_IOStream is using to access the
+   *   filesystem. If the program isn't running on Windows, or SDL used some
+   *   other method to access the filesystem, this property will not be set.
+   * - `SDL_PROP_IOSTREAM_STDIO_FILE_POINTER`: a pointer, that can be cast to a
+   *   stdio `FILE *`, that this SDL_IOStream is using to access the filesystem.
+   *   If SDL used some other method to access the filesystem, this property
+   *   will not be set. PLEASE NOTE that if SDL is using a different C runtime
+   *   than your app, trying to use this pointer will almost certainly result in
+   *   a crash! This is mostly a problem on Windows; make sure you build SDL and
+   *   your app with the same compiler and settings to avoid it.
+   * - `SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER`: a file descriptor that this
+   *   SDL_IOStream is using to access the filesystem.
+   * - `SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER`: a pointer, that can be cast
+   *   to an Android NDK `AAsset *`, that this SDL_IOStream is using to access
+   *   the filesystem. If SDL used some other method to access the filesystem,
+   *   this property will not be set.
+   *
+   * @param file a UTF-8 string representing the filename to open.
+   * @param mode an ASCII string representing the mode to be used for opening
+   *             the file.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CloseIO
+   * @sa SDL_FlushIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   * @sa SDL_WriteIO
+   */
+  IOStreamBase(StringParam file, StringParam mode)
+    : T(SDL_IOFromFile(file, mode))
+  {
+  }
+
+  /**
+   * Use this function to prepare a read-write memory buffer for use with
+   * SDL_IOStream.
+   *
+   * This function sets up an SDL_IOStream struct based on a memory area of a
+   * certain size, for both read and write access.
+   *
+   * This memory buffer is not copied by the SDL_IOStream; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to make sure the SDL_IOStream never writes to the memory
+   * buffer, you should use SDL_IOFromConstMem() with a read-only buffer of
+   * memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a pointer to a buffer to feed an SDL_IOStream stream.
+   * @param size the buffer size, in bytes.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SetColors()
-   * @sa Surface.SetPalette()
+   * @sa SDL_IOFromConstMem
+   * @sa SDL_CloseIO
+   * @sa SDL_FlushIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   * @sa SDL_WriteIO
    */
-  inline PaletteBase(int ncolors)
-    : T(SDL_CreatePalette(ncolors))
+  IOStreamBase(void* mem, size_t size)
+    : T(SDL_IOFromMem(mem, size))
   {
   }
 
-  constexpr int GetSize() const { return this->ncolors; }
-
-  constexpr Color operator[](int index) const { return this->colors[index]; }
+  /**
+   * Use this function to prepare a read-only memory buffer for use with
+   * SDL_IOStream.
+   *
+   * This function sets up an SDL_IOStream struct based on a memory area of a
+   * certain size. It assumes the memory area is not writable.
+   *
+   * Attempting to write to this SDL_IOStream stream will report an error
+   * without writing to the memory buffer.
+   *
+   * This memory buffer is not copied by the SDL_IOStream; the pointer you
+   * provide must remain valid until you close the stream. Closing the stream
+   * will not free the original buffer.
+   *
+   * If you need to write to a memory buffer, you should use SDL_IOFromMem()
+   * with a writable buffer of memory instead.
+   *
+   * The following properties will be set at creation time by SDL:
+   *
+   * - `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that
+   *   was passed to this function.
+   * - `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter
+   *   that was passed to this function.
+   *
+   * @param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.
+   * @param size the buffer size, in bytes.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOFromMem
+   * @sa SDL_CloseIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   */
+  IOStreamBase(const void* mem, size_t size)
+    : T(SDL_IOFromConstMem(mem, size))
+  {
+  }
 
   /**
-   * Set a range of colors in a palette.
+   * Use this function to create an SDL_IOStream that is backed by dynamically
+   * allocated memory.
    *
-   * @param colors an array of SDL_Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @param ncolors the number of entries to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * This supports the following properties to provide access to the memory and
+   * control over allocations:
    *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
+   * - `SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER`: a pointer to the internal
+   *   memory of the stream. This can be set to NULL to transfer ownership of
+   *   the memory to the application, which should free the memory with
+   *   SDL_free(). If this is done, the next operation on the stream must be
+   *   Close().
+   * - `SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
+   *   multiples of this size, defaulting to 1024.
+   *
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CloseIO
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_TellIO
+   * @sa SDL_WriteIO
+   */
+  IOStreamBase(IOFromDynamicMem_CtorTag)
+    : T(SDL_IOFromDynamicMem())
+  {
+  }
+
+  /**
+   * Create a custom SDL_IOStream.
+   *
+   * Applications do not need to use this function unless they are providing
+   * their own SDL_IOStream implementation. If you just need an SDL_IOStream to
+   * read/write a common data source, you should use the built-in
+   * implementations in SDL, like SDL_IOFromFile() or SDL_IOFromMem(), etc.
+   *
+   * This function makes a copy of `iface` and the caller does not need to keep
+   * it around after this call.
+   *
+   * @param iface the interface that implements this SDL_IOStream, initialized
+   *              using SDL_INIT_INTERFACE().
+   * @param userdata the pointer that will be passed to the interface functions.
+   * @post the object is convertible to true if valid or false on failure; call
+   * GetError() for more information.
+   *
+   * @threadsafety It is safe to call this function from any thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CloseIO
+   * @sa SDL_INIT_INTERFACE
+   * @sa SDL_IOFromConstMem
+   * @sa SDL_IOFromFile
+   * @sa SDL_IOFromMem
+   */
+  IOStreamBase(const IOStreamInterface* iface, void* userdata)
+    : T(SDL_OpenIO(iface, userdata))
+  {
+  }
+
+  template<class U>
+  IOStreamBase(std::span<U> mem)
+    : IOStreamBase(mem.data(), mem.size_bytes())
+  {
+    static_assert(false, "Not implemented");
+  }
+
+  /**
+   * Get the properties associated with an SDL_IOStream.
+   *
+   * @returns a valid property ID on success or 0 on failure; call
+   *          SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  inline bool SetColors(const Color* colors, int firstcolor, int ncolors)
-  {
-    return SDL_SetPaletteColors(T::get(), colors, firstcolor, ncolors);
-  }
+  PropertiesRef GetProperties() const { return SDL_GetIOProperties(T::get()); }
 
   /**
-   * Set a range of colors in a palette.
+   * Query the stream status of an SDL_IOStream.
    *
-   * @param colors a span of SDL_Color structures to copy into the palette.
-   * @param firstcolor the index of the first palette entry to modify.
-   * @returns true on success or false on failure; call GetError() for more
-   *          information.
+   * This information can be useful to decide if a short read or write was due
+   * to an error, an EOF, or a non-blocking operation that isn't yet ready to
+   * complete.
    *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
-   */
-  bool SetColors(SpanRef<const SDL_Color> colors, int firstcolor = 0)
-  {
-    SDL_assert_paranoid(colors.size() < SDL_MAX_SINT32);
-    return SetColors(colors.data(), firstcolor, colors.size());
-  }
-
-  /**
-   * Free a palette
+   * An SDL_IOStream's status is only expected to change after a SDL_ReadIO or
+   * SDL_WriteIO call; don't expect it to change if you just call this query
+   * function in a tight loop.
    *
-   * After calling, this object becomes empty.
+   * @returns an SDL_IOStatus enum with the current state.
    *
-   * @threadsafety It is safe to call this function from any thread, as long as
-   *               the palette is not modified or destroyed in another thread.
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy() { return SDL_DestroyPalette(T::release()); }
+  IOStatus GetStatus() const { return SDL_GetIOStatus(T::get()); }
+
+  /**
+   * Use this function to get the size of the data stream in an SDL_IOStream.
+   *
+   * @returns the size of the data stream in the SDL_IOStream on success or a
+   *          negative error code on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  Sint64 GetSize() const { return SDL_GetIOSize(T::get()); }
+
+  /**
+   * Seek within an SDL_IOStream data stream.
+   *
+   * This function seeks to byte `offset`, relative to `whence`.
+   *
+   * `whence` may be any of the following values:
+   *
+   * - `SDL_IO_SEEK_SET`: seek from the beginning of data
+   * - `SDL_IO_SEEK_CUR`: seek relative to current read point
+   * - `SDL_IO_SEEK_END`: seek relative to the end of data
+   *
+   * If this stream can not seek, it will return -1.
+   *
+   * @param offset an offset in bytes, relative to `whence` location; can be
+   *               negative.
+   * @param whence any of `SDL_IO_SEEK_SET`, `SDL_IO_SEEK_CUR`,
+   *               `SDL_IO_SEEK_END`.
+   * @returns the final offset in the data stream after the seek or -1 on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_TellIO
+   */
+  Sint64 Seek(Sint64 offset, IOWhence whence)
+  {
+    return SDL_SeekIO(T::get(), offset, whence);
+  }
+
+  /**
+   * Determine the current read/write offset in an SDL_IOStream data stream.
+   *
+   * SDL_TellIO is actually a wrapper function that calls the SDL_IOStream's
+   * `seek` method, with an offset of 0 bytes from `SDL_IO_SEEK_CUR`, to
+   * simplify application development.
+   *
+   * @returns the current offset in the stream, or -1 if the information can not
+   *          be determined.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_SeekIO
+   */
+  Sint64 Tell() const { return SDL_TellIO(T::get()); }
+
+  /**
+   * Read from a data source.
+   *
+   * This function reads up `size` bytes from the data source to the area
+   * pointed at by `ptr`. This function may read less bytes than requested.
+   *
+   * This function will return zero when the data stream is completely read, and
+   * SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If zero is returned and
+   * the stream is not at EOF, SDL_GetIOStatus() will return a different error
+   * value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param ptr a pointer to a buffer to read data into.
+   * @param size the number of bytes to read from the data source.
+   * @returns the number of bytes read, or 0 on end of file or other failure;
+   *          call SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_WriteIO
+   * @sa SDL_GetIOStatus
+   */
+  size_t Read(void* ptr, size_t size)
+  {
+    return SDL_ReadIO(T::get(), ptr, size);
+  }
+
+  template<class U>
+  size_t Write(std::span<U> data)
+  {
+    return Write(data.data(), data.size_bytes());
+  }
+
+  size_t Write(std::string_view str) { return Write(str.data(), str.size()); }
+
+  /**
+   * Write to an SDL_IOStream data stream.
+   *
+   * This function writes exactly `size` bytes from the area pointed at by `ptr`
+   * to the stream. If this fails for any reason, it'll return less than `size`
+   * to demonstrate how far the write progressed. On success, it returns `size`.
+   *
+   * On error, this function still attempts to write as much as possible, so it
+   * might return a positive value less than the requested write size.
+   *
+   * The caller can use SDL_GetIOStatus() to determine if the problem is
+   * recoverable, such as a non-blocking write that can simply be retried later,
+   * or a fatal error.
+   *
+   * @param ptr a pointer to a buffer containing data to write.
+   * @param size the number of bytes to write.
+   * @returns the number of bytes written, which will be less than `size` on
+   *          failure; call SDL_GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOprintf
+   * @sa SDL_ReadIO
+   * @sa SDL_SeekIO
+   * @sa SDL_FlushIO
+   * @sa SDL_GetIOStatus
+   */
+  size_t Write(const void* ptr, size_t size)
+  {
+    return SDL_WriteIO(T::get(), ptr, size);
+  }
+
+  /**
+   * @cat formatted-string
+   */
+  size_t print(std::string_view fmt, auto... args)
+  {
+    return Write(std::vformat(fmt, std::make_format_args(args...)));
+  }
+
+  /**
+   * @cat formatted-string
+   */
+  size_t println(std::string_view fmt, auto... args)
+  {
+    std::string result =
+      std::vformat(fmt, std::make_format_args(args...)) + "\n";
+    return Write(result);
+  }
+
+  /**
+   * Print to an SDL_IOStream data stream.
+   *
+   * @warning this is not typesafe! Prefer using print() and println()
+   *
+   * This function does formatted printing to the stream.
+   *
+   * @param fmt a printf() style format string.
+   * @param ... additional parameters matching % tokens in the `fmt` string, if
+   *            any.
+   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOvprintf
+   * @sa SDL_WriteIO
+   */
+  size_t printf(SDL_PRINTF_FORMAT_STRING const char* fmt, ...)
+  {
+    va_list ap;
+    size_t result;
+
+    va_start(ap, fmt);
+    result = vprintf(fmt, ap);
+    va_end(ap);
+
+    return result;
+  }
+
+  /**
+   * Print to an SDL_IOStream data stream.
+   *
+   * @warning this is not typesafe! Prefer using print() and println()
+   *
+   * This function does formatted printing to the stream.
+   *
+   * @param fmt a printf() style format string.
+   * @param ap a variable argument list.
+   * @returns the number of bytes written or 0 on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_IOprintf
+   * @sa SDL_WriteIO
+   */
+  size_t vprintf(SDL_PRINTF_FORMAT_STRING const char* fmt, va_list ap)
+  {
+    return SDL_IOvprintf(T::get(), fmt, ap);
+  }
+
+  /**
+   * Flush any buffered data in the stream.
+   *
+   * This function makes sure that any buffered data is written to the stream.
+   * Normally this isn't necessary but if the stream is a pipe or socket it
+   * guarantees that any pending data is sent.
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_OpenIO
+   * @sa SDL_WriteIO
+   */
+  bool Flush() { return SDL_FlushIO(T::get()); }
+
+  /**
+   * Load all the data from an SDL data stream.
+   *
+   * The data is allocated with a zero byte at the end (null terminated) for
+   * convenience. This extra byte is not included in the value reported via
+   * `datasize`.
+   *
+   * @returns the data or NULL on failure; call GetError() for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_LoadFile
+   * @sa SDL_SaveFile_IO
+   */
+  OwnArray<std::byte> LoadFile()
+  {
+    size_t datasize = 0;
+    auto data =
+      static_cast<std::byte*>(SDL_LoadFile_IO(T::get(), &datasize, false));
+    return OwnArray<std::byte>{data, datasize};
+  }
+
+  template<class U>
+  bool SaveFile(std::span<U> data)
+  {
+    return SaveFile(data.data(), data.size_bytes());
+  }
+
+  bool SaveFile(std::string_view str)
+  {
+    return SaveFile(str.data(), str.size());
+  }
+
+  /**
+   * Save all the data into an SDL data stream.
+   *
+   * @param data the data to be written. If datasize is 0, may be NULL or a
+   *             invalid pointer.
+   * @param datasize the number of bytes to be written.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_SaveFile
+   * @sa SDL_LoadFile_IO
+   */
+  bool SaveFile(const void* data, size_t datasize)
+  {
+    return SDL_SaveFile_IO(T::get(), data, datasize);
+  }
+  /**
+   * Use this function to read a byte from an SDL_IOStream.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on success or false on failure or EOF; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU8(Uint8* value) { return SDL_ReadU8(T::get(), value); }
+
+  /**
+   * Use this function to read a signed byte from an SDL_IOStream.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS8(Sint8* value) { return SDL_ReadS8(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU16LE(Uint16* value) { return SDL_ReadU16LE(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS16LE(Sint16* value) { return SDL_ReadS16LE(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU16BE(Uint16* value) { return SDL_ReadU16BE(T::get(), value); }
+
+  /**
+   * Use this function to read 16 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS16BE(Sint16* value) { return SDL_ReadS16BE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU32LE(Uint32* value) { return SDL_ReadU32LE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS32LE(Sint32* value) { return SDL_ReadS32LE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU32BE(Uint32* value) { return SDL_ReadU32BE(T::get(), value); }
+
+  /**
+   * Use this function to read 32 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS32BE(Sint32* value) { return SDL_ReadS32BE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU64LE(Uint64* value) { return SDL_ReadU64LE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of little-endian data from an
+   * SDL_IOStream and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS64LE(Sint64* value) { return SDL_ReadS64LE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadU64BE(Uint64* value) { return SDL_ReadU64BE(T::get(), value); }
+
+  /**
+   * Use this function to read 64 bits of big-endian data from an SDL_IOStream
+   * and return in native format.
+   *
+   * SDL byteswaps the data only if necessary, so the data returned will be in
+   * the native byte order.
+   *
+   * This function will return false when the data stream is completely read,
+   * and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned
+   * and the stream is not at EOF, SDL_GetIOStatus() will return a different
+   * error value and SDL_GetError() will offer a human-readable message.
+   *
+   * @param value a pointer filled in with the data read.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool ReadS64BE(Sint64* value) { return SDL_ReadS64BE(T::get(), value); }
+
+  /**
+   * Use this function to write a byte to an SDL_IOStream.
+   *
+   * @param value the byte value to write.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU8(Uint8 value) { return SDL_WriteU8(T::get(), value); }
+
+  /**
+   * Use this function to write a signed byte to an SDL_IOStream.
+   *
+   * @param value the byte value to write.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS8(Sint8 value) { return SDL_WriteS8(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU16LE(Uint16 value) { return SDL_WriteU16LE(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS16LE(Sint16 value) { return SDL_WriteS16LE(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU16BE(Uint16 value) { return SDL_WriteU16BE(T::get(), value); }
+
+  /**
+   * Use this function to write 16 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS16BE(Sint16 value) { return SDL_WriteS16BE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU32LE(Uint32 value) { return SDL_WriteU32LE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS32LE(Sint32 value) { return SDL_WriteS32LE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU32BE(Uint32 value) { return SDL_WriteU32BE(T::get(), value); }
+
+  /**
+   * Use this function to write 32 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS32BE(Sint32 value) { return SDL_WriteS32BE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU64LE(Uint64 value) { return SDL_WriteU64LE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * little-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in little-endian
+   * format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS64LE(Sint64 value) { return SDL_WriteS64LE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteU64BE(Uint64 value) { return SDL_WriteU64BE(T::get(), value); }
+
+  /**
+   * Use this function to write 64 bits in native format to an SDL_IOStream as
+   * big-endian data.
+   *
+   * SDL byteswaps the data only if necessary, so the application always
+   * specifies native format, and the data written will be in big-endian format.
+   *
+   * @param value the data to be written, in native format.
+   * @returns true on successful write or false on failure; call SDL_GetError()
+   *          for more information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(T::get(), value); }
+
+  /**
+   * Close and free an allocated SDL_IOStream structure.
+   *
+   * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
+   * resources used by the stream and frees the SDL_IOStream itself. This
+   * returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the SDL_IOStream is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call SDL_FlushIO() before closing. Note that flushing takes time and
+   * makes the system and your app operate less efficiently, so do so sparingly.
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_OpenIO
+   */
+  bool Close() { return SDL_CloseIO(T::release()); }
 };
 
 /**
- * Map an RGB triple to an opaque pixel value for a given pixel format.
+ * Close and free an allocated SDL_IOStream structure.
  *
- * This function maps the RGB color value to the specified pixel format and
- * returns the pixel value best approximating the given RGB color value for
- * the given pixel format.
+ * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
+ * resources used by the stream and frees the SDL_IOStream itself. This
+ * returns true on success, or false if the stream failed to flush to its
+ * output (e.g. to disk).
  *
- * If the format has a palette (8-bit) the index of the closest matching color
- * in the palette will be returned.
+ * Note that if this fails to flush the stream for any reason, this function
+ * reports an error, but the SDL_IOStream is still invalid once this function
+ * returns.
  *
- * If the specified pixel format has an alpha component it will be returned as
- * all 1 bits (fully opaque).
+ * This call flushes any buffered writes to the operating system, but there
+ * are no guarantees that those writes have gone to physical media; they might
+ * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+ * crucial that writes go to disk immediately, so they are definitely stored
+ * even if the power fails before the file cache would have caught up, one
+ * should call SDL_FlushIO() before closing. Note that flushing takes time and
+ * makes the system and your app operate less efficiently, so do so sparingly.
  *
- * If the pixel format bpp (color depth) is less than 32-bpp then the unused
- * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
- * format the return value can be assigned to a Uint16, and similarly a Uint8
- * for an 8-bpp format).
+ * @param resource SDL_IOStream structure to close.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
  *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @returns a pixel value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GetPixelFormatDetails()
- * @sa GetRGB()
- * @sa MapRGBA()
- * @sa Surface.MapColor()
+ * @sa SDL_OpenIO
  */
-inline Uint32 MapRGB(const PixelFormatDetails* format,
-                     PaletteRef palette,
-                     Uint8 r,
-                     Uint8 g,
-                     Uint8 b)
+template<>
+inline void ObjectRef<SDL_IOStream>::doFree(SDL_IOStream* resource)
 {
-  return SDL_MapRGB(format, palette.get(), r, g, b);
+  SDL_CloseIO(resource);
 }
 
 /**
- * Map an RGBA quadruple to a pixel value for a given pixel format.
+ * Load all the data from a file path.
  *
- * This function maps the RGBA color value to the specified pixel format and
- * returns the pixel value best approximating the given RGBA color value for
- * the given pixel format.
+ * The data is allocated with a zero byte at the end (null terminated) for
+ * convenience. This extra byte is not included in the value reported via
+ * `datasize`.
  *
- * If the specified pixel format has no alpha component the alpha value will
- * be ignored (as it will be in formats with a palette).
+ * The data should be freed with SDL_free().
  *
- * If the format has a palette (8-bit) the index of the closest matching color
- * in the palette will be returned.
+ * @param file the path to read all available data from.
+ * @returns the data or NULL on failure; call SDL_GetError() for more
+ *          information.
  *
- * If the pixel format bpp (color depth) is less than 32-bpp then the unused
- * upper bits of the return value can safely be ignored (e.g., with a 16-bpp
- * format the return value can be assigned to a Uint16, and similarly a Uint8
- * for an 8-bpp format).
- *
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r the red component of the pixel in the range 0-255.
- * @param g the green component of the pixel in the range 0-255.
- * @param b the blue component of the pixel in the range 0-255.
- * @param a the alpha component of the pixel in the range 0-255.
- * @returns a pixel value.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa Surface.MapColor()
+ * @sa SDL_LoadFile_IO
+ * @sa SDL_SaveFile
  */
-inline Uint32 MapRGBA(const PixelFormatDetails* format,
-                      PaletteRef palette,
-                      Uint8 r,
-                      Uint8 g,
-                      Uint8 b,
-                      Uint8 a)
+inline OwnArray<std::byte> LoadFile(StringParam file)
 {
-  return SDL_MapRGBA(format, palette.get(), r, g, b, a);
+  size_t datasize = 0;
+  auto data = static_cast<std::byte*>(SDL_LoadFile(file, &datasize));
+  return OwnArray<std::byte>{data, datasize};
 }
 
 /**
- * Get RGB values from a pixel in the specified format.
+ * Save all the data into a file path.
  *
- * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
+ * @param file the path to write all available data into.
+ * @param data the data to be written. If datasize is 0, may be NULL or a
+ *             invalid pointer.
+ * @param datasize the number of bytes to be written.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
  *
- * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
+ * @threadsafety This function is not thread safe.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGBA()
- * @sa MapRGB()
- * @sa MapRGBA()
+ * @sa SDL_SaveFile_IO
+ * @sa SDL_LoadFile
  */
-inline void GetRGB(Uint32 pixel,
-                   const PixelFormatDetails* format,
-                   PaletteRef palette,
-                   Uint8* r,
-                   Uint8* g,
-                   Uint8* b)
+inline bool SaveFile(StringParam file, const void* data, size_t datasize)
 {
-  SDL_GetRGB(pixel, format, palette.get(), r, g, b);
+  return SDL_SaveFile(file, data, datasize);
 }
 
-/**
- * Get RGBA values from a pixel in the specified format.
- *
- * This function uses the entire 8-bit [0..255] range when converting color
- * components from pixel formats with less than 8-bits per RGB component
- * (e.g., a completely white pixel in 16-bit RGB565 format would return [0xff,
- * 0xff, 0xff] not [0xf8, 0xfc, 0xf8]).
- *
- * If the surface has no alpha component, the alpha will be returned as 0xff
- * (100% opaque).
- *
- * @param pixel a pixel value.
- * @param format a pointer to SDL_PixelFormatDetails describing the pixel
- *               format.
- * @param palette an optional palette for indexed formats, may be NULL.
- * @param r a pointer filled in with the red component, may be NULL.
- * @param g a pointer filled in with the green component, may be NULL.
- * @param b a pointer filled in with the blue component, may be NULL.
- * @param a a pointer filled in with the alpha component, may be NULL.
- *
- * @threadsafety It is safe to call this function from any thread, as long as
- *               the palette is not modified.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa PixelFormat.GetDetails()
- * @sa GetRGB()
- * @sa MapRGB()
- * @sa MapRGBA()
- */
-inline void GetRGBA(Uint32 pixel,
-                    const PixelFormatDetails* format,
-                    PaletteRef palette,
-                    Uint8* r,
-                    Uint8* g,
-                    Uint8* b,
-                    Uint8* a)
+template<class T>
+inline bool SaveFile(StringParam file, std::span<T> data)
 {
-  SDL_GetRGBA(pixel, format, palette.get(), r, g, b, a);
+  return SaveFile(file, data.data(), data.size_bytes());
 }
 
-/** @} */
+inline bool SaveFile(StringParam file, std::string_view str)
+{
+  return SaveFile(std::move(file), str.data(), str.size());
+}
 
 #pragma region impl
-
-inline void ObjectDeleter<SDL_Palette>::operator()(PaletteRef palette) const
-{
-  palette.Destroy();
-}
-
-inline Uint32 Color::Map(const PixelFormatDetails* format,
-                         PaletteRef palette = nullptr) const
-{
-  return MapRGBA(format, palette.get(), r, g, b, a);
-}
-
-inline Color Get(Uint32 pixel,
-                 const PixelFormatDetails* format,
-                 PaletteRef palette = nullptr)
-{
-  Color c;
-  GetRGBA(pixel, format, palette, &c.r, &c.g, &c.b, &c.a);
-  return c;
-}
-
-inline Uint32 PixelFormat::Map(Color color, PaletteRef palette = nullptr) const
-{
-  return color.Map(GetDetails(), palette);
-}
-
-inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
-{
-  return Color::Get(pixel, GetDetails(), palette);
-}
+/// @}
 
 #pragma endregion impl
-
-} // namespace SDL
-
-#endif /* SDL3PP_PIXELS_H_ */
-
-
-// end --- SDL3pp_pixels.h --- 
-
-
-
-namespace SDL {
 
 /**
  * @defgroup CategorySurface Surface Creation and Simple Drawing
@@ -11331,12 +14932,6 @@ struct SurfaceBase;
  * @sa Surface
  */
 using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
-
-template<>
-struct ObjectDeleter<SDL_Surface>
-{
-  void operator()(SurfaceRef Surface) const;
-};
 
 /**
  * Handle to an owned surface
@@ -11441,6 +15036,21 @@ struct SurfaceBase : T
   using T::T;
 
   /**
+   * Load an image from a filesystem path into a software surface.
+   *
+   * If available, this uses LoadSurface(StringParam), otherwise it uses
+   * LoadBMP(StringParam).
+   *
+   * @param file a path on the filesystem to load an image from.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call GetError() for more information.
+   *
+   * @sa LoadSurface(StringParam)
+   * @sa LoadBMP(StringParam)
+   */
+  SurfaceBase(StringParam file);
+
+  /**
    * Allocate a new surface with a specific pixel format.
    *
    * The pixels of the new surface are initialized to zero.
@@ -11449,8 +15059,7 @@ struct SurfaceBase : T
    * @param height the height of the surface.
    * @param format the PixelFormat for the new surface's pixel format.
    * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
+   * or convertible to false on failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -11478,8 +15087,7 @@ struct SurfaceBase : T
    * @param pixels a pointer to existing pixel data.
    * @param pitch the number of bytes between each row, including padding.
    * @post the new structure that is created and convertible to true on success
-   * or convertible to false on failure; call SDL_GetError() for more
-   * information.
+   * or convertible to false on failure; call GetError() for more information.
    *
    * @since This function is available since SDL 3.2.0.
    */
@@ -11491,15 +15099,6 @@ struct SurfaceBase : T
     : T(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
   {
   }
-
-  /**
-   * Free a surface.
-   *
-   * This makes this object empty
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Destroy() { return SDL_DestroySurface(T::release()); }
 
   /**
    * Get the properties associated with a surface.
@@ -11672,11 +15271,11 @@ struct SurfaceBase : T
    * They are still referenced by the surface being queried and will be cleaned
    * up normally.
    *
-   * @param count a pointer filled in with the number of surface pointers
-   *              returned, may be NULL.
    * @returns a NULL terminated array of SDL_Surface pointers or NULL on
    *          failure; call SDL_GetError() for more information. This should be
    *          freed with SDL_free() when it is no longer needed.
+   *
+   * @threadsafety This function is not thread safe.
    *
    * @since This function is available since SDL 3.2.0.
    *
@@ -11684,9 +15283,12 @@ struct SurfaceBase : T
    * @sa RemoveAlternateImages()
    * @sa HasAlternateImages()
    */
-  FreeWrapper<SurfaceRef*[]> GetImages(int* count = nullptr) const
+  OwnArray<SurfaceRef*> GetImages() const
   {
-    return SDL_GetSurfaceImages(T::get(), count);
+    int count = 0;
+    auto data =
+      reinterpret_cast<SurfaceRef*>(SDL_GetSurfaceImages(T::get(), &count));
+    return OwnArray<SurfaceRef*>{data, size_t(count)};
   }
 
   /**
@@ -13062,6 +16664,15 @@ struct SurfaceBase : T
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
   PixelFormat GetFormat() const { return T::get()->format; }
+
+  /**
+   * Free a surface.
+   *
+   * This makes this object empty
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { return T::free(); }
 };
 
 /**
@@ -13145,21 +16756,41 @@ public:
 };
 
 /**
+ * Free a surface.
+ *
+ * It is safe to pass NULL to this function.
+ *
+ * @param surface the SDL_Surface to free.
+ *
+ * @threadsafety No other thread should be using the surface when it is freed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface
+ * @sa SurfaceBase
+ */
+template<>
+inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
+{
+  return SDL_DestroySurface(resource);
+}
+
+/**
  * Load a BMP image from a seekable SDL data stream.
  *
  * @param src the data stream for the surface.
- * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
- *                in the case of an error.
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
  * @sa SaveBMP()
  */
-inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
+inline Surface LoadBMP(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return Surface{SDL_LoadBMP_IO(src, closeio)};
+  return Surface{SDL_LoadBMP_IO(src, false)};
 }
 
 /**
@@ -13168,6 +16799,8 @@ inline Surface LoadBMP(SDL_IOStream* src, bool closeio)
  * @param file the BMP file to load.
  * @returns a Surface with the loaded content or nullptr on failure; call
  *          GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -13186,18 +16819,18 @@ inline Surface LoadBMP(StringParam file) { return Surface{SDL_LoadBMP(file)}; }
  *
  * @param surface the SDL_Surface structure containing the image to be saved.
  * @param dst a data stream to save to.
- * @param closeio if true, calls SDL_CloseIO() on `dst` before returning, even
- *                in the case of an error.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
+ * @threadsafety This function is not thread safe.
+ *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SaveBMP()
+ * @sa LoadBMP()
  */
-inline bool SaveBMP(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
+inline bool SaveBMP(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
 {
-  return SDL_SaveBMP_IO(surface.get(), dst, closeio);
+  return SDL_SaveBMP_IO(surface.get(), dst, false);
 }
 
 /**
@@ -13352,11 +16985,6 @@ inline bool PremultiplyAlpha(int width,
 #pragma region impl
 /// @}
 
-inline void ObjectDeleter<SDL_Surface>::operator()(SurfaceRef surface) const
-{
-  surface.Destroy();
-}
-
 template<ObjectBox<SDL_Surface*> T>
 SurfaceLock SurfaceBase<T>::Lock() &
 {
@@ -13365,16 +16993,6 @@ SurfaceLock SurfaceBase<T>::Lock() &
 
 #pragma endregion impl
 
-} // namespace SDL
-
-#endif /* SDL3PP_SURFACE_H_ */
-
-
-// end --- SDL3pp_surface.h --- 
-
-
-
-namespace SDL {
 /**
  * @defgroup CategoryVideo Display and Window Management
  *
@@ -13416,12 +17034,6 @@ struct WindowBase;
  * @sa WindowBase
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
-
-template<>
-struct ObjectDeleter<SDL_Window>
-{
-  void operator()(WindowRef window) const;
-};
 
 /**
  * Handle to an owned window
@@ -13519,6 +17131,11 @@ using DisplayModeData = SDL_DisplayModeData;
 using DisplayMode = SDL_DisplayMode;
 
 /**
+ * @name WindowFlags
+ * @{
+ */
+
+/**
  * The flags on a window.
  *
  * These cover a lot of true/false, or on/off, window state. Some of it is
@@ -13531,6 +17148,138 @@ using DisplayMode = SDL_DisplayMode;
  * @sa WindowBase.GetFlags()
  */
 using WindowFlags = SDL_WindowFlags;
+
+/**
+ * window is in fullscreen mode
+ */
+constexpr WindowFlags WINDOW_FULLSCREEN = SDL_WINDOW_FULLSCREEN;
+
+/**
+ * window usable with OpenGL context
+ */
+constexpr WindowFlags WINDOW_OPENGL = SDL_WINDOW_OPENGL;
+
+/**
+ * window is occluded
+ */
+constexpr WindowFlags WINDOW_OCCLUDED = SDL_WINDOW_OCCLUDED;
+
+/**
+ * window is neither mapped onto the desktop nor shown in the
+ * taskbar/dock/window list; SDL_ShowWindow() is required for it to become
+ * visible
+ */
+constexpr WindowFlags WINDOW_HIDDEN = SDL_WINDOW_HIDDEN;
+
+/**
+ * no window decoration
+ */
+constexpr WindowFlags WINDOW_BORDERLESS = SDL_WINDOW_BORDERLESS;
+
+/**
+ * window can be resized
+ */
+constexpr WindowFlags WINDOW_RESIZABLE = SDL_WINDOW_RESIZABLE;
+
+/**
+ * window is minimized
+ */
+constexpr WindowFlags WINDOW_MINIMIZED = SDL_WINDOW_MINIMIZED;
+
+/**
+ * window is maximized
+ */
+constexpr WindowFlags WINDOW_MAXIMIZED = SDL_WINDOW_MAXIMIZED;
+
+/**
+ * window has grabbed mouse input
+ */
+constexpr WindowFlags WINDOW_MOUSE_GRABBED = SDL_WINDOW_MOUSE_GRABBED;
+
+/**
+ * window has input focus
+ */
+constexpr WindowFlags WINDOW_INPUT_FOCUS = SDL_WINDOW_INPUT_FOCUS;
+
+/**
+ * window has mouse focus
+ */
+constexpr WindowFlags WINDOW_MOUSE_FOCUS = SDL_WINDOW_MOUSE_FOCUS;
+
+/**
+ * window not created by SDL
+ */
+constexpr WindowFlags WINDOW_EXTERNAL = SDL_WINDOW_EXTERNAL;
+
+/**
+ * window is modal
+ */
+constexpr WindowFlags WINDOW_MODAL = SDL_WINDOW_MODAL;
+
+/**
+ * window uses high pixel density back buffer if possible
+ */
+constexpr WindowFlags WINDOW_HIGH_PIXEL_DENSITY = SDL_WINDOW_HIGH_PIXEL_DENSITY;
+
+/**
+ * window has mouse captured (unrelated to MOUSE_GRABBED)
+ */
+constexpr WindowFlags WINDOW_MOUSE_CAPTURE = SDL_WINDOW_MOUSE_CAPTURE;
+
+/**
+ * window has relative mode enabled
+ */
+constexpr WindowFlags WINDOW_MOUSE_RELATIVE_MODE =
+  SDL_WINDOW_MOUSE_RELATIVE_MODE;
+
+/**
+ * window should always be above others
+ */
+constexpr WindowFlags WINDOW_ALWAYS_ON_TOP = SDL_WINDOW_ALWAYS_ON_TOP;
+
+/**
+ * window should be treated as a utility window, not showing in the task bar and
+ * window list
+ */
+constexpr WindowFlags WINDOW_UTILITY = SDL_WINDOW_UTILITY;
+
+/**
+ * window should be treated as a tooltip and does not get mouse or keyboard
+ * focus, requires a parent window
+ */
+constexpr WindowFlags WINDOW_TOOLTIP = SDL_WINDOW_TOOLTIP;
+
+/**
+ * window should be treated as a popup menu, requires a parent window
+ */
+constexpr WindowFlags WINDOW_POPUP_MENU = SDL_WINDOW_POPUP_MENU;
+
+/**
+ * window has grabbed keyboard input
+ */
+constexpr WindowFlags WINDOW_KEYBOARD_GRABBED = SDL_WINDOW_KEYBOARD_GRABBED;
+
+/**
+ * window usable for Vulkan surface
+ */
+constexpr WindowFlags WINDOW_VULKAN = SDL_WINDOW_VULKAN;
+
+/**
+ * window usable for Metal view
+ */
+constexpr WindowFlags WINDOW_METAL = SDL_WINDOW_METAL;
+
+/**
+ * window with transparent buffer
+ */
+constexpr WindowFlags WINDOW_TRANSPARENT = SDL_WINDOW_TRANSPARENT;
+
+/**
+ * window should not be focusable
+ */
+constexpr WindowFlags WINDOW_NOT_FOCUSABLE = SDL_WINDOW_NOT_FOCUSABLE;
+
+/// @}
 
 /**
  * @name FlashOperations
@@ -13695,8 +17444,6 @@ struct Display
   /**
    * Get a list of currently connected displays.
    *
-   * @param count a pointer filled in with the number of displays returned, may
-   *              be NULL.
    * @returns a 0 terminated array of display instance IDs or NULL on failure;
    *          call GetError() for more information. This should be freed
    *          with SDL_free() when it is no longer needed.
@@ -13705,9 +17452,11 @@ struct Display
    *
    * @since This function is available since SDL 3.2.0.
    */
-  static FreeWrapper<Display[]> GetAll(int* count)
+  static OwnArray<Display> GetAll()
   {
-    return wrapArray(reinterpret_cast<Display*>(SDL_GetDisplays(count)));
+    int count = 0;
+    auto data = reinterpret_cast<Display*>(SDL_GetDisplays(&count));
+    return OwnArray<Display>{data, size_t(count)};
   }
 
   /**
@@ -13856,7 +17605,7 @@ struct Display
   }
 
   /**
-   * @brief Get a list of fullscreen display modes available on a display.
+   * Get a list of fullscreen display modes available on a display.
    *
    * The display modes are sorted in this priority:
    *
@@ -13867,8 +17616,6 @@ struct Display
    * - refresh rate -> highest to lowest
    * - pixel density -> lowest to highest
    *
-   * @param count a pointer filled in with the number of display modes returned,
-   *              may be NULL.
    * @returns a NULL terminated array of display mode pointers or NULL on
    *          failure; call GetError() for more information.
    *
@@ -13876,12 +17623,16 @@ struct Display
    *
    * This automatically calls SDL_free after result is out of scope.
    *
+   * @since This function is available since SDL 3.2.0.
+   *
    * @sa Display.GetAll()
    * @sa GetDisplays()
    */
-  FreeWrapper<DisplayMode*[]> GetFullscreenModes(int* count = nullptr) const
+  OwnArray<DisplayMode*> GetFullscreenModes() const
   {
-    return wrapArray(SDL_GetFullscreenDisplayModes(displayID, count));
+    int count = 0;
+    auto data = SDL_GetFullscreenDisplayModes(displayID, &count);
+    return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
   /**
@@ -14456,9 +18207,9 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  FreeWrapper<void*> GetICCProfile(size_t* size) const
+  OwnPtr<void> GetICCProfile(size_t* size) const
   {
-    return {SDL_GetWindowICCProfile(T::get(), size)};
+    return OwnPtr<void>{SDL_GetWindowICCProfile(T::get(), size)};
   }
 
   /**
@@ -16016,22 +19767,90 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy()
-  {
-    auto window = T::release();
-    KeyValueWrapper<SDL_Window*, HitTestCB>::erase(window);
-    return SDL_DestroyWindow(window);
-  }
+  void Destroy() { return T::free(); }
 };
+
+// Forward decl
+template<ObjectBox<SDL_GLContext> T>
+struct GLContextBase;
+
+using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
+
+using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
 
 /**
  * An opaque handle to an OpenGL context.
  *
  * @since This datatype is available since SDL 3.2.0.
  *
- * @sa GL_CreateContext()
+ * @cat resource
  */
-using GLContext = SDL_GLContext;
+template<ObjectBox<SDL_GLContext> T>
+struct GLContextBase : T
+{
+  using T::T;
+
+  /**
+   * Create an OpenGL context for an OpenGL window, and make it current.
+   *
+   * Windows users new to OpenGL should note that, for historical reasons, GL
+   * functions added after OpenGL version 1.1 are not available by default.
+   * Those functions must be loaded at run-time, either with an OpenGL
+   * extension-handling library or with SDL_GL_GetProcAddress() and its related
+   * functions.
+   *
+   * SDL_GLContext is opaque to the application.
+   *
+   * @param window the window to associate with the context.
+   * @post the OpenGL context associated with `window` or NULL on failure;
+   *          call GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa Destroy()
+   * @sa MakeCurrent()
+   */
+  GLContextBase(WindowRef window)
+    : T(SDL_GL_CreateContext(window.get()))
+  {
+  }
+
+  /**
+   * Set up an OpenGL context for rendering into an OpenGL window.
+   *
+   * The context must have been created with a compatible window.
+   *
+   * @param window the window to associate with the context.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GL_CreateContext
+   */
+  bool MakeCurrent(WindowRef window)
+  {
+    return SDL_GL_MakeCurrent(window.get(), T::get());
+  }
+
+  /**
+   * Delete an OpenGL context.
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_GL_CreateContext
+   */
+  bool Destroy() { return SDL_GL_DestroyContext(T::release()); }
+};
 
 /**
  * Opaque type for an EGL display.
@@ -16400,8 +20219,6 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 /**
  * Get a list of valid windows.
  *
- * @param count a pointer filled in with the number of windows returned, may
- *              be NULL.
  * @returns a NULL terminated array of SDL_Window pointers or NULL on failure;
  *          call GetError() for more information. This is a single
  *          allocation that should be freed with SDL_free() when it is no
@@ -16411,9 +20228,11 @@ inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
  *
  * @since This function is available since SDL 3.2.0.
  */
-inline FreeWrapper<WindowRef[]> GetWindows(int* count)
+inline OwnArray<WindowRef> GetWindows()
 {
-  return wrapArray(reinterpret_cast<WindowRef*>(SDL_GetWindows(count)));
+  int count = 0;
+  auto data = reinterpret_cast<WindowRef*>(SDL_GetWindows(&count));
+  return OwnArray<WindowRef>{data, size_t(count)};
 }
 
 /**
@@ -16450,6 +20269,32 @@ inline WindowRef GetWindowFromID(WindowID id)
  * @sa SetKeyboardGrab()
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
+
+/**
+ * Destroy a window.
+ *
+ * Any child windows owned by the window will be recursively destroyed as
+ * well.
+ *
+ * Note that on some platforms, the visible window may not actually be removed
+ * from the screen until the SDL event loop is pumped again, even though the
+ * SDL_Window is no longer valid after this call.
+ *
+ * @param resource the window to destroy.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window
+ * @sa WindowBase
+ */
+template<>
+inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
+{
+  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
+  SDL_DestroyWindow(resource);
+}
 
 /**
  * @brief  Check whether the screensaver is currently enabled.
@@ -16703,54 +20548,6 @@ inline bool GL_GetAttribute(GLAttr attr, int* value)
 }
 
 /**
- * Create an OpenGL context for an OpenGL window, and make it current.
- *
- * Windows users new to OpenGL should note that, for historical reasons, GL
- * functions added after OpenGL version 1.1 are not available by default.
- * Those functions must be loaded at run-time, either with an OpenGL
- * extension-handling library or with SDL_GL_GetProcAddress() and its related
- * functions.
- *
- * SDL_GLContext is opaque to the application.
- *
- * @param window the window to associate with the context.
- * @returns the OpenGL context associated with `window` or NULL on failure;
- *          call GetError() for more information.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GL_DestroyContext()
- * @sa GL_MakeCurrent()
- */
-inline GLContext GL_CreateContext(WindowRef window)
-{
-  return SDL_GL_CreateContext(window.get());
-}
-
-/**
- * Set up an OpenGL context for rendering into an OpenGL window.
- *
- * The context must have been created with a compatible window.
- *
- * @param window the window to associate with the context.
- * @param context the OpenGL context to associate with the window.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GL_CreateContext()
- */
-inline bool GL_MakeCurrent(WindowRef window, GLContext context)
-{
-  return SDL_GL_MakeCurrent(window.get(), context);
-}
-
-/**
  * Get the currently active OpenGL window.
  *
  * @returns the currently active OpenGL window on success or NULL on failure;
@@ -16772,9 +20569,12 @@ inline WindowRef GL_GetCurrentWindow() { return SDL_GL_GetCurrentWindow(); }
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GL_MakeCurrent()
+ * @sa GLContextBase.MakeCurrent()
  */
-inline GLContext GL_GetCurrentContext() { return SDL_GL_GetCurrentContext(); }
+inline GLContextRef GL_GetCurrentContext()
+{
+  return SDL_GL_GetCurrentContext();
+}
 
 /**
  * Get the currently active EGL display.
@@ -16935,42 +20735,26 @@ inline bool GL_SwapWindow(WindowRef window)
 /**
  * Delete an OpenGL context.
  *
- * @param context the OpenGL context to be deleted.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
+ * @param resource the OpenGL context to be deleted.
  *
  * @threadsafety This function should only be called on the main thread.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa GL_CreateContext()
+ * @sa GLContext
+ * @sa GLContextBase
  */
-inline bool GL_DestroyContext(GLContext context)
+template<>
+inline void ObjectRef<SDL_GLContextState>::doFree(SDL_GLContext resource)
 {
-  return SDL_GL_DestroyContext(context);
+  SDL_GL_DestroyContext(resource);
 }
 
 #pragma region impl
 
 /// @}
 
-inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
-{
-  window.Destroy();
-}
-
 #pragma endregion impl
-
-} // namespace SDL
-
-#endif /* SDL3PP_VIDEO_H_ */
-
-
-// end --- SDL3pp_video.h --- 
-
-
-
-namespace SDL {
 
 /**
  * @defgroup CategoryEvents Category Events
@@ -18902,2094 +22686,6 @@ inline WindowRef GetWindowFromEvent(const Event* event)
 
 /// @}
 
-} // namespace SDL
-
-#endif /* SDL3PP_EVENTS_H_ */
-
-
-// end --- SDL3pp_events.h --- 
-
-
-//
-//
-//
-
-// begin --- SDL3pp_guid.h --- 
-
-#ifndef SDL3PP_GUID_H_
-#define SDL3PP_GUID_H_
-
-#include <SDL3/SDL_guid.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryGUID GUIDs
- *
- * A GUID is a 128-bit value that represents something that is uniquely
- * identifiable by this value: "globally unique."
- *
- * SDL provides functions to convert a GUID to/from a string.
- * @{
- */
-
-/**
- * An SDL_GUID is a 128-bit identifier for an input device that identifies
- * that device across runs of SDL programs on the same platform.
- *
- * If the device is detached and then re-attached to a different port, or if
- * the base system is rebooted, the device should still report the same GUID.
- *
- * GUIDs are as precise as possible but are not guaranteed to distinguish
- * physically distinct but equivalent devices. For example, two game
- * controllers from the same vendor with the same product ID and revision may
- * have the same GUID.
- *
- * GUIDs may be platform-dependent (i.e., the same device may report different
- * GUIDs on different operating systems).
- *
- * @since This struct is available since SDL 3.2.0.
- *
- * @cat wrap-extending-struct
- *
- * @sa wrap-extending-struct
- */
-struct GUID : SDL_GUID
-{
-  constexpr GUID()
-    : SDL_GUID({0})
-  {
-  }
-
-  constexpr GUID(SDL_GUID guid)
-    : SDL_GUID(guid)
-  {
-  }
-
-  /**
-   * Convert a GUID string into a SDL_GUID structure.
-   *
-   * Performs no error checking. If this function is given a string containing
-   * an invalid GUID, the function will silently succeed, but the GUID generated
-   * will not be useful.
-   *
-   * @param pchGUID string containing an ASCII representation of a GUID.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_GUIDToString
-   */
-  GUID(StringParam pchGUID)
-    : SDL_GUID(SDL_StringToGUID(pchGUID))
-  {
-  }
-
-  /**
-   * Get an ASCII string representation for a given SDL_GUID.
-   *
-   * @returns pszGUID the ASCII string representation for
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_StringToGUID
-   */
-  std::string ToString() const
-  {
-    std::string result(32, ' ');
-    SDL_GUIDToString(*this, result.data(), 33);
-    return result;
-  }
-};
-
-/**
- * Get an ASCII string representation for a given SDL_GUID.
- *
- * @param guid the SDL_GUID you wish to convert to string.
- * @param pszGUID buffer in which to write the ASCII string.
- * @param cbGUID the size of pszGUID, should be at least 33 bytes.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_StringToGUID
- */
-inline void GUIDToString(SDL_GUID guid, char* pszGUID, int cbGUID)
-{
-  return SDL_GUIDToString(guid, pszGUID, cbGUID);
-}
-
-/**
- * Convert a GUID string into a SDL_GUID structure.
- *
- * Performs no error checking. If this function is given a string containing
- * an invalid GUID, the function will silently succeed, but the GUID generated
- * will not be useful.
- *
- * @param pchGUID string containing an ASCII representation of a GUID.
- * @returns a SDL_GUID structure.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GUIDToString
- */
-inline SDL_GUID StringToGUID(StringParam pchGUID)
-{
-  return SDL_StringToGUID(pchGUID);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_GUID_H_ */
-
-
-// end --- SDL3pp_guid.h --- 
-
-
-//
-//
-
-// begin --- SDL3pp_hints.h --- 
-
-#ifndef SDL3PP_HINTS_H_
-#define SDL3PP_HINTS_H_
-
-#include <SDL3/SDL_hints.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryHints Configuration Variables
- *
- * This file contains functions to set and get configuration hints, as well as
- * listing each of them alphabetically.
- *
- * The convention for naming hints is SDL_HINT_X, where "SDL_X" is the
- * environment variable that can be used to override the default.
- *
- * In general these hints are just that - they may or may not be supported or
- * applicable on any given platform, but they provide a way for an application
- * or user to give the library a hint as to how they would like the library to
- * work.
- *
- * @{
- */
-
-/**
- * An enumeration of hint priorities.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using HintPriority = SDL_HintPriority;
-
-constexpr HintPriority HINT_DEFAULT = SDL_HINT_DEFAULT;
-
-constexpr HintPriority HINT_NORMAL = SDL_HINT_NORMAL;
-
-constexpr HintPriority HINT_OVERRIDE = SDL_HINT_OVERRIDE;
-
-/**
- * Set a hint with a specific priority.
- *
- * The priority controls the behavior when setting a hint that already has a
- * value. Hints will replace existing hints of their priority and lower.
- * Environment variables are considered to have override priority.
- *
- * @param name the hint to set.
- * @param value the value of the hint variable.
- * @param priority the SDL_HintPriority level for the hint.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetHint
- * @sa SDL_ResetHint
- * @sa SDL_SetHint
- */
-inline bool SetHintWithPriority(StringParam name,
-                                StringParam value,
-                                HintPriority priority)
-{
-  return SDL_SetHintWithPriority(name, value, priority);
-}
-
-/**
- * Set a hint with normal priority.
- *
- * Hints will not be set if there is an existing override hint or environment
- * variable that takes precedence. You can use SDL_SetHintWithPriority() to
- * set the hint with override priority instead.
- *
- * @param name the hint to set.
- * @param value the value of the hint variable.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetHint
- * @sa SDL_ResetHint
- * @sa SDL_SetHintWithPriority
- */
-inline bool SetHint(StringParam name, StringParam value)
-{
-  return SDL_SetHint(name, value);
-}
-
-/**
- * Reset a hint to the default value.
- *
- * This will reset a hint to the value of the environment variable, or NULL if
- * the environment isn't set. Callbacks will be called normally with this
- * change.
- *
- * @param name the hint to set.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SetHint
- * @sa SDL_ResetHints
- */
-inline bool ResetHint(StringParam name) { return SDL_ResetHint(name); }
-
-/**
- * Reset all hints to the default values.
- *
- * This will reset all hints to the value of the associated environment
- * variable, or NULL if the environment isn't set. Callbacks will be called
- * normally with this change.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_ResetHint
- */
-inline void ResetHints() { return SDL_ResetHints(); }
-
-/**
- * Get the value of a hint.
- *
- * @param name the hint to query.
- * @returns the string value of a hint or NULL if the hint isn't set.
- *
- * @threadsafety It is safe to call this function from any thread, however the
- *               return value only remains valid until the hint is changed; if
- *               another thread might do so, the app should supply locks
- *               and/or make a copy of the string. Note that using a hint
- *               callback instead is always thread-safe, as SDL holds a lock
- *               on the thread subsystem during the callback.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_SetHint
- * @sa SDL_SetHintWithPriority
- */
-inline const char* GetHint(StringParam name) { return SDL_GetHint(name); }
-
-/**
- * Get the boolean value of a hint variable.
- *
- * @param name the name of the hint to get the boolean value from.
- * @param default_value the value to return if the hint does not exist.
- * @returns the boolean value of a hint or the provided default value if the
- *          hint does not exist.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetHint
- * @sa SDL_SetHint
- */
-inline bool GetHintBoolean(StringParam name, bool default_value)
-{
-  return SDL_GetHintBoolean(name, default_value);
-}
-
-/**
- * A callback used to send notifications of hint value changes.
- *
- * This is called an initial time during SDL_AddHintCallback with the hint's
- * current value, and then again each time the hint's value changes.
- *
- * @param userdata what was passed as `userdata` to SDL_AddHintCallback().
- * @param name what was passed as `name` to SDL_AddHintCallback().
- * @param oldValue the previous hint value.
- * @param newValue the new value hint is to be set to.
- *
- * @threadsafety This callback is fired from whatever thread is setting a new
- *               hint value. SDL holds a lock on the hint subsystem when
- *               calling this callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa SDL_AddHintCallback
- */
-using HintCallback = SDL_HintCallback;
-
-/**
- * Add a function to watch a particular hint.
- *
- * The callback function is called _during_ this function, to provide it an
- * initial value, and again each time the hint's value changes.
- *
- * @param name the hint to watch.
- * @param callback An SDL_HintCallback function that will be called when the
- *                 hint value changes.
- * @param userdata a pointer to pass to the callback function.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_RemoveHintCallback
- */
-inline bool AddHintCallback(StringParam name,
-                            HintCallback callback,
-                            void* userdata)
-{
-  return SDL_AddHintCallback(name, callback, userdata);
-}
-
-/**
- * Remove a function watching a particular hint.
- *
- * @param name the hint being watched.
- * @param callback an SDL_HintCallback function that will be called when the
- *                 hint value changes.
- * @param userdata a pointer being passed to the callback function.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_AddHintCallback
- */
-inline void RemoveHintCallback(StringParam name,
-                               HintCallback callback,
-                               void* userdata)
-{
-  return SDL_RemoveHintCallback(name, callback, userdata);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_HINTS_H_ */
-
-
-// end --- SDL3pp_hints.h --- 
-
-
-
-// begin --- SDL3pp_init.h --- 
-
-#ifndef SDL3PP_INIT_H_
-#define SDL3PP_INIT_H_
-
-#include <SDL3/SDL_init.h>
-
-/**
- * @namespace SDL
- * @brief the main namespace where all SDL3pp public functions and types live
- */
-namespace SDL {
-
-/**
- * @defgroup CategoryInit Initialization and Shutdown
- *
- * All SDL programs need to initialize the library before starting to work
- * with it.
- *
- * Almost everything can simply call SDL_Init() near startup, with a handful
- * of flags to specify subsystems to touch. These are here to make sure SDL
- * does not even attempt to touch low-level pieces of the operating system
- * that you don't intend to use. For example, you might be using SDL for video
- * and input but chose an external library for audio, and in this case you
- * would just need to leave off the `SDL_INIT_AUDIO` flag to make sure that
- * external library has complete control.
- *
- * Most apps, when terminating, should call SDL_Quit(). This will clean up
- * (nearly) everything that SDL might have allocated, and crucially, it'll
- * make sure that the display's resolution is back to what the user expects if
- * you had previously changed it for your game.
- *
- * SDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup
- * to fill in details about the program. This is completely optional, but it
- * helps in small ways (we can provide an About dialog box for the macOS menu,
- * we can name the app in the system's audio mixer, etc). Those that want to
- * provide a _lot_ of information should look at the more-detailed
- * SDL_SetAppMetadataProperty().
- *
- * @{
- */
-
-/**
- * @name InitFlags
- *
- * Initialization flags
- *
- * @{
- */
-
-/**
- * @brief Initialization flags for SDL
- */
-using InitFlags = SDL_InitFlags;
-
-/**
- * `SDL_INIT_AUDIO` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_AUDIO = SDL_INIT_AUDIO;
-
-/**
- * `SDL_INIT_VIDEO` implies `SDL_INIT_EVENTS`, should be initialized on the main
- * thread
- */
-constexpr inline InitFlags INIT_VIDEO = SDL_INIT_VIDEO;
-
-/**
- * `SDL_INIT_JOYSTICK` implies `SDL_INIT_EVENTS`, should be initialized on the
- * same thread as SDL_INIT_VIDEO on Windows if you don't set
- * SDL_HINT_JOYSTICK_THREAD
- */
-constexpr inline InitFlags INIT_JOYSTICK = SDL_INIT_JOYSTICK;
-
-constexpr inline InitFlags INIT_HAPTIC = SDL_INIT_HAPTIC;
-
-/**
- * `SDL_INIT_GAMEPAD` implies `SDL_INIT_JOYSTICK`
- */
-constexpr inline InitFlags INIT_GAMEPAD = SDL_INIT_GAMEPAD;
-
-constexpr inline InitFlags INIT_EVENTS = SDL_INIT_EVENTS;
-
-/**
- * `SDL_INIT_SENSOR` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_SENSOR = SDL_INIT_SENSOR;
-
-/**
- * `SDL_INIT_CAMERA` implies `SDL_INIT_EVENTS`
- */
-constexpr inline InitFlags INIT_CAMERA = SDL_INIT_CAMERA;
-
-/// @}
-
-/**
- * @name AppResult
- * App result for Main callback
- * @{
- */
-
-/**
- * Return values for optional main callbacks.
- *
- * Returning SDL_APP_SUCCESS or SDL_APP_FAILURE from SDL_AppInit,
- * SDL_AppEvent, or SDL_AppIterate will terminate the program and report
- * success/failure to the operating system. What that means is
- * platform-dependent. On Unix, for example, on success, the process error
- * code will be zero, and on failure it will be 1. This interface doesn't
- * allow you to return specific exit codes, just whether there was an error
- * generally or not.
- *
- * Returning SDL_APP_CONTINUE from these functions will let the app continue
- * to run.
- *
- * See
- * [Main callbacks in
- * SDL3](https://wiki.libsdl.org/SDL3/README/main-functions#main-callbacks-in-sdl3)
- * for complete details.
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using AppResult = SDL_AppResult;
-
-/**
- * Value that requests that the app continue from the main callbacks.
- */
-constexpr AppResult APP_CONTINUE = SDL_APP_CONTINUE;
-
-/**
- * Value that requests termination with success from the main callbacks.
- */
-constexpr AppResult APP_SUCCESS = SDL_APP_SUCCESS;
-
-/**
- * Value that requests termination with error from the main callbacks.
- */
-constexpr AppResult APP_FAILURE = SDL_APP_FAILURE;
-
-/// @}
-
-/**
- * @name Callbacks for EnterAppMainCallbacks()
- *
- * @{
- */
-
-/**
- * Function pointer typedef for SDL_AppInit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppInit directly.
- *
- * @param appstate a place where the app can optionally store a pointer for
- *                 future use.
- * @param argc the standard ANSI C main's argc; number of elements in `argv`.
- * @param argv the standard ANSI C main's argv; array of command line
- *             arguments.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppInit_func = SDL_AppInit_func;
-
-/**
- * Function pointer typedef for SDL_AppIterate.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppIterate directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppIterate_func = SDL_AppIterate_func;
-
-/**
- * Function pointer typedef for SDL_AppEvent.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param event the new event for the app to examine.
- * @returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to
- *          terminate with success, SDL_APP_CONTINUE to continue.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppEvent_func = SDL_AppEvent_func;
-
-/**
- * Function pointer typedef for SDL_AppQuit.
- *
- * These are used by SDL_EnterAppMainCallbacks. This mechanism operates behind
- * the scenes for apps using the optional main callbacks. Apps that want to
- * use this should just implement SDL_AppEvent directly.
- *
- * @param appstate an optional pointer, provided by the app in SDL_AppInit.
- * @param result the result code that terminated the app (success or failure).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using AppQuit_func = SDL_AppQuit_func;
-
-/// @}
-
-/**
- * Initialize the SDL library.
- *
- * SDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the
- * two may be used interchangeably. Though for readability of your code
- * SDL_InitSubSystem() might be preferred.
- *
- * The file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)
- * subsystems are initialized by default. Message boxes
- * (SDL_ShowSimpleMessageBox) also attempt to work without initializing the
- * video subsystem, in hopes of being useful in showing an error dialog when
- * SDL_Init fails. You must specifically initialize other subsystems if you
- * use them in your application.
- *
- * Logging (such as SDL_Log) works without initialization, too.
- *
- * `flags` may be any of the following OR'd together:
- *
- * - `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events
- *   subsystem
- * - `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events
- *   subsystem, should be initialized on the main thread.
- * - `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the
- *   events subsystem
- * - `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem
- * - `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
- *   joystick subsystem
- * - `SDL_INIT_EVENTS`: events subsystem
- * - `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events
- *   subsystem
- * - `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events
- *   subsystem
- *
- * Subsystem initialization is ref-counted, you must call SDL_QuitSubSystem()
- * for each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or
- * call SDL_Quit() to force shutdown). If a subsystem is already loaded then
- * this call will increase the ref-count and return.
- *
- * Consider reporting some basic metadata about your application before
- * calling SDL_Init, using either SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty().
- *
- * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- * @sa InitSubSystem()
- * @sa Quit()
- * @sa SetMainReady()
- * @sa WasInit()
- */
-inline bool Init(InitFlags flags) { return SDL_Init(flags); }
-
-/**
- * Compatibility function to initialize the SDL library.
- *
- * This function and SDL_Init() are interchangeable.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa Quit()
- * @sa QuitSubSystem()
- */
-inline bool InitSubSystem(InitFlags flags) { return SDL_InitSubSystem(flags); }
-
-/**
- * Shut down specific SDL subsystems.
- *
- * You still need to call SDL_Quit() even if you close all open subsystems
- * with SDL_QuitSubSystem().
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa InitSubSystem()
- * @sa Quit()
- */
-inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
-
-/**
- * Get a mask of the specified subsystems which are currently initialized.
- *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
- *          returns the initialization status of the specified subsystems.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa InitSubSystem()
- */
-inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
-
-/**
- * Clean up all initialized subsystems.
- *
- * You should call this function even if you have already shutdown each
- * initialized subsystem with SDL_QuitSubSystem(). It is safe to call this
- * function even in the case of errors in initialization.
- *
- * You can use this function with atexit() to ensure that it is run when your
- * application is shutdown, but it is not wise to do this from a library or
- * other dynamically loaded code.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Init()
- * @sa QuitSubSystem()
- */
-inline void Quit() { return SDL_Quit(); }
-
-/**
- * @brief Initialize the SDL library.
- *
- * Also init any subsystem passed as InitFlags
- *
- * This might be called multiple times, it keeps a ref count and calls SDL_Quit
- * only on the last one.
- *
- * The SubSystems are out of the refCount, as SDL itself already keep track
- * internally.
- */
-struct SDL
-{
-
-  /**
-   * @brief Init given subsystems
-   * @param flags
-   *
-   * This uses a refCount internally, so it is safe to call
-   * this multiple times, the quit will be called only on the last call.
-   */
-  SDL(InitFlags flags)
-    : flags(flags)
-  {
-    refCount(+1, true);
-  }
-
-  // Copy ctor
-  SDL(const SDL& other)
-    : flags(other.flags)
-    , active(other.active)
-  {
-    if (active) refCount(+1);
-  }
-
-  // Move ctor
-  SDL(SDL&& other)
-    : flags(other.flags)
-    , active(other.active)
-  {
-    other.active = false;
-  }
-
-  // Dtor
-  ~SDL()
-  {
-    if (active) refCount(-1);
-  }
-
-  SDL& operator=(SDL rhs)
-  {
-    std::swap(active, rhs.active);
-    std::swap(flags, rhs.flags);
-    return *this;
-  }
-
-  /**
-   * @brief Check if given subSystems are initialized
-   * @param flags the flags to test or 0 to test all
-   * @return Which subsystem are active
-   */
-  static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
-
-  /**
-   * @brief release locking such as reset() does, but never calls SDL_Quit() or
-   * SDL_QuitSubSystem()
-   * @return false if there are still other locks, true if this was last one
-   *
-   * When this returns true it is safe to call SDL_Quit()
-   */
-  bool release()
-  {
-    flags = 0;
-    return refCount(-1, false) == 0;
-  }
-
-  /**
-   * @brief reset the value of this instance, acts like it was destroyed and
-   * then newly instantiated
-   * @return false if there are still other locks, true if this was last one
-   */
-  bool reset() { return refCount(-1) == 0; }
-
-  /// @brief returns true if active and has no errors
-  operator bool() const { return active; }
-
-  InitFlags GetCurrentFlags() const { return flags; }
-
-private:
-  InitFlags flags = 0;
-  bool active = true;
-
-  int refCount(int delta, bool autoQuit = true);
-};
-
-/**
- * Return whether this is the main thread.
- *
- * On Apple platforms, the main thread is the thread that runs your program's
- * main() entry point. On other platforms, the main thread is the one that
- * calls SDL_Init(SDL_INIT_VIDEO), which should usually be the one that runs
- * your program's main() entry point. If you are using the main callbacks,
- * SDL_AppInit(), SDL_AppIterate(), and SDL_AppQuit() are all called on the
- * main thread.
- *
- * @returns true if this thread is the main thread, or false otherwise.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-inline bool IsMainThread() { return SDL_IsMainThread(); }
-
-/**
- * @name Callbacks for RunOnMainThread()
- * @{
- */
-
-/**
- * Callback run on the main thread.
- *
- * @param userdata an app-controlled pointer that is passed to the callback.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa RunOnMainThread()
- */
-using MainThreadCallback = SDL_MainThreadCallback;
-
-/**
- * @sa PropertiesRef.MainThreadCallback
- * @sa result-callback
- *
- * @cat result-callback
- *
- */
-using MainThreadCB = std::function<void()>;
-
-/// @}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param userdata a pointer that is passed to `callback`.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- */
-inline bool RunOnMainThread(MainThreadCallback callback,
-                            void* userdata,
-                            bool wait_complete)
-{
-  return SDL_RunOnMainThread(callback, userdata, wait_complete);
-}
-
-/**
- * Call a function on the main thread during event processing.
- *
- * If this is called on the main thread, the callback is executed immediately.
- * If this is called on another thread, this callback is queued for execution
- * on the main thread during event processing.
- *
- * Be careful of deadlocks when using this functionality. You should not have
- * the main thread wait for the current thread while this function is being
- * called with `wait_complete` true.
- *
- * @param callback the callback to call on the main thread.
- * @param wait_complete true to wait for the callback to complete, false to
- *                      return immediately.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IsMainThread()
- * @sa result-callback
- *
- * @cat result-callback
- */
-inline bool RunOnMainThread(MainThreadCB callback, bool wait_complete)
-{
-  using Wrapper = CallbackWrapper<MainThreadCB>;
-  return RunOnMainThread(
-    &Wrapper::CallOnce, Wrapper::Wrap(std::move(callback)), wait_complete);
-}
-
-/**
- * Specify basic metadata about your app.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left as NULL, if a specific
- * detail doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Passing a NULL removes any previous metadata.
- *
- * This is a simplified interface for the most important information. You can
- * supply significantly more detailed metadata with
- * SDL_SetAppMetadataProperty().
- *
- * @param appname The name of the application ("My Game 2: Bad Guy's
- *                Revenge!").
- * @param appversion The version of the application ("1.0.0beta5" or a git
- *                   hash, or whatever makes sense).
- * @param appidentifier A unique string in reverse-domain format that
- *                      identifies this app ("com.example.mygame2").
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadataProperty()
- */
-inline bool SetAppMetadata(StringParam appname,
-                           StringParam appversion,
-                           StringParam appidentifier)
-{
-  return SDL_SetAppMetadata(appname, appversion, appidentifier);
-}
-
-/**
- * Specify metadata about your app through a set of properties.
- *
- * You can optionally provide metadata about your app to SDL. This is not
- * required, but strongly encouraged.
- *
- * There are several locations where SDL can make use of metadata (an "About"
- * box in the macOS menu bar, the name of the app can be shown on some audio
- * mixers, etc). Any piece of metadata can be left out, if a specific detail
- * doesn't make sense for the app.
- *
- * This function should be called as early as possible, before SDL_Init.
- * Multiple calls to this function are allowed, but various state might not
- * change once it has been set up with a previous call to this function.
- *
- * Once set, this metadata can be read using SDL_GetAppMetadataProperty().
- *
- * These are the supported properties:
- *
- * - `SDL_PROP_APP_METADATA_NAME_STRING`: The human-readable name of the
- *   application, like "My Game 2: Bad Guy's Revenge!". This will show up
- *   anywhere the OS shows the name of the application separately from window
- *   titles, such as volume control applets, etc. This defaults to "SDL
- *   Application".
- * - `SDL_PROP_APP_METADATA_VERSION_STRING`: The version of the app that is
- *   running; there are no rules on format, so "1.0.3beta2" and "April 22nd,
- *   2024" and a git hash are all valid options. This has no default.
- * - `SDL_PROP_APP_METADATA_IDENTIFIER_STRING`: A unique string that
- *   identifies this app. This must be in reverse-domain format, like
- *   "com.example.mygame2". This string is used by desktop compositors to
- *   identify and group windows together, as well as match applications with
- *   associated desktop settings and icons. If you plan to package your
- *   application in a container such as Flatpak, the app ID should match the
- *   name of your Flatpak container as well. This has no default.
- * - `SDL_PROP_APP_METADATA_CREATOR_STRING`: The human-readable name of the
- *   creator/developer/maker of this app, like "MojoWorkshop, LLC"
- * - `SDL_PROP_APP_METADATA_COPYRIGHT_STRING`: The human-readable copyright
- *   notice, like "Copyright (c) 2024 MojoWorkshop, LLC" or whatnot. Keep this
- *   to one line, don't paste a copy of a whole software license in here. This
- *   has no default.
- * - `SDL_PROP_APP_METADATA_URL_STRING`: A URL to the app on the web. Maybe a
- *   product page, or a storefront, or even a GitHub repository, for user's
- *   further information This has no default.
- * - `SDL_PROP_APP_METADATA_TYPE_STRING`: The type of application this is.
- *   Currently this string can be "game" for a video game, "mediaplayer" for a
- *   media player, or generically "application" if nothing else applies.
- *   Future versions of SDL might add new types. This defaults to
- *   "application".
- *
- * @param name the name of the metadata property to set.
- * @param value the value of the property, or NULL to remove that property.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetAppMetadataProperty()
- * @sa SetAppMetadata()
- */
-inline bool SetAppMetadataProperty(StringParam name, StringParam value)
-{
-  return SDL_SetAppMetadataProperty(name, value);
-}
-
-/**
- * Get metadata about your app.
- *
- * This returns metadata previously set using SDL_SetAppMetadata() or
- * SDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list
- * of available properties and their meanings.
- *
- * @param name the name of the metadata property to get.
- * @returns the current value of the metadata property, or the default if it
- *          is not set, NULL for properties with no default.
- *
- * @threadsafety It is safe to call this function from any thread, although
- *               the string returned is not protected and could potentially be
- *               freed if you call SDL_SetAppMetadataProperty() to set that
- *               property from another thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
- */
-inline const char* GetAppMetadataProperty(StringParam name)
-{
-  return SDL_GetAppMetadataProperty(name);
-}
-
-/// @}
-
-#pragma region impl
-
-inline int SDL::refCount(int delta, bool autoQuit)
-{
-  // TODO Locking these?
-  static int refCount = 0;
-  if (delta && active) {
-    if (delta > 0) {
-      refCount += 1;
-      if (flags) active = SDL_InitSubSystem(flags);
-    } else {
-      SDL_assert_always(refCount > 0);
-      active = false;
-      refCount -= 1;
-
-      if (autoQuit) {
-        if (refCount <= 0) {
-          // TODO Make this under FLAG
-          SDL_Quit();
-        } else if (flags) {
-          SDL_QuitSubSystem(flags);
-        }
-      }
-    }
-  }
-  return refCount;
-}
-
-#pragma endregion
-
-} // namespace SDL
-
-#endif /* SDL3PP_INIT_H_ */
-
-
-// end --- SDL3pp_init.h --- 
-
-
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_locale.h --- 
-
-
-
-#ifndef SDL3PP_LOCALE_H_
-#define SDL3PP_LOCALE_H_
-
-#include <SDL3/SDL_locale.h>
-
-namespace SDL {
-/**
- * @defgroup CategoryLocale Locale Info
- *
- * SDL locale services.
- *
- * This provides a way to get a list of preferred locales (language plus
- * country) for the user. There is exactly one function:
- * GetPreferredLocales(), which handles all the heavy lifting, and offers
- * documentation on all the strange ways humans might have configured their
- * language settings.
- *
- * @{
- */
-
-/**
- * A struct to provide locale data.
- *
- * Locale data is split into a spoken language, like English, and an optional
- * country, like Canada. The language will be in ISO-639 format (so English
- * would be "en"), and the country, if not NULL, will be an ISO-3166 country
- * code (so Canada would be "CA").
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPreferredLocales()
- */
-using Locale = SDL_Locale;
-
-/**
- * Report the user's preferred locale.
- *
- * Returned language strings are in the format xx, where 'xx' is an ISO-639
- * language specifier (such as "en" for English, "de" for German, etc).
- * Country strings are in the format YY, where "YY" is an ISO-3166 country
- * code (such as "US" for the United States, "CA" for Canada, etc). Country
- * might be NULL if there's no specific guidance on them (so you might get {
- * "en", "US" } for American English, but { "en", NULL } means "English
- * language, generically"). Language strings are never NULL, except to
- * terminate the array.
- *
- * Please note that not all of these strings are 2 characters; some are three
- * or more.
- *
- * The returned list of locales are in the order of the user's preference. For
- * example, a German citizen that is fluent in US English and knows enough
- * Japanese to navigate around Tokyo might have a list like: { "de", "en_US",
- * "jp", NULL }. Someone from England might prefer British English (where
- * "color" is spelled "colour", etc), but will settle for anything like it: {
- * "en_GB", "en", NULL }.
- *
- * This function returns NULL on error, including when the platform does not
- * supply this information at all.
- *
- * This might be a "slow" call that has to query the operating system. It's
- * best to ask for this once and save the results. However, this list can
- * change, usually because the user has changed a system preference outside of
- * your program; SDL will send an SDL::EVENT_LOCALE_CHANGED event in this case,
- * if possible, and you can call this function again to get an updated copy of
- * preferred locales.
- *
- * @param count a pointer filled in with the number of locales returned, may
- *              be NULL.
- * @returns a NULL terminated array of locale pointers, or NULL on failure;
- *          call GetError() for more information. This is a single allocation
- *          that should be freed with free() when it is no longer needed.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline FreeWrapper<Locale*[]> GetPreferredLocales(int* count)
-{
-  return wrapArray(SDL_GetPreferredLocales(count));
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_LOCALE_H_ */
-
-
-// end --- SDL3pp_locale.h --- 
-
-
-
-// begin --- SDL3pp_log.h --- 
-
-#ifndef SDL3PP_LOG_H_
-#define SDL3PP_LOG_H_
-
-#include <format>
-#include <SDL3/SDL_log.h>
-
-namespace SDL {
-/**
- * @defgroup CategoryLog Log Handling
- *
- * Simple log messages with priorities and categories. A message's
- * LogPriority signifies how important the message is. A message's
- * LogCategory signifies from what domain it belongs to. Every category
- * has a minimum priority specified: when a message belongs to that category,
- * it will only be sent out if it has that minimum priority or higher.
- *
- * SDL's own logs are sent below the default priority threshold, so they are
- * quiet by default.
- *
- * You can change the log verbosity programmatically using
- * LogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or
- * with the "SDL_LOGGING" environment variable. This variable is a comma
- * separated set of category=level tokens that define the default logging levels
- * for SDL applications.
- *
- * The category can be a numeric category, one of "app", "error", "assert",
- * "system", "audio", "video", "render", "input", "test", or `*` for any
- * unspecified category.
- *
- * The level can be a numeric level, one of "trace", "verbose", "debug",
- * "info", "warn", "error", "critical", or "quiet" to disable that category.
- *
- * You can omit the category if you want to set the logging level for all
- * categories.
- *
- * If this hint isn't set, the default log levels are equivalent to:
- *
- * `app=info,assert=warn,test=verbose,*=error`
- *
- * Here's where the messages go on different platforms:
- *
- * - Windows: debug output stream
- * - Android: log output
- * - Others: standard error output (stderr)
- *
- * You don't need to have a newline (`@n`) on the end of messages, the
- * functions will do that for you. For consistent behavior cross-platform, you
- * shouldn't have any newlines in messages, such as to log multiple lines in
- * one call; unusual platform-specific behavior can be observed in such usage.
- * Do one log call per line instead, with no newlines in messages.
- *
- * Each log call is atomic, so you won't see log messages cut off one another
- * when logging from multiple threads.
- *
- * @{
- */
-
-/**
- * @name LogPriorities
- *
- * The priorities assignable for a LogCategory.
- *
- * @{
- */
-
-/**
- * The predefined log priorities
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using LogPriority = SDL_LogPriority;
-
-/// @}
-
-/**
- * @name LogCategories
- *
- * The logging categories. see LogCategory for more info
- *
- * @{
- */
-
-/**
- * The predefined log categories
- *
- * By default the application and gpu categories are enabled at the INFO
- * level, the assert category is enabled at the WARN level, test is enabled at
- * the VERBOSE level and all other categories are enabled at the ERROR level.
- *
- * @since This enum is available since SDL 3.2.0.
- *
- * @cat wrap-state
- *
- * @sa wrap-state
- */
-class LogCategory
-{
-  int m_category;
-
-public:
-  constexpr explicit LogCategory(int category)
-    : m_category(category)
-  {
-  }
-
-  constexpr LogCategory(SDL_LogCategory category = SDL_LOG_CATEGORY_APPLICATION)
-    : m_category(category)
-  {
-  }
-
-  constexpr operator int() { return m_category; }
-
-  constexpr operator SDL_LogCategory() { return SDL_LogCategory(m_category); }
-
-  constexpr auto operator<=>(const LogCategory& other) const = default;
-
-  /**
-   * Set the priority of all log categories.
-   *
-   * @param priority the LogPriority to assign.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa ResetLogPriorities()
-   * @sa SetLogPriority()
-   */
-  static void SetLogPriorities(LogPriority priority)
-  {
-    return SDL_SetLogPriorities(priority);
-  }
-
-  /**
-   * Set the priority of a particular log category.
-   *
-   * @param priority the SDL_LogPriority to assign.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa GetLogPriority()
-   * @sa ResetLogPriorities()
-   * @sa SetLogPriorities()
-   */
-  void SetLogPriority(LogPriority priority)
-  {
-    return SDL_SetLogPriority(m_category, priority);
-  }
-
-  /**
-   * Get the priority of a particular log category.
-   *
-   * @returns the LogPriority for the requested category.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SetLogPriority()
-   */
-  LogPriority GetLogPriority() const { return SDL_GetLogPriority(m_category); }
-
-  /**
-   * Reset all priorities to default.
-   *
-   * This is called by SDL_Quit().
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SetLogPriorities
-   * @sa SetLogPriority
-   */
-  static void ResetLogPriorities() { return SDL_ResetLogPriorities(); }
-
-  /**
-   * Log an unformatted message with the specified priority.
-   *
-   * @param priority the priority of the message.
-   * @param message string to output.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL::Log()
-   * @sa Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  void LogUnformatted(LogPriority priority, StringParam message) const
-  {
-    return SDL_LogMessage(m_category, priority, "%s", (const char*)(message));
-  }
-
-  /**
-   * Log a message with the specified priority.
-   *
-   * @param priority the priority of the message.
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogUnformatted()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void Log(LogPriority priority, std::string_view fmt, ARGS... args) const
-  {
-    return LogUnformatted(priority,
-                          std::vformat(fmt, std::make_format_args(args...)));
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_TRACE.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogTrace(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_TRACE, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_VERBOSE.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogVerbose(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_VERBOSE, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_DEBUG.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogDebug(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_DEBUG, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_INFO.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogInfo(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_WARN.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   */
-  template<class... ARGS>
-  void LogWarn(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_WARN, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_ERROR.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogCritical()
-   * @sa LogDebug()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogError(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_ERROR, fmt, std::forward<ARGS>(args)...);
-  }
-
-  /**
-   * Log a message with SDL_LOG_PRIORITY_CRITICAL.
-   *
-   * @param fmt a
-   * [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
-   * style message format string.
-   * @param args additional parameters matching the `{}` tokens in the format
-   * string, if any.
-   *
-   * @threadsafety It is safe to call this function from any thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @cat formatted-string
-   *
-   * @sa formatted-string
-   * @sa SDL::Log()
-   * @sa LogDebug()
-   * @sa LogError()
-   * @sa LogInfo()
-   * @sa Log()
-   * @sa LogUnformatted()
-   * @sa LogTrace()
-   * @sa LogVerbose()
-   * @sa LogWarn()
-   */
-  template<class... ARGS>
-  void LogCritical(std::string_view fmt, ARGS&&... args) const
-  {
-    return Log(SDL_LOG_PRIORITY_CRITICAL, fmt, std::forward<ARGS>(args)...);
-  }
-};
-
-constexpr LogCategory LOG_CATEGORY_APPLICATION = SDL_LOG_CATEGORY_APPLICATION;
-
-constexpr LogCategory LOG_CATEGORY_ERROR = SDL_LOG_CATEGORY_ERROR;
-
-constexpr LogCategory LOG_CATEGORY_ASSERT = SDL_LOG_CATEGORY_ASSERT;
-
-constexpr LogCategory LOG_CATEGORY_SYSTEM = SDL_LOG_CATEGORY_SYSTEM;
-
-constexpr LogCategory LOG_CATEGORY_AUDIO = SDL_LOG_CATEGORY_AUDIO;
-
-constexpr LogCategory LOG_CATEGORY_VIDEO = SDL_LOG_CATEGORY_VIDEO;
-
-constexpr LogCategory LOG_CATEGORY_RENDER = SDL_LOG_CATEGORY_RENDER;
-
-constexpr LogCategory LOG_CATEGORY_INPUT = SDL_LOG_CATEGORY_INPUT;
-
-constexpr LogCategory LOG_CATEGORY_TEST = SDL_LOG_CATEGORY_TEST;
-
-constexpr LogCategory LOG_CATEGORY_GPU = SDL_LOG_CATEGORY_GPU;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED2 = SDL_LOG_CATEGORY_RESERVED2;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED3 = SDL_LOG_CATEGORY_RESERVED3;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED4 = SDL_LOG_CATEGORY_RESERVED4;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED5 = SDL_LOG_CATEGORY_RESERVED5;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED6 = SDL_LOG_CATEGORY_RESERVED6;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED7 = SDL_LOG_CATEGORY_RESERVED7;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED8 = SDL_LOG_CATEGORY_RESERVED8;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED9 = SDL_LOG_CATEGORY_RESERVED9;
-
-constexpr LogCategory LOG_CATEGORY_RESERVED10 = SDL_LOG_CATEGORY_RESERVED10;
-
-constexpr LogCategory LOG_CATEGORY_CUSTOM = SDL_LOG_CATEGORY_CUSTOM;
-
-/// @}
-
-/**
- * @name LogPriorities
- * @{
- */
-
-constexpr LogPriority LOG_PRIORITY_INVALID = SDL_LOG_PRIORITY_INVALID;
-
-constexpr LogPriority LOG_PRIORITY_TRACE = SDL_LOG_PRIORITY_TRACE;
-
-constexpr LogPriority LOG_PRIORITY_VERBOSE = SDL_LOG_PRIORITY_VERBOSE;
-
-constexpr LogPriority LOG_PRIORITY_DEBUG = SDL_LOG_PRIORITY_DEBUG;
-
-constexpr LogPriority LOG_PRIORITY_INFO = SDL_LOG_PRIORITY_INFO;
-
-constexpr LogPriority LOG_PRIORITY_WARN = SDL_LOG_PRIORITY_WARN;
-
-constexpr LogPriority LOG_PRIORITY_ERROR = SDL_LOG_PRIORITY_ERROR;
-
-constexpr LogPriority LOG_PRIORITY_CRITICAL = SDL_LOG_PRIORITY_CRITICAL;
-
-constexpr LogPriority LOG_PRIORITY_COUNT = SDL_LOG_PRIORITY_COUNT;
-
-/// @}
-
-/**
- * Set the text prepended to log messages of a given priority.
- *
- * By default LOG_PRIORITY_INFO and below have no prefix, and
- * LOG_PRIORITY_WARN and higher have a prefix showing their priority, e.g.
- * "WARNING: ".
- *
- * @param priority the LogPriority to modify.
- * @param prefix the prefix to use for that log priority, or NULL to use no
- *               prefix.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa LogCategory::SetLogPriorities()
- * @sa LogCategory::SetLogPriority()
- */
-inline bool SetLogPriorityPrefix(LogPriority priority, StringParam prefix)
-{
-  return SDL_SetLogPriorityPrefix(priority, prefix);
-}
-
-/**
- * Log a message with LOG_CATEGORY_APPLICATION and LOG_PRIORITY_INFO.
- *
- * @param fmt a
- *            [std::format/fmt](https://en.cppreference.com/w/cpp/utility/format/spec)
- *            style message format string.
- * @param args additional parameters matching the `{}` tokens in the format
- *             string, if any.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat formatted-string
- *
- * @sa formatted-string
- * @sa LogUnformatted()
- * @sa LogCategory.LogCritical()
- * @sa LogCategory.LogDebug()
- * @sa LogCategory.LogError()
- * @sa LogCategory.LogInfo()
- * @sa LogCategory.Log()
- * @sa LogCategory.LogUnformatted()
- * @sa LogCategory.LogTrace()
- * @sa LogCategory.LogVerbose()
- * @sa LogCategory.LogWarn()
- */
-template<class... ARGS>
-inline void Log(std::string_view fmt, ARGS&&... args)
-{
-  LOG_CATEGORY_APPLICATION.Log(
-    LOG_PRIORITY_INFO, fmt, std::forward<ARGS>(args)...);
-}
-
-/**
- * Log an unformatted message with LOG_CATEGORY_APPLICATION and
- * LOG_PRIORITY_INFO.
- *
- * @param message string to output.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Log()
- * @sa LogCategory.LogCritical()
- * @sa LogCategory.LogDebug()
- * @sa LogCategory.LogError()
- * @sa LogCategory.LogInfo()
- * @sa LogCategory.Log()
- * @sa LogCategory.LogUnformatted()
- * @sa LogCategory.LogTrace()
- * @sa LogCategory.LogVerbose()
- * @sa LogCategory.LogWarn()
- */
-inline void LogUnformatted(StringParam message)
-{
-  SDL_Log("%s", static_cast<const char*>(message));
-}
-
-/**
- * The prototype for the log output callback function.
- *
- * This function is called by SDL when there is new text to be logged. A mutex
- * is held so that this function is never called by more than one thread at
- * once.
- *
- * @param userdata what was passed as `userdata` to
- *                 SetLogOutputFunction().
- * @param category the category of the message.
- * @param priority the priority of the message.
- * @param message the message being output.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using LogOutputFunction = SDL_LogOutputFunction;
-
-/**
- * The prototype for the log output callback function.
- *
- * This function is called by SDL when there is new text to be logged. A mutex
- * is held so that this function is never called by more than one thread at
- * once.
- *
- * @param category the category of the message.
- * @param priority the priority of the message.
- * @param message the message being output.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa LogOutputFunction
- */
-using LogOutputFunctionCB =
-  std::function<void(LogCategory, LogPriority, StringParam)>;
-
-/**
- * Get the default log output function.
- *
- * @returns the default log output callback.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SetLogOutputFunction()
- * @sa GetLogOutputFunction()
- */
-inline LogOutputFunction GetDefaultLogOutputFunction()
-{
-  return SDL_GetDefaultLogOutputFunction();
-}
-
-/**
- * Get the current log output function.
- *
- * @param callback an LogOutputFunction filled in with the current log callback.
- * @param userdata a pointer filled in with the pointer that is passed to
- *                 `callback`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetDefaultLogOutputFunction()
- * @sa SetLogOutputFunction()
- */
-inline void GetLogOutputFunction(LogOutputFunction* callback, void** userdata)
-{
-  return SDL_GetLogOutputFunction(callback, userdata);
-}
-
-/**
- * Get the current log output function.
- *
- * @returns the LogOutputFunctionCB currently set
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction()
- * @sa SetLogOutputFunction()
- */
-inline LogOutputFunctionCB GetLogOutputFunction()
-{
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
-  LogOutputFunction cb;
-  void* userdata;
-  if (userdata == nullptr) {
-    return [cb](LogCategory c, LogPriority p, StringParam m) {
-      cb(nullptr, c, p, m);
-    };
-  }
-  GetLogOutputFunction(&cb, &userdata);
-  if (!Wrapper::contains(userdata)) {
-    return [cb, userdata](LogCategory c, LogPriority p, StringParam m) {
-      cb(userdata, c, p, m);
-    };
-  }
-  return Wrapper::at(userdata);
-}
-
-/**
- * Replace the default log output function with one of your own.
- *
- * @param callback an LogOutputFunction to call instead of the default.
- * @param userdata a pointer that is passed to `callback`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- * @sa ResetLogOutputFunction()
- */
-inline void SetLogOutputFunction(LogOutputFunction callback, void* userdata)
-{
-  UniqueWrapper<LogOutputFunctionCB>::erase();
-  return SDL_SetLogOutputFunction(callback, userdata);
-}
-
-/**
- * Replace the default log output function with one of your own.
- *
- * @param callback an LogOutputFunction to call instead of the default.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- * @sa ResetLogOutputFunction()
- */
-inline void SetLogOutputFunction(LogOutputFunctionCB callback)
-{
-  using Wrapper = UniqueWrapper<LogOutputFunctionCB>;
-  SDL_SetLogOutputFunction(
-    [](
-      void* userdata, int category, LogPriority priority, const char* message) {
-      return Wrapper::at(userdata)(LogCategory{category}, priority, message);
-    },
-    Wrapper::Wrap(std::move(callback)));
-}
-
-/**
- * Replace the current log output function with the default one
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetDefaultLogOutputFunction()
- * @sa GetLogOutputFunction()
- */
-inline void ResetLogOutputFunction()
-{
-  return SetLogOutputFunction(GetDefaultLogOutputFunction(), nullptr);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_LOG_H_ */
-
-
-// end --- SDL3pp_log.h --- 
-
-
-//
-//
-
-// begin --- SDL3pp_misc.h --- 
-
-
-#ifndef SDL3PP_MISC_H_
-#define SDL3PP_MISC_H_
-
-#include <SDL3/SDL_misc.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryMisc Miscellaneous
- *
- * SDL API functions that don't fit elsewhere.
- *
- * @{
- */
-
-/**
- * Open a URL/URI in the browser or other appropriate external application.
- *
- * Open a URL in a separate, system-provided application. How this works will
- * vary wildly depending on the platform. This will likely launch what makes
- * sense to handle a specific URL's protocol (a web browser for `http://`,
- * etc), but it might also be able to launch file managers for directories and
- * other things.
- *
- * What happens when you open a URL varies wildly as well: your game window
- * may lose focus (and may or may not lose focus if your game was fullscreen
- * or grabbing input at the time). On mobile devices, your app will likely
- * move to the background or your process might be paused. Any given platform
- * may or may not handle a given URL.
- *
- * If this is unimplemented (or simply unavailable) for a platform, this will
- * fail with an error. A successful result does not mean the URL loaded, just
- * that we launched _something_ to handle it (or at least believe we did).
- *
- * All this to say: this function can be useful, but you should definitely
- * test it on every platform you target.
- *
- * @param url a valid URL/URI to open. Use `file:///full/path/to/file` for
- *            local files, if supported.
- * @returns true on success or false on failure; call SDL_GetError() for more
- *          information.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline bool OpenURL(StringParam url) { return SDL_OpenURL(url); }
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_MISC_H_ */
-
-
-// end --- SDL3pp_misc.h --- 
-
-
-//
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_render.h --- 
-
-#ifndef SDL3PP_RENDER_H_
-#define SDL3PP_RENDER_H_
-
-#include <SDL3/SDL_render.h>
-
-namespace SDL {
-
 /**
  * @defgroup CategoryRender 2D Accelerated Rendering
  *
@@ -21020,13 +22716,6 @@ namespace SDL {
  * @{
  */
 
-/**  Deleter */
-template<>
-struct ObjectDeleter<SDL_Renderer>
-{
-  void operator()(RendererRef renderer) const;
-};
-
 /**
  * Handle to an owned renderer
  *
@@ -21052,12 +22741,6 @@ struct TextureBase;
  * @sa Texture
  */
 using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
-
-template<>
-struct ObjectDeleter<SDL_Texture>
-{
-  void operator()(TextureRef texture) const;
-};
 
 /**
  * Handle to an owned texture
@@ -22589,20 +24272,6 @@ struct RendererBase : T
   bool Present() { return SDL_RenderPresent(T::get()); }
 
   /**
-   * Destroy the rendering context for a window and free all associated
-   * textures.
-   *
-   * This object becomes empty after the call.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CreateRenderer
-   */
-  void Destroy() { return SDL_DestroyRenderer(T::release()); }
-
-  /**
    * Force the rendering context to flush any pending commands and state.
    *
    * You do not need to (and in fact, shouldn't) call this function unless you
@@ -22720,6 +24389,20 @@ struct RendererBase : T
   }
 
   // TODO RenderDebugTextFormat
+
+  /**
+   * Destroy the rendering context for a window and free all associated
+   * textures.
+   *
+   * This object becomes empty after the call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreateRenderer
+   */
+  void Destroy() { return SDL_DestroyRenderer(T::release()); }
 };
 
 /**
@@ -22738,6 +24421,22 @@ template<ObjectBox<SDL_Texture*> T>
 struct TextureBase : T
 {
   using T::T;
+
+  /**
+   * Load an image from a filesystem path into a GPU texture.
+   *
+   * If available, this uses LoadTexture(RendererRef, StringParam), otherwise it
+   * uses LoadTextureBMP(RendererRef, StringParam).
+   *
+   * @param renderer the Renderer to use to create the GPU texture.
+   * @param file a path on the filesystem to load an image from.
+   * @post the new structure that is created and convertible to true on success
+   * or convertible to false on failure; call GetError() for more information.
+   *
+   * @sa LoadTexture(RendererRef, StringParam)
+   * @sa LoadTextureBMP(RendererRef, StringParam)
+   */
+  TextureBase(RendererRef renderer, StringParam file);
 
   /**
    * Create a texture for a rendering context.
@@ -23690,6 +25389,45 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 }
 
 /**
+ * Destroy the texture.
+ *
+ * This object becomes empty after the call.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Texture
+ * @sa TextureBase
+ */
+template<>
+inline void ObjectRef<SDL_Texture>::doFree(SDL_Texture* resource)
+{
+  return SDL_DestroyTexture(resource);
+}
+
+/**
+ * Destroy the rendering context for a window and free all associated
+ * textures.
+ *
+ * This should be called before destroying the associated window.
+ *
+ * @param renderer the rendering context.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer
+ * @sa RendererBase
+ */
+template<>
+inline void ObjectRef<SDL_Renderer>::doFree(SDL_Renderer* resource)
+{
+  return SDL_DestroyRenderer(resource);
+}
+
+/**
  * Get the CAMetalLayer associated with the given Metal renderer.
  *
  * This function returns `void *`, so SDL doesn't have to include Metal's
@@ -23778,8 +25516,6 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
  *
  * @param renderer the renderer to create texture
  * @param src the data stream for the surface.
- * @param closeio if true, calls SDL_CloseIO() on `src` before returning, even
- *                in the case of an error.
  * @returns a Texture with loaded content or nullptr on failure; call
  *          GetError() for more information.
  *
@@ -23787,10 +25523,9 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
  *
  */
 inline Texture LoadTextureBMP(RendererRef renderer,
-                              SDL_IOStream* src,
-                              bool closeio)
+                              ObjectBox<SDL_IOStream> auto&& src)
 {
-  Surface surface{LoadBMP(src, closeio)};
+  Surface surface{LoadBMP(src)};
   return Texture(renderer, surface);
 }
 
@@ -23937,16 +25672,6 @@ bool RendererBase<T>::RenderGeometryRaw(TextureRef texture,
                                size_indices);
 }
 
-inline void ObjectDeleter<SDL_Renderer>::operator()(RendererRef renderer) const
-{
-  renderer.Destroy();
-}
-
-inline void ObjectDeleter<SDL_Texture>::operator()(TextureRef texture) const
-{
-  texture.Destroy();
-}
-
 template<ObjectBox<SDL_Texture*> T>
 TextureLock TextureBase<T>::Lock(OptionalRef<const SDL_Rect> rect) &
 {
@@ -23956,476 +25681,6 @@ TextureLock TextureBase<T>::Lock(OptionalRef<const SDL_Rect> rect) &
 #pragma endregion impl
 
 } // namespace SDL
-
-#endif /* SDL3PP_RENDER_H_ */
-
-
-// end --- SDL3pp_render.h --- 
-
-
-//
-//
-//
-//
-//
-//
-
-// begin --- SDL3pp_timer.h --- 
-
-#ifndef SDL3PP_TIMER_H_
-#define SDL3PP_TIMER_H_
-
-#include <chrono>
-#include <functional>
-#include <SDL3/SDL_timer.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryTimer Timer Support
- *
- * SDL provides time management functionality. It is useful for dealing with
- * (usually) small durations of time.
- *
- * This is not to be confused with _calendar time_ management, which is
- * provided by [CategoryTime](#CategoryTime).
- *
- * This category covers measuring time elapsed (GetTicks(),
- * GetPerformanceCounter()), putting a thread to sleep for a certain
- * amount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing
- * a callback function after a certain amount of time has elapsed
- * (AddTimer(), etc).
- *
- * @{
- */
-
-/**
- * Get the time elapsed since SDL library initialization.
- *
- * @returns a std::chrono::nanoseconds value representing the number of
- * nanoseconds since the SDL library initialized.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- */
-inline std::chrono::nanoseconds GetTicks()
-{
-  return std::chrono::nanoseconds{SDL_GetTicksNS()};
-}
-
-/**
- * Get the current value of the high resolution counter.
- *
- * This function is typically used for profiling.
- *
- * The counter values are only meaningful relative to each other. Differences
- * between values can be converted to times by using
- * SDL_GetPerformanceFrequency().
- *
- * @returns the current counter value.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPerformanceFrequency()
- */
-inline Uint64 GetPerformanceCounter() { return SDL_GetPerformanceCounter(); }
-
-/**
- * Get the count per second of the high resolution counter.
- *
- * @returns a platform-specific count per second.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetPerformanceCounter()
- */
-inline Uint64 GetPerformanceFrequency()
-{
-  return SDL_GetPerformanceFrequency();
-}
-
-/**
- * Wait a specified duration before returning.
- *
- * This function waits a specified duration before returning. It
- * waits at least the specified time, but possibly longer due to OS
- * scheduling.
- *
- * @param duration the duration to delay, with max precision in ns.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- */
-inline void Delay(std::chrono::nanoseconds duration)
-{
-  SDL_DelayNS(duration.count());
-}
-
-/**
- * Wait a specified duration before returning.
- *
- * This function waits a specified duration before returning. It
- * will attempt to wait as close to the requested time as possible, busy
- * waiting if necessary, but could return later due to OS scheduling.
- *
- * @param duration the duration to delay.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Delay()
- * @sa DelayNS()
- */
-inline void DelayPrecise(std::chrono::nanoseconds duration)
-{
-  SDL_DelayPrecise(duration.count());
-}
-/**
- * Definition of the timer ID type.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using TimerID = SDL_TimerID;
-
-/**
- * Function prototype for the millisecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in milliseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param userdata an arbitrary pointer provided by the app through
- *                 SDL_AddTimer, for its own use.
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-using TimerCallback = SDL_TimerCallback;
-
-/**
- * Function prototype for the nanosecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param userdata an arbitrary pointer provided by the app through
- *                 AddTimer(), for its own use.
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-using NSTimerCallback = SDL_NSTimerCallback;
-
-/**
- * Function prototype for the nanosecond timer callback function.
- *
- * The callback function is passed the current timer interval and returns the
- * next timer interval, in nanoseconds. If the returned value is the same as
- * the one passed in, the periodic alarm continues, otherwise a new alarm is
- * scheduled. If the callback returns 0, the periodic alarm is canceled and
- * will be removed.
- *
- * @param timerID the current timer being processed.
- * @param interval the current callback time interval.
- * @returns the new callback time interval, or 0 to disable further runs of
- *          the callback.
- *
- * @threadsafety SDL may call this callback at any time from a background
- *               thread; the application is responsible for locking resources
- *               the callback touches that need to be protected.
- *
- * @since This datatype is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa AddTimer(TimerCB)
- */
-using TimerCB =
-  std::function<std::chrono::nanoseconds(TimerID, std::chrono::nanoseconds)>;
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimer() call and should return the next
- * timer interval. If the value returned from the callback is 0, the timer is
- * canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ms to execute and returned
- * 1000 (ms), the timer would only wait another 750 ms before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in milliseconds, passed to `callback`.
- * @param callback the TimerCallback function to call when the specified
- *                 `interval` elapses.
- * @param userdata a pointer that is passed to `callback`.
- * @returns a timer ID or 0 on failure; call SDL_GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::milliseconds interval,
-                        TimerCallback callback,
-                        void* userdata)
-{
-  return SDL_AddTimer(interval.count(), callback, userdata);
-}
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in std::chrono::nanoseconds, passed to
- * `callback`.
- * @param callback the NSTimerCallback function to call when the specified
- *                 `interval` elapses.
- * @param userdata a pointer that is passed to `callback`.
- * @returns a timer ID or 0 on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::nanoseconds interval,
-                        NSTimerCallback callback,
-                        void* userdata)
-{
-  return SDL_AddTimerNS(interval.count(), callback, userdata);
-}
-
-/**
- * Call a callback function at a future time.
- *
- * The callback function is passed the current timer interval and the user
- * supplied parameter from the AddTimerNS() call and should return the
- * next timer interval. If the value returned from the callback is 0, the
- * timer is canceled and will be removed.
- *
- * The callback is run on a separate thread, and for short timeouts can
- * potentially be called before this function returns.
- *
- * Timers take into account the amount of time it took to execute the
- * callback. For example, if the callback took 250 ns to execute and returned
- * 1000 (ns), the timer would only wait another 750 ns before its next
- * iteration.
- *
- * Timing may be inexact due to OS scheduling. Be sure to note the current
- * time with GetTicksNS() or GetPerformanceCounter() in case your
- * callback needs to adjust for variances.
- *
- * @param interval the timer delay, in std::chrono::nanoseconds, passed to
- * `callback`.
- * @param callback the TimerCB function to call when the specified
- *                 `interval` elapses.
- * @returns a timer ID or 0 on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @cat listener-callback
- *
- * @sa listener-callback
- * @sa RemoveTimer()
- */
-inline TimerID AddTimer(std::chrono::nanoseconds interval, TimerCB callback)
-{
-  using Wrapper = CallbackWrapper<TimerCB>;
-  using Store = KeyValueWrapper<TimerID, TimerCB*>;
-
-  auto cb = Wrapper::Wrap(std::move(callback));
-
-  if (TimerID id = SDL_AddTimerNS(
-        interval.count(),
-        [](void* userdata, TimerID timerID, Uint64 interval) -> Uint64 {
-          auto& f = *static_cast<TimerCB*>(userdata);
-          auto next = f(timerID, std::chrono::nanoseconds(interval)).count();
-          // If ask to removal, then remove it
-          if (next == 0) delete Store::release(timerID);
-          return next;
-        },
-        cb)) {
-    Store::Wrap(id, std::move(cb));
-    return id;
-  }
-  delete cb;
-  return TimerID{0};
-}
-
-/**
- * Remove a timer created with AddTimer().
- *
- * @param id the ID of the timer to remove.
- * @returns true on success or false on failure; call GetError() for more
- *          information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa AddTimer()
- */
-inline bool RemoveTimer(TimerID id)
-{
-  delete KeyValueWrapper<TimerID, TimerCB*>::release(id);
-  return SDL_RemoveTimer(id);
-}
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_TIMER_H_ */
-
-
-// end --- SDL3pp_timer.h --- 
-
-
-//
-//
-
-// begin --- SDL3pp_version.h --- 
-
-#ifndef SDL3PP_VERSION_H_
-#define SDL3PP_VERSION_H_
-
-#include <SDL3/SDL_version.h>
-
-namespace SDL {
-
-/**
- * @defgroup CategoryVersion Querying SDL Version
- *
- * Functionality to query the current SDL version, both as headers the app was
- * compiled against, and a library the app is linked to.
- *
- * @{
- */
-
-/**
- * Get the version of SDL that is linked against your program.
- *
- * If you are linking to SDL dynamically, then it is possible that the current
- * version will be different than the version you compiled against. This
- * function returns the current version, while SDL_VERSION is the version you
- * compiled with.
- *
- * This function may be called safely at any time, even before SDL_Init().
- *
- * @returns the version of the linked library.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetRevision
- */
-inline int GetVersion() { return SDL_GetVersion(); }
-
-/**
- * Get the code revision of SDL that is linked against your program.
- *
- * This value is the revision of the code you are linked with and may be
- * different from the code you are compiling with, which is found in the
- * constant SDL_REVISION.
- *
- * The revision is arbitrary string (a hash value) uniquely identifying the
- * exact revision of the SDL library in use, and is only useful in comparing
- * against other revisions. It is NOT an incrementing number.
- *
- * If SDL wasn't built from a git repository with the appropriate tools, this
- * will return an empty string.
- *
- * You shouldn't use this function for anything but logging it for debugging
- * purposes. The string is not intended to be reliable in any way.
- *
- * @returns an arbitrary string, uniquely identifying the exact revision of
- *          the SDL library in use.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_GetVersion
- */
-inline const char* GetRevision() { return SDL_GetRevision(); }
-
-/// @}
-
-} // namespace SDL
-
-#endif /* SDL3PP_VERSION_H_ */
-
-
-// end --- SDL3pp_version.h --- 
-
-
-
-// Here we have additional "satellite" libraries
-
-// begin --- SDL3pp_image.h --- 
-
-#ifndef SDL3PP_IMAGE_H_
-#define SDL3PP_IMAGE_H_
-
 #if !defined(SDL3PP_DISABLE_IMAGE) && !defined(SDL3PP_ENABLE_IMAGE) &&         \
   __has_include(<SDL3_image/SDL_image.h>)
 #define SDL3PP_ENABLE_IMAGE
@@ -24446,6 +25701,32 @@ namespace SDL {
  * @{
  */
 
+// Forward decl
+template<ObjectBox<IMG_Animation*> T>
+struct AnimationBase;
+
+/**
+ * Handle to a non owned animation
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa AnimationBase
+ * @sa Animation
+ */
+using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
+
+/**
+ * Handle to an owned animation
+ *
+ * @cat resource
+ *
+ * @sa resource
+ * @sa AnimationBase
+ * @sa AnimationRef
+ */
+using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
+
 /**
  * This function gets the version of the dynamically linked SDL_image library.
  *
@@ -24453,7 +25734,7 @@ namespace SDL {
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline int IMG_Version() { return IMG_Version(); }
+inline int IMG_Version() { return ::IMG_Version(); }
 
 /**
  * Load an image from an SDL data source into a software surface.
@@ -24476,10 +25757,6 @@ inline int IMG_Version() { return IMG_Version(); }
  * by calling: SurfaceBase::SetColorKey(image, SDL_RLEACCEL,
  * image->format->colorkey);
  *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
  * Even though this function accepts a file type, SDL_image may still try
  * other decoders that are capable of detecting file type from the contents of
  * the image data, but may rely on the caller-provided type string for formats
@@ -24496,17 +25773,15 @@ inline int IMG_Version() { return IMG_Version(); }
  * software surface: call LoadTexture() instead.
  *
  * @param src an SDL_IOStream that data will be read from.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface LoadSurface(SDL_IOStream* src, bool closeio, StringParam type)
+inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
 {
-  return Surface{IMG_LoadTyped_IO(src, closeio, type)};
+  return Surface{IMG_LoadTyped_IO(src, false, type)};
 }
 
 /**
@@ -24566,10 +25841,6 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * by calling: SurfaceBase::SetColorKey(image, SDL_RLEACCEL,
  * image->format->colorkey);
  *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
  * There is a separate function to read files from disk without having to deal
  * with SDL_IOStream: `Load("filename.jpg")` will call this function and
  * manage those details for you, determining the file type from the filename's
@@ -24583,16 +25854,14 @@ inline Surface LoadSurface(StringParam file) { return Surface{IMG_Load(file)}; }
  * load images directly into an Texture for use by the GPU without using a
  * software surface: call LoadTexture() instead.
  *
- * @param src an SDL_IOStream that data will be read from.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
+ * @param src an IOStream that data will be read from.
  * @returns a new SDL surface, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface LoadSurface(SDL_IOStream* src, bool closeio)
+inline Surface LoadSurface(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return Surface{IMG_Load_IO(src, closeio)};
+  return Surface{IMG_Load_IO(src, false)};
 }
 
 /**
@@ -24612,7 +25881,7 @@ inline Surface LoadSurface(SDL_IOStream* src, bool closeio)
  * If you would rather decode an image to an Surface (a buffer of pixels in CPU
  * memory), call LoadSurface(StringParam) instead.
  *
- * @param renderer the SDL_Renderer to use to create the GPU texture.
+ * @param renderer the Renderer to use to create the GPU texture.
  * @param file a path on the filesystem to load an image from.
  * @returns a new texture, or nullptr on error.
  *
@@ -24636,10 +25905,6 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
  * data (but in many cases, this will just end up being 32-bit RGB or 32-bit
  * RGBA).
  *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
  * There is a separate function to read files from disk without having to deal
  * with SDL_IOStream: `LoadTexture(renderer, "filename.jpg")` will call
  * this function and manage those details for you, determining the file type
@@ -24650,17 +25915,14 @@ inline Texture LoadTexture(RendererRef renderer, StringParam file)
  *
  * @param renderer the SDL_Renderer to use to create the GPU texture.
  * @param src an SDL_IOStream that data will be read from.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
  * @returns a new texture, or nullptr on error.
  *
  * @since This function is available since SDL_image 3.0.0.
  */
 inline Texture LoadTexture(RendererRef renderer,
-                           SDL_IOStream* src,
-                           bool closeio)
+                           ObjectBox<SDL_IOStream> auto&& src)
 {
-  return Texture{IMG_LoadTexture_IO(renderer.get(), src, closeio)};
+  return Texture{IMG_LoadTexture_IO(renderer.get(), src, false)};
 }
 
 /**
@@ -24674,10 +25936,6 @@ inline Texture LoadTexture(RendererRef renderer,
  * channel will be created. Otherwise, SDL_image will attempt to create an
  * Texture in the most format that most reasonably represents the image data
  * (but in many cases, this will just end up being 32-bit RGB or 32-bit RGBA).
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
  *
  * Even though this function accepts a file type, SDL_image may still try
  * other decoders that are capable of detecting file type from the contents of
@@ -24695,8 +25953,6 @@ inline Texture LoadTexture(RendererRef renderer,
  *
  * @param renderer the SDL_Renderer to use to create the GPU texture.
  * @param src an SDL_IOStream that data will be read from.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
  * @param type a filename extension that represent this data ("BMP", "GIF",
  *             "PNG", etc).
  * @returns a new texture, or nullptr on error.
@@ -24704,11 +25960,10 @@ inline Texture LoadTexture(RendererRef renderer,
  * @since This function is available since SDL_image 3.0.0.
  */
 inline Texture LoadTexture(RendererRef renderer,
-                           SDL_IOStream* src,
-                           bool closeio,
+                           ObjectBox<SDL_IOStream> auto&& src,
                            StringParam type)
 {
-  return Texture{IMG_LoadTextureTyped_IO(renderer.get(), src, closeio, type)};
+  return Texture{IMG_LoadTextureTyped_IO(renderer.get(), src, false, type)};
 }
 
 /**
@@ -24753,7 +26008,10 @@ inline Texture LoadTexture(RendererRef renderer,
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isAVIF(SDL_IOStream* src) { return IMG_isAVIF(src); }
+inline bool isAVIF(ObjectBox<SDL_IOStream> auto&& src)
+{
+  return IMG_isAVIF(src);
+}
 
 /**
  * Detect ICO image data on a readable/seekable SDL_IOStream.
@@ -24796,7 +26054,7 @@ inline bool isAVIF(SDL_IOStream* src) { return IMG_isAVIF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isICO(SDL_IOStream* src) { return IMG_isICO(src); }
+inline bool isICO(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isICO(src); }
 
 /**
  * Detect CUR image data on a readable/seekable SDL_IOStream.
@@ -24839,7 +26097,7 @@ inline bool isICO(SDL_IOStream* src) { return IMG_isICO(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isCUR(SDL_IOStream* src) { return IMG_isCUR(src); }
+inline bool isCUR(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isCUR(src); }
 
 /**
  * Detect BMP image data on a readable/seekable SDL_IOStream.
@@ -24882,7 +26140,7 @@ inline bool isCUR(SDL_IOStream* src) { return IMG_isCUR(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isBMP(SDL_IOStream* src) { return IMG_isBMP(src); }
+inline bool isBMP(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isBMP(src); }
 
 /**
  * Detect GIF image data on a readable/seekable SDL_IOStream.
@@ -24925,7 +26183,7 @@ inline bool isBMP(SDL_IOStream* src) { return IMG_isBMP(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isGIF(SDL_IOStream* src) { return IMG_isGIF(src); }
+inline bool isGIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isGIF(src); }
 
 /**
  * Detect JPG image data on a readable/seekable SDL_IOStream.
@@ -24968,7 +26226,7 @@ inline bool isGIF(SDL_IOStream* src) { return IMG_isGIF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJPG(SDL_IOStream* src) { return IMG_isJPG(src); }
+inline bool isJPG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJPG(src); }
 
 /**
  * Detect JXL image data on a readable/seekable SDL_IOStream.
@@ -25011,7 +26269,7 @@ inline bool isJPG(SDL_IOStream* src) { return IMG_isJPG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isJXL(SDL_IOStream* src) { return IMG_isJXL(src); }
+inline bool isJXL(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isJXL(src); }
 
 /**
  * Detect LBM image data on a readable/seekable SDL_IOStream.
@@ -25054,7 +26312,7 @@ inline bool isJXL(SDL_IOStream* src) { return IMG_isJXL(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isLBM(SDL_IOStream* src) { return IMG_isLBM(src); }
+inline bool isLBM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isLBM(src); }
 
 /**
  * Detect PCX image data on a readable/seekable SDL_IOStream.
@@ -25097,7 +26355,7 @@ inline bool isLBM(SDL_IOStream* src) { return IMG_isLBM(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPCX(SDL_IOStream* src) { return IMG_isPCX(src); }
+inline bool isPCX(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPCX(src); }
 
 /**
  * Detect PNG image data on a readable/seekable SDL_IOStream.
@@ -25140,7 +26398,7 @@ inline bool isPCX(SDL_IOStream* src) { return IMG_isPCX(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNG(SDL_IOStream* src) { return IMG_isPNG(src); }
+inline bool isPNG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNG(src); }
 
 /**
  * Detect PNM image data on a readable/seekable SDL_IOStream.
@@ -25183,7 +26441,7 @@ inline bool isPNG(SDL_IOStream* src) { return IMG_isPNG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isPNM(SDL_IOStream* src) { return IMG_isPNM(src); }
+inline bool isPNM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isPNM(src); }
 
 /**
  * Detect SVG image data on a readable/seekable SDL_IOStream.
@@ -25226,7 +26484,7 @@ inline bool isPNM(SDL_IOStream* src) { return IMG_isPNM(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isSVG(SDL_IOStream* src) { return IMG_isSVG(src); }
+inline bool isSVG(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isSVG(src); }
 
 /**
  * Detect QOI image data on a readable/seekable SDL_IOStream.
@@ -25269,7 +26527,7 @@ inline bool isSVG(SDL_IOStream* src) { return IMG_isSVG(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isQOI(SDL_IOStream* src) { return IMG_isQOI(src); }
+inline bool isQOI(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isQOI(src); }
 
 /**
  * Detect TIFF image data on a readable/seekable SDL_IOStream.
@@ -25312,7 +26570,7 @@ inline bool isQOI(SDL_IOStream* src) { return IMG_isQOI(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isTIF(SDL_IOStream* src) { return IMG_isTIF(src); }
+inline bool isTIF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isTIF(src); }
 
 /**
  * Detect XCF image data on a readable/seekable SDL_IOStream.
@@ -25355,7 +26613,7 @@ inline bool isTIF(SDL_IOStream* src) { return IMG_isTIF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXCF(SDL_IOStream* src) { return IMG_isXCF(src); }
+inline bool isXCF(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXCF(src); }
 
 /**
  * Detect XPM image data on a readable/seekable SDL_IOStream.
@@ -25398,7 +26656,7 @@ inline bool isXCF(SDL_IOStream* src) { return IMG_isXCF(src); }
  * @sa isXV
  * @sa isWEBP
  */
-inline bool isXPM(SDL_IOStream* src) { return IMG_isXPM(src); }
+inline bool isXPM(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXPM(src); }
 
 /**
  * Detect XV image data on a readable/seekable SDL_IOStream.
@@ -25441,7 +26699,7 @@ inline bool isXPM(SDL_IOStream* src) { return IMG_isXPM(src); }
  * @sa isXPM
  * @sa isWEBP
  */
-inline bool isXV(SDL_IOStream* src) { return IMG_isXV(src); }
+inline bool isXV(ObjectBox<SDL_IOStream> auto&& src) { return IMG_isXV(src); }
 
 /**
  * Detect WEBP image data on a readable/seekable SDL_IOStream.
@@ -25484,7 +26742,10 @@ inline bool isXV(SDL_IOStream* src) { return IMG_isXV(src); }
  * @sa isXPM
  * @sa isXV
  */
-inline bool isWEBP(SDL_IOStream* src) { return IMG_isWEBP(src); }
+inline bool isWEBP(ObjectBox<SDL_IOStream> auto&& src)
+{
+  return IMG_isWEBP(src);
+}
 
 /**
  * Load a AVIF image directly.
@@ -25518,7 +26779,7 @@ inline bool isWEBP(SDL_IOStream* src) { return IMG_isWEBP(src); }
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadAVIF(SDL_IOStream* src)
+inline Surface LoadAVIF(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadAVIF_IO(src)};
 }
@@ -25555,7 +26816,7 @@ inline Surface LoadAVIF(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadICO(SDL_IOStream* src)
+inline Surface LoadICO(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadICO_IO(src)};
 }
@@ -25592,46 +26853,9 @@ inline Surface LoadICO(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadCUR(SDL_IOStream* src)
+inline Surface LoadCUR(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadCUR_IO(src)};
-}
-
-/**
- * Load a BMP image directly.
- *
- * If you know you definitely have a BMP image, you can call this function,
- * which will skip SDL_image's file format detection routines. Generally it's
- * better to use the abstract interfaces; also, there is only an SDL_IOStream
- * interface available here.
- *
- * @param src an SDL_IOStream to load image data from.
- * @returns SDL surface, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadAVIF()
- * @sa LoadICO()
- * @sa LoadCUR()
- * @sa LoadGIF()
- * @sa LoadJPG()
- * @sa LoadJXL()
- * @sa LoadLBM()
- * @sa LoadPCX()
- * @sa LoadPNG()
- * @sa LoadPNM()
- * @sa LoadSVG()
- * @sa LoadQOI()
- * @sa LoadTGA()
- * @sa LoadTIF()
- * @sa LoadXCF()
- * @sa LoadXPM()
- * @sa LoadXV()
- * @sa LoadWEBP()
- */
-inline Surface LoadBMP(SDL_IOStream* src)
-{
-  return Surface{IMG_LoadBMP_IO(src)};
 }
 
 /**
@@ -25666,7 +26890,7 @@ inline Surface LoadBMP(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadGIF(SDL_IOStream* src)
+inline Surface LoadGIF(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadGIF_IO(src)};
 }
@@ -25703,7 +26927,7 @@ inline Surface LoadGIF(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadJPG(SDL_IOStream* src)
+inline Surface LoadJPG(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadJPG_IO(src)};
 }
@@ -25740,7 +26964,7 @@ inline Surface LoadJPG(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadJXL(SDL_IOStream* src)
+inline Surface LoadJXL(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadJXL_IO(src)};
 }
@@ -25777,7 +27001,7 @@ inline Surface LoadJXL(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadLBM(SDL_IOStream* src)
+inline Surface LoadLBM(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadLBM_IO(src)};
 }
@@ -25814,7 +27038,7 @@ inline Surface LoadLBM(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadPCX(SDL_IOStream* src)
+inline Surface LoadPCX(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadPCX_IO(src)};
 }
@@ -25851,7 +27075,7 @@ inline Surface LoadPCX(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadPNG(SDL_IOStream* src)
+inline Surface LoadPNG(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadPNG_IO(src)};
 }
@@ -25888,7 +27112,7 @@ inline Surface LoadPNG(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadPNM(SDL_IOStream* src)
+inline Surface LoadPNM(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadPNM_IO(src)};
 }
@@ -25925,7 +27149,7 @@ inline Surface LoadPNM(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadSVG(SDL_IOStream* src)
+inline Surface LoadSVG(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadSVG_IO(src)};
 }
@@ -25962,7 +27186,7 @@ inline Surface LoadSVG(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadQOI(SDL_IOStream* src)
+inline Surface LoadQOI(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadQOI_IO(src)};
 }
@@ -25999,7 +27223,7 @@ inline Surface LoadQOI(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadTGA(SDL_IOStream* src)
+inline Surface LoadTGA(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadTGA_IO(src)};
 }
@@ -26036,7 +27260,7 @@ inline Surface LoadTGA(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadTIF(SDL_IOStream* src)
+inline Surface LoadTIF(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadTIF_IO(src)};
 }
@@ -26073,7 +27297,7 @@ inline Surface LoadTIF(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadXCF(SDL_IOStream* src)
+inline Surface LoadXCF(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadXCF_IO(src)};
 }
@@ -26110,7 +27334,7 @@ inline Surface LoadXCF(SDL_IOStream* src)
  * @sa LoadXV()
  * @sa LoadWEBP()
  */
-inline Surface LoadXPM(SDL_IOStream* src)
+inline Surface LoadXPM(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadXPM_IO(src)};
 }
@@ -26147,7 +27371,10 @@ inline Surface LoadXPM(SDL_IOStream* src)
  * @sa LoadXPM()
  * @sa LoadWEBP()
  */
-inline Surface LoadXV(SDL_IOStream* src) { return Surface{IMG_LoadXV_IO(src)}; }
+inline Surface LoadXV(ObjectBox<SDL_IOStream> auto&& src)
+{
+  return Surface{IMG_LoadXV_IO(src)};
+}
 
 /**
  * Load a WEBP image directly.
@@ -26181,7 +27408,7 @@ inline Surface LoadXV(SDL_IOStream* src) { return Surface{IMG_LoadXV_IO(src)}; }
  * @sa LoadXPM()
  * @sa LoadXV()
  */
-inline Surface LoadWEBP(SDL_IOStream* src)
+inline Surface LoadWEBP(ObjectBox<SDL_IOStream> auto&& src)
 {
   return Surface{IMG_LoadWEBP_IO(src)};
 }
@@ -26205,7 +27432,9 @@ inline Surface LoadWEBP(SDL_IOStream* src)
  *
  * @since This function is available since SDL_image 3.0.0.
  */
-inline Surface LoadSizedSVG(SDL_IOStream* src, int width, int height)
+inline Surface LoadSizedSVG(ObjectBox<SDL_IOStream> auto&& src,
+                            int width,
+                            int height)
 {
   return Surface{IMG_LoadSizedSVG_IO(src, width, height)};
 }
@@ -26280,13 +27509,8 @@ inline bool SaveAVIF(SurfaceRef surface, StringParam file, int quality)
  *
  * If you just want to save to a filename, you can use IMG_SaveAVIF() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the SDL_IOStream to save the image data to.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
  * @param quality the desired quality, ranging between 0 (lowest) and 100
  *                (highest).
  * @returns true on success or false on failure; call SDL_GetError() for more
@@ -26297,11 +27521,10 @@ inline bool SaveAVIF(SurfaceRef surface, StringParam file, int quality)
  * @sa SaveAVIF
  */
 inline bool SaveAVIF(SurfaceRef surface,
-                     SDL_IOStream* dst,
-                     bool closeio,
+                     ObjectBox<SDL_IOStream> auto&& dst,
                      int quality)
 {
-  return IMG_SaveAVIF_IO(surface.get(), dst, closeio, quality);
+  return IMG_SaveAVIF_IO(surface.get(), dst, false, quality);
 }
 
 /**
@@ -26328,13 +27551,8 @@ inline bool SavePNG(SurfaceRef surface, StringParam file)
  *
  * If you just want to save to a filename, you can use IMG_SavePNG() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the SDL_IOStream to save the image data to.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
@@ -26342,9 +27560,9 @@ inline bool SavePNG(SurfaceRef surface, StringParam file)
  *
  * @sa SavePNG
  */
-inline bool SavePNG(SurfaceRef surface, SDL_IOStream* dst, bool closeio)
+inline bool SavePNG(SurfaceRef surface, ObjectBox<SDL_IOStream> auto&& dst)
 {
-  return IMG_SavePNG_IO(surface.get(), dst, closeio);
+  return IMG_SavePNG_IO(surface.get(), dst, false);
 }
 
 /**
@@ -26373,13 +27591,8 @@ inline bool SaveJPG(SurfaceRef surface, StringParam file, int quality)
  *
  * If you just want to save to a filename, you can use IMG_SaveJPG() instead.
  *
- * If `closeio` is true, `dst` will be closed before returning, whether this
- * function succeeds or not.
- *
  * @param surface the SDL surface to save.
  * @param dst the SDL_IOStream to save the image data to.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
  * @param quality [0; 33] is Lowest quality, [34; 66] is Middle quality, [67;
  *                100] is Highest quality.
  * @returns true on success or false on failure; call SDL_GetError() for more
@@ -26390,111 +27603,105 @@ inline bool SaveJPG(SurfaceRef surface, StringParam file, int quality)
  * @sa SaveJPG
  */
 inline bool SaveJPG(SurfaceRef surface,
-                    SDL_IOStream* dst,
-                    bool closeio,
+                    ObjectBox<SDL_IOStream> auto&& dst,
                     int quality)
 {
-  return IMG_SaveJPG_IO(surface.get(), dst, closeio, quality);
+  return IMG_SaveJPG_IO(surface.get(), dst, false, quality);
 }
 
 /**
  * Animated image support
  *
  * Currently only animated GIFs and WEBP images are supported.
+ *
+ * @cat resource
+ *
+ * @sa Animation
+ * @sa AnimationRef
  */
-using Animation = IMG_Animation;
-
-/**
- * Load an animation from a file.
- *
- * When done with the returned animation, the app should dispose of it with a
- * call to IMG_FreeAnimation().
- *
- * @param file path on the filesystem containing an animated image.
- * @returns a new IMG_Animation, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa FreeAnimation
- */
-inline Animation* LoadAnimation(StringParam file)
+template<ObjectBox<IMG_Animation*> T>
+struct AnimationBase : T
 {
-  return IMG_LoadAnimation(file);
-}
+  using T::T;
 
-/**
- * Load an animation from an SDL_IOStream.
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
- * When done with the returned animation, the app should dispose of it with a
- * call to IMG_FreeAnimation().
- *
- * @param src an SDL_IOStream that data will be read from.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
- * @returns a new IMG_Animation, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa FreeAnimation
- */
-inline Animation* LoadAnimation_IO(SDL_IOStream* src, bool closeio)
-{
-  return IMG_LoadAnimation_IO(src, closeio);
-}
+  /**
+   * Load an animation from a file.
+   *
+   * @param file path on the filesystem containing an animated image.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa FreeAnimation()
+   */
+  AnimationBase(StringParam file)
+    : T(IMG_LoadAnimation(file))
+  {
+  }
 
-/**
- * Load an animation from an SDL datasource
- *
- * Even though this function accepts a file type, SDL_image may still try
- * other decoders that are capable of detecting file type from the contents of
- * the image data, but may rely on the caller-provided type string for formats
- * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
- * on its ability to guess the format.
- *
- * If `closeio` is true, `src` will be closed before returning, whether this
- * function succeeds or not. SDL_image reads everything it needs from `src`
- * during this call in any case.
- *
- * When done with the returned animation, the app should dispose of it with a
- * call to IMG_FreeAnimation().
- *
- * @param src an SDL_IOStream that data will be read from.
- * @param closeio true to close/free the SDL_IOStream before returning, false
- *                to leave it open.
- * @param type a filename extension that represent this data ("GIF", etc).
- * @returns a new IMG_Animation, or nullptr on error.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa LoadAnimation
- * @sa LoadAnimation()
- * @sa FreeAnimation
- */
-inline Animation* LoadAnimationTyped_IO(SDL_IOStream* src,
-                                        bool closeio,
-                                        StringParam type)
-{
-  return IMG_LoadAnimationTyped_IO(src, closeio, type);
-}
+  /**
+   * Load an animation from an SDL_IOStream.
+   *
+   * @param src an SDL_IOStream that data will be read from.
+   * @post a new Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa FreeAnimation()
+   */
+  AnimationBase(ObjectBox<SDL_IOStream> auto&& src)
+    : T(IMG_LoadAnimation_IO(src.get(), false))
+  {
+  }
+
+  /**
+   * Load an animation from an SDL datasource
+   *
+   * Even though this function accepts a file type, SDL_image may still try
+   * other decoders that are capable of detecting file type from the contents of
+   * the image data, but may rely on the caller-provided type string for formats
+   * that it cannot autodetect. If `type` is nullptr, SDL_image will rely solely
+   * on its ability to guess the format.
+   *
+   * @param src an SDL_IOStream that data will be read from.
+   * @param type a filename extension that represent this data ("GIF", etc).
+   * @post a new IMG_Animation, or nullptr on error.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa FreeAnimation()
+   */
+  AnimationBase(ObjectBox<SDL_IOStream> auto&& src, StringParam type)
+    : T(IMG_LoadAnimationTyped_IO(src.get(), false, type))
+  {
+  }
+
+  /**
+   * Dispose of an IMG_Animation and free its resources.
+   *
+   * @since This function is available since SDL_image 3.0.0.
+   *
+   * @sa AnimationBase::AnimationBase()
+   */
+  void Free() { return T::free(); }
+};
 
 /**
  * Dispose of an IMG_Animation and free its resources.
  *
- * The provided `anim` pointer is not valid once this call returns.
+ * The provided `resource` pointer is not valid once this call returns.
  *
- * @param anim IMG_Animation to dispose of.
+ * @param resource IMG_Animation to dispose of.
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAnimation
- * @sa LoadAnimation()
- * @sa LoadAnimationTyped()
+ * @sa AnimationBase::AnimationBase()
  */
-inline void FreeAnimation(Animation* anim) { return IMG_FreeAnimation(anim); }
+template<>
+inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation* resource)
+{
+  return IMG_FreeAnimation(resource);
+}
 
 /**
  * Load a GIF animation directly.
@@ -26514,9 +27721,9 @@ inline void FreeAnimation(Animation* anim) { return IMG_FreeAnimation(anim); }
  * @sa LoadAnimationTyped()
  * @sa FreeAnimation
  */
-inline Animation* LoadGIFAnimation_IO(SDL_IOStream* src)
+inline Animation LoadGIFAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return IMG_LoadGIFAnimation_IO(src);
+  return Animation{IMG_LoadGIFAnimation_IO(src.get())};
 }
 
 /**
@@ -26532,32 +27739,52 @@ inline Animation* LoadGIFAnimation_IO(SDL_IOStream* src)
  *
  * @since This function is available since SDL_image 3.0.0.
  *
- * @sa LoadAnimation
- * @sa LoadAnimation()
- * @sa LoadAnimationTyped()
- * @sa FreeAnimation
+ * @sa Animation
  */
-inline Animation* LoadWEBPAnimation_IO(SDL_IOStream* src)
+inline Animation LoadWEBPAnimation(ObjectBox<SDL_IOStream> auto&& src)
 {
-  return IMG_LoadWEBPAnimation_IO(src);
+  return Animation{IMG_LoadWEBPAnimation_IO(src.get())};
 }
 
+#pragma region impl
+
 /// @}
+
+template<ObjectBox<SDL_Surface*> T>
+SurfaceBase<T>::SurfaceBase(StringParam file)
+  : T(LoadSurface(std::move(file)))
+{
+}
+
+template<ObjectBox<SDL_Texture*> T>
+TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
+  : T(LoadTexture(renderer, std::move(file)))
+{
+}
+
+#pragma endregion impl
+
 } // namespace SDL
 
-#endif // defined(SDL3PP_ENABLE_IMAGES) || defined(SDL3PP_DOC)
+#else // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
-#endif /* SDL3PP_IMAGE_H_ */
+namespace SDL {
 
+template<ObjectBox<SDL_Surface*> T>
+SurfaceBase<T>::SurfaceBase(StringParam file)
+  : T(LoadBMP(std::move(file)))
+{
+}
 
-// end --- SDL3pp_image.h --- 
+template<ObjectBox<SDL_Texture*> T>
+TextureBase<T>::TextureBase(RendererRef renderer, StringParam file)
+  : T(LoadTextureBMP(renderer, std::move(file)))
+{
+}
 
+}
 
-
-// begin --- SDL3pp_ttf.h --- 
-
-#ifndef SDL3PP_TTF_H_
-#define SDL3PP_TTF_H_
+#endif // defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)
 
 #if !defined(SDL3PP_DISABLE_TTF) && !defined(SDL3PP_ENABLE_TTF) &&             \
   __has_include(<SDL3_ttf/SDL_ttf.h>)
@@ -26776,7 +28003,7 @@ struct FontBase : T
    *
    * @sa TTF_CloseFont
    */
-  FontBase(SDL_IOStream* src, bool closeio, float ptsize)
+  FontBase(ObjectBox<SDL_IOStream> auto&& src, bool closeio, float ptsize)
     : T(TTF_OpenFontIO(src, closeio, ptsize))
   {
   }
@@ -29691,15 +30918,4 @@ void ObjectDeleter<TTF_Font>::operator()(FontRef font) const { font.Destroy(); }
 
 #endif // defined(SDL3PP_ENABLE_TTF) || defined(SDL3PP_DOC)
 
-#endif /* SDL3PP_TTF_H_ */
-
-
-// end --- SDL3pp_ttf.h --- 
-
-
-
-#endif /* SDL3PP_H_ */
-
-
-// end --- SDL3pp.h --- 
-
+#endif // SDL3PP_H_

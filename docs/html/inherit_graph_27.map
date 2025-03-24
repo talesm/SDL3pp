@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classSDL_1_1StringParamImpl.html" title="A safe and mostly efficient wrapper to std::string and std::string_view parameters." alt="" coords="5,5,168,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,96,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats)." alt="" coords="144,5,236,31"/>
+<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="110,15,144,15,144,21,110,21"/>
 </map>

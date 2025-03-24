@@ -13,6 +13,8 @@ Pages:
 - @subpage formatted-string
 - @subpage wrap-state
 - @subpage wrap-extending-struct
+- @subpage constructor-tag helps dealing with ambiguity constructors, specially
+  [resources](#resource);
 
 */
 

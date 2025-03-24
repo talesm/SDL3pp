@@ -103,7 +103,7 @@ Function rules</h1>
 </li>
 <li>Method-like functions become class/struct methods accordingly to <a class="el" href="transformations.html#type-rules">Type rules</a>;<ul>
 <li>The Type name is removed, eg SDL_GetTextureProperties becomes <a class="el" href="structSDL_1_1TextureBase.html#a42c6cd85f4d05f3dba98306fc44c031a" title="Get the properties associated with a texture.">SDL::Texture::GetProperties()</a>;</li>
-<li>Functions that involve I/O, like <code>SDL_LoadBMP()</code>, are considered non-method like and thus stay as free functions like: <a class="el" href="group__CategorySDLImage.html#gab0058ee594e896b1ef08e2536624ccc7" title="Load a BMP image directly.">SDL::LoadBMP()</a>;</li>
+<li>Functions that involve I/O, like <code>SDL_LoadBMP()</code>, are considered non-method like and thus stay as free functions like: <a class="el" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7" title="Load a BMP image from a seekable SDL data stream.">SDL::LoadBMP()</a>;</li>
 </ul>
 </li>
 <li>The parameters of the function have the same meaning and same order than <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s C API, transformed as the following:<ul>

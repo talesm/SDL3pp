@@ -1,0 +1,42 @@
+{
+  "sources": [
+    "structs_extends.h"
+  ],
+  "api": "tests/samples/structs_extends.json",
+  "baseDir": "tests/samples/",
+  "sourceApi": "tests/samples/structs.json",
+  "transform": {
+    "prefixes": "My",
+    "renameRules": [
+      {
+        "pattern": "^([^.]*)",
+        "replacement": "$1_extends"
+      }
+    ],
+    "files": {
+      "structs.h": {
+        "ignoreEntries": [
+          "MyCreateType1"
+        ],
+        "transform": {
+          "MyType1": {
+            "type": "MyType1",
+            "kind": "struct",
+            "entries": {
+              "MyType1Check": "function",
+              "MyGetType1Var1": "function",
+              "MySetType1Var1": "function",
+              "MyType1GetVar2": "function",
+              "MyType1SetVar2": "function"
+            }
+          },
+          "MyType2": {
+            "type": "MyType2",
+            "kind": "struct",
+            "entries": {}
+          }
+        }
+      }
+    }
+  }
+}

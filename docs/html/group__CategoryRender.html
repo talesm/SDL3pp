@@ -84,13 +84,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ObjectDeleter_3_01SDL__Renderer_01_4.html">SDL::ObjectDeleter&lt; SDL_Renderer &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleter.  <a href="structSDL_1_1ObjectDeleter_3_01SDL__Renderer_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An efficient driver-specific representation of pixel data.  <a href="structSDL_1_1TextureBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1ObjectDeleter_3_01SDL__Texture_01_4.html">SDL::ObjectDeleter&lt; SDL_Texture &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure representing rendering state.  <a href="structSDL_1_1RendererBase.html#details">More...</a><br /></td></tr>
@@ -140,9 +135,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gac4528e04e28d93b190e651508b82ac18" id="r_gac4528e04e28d93b190e651508b82ac18"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gac4528e04e28d93b190e651508b82ac18">SDL::AddVulkanRenderSemaphores</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, Uint32 wait_stage_mask, Sint64 wait_semaphore, Sint64 signal_semaphore)</td></tr>
 <tr class="memdesc:gac4528e04e28d93b190e651508b82ac18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a set of synchronization semaphores for the current frame.  <br /></td></tr>
 <tr class="separator:gac4528e04e28d93b190e651508b82ac18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5fef1389da94988b75cb72bd19162ae1" id="r_ga5fef1389da94988b75cb72bd19162ae1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga5fef1389da94988b75cb72bd19162ae1">SDL::LoadTextureBMP</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, SDL_IOStream *src, bool closeio)</td></tr>
-<tr class="memdesc:ga5fef1389da94988b75cb72bd19162ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream.  <br /></td></tr>
-<tr class="separator:ga5fef1389da94988b75cb72bd19162ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga55becfff281d094fc47916ab05fc947b" id="r_ga55becfff281d094fc47916ab05fc947b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga55becfff281d094fc47916ab05fc947b">SDL::LoadTextureBMP</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</td></tr>
+<tr class="memdesc:ga55becfff281d094fc47916ab05fc947b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a seekable <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> data stream.  <br /></td></tr>
+<tr class="separator:ga55becfff281d094fc47916ab05fc947b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad2866da5ac1fa8e6fc88967d3d37ab8a" id="r_gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a">SDL::LoadTextureBMP</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file)</td></tr>
 <tr class="memdesc:gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load a BMP texture from a file.  <br /></td></tr>
 <tr class="separator:gad2866da5ac1fa8e6fc88967d3d37ab8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,7 +204,7 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d" title="Handle to a non owned renderer.">RendererRef</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00066">66</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00058">58</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -227,7 +222,7 @@ Variables</h2></td></tr>
 
 <p>How the logical size is mapped to the output. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00134">134</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00120">120</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -251,7 +246,7 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7" title="Handle to a non owned texture.">TextureRef</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00098">98</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00084">84</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -269,7 +264,7 @@ Variables</h2></td></tr>
 
 <p>The access pattern allowed for a texture. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00113">113</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00099">99</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -293,7 +288,7 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a" title="Handle to an owned texture.">Texture</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00081">81</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00073">73</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -311,7 +306,7 @@ Variables</h2></td></tr>
 
 <p>Vertex structure. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00107">107</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00093">93</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -378,7 +373,7 @@ Variables</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is <b>NOT</b> safe to call this function from two threads at once.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02794">2794</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02835">2835</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -438,7 +433,7 @@ Variables</h2></td></tr>
 <dd>
 <a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847" title="Handle to an owned window.">Window</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02707">2707</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02709">2709</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -473,7 +468,7 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetDriver() </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02661">2661</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02663">2663</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -515,7 +510,7 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetNumRenderDrivers </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02685">2685</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02687">2687</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -557,7 +552,7 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetRenderMetalLayer </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02761">2761</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02802">2802</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -598,12 +593,12 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetRenderMetalCommandEncoder </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02735">2735</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02776">2776</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
-<a id="ga5fef1389da94988b75cb72bd19162ae1" name="ga5fef1389da94988b75cb72bd19162ae1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga5fef1389da94988b75cb72bd19162ae1">&#9670;&#160;</a></span>LoadTextureBMP() <span class="overload">[1/2]</span></h2>
+<a id="ga55becfff281d094fc47916ab05fc947b" name="ga55becfff281d094fc47916ab05fc947b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga55becfff281d094fc47916ab05fc947b">&#9670;&#160;</a></span>LoadTextureBMP() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -620,14 +615,8 @@ Variables</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">SDL_IOStream *&#160;</td>
-          <td class="paramname"><em>src</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>closeio</em>&#160;</td>
+          <td class="paramtype">ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -647,14 +636,13 @@ Variables</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">renderer</td><td>the renderer to create texture </td></tr>
     <tr><td class="paramname">src</td><td>the data stream for the surface. </td></tr>
-    <tr><td class="paramname">closeio</td><td>if true, calls SDL_CloseIO() on <code>src</code> before returning, even in the case of an error. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a Texture with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02816">2816</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02855">2855</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -703,7 +691,7 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>a Texture with loaded content or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02834">2834</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02872">2872</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -732,7 +720,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>There is no logical size in effect. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00139">139</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00125">125</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -760,7 +748,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>The rendered content is scaled up by integer multiples to fit the output resolution. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00166">166</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00152">152</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -788,7 +776,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00152">152</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00138">138</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -816,7 +804,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00159">159</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00145">145</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -844,7 +832,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>The rendered content is stretched to the output resolution. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00145">145</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00131">131</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -870,7 +858,7 @@ Variables</h2></td></tr>
 
 <p>Changes rarely, not lockable. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00118">118</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00104">104</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -896,7 +884,7 @@ Variables</h2></td></tr>
 
 <p>Changes frequently, lockable. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00123">123</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00109">109</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -922,7 +910,7 @@ Variables</h2></td></tr>
 
 <p>Texture can be used as a render target. </p>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00128">128</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00114">114</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>

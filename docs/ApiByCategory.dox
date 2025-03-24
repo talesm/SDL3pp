@@ -38,6 +38,12 @@ Category                 | Header
 ------------------------ | --------------------
 @ref CategoryTimer       | SDL3pp_timer.h
 
+## File and I/O Abstractions
+
+Category                 | Header
+------------------------ | --------------------
+@ref CategoryIOStream    | SDL3pp_iostream.h
+
 ## Additional Functionality
 
 Category             | Header
@@ -58,12 +64,12 @@ Category               | Header
 
 Category                     | Header
 ---------------------------- | ------------------------
+@ref CategoryCallbackWrapper | SDL3pp_callbackWrapper.h
 @ref CategoryObjectWrapper   | SDL3pp_objectWrapper.h
 @ref CategoryOptionalRef     | SDL3pp_optionalRef.h
-@ref CategoryStringParam     | SDL3pp_stringParam.h
+@ref CategoryOwnPtr          | SDL3pp_ownPtr.h
 @ref CategorySpanRef         | SDL3pp_spanRef.h
-@ref CategoryFreeWrapper     | SDL3pp_freeWrapper.h
-@ref CategoryCallbackWrapper | SDL3pp_callbackWrapper.h
+@ref CategoryStringParam     | SDL3pp_stringParam.h
 
 @defgroup Categories Categories
 
@@ -102,6 +108,11 @@ You probably want to see @ref ApiByCategory
 @addtogroup CategoryTimer
 @}
 
+@defgroup CategoriesFileIO File and I/O Abstractions
+@{
+@addtogroup CategoryIOStream
+@}
+
 @defgroup CategoriesAdditionalFunctionality Additional Functionality
 @{
 @addtogroup CategoryLocale
@@ -118,12 +129,12 @@ You probably want to see @ref ApiByCategory
 
 @defgroup CategoriesCppSupport C++ Support
 @{
+@addtogroup CategoryCallbackWrapper
 @addtogroup CategoryObjectWrapper
 @addtogroup CategoryOptionalRef
-@addtogroup CategoryStringParam
+@addtogroup CategoryOwnPtr
 @addtogroup CategorySpanRef
-@addtogroup CategoryFreeWrapper
-@addtogroup CategoryCallbackWrapper
+@addtogroup CategoryStringParam
 @}
 
 @}

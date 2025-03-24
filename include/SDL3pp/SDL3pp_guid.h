@@ -2,7 +2,7 @@
 #define SDL3PP_GUID_H_
 
 #include <SDL3/SDL_guid.h>
-#include "SDL3pp_stringParam.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 

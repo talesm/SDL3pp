@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(SDL3pp)
 
-add_subdirectory(external/Heady)
 add_subdirectory(external/SDL)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -58,7 +57,6 @@ file(CREATE_LINK ${CMAKE_CURRENT_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/
 set(SDL3PP_AMALGAMATION_DIR "${PROJECT_SOURCE_DIR}/dist" CACHE FILEPATH "Amalgamation output directory")
 set(SDL3PP_AMALGAMATION_FILENAME "${SDL3PP_AMALGAMATION_DIR}SDL3pp/SDL3pp.h")
 file(GLOB SDL3PP_WRAPPED_HEADERS CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include/SDL3pp/*.h)
-message("${SDL3PP_AMALGAMATION_FILENAME}")
 
 add_library(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_FILENAME})
 target_include_directories(SDL3pp_amalgamated INTERFACE ${SDL3PP_AMALGAMATION_DIR})
@@ -73,8 +71,9 @@ else (SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 endif(SDL3PP_BUILD_EXAMPLES_AGAINST_AMALGAMATION)
 
 add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_FILENAME}
-    COMMAND Heady --source ${PROJECT_SOURCE_DIR}/include/SDL3pp/ --output ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
-    DEPENDS ${SDL3PP_WRAPPED_HEADERS} Heady
+    COMMAND node scripts/amalgamate ${SDL3PP_AMALGAMATION_FILENAME} ${SDL3PP_AMALGAMATION_DEFS}
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/amalgamate.js
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # Manual tests
@@ -111,18 +110,18 @@ endif (DOXYGEN_FOUND)
 
 # Refresh the headers
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND node scripts/ parse ${SDL3PP_PARSE_DIR_PARAMS} scripts/config.json 
+    COMMAND node scripts/cppfier parse ${SDL3PP_PARSE_DIR_PARAMS} scripts/config.json 
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
-    COMMAND node scripts/ transform scripts/config.json
+    COMMAND node scripts/cppfier transform scripts/config.json
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json  ${PROJECT_SOURCE_DIR}/scripts/transform.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 add_custom_target(SDL3pp_refresh
-    COMMAND node scripts/ update scripts/config.json
+    COMMAND node scripts/cppfier update scripts/config.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

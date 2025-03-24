@@ -7,7 +7,8 @@ var searchData=
   ['version_4',['Querying SDL Version',['../group__CategoryVersion.html',1,'']]],
   ['vertex_5',['Vertex',['../group__CategoryRender.html#ga4b86011ede078f9ba75274ed30df602b',1,'SDL']]],
   ['video_6',['video',['../group__CategoriesVideo.html',1,'Video'],['../ApiByCategory.html#video',1,'Video']]],
-  ['vsnprintf_7',['vsnprintf',['../group__CategoryStdinc.html#ga4402ec18128560a4643446630b3a4633',1,'SDL']]],
-  ['vsscanf_8',['vsscanf',['../group__CategoryStdinc.html#gac1c131187ea64c08ed8abb3d04551072',1,'SDL']]],
-  ['vswprintf_9',['vswprintf',['../group__CategoryStdinc.html#ga83409fe8ca79edcf997ebfcda6226a5a',1,'SDL']]]
+  ['vprintf_7',['vprintf',['../structSDL_1_1IOStreamBase.html#aaac4c894456a3f003d78c0608bfa55a4',1,'SDL::IOStreamBase']]],
+  ['vsnprintf_8',['vsnprintf',['../group__CategoryStdinc.html#ga4402ec18128560a4643446630b3a4633',1,'SDL']]],
+  ['vsscanf_9',['vsscanf',['../group__CategoryStdinc.html#gac1c131187ea64c08ed8abb3d04551072',1,'SDL']]],
+  ['vswprintf_10',['vswprintf',['../group__CategoryStdinc.html#ga83409fe8ca79edcf997ebfcda6226a5a',1,'SDL']]]
 ];

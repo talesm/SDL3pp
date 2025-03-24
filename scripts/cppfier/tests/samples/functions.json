@@ -1,0 +1,100 @@
+{
+  "files": {
+    "functions.h": {
+      "name": "functions.h",
+      "doc": "@file functions.h\n\nDocumentation",
+      "entries": {
+        "funcCStr": {
+          "doc": "Documentation",
+          "name": "funcCStr",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "const char *"
+            }
+          ]
+        },
+        "funcVoid": {
+          "doc": "Documentation",
+          "name": "funcVoid",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "funcEmpty": {
+          "doc": "Documentation",
+          "name": "funcEmpty",
+          "kind": "function",
+          "type": "int",
+          "parameters": []
+        },
+        "funcInt": [
+          {
+            "doc": "Documentation",
+            "name": "funcInt",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "value",
+                "type": "int"
+              },
+              {
+                "name": "otherValue",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "doc": "Documentation",
+            "name": "funcInt",
+            "kind": "function",
+            "type": "int",
+            "parameters": [
+              {
+                "name": "value",
+                "type": "int"
+              }
+            ]
+          }
+        ],
+        "funcIntReturnsCStr": {
+          "doc": "Documentation",
+          "name": "funcIntReturnsCStr",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "int"
+            },
+            {
+              "name": "otherValue",
+              "type": "int",
+              "default": "0"
+            }
+          ]
+        },
+        "functionConstexpr": {
+          "doc": "@brief Documentation",
+          "name": "functionConstexpr",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "value",
+              "type": "int"
+            },
+            {
+              "name": "otherValue",
+              "type": "int"
+            }
+          ],
+          "constexpr": true
+        }
+      }
+    }
+  }
+}

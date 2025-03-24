@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['iconvbase_0',['IConvBase',['../structSDL_1_1IConvBase.html',1,'SDL']]]
+  ['glcontextbase_0',['GLContextBase',['../structSDL_1_1GLContextBase.html',1,'SDL']]],
+  ['guid_1',['GUID',['../structSDL_1_1GUID.html',1,'SDL']]]
 ];

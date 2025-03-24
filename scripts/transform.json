@@ -17,6 +17,7 @@
     "const char *": "StringParam",
     "SDL_Environment *": "EnvironmentRef",
     "SDL_iconv_t": "IConvRef",
+    "SDL_IOStream *": "ObjectBox<SDL_IOStream> auto &&",
     "SDL_Palette *": "PaletteRef",
     "const SDL_Palette *": "PaletteRef",
     "const SDL_Point *": "const SDL_Point &",
@@ -25,18 +26,23 @@
     "const SDL_FRect *": "const SDL_FRect &",
     "SDL_Surface *": "SurfaceRef",
     "SDL_Window *": "WindowRef",
+    "SDL_GLContext": "GLContextRef",
     "SDL_Renderer *": "RendererRef",
     "SDL_Texture *": "TextureRef",
+    "IMG_Animation *": "AnimationRef",
     "TTF_Font *": "FontRef"
   },
   "returnTypeMap": {
     "SDL_Environment *": "Environment",
     "SDL_iconv_t": "IConv",
+    "SDL_IOStream *": "IOStreamRef",
     "SDL_Palette *": "PaletteRef",
     "SDL_Surface *": "SurfaceRef",
     "SDL_Window *": "WindowRef",
+    "SDL_GLContext": "GLContextRef",
     "SDL_Renderer *": "RendererRef",
     "SDL_Texture *": "TextureRef",
+    "IMG_Animation *": "Animation",
     "TTF_Font *": "FontRef"
   },
   "files": {
@@ -65,25 +71,6 @@
             "type": "EnvironmentBase<ObjectRef<SDL_Environment>>"
           },
           {
-            "name": "ObjectDeleter<SDL_Environment>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "EnvironmentRef",
-                    "name": "environment"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Environment",
             "kind": "alias",
             "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>"
@@ -102,25 +89,6 @@
             "name": "IConvRef",
             "kind": "alias",
             "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_iconv_data_t>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "IConvRef",
-                    "name": "iconv"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "IConv",
@@ -226,7 +194,7 @@
             "SDL_CreateEnvironment": "ctor",
             "SDL_GetEnvironmentVariable": "function",
             "SDL_GetEnvironmentVariables": {
-              "type": "FreeWrapper<char *[]>"
+              "type": "OwnArray<char *>"
             },
             "GetVariableCount": {
               "kind": "function",
@@ -234,9 +202,19 @@
               "parameters": []
             },
             "SDL_SetEnvironmentVariable": "function",
-            "SDL_UnsetEnvironmentVariable": "function",
-            "SDL_DestroyEnvironment": "function"
+            "SDL_UnsetEnvironmentVariable": "function"
           }
+        },
+        "SDL_DestroyEnvironment": {
+          "name": "ObjectRef<SDL_Environment>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Environment *",
+              "name": "resource"
+            }
+          ]
         },
         "SDL_iconv_t": {
           "name": "IConvBase",
@@ -254,11 +232,19 @@
               "name": "T::T"
             },
             "SDL_iconv_open": "ctor",
-            "SDL_iconv": "function",
-            "SDL_iconv_close": {
-              "name": "close"
-            }
+            "SDL_iconv": "function"
           }
+        },
+        "SDL_iconv_close": {
+          "name": "ObjectRef<SDL_iconv_data_t>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_iconv_t",
+              "name": "resource"
+            }
+          ]
         }
       }
     },
@@ -670,7 +656,320 @@
     "SDL_locale.h": {
       "transform": {
         "SDL_GetPreferredLocales": {
-          "type": "FreeWrapper<Locale *[]>"
+          "type": "OwnArray<Locale *>",
+          "parameters": []
+        }
+      }
+    },
+    "SDL_iostream.h": {
+      "ignoreEntries": [],
+      "includeAfter": {
+        "__begin": [
+          {
+            "name": "IOStreamBase",
+            "kind": "forward",
+            "template": [
+              {
+                "name": "T",
+                "type": "ObjectBox<SDL_IOStream *>"
+              }
+            ]
+          },
+          {
+            "name": "IOStreamRef",
+            "kind": "alias",
+            "type": "IOStreamBase<ObjectRef<SDL_IOStream>>"
+          },
+          {
+            "name": "IOStream",
+            "kind": "alias",
+            "type": "IOStreamBase<ObjectUnique<SDL_IOStream>>"
+          },
+          {
+            "name": "IOFromDynamicMem_CtorTag",
+            "kind": "struct",
+            "doc": "@cat constructor-tag"
+          }
+        ],
+        "SDL_OpenIO": {
+          "name": "IOStreamBase.IOStreamBase",
+          "kind": "function",
+          "type": "",
+          "static": false,
+          "template": [
+            {
+              "type": "class",
+              "name": "U"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "std::span<U>",
+              "name": "mem"
+            }
+          ]
+        },
+        "SDL_IOFromConstMem": [],
+        "SDL_SaveFile": [
+          {
+            "kind": "function",
+            "name": "SaveFile",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "T"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "StringParam",
+                "name": "file"
+              },
+              {
+                "type": "std::span<T>",
+                "name": "data"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "SaveFile",
+            "type": "bool",
+            "parameters": [
+              {
+                "type": "StringParam",
+                "name": "file"
+              },
+              {
+                "type": "std::string_view",
+                "name": "str"
+              }
+            ]
+          }
+        ]
+      },
+      "transform": {
+        "SDL_IOStream": {
+          "name": "IOStreamBase",
+          "kind": "struct",
+          "type": "T",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_IOStream *>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": "alias",
+            "SDL_IOFromFile": "ctor",
+            "SDL_IOFromMem": "ctor",
+            "SDL_IOFromConstMem": "ctor",
+            "SDL_IOFromDynamicMem": {
+              "name": "IOStreamBase",
+              "type": "",
+              "static": false,
+              "parameters": [
+                "IOFromDynamicMem_CtorTag"
+              ]
+            },
+            "SDL_OpenIO": {
+              "type": "",
+              "name": "IOStreamBase",
+              "parameters": [
+                {
+                  "type": "IOStream *"
+                },
+                {
+                  "type": "const IOStreamInterface *",
+                  "name": "iface"
+                },
+                {
+                  "type": "void *",
+                  "name": "userdata"
+                }
+              ]
+            },
+            "SDL_GetIOProperties": {
+              "name": "GetProperties",
+              "immutable": true
+            },
+            "SDL_GetIOStatus": {
+              "name": "GetStatus",
+              "immutable": true
+            },
+            "SDL_GetIOSize": {
+              "name": "GetSize",
+              "immutable": true
+            },
+            "SDL_SeekIO": {
+              "name": "Seek"
+            },
+            "SDL_TellIO": {
+              "name": "Tell",
+              "immutable": true
+            },
+            "SDL_ReadIO": {
+              "name": "Read"
+            },
+            "Write": [
+              {
+                "kind": "function",
+                "type": "size_t",
+                "template": [
+                  {
+                    "type": "class",
+                    "name": "U"
+                  }
+                ],
+                "parameters": [
+                  {
+                    "type": "std::span<U>",
+                    "name": "data"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "size_t",
+                "parameters": [
+                  {
+                    "type": "std::string_view",
+                    "name": "str"
+                  }
+                ]
+              }
+            ],
+            "SDL_WriteIO": {
+              "name": "Write"
+            },
+            "print": {
+              "kind": "function",
+              "type": "size_t",
+              "doc": "@cat formatted-string",
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "auto...",
+                  "name": "args"
+                }
+              ]
+            },
+            "println": {
+              "kind": "function",
+              "type": "size_t",
+              "doc": "@cat formatted-string",
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "fmt"
+                },
+                {
+                  "type": "auto...",
+                  "name": "args"
+                }
+              ]
+            },
+            "SDL_IOprintf": {
+              "name": "printf"
+            },
+            "SDL_IOvprintf": {
+              "name": "vprintf"
+            },
+            "SDL_FlushIO": {
+              "name": "Flush"
+            },
+            "SDL_LoadFile_IO": {
+              "name": "LoadFile",
+              "type": "OwnArray<std::byte>",
+              "static": false,
+              "parameters": []
+            },
+            "SaveFile": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "template": [
+                  {
+                    "type": "class",
+                    "name": "U"
+                  }
+                ],
+                "parameters": [
+                  {
+                    "type": "std::span<U>",
+                    "name": "data"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "std::string_view",
+                    "name": "str"
+                  }
+                ]
+              }
+            ],
+            "SDL_SaveFile_IO": {
+              "name": "SaveFile",
+              "parameters": [
+                {},
+                {},
+                {}
+              ]
+            },
+            "SDL_ReadU8": "function",
+            "SDL_ReadS8": "function",
+            "SDL_ReadU16LE": "function",
+            "SDL_ReadS16LE": "function",
+            "SDL_ReadU16BE": "function",
+            "SDL_ReadS16BE": "function",
+            "SDL_ReadU32LE": "function",
+            "SDL_ReadS32LE": "function",
+            "SDL_ReadU32BE": "function",
+            "SDL_ReadS32BE": "function",
+            "SDL_ReadU64LE": "function",
+            "SDL_ReadS64LE": "function",
+            "SDL_ReadU64BE": "function",
+            "SDL_ReadS64BE": "function",
+            "SDL_WriteU8": "function",
+            "SDL_WriteS8": "function",
+            "SDL_WriteU16LE": "function",
+            "SDL_WriteS16LE": "function",
+            "SDL_WriteU16BE": "function",
+            "SDL_WriteS16BE": "function",
+            "SDL_WriteU32LE": "function",
+            "SDL_WriteS32LE": "function",
+            "SDL_WriteU32BE": "function",
+            "SDL_WriteS32BE": "function",
+            "SDL_WriteU64LE": "function",
+            "SDL_WriteS64LE": "function",
+            "SDL_WriteU64BE": "function",
+            "SDL_WriteS64BE": "function"
+          }
+        },
+        "SDL_CloseIO": {
+          "name": "ObjectRef<SDL_IOStream>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_IOStream *",
+              "name": "resource"
+            }
+          ]
+        },
+        "SDL_LoadFile": {
+          "type": "OwnArray<std::byte>",
+          "parameters": [
+            {}
+          ]
         }
       }
     },
@@ -691,25 +990,6 @@
             "name": "PaletteRef",
             "kind": "alias",
             "type": "PaletteBase<ObjectRef<SDL_Palette>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_Palette>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "PaletteRef",
-                    "name": "palette"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "Palette",
@@ -1246,13 +1526,26 @@
                 }
               ]
             },
-            "SDL_SetPaletteColors": "function",
-            "SDL_DestroyPalette": "function"
+            "SDL_SetPaletteColors": "function"
           }
+        },
+        "SDL_DestroyPalette": {
+          "name": "ObjectRef<SDL_Palette>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Palette *",
+              "name": "resource"
+            }
+          ]
         }
       }
     },
     "SDL_properties.h": {
+      "ignoreEntries": [
+        "SDL_DestroyProperties"
+      ],
       "includeAfter": {
         "__begin": [
           {
@@ -1271,31 +1564,8 @@
             "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>"
           },
           {
-            "name": "PropertiesDeleter",
-            "kind": "struct",
-            "entries": {
-              "pointer": {
-                "kind": "alias",
-                "type": "FancyPointer<SDL_PropertiesID>"
-              },
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "PropertiesRef",
-                    "name": "props"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Properties",
-            "kind": "alias",
-            "type": "PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>"
+            "kind": "alias"
           },
           {
             "name": "PropertyType",
@@ -1540,12 +1810,22 @@
               "kind": "function",
               "name": "Enumerate",
               "immutable": true
-            },
-            "SDL_DestroyProperties": "function"
+            }
           }
         },
         "SDL_CreateProperties": {
           "type": "Properties"
+        },
+        "SDL_DestroyProperties": {
+          "name": "ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "FancyPointer<SDL_PropertiesID>",
+              "name": "resource"
+            }
+          ]
         }
       }
     },
@@ -2008,25 +2288,6 @@
             "type": "SurfaceBase<ObjectRef<SDL_Surface>>"
           },
           {
-            "name": "ObjectDeleter<SDL_Surface>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "SurfaceRef",
-                    "name": "Surface"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Surface",
             "kind": "alias",
             "type": "SurfaceBase<ObjectUnique<SDL_Surface>>"
@@ -2143,9 +2404,18 @@
           ],
           "entries": {
             "T::T": "alias",
+            "SurfaceBase": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "file"
+                }
+              ]
+            },
             "SDL_CreateSurface": "ctor",
             "SDL_CreateSurfaceFrom": "ctor",
-            "SDL_DestroySurface": "function",
             "SDL_GetSurfaceProperties": "immutable",
             "SDL_SetSurfaceColorspace": "function",
             "SDL_GetSurfaceColorspace": "immutable",
@@ -2163,15 +2433,8 @@
             "SDL_GetSurfaceImages": {
               "kind": "function",
               "immutable": true,
-              "type": "FreeWrapper<SurfaceRef *[]>",
-              "parameters": [
-                {
-                  "name": "this"
-                },
-                {
-                  "default": "nullptr"
-                }
-              ]
+              "type": "OwnArray<SurfaceRef *>",
+              "parameters": []
             },
             "SDL_RemoveSurfaceAlternateImages": {
               "kind": "function",
@@ -2804,15 +3067,37 @@
             }
           }
         },
+        "SDL_DestroySurface": {
+          "name": "ObjectRef<SDL_Surface>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Surface *",
+              "name": "resource"
+            }
+          ]
+        },
         "SDL_LoadBMP_IO": {
           "name": "LoadBMP",
-          "type": "Surface"
+          "type": "Surface",
+          "parameters": [
+            {
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            }
+          ]
         },
         "SDL_LoadBMP": {
           "type": "Surface"
         },
         "SDL_SaveBMP_IO": {
-          "name": "SaveBMP"
+          "name": "SaveBMP",
+          "parameters": [
+            {},
+            {
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            }
+          ]
         }
       }
     },
@@ -2833,25 +3118,6 @@
             "name": "WindowRef",
             "kind": "alias",
             "type": "WindowBase<ObjectRef<SDL_Window>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_Window>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "WindowRef",
-                    "name": "window"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "Window",
@@ -2911,6 +3177,106 @@
           },
           {
             "name": "WindowFlags",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_FULLSCREEN",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_OPENGL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_OCCLUDED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_HIDDEN",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_BORDERLESS",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_RESIZABLE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MINIMIZED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MAXIMIZED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_GRABBED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_INPUT_FOCUS",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_FOCUS",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_EXTERNAL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MODAL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_HIGH_PIXEL_DENSITY",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_CAPTURE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_MOUSE_RELATIVE_MODE",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_ALWAYS_ON_TOP",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_UTILITY",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_TOOLTIP",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_POPUP_MENU",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_KEYBOARD_GRABBED",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_VULKAN",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_METAL",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_TRANSPARENT",
+            "kind": "placeholder"
+          },
+          {
+            "name": "WINDOW_NOT_FOCUSABLE",
             "kind": "placeholder"
           },
           {
@@ -2982,6 +3348,28 @@
             "name": "HitTestCB",
             "doc": "@sa HitTest"
           }
+        ],
+        "SDL_FlashOperation": [
+          {
+            "name": "GLContextBase",
+            "kind": "forward",
+            "template": [
+              {
+                "name": "T",
+                "type": "ObjectBox<SDL_GLContext>"
+              }
+            ]
+          },
+          {
+            "name": "GLContextRef",
+            "kind": "alias",
+            "type": "GLContextBase<ObjectRef<SDL_GLContextState>>"
+          },
+          {
+            "name": "GLContext",
+            "kind": "alias",
+            "type": "GLContextBase<ObjectUnique<SDL_GLContextState>>"
+          }
         ]
       },
       "transform": {
@@ -3016,7 +3404,8 @@
             "SDL_GetDisplays": {
               "kind": "function",
               "name": "GetAll",
-              "type": "FreeWrapper<Display[]>"
+              "type": "OwnArray<Display>",
+              "parameters": []
             },
             "SDL_GetPrimaryDisplay": {
               "kind": "function",
@@ -3051,7 +3440,8 @@
               "kind": "function",
               "name": "GetFullscreenModes",
               "immutable": true,
-              "type": "FreeWrapper<DisplayMode *[]>"
+              "type": "OwnArray<DisplayMode *>",
+              "parameters": []
             },
             "SDL_GetClosestFullscreenDisplayMode": {
               "kind": "function",
@@ -3159,7 +3549,7 @@
             "SDL_GetWindowICCProfile": {
               "kind": "function",
               "immutable": true,
-              "type": "FreeWrapper<void *>"
+              "type": "OwnPtr<void>"
             },
             "SDL_GetWindowPixelFormat": "immutable",
             "SDL_GetWindowID": "immutable",
@@ -3325,13 +3715,185 @@
             },
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
-            "SDL_FlashWindow": "function",
-            "SDL_DestroyWindow": "function"
+            "SDL_FlashWindow": "function"
           }
+        },
+        "SDL_DestroyWindow": {
+          "name": "ObjectRef<SDL_Window>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Window *",
+              "name": "resource"
+            }
+          ]
         },
         "SDL_GetWindows": {
           "kind": "function",
-          "type": "FreeWrapper<WindowRef[]>"
+          "type": "OwnArray<WindowRef>",
+          "parameters": []
+        },
+        "SDL_WINDOW_FULLSCREEN": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_OPENGL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_OCCLUDED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_HIDDEN": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_BORDERLESS": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_RESIZABLE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MINIMIZED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MAXIMIZED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_GRABBED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_INPUT_FOCUS": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_FOCUS": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_EXTERNAL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MODAL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_HIGH_PIXEL_DENSITY": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_CAPTURE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_MOUSE_RELATIVE_MODE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_ALWAYS_ON_TOP": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_UTILITY": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_TOOLTIP": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_POPUP_MENU": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_KEYBOARD_GRABBED": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_VULKAN": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_METAL": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_TRANSPARENT": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_WINDOW_NOT_FOCUSABLE": {
+          "kind": "var",
+          "constexpr": true,
+          "type": "WindowFlags"
+        },
+        "SDL_GLContext": {
+          "name": "GLContextBase",
+          "kind": "struct",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_GLContext>",
+              "name": "T"
+            }
+          ],
+          "type": "T",
+          "entries": {
+            "T::T": "alias",
+            "SDL_GL_CreateContext": "ctor",
+            "SDL_GL_MakeCurrent": {
+              "name": "MakeCurrent",
+              "static": false,
+              "parameters": [
+                {
+                  "type": "WindowRef",
+                  "name": "window"
+                }
+              ]
+            }
+          }
+        },
+        "SDL_GL_DestroyContext": {
+          "name": "ObjectRef<SDL_GLContextState>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_GLContext",
+              "name": "resource"
+            }
+          ]
         }
       }
     },
@@ -3343,25 +3905,6 @@
       ],
       "includeAfter": {
         "__begin": [
-          {
-            "name": "ObjectDeleter<SDL_Renderer>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "RendererRef",
-                    "name": "renderer"
-                  }
-                ]
-              }
-            }
-          },
           {
             "name": "Renderer",
             "kind": "alias",
@@ -3381,25 +3924,6 @@
             "name": "TextureRef",
             "kind": "alias",
             "type": "TextureBase<ObjectRef<SDL_Texture>>"
-          },
-          {
-            "name": "ObjectDeleter<SDL_Texture>",
-            "kind": "struct",
-            "template": [],
-            "entries": {
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "TextureRef",
-                    "name": "texture"
-                  }
-                ]
-              }
-            }
           },
           {
             "name": "Texture",
@@ -4072,7 +4596,6 @@
               "kind": "function",
               "name": "Present"
             },
-            "SDL_DestroyRenderer": "function",
             "SDL_FlushRenderer": "function",
             "SDL_SetRenderVSync": {
               "kind": "function",
@@ -4102,6 +4625,17 @@
             }
           }
         },
+        "SDL_DestroyRenderer": {
+          "name": "ObjectRef<SDL_Renderer>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Renderer *",
+              "name": "resource"
+            }
+          ]
+        },
         "SDL_Texture": {
           "name": "TextureBase",
           "kind": "struct",
@@ -4114,6 +4648,20 @@
           "type": "T",
           "entries": {
             "T::T": "alias",
+            "TextureBase": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "RendererRef",
+                  "name": "renderer"
+                },
+                {
+                  "type": "StringParam",
+                  "name": "file"
+                }
+              ]
+            },
             "SDL_CreateTexture": "ctor",
             "SDL_CreateTextureFromSurface": "ctor",
             "SDL_CreateTextureWithProperties": "ctor",
@@ -4271,9 +4819,19 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ]
-            },
-            "SDL_DestroyTexture": "function"
+            }
           }
+        },
+        "SDL_DestroyTexture": {
+          "name": "ObjectRef<SDL_Texture>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Texture *",
+              "name": "resource"
+            }
+          ]
         },
         "SDL_CreateWindowAndRenderer": {
           "type": "std::pair<Window, Renderer>",
@@ -4663,18 +5221,105 @@
       }
     },
     "SDL_image.h": {
+      "ignoreEntries": [
+        "IMG_LoadBMP_IO"
+      ],
       "includeAfter": {
-        "__begin": {
-          "name": "SDL3PP_ENABLE_IMAGE"
-        }
+        "__begin": [
+          {
+            "name": "SDL3PP_ENABLE_IMAGE"
+          },
+          {
+            "name": "AnimationBase",
+            "kind": "forward",
+            "template": [
+              {
+                "type": "ObjectBox<IMG_Animation *>",
+                "name": "T"
+              }
+            ]
+          },
+          {
+            "name": "AnimationRef",
+            "kind": "alias",
+            "type": "AnimationBase<ObjectRef<IMG_Animation>>"
+          },
+          {
+            "name": "Animation",
+            "kind": "alias",
+            "type": "AnimationBase<ObjectUnique<IMG_Animation>>"
+          }
+        ]
       },
       "transform": {
+        "IMG_Animation": {
+          "name": "AnimationBase",
+          "kind": "struct",
+          "template": [
+            {
+              "type": "ObjectBox<IMG_Animation *>",
+              "name": "T"
+            }
+          ],
+          "type": "T",
+          "entries": {
+            "T::T": "alias",
+            "IMG_LoadAnimation": "ctor",
+            "IMG_LoadAnimation_IO": {
+              "name": "AnimationBase",
+              "type": "",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "src",
+                  "type": "ObjectBox<SDL_IOStream> auto &&"
+                }
+              ]
+            },
+            "IMG_LoadAnimationTyped_IO": {
+              "name": "AnimationBase",
+              "type": "",
+              "static": false,
+              "parameters": [
+                {
+                  "name": "src",
+                  "type": "ObjectBox<SDL_IOStream> auto &&"
+                },
+                {
+                  "name": "type",
+                  "type": "StringParam"
+                }
+              ]
+            }
+          }
+        },
+        "IMG_FreeAnimation": {
+          "name": "ObjectRef<IMG_Animation>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "IMG_Animation *",
+              "name": "resource"
+            }
+          ]
+        },
         "IMG_Version": {
           "name": "IMG_Version"
         },
         "IMG_LoadTyped_IO": {
           "type": "Surface",
-          "name": "LoadSurface"
+          "name": "LoadSurface",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            },
+            {
+              "name": "type",
+              "type": "StringParam"
+            }
+          ]
         },
         "IMG_Load": {
           "type": "Surface",
@@ -4682,18 +5327,48 @@
         },
         "IMG_Load_IO": {
           "type": "Surface",
-          "name": "LoadSurface"
+          "name": "LoadSurface",
+          "parameters": [
+            {
+              "name": "src",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            }
+          ]
         },
         "IMG_LoadTexture": {
           "type": "Texture"
         },
         "IMG_LoadTexture_IO": {
           "type": "Texture",
-          "name": "LoadTexture"
+          "name": "LoadTexture",
+          "parameters": [
+            {
+              "name": "renderer",
+              "type": "RendererRef"
+            },
+            {
+              "name": "src",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            }
+          ]
         },
         "IMG_LoadTextureTyped_IO": {
           "type": "Texture",
-          "name": "LoadTexture"
+          "name": "LoadTexture",
+          "parameters": [
+            {
+              "name": "renderer",
+              "type": "RendererRef"
+            },
+            {
+              "name": "src",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            },
+            {
+              "name": "type",
+              "type": "StringParam"
+            }
+          ]
         },
         "IMG_LoadAVIF_IO": {
           "type": "Surface",
@@ -4706,10 +5381,6 @@
         "IMG_LoadCUR_IO": {
           "type": "Surface",
           "name": "LoadCUR"
-        },
-        "IMG_LoadBMP_IO": {
-          "type": "Surface",
-          "name": "LoadBMP"
         },
         "IMG_LoadGIF_IO": {
           "type": "Surface",
@@ -4784,13 +5455,57 @@
           "name": "ReadXPMFromArrayToRGB888"
         },
         "IMG_SaveAVIF_IO": {
-          "name": "SaveAVIF"
+          "name": "SaveAVIF",
+          "parameters": [
+            {
+              "name": "surface",
+              "type": "SurfaceRef"
+            },
+            {
+              "name": "dst",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            },
+            {
+              "name": "quality",
+              "type": "int"
+            }
+          ]
         },
         "IMG_SavePNG_IO": {
-          "name": "SavePNG"
+          "name": "SavePNG",
+          "parameters": [
+            {
+              "name": "surface",
+              "type": "SurfaceRef"
+            },
+            {
+              "name": "dst",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            }
+          ]
         },
         "IMG_SaveJPG_IO": {
-          "name": "SaveJPG"
+          "name": "SaveJPG",
+          "parameters": [
+            {
+              "name": "surface",
+              "type": "SurfaceRef"
+            },
+            {
+              "name": "dst",
+              "type": "ObjectBox<SDL_IOStream> auto &&"
+            },
+            {
+              "name": "quality",
+              "type": "int"
+            }
+          ]
+        },
+        "IMG_LoadGIFAnimation_IO": {
+          "name": "LoadGIFAnimation"
+        },
+        "IMG_LoadWEBPAnimation_IO": {
+          "name": "LoadWEBPAnimation"
         }
       }
     },

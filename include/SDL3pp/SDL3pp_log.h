@@ -3,8 +3,7 @@
 
 #include <format>
 #include <SDL3/SDL_log.h>
-#include "SDL3pp_callbackWrapper.h"
-#include "SDL3pp_stringParam.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 /**

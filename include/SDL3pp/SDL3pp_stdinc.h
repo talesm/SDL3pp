@@ -2,8 +2,11 @@
 #define SDL3PP_STDINC_H_
 
 #include <SDL3/SDL_stdinc.h>
-#include "SDL3pp_freeWrapper.h"
+#include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_objectWrapper.h"
+#include "SDL3pp_optionalRef.h"
+#include "SDL3pp_ownPtr.h"
+#include "SDL3pp_spanRef.h"
 #include "SDL3pp_stringParam.h"
 
 namespace SDL {
@@ -49,12 +52,6 @@ struct EnvironmentBase;
  */
 using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 
-template<>
-struct ObjectDeleter<SDL_Environment>
-{
-  inline void operator()(EnvironmentRef environment) const;
-};
-
 /**
  * Handle to an owning environment
  *
@@ -80,12 +77,6 @@ struct IConvBase;
  * @sa IConv
  */
 using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
-
-template<>
-struct ObjectDeleter<SDL_iconv_data_t>
-{
-  inline void operator()(IConvRef iconv) const;
-};
 
 /**
  * Handle to an owning iconv
@@ -539,9 +530,9 @@ struct EnvironmentBase : T
    * @sa SDL_SetEnvironmentVariable
    * @sa SDL_UnsetEnvironmentVariable
    **/
-  inline FreeWrapper<char*[]> GetVariables()
+  inline OwnArray<char*> GetVariables()
   {
-    return wrapArray(SDL_GetEnvironmentVariables(T::get()));
+    return OwnArray<char*>{SDL_GetEnvironmentVariables(T::get())};
   }
 
   /**
@@ -643,6 +634,25 @@ struct EnvironmentBase : T
  * @sa UnsetVariable()
  **/
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
+
+/**
+ * Destroy a set of environment variables.
+ *
+ * @param resource the environment to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the environment is no longer in use.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Environment
+ * @sa EnvironmentBase
+ */
+template<>
+inline void ObjectRef<SDL_Environment>::doFree(SDL_Environment* resource)
+{
+  return SDL_DestroyEnvironment(resource);
+}
 
 /**
  * Get the value of a variable in the environment.
@@ -4787,6 +4797,22 @@ struct IConvBase : T
 };
 
 /**
+ * This function frees a context used for character set conversion.
+ *
+ * @param resource The character set conversion handle.
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IConv
+ * @sa IConvBase
+ * @sa iconv_string()
+ */
+template<>
+inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_t resource)
+{
+  SDL_iconv_close(resource);
+}
+
+/**
  * Helper function to convert a string's encoding in one call.
  *
  * This function converts a buffer or string between encodings in one pass.
@@ -4883,15 +4909,10 @@ using FunctionPointer = SDL_FunctionPointer;
 #pragma region impl
 /// @}
 
-inline void ObjectDeleter<SDL_Environment>::operator()(
-  EnvironmentRef environment) const
+template<class T>
+void PtrBase<T>::free()
 {
-  environment.Destroy();
-}
-
-inline void ObjectDeleter<SDL_iconv_data_t>::operator()(IConvRef iconv) const
-{
-  iconv.close();
+  SDL::free(T::release());
 }
 
 #pragma endregion impl
