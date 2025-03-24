@@ -17113,10 +17113,10 @@
           "type": "SDL_AppQuit_func",
           "sourceName": "SDL_AppQuit_func"
         },
-        "Init": [
+        "InitSubSystem": [
           {
             "doc": "Initialize the SDL library.\n\nSDL_Init() simply forwards to calling SDL_InitSubSystem(). Therefore, the\ntwo may be used interchangeably. Though for readability of your code\nSDL_InitSubSystem() might be preferred.\n\nThe file I/O (for example: SDL_IOFromFile) and threading (SDL_CreateThread)\nsubsystems are initialized by default. Message boxes\n(SDL_ShowSimpleMessageBox) also attempt to work without initializing the\nvideo subsystem, in hopes of being useful in showing an error dialog when\nSDL_Init fails. You must specifically initialize other subsystems if you\nuse them in your application.\n\nLogging (such as SDL_Log) works without initialization, too.\n\n`flags` may be any of the following OR'd together:\n\n- `SDL_INIT_AUDIO`: audio subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_VIDEO`: video subsystem; automatically initializes the events\n  subsystem, should be initialized on the main thread.\n- `SDL_INIT_JOYSTICK`: joystick subsystem; automatically initializes the\n  events subsystem\n- `SDL_INIT_HAPTIC`: haptic (force feedback) subsystem\n- `SDL_INIT_GAMEPAD`: gamepad subsystem; automatically initializes the\n  joystick subsystem\n- `SDL_INIT_EVENTS`: events subsystem\n- `SDL_INIT_SENSOR`: sensor subsystem; automatically initializes the events\n  subsystem\n- `SDL_INIT_CAMERA`: camera subsystem; automatically initializes the events\n  subsystem\n\nSubsystem initialization is ref-counted, you must call SDL_QuitSubSystem()\nfor each SDL_InitSubSystem() to correctly shutdown a subsystem manually (or\ncall SDL_Quit() to force shutdown). If a subsystem is already loaded then\nthis call will increase the ref-count and return.\n\nConsider reporting some basic metadata about your application before\ncalling SDL_Init, using either SDL_SetAppMetadata() or\nSDL_SetAppMetadataProperty().\n\n@param flags subsystem initialization flags.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAppMetadata\n@sa SDL_SetAppMetadataProperty\n@sa SDL_InitSubSystem\n@sa SDL_Quit\n@sa SDL_SetMainReady\n@sa SDL_WasInit",
-            "name": "Init",
+            "name": "InitSubSystem",
             "kind": "function",
             "type": "bool",
             "parameters": [
@@ -17129,7 +17129,7 @@
           },
           {
             "kind": "function",
-            "name": "Init",
+            "name": "InitSubSystem",
             "type": "bool",
             "template": [
               {
@@ -17163,7 +17163,7 @@
           },
           {
             "kind": "function",
-            "name": "Init",
+            "name": "InitSubSystem",
             "type": "bool",
             "template": [
               {
@@ -17192,51 +17192,164 @@
             "doc": ""
           }
         ],
-        "InitSubSystem": {
-          "doc": "Compatibility function to initialize the SDL library.\n\nThis function and SDL_Init() are interchangeable.\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_Quit\n@sa SDL_QuitSubSystem",
-          "name": "InitSubSystem",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "flags",
-              "type": "FLAGS..."
-            }
-          ],
-          "sourceName": "SDL_InitSubSystem",
-          "template": [
-            {
-              "type": "class...",
-              "name": "FLAGS"
-            }
-          ]
-        },
-        "QuitSubSystem": {
-          "doc": "Shut down specific SDL subsystems.\n\nYou still need to call SDL_Quit() even if you close all open subsystems\nwith SDL_QuitSubSystem().\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_InitSubSystem\n@sa SDL_Quit",
-          "name": "QuitSubSystem",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "flags",
-              "type": "InitFlags"
-            }
-          ],
-          "sourceName": "SDL_QuitSubSystem"
-        },
-        "WasInit": {
-          "doc": "Get a mask of the specified subsystems which are currently initialized.\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n@returns a mask of all initialized subsystems if `flags` is 0, otherwise it\n         returns the initialization status of the specified subsystems.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_InitSubSystem",
-          "name": "WasInit",
-          "kind": "function",
-          "type": "InitFlags",
-          "parameters": [
-            {
-              "name": "flags",
-              "type": "InitFlags"
-            }
-          ],
-          "sourceName": "SDL_WasInit"
-        },
+        "QuitSubSystem": [
+          {
+            "doc": "Shut down specific SDL subsystems.\n\nYou still need to call SDL_Quit() even if you close all open subsystems\nwith SDL_QuitSubSystem().\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_InitSubSystem\n@sa SDL_Quit",
+            "name": "QuitSubSystem",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "flags",
+                "type": "InitFlags"
+              }
+            ],
+            "sourceName": "SDL_QuitSubSystem"
+          },
+          {
+            "kind": "function",
+            "name": "QuitSubSystem",
+            "type": "void",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG0"
+              },
+              {
+                "type": "class",
+                "name": "FLAG1"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG0",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG1",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "kind": "function",
+            "name": "QuitSubSystem",
+            "type": "void",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "WasInit": [
+          {
+            "doc": "Get a mask of the specified subsystems which are currently initialized.\n\n@param flags any of the flags used by SDL_Init(); see SDL_Init for details.\n@returns a mask of all initialized subsystems if `flags` is 0, otherwise it\n         returns the initialization status of the specified subsystems.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_InitSubSystem",
+            "name": "WasInit",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "flags",
+                "type": "InitFlags"
+              }
+            ],
+            "sourceName": "SDL_WasInit"
+          },
+          {
+            "kind": "function",
+            "name": "WasInit",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG0"
+              },
+              {
+                "type": "class",
+                "name": "FLAG1"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG0",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG1",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ],
+            "doc": ""
+          },
+          {
+            "kind": "function",
+            "name": "WasInit",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ],
+            "doc": ""
+          }
+        ],
         "Quit": {
           "doc": "Clean up all initialized subsystems.\n\nYou should call this function even if you have already shutdown each\ninitialized subsystem with SDL_QuitSubSystem(). It is safe to call this\nfunction even in the case of errors in initialization.\n\nYou can use this function with atexit() to ensure that it is run when your\napplication is shutdown, but it is not wise to do this from a library or\nother dynamically loaded code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init\n@sa SDL_QuitSubSystem",
           "name": "Quit",
@@ -19389,9 +19502,9 @@
             }
           }
         },
-        "Init": {
+        "InitSubSystem": {
           "doc": "Initialize SDL_ttf.\n\nYou must successfully call this function before it is safe to call any\nother function in this library.\n\nIt is safe to call this more than once, and each successful TTF_Init() call\nshould be paired with a matching TTF_Quit() call.\n\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_Quit",
-          "name": "Init",
+          "name": "InitSubSystem",
           "kind": "function",
           "type": "bool",
           "parameters": [

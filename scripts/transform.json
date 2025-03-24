@@ -5117,7 +5117,206 @@
       }
     },
     "SDL_init.h": {
+      "ignoreEntries": [
+        "SDL_InitSubSystem"
+      ],
       "includeAfter": {
+        "SDL_InitFlags": {
+          "kind": "struct",
+          "name": "InitFlagsExtra"
+        },
+        "SDL_Init": [
+          {
+            "kind": "function",
+            "name": "InitSubSystem",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG0"
+              },
+              {
+                "type": "class",
+                "name": "FLAG1"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG0",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG1",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "InitSubSystem",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          }
+        ],
+        "SDL_QuitSubSystem": [
+          {
+            "kind": "function",
+            "name": "QuitSubSystem",
+            "type": "void",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG0"
+              },
+              {
+                "type": "class",
+                "name": "FLAG1"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG0",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG1",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "QuitSubSystem",
+            "type": "void",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          }
+        ],
+        "SDL_WasInit": [
+          {
+            "kind": "function",
+            "name": "WasInit",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG0"
+              },
+              {
+                "type": "class",
+                "name": "FLAG1"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG0",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG1",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          },
+          {
+            "kind": "function",
+            "name": "WasInit",
+            "type": "bool",
+            "template": [
+              {
+                "type": "class",
+                "name": "FLAG"
+              },
+              {
+                "type": "class...",
+                "name": "FLAGS"
+              }
+            ],
+            "parameters": [
+              {
+                "type": "FLAG",
+                "name": "flag0"
+              },
+              {
+                "type": "FLAG",
+                "name": "flag1"
+              },
+              {
+                "type": "FLAGS...",
+                "name": "flags"
+              }
+            ]
+          }
+        ],
         "SDL_Quit": {
           "kind": "struct",
           "name": "SDL",
@@ -5156,74 +5355,6 @@
             ]
           }
         },
-        "SDL_InitFlags": {
-          "kind": "struct",
-          "name": "InitFlagsExtra"
-        },
-        "SDL_Init": [
-          {
-            "kind": "function",
-            "name": "Init",
-            "type": "bool",
-            "template": [
-              {
-                "type": "class",
-                "name": "FLAG0"
-              },
-              {
-                "type": "class",
-                "name": "FLAG1"
-              },
-              {
-                "type": "class...",
-                "name": "FLAGS"
-              }
-            ],
-            "parameters": [
-              {
-                "type": "FLAG0",
-                "name": "flag0"
-              },
-              {
-                "type": "FLAG1",
-                "name": "flag1"
-              },
-              {
-                "type": "FLAGS...",
-                "name": "flags"
-              }
-            ]
-          },
-          {
-            "kind": "function",
-            "name": "Init",
-            "type": "bool",
-            "template": [
-              {
-                "type": "class",
-                "name": "FLAG"
-              },
-              {
-                "type": "class...",
-                "name": "FLAGS"
-              }
-            ],
-            "parameters": [
-              {
-                "type": "FLAG",
-                "name": "flag0"
-              },
-              {
-                "type": "FLAG",
-                "name": "flag1"
-              },
-              {
-                "type": "FLAGS...",
-                "name": "flags"
-              }
-            ]
-          }
-        ],
         "SDL_MainThreadCallback": {
           "kind": "alias",
           "name": "MainThreadCB",
@@ -5286,19 +5417,11 @@
           "constexpr": true,
           "type": "InitFlags"
         },
-        "SDL_InitSubSystem": {
-          "template": [
-            {
-              "type": "class...",
-              "name": "FLAGS"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "FLAGS...",
-              "name": "flags"
-            }
-          ]
+        "SDL_Init": {
+          "name": "InitSubSystem"
+        },
+        "SDL_WasInit": {
+          "type": "bool"
         }
       }
     },
@@ -5977,7 +6100,7 @@
           ]
         },
         "TTF_Init": {
-          "name": "Init",
+          "name": "InitSubSystem",
           "parameters": [
             {
               "type": "TtfInitFlag",

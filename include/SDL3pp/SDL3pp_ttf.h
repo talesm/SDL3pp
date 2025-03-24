@@ -1788,6 +1788,8 @@ struct FontBase : T
  * It is safe to call this more than once, and each successful TTF_Init() call
  * should be paired with a matching TTF_Quit() call.
  *
+ * @param _ An INIT_TTF value;
+ *
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
@@ -1795,7 +1797,7 @@ struct FontBase : T
  *
  * @sa TTF_Quit
  */
-inline bool Init(TtfInitFlag _) { return TTF_Init(); }
+inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
 
 /**
  * Normal hinting applies standard grid-fitting.

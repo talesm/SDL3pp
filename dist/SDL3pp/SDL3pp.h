@@ -9540,16 +9540,24 @@ inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
  */
 
 /**
- * @brief Initialization flags for SDL
+ * Initialization flags for SDL
+ *
+ * @sa Init
+ * @sa InitSubSystem
+ * @sa InitFlagsExtra
  */
 using InitFlags = SDL_InitFlags;
 
 /**
- * @brief Initialization flags for SDL satellite libraries
- *
+ * Initialization flags for SDL satellite libraries
  *
  * Each satellite lib that needs initialization should extend this class and
- * provide an overload of Init() with accepting it.
+ * provide an overload of InitSubSystem(), WasInit() and QuitSubSystem() with
+ * a single parameter accepting this extended type.
+ *
+ * @sa InitFlags
+ * @sa Init
+ * @sa InitSubSystem
  */
 struct InitFlagsExtra
 {};
@@ -9714,11 +9722,10 @@ using AppQuit_func = SDL_AppQuit_func;
 /**
  * Initialize the SDL library.
  *
- * Init() simply forwards to calling InitSubSystem(). Therefore, the
- * two may be used interchangeably. Though for readability of your code
- * InitSubSystem() might be preferred.
+ * The class Init is probably what you are looking for, as it automatically
+ * handles de-initialization.
  *
- * The file I/O (for example: IOFromFile) and threading (CreateThread)
+ * The file I/O (for example: IOStream) and threading (CreateThread)
  * subsystems are initialized by default. Message boxes
  * (ShowSimpleMessageBox) also attempt to work without initializing the
  * video subsystem, in hopes of being useful in showing an error dialog when
@@ -9743,6 +9750,8 @@ using AppQuit_func = SDL_AppQuit_func;
  *   subsystem
  * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
  *   subsystem
+ * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
+ *   events subsystem
  *
  * Subsystem initialization is ref-counted, you must call QuitSubSystem()
  * for each InitSubSystem() to correctly shutdown a subsystem manually (or
@@ -9754,7 +9763,7 @@ using AppQuit_func = SDL_AppQuit_func;
  * SetAppMetadataProperty().
  *
  * @param flags subsystem initialization flags.
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL 3.2.0.
@@ -9766,47 +9775,149 @@ using AppQuit_func = SDL_AppQuit_func;
  * @sa SetMainReady()
  * @sa WasInit()
  */
-inline bool Init(InitFlags flags) { return SDL_Init(flags); }
-
-template<class FLAG0, class FLAG1, class... FLAGS>
-inline bool Init(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
-{
-  if (Init(flag0)) return Init(flag1, flags...);
-  return false;
-}
-
-template<class FLAG, class... FLAGS>
-inline bool Init(FLAG flag0, FLAG flag1, FLAGS... flags)
-{
-  return Init(flag0 | flag1, flags...);
-}
+inline bool InitSubSystem(InitFlags flags) { return SDL_Init(flags); }
 
 /**
- * Compatibility function to initialize the SDL library.
+ * Initialize the SDL library.
  *
- * @param flags any of the flags used by Init(); see Init for details.
+ * The class Init is probably what you are looking for, as it automatically
+ * handles de-initialization.
+ *
+ * The file I/O (for example: IOStream) and threading (CreateThread)
+ * subsystems are initialized by default. Message boxes
+ * (ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
+ *   events subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem()
+ * for each InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling Init, using either SetAppMetadata() or
+ * SetAppMetadataProperty().
+ *
+ * @tparam FLAG0
+ * @tparam FLAG1
+ * @tparam FLAGS
+ * @param flag0 subsystem initialization flags.
+ * @param flag1 subsystem initialization flags.
+ * @param flags subsystem initialization flags.
  * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa Init()
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
  * @sa Quit()
- * @sa QuitSubSystem()
+ * @sa SetMainReady()
+ * @sa WasInit()
  */
-template<class... FLAGS>
-inline bool InitSubSystem(FLAGS... flags)
+template<class FLAG0, class FLAG1, class... FLAGS>
+inline bool InitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
 {
-  return SDL_Init(flags...);
+  if (InitSubSystem(flag0)) return InitSubSystem(flag1, flags...);
+  return false;
+}
+
+/**
+ * Initialize the SDL library.
+ *
+ * The class Init is probably what you are looking for, as it automatically
+ * handles de-initialization.
+ *
+ * The file I/O (for example: IOStream) and threading (CreateThread)
+ * subsystems are initialized by default. Message boxes
+ * (ShowSimpleMessageBox) also attempt to work without initializing the
+ * video subsystem, in hopes of being useful in showing an error dialog when
+ * Init fails. You must specifically initialize other subsystems if you
+ * use them in your application.
+ *
+ * Logging (such as Log) works without initialization, too.
+ *
+ * `flags` may be any of the following OR'd together:
+ *
+ * - `INIT_AUDIO`: audio subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_VIDEO`: video subsystem; automatically initializes the events
+ *   subsystem, should be initialized on the main thread.
+ * - `INIT_JOYSTICK`: joystick subsystem; automatically initializes the
+ *   events subsystem
+ * - `INIT_HAPTIC`: haptic (force feedback) subsystem
+ * - `INIT_GAMEPAD`: gamepad subsystem; automatically initializes the
+ *   joystick subsystem
+ * - `INIT_EVENTS`: events subsystem
+ * - `INIT_SENSOR`: sensor subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_CAMERA`: camera subsystem; automatically initializes the events
+ *   subsystem
+ * - `INIT_TTF`: ttf satellite library subsystem; automatically initializes the
+ *   events subsystem
+ *
+ * Subsystem initialization is ref-counted, you must call QuitSubSystem()
+ * for each InitSubSystem() to correctly shutdown a subsystem manually (or
+ * call Quit() to force shutdown). If a subsystem is already loaded then
+ * this call will increase the ref-count and return.
+ *
+ * Consider reporting some basic metadata about your application before
+ * calling Init, using either SetAppMetadata() or
+ * SetAppMetadataProperty().
+ *
+ * @tparam FLAG
+ * @tparam FLAGS
+ * @param flag0 subsystem initialization flags.
+ * @param flag1 subsystem initialization flags.
+ * @param flags subsystem initialization flags.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SetAppMetadata()
+ * @sa SetAppMetadataProperty()
+ * @sa InitSubSystem()
+ * @sa Quit()
+ * @sa SetMainReady()
+ * @sa WasInit()
+ */
+template<class FLAG, class... FLAGS>
+inline bool InitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
+{
+  return InitSubSystem(flag0 | flag1, flags...);
 }
 
 /**
  * Shut down specific SDL subsystems.
  *
- * You still need to call SDL_Quit() even if you close all open subsystems
- * with SDL_QuitSubSystem().
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
  *
- * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
+ * @param flags any of the flags used by Init(); see InitFlags for details.
  *
  * @since This function is available since SDL 3.2.0.
  *
@@ -9816,18 +9927,94 @@ inline bool InitSubSystem(FLAGS... flags)
 inline void QuitSubSystem(InitFlags flags) { return SDL_QuitSubSystem(flags); }
 
 /**
- * Get a mask of the specified subsystems which are currently initialized.
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
+ *
+ * @tparam FLAG0
+ * @tparam FLAG1
+ * @tparam FLAGS
+ * @param flag0 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flag1 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flags any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ */
+template<class FLAG0, class FLAG1, class... FLAGS>
+inline void QuitSubSystem(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
+{
+  if (!QuitSubSystem(flag0)) return;
+  QuitSubSystem(flag1, flags...);
+}
+
+/**
+ * Shut down specific SDL subsystems.
+ *
+ * You still need to call Quit() even if you close all open subsystems with
+ * QuitSubSystem().
+ *
+ * @tparam FLAG
+ * @tparam FLAGS
+ * @param flag0 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flag1 any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ * @param flags any of the flags used by Init(); see InitFlags and
+ * InitFlagsExtra for details.
+ */
+template<class FLAG, class... FLAGS>
+inline void QuitSubSystem(FLAG flag0, FLAG flag1, FLAGS... flags)
+{
+  QuitSubSystem(flag0 | flag1, flags...);
+}
+
+/**
+ * Check if all of the specified subsystems which are currently initialized.
  *
  * @param flags any of the flags used by SDL_Init(); see SDL_Init for details.
- * @returns a mask of all initialized subsystems if `flags` is 0, otherwise it
- *          returns the initialization status of the specified subsystems.
- *
+ * @returns true if all subsystems are currently initialized
  * @since This function is available since SDL 3.2.0.
  *
  * @sa Init()
  * @sa InitSubSystem()
  */
-inline InitFlags WasInit(InitFlags flags) { return SDL_WasInit(flags); }
+inline bool WasInit(InitFlags flags) { return SDL_WasInit(flags) == flags; }
+
+/**
+ * Check if all of the specified subsystems which are currently initialized.
+ *
+ * @tparam FLAG0
+ * @tparam FLAG1
+ * @tparam FLAGS
+ * @param flag0 flag to check
+ * @param flag1 flag to check
+ * @param flags flag to check
+ * @returns true if all subsystems are currently initialized
+ */
+template<class FLAG0, class FLAG1, class... FLAGS>
+inline bool WasInit(FLAG0 flag0, FLAG1 flag1, FLAGS... flags)
+{
+  if (WasInit(flag0)) return WasInit(flag1, flags...);
+  return false;
+}
+
+/**
+ * Check if all of the specified subsystems which are currently initialized.
+ *
+ * @tparam FLAG
+ * @tparam FLAGS
+ * @param flag0 flag to check
+ * @param flag1 flag to check
+ * @param flags flag to check
+ * @returns true if all subsystems are currently initialized
+ */
+template<class FLAG, class... FLAGS>
+inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
+{
+  return WasInit(flag0 | flag1, flags...);
+}
 
 /**
  * Clean up all initialized subsystems.
@@ -9908,7 +10095,7 @@ struct SDL
    * @param flags the flags to test or 0 to test all
    * @return Which subsystem are active
    */
-  static InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
+  InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
 
   /**
    * @brief release locking such as reset() does, but never calls SDL_Quit() or
@@ -9932,8 +10119,6 @@ struct SDL
 
   /// @brief returns true if active and has no errors
   operator bool() const { return active; }
-
-  InitFlags GetCurrentFlags() const { return flags; }
 
 private:
   InitFlags flags = 0;
@@ -10199,7 +10384,7 @@ inline int SDL::refCount(int delta, bool autoQuit)
   if (delta && active) {
     if (delta > 0) {
       refCount += 1;
-      if (flags) active = SDL_InitSubSystem(flags);
+      if (flags) active = InitSubSystem(flags);
     } else {
       SDL_assert_always(refCount > 0);
       active = false;
@@ -10208,9 +10393,9 @@ inline int SDL::refCount(int delta, bool autoQuit)
       if (autoQuit) {
         if (refCount <= 0) {
           // TODO Make this under FLAG
-          SDL_Quit();
+          Quit();
         } else if (flags) {
-          SDL_QuitSubSystem(flags);
+          QuitSubSystem(flags);
         }
       }
     }
@@ -29623,6 +29808,8 @@ struct FontBase : T
  * It is safe to call this more than once, and each successful TTF_Init() call
  * should be paired with a matching TTF_Quit() call.
  *
+ * @param _ An INIT_TTF value;
+ *
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
@@ -29630,7 +29817,7 @@ struct FontBase : T
  *
  * @sa TTF_Quit
  */
-inline bool Init(TtfInitFlag _) { return TTF_Init(); }
+inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
 
 /**
  * Normal hinting applies standard grid-fitting.
