@@ -71,7 +71,7 @@ var searchData=
   ['rendertext_5fshaded_68',['RenderText_Shaded',['../structSDL_1_1FontBase.html#a33ca6ad21695d0116e4e35f390b46680',1,'SDL::FontBase']]],
   ['rendertext_5fshaded_5fwrapped_69',['RenderText_Shaded_Wrapped',['../structSDL_1_1FontBase.html#ab63217313efb3dea3873aee50e0410ce',1,'SDL::FontBase']]],
   ['rendertext_5fsolid_70',['RenderText_Solid',['../structSDL_1_1FontBase.html#a13cc457b4765e888383da7e6b6b2d048',1,'SDL::FontBase']]],
-  ['rendertext_5fsolid_5fwrapped_71',['RenderText_Solid_Wrapped',['../structSDL_1_1FontBase.html#aef65f72b5f54e0ed995e215635e0103c',1,'SDL::FontBase']]],
+  ['rendertext_5fsolid_5fwrapped_71',['RenderText_Solid_Wrapped',['../structSDL_1_1FontBase.html#aca312b387aaa6d12eb53fa8a6f57ee66',1,'SDL::FontBase']]],
   ['rendertexture_72',['RenderTexture',['../structSDL_1_1RendererBase.html#ac685a8eac163763f9dd2fbc1e7c1cc5b',1,'SDL::RendererBase']]],
   ['rendertexture9grid_73',['RenderTexture9Grid',['../structSDL_1_1RendererBase.html#a90d4980a4b7dbaf9e088def788f53d13',1,'SDL::RendererBase']]],
   ['rendertextureaffine_74',['RenderTextureAffine',['../structSDL_1_1RendererBase.html#adc8228728e43fc07ec7e7ac63ff3eb73',1,'SDL::RendererBase']]],

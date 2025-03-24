@@ -1729,8 +1729,8 @@ struct RendererBase : T
    * For the full list of limitations and other useful information, see
    * SDL_RenderDebugText.
    *
-   * @param x the x coordinate where the top-left corner of the text will draw.
-   * @param y the y coordinate where the top-left corner of the text will draw.
+   * @param p the x, y coordinates where the top-left corner of the text will
+   * draw.
    * @param fmt the format string to draw.
    * @param args additional parameters matching {} tokens in the `fmt` string,
    * if any.

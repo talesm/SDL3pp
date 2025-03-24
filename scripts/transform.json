@@ -5979,7 +5979,7 @@
                   "type": "Color"
                 },
                 {
-                  "name": "wrap_width",
+                  "name": "wrapLength",
                   "type": "int"
                 }
               ]

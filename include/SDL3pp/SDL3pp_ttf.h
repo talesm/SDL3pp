@@ -103,8 +103,7 @@ using HorizontalAlignment = TTF_HorizontalAlignment;
  * Direction flags
  *
  * The values here are chosen to match
- * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t)
- * .
+ * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t).
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
@@ -190,7 +189,7 @@ struct FontBase : T
    *
    * @param file path to font file.
    * @param ptsize point size to use for the newly-opened font.
-   * @returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
+   * @post a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -220,7 +219,7 @@ struct FontBase : T
    * @param closeio true to close `src` when the font is closed, false to leave
    *                it open.
    * @param ptsize point size to use for the newly-opened font.
-   * @returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
+   * @post a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -268,7 +267,7 @@ struct FontBase : T
    *   the new font.
    *
    * @param props the properties to use.
-   * @returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
+   * @post a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
    *          information.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -290,7 +289,6 @@ struct FontBase : T
    *
    * When done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.
    *
-   * @param existing_font the font to copy.
    * @returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
    *          information.
    *
@@ -317,7 +315,6 @@ struct FontBase : T
    * - `TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
    *   when setting the font outline, defaults to 0.
    *
-   * @param font the font to query.
    * @returns a valid property ID on success or 0 on failure; call
    *          SDL_GetError() for more information.
    *
@@ -333,7 +330,6 @@ struct FontBase : T
    * The generation is incremented each time font properties change that require
    * rebuilding glyphs, such as style, size, etc.
    *
-   * @param font the font to query.
    * @returns the font generation or 0 on failure; call SDL_GetError() for more
    *          information.
    *
@@ -354,7 +350,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to modify.
    * @param fallback the font to add as a fallback.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -377,7 +372,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to modify.
    * @param fallback the font to remove as a fallback.
    *
    * @threadsafety This function should be called on the thread that created
@@ -398,8 +392,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to modify.
-   *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
@@ -416,7 +408,6 @@ struct FontBase : T
    * This updates any TTF_Text objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
-   * @param font the font to resize.
    * @param ptsize the new point size.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -436,7 +427,6 @@ struct FontBase : T
    * This updates any TTF_Text objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
-   * @param font the font to resize.
    * @param ptsize the new point size.
    * @param hdpi the target horizontal DPI.
    * @param vdpi the target vertical DPI.
@@ -459,7 +449,6 @@ struct FontBase : T
   /**
    * Get the size of a font.
    *
-   * @param font the font to query.
    * @returns the size of the font, or 0.0f on failure; call SDL_GetError() for
    *          more information.
    *
@@ -476,7 +465,6 @@ struct FontBase : T
   /**
    * Get font target resolutions, in dots per inch.
    *
-   * @param font the font to query.
    * @param hdpi a pointer filled in with the target horizontal DPI.
    * @param vdpi a pointer filled in with the target vertical DPI.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -508,7 +496,6 @@ struct FontBase : T
    * - `TTF_STYLE_UNDERLINE`
    * - `TTF_STYLE_STRIKETHROUGH`
    *
-   * @param font the font to set a new style on.
    * @param style the new style values to set, OR'd together.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -534,7 +521,6 @@ struct FontBase : T
    * - `TTF_STYLE_UNDERLINE`
    * - `TTF_STYLE_STRIKETHROUGH`
    *
-   * @param font the font to query.
    * @returns the current font style, as a set of bit flags.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -555,7 +541,6 @@ struct FontBase : T
    * This updates any TTF_Text objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
-   * @param font the font to set a new outline on.
    * @param outline positive outline value, 0 to default.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -572,7 +557,6 @@ struct FontBase : T
   /**
    * Query a font's current outline.
    *
-   * @param font the font to query.
    * @returns the font's current outline value.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -597,7 +581,6 @@ struct FontBase : T
    * - `TTF_HINTING_NONE`
    * - `TTF_HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)
    *
-   * @param font the font to set a new hinter setting on.
    * @param hinting the new hinter setting.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -615,7 +598,6 @@ struct FontBase : T
   /**
    * Query the number of faces of a font.
    *
-   * @param font the font to query.
    * @returns the number of FreeType font faces.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -635,7 +617,6 @@ struct FontBase : T
    * - `TTF_HINTING_NONE`
    * - `TTF_HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)
    *
-   * @param font the font to query.
    * @returns the font's current hinter value.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -658,7 +639,6 @@ struct FontBase : T
    * This updates any TTF_Text objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
-   * @param font the font to set SDF support on.
    * @param enabled true to enable SDF, false to disable.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -675,7 +655,6 @@ struct FontBase : T
   /**
    * Query whether Signed Distance Field rendering is enabled for a font.
    *
-   * @param font the font to query.
    * @returns true if enabled, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -691,7 +670,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to set a new wrap alignment option on.
    * @param align the new wrap alignment option.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -709,7 +687,6 @@ struct FontBase : T
   /**
    * Query a font's current wrap alignment option.
    *
-   * @param font the font to query.
    * @returns the font's current wrap alignment option.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -728,7 +705,6 @@ struct FontBase : T
    *
    * This is usually equal to point size.
    *
-   * @param font the font to query.
    * @returns the font's height.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -742,7 +718,6 @@ struct FontBase : T
    *
    * This is a positive value, relative to the baseline.
    *
-   * @param font the font to query.
    * @returns the font's ascent.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -756,7 +731,6 @@ struct FontBase : T
    *
    * This is a negative value, relative to the baseline.
    *
-   * @param font the font to query.
    * @returns the font's descent.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -770,7 +744,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to modify.
    * @param lineskip the new line spacing for the font.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -788,7 +761,6 @@ struct FontBase : T
   /**
    * Query the spacing between lines of text for a font.
    *
-   * @param font the font to query.
    * @returns the font's recommended spacing.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -809,7 +781,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to set kerning on.
    * @param enabled true to enable kerning, false to disable.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -827,7 +798,6 @@ struct FontBase : T
   /**
    * Query whether or not kerning is enabled for a font.
    *
-   * @param font the font to query.
    * @returns true if kerning is enabled, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -847,7 +817,6 @@ struct FontBase : T
    * text as a grid. Most other things (WYSIWYG word processors, web pages, etc)
    * are more likely to not be fixed-width in most cases.
    *
-   * @param font the font to query.
    * @returns true if the font is fixed-width, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -861,7 +830,6 @@ struct FontBase : T
    *
    * Scalability lets us distinguish between outline and bitmap fonts.
    *
-   * @param font the font to query.
    * @returns true if the font is scalable, false otherwise.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -881,7 +849,6 @@ struct FontBase : T
    * modified or free'd by the caller. The string becomes invalid, with the rest
    * of the font, when `font` is handed to TTF_CloseFont().
    *
-   * @param font the font to query.
    * @returns the font's family name.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -899,7 +866,6 @@ struct FontBase : T
    * modified or free'd by the caller. The string becomes invalid, with the rest
    * of the font, when `font` is handed to TTF_CloseFont().
    *
-   * @param font the font to query.
    * @returns the font's style name.
    *
    * @threadsafety It is safe to call this function from any thread.
@@ -916,7 +882,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to modify.
    * @param direction the new direction for text to flow.
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
@@ -936,7 +901,6 @@ struct FontBase : T
    *
    * This defaults to TTF_DIRECTION_INVALID if it hasn't been set.
    *
-   * @param font the font to query.
    * @returns the direction to be used for text shaping.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -953,11 +917,8 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to modify.
    * @param script an
-   *               [ISO 15924
-   * code](https://unicode.org/iso15924/iso15924-codes.html)
-   *               .
+   * [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html).
    * @returns true on success or false on failure; call SDL_GetError() for more
    *          information.
    *
@@ -973,10 +934,9 @@ struct FontBase : T
   /**
    * Get the script used for text shaping a font.
    *
-   * @param font the font to query.
    * @returns an
-   *          [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
-   *          or 0 if a script hasn't been set.
+   * [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html) or 0 if
+   * a script hasn't been set.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -1015,7 +975,6 @@ struct FontBase : T
    *
    * This updates any TTF_Text objects using this font.
    *
-   * @param font the font to specify a language for.
    * @param language_bcp47 a null-terminated string containing the desired
    *                       language's BCP47 code. Or null to reset the value.
    * @returns true on success or false on failure; call SDL_GetError() for more
@@ -1034,7 +993,6 @@ struct FontBase : T
   /**
    * Check whether a glyph is provided by the font for a UNICODE codepoint.
    *
-   * @param font the font to query.
    * @param ch the codepoint to check.
    * @returns true if font provides a glyph for this character, false if not.
    *
@@ -1048,7 +1006,6 @@ struct FontBase : T
   /**
    * Get the pixel image for a UNICODE codepoint.
    *
-   * @param font the font to query.
    * @param ch the codepoint to check.
    * @param image_type a pointer filled in with the glyph image type, may be
    *                   NULL.
@@ -1071,7 +1028,6 @@ struct FontBase : T
    * This is useful for text engine implementations, which can call this with
    * the `glyph_index` in a TTF_CopyOperation
    *
-   * @param font the font to query.
    * @param glyph_index the index of the glyph to return.
    * @param image_type a pointer filled in with the glyph image type, may be
    *                   NULL.
@@ -1096,7 +1052,6 @@ struct FontBase : T
    *
    * https://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html
    *
-   * @param font the font to query.
    * @param ch the codepoint to check.
    * @param minx a pointer filled in with the minimum x coordinate of the glyph
    *             from the left edge of its bounding box. This value may be
@@ -1131,13 +1086,10 @@ struct FontBase : T
   /**
    * Query the kerning size between the glyphs of two UNICODE codepoints.
    *
-   * @param font the font to query.
    * @param previous_ch the previous codepoint.
    * @param ch the current codepoint.
-   * @param kerning a pointer filled in with the kerning size between the two
-   *                glyphs, in pixels, may be NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
+   * @returns the kerning size between the two glyphs, in pixels, on success or
+   * false on failure; call GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -1305,10 +1257,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Shaded,
    * TTF_RenderText_Blended, and TTF_RenderText_LCD.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @returns a new 8-bit, palettized surface, or NULL if there was an error.
    *
@@ -1343,10 +1292,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Shaded_Wrapped,
    * TTF_RenderText_Blended_Wrapped, and TTF_RenderText_LCD_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @param wrapLength the maximum width of the text surface or 0 to wrap on
    *                   newline characters.
@@ -1364,10 +1310,10 @@ struct FontBase : T
    */
   Surface RenderText_Solid_Wrapped(std::string_view text,
                                    Color fg,
-                                   int wrap_width) const
+                                   int wrapLength) const
   {
     return TTF_RenderText_Solid_Wrapped(
-      T::get(), text.data(), text.size(), fg, wrap_width);
+      T::get(), text.data(), text.size(), fg, wrapLength);
   }
 
   /**
@@ -1383,7 +1329,6 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderGlyph_Shaded,
    * TTF_RenderGlyph_Blended, and TTF_RenderGlyph_LCD.
    *
-   * @param font the font to render with.
    * @param ch the character to render.
    * @param fg the foreground color for the text.
    * @returns a new 8-bit, palettized surface, or NULL if there was an error.
@@ -1420,10 +1365,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Solid,
    * TTF_RenderText_Blended, and TTF_RenderText_LCD.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
    * @returns a new 8-bit, palettized surface, or NULL if there was an error.
@@ -1459,10 +1401,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Solid_Wrapped,
    * TTF_RenderText_Blended_Wrapped, and TTF_RenderText_LCD_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -1502,7 +1441,6 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderGlyph_Solid,
    * TTF_RenderGlyph_Blended, and TTF_RenderGlyph_LCD.
    *
-   * @param font the font to render with.
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -1539,10 +1477,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Solid,
    * TTF_RenderText_Shaded, and TTF_RenderText_LCD.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
    *
@@ -1576,10 +1511,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Solid_Wrapped,
    * TTF_RenderText_Shaded_Wrapped, and TTF_RenderText_LCD_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
    *                   newline characters.
@@ -1616,7 +1548,6 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderGlyph_Solid,
    * TTF_RenderGlyph_Shaded, and TTF_RenderGlyph_LCD.
    *
-   * @param font the font to render with.
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
    * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
@@ -1652,10 +1583,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Solid,
    * TTF_RenderText_Shaded, and TTF_RenderText_Blended.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
    * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
@@ -1691,10 +1619,7 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderText_Solid_Wrapped,
    * TTF_RenderText_Shaded_Wrapped, and TTF_RenderText_Blended_Wrapped.
    *
-   * @param font the font to render with.
    * @param text text to render, in UTF-8 encoding.
-   * @param length the length of the text, in bytes, or 0 for null terminated
-   *               text.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
@@ -1734,7 +1659,6 @@ struct FontBase : T
    * You can render at other quality levels with TTF_RenderGlyph_Solid,
    * TTF_RenderGlyph_Shaded, and TTF_RenderGlyph_Blended.
    *
-   * @param font the font to render with.
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
@@ -1765,8 +1689,6 @@ struct FontBase : T
    * from functions that return information on this font, such as
    * TTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid
    * after this call, as well.
-   *
-   * @param font the font to dispose of.
    *
    * @threadsafety This function should not be called while any other thread is
    *               using the font.
@@ -2455,9 +2377,7 @@ inline Direction GetTextDirection(Text* text)
  *
  * @param text the text to modify.
  * @param script an
- *               [ISO 15924
- * code](https://unicode.org/iso15924/iso15924-codes.html)
- *               .
+ * [ISO 15924 * code](https://unicode.org/iso15924/iso15924-codes.html).
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
@@ -3017,6 +2937,7 @@ inline bool GetTextSubStringForPoint(Text* text,
  *
  * @param text the TTF_Text to query.
  * @param substring the TTF_SubString to query.
+ * @param previous a pointer filled in with the previous substring.
  * @returns true on success or false on failure; call SDL_GetError() for more
  *          information.
  *
