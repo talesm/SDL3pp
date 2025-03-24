@@ -83,6 +83,8 @@ $(function() {
 
 <p>Represents a handle to a window.  
  <a href="structSDL_1_1WindowBase.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SDL::WindowBase&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -106,7 +108,7 @@ Collaboration diagram for SDL::WindowBase&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a82df25d3ef02bd3e3ad69480547f5614" id="r_a82df25d3ef02bd3e3ad69480547f5614"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614">WindowBase</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> flags=0)</td></tr>
+<tr class="memitem:a82df25d3ef02bd3e3ad69480547f5614" id="r_a82df25d3ef02bd3e3ad69480547f5614"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614">WindowBase</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> title, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> flags=0)</td></tr>
 <tr class="memdesc:a82df25d3ef02bd3e3ad69480547f5614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a window with the specified dimensions and flags.  <br /></td></tr>
 <tr class="separator:a82df25d3ef02bd3e3ad69480547f5614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb74480c07b4832be01028e828f23284" id="r_acb74480c07b4832be01028e828f23284"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#acb74480c07b4832be01028e828f23284">WindowBase</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> parent, SDL_Point offset, SDL_Point size, <a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> flags=0)</td></tr>
@@ -148,7 +150,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a25a4b4b4781403ab4422e0d408783b05" id="r_a25a4b4b4781403ab4422e0d408783b05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a25a4b4b4781403ab4422e0d408783b05">GetFlags</a> () const</td></tr>
 <tr class="memdesc:a25a4b4b4781403ab4422e0d408783b05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the window flags.  <br /></td></tr>
 <tr class="separator:a25a4b4b4781403ab4422e0d408783b05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71234a32ca6fc918001ae9068f182375" id="r_a71234a32ca6fc918001ae9068f182375"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a71234a32ca6fc918001ae9068f182375">SetTitle</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> title)</td></tr>
+<tr class="memitem:a71234a32ca6fc918001ae9068f182375" id="r_a71234a32ca6fc918001ae9068f182375"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#a71234a32ca6fc918001ae9068f182375">SetTitle</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> title)</td></tr>
 <tr class="memdesc:a71234a32ca6fc918001ae9068f182375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the title of a window.  <br /></td></tr>
 <tr class="separator:a71234a32ca6fc918001ae9068f182375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa89aeab4b9966165a28017025986d28a" id="r_aa89aeab4b9966165a28017025986d28a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1WindowBase.html#aa89aeab4b9966165a28017025986d28a">GetTitle</a> () const</td></tr>
@@ -322,15 +324,12 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt;<br />
-struct SDL::WindowBase&lt; T &gt;</div><p>Represents a handle to a window. </p>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+struct SDL::WindowBase&lt; T &gt;</div><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>
 <a class="el" href="group__CategoryVideo.html#gadc7408c6cf3381faad6fc9ec0ef39847" title="Handle to an owned window.">Window</a> </dd>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066" title="Handle to a non owned window.">WindowRef</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00842">842</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a82df25d3ef02bd3e3ad69480547f5614" name="a82df25d3ef02bd3e3ad69480547f5614"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a82df25d3ef02bd3e3ad69480547f5614">&#9670;&#160;</a></span>WindowBase() <span class="overload">[1/3]</span></h2>
@@ -346,7 +345,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::WindowBase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>title</em>, </td>
         </tr>
         <tr>
@@ -373,8 +372,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a window with the specified dimensions and flags. </p>
 <p><code>flags</code> may be any of the following OR'd together:</p>
 <ul>
 <li><code>SDL_WINDOW_FULLSCREEN</code>: fullscreen window at desktop resolution</li>
@@ -422,8 +419,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d" title="Create a window and default renderer.">CreateWindowAndRenderer()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00926">926</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -474,8 +469,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a child popup window of the specified parent window. </p>
 <p>The flags parameter <b>must</b> contain at least one of the following:</p>
 <ul>
 <li><code>SDL_WINDOW_TOOLTIP</code>: The popup window is a tooltip and will not pass any input events.</li>
@@ -511,8 +504,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a59eef9c52d3ed116d3a61c4082b13a93" title="Get parent of a window.">GetParent()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00985">985</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
 </div>
 </div>
 <a id="aa53f308f46a1c76ec83d6f1e204def89" name="aa53f308f46a1c76ec83d6f1e204def89"></a>
@@ -540,8 +531,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a window with the specified properties. </p>
 <p>These are the supported properties:</p>
 <ul>
 <li><code>SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN</code>: true if the window should be always on top</li>
@@ -605,8 +594,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dd>
 <a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5" title="Handle to an owned properties.">Properties</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01114">1114</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -634,14 +621,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Destroy a window. </p>
 <p>Any child windows owned by the window will be recursively destroyed as well.</p>
 <p>Note that on some platforms, the visible window may not actually be removed from the screen until the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> event loop is pumped again, even though the SDL_Window is no longer valid after this call.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02792">2792</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -669,16 +652,12 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Destroy the surface associated with the window. </p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#abdc683dcdc473d25d7489a429ec35fa5" title="Get the SDL surface associated with the window.">GetSurface()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a3323af4fd14511ce3074a2d0840665bb" title="Return whether the window has a surface associated with it.">HasSurface()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02364">2364</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -707,8 +686,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request a window to demand attention from the user. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">operation</td><td>the operation to perform. </td></tr>
@@ -718,8 +695,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02773">2773</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -758,8 +733,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a window's client area. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">min_aspect</td><td>a pointer filled in with the minimum aspect ratio of the window, may be NULL. </td></tr>
@@ -771,8 +744,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SetspectRatio() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01769">1769</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -823,8 +794,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a window's borders (decorations) around the client area. </p>
 <p>Note: If this function fails (returns false), the size values will be initialized to 0, 0, 0, 0 (if a non-NULL pointer is provided), as if the window in question was borderless.</p>
 <p>Note: This function may fail on systems where the window has not yet been decorated by the display server (for example, immediately after calling <a class="el" href="structSDL_1_1WindowBase.html#a82df25d3ef02bd3e3ad69480547f5614" title="Create a window with the specified dimensions and flags.">WindowBase::WindowBase()</a>). It is recommended that you wait at least until the window has been presented and composited, so that the window system has a chance to decorate the window and provide the border dimensions to <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>.</p>
 <p>This function also returns false if getting the information is not supported.</p>
@@ -841,8 +810,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a9c7cdebba6f3911ed72e1bfbae7747e6" title="Get the size of a window&#39;s client area.">GetSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01807">1807</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -870,11 +837,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the display associated with a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the display containing the center of the window on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01126">1126</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -902,14 +865,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the content display scale relative to a window's pixel size. </p>
 <p>This is a combination of the window pixel density and the display content scale, and is the expected scale for displaying content in this window. For example, if a 3840x2160 window had a display scale of 2.0, the user expects the content to take twice as many pixels and be the same physical size as if it were being displayed in a 1920x1080 window with a display scale of 1.0.</p>
 <p>Conceptually this value corresponds to the scale display setting, and is updated when that setting is changed, or the window moves to a display with a different scale setting.</p>
 <dl class="section return"><dt>Returns</dt><dd>the display scale, or 0.0f on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01163">1163</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -937,8 +896,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the window flags. </p>
 <dl class="section return"><dt>Returns</dt><dd>a mask of the SDL_WindowFlags associated with <code>window</code>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -953,8 +910,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a5697f649732d90c479758befb7ef8426" title="Show a window.">Show()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01417">1417</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -982,16 +937,12 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the display mode to use when a window is visible at fullscreen. </p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the exclusive fullscreen mode to use or NULL for borderless fullscreen desktop mode.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a250d0a52a35036c577173ff3a60a138f" title="Set the display mode to use when a window is visible and fullscreen.">SetFullscreenMode()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a20e380d4c0f9c08ec3387853b75fdb6a" title="Request that the window&#39;s fullscreen state be changed.">SetFullscreen()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01215">1215</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1020,8 +971,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the raw ICC profile data for the screen the window is currently on. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">size</td><td>the size of the ICC profile. </td></tr>
@@ -1031,8 +980,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the raw ICC profile data on success or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. This should be freed with SDL_free() when it is no longer needed.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01232">1232</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1060,13 +1007,9 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get a window from a stored ID. </p>
 <p>The numeric ID is what SDL_WindowEvent references, and is necessary to map these events to specific SDL_Window objects.</p>
 <dl class="section return"><dt>Returns</dt><dd>the ID of the window on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01264">1264</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1094,14 +1037,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get a window's keyboard grab mode. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if keyboard is grabbed, and false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02435">2435</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1140,8 +1079,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the maximum size of a window's client area. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">w</td><td>a pointer filled in with the maximum width of the window, may be NULL. </td></tr>
@@ -1155,8 +1092,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a36a12f53d4ea2d6d467605c7ae112453" title="Get the minimum size of a window&#39;s client area.">GetMinimumSize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a51741a99b88d4668ea4198ad62e8e093" title="Set the maximum size of a window&#39;s client area.">SetMaximumSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01929">1929</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1195,8 +1130,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the minimum size of a window's client area. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">w</td><td>a pointer filled in with the minimum width of the window, may be NULL. </td></tr>
@@ -1210,8 +1143,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a0b64a61bfa0c3ada273be3f3c51121a1" title="Get the maximum size of a window&#39;s client area.">GetMaximumSize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#aa0765b664547d3d048d8fc9dace25082" title="Set the minimum size of a window&#39;s client area.">SetMinimumSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01888">1888</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1239,8 +1170,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get a window's mouse grab mode. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if mouse is grabbed, and false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -1251,8 +1180,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02451">2451</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1280,8 +1207,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the mouse confinement rectangle of a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the mouse confinement rectangle of a window, or NULL if there isn't one.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -1290,8 +1215,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#ae3c56bba66cffdf46ade7aefaa70ba9a" title="Get a window&#39;s mouse grab mode.">GetMouseGrab()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02491">2491</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1319,15 +1242,11 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the opacity of a window. </p>
 <p>If transparency isn't supported on this platform, opacity will be returned as 1.0f without error.</p>
 <dl class="section return"><dt>Returns</dt><dd>the opacity, (0.0f - transparent, 1.0f - opaque), or -1.0f on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a8f9d58a02dc960f280d967f8ffa132d9" title="Set the opacity for a window.">SetOpacity()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02531">2531</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1355,13 +1274,9 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get parent of a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>the parent of the window on success or NULL if the window has no parent.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01276">1276</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1389,14 +1304,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the pixel density of a window. </p>
 <p>This is a ratio of pixel size to window size. For example, if the window is 1920x1080 and it has a high density back buffer of 3840x2160 pixels, it would have a pixel density of 2.0.</p>
 <dl class="section return"><dt>Returns</dt><dd>the pixel density or 0.0f on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a75077a1e44bec472624f3b5ac47de3c8" title="Get the content display scale relative to a window&#39;s pixel size.">WindowBase.GetDisplayScale()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01142">1142</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1424,13 +1335,9 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the pixel format associated with the window. </p>
 <dl class="section return"><dt>Returns</dt><dd>the pixel format of the window on success or SDL_PIXELFORMAT_UNKNOWN on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01248">1248</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1458,8 +1365,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the position of a window. </p>
 <p>This is the current position of the window as last reported by the windowing system.</p>
 <dl class="section return"><dt>Returns</dt><dd>the position on success or false on std::nullopt; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
@@ -1467,8 +1372,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a89a23881e6b70255345e9595eb6bccc0" title="Request that the window&#39;s position be set.">SetPosition()</a> </dd>
 <dd>
 SetPosition(int *, int *) </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01569">1569</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1507,8 +1410,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the position of a window. </p>
 <p>This is the current position of the window as last reported by the windowing system.</p>
 <p>If you do not need the value for one of the positions a NULL may be passed in the <code>x</code> or <code>y</code> parameter.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1522,8 +1423,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a89a23881e6b70255345e9595eb6bccc0" title="Request that the window&#39;s position be set.">SetPosition()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01597">1597</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1551,8 +1450,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the properties associated with a window. </p>
 <p>The following read-only properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
 <li><code>SDL_PROP_WINDOW_SHAPE_POINTER</code>: the surface associated with a shaped window</li>
@@ -1622,8 +1519,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or falsy one on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01396">1396</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
 </div>
 </div>
 <a id="ae259269807027a30ffd9b2705f5cb0f7" name="ae259269807027a30ffd9b2705f5cb0f7"></a>
@@ -1650,13 +1545,9 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the position and client size of a window. </p>
 <p>This is the current position of the window as last reported by the windowing system.</p>
 <p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use SDL_GetWindowSizeInPixels() or SDL_GetRenderOutputSize() to get the real client area size in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd>std::optional&lt;Rect&gt; </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01505">1505</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1684,13 +1575,9 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the renderer associated with a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>the rendering context on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02916">2916</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1718,14 +1605,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the safe area for this window. </p>
 <p>Some devices have portions of the screen which are partially obscured or not interactive, possibly due to on-screen controls, curved edges, camera notches, TV overscan, etc. This function provides the area of the window which is safe to have interactable content. You should continue rendering into the rest of the window, but it should not contain visually important or interactible content.</p>
 <dl class="section return"><dt>Returns</dt><dd>the client area that is safe for interactive content on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01704">1704</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1753,21 +1636,17 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a window's client area. </p>
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#ab236f258e24873123729491a7e11fc58" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#aaffe3a24cc96cd303be80238b537f00b">Renderer.GetOutputSize()</a> to get the real client area size in pixels.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#ab236f258e24873123729491a7e11fc58" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or Renderer.GetOutputSize() to get the real client area size in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd>a point with width and height on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aaffe3a24cc96cd303be80238b537f00b">Renderer.GetOutputSize()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Renderer.GetOutputSize() </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#ab236f258e24873123729491a7e11fc58" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3" title="Request that the size of a window&#39;s client area be set.">SetSize()</a> </dd>
 <dd>
 GetSize(int *, int *) </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01656">1656</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1806,9 +1685,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a window's client area. </p>
-<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#ab236f258e24873123729491a7e11fc58" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or <a class="el" href="structSDL_1_1RendererBase.html#aaffe3a24cc96cd303be80238b537f00b">Renderer.GetOutputSize()</a> to get the real client area size in pixels.</p>
+<p>The window pixel size may differ from its window coordinate size if the window is on a high pixel density display. Use <a class="el" href="structSDL_1_1WindowBase.html#ab236f258e24873123729491a7e11fc58" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> or Renderer.GetOutputSize() to get the real client area size in pixels.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">w</td><td>a pointer filled in with the width of the window, may be NULL. </td></tr>
@@ -1819,13 +1696,11 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aaffe3a24cc96cd303be80238b537f00b">Renderer.GetOutputSize()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>Renderer.GetOutputSize() </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#ab236f258e24873123729491a7e11fc58" title="Get the size of a window&#39;s client area, in pixels.">GetSizeInPixels()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3" title="Request that the size of a window&#39;s client area be set.">SetSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01682">1682</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1853,16 +1728,12 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a window's client area, in pixels. </p>
 <dl class="section return"><dt>Returns</dt><dd>the size on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a9c7cdebba6f3911ed72e1bfbae7747e6" title="Get the size of a window&#39;s client area.">GetSize()</a> </dd>
 <dd>
 GetSizeInPixels(int*, int*) </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01825">1825</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1901,8 +1772,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a window's client area, in pixels. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">w</td><td>a pointer to variable for storing the width in pixels, may be NULL. </td></tr>
@@ -1914,8 +1783,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a9c7cdebba6f3911ed72e1bfbae7747e6" title="Get the size of a window&#39;s client area.">GetSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01847">1847</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1943,8 +1810,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> surface associated with the window. </p>
 <p>A new surface will be created with the optimal format for the window, if necessary. This surface will be freed when the window is destroyed. Do not free this surface.</p>
 <p>This surface will be invalidated if the window is resized. After resizing a window this function must be called again to return a valid surface.</p>
 <p>You may not combine this with 3D or the rendering API on this window.</p>
@@ -1957,8 +1822,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#ac7f41ac26be0841520d8cbb42e63ed33" title="Copy the window surface to the screen.">UpdateSurface()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a439ff2ab8a4ea8b8b4cdf5fd88a4d3b2" title="Copy areas of the window surface to the screen.">UpdateSurfaceRects()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02252">2252</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -1986,14 +1849,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get VSync for the window surface. </p>
 <dl class="section return"><dt>Returns</dt><dd>the current vertical refresh sync interval on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#ad2678f94ed335e4c66c9e08304a90aaf" title="Toggle VSync for the window surface.">SetSurfaceVSync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02294">2294</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2021,14 +1880,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the title of a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>the title of the window in UTF-8 format or "" if there is no title.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a71234a32ca6fc918001ae9068f182375" title="Set the title of a window.">SetTitle()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01451">1451</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2056,13 +1911,9 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Return whether the window has a surface associated with it. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if there is a surface associated with the window, or false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#abdc683dcdc473d25d7489a429ec35fa5" title="Get the SDL surface associated with the window.">WindowBase.GetSurface()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02227">2227</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2090,16 +1941,12 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Hide a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a5697f649732d90c479758befb7ef8426" title="Show a window.">Show()</a> </dd>
 <dd>
 SDL_WINDOW_HIDDEN </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02031">2031</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2127,8 +1974,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that the window be made as large as possible. </p>
 <p>Non-resizable windows can't be maximized. The window must have the SDL_WINDOW_RESIZABLE flag set, or this will have no effect.</p>
 <p>On some windowing systems this request is asynchronous and the new window state may not have have been applied immediately upon the return of this function. If an immediate change is required, call SDL_SyncWindow() to block until the changes have taken effect.</p>
 <p>When the window state changes, an SDL_EVENT_WINDOW_MAXIMIZED event will be emitted. Note that, as this is just a request, the windowing system can deny the state change.</p>
@@ -2141,8 +1986,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2" title="Request that the size and position of a minimized or maximized window be restored.">Restore()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02083">2083</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2170,8 +2013,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that the window be minimized to an iconic representation. </p>
 <p>If the window is in a fullscreen state, this request has no direct effect. It may alter the state the window is returned to when leaving fullscreen.</p>
 <p>On some windowing systems this request is asynchronous and the new window state may not have been applied immediately upon the return of this function. If an immediate change is required, call SDL_SyncWindow() to block until the changes have taken effect.</p>
 <p>When the window state changes, an SDL_EVENT_WINDOW_MINIMIZED event will be emitted. Note that, as this is just a request, the windowing system can deny the state change.</p>
@@ -2183,8 +2024,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2" title="Request that the size and position of a minimized or maximized window be restored.">Restore()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02111">2111</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2212,14 +2051,10 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that a window be raised above other windows and gain the input focus. </p>
 <p>The result of this request is subject to desktop window manager policy, particularly if raising the requested window would result in stealing focus from another application. If the window is successfully raised and gains input focus, an SDL_EVENT_WINDOW_FOCUS_GAINED event will be emitted, and the window will have the SDL_WINDOW_INPUT_FOCUS flag set.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02050">2050</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2247,8 +2082,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that the size and position of a minimized or maximized window be restored. </p>
 <p>If the window is in a fullscreen state, this request has no direct effect. It may alter the state the window is returned to when leaving fullscreen.</p>
 <p>On some windowing systems this request is asynchronous and the new window state may not have have been applied immediately upon the return of this function. If an immediate change is required, call SDL_SyncWindow() to block until the changes have taken effect.</p>
 <p>When the window state changes, an SDL_EVENT_WINDOW_RESTORED event will be emitted. Note that, as this is just a request, the windowing system can deny the state change.</p>
@@ -2260,8 +2093,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#ab4791bd71e83da23414a50725aabfb73" title="Request that the window be minimized to an iconic representation.">Minimize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02140">2140</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2290,8 +2121,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the window to always be above the others. </p>
 <p>This will add or remove the window's <code>SDL_WINDOW_ALWAYS_ON_TOP</code> flag. This will bring the window to the front and keep the window above the rest.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2303,8 +2132,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a25a4b4b4781403ab4422e0d408783b05" title="Get the window flags.">GetFlags()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01998">1998</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2343,8 +2170,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that the aspect ratio of a window's client area be set. </p>
 <p>The aspect ratio is the ratio of width divided by height, e.g. 2560x1600 would be 1.6. Larger aspect ratios are wider and smaller aspect ratios are narrower.</p>
 <p>If, at the time of this request, the window in a fixed-size state, such as maximized or fullscreen, the request will be deferred until the window exits this state and becomes resizable again.</p>
 <p>On some windowing systems, this request is asynchronous and the new window aspect ratio may not have have been applied immediately upon the return of this function. If an immediate change is required, call SDL_SyncWindow() to block until the changes have taken effect.</p>
@@ -2362,8 +2187,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a444bb72b41d352bedd387a488864a918" title="Get the size of a window&#39;s client area.">GetAspectRatio()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01748">1748</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2392,8 +2215,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the border state of a window. </p>
 <p>This will add or remove the window's <code>SDL_WINDOW_BORDERLESS</code> flag and add or remove the border from the actual window. This is a no-op if the window's border already matches the requested state.</p>
 <p>You can't change the border state of a fullscreen window.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2406,8 +2227,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a25a4b4b4781403ab4422e0d408783b05" title="Get the window flags.">GetFlags()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01953">1953</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2436,8 +2255,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set whether the window may have input focus. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">focusable</td><td>true to allow input focus, false to not allow input focus. </td></tr>
@@ -2447,8 +2264,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02600">2600</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2477,8 +2292,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that the window's fullscreen state be changed. </p>
 <p>By default a window in fullscreen state uses borderless fullscreen desktop mode, but a specific exclusive display mode can be set using SDL_SetWindowFullscreenMode().</p>
 <p>On some windowing systems this request is asynchronous and the new fullscreen state may not have have been applied immediately upon the return of this function. If an immediate change is required, call SDL_SyncWindow() to block until the changes have taken effect.</p>
 <p>When the window state changes, an SDL_EVENT_WINDOW_ENTER_FULLSCREEN or SDL_EVENT_WINDOW_LEAVE_FULLSCREEN event will be emitted. Note that, as this is just a request, it can be denied by the windowing system.</p>
@@ -2498,8 +2311,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd>
 <dd>
 SDL_WINDOW_FULLSCREEN </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02171">2171</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2528,8 +2339,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the display mode to use when a window is visible and fullscreen. </p>
 <p>This only affects the display mode used when the window is fullscreen. To change the window size when the window is not fullscreen, use SDL_SetWindowSize().</p>
 <p>If the window is currently in the fullscreen state, this request is asynchronous on some windowing systems and the new mode dimensions may not be applied immediately upon the return of this function. If an immediate change is required, call SDL_SyncWindow() to block until the changes have taken effect.</p>
 <p>When the new mode takes effect, an SDL_EVENT_WINDOW_RESIZED and/or an SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED event will be emitted with the new mode dimensions.</p>
@@ -2547,8 +2356,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a20e380d4c0f9c08ec3387853b75fdb6a" title="Request that the window&#39;s fullscreen state be changed.">SetFullscreen()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01197">1197</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2587,8 +2394,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Provide a callback that decides if a window region has special properties. </p>
 <p>Normally windows are dragged and resized by decorations provided by the system window manager (a title bar, borders, etc), but for some apps, it makes sense to drag them from somewhere else inside the window itself; for example, one might have a borderless window that wants to be draggable from any part, or simulate its own title bar, etc.</p>
 <p>This function lets the app provide a callback that designates pieces of a given window as special. This callback is run during event processing if we need to tell the OS to treat a region of the window specially; the use of this callback is known as "hit testing."</p>
 <p>Mouse input may not be delivered to your application if it is within a special area; the OS will often apply that input to moving the window or resizing the window and not deliver it to the application.</p>
@@ -2605,8 +2410,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02727">2727</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2635,8 +2438,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Provide a callback that decides if a window region has special properties. </p>
 <p>Normally windows are dragged and resized by decorations provided by the system window manager (a title bar, borders, etc), but for some apps, it makes sense to drag them from somewhere else inside the window itself; for example, one might have a borderless window that wants to be draggable from any part, or simulate its own title bar, etc.</p>
 <p>This function lets the app provide a callback that designates pieces of a given window as special. This callback is run during event processing if we need to tell the OS to treat a region of the window specially; the use of this callback is known as "hit testing."</p>
 <p>Mouse input may not be delivered to your application if it is within a special area; the OS will often apply that input to moving the window or resizing the window and not deliver it to the application.</p>
@@ -2654,8 +2455,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>listener-callback</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#listener-callback">Listener callback</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02674">2674</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2684,8 +2483,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the icon for a window. </p>
 <p>If this function is passed a surface with alternate representations, the surface will be interpreted as the content to be used for 100% display scale, and the alternate representations will be used for high DPI situations. For example, if the original surface is 32x32, then on a 2x macOS display or 200% display scale on Windows, a 64x64 version of the image will be used, if available. If a matching version of the image isn't available, the closest larger size image will be downscaled to the appropriate size and be used instead, if available. Otherwise, the closest smaller image will be upscaled and be used instead.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2696,8 +2493,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01474">1474</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2726,8 +2521,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a window's keyboard grab mode. </p>
 <p>Keyboard grab enables capture of system keyboard shortcuts like Alt+Tab or the Meta/Super key. Note that not all system keyboard shortcuts can be captured by applications (one example is Ctrl+Alt+Del on Windows).</p>
 <p>This is primarily intended for specialized applications such as VNC clients or VM frontends. Normal games should not use keyboard grab.</p>
 <p>When keyboard grab is enabled, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will continue to handle Alt+Tab when the window is full-screen to ensure the user is not trapped in your application. If you have a custom keyboard shortcut to exit fullscreen mode, you may suppress this behavior with <code>SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED</code>.</p>
@@ -2744,8 +2537,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a0c44f7ffd50e28265cfc9ef18a2b8760" title="Get a window&#39;s keyboard grab mode.">GetKeyboardGrab()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02396">2396</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2774,8 +2565,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the maximum size of a window's client area. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the maximum width and height of the window, or 0 for no limit. </td></tr>
@@ -2788,8 +2577,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a0b64a61bfa0c3ada273be3f3c51121a1" title="Get the maximum size of a window&#39;s client area.">GetMaximumSize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#aa0765b664547d3d048d8fc9dace25082" title="Set the minimum size of a window&#39;s client area.">SetMinimumSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01907">1907</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2818,8 +2605,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the minimum size of a window's client area. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the minimum width and height of the window, or 0 for no limit. </td></tr>
@@ -2832,8 +2617,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a36a12f53d4ea2d6d467605c7ae112453" title="Get the minimum size of a window&#39;s client area.">GetMinimumSize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a51741a99b88d4668ea4198ad62e8e093" title="Set the maximum size of a window&#39;s client area.">SetMaximumSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01866">1866</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2862,8 +2645,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Toggle the state of the window as modal. </p>
 <p>To enable modal status on a window, the window must currently be the child window of a parent, or toggling modal status on will fail.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2877,8 +2658,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a51b96b1e643958a47ce12e6da2cbaaab" title="Set the window as a child of a parent window.">SetParent()</a> </dd>
 <dd>
 SDL_WINDOW_MODAL </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02586">2586</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2907,8 +2686,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a window's mouse grab mode. </p>
 <p>Mouse grab confines the mouse cursor to the window.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2926,8 +2703,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a1c4a454403fcfbdca99a05ee40acc32d" title="Set a window&#39;s keyboard grab mode.">SetKeyboardGrab()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02419">2419</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -2956,8 +2731,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Confines the cursor to the specified area of a window. </p>
 <p>Note that this does NOT grab the cursor, it only defines the area a cursor is restricted to when the window has mouse focus.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2973,8 +2746,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#ae3c56bba66cffdf46ade7aefaa70ba9a" title="Get a window&#39;s mouse grab mode.">GetMouseGrab()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a4bb1a4292a9941225245d364903c06f7" title="Set a window&#39;s mouse grab mode.">SetMouseGrab()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02472">2472</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3003,8 +2774,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the opacity for a window. </p>
 <p>The parameter <code>opacity</code> will be clamped internally between 0.0f (transparent) and 1.0f (opaque).</p>
 <p>This function also returns false if setting the opacity isn't supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3017,8 +2786,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#af519b9dd35b6c07c64236f567ca99e14" title="Get the opacity of a window.">GetOpacity()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02511">2511</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3047,8 +2814,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the window as a child of a parent window. </p>
 <p>If the window is already the child of an existing window, it will be reparented to the new owner. Setting the parent window to NULL unparents the window and removes child window status.</p>
 <p>If a parent window is hidden or destroyed, the operation will be recursively applied to child windows. Child windows hidden with the parent that did not have their hidden status explicitly set will be restored when the parent is shown.</p>
 <p>Attempting to set the parent of a window that is currently in the modal state will fail. Use SDL_SetWindowModal() to cancel the modal status before attempting to change the parent.</p>
@@ -3064,8 +2829,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a7b5953075255b793ed8f04503b76fa07" title="Toggle the state of the window as modal.">SetModal()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02564">2564</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3094,8 +2857,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that the window's position be set. </p>
 <p>If the window is in an exclusive fullscreen or maximized state, this request has no effect.</p>
 <p>This can be used to reposition fullscreen-desktop windows onto a different display, however, as exclusive fullscreen windows are locked to a specific display, they can only be repositioned programmatically via <a class="el" href="structSDL_1_1WindowBase.html#a250d0a52a35036c577173ff3a60a138f" title="Set the display mode to use when a window is visible and fullscreen.">SetFullscreenMode()</a>.</p>
 <p>On some windowing systems this request is asynchronous and the new coordinates may not have have been applied immediately upon the return of this function. If an immediate change is required, call <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> to block until the changes have taken effect.</p>
@@ -3112,8 +2873,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a0364baaaf3f8e7bed627a598fa2db69e" title="Get the position of a window.">GetPosition()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01548">1548</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3142,8 +2901,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request the window's position and size to be set. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rect</td><td>the rect containing the new coordinates </td></tr>
@@ -3155,8 +2912,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a89a23881e6b70255345e9595eb6bccc0" title="Request that the window&#39;s position be set.">SetPosition()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#afb5f058be5adbc7e9cc855eb7aab90b3" title="Request that the size of a window&#39;s client area be set.">SetSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01488">1488</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3185,8 +2940,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the user-resizable state of a window. </p>
 <p>This will add or remove the window's <code>SDL_WINDOW_RESIZABLE</code> flag and allow/disallow user resizing of the window. This is a no-op if the window's resizable state already matches the requested state.</p>
 <p>You can't change the resizable state of a fullscreen window.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3199,8 +2952,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetWindowFlags() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01977">1977</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3229,8 +2980,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the shape of a transparent window. </p>
 <p>This sets the alpha channel of a transparent window and any fully transparent areas are also transparent to mouse clicks. If you are using something besides the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> render API, then you are responsible for drawing the alpha channel of the window to match the shape alpha channel to get consistent cross-platform results.</p>
 <p>The shape is copied inside this function, so you can free it afterwards. If your shape surface changes, you should call SDL_SetWindowShape() again to update the window. This is an expensive operation, so should be done sparingly.</p>
 <p>The window must have been created with the SDL_WINDOW_TRANSPARENT flag.</p>
@@ -3243,8 +2992,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02757">2757</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3273,8 +3020,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Request that the size of a window's client area be set. </p>
 <p>If the window is in a fullscreen or maximized state, this request has no effect.</p>
 <p>To change the exclusive fullscreen mode of a window, use SDL_SetWindowFullscreenMode().</p>
 <p>On some windowing systems, this request is asynchronous and the new window size may not have have been applied immediately upon the return of this function. If an immediate change is required, call SDL_SyncWindow() to block until the changes have taken effect.</p>
@@ -3293,8 +3038,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a250d0a52a35036c577173ff3a60a138f" title="Set the display mode to use when a window is visible and fullscreen.">SetFullscreenMode()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a98af4fbb1ca89c4305fafd70f1b572cf" title="Block until any pending window state is finalized.">Sync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01635">1635</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3323,8 +3066,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Toggle VSync for the window surface. </p>
 <p>When a window surface is created, vsync defaults to SDL_WINDOW_SURFACE_VSYNC_DISABLED.</p>
 <p>The <code>vsync</code> parameter can be 1 to synchronize present with every vertical refresh, 2 to synchronize present with every second vertical refresh, etc., SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or SDL_WINDOW_SURFACE_VSYNC_DISABLED to disable. Not every value is supported by every driver, so you should check the return value to see whether the requested setting is supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3337,8 +3078,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#a60f31c3427f652fb389bd4be091e0793" title="Get VSync for the window surface.">GetSurfaceVSync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02277">2277</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3356,7 +3095,7 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1WindowBase.html">SDL::WindowBase</a>&lt; T &gt;::SetTitle </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>title</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3367,8 +3106,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the title of a window. </p>
 <p>This string is expected to be in UTF-8 encoding.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3380,8 +3117,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#aa89aeab4b9966165a28017025986d28a" title="Get the title of a window.">GetTitle()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l01434">1434</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3409,16 +3144,12 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Show a window. </p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#aacfd463171baa3b337fb09c29b613de2" title="Hide a window.">Hide()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#ad2e6a8e788af1805e9c6afafffdb9b38" title="Request that a window be raised above other windows and gain the input focus.">Raise()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02016">2016</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3447,8 +3178,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p><a class="el" href="structSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a> the system-level window menu. </p>
 <p>This default window menu is provided by the system and on some platforms provides functionality for setting or changing privileged state on the window, such as moving it between workspaces or displays, or toggling the always-on-top property.</p>
 <p>On platforms or desktops where this is unsupported, this function does nothing.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3460,8 +3189,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02625">2625</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3489,8 +3216,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Block until any pending window state is finalized. </p>
 <p>On asynchronous windowing systems, this acts as a synchronization barrier for pending window state. It will attempt to wait until any pending window state has been applied and is guaranteed to return within finite time. Note that for how long it can potentially block depends on the underlying window system, as window state changes may involve somewhat lengthy animations that must complete before the window is in its final requested state.</p>
 <p>On windowing systems where changes are immediate, this does nothing.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false if the operation timed out before the window was in the requested state.</dd></dl>
@@ -3509,8 +3234,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2" title="Request that the size and position of a minimized or maximized window be restored.">Restore()</a> </dd>
 <dd>
 SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02204">2204</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3538,8 +3261,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Copy the window surface to the screen. </p>
 <p>This is the function you use to reflect any changes to the surface on the screen.</p>
 <p>This function is equivalent to the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 1.2 API SDL_Flip().</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
@@ -3547,8 +3268,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#abdc683dcdc473d25d7489a429ec35fa5" title="Get the SDL surface associated with the window.">GetSurface()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#a439ff2ab8a4ea8b8b4cdf5fd88a4d3b2" title="Copy areas of the window surface to the screen.">UpdateSurfaceRects()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02318">2318</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -3577,8 +3296,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Copy areas of the window surface to the screen. </p>
 <p>This is the function you use to reflect changes to portions of the surface on the screen.</p>
 <p>This function is equivalent to the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 1.2 API SDL_UpdateRects().</p>
 <p>Note that this function will update <em>at least</em> the rectangles specified, but this is only intended as an optimization; in practice, this might update more of the screen (or all of the screen!), depending on what method <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses to send pixels to the system.</p>
@@ -3594,8 +3311,6 @@ template&lt;ObjectBox&lt; SDL_Window * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1WindowBase.html#abdc683dcdc473d25d7489a429ec35fa5" title="Get the SDL surface associated with the window.">GetSurface()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1WindowBase.html#ac7f41ac26be0841520d8cbb42e63ed33" title="Copy the window surface to the screen.">UpdateSurface()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02345">2345</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>

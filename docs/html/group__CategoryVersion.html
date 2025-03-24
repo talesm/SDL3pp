@@ -89,7 +89,6 @@ Functions</h2></td></tr>
 <tr class="separator:ga7b3594d2efbeb69076db59694679a559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Functionality to query the current <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> version, both as headers the app was compiled against, and a library the app is linked to. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga7b3594d2efbeb69076db59694679a559" name="ga7b3594d2efbeb69076db59694679a559"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7b3594d2efbeb69076db59694679a559">&#9670;&#160;</a></span>GetRevision()</h2>
@@ -113,8 +112,6 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the code revision of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> that is linked against your program. </p>
 <p>This value is the revision of the code you are linked with and may be different from the code you are compiling with, which is found in the constant SDL_REVISION.</p>
 <p>The revision is arbitrary string (a hash value) uniquely identifying the exact revision of the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library in use, and is only useful in comparing against other revisions. It is NOT an incrementing number.</p>
 <p>If <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> wasn't built from a git repository with the appropriate tools, this will return an empty string.</p>
@@ -122,8 +119,6 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>an arbitrary string, uniquely identifying the exact revision of the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> library in use.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetVersion </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__version_8h_source.html#l00061">61</a> of file <a class="el" href="SDL3pp__version_8h_source.html">SDL3pp_version.h</a>.</p>
 
 </div>
 </div>
@@ -149,15 +144,11 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the version of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> that is linked against your program. </p>
 <p>If you are linking to <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> dynamically, then it is possible that the current version will be different than the version you compiled against. This function returns the current version, while SDL_VERSION is the version you compiled with.</p>
 <p>This function may be called safely at any time, even before SDL_Init().</p>
 <dl class="section return"><dt>Returns</dt><dd>the version of the linked library.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetRevision </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__version_8h_source.html#l00035">35</a> of file <a class="el" href="SDL3pp__version_8h_source.html">SDL3pp_version.h</a>.</p>
 
 </div>
 </div>

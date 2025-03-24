@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27)
-project(SDL3pp)
+project(SDL3pp DESCRIPTION "A slim C++ wrapper for SDL3")
 
 add_subdirectory(external/SDL)
 
@@ -101,11 +101,51 @@ add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 # check if Doxygen is installed
 find_package(Doxygen REQUIRED dot)
 if (DOXYGEN_FOUND)
+    # New Doxygen
+    set(DOXYGEN_HTML_OUTPUT "${PROJECT_SOURCE_DIR}/docs/html")
+    set(DOXYGEN_GENERATE_XML YES)
+    set(DOXYGEN_EXCLUDE 
+        "${PROJECT_SOURCE_DIR}/build/"
+        "${PROJECT_SOURCE_DIR}/dist/"
+        "${PROJECT_SOURCE_DIR}/examples/"
+        "${PROJECT_SOURCE_DIR}/external/"
+        "${PROJECT_SOURCE_DIR}/scripts/"
+        "${PROJECT_SOURCE_DIR}/test/"
+    )
+    set(DOXYGEN_LAYOUT_FILE "${PROJECT_SOURCE_DIR}/docs/DoxygenLayout.xml")
+    set(DOXYGEN_BRIEF_MEMBER_DESC YES)
+    set(DOXYGEN_REPEAT_BRIEF NO)
+    set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
+    set(DOXYGEN_ALIASES
+        "threadsafety=@par Thread safety:^^"
+        "cat=@par Category:^^@ref "
+    )
+    set(DOXYGEN_BUILTIN_STL_SUPPORT YES)
+    set(DOXYGEN_STRIP_FROM_PATH "include/")
+    set(DOXYGEN_PREDEFINED
+        "SDL_VERSION_ATLEAST(x,y,z)=1"
+        "SDL3PP_DOC=1"
+    )
+    set(DOXYGEN_MARKDOWN_ID_STYLE GITHUB)
+    set(DOXYGEN_EXAMPLE_PATH "${PROJECT_SOURCE_DIR}/examples/")
+    set(SHOW_HEADERFILE NO)
+    set(DOXYGEN_INCLUDE_GRAPH NO)
+    set(DOXYGEN_INCLUDED_BY_GRAPH NO)
+    set(DOXYGEN_CALL_GRAPH NO)
+    set(DOXYGEN_CALLER_GRAPH NO)
+    set(DOXYGEN_GROUP_GRAPHS NO)
+    
     doxygen_add_docs(SDL3pp_doxygen
         COMMENT "Generate API docs for SDL3pp"
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
     )
+    
+    # Old doxygen
+    # doxygen_add_docs(SDL3pp_doxygen
+    #     COMMENT "Generate API docs for SDL3pp"
+    #     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    #     CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
+    # )
 endif (DOXYGEN_FOUND)
 
 # Refresh the headers

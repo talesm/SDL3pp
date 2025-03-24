@@ -5,6 +5,5 @@ var searchData=
   ['flash_5funtil_5ffocused_2',['FLASH_UNTIL_FOCUSED',['../group__CategoryVideo.html#gaba81c5903c233d712d3172801e907441',1,'SDL']]],
   ['flip_5fhorizontal_3',['FLIP_HORIZONTAL',['../group__CategorySurface.html#gac0771f3c7f68c513c444fa255fbc7d44',1,'SDL']]],
   ['flip_5fnone_4',['FLIP_NONE',['../group__CategorySurface.html#ga3e81f3df151b51bf38d6b348491b8b76',1,'SDL']]],
-  ['flip_5fvertical_5',['FLIP_VERTICAL',['../group__CategorySurface.html#ga12eade56d263c052589ed58c274021f2',1,'SDL']]],
-  ['format_6',['format',['../structSDL_1_1PixelFormat.html#adf151f3aa89ba89ba5d6f8d6634d71bf',1,'SDL::PixelFormat']]]
+  ['flip_5fvertical_5',['FLIP_VERTICAL',['../group__CategorySurface.html#ga12eade56d263c052589ed58c274021f2',1,'SDL']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['begin_0',['begin',['../classSDL_1_1ArrayBase.html#a738c40207f2ce6edab17ac09cb723bb4',1,'SDL::ArrayBase::begin()'],['../classSDL_1_1ArrayBase.html#a792d6a7527fedd26660e361b76ec715b',1,'SDL::ArrayBase::begin() const']]],
+  ['begin_0',['begin',['../classSDL_1_1ArrayBase.html#a738c40207f2ce6edab17ac09cb723bb4',1,'SDL::ArrayBase']]],
   ['blit_1',['blit',['../structSDL_1_1SurfaceBase.html#a55250326edd31885a182c6d2efd96a70',1,'SDL::SurfaceBase::Blit(SurfaceRef src, OptionalRef&lt; const SDL_Rect &gt; srcrect, const SDL_Point &amp;dstpos)'],['../structSDL_1_1SurfaceBase.html#a7bb77d57c2519f592fa08f210437bf2b',1,'SDL::SurfaceBase::Blit(SurfaceRef src, OptionalRef&lt; const SDL_Rect &gt; srcrect, OptionalRef&lt; const SDL_Rect &gt; dstrect)']]],
   ['blit9grid_2',['Blit9Grid',['../structSDL_1_1SurfaceBase.html#a4ef73082e5e73395c9bcd7a13a6b699a',1,'SDL::SurfaceBase']]],
   ['blit9gridwithscale_3',['Blit9GridWithScale',['../structSDL_1_1SurfaceBase.html#a70051f30a31c039c5d1ec94c9306707c',1,'SDL::SurfaceBase']]],

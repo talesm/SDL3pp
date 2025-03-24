@@ -91,12 +91,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ga4efae6ae549cdb0f0d92ab4011e7d7e7" id="r_ga4efae6ae549cdb0f0d92ab4011e7d7e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#ga4efae6ae549cdb0f0d92ab4011e7d7e7">SDL::GUIDToString</a> (SDL_GUID guid, char *pszGUID, int cbGUID)</td></tr>
 <tr class="memdesc:ga4efae6ae549cdb0f0d92ab4011e7d7e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get an ASCII string representation for a given SDL_GUID.  <br /></td></tr>
 <tr class="separator:ga4efae6ae549cdb0f0d92ab4011e7d7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga08bc07824cac3af27ec0fac342b15382" id="r_ga08bc07824cac3af27ec0fac342b15382"><td class="memItemLeft" align="right" valign="top">SDL_GUID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#ga08bc07824cac3af27ec0fac342b15382">SDL::StringToGUID</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> pchGUID)</td></tr>
+<tr class="memitem:ga08bc07824cac3af27ec0fac342b15382" id="r_ga08bc07824cac3af27ec0fac342b15382"><td class="memItemLeft" align="right" valign="top">SDL_GUID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryGUID.html#ga08bc07824cac3af27ec0fac342b15382">SDL::StringToGUID</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> pchGUID)</td></tr>
 <tr class="memdesc:ga08bc07824cac3af27ec0fac342b15382"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a <a class="el" href="structSDL_1_1GUID.html" title="An SDL_GUID is a 128-bit identifier for an input device that identifies that device across runs of SD...">GUID</a> string into a SDL_GUID structure.  <br /></td></tr>
 <tr class="separator:ga08bc07824cac3af27ec0fac342b15382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>A <a class="el" href="structSDL_1_1GUID.html" title="An SDL_GUID is a 128-bit identifier for an input device that identifies that device across runs of SD...">GUID</a> is a 128-bit value that represents something that is uniquely identifiable by this value: "globally unique.". </p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> provides functions to convert a <a class="el" href="structSDL_1_1GUID.html" title="An SDL_GUID is a 128-bit identifier for an input device that identifies that device across runs of SD...">GUID</a> to/from a string. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga4efae6ae549cdb0f0d92ab4011e7d7e7" name="ga4efae6ae549cdb0f0d92ab4011e7d7e7"></a>
@@ -138,8 +137,6 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get an ASCII string representation for a given SDL_GUID. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">guid</td><td>the SDL_GUID you wish to convert to string. </td></tr>
@@ -151,8 +148,6 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_StringToGUID </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__guid_8h_source.html#l00104">104</a> of file <a class="el" href="SDL3pp__guid_8h_source.html">SDL3pp_guid.h</a>.</p>
 
 </div>
 </div>
@@ -168,7 +163,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">SDL_GUID SDL::StringToGUID </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>pchGUID</em></td><td>)</td>
           <td></td>
         </tr>
@@ -179,8 +174,6 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Convert a <a class="el" href="structSDL_1_1GUID.html" title="An SDL_GUID is a 128-bit identifier for an input device that identifies that device across runs of SD...">GUID</a> string into a SDL_GUID structure. </p>
 <p>Performs no error checking. If this function is given a string containing an invalid <a class="el" href="structSDL_1_1GUID.html" title="An SDL_GUID is a 128-bit identifier for an input device that identifies that device across runs of SD...">GUID</a>, the function will silently succeed, but the <a class="el" href="structSDL_1_1GUID.html" title="An SDL_GUID is a 128-bit identifier for an input device that identifies that device across runs of SD...">GUID</a> generated will not be useful.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -192,8 +185,6 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GUIDToString </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__guid_8h_source.html#l00125">125</a> of file <a class="el" href="SDL3pp__guid_8h_source.html">SDL3pp_guid.h</a>.</p>
 
 </div>
 </div>

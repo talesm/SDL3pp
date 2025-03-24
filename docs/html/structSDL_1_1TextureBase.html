@@ -83,6 +83,8 @@ $(function() {
 
 <p>An efficient driver-specific representation of pixel data.  
  <a href="structSDL_1_1TextureBase.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SDL::TextureBase&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -106,7 +108,7 @@ Collaboration diagram for SDL::TextureBase&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2c14018fb1df594e498b6ac5a1cd996e" id="r_a2c14018fb1df594e498b6ac5a1cd996e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">TextureBase</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file)</td></tr>
+<tr class="memitem:a2c14018fb1df594e498b6ac5a1cd996e" id="r_a2c14018fb1df594e498b6ac5a1cd996e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">TextureBase</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> file)</td></tr>
 <tr class="memdesc:a2c14018fb1df594e498b6ac5a1cd996e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load an image from a filesystem path into a GPU texture.  <br /></td></tr>
 <tr class="separator:a2c14018fb1df594e498b6ac5a1cd996e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26b12859b23ad925ae7bed0c81ab0f46" id="r_a26b12859b23ad925ae7bed0c81ab0f46"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a26b12859b23ad925ae7bed0c81ab0f46">TextureBase</a> (<a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a> format, <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56">TextureAccess</a> access, int w, int h)</td></tr>
@@ -124,22 +126,29 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b9e1d066fc334790c62565de16abfb6" id="r_a8b9e1d066fc334790c62565de16abfb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a8b9e1d066fc334790c62565de16abfb6">GetRenderer</a> () const</td></tr>
 <tr class="memdesc:a8b9e1d066fc334790c62565de16abfb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer that created an SDL_Texture.  <br /></td></tr>
 <tr class="separator:a8b9e1d066fc334790c62565de16abfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8c2276d3c39fc28b1d185f14f23828b" id="r_ae8c2276d3c39fc28b1d185f14f23828b"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ae8c2276d3c39fc28b1d185f14f23828b">GetSize</a> () const</td></tr>
+<tr class="memitem:ae8c2276d3c39fc28b1d185f14f23828b" id="r_ae8c2276d3c39fc28b1d185f14f23828b"><td class="memItemLeft" align="right" valign="top"><a id="ae8c2276d3c39fc28b1d185f14f23828b" name="ae8c2276d3c39fc28b1d185f14f23828b"></a>
+std::optional&lt; <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
 <tr class="separator:ae8c2276d3c39fc28b1d185f14f23828b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa19f25b26c06046bc117f7813a43f75" id="r_aaa19f25b26c06046bc117f7813a43f75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#aaa19f25b26c06046bc117f7813a43f75">GetSize</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> *size) const</td></tr>
+<tr class="memitem:aaa19f25b26c06046bc117f7813a43f75" id="r_aaa19f25b26c06046bc117f7813a43f75"><td class="memItemLeft" align="right" valign="top"><a id="aaa19f25b26c06046bc117f7813a43f75" name="aaa19f25b26c06046bc117f7813a43f75"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> *size) const</td></tr>
 <tr class="separator:aaa19f25b26c06046bc117f7813a43f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a849768b5342e6bb1f6948f6e2c7b4e0a" id="r_a849768b5342e6bb1f6948f6e2c7b4e0a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a849768b5342e6bb1f6948f6e2c7b4e0a">GetSize</a> (float *w, float *h) const</td></tr>
 <tr class="memdesc:a849768b5342e6bb1f6948f6e2c7b4e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a texture, as floating point values.  <br /></td></tr>
 <tr class="separator:a849768b5342e6bb1f6948f6e2c7b4e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89325d1df6c6c5d0b8bb3500c78b913f" id="r_a89325d1df6c6c5d0b8bb3500c78b913f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a89325d1df6c6c5d0b8bb3500c78b913f">SetColorAndAlphaMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> c)</td></tr>
+<tr class="memitem:a89325d1df6c6c5d0b8bb3500c78b913f" id="r_a89325d1df6c6c5d0b8bb3500c78b913f"><td class="memItemLeft" align="right" valign="top"><a id="a89325d1df6c6c5d0b8bb3500c78b913f" name="a89325d1df6c6c5d0b8bb3500c78b913f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetColorAndAlphaMod</b> (<a class="el" href="structSDL_1_1Color.html">Color</a> c)</td></tr>
 <tr class="separator:a89325d1df6c6c5d0b8bb3500c78b913f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a00dde2a1f4a8432c15c681e75068cc" id="r_a1a00dde2a1f4a8432c15c681e75068cc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a1a00dde2a1f4a8432c15c681e75068cc">SetColorAndAlphaMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> c)</td></tr>
+<tr class="memitem:a1a00dde2a1f4a8432c15c681e75068cc" id="r_a1a00dde2a1f4a8432c15c681e75068cc"><td class="memItemLeft" align="right" valign="top"><a id="a1a00dde2a1f4a8432c15c681e75068cc" name="a1a00dde2a1f4a8432c15c681e75068cc"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetColorAndAlphaMod</b> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> c)</td></tr>
 <tr class="separator:a1a00dde2a1f4a8432c15c681e75068cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70abd6612312bd12c9a042fedb6c657d" id="r_a70abd6612312bd12c9a042fedb6c657d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1FColor.html">FColor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a70abd6612312bd12c9a042fedb6c657d">GetColorAndAlphaMod</a> () const</td></tr>
+<tr class="memitem:a70abd6612312bd12c9a042fedb6c657d" id="r_a70abd6612312bd12c9a042fedb6c657d"><td class="memItemLeft" align="right" valign="top"><a id="a70abd6612312bd12c9a042fedb6c657d" name="a70abd6612312bd12c9a042fedb6c657d"></a>
+std::optional&lt; <a class="el" href="structSDL_1_1FColor.html">FColor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetColorAndAlphaMod</b> () const</td></tr>
 <tr class="separator:a70abd6612312bd12c9a042fedb6c657d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae310315ba2462c76d195f178489f7fbf" id="r_ae310315ba2462c76d195f178489f7fbf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ae310315ba2462c76d195f178489f7fbf">GetColorAndAlphaMod</a> (<a class="el" href="structSDL_1_1Color.html">Color</a> *c) const</td></tr>
+<tr class="memitem:ae310315ba2462c76d195f178489f7fbf" id="r_ae310315ba2462c76d195f178489f7fbf"><td class="memItemLeft" align="right" valign="top"><a id="ae310315ba2462c76d195f178489f7fbf" name="ae310315ba2462c76d195f178489f7fbf"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetColorAndAlphaMod</b> (<a class="el" href="structSDL_1_1Color.html">Color</a> *c) const</td></tr>
 <tr class="separator:ae310315ba2462c76d195f178489f7fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8017ad0db340645b46f5f44d4fff5331" id="r_a8017ad0db340645b46f5f44d4fff5331"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a8017ad0db340645b46f5f44d4fff5331">GetColorAndAlphaMod</a> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> *c) const</td></tr>
+<tr class="memitem:a8017ad0db340645b46f5f44d4fff5331" id="r_a8017ad0db340645b46f5f44d4fff5331"><td class="memItemLeft" align="right" valign="top"><a id="a8017ad0db340645b46f5f44d4fff5331" name="a8017ad0db340645b46f5f44d4fff5331"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetColorAndAlphaMod</b> (<a class="el" href="structSDL_1_1FColor.html">FColor</a> *c) const</td></tr>
 <tr class="separator:a8017ad0db340645b46f5f44d4fff5331"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a187e90f3e1253dc53223d348f3b591c8" id="r_a187e90f3e1253dc53223d348f3b591c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a187e90f3e1253dc53223d348f3b591c8">SetColorMod</a> (Uint8 r, Uint8 g, Uint8 b)</td></tr>
 <tr class="memdesc:a187e90f3e1253dc53223d348f3b591c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional color value multiplied into render copy operations.  <br /></td></tr>
@@ -159,7 +168,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6e406273bf30873feabb11c2de6b567a" id="r_a6e406273bf30873feabb11c2de6b567a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a6e406273bf30873feabb11c2de6b567a">SetAlphaMod</a> (float alpha)</td></tr>
 <tr class="memdesc:a6e406273bf30873feabb11c2de6b567a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set an additional alpha value multiplied into render copy operations.  <br /></td></tr>
 <tr class="separator:a6e406273bf30873feabb11c2de6b567a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc7d66e8309fcf784ffae07c85decae5" id="r_acc7d66e8309fcf784ffae07c85decae5"><td class="memItemLeft" align="right" valign="top">std::optional&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#acc7d66e8309fcf784ffae07c85decae5">GetAlphaMod</a> () const</td></tr>
+<tr class="memitem:acc7d66e8309fcf784ffae07c85decae5" id="r_acc7d66e8309fcf784ffae07c85decae5"><td class="memItemLeft" align="right" valign="top"><a id="acc7d66e8309fcf784ffae07c85decae5" name="acc7d66e8309fcf784ffae07c85decae5"></a>
+std::optional&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetAlphaMod</b> () const</td></tr>
 <tr class="separator:acc7d66e8309fcf784ffae07c85decae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2982c1ed7424b984cccfd8853b2672c" id="r_ae2982c1ed7424b984cccfd8853b2672c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ae2982c1ed7424b984cccfd8853b2672c">GetAlphaMod</a> (Uint8 *alpha) const</td></tr>
 <tr class="memdesc:ae2982c1ed7424b984cccfd8853b2672c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional alpha value multiplied into render copy operations.  <br /></td></tr>
@@ -197,8 +207,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt;<br />
-struct SDL::TextureBase&lt; T &gt;</div><p>An efficient driver-specific representation of pixel data. </p>
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+struct SDL::TextureBase&lt; T &gt;</div><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>
@@ -207,8 +216,6 @@ struct SDL::TextureBase&lt; T &gt;</div><p>An efficient driver-specific represen
 <a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7" title="Handle to a non owned texture.">TextureRef</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html" title="A structure representing rendering state.">RendererBase</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01785">1785</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2c14018fb1df594e498b6ac5a1cd996e" name="a2c14018fb1df594e498b6ac5a1cd996e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2c14018fb1df594e498b6ac5a1cd996e">&#9670;&#160;</a></span>TextureBase() <span class="overload">[1/4]</span></h2>
@@ -227,7 +234,7 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>file</em>&#160;</td>
         </tr>
         <tr>
@@ -237,8 +244,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Load an image from a filesystem path into a GPU texture. </p>
 <p>If available, this uses <a class="el" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererRef, StringParam)</a>, otherwise it uses <a class="el" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a" title="Load a BMP texture from a file.">LoadTextureBMP(RendererRef, StringParam)</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -251,8 +256,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9" title="Load an image from a filesystem path into a GPU texture.">LoadTexture(RendererRef, StringParam)</a> </dd>
 <dd>
 <a class="el" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a" title="Load a BMP texture from a file.">LoadTextureBMP(RendererRef, StringParam)</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__image_8h_source.html#l02086">2086</a> of file <a class="el" href="SDL3pp__image_8h_source.html">SDL3pp_image.h</a>.</p>
 
 </div>
 </div>
@@ -309,8 +312,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a texture for a rendering context. </p>
 <p>The contents of a texture when first created are not defined.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -325,11 +326,9 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html#ae8c2276d3c39fc28b1d185f14f23828b">GetSize()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>GetSize() </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf" title="Update the given texture rectangle with new pixel data.">Update()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01825">1825</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -368,8 +367,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a texture from an existing surface. </p>
 <p>The surface is not modified or freed by this function.</p>
 <p>The SDL_TextureAccess hint for the created texture is <code>SDL_TEXTUREACCESS_STATIC</code>.</p>
 <p>The pixel format of the created texture may be different from the pixel format of the surface, and can be queried using the SDL_PROP_TEXTURE_FORMAT_NUMBER property.</p>
@@ -383,11 +380,9 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html#ae8c2276d3c39fc28b1d185f14f23828b">GetSize()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>GetSize() </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf" title="Update the given texture rectangle with new pixel data.">Update()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01859">1859</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -426,8 +421,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a texture for a rendering context with the specified properties. </p>
 <p>These are the supported properties:</p>
 <ul>
 <li><code>SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER</code>: an SDL_Colorspace value describing the texture colorspace, defaults to SDL_COLORSPACE_SRGB_LINEAR for floating point textures, SDL_COLORSPACE_HDR10 for 10-bit textures, SDL_COLORSPACE_SRGB for other RGB textures and SDL_COLORSPACE_JPEG for YUV textures.</li>
@@ -495,8 +488,6 @@ SDL_GetTextureSize </dd>
 <dd>
 SDL_UpdateTexture </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01974">1974</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -524,8 +515,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Destroy the texture. </p>
 <p>This object becomes empty after the call.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -533,41 +522,10 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dd>
 SDL_CreateTextureFromSurface </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02575">2575</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="acc7d66e8309fcf784ffae07c85decae5" name="acc7d66e8309fcf784ffae07c85decae5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc7d66e8309fcf784ffae07c85decae5">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; float &gt; <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::GetAlphaMod </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02305">2305</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a4206de1417b0b360c2a6639ee9d2831e" name="a4206de1417b0b360c2a6639ee9d2831e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4206de1417b0b360c2a6639ee9d2831e">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4206de1417b0b360c2a6639ee9d2831e">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -591,8 +549,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the additional alpha value multiplied into render copy operations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">alpha</td><td>a pointer filled in with the current alpha value. </td></tr>
@@ -603,12 +559,10 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02338">2338</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="ae2982c1ed7424b984cccfd8853b2672c" name="ae2982c1ed7424b984cccfd8853b2672c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2982c1ed7424b984cccfd8853b2672c">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2982c1ed7424b984cccfd8853b2672c">&#9670;&#160;</a></span>GetAlphaMod() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -632,8 +586,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the additional alpha value multiplied into render copy operations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">alpha</td><td>a pointer filled in with the current alpha value. </td></tr>
@@ -643,8 +595,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02322">2322</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -672,103 +622,10 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the blend mode used for texture copy operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>the current SDL_BlendMode on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SetTextureBlendMode </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02376">2376</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a70abd6612312bd12c9a042fedb6c657d" name="a70abd6612312bd12c9a042fedb6c657d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70abd6612312bd12c9a042fedb6c657d">&#9670;&#160;</a></span>GetColorAndAlphaMod() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="structSDL_1_1FColor.html">FColor</a> &gt; <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::GetColorAndAlphaMod </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02125">2125</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="ae310315ba2462c76d195f178489f7fbf" name="ae310315ba2462c76d195f178489f7fbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae310315ba2462c76d195f178489f7fbf">&#9670;&#160;</a></span>GetColorAndAlphaMod() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::GetColorAndAlphaMod </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1Color.html">Color</a> *&#160;</td>
-          <td class="paramname"><em>c</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02131">2131</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a8017ad0db340645b46f5f44d4fff5331" name="a8017ad0db340645b46f5f44d4fff5331"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8017ad0db340645b46f5f44d4fff5331">&#9670;&#160;</a></span>GetColorAndAlphaMod() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::GetColorAndAlphaMod </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1FColor.html">FColor</a> *&#160;</td>
-          <td class="paramname"><em>c</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02137">2137</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -813,8 +670,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the additional color value multiplied into render copy operations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">r</td><td>a pointer filled in with the current red color value. </td></tr>
@@ -831,8 +686,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 SDL_GetTextureColorMod </dd>
 <dd>
 SDL_SetTextureColorModFloat </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02244">2244</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -877,8 +730,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the additional color value multiplied into render copy operations. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">r</td><td>a pointer filled in with the current red color value. </td></tr>
@@ -895,8 +746,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 SDL_GetTextureColorModFloat </dd>
 <dd>
 SDL_SetTextureColorMod </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02222">2222</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -924,8 +773,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the properties associated with a texture. </p>
 <p>The following read-only properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
 <li><code>SDL_PROP_TEXTURE_COLORSPACE_NUMBER</code>: an SDL_Colorspace value describing the texture colorspace.</li>
@@ -974,8 +821,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02064">2064</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a8b9e1d066fc334790c62565de16abfb6" name="a8b9e1d066fc334790c62565de16abfb6"></a>
@@ -1002,13 +847,9 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the renderer that created an SDL_Texture. </p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the SDL_Renderer that created the texture, or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02079">2079</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1036,48 +877,15 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the scale mode used for texture scale operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>the current scale mode on success or std::nullopt on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SetTextureScaleMode </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02418">2418</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="ae8c2276d3c39fc28b1d185f14f23828b" name="ae8c2276d3c39fc28b1d185f14f23828b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8c2276d3c39fc28b1d185f14f23828b">&#9670;&#160;</a></span>GetSize() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &gt; <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::GetSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02084">2084</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a849768b5342e6bb1f6948f6e2c7b4e0a" name="a849768b5342e6bb1f6948f6e2c7b4e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a849768b5342e6bb1f6948f6e2c7b4e0a">&#9670;&#160;</a></span>GetSize() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a849768b5342e6bb1f6948f6e2c7b4e0a">&#9670;&#160;</a></span>GetSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1111,8 +919,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a texture, as floating point values. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">w</td><td>a pointer filled in with the width of the texture in pixels. This argument can be NULL if you don't need this information. </td></tr>
@@ -1123,38 +929,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02110">2110</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="aaa19f25b26c06046bc117f7813a43f75" name="aaa19f25b26c06046bc117f7813a43f75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa19f25b26c06046bc117f7813a43f75">&#9670;&#160;</a></span>GetSize() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::GetSize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a> *&#160;</td>
-          <td class="paramname"><em>size</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02090">2090</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1175,8 +949,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Lock a portion of the texture for <b>write-only</b> pixel access. </p>
 <p>As an optimization, the pixels made available for editing don't necessarily contain the old texture data. This is a write-only operation, and if you need to keep a copy of the texture data you should do that at the application level.</p>
 <p>You must use SDL_UnlockTexture() to unlock the pixels and apply any changes.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1189,8 +961,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TextureLock.UnlockTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l03040">3040</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1219,8 +989,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set an additional alpha value multiplied into render copy operations. </p>
 <p>When this texture is rendered, during the copy operation the source alpha value is modulated by this alpha value according to the following formula:</p>
 <p><code>srcA = srcA * alpha</code></p>
 <p>Alpha modulation is not always supported by the renderer; it will return false if alpha modulation is not supported.</p>
@@ -1238,8 +1006,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 SDL_SetTextureAlphaMod </dd>
 <dd>
 SDL_SetTextureColorModFloat </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02300">2300</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1268,8 +1034,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set an additional alpha value multiplied into render copy operations. </p>
 <p>When this texture is rendered, during the copy operation the source alpha value is modulated by this alpha value according to the following formula:</p>
 <p><code>srcA = srcA * (alpha / 255)</code></p>
 <p>Alpha modulation is not always supported by the renderer; it will return false if alpha modulation is not supported.</p>
@@ -1287,8 +1051,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 SDL_SetTextureAlphaModFloat </dd>
 <dd>
 SDL_SetTextureColorMod </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02272">2272</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1317,8 +1079,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the blend mode for a texture, used by <a class="el" href="structSDL_1_1RendererBase.html#ac685a8eac163763f9dd2fbc1e7c1cc5b" title="Copy a portion of the texture to the current rendering target at subpixel precision.">RendererBase::RenderTexture()</a>. </p>
 <p>If the blend mode is not supported, the closest supported mode is chosen and this function returns false.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1330,68 +1090,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetTextureBlendMode </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02359">2359</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a89325d1df6c6c5d0b8bb3500c78b913f" name="a89325d1df6c6c5d0b8bb3500c78b913f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89325d1df6c6c5d0b8bb3500c78b913f">&#9670;&#160;</a></span>SetColorAndAlphaMod() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::SetColorAndAlphaMod </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td>
-          <td class="paramname"><em>c</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02115">2115</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a1a00dde2a1f4a8432c15c681e75068cc" name="a1a00dde2a1f4a8432c15c681e75068cc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a00dde2a1f4a8432c15c681e75068cc">&#9670;&#160;</a></span>SetColorAndAlphaMod() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::SetColorAndAlphaMod </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1FColor.html">FColor</a>&#160;</td>
-          <td class="paramname"><em>c</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02120">2120</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1436,8 +1134,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set an additional color value multiplied into render copy operations. </p>
 <p>When this texture is rendered, during the copy operation each source color channel is modulated by the appropriate color value according to the following formula:</p>
 <p><code>srcC = srcC * color</code></p>
 <p><a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> modulation is not always supported by the renderer; it will return false if color modulation is not supported.</p>
@@ -1457,8 +1153,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 SDL_SetTextureAlphaModFloat </dd>
 <dd>
 SDL_SetTextureColorMod </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02200">2200</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1503,8 +1197,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set an additional color value multiplied into render copy operations. </p>
 <p>When this texture is rendered, during the copy operation each source color channel is modulated by the appropriate color value according to the following formula:</p>
 <p><code>srcC = srcC * (color / 255)</code></p>
 <p><a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> modulation is not always supported by the renderer; it will return false if color modulation is not supported.</p>
@@ -1524,8 +1216,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 SDL_SetTextureAlphaMod </dd>
 <dd>
 SDL_SetTextureColorModFloat </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02169">2169</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1554,8 +1244,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the scale mode used for texture scale operations. </p>
 <p>The default texture scale mode is SDL_SCALEMODE_LINEAR.</p>
 <p>If the scale mode is not supported, the closest supported mode is chosen.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1568,8 +1256,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetTextureScaleMode </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02401">2401</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1614,8 +1300,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Update the given texture rectangle with new pixel data. </p>
 <p>The pixel data must be in the pixel format of the texture, which can be queried using the SDL_PROP_TEXTURE_FORMAT_NUMBER property.</p>
 <p>This is a fairly slow function, intended for use with static textures that do not change often.</p>
 <p>If the texture is intended to be updated often, it is preferred to create the texture as streaming and use the locking functions referenced below. While this function will work with streaming textures, for optimization reasons you may not get the pixels back if you lock the texture afterward.</p>
@@ -1637,8 +1321,6 @@ SDL_UnlockTexture </dd>
 SDL_UpdateNVTexture </dd>
 <dd>
 SDL_UpdateYUVTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02457">2457</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1695,8 +1377,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Update a rectangle within a planar NV12 or NV21 texture with new pixels. </p>
 <p>You can use SDL_UpdateTexture() as long as your pixel data is a contiguous block of NV12/21 planes in the proper order, but this function is available if your pixel data is not contiguous.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1714,8 +1394,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_UpdateTexture </dd>
 <dd>
 SDL_UpdateYUVTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02528">2528</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1784,8 +1462,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Update a rectangle within a planar YV12 or IYUV texture with new pixel data. </p>
 <p>You can use SDL_UpdateTexture() as long as your pixel data is a contiguous block of Y and U/V planes in the proper order, but this function is available if your pixel data is not contiguous.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1805,8 +1481,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_UpdateNVTexture </dd>
 <dd>
 SDL_UpdateTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02491">2491</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>

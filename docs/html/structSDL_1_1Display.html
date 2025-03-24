@@ -85,12 +85,16 @@ $(function() {
 
 <p>This is a unique ID for a display for the time it is connected to the system, and is never reused for the lifetime of the application.  
  <a href="structSDL_1_1Display.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4a37345ff543bff5ac3553e53690cf52" id="r_a4a37345ff543bff5ac3553e53690cf52"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Display.html#a4a37345ff543bff5ac3553e53690cf52">Display</a> (SDL_DisplayID <a class="el" href="structSDL_1_1Display.html#ae33f0c38ea9edc3f56b0b956316fea20">displayID</a>=0)</td></tr>
+<tr class="memitem:a4a37345ff543bff5ac3553e53690cf52" id="r_a4a37345ff543bff5ac3553e53690cf52"><td class="memItemLeft" align="right" valign="top"><a id="a4a37345ff543bff5ac3553e53690cf52" name="a4a37345ff543bff5ac3553e53690cf52"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Display</b> (SDL_DisplayID displayID=0)</td></tr>
 <tr class="separator:a4a37345ff543bff5ac3553e53690cf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a710fdc6c0684959b1f5e970788632c" id="r_a9a710fdc6c0684959b1f5e970788632c"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Display.html#a9a710fdc6c0684959b1f5e970788632c">operator bool</a> () const</td></tr>
+<tr class="memitem:a9a710fdc6c0684959b1f5e970788632c" id="r_a9a710fdc6c0684959b1f5e970788632c"><td class="memItemLeft" align="right" valign="top"><a id="a9a710fdc6c0684959b1f5e970788632c" name="a9a710fdc6c0684959b1f5e970788632c"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
 <tr class="separator:a9a710fdc6c0684959b1f5e970788632c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ca7e4ea5bf27c27f8a80feb8e04a2f6" id="r_a2ca7e4ea5bf27c27f8a80feb8e04a2f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Display.html#a2ca7e4ea5bf27c27f8a80feb8e04a2f6">GetProperties</a> () const</td></tr>
 <tr class="memdesc:a2ca7e4ea5bf27c27f8a80feb8e04a2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a display.  <br /></td></tr>
@@ -146,46 +150,15 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae33f0c38ea9edc3f56b0b956316fea20" id="r_ae33f0c38ea9edc3f56b0b956316fea20"><td class="memItemLeft" align="right" valign="top">SDL_DisplayID&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1Display.html#ae33f0c38ea9edc3f56b0b956316fea20">displayID</a></td></tr>
+<tr class="memitem:ae33f0c38ea9edc3f56b0b956316fea20" id="r_ae33f0c38ea9edc3f56b0b956316fea20"><td class="memItemLeft" align="right" valign="top"><a id="ae33f0c38ea9edc3f56b0b956316fea20" name="ae33f0c38ea9edc3f56b0b956316fea20"></a>
+SDL_DisplayID&#160;</td><td class="memItemRight" valign="bottom"><b>displayID</b></td></tr>
 <tr class="separator:ae33f0c38ea9edc3f56b0b956316fea20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This is a unique ID for a display for the time it is connected to the system, and is never reused for the lifetime of the application. </p>
-<p>If the display is disconnected and reconnected, it will get a new ID.</p>
+<div class="textblock"><p>If the display is disconnected and reconnected, it will get a new ID.</p>
 <p>The value 0 is an invalid ID.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00455">455</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a4a37345ff543bff5ac3553e53690cf52" name="a4a37345ff543bff5ac3553e53690cf52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a37345ff543bff5ac3553e53690cf52">&#9670;&#160;</a></span>Display()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr SDL::Display::Display </td>
-          <td>(</td>
-          <td class="paramtype">SDL_DisplayID&#160;</td>
-          <td class="paramname"><em>displayID</em> = <code>0</code></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00459">459</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae196b7d3fea1b9a05e0dc2505d4ed8a7" name="ae196b7d3fea1b9a05e0dc2505d4ed8a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae196b7d3fea1b9a05e0dc2505d4ed8a7">&#9670;&#160;</a></span>GetAll()</h2>
 
@@ -208,13 +181,9 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get a list of currently connected displays. </p>
 <dl class="section return"><dt>Returns</dt><dd>a 0 terminated array of display instance IDs or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. This should be freed with SDL_free() when it is no longer needed.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00477">477</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -240,13 +209,9 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the desktop area represented by a display. </p>
 <p>The primary display is often located at (0,0), but may be placed at a different location depending on monitor layout.</p>
 <dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the display bounds on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00549">549</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -295,8 +260,6 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the closest match to the requested display mode. </p>
 <p>The available display modes are scanned and <code>closest</code> is filled in with the closest mode matching the requested mode and returned. The mode format and refresh rate default to the desktop mode if they are set to 0. The modes are scanned with size being first priority, format being second priority, and finally checking the refresh rate. If all the available modes are too small, then false is returned.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -313,8 +276,6 @@ Public Attributes</h2></td></tr>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#a119ab5a8e1719e58d0c2b1342e1e214c" title="Get a list of fullscreen display modes available on a display.">Display.GetFullscreenModes()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00687">687</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -340,8 +301,6 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the content scale of a display. </p>
 <dl class="section return"><dt>Returns</dt><dd>the content scale of the display, or 0.0f on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
@@ -349,8 +308,6 @@ Public Attributes</h2></td></tr>
 <a class="el" href="structSDL_1_1WindowBase.html#a75077a1e44bec472624f3b5ac47de3c8" title="Get the content display scale relative to a window&#39;s pixel size.">WindowBase.GetDisplayScale()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00624">624</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -376,8 +333,6 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get information about the current display mode. </p>
 <p>There's a difference between this function and SDL_GetDesktopDisplayMode() when <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the current display mode, and not the previous native display mode.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the desktop display mode or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
@@ -386,8 +341,6 @@ GetDisplays() </dd></dl>
 <a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00744">744</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -413,15 +366,11 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the orientation of a display. </p>
 <dl class="section return"><dt>Returns</dt><dd>the SDL_DisplayOrientation enum value of the display, or <code>SDL_ORIENTATION_UNKNOWN</code> if it isn't available.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00607">607</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -447,8 +396,6 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get information about the desktop's display mode. </p>
 <p>There's a difference between this function and SDL_GetCurrentDisplayMode() when <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the previous native display mode, and not the current display mode.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the desktop display mode or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
@@ -457,8 +404,6 @@ GetDisplays() </dd></dl>
 <a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00722">722</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -485,8 +430,6 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the display containing a point. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">point</td><td>the point to query. </td></tr>
@@ -499,8 +442,6 @@ GetDisplays() </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a56679cc0b89ce0933cc7a6a50d3bf06e" title="Get the desktop area represented by a display.">GetBounds()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">GetAll()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00763">763</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -527,8 +468,6 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the display primarily containing a rect. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rect</td><td>the rect to query. </td></tr>
@@ -537,8 +476,6 @@ GetDisplays() </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the display entirely containing the rect or closest to the center of the rect on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00777">777</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -565,8 +502,6 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the display associated with a window. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">window</td><td>the window to query. </td></tr>
@@ -600,8 +535,6 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get a list of fullscreen display modes available on a display. </p>
 <p>The display modes are sorted in this priority:</p>
 <ul>
 <li>w -&gt; largest to smallest</li>
@@ -618,8 +551,6 @@ GetDisplays() </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00653">653</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -645,12 +576,8 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the name of a display in UTF-8 encoding. </p>
 <dl class="section return"><dt>Returns</dt><dd>the name of a display or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00536">536</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -676,15 +603,11 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the orientation of a display when it is unrotated. </p>
 <dl class="section return"><dt>Returns</dt><dd>the SDL_DisplayOrientation enum value of the display, or <code>SDL_ORIENTATION_UNKNOWN</code> if it isn't available.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetDisplays() </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00591">591</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -710,14 +633,10 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Return the primary display. </p>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the primary display on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetDisplays() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00496">496</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -743,8 +662,6 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the properties associated with a display. </p>
 <p>The following read-only properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
 <li><code>SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN</code>: true if the display has HDR headroom above the SDR white point. This is for informational and diagnostic purposes only, as not all platforms provide this information at the display level.</li>
@@ -757,8 +674,6 @@ GetDisplays() </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00523">523</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -784,58 +699,10 @@ GetDisplays() </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the usable desktop area represented by a display, in screen coordinates. </p>
 <p>This is the same area as <a class="el" href="structSDL_1_1Display.html#a56679cc0b89ce0933cc7a6a50d3bf06e" title="Get the desktop area represented by a display.">Display.GetBounds()</a> reports, but with portions reserved by the system removed. For example, on Apple's macOS, this subtracts the area occupied by the menu bar and dock.</p>
 <p>Setting a window to be fullscreen generally bypasses these unusable areas, so these are good guidelines for the maximum space available to a non-fullscreen window.</p>
 <dl class="section return"><dt>Returns</dt><dd>he <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the display bounds on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00573">573</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
-</div>
-</div>
-<a id="a9a710fdc6c0684959b1f5e970788632c" name="a9a710fdc6c0684959b1f5e970788632c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a710fdc6c0684959b1f5e970788632c">&#9670;&#160;</a></span>operator bool()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr SDL::Display::operator bool </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00464">464</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ae33f0c38ea9edc3f56b0b956316fea20" name="ae33f0c38ea9edc3f56b0b956316fea20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae33f0c38ea9edc3f56b0b956316fea20">&#9670;&#160;</a></span>displayID</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SDL_DisplayID SDL::Display::displayID</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00457">457</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>

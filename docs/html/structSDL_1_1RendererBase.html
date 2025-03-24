@@ -83,6 +83,8 @@ $(function() {
 
 <p>A structure representing rendering state.  
  <a href="structSDL_1_1RendererBase.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SDL::RendererBase&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -109,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6cd596ee84afc3ead3c26a6c429a797c" id="r_a6cd596ee84afc3ead3c26a6c429a797c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a6cd596ee84afc3ead3c26a6c429a797c">RendererBase</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window)</td></tr>
 <tr class="memdesc:a6cd596ee84afc3ead3c26a6c429a797c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a 2D rendering context for a window.  <br /></td></tr>
 <tr class="separator:a6cd596ee84afc3ead3c26a6c429a797c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40139cb8ccb05de0bfa1de252a16a413" id="r_a40139cb8ccb05de0bfa1de252a16a413"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413">RendererBase</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> name)</td></tr>
+<tr class="memitem:a40139cb8ccb05de0bfa1de252a16a413" id="r_a40139cb8ccb05de0bfa1de252a16a413"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413">RendererBase</a> (<a class="el" href="group__CategoryVideo.html#ga42069207012bd44674fe1677bd5a1066">WindowRef</a> window, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</td></tr>
 <tr class="memdesc:a40139cb8ccb05de0bfa1de252a16a413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a 2D rendering context for a window.  <br /></td></tr>
 <tr class="separator:a40139cb8ccb05de0bfa1de252a16a413"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2e35780944151019d207ce15e91e6bc" id="r_ac2e35780944151019d207ce15e91e6bc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc">RendererBase</a> (<a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props)</td></tr>
@@ -124,16 +126,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a25e12268f5d4a0d7fdb63c448762aced" id="r_a25e12268f5d4a0d7fdb63c448762aced"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a25e12268f5d4a0d7fdb63c448762aced">GetName</a> () const</td></tr>
 <tr class="memdesc:a25e12268f5d4a0d7fdb63c448762aced"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the name of a renderer.  <br /></td></tr>
 <tr class="separator:a25e12268f5d4a0d7fdb63c448762aced"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaffe3a24cc96cd303be80238b537f00b" id="r_aaffe3a24cc96cd303be80238b537f00b"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#aaffe3a24cc96cd303be80238b537f00b">GetOutputSize</a> () const</td></tr>
+<tr class="memitem:aaffe3a24cc96cd303be80238b537f00b" id="r_aaffe3a24cc96cd303be80238b537f00b"><td class="memItemLeft" align="right" valign="top"><a id="aaffe3a24cc96cd303be80238b537f00b" name="aaffe3a24cc96cd303be80238b537f00b"></a>
+std::optional&lt; <a class="el" href="structSDL_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputSize</b> () const</td></tr>
 <tr class="separator:aaffe3a24cc96cd303be80238b537f00b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbdd1ddd5d6fea7af6eb3b0e33bd2ac4" id="r_acbdd1ddd5d6fea7af6eb3b0e33bd2ac4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#acbdd1ddd5d6fea7af6eb3b0e33bd2ac4">GetOutputSize</a> (SDL_Point *size) const</td></tr>
+<tr class="memitem:acbdd1ddd5d6fea7af6eb3b0e33bd2ac4" id="r_acbdd1ddd5d6fea7af6eb3b0e33bd2ac4"><td class="memItemLeft" align="right" valign="top"><a id="acbdd1ddd5d6fea7af6eb3b0e33bd2ac4" name="acbdd1ddd5d6fea7af6eb3b0e33bd2ac4"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetOutputSize</b> (SDL_Point *size) const</td></tr>
 <tr class="separator:acbdd1ddd5d6fea7af6eb3b0e33bd2ac4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ede670010086138ad523545e0b14be9" id="r_a7ede670010086138ad523545e0b14be9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a7ede670010086138ad523545e0b14be9">GetOutputSize</a> (int *w, int *h) const</td></tr>
 <tr class="memdesc:a7ede670010086138ad523545e0b14be9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the output size in pixels of a rendering context.  <br /></td></tr>
 <tr class="separator:a7ede670010086138ad523545e0b14be9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77bfed3fbb4b92f116c4e5ca1e96837f" id="r_a77bfed3fbb4b92f116c4e5ca1e96837f"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a77bfed3fbb4b92f116c4e5ca1e96837f">GetCurrentOutputSize</a> () const</td></tr>
+<tr class="memitem:a77bfed3fbb4b92f116c4e5ca1e96837f" id="r_a77bfed3fbb4b92f116c4e5ca1e96837f"><td class="memItemLeft" align="right" valign="top"><a id="a77bfed3fbb4b92f116c4e5ca1e96837f" name="a77bfed3fbb4b92f116c4e5ca1e96837f"></a>
+std::optional&lt; <a class="el" href="structSDL_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentOutputSize</b> () const</td></tr>
 <tr class="separator:a77bfed3fbb4b92f116c4e5ca1e96837f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a65569ed1cc97116848e1bf97ab9b87" id="r_a0a65569ed1cc97116848e1bf97ab9b87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a0a65569ed1cc97116848e1bf97ab9b87">GetCurrentOutputSize</a> (SDL_Point *size) const</td></tr>
+<tr class="memitem:a0a65569ed1cc97116848e1bf97ab9b87" id="r_a0a65569ed1cc97116848e1bf97ab9b87"><td class="memItemLeft" align="right" valign="top"><a id="a0a65569ed1cc97116848e1bf97ab9b87" name="a0a65569ed1cc97116848e1bf97ab9b87"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentOutputSize</b> (SDL_Point *size) const</td></tr>
 <tr class="separator:a0a65569ed1cc97116848e1bf97ab9b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fc01bda29bd2bc7d1e3f848c8b194fd" id="r_a8fc01bda29bd2bc7d1e3f848c8b194fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a8fc01bda29bd2bc7d1e3f848c8b194fd">GetCurrentOutputSize</a> (int *w, int *h) const</td></tr>
 <tr class="memdesc:a8fc01bda29bd2bc7d1e3f848c8b194fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current output size in pixels of a rendering context.  <br /></td></tr>
@@ -141,7 +147,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2a311b6d4c3597689ffe65718208a1f5" id="r_a2a311b6d4c3597689ffe65718208a1f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a2a311b6d4c3597689ffe65718208a1f5">GetProperties</a> () const</td></tr>
 <tr class="memdesc:a2a311b6d4c3597689ffe65718208a1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a renderer.  <br /></td></tr>
 <tr class="separator:a2a311b6d4c3597689ffe65718208a1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ca57a9d138be624fa363a40cb887718" id="r_a4ca57a9d138be624fa363a40cb887718"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a4ca57a9d138be624fa363a40cb887718">ResetTarget</a> ()</td></tr>
+<tr class="memitem:a4ca57a9d138be624fa363a40cb887718" id="r_a4ca57a9d138be624fa363a40cb887718"><td class="memItemLeft" align="right" valign="top"><a id="a4ca57a9d138be624fa363a40cb887718" name="a4ca57a9d138be624fa363a40cb887718"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ResetTarget</b> ()</td></tr>
 <tr class="separator:a4ca57a9d138be624fa363a40cb887718"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00f6fe44be445493f8ee9384bf764c87" id="r_a00f6fe44be445493f8ee9384bf764c87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a00f6fe44be445493f8ee9384bf764c87">SetTarget</a> (<a class="el" href="group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7">TextureRef</a> texture)</td></tr>
 <tr class="memdesc:a00f6fe44be445493f8ee9384bf764c87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a texture as the current rendering target.  <br /></td></tr>
@@ -170,7 +177,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8883859100726a7c7f08134ee0fc0229" id="r_a8883859100726a7c7f08134ee0fc0229"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a8883859100726a7c7f08134ee0fc0229">ConvertEventToRenderCoordinates</a> (SDL_Event *event) const</td></tr>
 <tr class="memdesc:a8883859100726a7c7f08134ee0fc0229"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the coordinates in an event to render coordinates.  <br /></td></tr>
 <tr class="separator:a8883859100726a7c7f08134ee0fc0229"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa44e212c72e672a441ec729a18c26ecb" id="r_aa44e212c72e672a441ec729a18c26ecb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#aa44e212c72e672a441ec729a18c26ecb">ResetViewport</a> ()</td></tr>
+<tr class="memitem:aa44e212c72e672a441ec729a18c26ecb" id="r_aa44e212c72e672a441ec729a18c26ecb"><td class="memItemLeft" align="right" valign="top"><a id="aa44e212c72e672a441ec729a18c26ecb" name="aa44e212c72e672a441ec729a18c26ecb"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ResetViewport</b> ()</td></tr>
 <tr class="separator:aa44e212c72e672a441ec729a18c26ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f48812426d05f0ac160cb1b116c6932" id="r_a1f48812426d05f0ac160cb1b116c6932"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932">SetViewport</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect)</td></tr>
 <tr class="memdesc:a1f48812426d05f0ac160cb1b116c6932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drawing area for rendering on the current target.  <br /></td></tr>
@@ -184,7 +192,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8ea5bb6aff35c2777433b0c659b6e486" id="r_a8ea5bb6aff35c2777433b0c659b6e486"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1Rect.html">Rect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a8ea5bb6aff35c2777433b0c659b6e486">GetSafeArea</a> () const</td></tr>
 <tr class="memdesc:a8ea5bb6aff35c2777433b0c659b6e486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the safe area for rendering within the current viewport.  <br /></td></tr>
 <tr class="separator:a8ea5bb6aff35c2777433b0c659b6e486"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadf093d5d6a7423dab461367031cffbd" id="r_aadf093d5d6a7423dab461367031cffbd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#aadf093d5d6a7423dab461367031cffbd">ResetClipRect</a> ()</td></tr>
+<tr class="memitem:aadf093d5d6a7423dab461367031cffbd" id="r_aadf093d5d6a7423dab461367031cffbd"><td class="memItemLeft" align="right" valign="top"><a id="aadf093d5d6a7423dab461367031cffbd" name="aadf093d5d6a7423dab461367031cffbd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ResetClipRect</b> ()</td></tr>
 <tr class="separator:aadf093d5d6a7423dab461367031cffbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6809765651f06b11bd0711c60d24633" id="r_af6809765651f06b11bd0711c60d24633"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#af6809765651f06b11bd0711c60d24633">SetClipRect</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect)</td></tr>
 <tr class="memdesc:af6809765651f06b11bd0711c60d24633"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the clip rectangle for rendering on the specified target.  <br /></td></tr>
@@ -198,9 +207,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaf2e2c2a7eab09a2252d67b43a7de7eb" id="r_aaf2e2c2a7eab09a2252d67b43a7de7eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#aaf2e2c2a7eab09a2252d67b43a7de7eb">SetScale</a> (SDL_FPoint scale)</td></tr>
 <tr class="memdesc:aaf2e2c2a7eab09a2252d67b43a7de7eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drawing scale for rendering on the current target.  <br /></td></tr>
 <tr class="separator:aaf2e2c2a7eab09a2252d67b43a7de7eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bcd884ff71913fb2b29de66ba46573f" id="r_a4bcd884ff71913fb2b29de66ba46573f"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a4bcd884ff71913fb2b29de66ba46573f">GetScale</a> () const</td></tr>
+<tr class="memitem:a4bcd884ff71913fb2b29de66ba46573f" id="r_a4bcd884ff71913fb2b29de66ba46573f"><td class="memItemLeft" align="right" valign="top"><a id="a4bcd884ff71913fb2b29de66ba46573f" name="a4bcd884ff71913fb2b29de66ba46573f"></a>
+std::optional&lt; <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetScale</b> () const</td></tr>
 <tr class="separator:a4bcd884ff71913fb2b29de66ba46573f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52eff7fddc4bbc4d8f048cc788bf40c2" id="r_a52eff7fddc4bbc4d8f048cc788bf40c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a52eff7fddc4bbc4d8f048cc788bf40c2">GetScale</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> *scale) const</td></tr>
+<tr class="memitem:a52eff7fddc4bbc4d8f048cc788bf40c2" id="r_a52eff7fddc4bbc4d8f048cc788bf40c2"><td class="memItemLeft" align="right" valign="top"><a id="a52eff7fddc4bbc4d8f048cc788bf40c2" name="a52eff7fddc4bbc4d8f048cc788bf40c2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetScale</b> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> *scale) const</td></tr>
 <tr class="separator:a52eff7fddc4bbc4d8f048cc788bf40c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2575fc8ac70cc87bb27d98beaa89fe25" id="r_a2575fc8ac70cc87bb27d98beaa89fe25"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a2575fc8ac70cc87bb27d98beaa89fe25">GetScale</a> (float *scaleX, float *scaleY) const</td></tr>
 <tr class="memdesc:a2575fc8ac70cc87bb27d98beaa89fe25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the drawing scale for the current target.  <br /></td></tr>
@@ -211,11 +222,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab5d39f29732e13b3e5b2dce47f78479f" id="r_ab5d39f29732e13b3e5b2dce47f78479f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#ab5d39f29732e13b3e5b2dce47f78479f">SetDrawColor</a> (SDL_FColor c)</td></tr>
 <tr class="memdesc:ab5d39f29732e13b3e5b2dce47f78479f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the color used for drawing operations (<a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, Line and Clear).  <br /></td></tr>
 <tr class="separator:ab5d39f29732e13b3e5b2dce47f78479f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5583d29c44a38c505d5fd1d830314c8e" id="r_a5583d29c44a38c505d5fd1d830314c8e"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1FColor.html">FColor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a5583d29c44a38c505d5fd1d830314c8e">GetDrawColor</a> () const</td></tr>
+<tr class="memitem:a5583d29c44a38c505d5fd1d830314c8e" id="r_a5583d29c44a38c505d5fd1d830314c8e"><td class="memItemLeft" align="right" valign="top"><a id="a5583d29c44a38c505d5fd1d830314c8e" name="a5583d29c44a38c505d5fd1d830314c8e"></a>
+std::optional&lt; <a class="el" href="structSDL_1_1FColor.html">FColor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetDrawColor</b> () const</td></tr>
 <tr class="separator:a5583d29c44a38c505d5fd1d830314c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84472282efbcf5b52b2db615f9e9fcaf" id="r_a84472282efbcf5b52b2db615f9e9fcaf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a84472282efbcf5b52b2db615f9e9fcaf">GetDrawColor</a> (SDL_Color *c) const</td></tr>
+<tr class="memitem:a84472282efbcf5b52b2db615f9e9fcaf" id="r_a84472282efbcf5b52b2db615f9e9fcaf"><td class="memItemLeft" align="right" valign="top"><a id="a84472282efbcf5b52b2db615f9e9fcaf" name="a84472282efbcf5b52b2db615f9e9fcaf"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetDrawColor</b> (SDL_Color *c) const</td></tr>
 <tr class="separator:a84472282efbcf5b52b2db615f9e9fcaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21113c787e4aafd3d0b768a9796d3c0e" id="r_a21113c787e4aafd3d0b768a9796d3c0e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a21113c787e4aafd3d0b768a9796d3c0e">GetDrawColor</a> (SDL_FColor *c) const</td></tr>
+<tr class="memitem:a21113c787e4aafd3d0b768a9796d3c0e" id="r_a21113c787e4aafd3d0b768a9796d3c0e"><td class="memItemLeft" align="right" valign="top"><a id="a21113c787e4aafd3d0b768a9796d3c0e" name="a21113c787e4aafd3d0b768a9796d3c0e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetDrawColor</b> (SDL_FColor *c) const</td></tr>
 <tr class="separator:a21113c787e4aafd3d0b768a9796d3c0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae87188c54fb244244994f3c2cdbf78b6" id="r_ae87188c54fb244244994f3c2cdbf78b6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#ae87188c54fb244244994f3c2cdbf78b6">GetDrawColor</a> (Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a) const</td></tr>
 <tr class="memdesc:ae87188c54fb244244994f3c2cdbf78b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the color used for drawing operations (<a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, Line and Clear).  <br /></td></tr>
@@ -298,11 +312,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7b89b4471bea4dbcab9d63e1aacd871" id="r_aa7b89b4471bea4dbcab9d63e1aacd871"><td class="memItemLeft" align="right" valign="top">std::optional&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#aa7b89b4471bea4dbcab9d63e1aacd871">GetVSync</a> () const</td></tr>
 <tr class="memdesc:aa7b89b4471bea4dbcab9d63e1aacd871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get VSync of the given renderer.  <br /></td></tr>
 <tr class="separator:aa7b89b4471bea4dbcab9d63e1aacd871"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf5f20990f4aa8ab99b8bd7639b665dc" id="r_abf5f20990f4aa8ab99b8bd7639b665dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc">RenderDebugText</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> str)</td></tr>
+<tr class="memitem:abf5f20990f4aa8ab99b8bd7639b665dc" id="r_abf5f20990f4aa8ab99b8bd7639b665dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc">RenderDebugText</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> str)</td></tr>
 <tr class="memdesc:abf5f20990f4aa8ab99b8bd7639b665dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw debug text to an SDL_Renderer.  <br /></td></tr>
 <tr class="separator:abf5f20990f4aa8ab99b8bd7639b665dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a561ff5daacc18b6a372bcc62324d33e7" id="r_a561ff5daacc18b6a372bcc62324d33e7"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
-<tr class="memitem:a561ff5daacc18b6a372bcc62324d33e7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7">RenderDebugTextFormat</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> fmt, ARGS... args)</td></tr>
+<tr class="memitem:a561ff5daacc18b6a372bcc62324d33e7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7">RenderDebugTextFormat</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> fmt, ARGS... args)</td></tr>
 <tr class="memdesc:a561ff5daacc18b6a372bcc62324d33e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw debug text to an SDL_Renderer.  <br /></td></tr>
 <tr class="separator:a561ff5daacc18b6a372bcc62324d33e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e5798bee1abea5a16b88b6ab0667c76" id="r_a8e5798bee1abea5a16b88b6ab0667c76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a8e5798bee1abea5a16b88b6ab0667c76">Destroy</a> ()</td></tr>
@@ -311,15 +325,12 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt;<br />
-struct SDL::RendererBase&lt; T &gt;</div><p>A structure representing rendering state. </p>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+struct SDL::RendererBase&lt; T &gt;</div><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>
 <a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068" title="Handle to an owned renderer.">Renderer</a> </dd>
 <dd>
 <a class="el" href="group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d" title="Handle to a non owned renderer.">RendererRef</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00165">165</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6cd596ee84afc3ead3c26a6c429a797c" name="a6cd596ee84afc3ead3c26a6c429a797c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cd596ee84afc3ead3c26a6c429a797c">&#9670;&#160;</a></span>RendererBase() <span class="overload">[1/4]</span></h2>
@@ -346,8 +357,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a 2D rendering context for a window. </p>
 <p>By default the rendering size matches the window size in pixels, but you can call SDL_SetRenderLogicalPresentation() to change the content size and scaling options.</p>
 <p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -357,8 +366,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00183">183</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +389,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>name</em>&#160;</td>
         </tr>
         <tr>
@@ -397,8 +404,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a 2D rendering context for a window. </p>
 <p>If you want a specific renderer, you can specify its name here. A list of available renderers can be obtained by calling SDL_GetRenderDriver() multiple times, with indices from 0 to SDL_GetNumRenderDrivers()-1. If you don't need a specific renderer, specify NULL and <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will attempt to choose the best option for you, based on what is available on the user's system.</p>
 <p>If <code>name</code> is a comma-separated list, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will try each name, in the order listed, until one succeeds or all of them fail.</p>
 <p>By default the rendering size matches the window size in pixels, but you can call SDL_SetRenderLogicalPresentation() to change the content size and scaling options.</p>
@@ -417,8 +422,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a" title="Use this function to get the name of a built in 2D rendering driver.">GetRenderDriver()</a> </dd>
 <dd>
 GetRendererName() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00218">218</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -447,8 +450,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a 2D rendering context for a window, with the specified properties. </p>
 <p>These are the supported properties:</p>
 <ul>
 <li><code>SDL_PROP_RENDERER_CREATE_NAME_STRING</code>: the name of the rendering driver to use, if a specific one is desired</li>
@@ -479,8 +480,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a25e12268f5d4a0d7fdb63c448762aced" title="Get the name of a renderer.">GetName()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00272">272</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="ab46ac713dd82379701bb276f3d081d92" name="ab46ac713dd82379701bb276f3d081d92"></a>
@@ -508,8 +507,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a 2D software rendering context for a surface. </p>
 <p>Two other API which can be used to create Renderer: <a class="el" href="structSDL_1_1RendererBase.html#a6cd596ee84afc3ead3c26a6c429a797c" title="Create a 2D rendering context for a window.">RendererBase(WindowRef)</a> and SDL_CreateWindowAndRenderer(WindowRef,
 StringParam). These can <em>also</em> create a software renderer, but they are intended to be used with an Window as the final destination and not an Surface.</p>
 <p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
@@ -521,8 +518,6 @@ StringParam). These can <em>also</em> create a software renderer, but they are i
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00296">296</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -552,8 +547,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Convert the coordinates in an event to render coordinates. </p>
 <p>This takes into account several states:</p>
 <ul>
 <li>The window dimensions.</li>
@@ -575,8 +568,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderCoordinatesFromWindow </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00726">726</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -604,14 +595,10 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Destroy the rendering context for a window and free all associated textures. </p>
 <p>This object becomes empty after the call.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_CreateRenderer </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01769">1769</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -639,8 +626,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Force the rendering context to flush any pending commands and state. </p>
 <p>You do not need to (and in fact, shouldn't) call this function unless you are planning to call into OpenGL/Direct3D/Metal/whatever directly, in addition to using an SDL_Renderer.</p>
 <p>This is for a very-specific case: if you are using <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s render API, and you plan to make OpenGL/D3D/whatever calls in addition to <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> render API calls. If this applies, you should call this function between calls to <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s render API and the low-level API you're using in cooperation.</p>
 <p>In all other cases, you can ignore this function.</p>
@@ -649,8 +634,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01634">1634</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -678,16 +661,12 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the clip rectangle for the current target. </p>
 <dl class="section return"><dt>Returns</dt><dd>the rect filled in with the current clipping area or an empty rectangle if clipping is disabled on success; std::nullopt on failure, call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>ClipEnabled() </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#af6809765651f06b11bd0711c60d24633" title="Set the clip rectangle for rendering on the specified target.">SetClipRect()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00865">865</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -715,48 +694,15 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the color scale used for render operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>a float representing the current color scale on success or std::nullopt on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a85566531c35dc2c49e56a577fb4fb060" title="Set the color scale used for render operations.">SetColorScale()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01101">1101</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a77bfed3fbb4b92f116c4e5ca1e96837f" name="a77bfed3fbb4b92f116c4e5ca1e96837f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77bfed3fbb4b92f116c4e5ca1e96837f">&#9670;&#160;</a></span>GetCurrentOutputSize() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="structSDL_1_1Point.html">Point</a> &gt; <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetCurrentOutputSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00360">360</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a8fc01bda29bd2bc7d1e3f848c8b194fd" name="a8fc01bda29bd2bc7d1e3f848c8b194fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fc01bda29bd2bc7d1e3f848c8b194fd">&#9670;&#160;</a></span>GetCurrentOutputSize() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fc01bda29bd2bc7d1e3f848c8b194fd">&#9670;&#160;</a></span>GetCurrentOutputSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -790,8 +736,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the current output size in pixels of a rendering context. </p>
 <p>If a rendering target is active, this will return the size of the rendering target in pixels, otherwise if a logical size is set, it will return the logical size, otherwise it will return the value of SDL_GetRenderOutputSize().</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -803,39 +747,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aaffe3a24cc96cd303be80238b537f00b">GetOutputSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00391">391</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a0a65569ed1cc97116848e1bf97ab9b87" name="a0a65569ed1cc97116848e1bf97ab9b87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a65569ed1cc97116848e1bf97ab9b87">&#9670;&#160;</a></span>GetCurrentOutputSize() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetCurrentOutputSize </td>
-          <td>(</td>
-          <td class="paramtype">SDL_Point *&#160;</td>
-          <td class="paramname"><em>size</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00366">366</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<dl class="section see"><dt>See also</dt><dd>GetOutputSize() </dd></dl>
 
 </div>
 </div>
@@ -863,48 +775,15 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the blend mode used for drawing operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>the current BlendMode on success or std::nullopt on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a9d16732d32a1527f38860ee1cb424953" title="Set the blend mode used for drawing operations (Fill and Line).">SetDrawBlendMode()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01139">1139</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a5583d29c44a38c505d5fd1d830314c8e" name="a5583d29c44a38c505d5fd1d830314c8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5583d29c44a38c505d5fd1d830314c8e">&#9670;&#160;</a></span>GetDrawColor() <span class="overload">[1/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="structSDL_1_1FColor.html">FColor</a> &gt; <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetDrawColor </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00987">987</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="abdacc19afd18b9d4777c7479c47aff06" name="abdacc19afd18b9d4777c7479c47aff06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdacc19afd18b9d4777c7479c47aff06">&#9670;&#160;</a></span>GetDrawColor() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abdacc19afd18b9d4777c7479c47aff06">&#9670;&#160;</a></span>GetDrawColor() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -950,8 +829,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the color used for drawing operations (<a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, Line and Clear). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">r</td><td>a pointer filled in with the red value used to draw on the rendering target. </td></tr>
@@ -966,74 +843,12 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SetDrawColorFloat() </dd>
 <dd>
-<a class="el" href="structSDL_1_1RendererBase.html#a5583d29c44a38c505d5fd1d830314c8e">GetDrawColor()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01058">1058</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a84472282efbcf5b52b2db615f9e9fcaf" name="a84472282efbcf5b52b2db615f9e9fcaf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84472282efbcf5b52b2db615f9e9fcaf">&#9670;&#160;</a></span>GetDrawColor() <span class="overload">[3/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetDrawColor </td>
-          <td>(</td>
-          <td class="paramtype">SDL_Color *&#160;</td>
-          <td class="paramname"><em>c</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00993">993</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a21113c787e4aafd3d0b768a9796d3c0e" name="a21113c787e4aafd3d0b768a9796d3c0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21113c787e4aafd3d0b768a9796d3c0e">&#9670;&#160;</a></span>GetDrawColor() <span class="overload">[4/5]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetDrawColor </td>
-          <td>(</td>
-          <td class="paramtype">SDL_FColor *&#160;</td>
-          <td class="paramname"><em>c</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01002">1002</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+GetDrawColor() </dd></dl>
 
 </div>
 </div>
 <a id="ae87188c54fb244244994f3c2cdbf78b6" name="ae87188c54fb244244994f3c2cdbf78b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae87188c54fb244244994f3c2cdbf78b6">&#9670;&#160;</a></span>GetDrawColor() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae87188c54fb244244994f3c2cdbf78b6">&#9670;&#160;</a></span>GetDrawColor() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1079,8 +894,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the color used for drawing operations (<a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, Line and Clear). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">r</td><td>a pointer filled in with the red value used to draw on the rendering target. </td></tr>
@@ -1096,8 +909,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>GetDrawColorFloat() </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867" title="Set the color used for drawing operations.">SetDrawColor()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01032">1032</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1142,8 +953,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get device independent resolution and presentation mode for rendering. </p>
 <p>This function gets the width and height of the logical rendering output, or the output size in pixels if a logical resolution is not enabled.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1157,8 +966,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00607">607</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1197,8 +1004,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get device independent resolution and presentation mode for rendering. </p>
 <p>This function gets the width and height of the logical rendering output, or the output size in pixels if a logical resolution is not enabled.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1211,8 +1016,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00582">582</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1240,15 +1043,11 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the final presentation rectangle for rendering. </p>
 <p>This function returns the calculated rectangle used for logical presentation, based on the presentation mode and output size. If logical presentation is disabled, it will fill the rectangle with the output size, in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd>the rect with the final presentation rectangle on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00631">631</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1276,47 +1075,14 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the name of a renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>the name of the selected renderer, or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00324">324</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="aaffe3a24cc96cd303be80238b537f00b" name="aaffe3a24cc96cd303be80238b537f00b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaffe3a24cc96cd303be80238b537f00b">&#9670;&#160;</a></span>GetOutputSize() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="structSDL_1_1Point.html">Point</a> &gt; <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetOutputSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00326">326</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a7ede670010086138ad523545e0b14be9" name="a7ede670010086138ad523545e0b14be9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ede670010086138ad523545e0b14be9">&#9670;&#160;</a></span>GetOutputSize() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ede670010086138ad523545e0b14be9">&#9670;&#160;</a></span>GetOutputSize()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1350,8 +1116,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the output size in pixels of a rendering context. </p>
 <p>This returns the true output size in pixels, ignoring any render targets or logical size and presentation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1363,39 +1127,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a77bfed3fbb4b92f116c4e5ca1e96837f">GetCurrentOutputSize()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00355">355</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="acbdd1ddd5d6fea7af6eb3b0e33bd2ac4" name="acbdd1ddd5d6fea7af6eb3b0e33bd2ac4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbdd1ddd5d6fea7af6eb3b0e33bd2ac4">&#9670;&#160;</a></span>GetOutputSize() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetOutputSize </td>
-          <td>(</td>
-          <td class="paramtype">SDL_Point *&#160;</td>
-          <td class="paramname"><em>size</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00332">332</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<dl class="section see"><dt>See also</dt><dd>GetCurrentOutputSize() </dd></dl>
 
 </div>
 </div>
@@ -1423,8 +1155,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the properties associated with a renderer. </p>
 <p>The following read-only properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
 <li><code>SDL_PROP_RENDERER_NAME_STRING</code>: the name of the rendering driver</li>
@@ -1471,8 +1201,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00479">479</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a8ea5bb6aff35c2777433b0c659b6e486" name="a8ea5bb6aff35c2777433b0c659b6e486"></a>
@@ -1499,48 +1227,15 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the safe area for rendering within the current viewport. </p>
 <p>Some devices have portions of the screen which are partially obscured or not interactive, possibly due to on-screen controls, curved edges, camera notches, TV overscan, etc. This function provides the area of the current viewport which is safe to have interactible content. You should continue rendering into the rest of the render target, but it should not contain visually important or interactible content.</p>
 <dl class="section return"><dt>Returns</dt><dd>the rect filled the area that is safe for interactive content on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00823">823</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a4bcd884ff71913fb2b29de66ba46573f" name="a4bcd884ff71913fb2b29de66ba46573f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bcd884ff71913fb2b29de66ba46573f">&#9670;&#160;</a></span>GetScale() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &gt; <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetScale </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00912">912</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a2575fc8ac70cc87bb27d98beaa89fe25" name="a2575fc8ac70cc87bb27d98beaa89fe25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2575fc8ac70cc87bb27d98beaa89fe25">&#9670;&#160;</a></span>GetScale() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2575fc8ac70cc87bb27d98beaa89fe25">&#9670;&#160;</a></span>GetScale()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1574,8 +1269,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the drawing scale for the current target. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">scaleX</td><td>a pointer filled in with the horizontal scaling factor. </td></tr>
@@ -1587,38 +1280,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aaf2e2c2a7eab09a2252d67b43a7de7eb" title="Set the drawing scale for rendering on the current target.">SetScale()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00938">938</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a52eff7fddc4bbc4d8f048cc788bf40c2" name="a52eff7fddc4bbc4d8f048cc788bf40c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52eff7fddc4bbc4d8f048cc788bf40c2">&#9670;&#160;</a></span>GetScale() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::GetScale </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSDL_1_1FPoint.html">FPoint</a> *&#160;</td>
-          <td class="paramname"><em>scale</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00918">918</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1638,15 +1299,11 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Get the current render target. </p>
 <p>The default render target is the window for which the renderer was created, and is reported a NULL here.</p>
 <dl class="section return"><dt>Returns</dt><dd>the current render target or NULL for the default render target.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a00f6fe44be445493f8ee9384bf764c87" title="Set a texture as the current rendering target.">SetTarget()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02928">2928</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1674,8 +1331,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the drawing area for the current target. </p>
 <p>Each render target has its own viewport. This function gets the viewport for the current render target.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
@@ -1683,8 +1338,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#ab2908ff72f1fcfe85cd2c9b2ce703fca" title="Return whether an explicit rectangle was set as the viewport.">IsViewportSet()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932" title="Set the drawing area for rendering on the current target.">SetViewport()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00778">778</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1712,14 +1365,10 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get VSync of the given renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>the current vertical refresh sync interval on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a7f956ae897c56fe35213f70e3d548790" title="Toggle VSync of the given renderer.">SetVSync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01672">1672</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1747,13 +1396,9 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the window associated with a renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>the window on success or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00311">311</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1781,16 +1426,12 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get whether clipping is enabled on the given renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if clipping is enabled or false if not; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a755bccca740076de95e4a4a889a54b48" title="Get the clip rectangle for the current target.">GetClipRect()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#af6809765651f06b11bd0711c60d24633" title="Set the clip rectangle for rendering on the specified target.">SetClipRect()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00884">884</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1818,8 +1459,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Return whether an explicit rectangle was set as the viewport. </p>
 <p>This is useful if you're saving and restoring the viewport and want to know whether you should restore a specific rectangle or NULL. Note that the viewport is always reset when changing rendering targets.</p>
 <p>Each render target has its own viewport. This function checks the viewport for the current render target.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the viewport was set to a specific rectangle, or false if it was set to NULL (the entire target).</dd></dl>
@@ -1828,8 +1467,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#ad74c59e900e3ffd5a6ff9f5258fefef8" title="Get the drawing area for the current target.">GetViewport()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932" title="Set the drawing area for rendering on the current target.">SetViewport()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00804">804</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1857,8 +1494,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Update the screen with any rendering performed since the previous call. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s rendering functions operate on a backbuffer; that is, calling a rendering function such as SDL_RenderLine() does not directly put a line on the screen, but rather updates the backbuffer. As such, you compose your entire scene and <em>present</em> the composed backbuffer to the screen as a complete picture.</p>
 <p>Therefore, when using <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s rendering API, one does all drawing intended for the frame, and then calls this function once per frame to present the final drawing to the user.</p>
 <p>The backbuffer should be considered invalidated after each present; do not assume that previous contents will exist between frames. You are strongly encouraged to call SDL_RenderClear() to initialize the backbuffer before starting each new frame's drawing, even if you plan to overwrite every pixel.</p>
@@ -1888,8 +1523,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867" title="Set the color used for drawing operations.">SetDrawColor()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01602">1602</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="aeb6edc12d14e357905ec3b408f1eaf3b" name="aeb6edc12d14e357905ec3b408f1eaf3b"></a>
@@ -1916,15 +1549,11 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Clear the current rendering target with the drawing color. </p>
 <p>This function clears the entire rendering target, ignoring the viewport and the clip rectangle. Note, that clearing will also set/fill all pixels of the rendering target to current renderer draw color, so make sure to invoke SDL_SetRenderDrawColor() when needed.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867" title="Set the color used for drawing operations.">SetDrawColor()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01164">1164</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -1953,8 +1582,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get a point in render coordinates when given a point in window coordinates. </p>
 <p>This takes into account several states:</p>
 <ul>
 <li>The window dimensions.</li>
@@ -1974,8 +1601,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#aaf2e2c2a7eab09a2252d67b43a7de7eb" title="Set the drawing scale for rendering on the current target.">SetScale()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00660">660</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2004,8 +1629,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get a point in window coordinates when given a point in render coordinates. </p>
 <p>This takes into account several states:</p>
 <ul>
 <li>The window dimensions.</li>
@@ -2027,8 +1650,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1RendererBase.html#aaf2e2c2a7eab09a2252d67b43a7de7eb" title="Set the drawing scale for rendering on the current target.">SetScale()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932" title="Set the drawing area for rendering on the current target.">SetViewport()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00688">688</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2052,7 +1673,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>str</em>&#160;</td>
         </tr>
         <tr>
@@ -2067,8 +1688,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw debug text to an SDL_Renderer. </p>
 <p>This function will render a string of text to an SDL_Renderer. Note that this is a convenience function for debugging, with severe limitations, and not intended to be used for production apps and games.</p>
 <p>Among these limitations:</p>
 <ul>
@@ -2094,8 +1713,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dd>
 SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01716">1716</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
 </div>
 </div>
 <a id="a561ff5daacc18b6a372bcc62324d33e7" name="a561ff5daacc18b6a372bcc62324d33e7"></a>
@@ -2120,7 +1737,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>fmt</em>, </td>
         </tr>
         <tr>
@@ -2141,8 +1758,6 @@ template&lt;class... ARGS&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw debug text to an SDL_Renderer. </p>
 <p>This function will render a std::format()-style format string to a renderer. Note that this is a convenience function for debugging, with severe limitations, and is not intended to be used for production apps and games.</p>
 <p>For the full list of limitations and other useful information, see SDL_RenderDebugText.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2159,8 +1774,6 @@ template&lt;class... ARGS&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc" title="Draw debug text to an SDL_Renderer.">RenderDebugText()</a> </dd>
 <dd>
 SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01748">1748</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2189,8 +1802,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Fill a rectangle on the current rendering target with the drawing color at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rect</td><td>a pointer to the destination rectangle, or std::nullopt for the entire rendering target. </td></tr>
@@ -2201,8 +1812,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderFillRects </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01293">1293</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2231,8 +1840,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Fill some number of rectangles on the current rendering target with the drawing color at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rects</td><td>a pointer to an array of destination rectangles. </td></tr>
@@ -2243,8 +1850,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderFillRect </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01312">1312</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2281,8 +1886,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Render a list of triangles, optionally using a texture and indices into the vertex array <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
@@ -2295,8 +1898,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderGeometryRaw </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02996">2996</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2381,8 +1982,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
@@ -2403,8 +2002,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderGeometry </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l03013">3013</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2443,8 +2040,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw a line on the current rendering target at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p1</td><td>the x,y coordinate of the start point. </td></tr>
@@ -2456,8 +2051,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderLines </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01214">1214</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2486,8 +2079,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw a series of connected lines on the current rendering target at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">points</td><td>the points along the lines, drawing count-1 lines. </td></tr>
@@ -2498,8 +2089,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderLine </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01233">1233</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2528,8 +2117,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw a point on the current rendering target at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the x, y coordinates of the point. </td></tr>
@@ -2540,8 +2127,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderPoints </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01179">1179</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2570,8 +2155,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw multiple points on the current rendering target at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">points</td><td>the points to draw. </td></tr>
@@ -2582,8 +2165,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderPoint </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01194">1194</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2612,8 +2193,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Read pixels from the current rendering target. </p>
 <p><b>WARNING</b>: This is a very slow operation, and should not be used frequently. If you're using this on the main rendering target, it should be called after rendering and before SDL_RenderPresent().</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2624,8 +2203,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>a new SDL_Surface on success or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01551">1551</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2654,8 +2231,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw a rectangle on the current rendering target at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rect</td><td>a pointer to the destination rectangle, or std::nullopt to outline the entire rendering target. </td></tr>
@@ -2666,8 +2241,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderRects </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01253">1253</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2696,8 +2269,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Draw some number of rectangles on the current rendering target at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rects</td><td>a pointer to an array of destination rectangles. </td></tr>
@@ -2708,8 +2279,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderRect </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01272">1272</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2746,8 +2315,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Copy a portion of the texture to the current rendering target at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
@@ -2762,8 +2329,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTextureRotated </dd>
 <dd>
 SDL_RenderTextureTiled </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02934">2934</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2830,8 +2395,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Perform a scaled copy using the 9-grid algorithm to the current rendering target at subpixel precision. </p>
 <p>The pixels in the texture are split into a 3x3 grid, using the different corner sizes for each corner, and the sides and center making up the remaining pixels. The corners are then scaled using <code>scale</code> and fit into the corners of the destination rectangle. The sides and center are then stretched into place to cover the remaining destination rectangle.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2850,8 +2413,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02975">2975</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2900,8 +2461,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Copy a portion of the source texture to the current rendering target, with affine transform, at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
@@ -2916,8 +2475,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>You may only call this function from the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02954">2954</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -2972,8 +2529,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Copy a portion of the source texture to the current rendering target, with rotation and flipping, at subpixel precision. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">texture</td><td>the source texture. </td></tr>
@@ -2989,8 +2544,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02942">2942</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3033,8 +2586,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Tile a portion of the texture to the current rendering target at subpixel precision. </p>
 <p>The pixels in <code>srcrect</code> will be repeated as many times as needed to completely fill <code>dstrect</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3049,95 +2600,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02965">2965</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="aadf093d5d6a7423dab461367031cffbd" name="aadf093d5d6a7423dab461367031cffbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadf093d5d6a7423dab461367031cffbd">&#9670;&#160;</a></span>ResetClipRect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::ResetClipRect </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00829">829</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="a4ca57a9d138be624fa363a40cb887718" name="a4ca57a9d138be624fa363a40cb887718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ca57a9d138be624fa363a40cb887718">&#9670;&#160;</a></span>ResetTarget()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::ResetTarget </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00484">484</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
-
-</div>
-</div>
-<a id="aa44e212c72e672a441ec729a18c26ecb" name="aa44e212c72e672a441ec729a18c26ecb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa44e212c72e672a441ec729a18c26ecb">&#9670;&#160;</a></span>ResetViewport()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase</a>&lt; T &gt;::ResetViewport </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00731">731</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3166,8 +2628,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the clip rectangle for rendering on the specified target. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rect</td><td>an SDL_Rect structure representing the clip area, relative to the viewport, or NULL to disable clipping. </td></tr>
@@ -3180,8 +2640,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a755bccca740076de95e4a4a889a54b48" title="Get the clip rectangle for the current target.">GetClipRect()</a> </dd>
 <dd>
 ClipEnabled() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00846">846</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3210,8 +2668,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the color scale used for render operations. </p>
 <p>The color scale is an additional scale multiplied into the pixel color value while rendering. This can be used to adjust the brightness of colors during HDR rendering, or changing HDR video brightness when playing on an SDR display.</p>
 <p>The color scale does not affect the alpha channel, only the color brightness.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3224,8 +2680,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aa3455f1ed5c9673fb3560f769fcfdca1" title="Get the color scale used for render operations.">GetColorScale()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01084">1084</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3254,8 +2708,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the blend mode used for drawing operations (Fill and Line). </p>
 <p>If the blend mode is not supported, the closest supported mode is chosen.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3267,8 +2719,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a157ad97e3ed83a6c87b21cb5094c57b4" title="Get the blend mode used for drawing operations.">GetDrawBlendMode()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01122">1122</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3297,8 +2747,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the color used for drawing operations. </p>
 <p>Set the color for drawing or filling rectangles, lines, and points, and for SDL_RenderClear().</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3309,11 +2757,9 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a5583d29c44a38c505d5fd1d830314c8e">GetDrawColor()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>GetDrawColor() </dd>
 <dd>
 SetDrawColorFloat() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00960">960</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3342,8 +2788,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the color used for drawing operations (<a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, Line and Clear). </p>
 <p>Set the color for drawing or filling rectangles, lines, and points, and for SDL_RenderClear().</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3357,8 +2801,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>GetDrawColorFloat() </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867" title="Set the color used for drawing operations.">SetDrawColor()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00982">982</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3397,8 +2839,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a device independent resolution and presentation mode for rendering. </p>
 <p>This function sets the width and height of the logical rendering output. The renderer will act as if the window is always the requested dimensions, scaling to the actual window resolution as necessary.</p>
 <p>This can be useful for games that expect a fixed size, but would like to scale the output to whatever is available, regardless of how a user resizes a window, or if the display is high DPI.</p>
 <p>You can disable logical coordinates by setting the mode to SDL_LOGICAL_PRESENTATION_DISABLED, and in that case you get the full pixel resolution of the output window; it is safe to toggle logical presentation during the rendering of a frame: perhaps most of the rendering is done to specific dimensions but to make fonts look sharp, the app turns off logical presentation while drawing text.</p>
@@ -3419,8 +2859,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <a class="el" href="structSDL_1_1RendererBase.html#ad0a46c5ec2a153ed79933f1efb2eafbb" title="Get device independent resolution and presentation mode for rendering.">GetLogicalPresentation()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a4e231417b3b5cee3048276f4ed5ac701" title="Get the final presentation rectangle for rendering.">GetLogicalPresentationRect()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00560">560</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3449,8 +2887,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the drawing scale for rendering on the current target. </p>
 <p>The drawing coordinates are scaled by the x/y scaling factors before they are used by the renderer. This allows resolution independent drawing with a single coordinate system.</p>
 <p>If this results in scaling or subpixel drawing by the rendering backend, it will be handled using the appropriate quality hints. For best results use integer scaling factors.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3462,9 +2898,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a4bcd884ff71913fb2b29de66ba46573f">GetScale()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00907">907</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
+<dl class="section see"><dt>See also</dt><dd>GetScale() </dd></dl>
 
 </div>
 </div>
@@ -3485,8 +2919,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Set a texture as the current rendering target. </p>
 <p>The default render target is the window for which the renderer was created. To stop rendering to a texture and render to the window again, call this function with a NULL <code>texture</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3498,8 +2930,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a0a08906b9ff3d00e0ad75107e991f5d1" title="Get the current render target.">GetTarget()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02922">2922</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3528,8 +2958,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the drawing area for rendering on the current target. </p>
 <p>Drawing will clip to this area (separately from any clipping done with SDL_SetRenderClipRect), and the top left of the area will become coordinate (0, 0) for future drawing commands.</p>
 <p>The area's width and height must be &gt;= 0.</p>
 <p>Each render target has its own viewport. This function sets the viewport for the current render target.</p>
@@ -3545,8 +2973,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#ad74c59e900e3ffd5a6ff9f5258fefef8" title="Get the drawing area for the current target.">GetViewport()</a> </dd>
 <dd>
 ViewportSet() </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00757">757</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>
@@ -3575,8 +3001,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Toggle VSync of the given renderer. </p>
 <p>When a renderer is created, vsync defaults to SDL_RENDERER_VSYNC_DISABLED.</p>
 <p>The <code>vsync</code> parameter can be 1 to synchronize present with every vertical refresh, 2 to synchronize present with every second vertical refresh, etc., SDL_RENDERER_VSYNC_ADAPTIVE for late swap tearing (adaptive vsync), or SDL_RENDERER_VSYNC_DISABLED to disable. Not every value is supported by every driver, so you should check the return value to see whether the requested setting is supported.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3589,8 +3013,6 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aa7b89b4471bea4dbcab9d63e1aacd871" title="Get VSync of the given renderer.">GetVSync()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01658">1658</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
 </div>
 </div>

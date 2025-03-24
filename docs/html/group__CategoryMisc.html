@@ -81,12 +81,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga59e209c6233f74a03b27e90eba2ab151" id="r_ga59e209c6233f74a03b27e90eba2ab151"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMisc.html#ga59e209c6233f74a03b27e90eba2ab151">SDL::OpenURL</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> url)</td></tr>
+<tr class="memitem:ga59e209c6233f74a03b27e90eba2ab151" id="r_ga59e209c6233f74a03b27e90eba2ab151"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMisc.html#ga59e209c6233f74a03b27e90eba2ab151">SDL::OpenURL</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> url)</td></tr>
 <tr class="memdesc:ga59e209c6233f74a03b27e90eba2ab151"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a URL/URI in the browser or other appropriate external application.  <br /></td></tr>
 <tr class="separator:ga59e209c6233f74a03b27e90eba2ab151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> API functions that don't fit elsewhere. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga59e209c6233f74a03b27e90eba2ab151" name="ga59e209c6233f74a03b27e90eba2ab151"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga59e209c6233f74a03b27e90eba2ab151">&#9670;&#160;</a></span>OpenURL()</h2>
@@ -100,7 +99,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool SDL::OpenURL </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>url</em></td><td>)</td>
           <td></td>
         </tr>
@@ -111,8 +110,6 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Open a URL/URI in the browser or other appropriate external application. </p>
 <p>Open a URL in a separate, system-provided application. How this works will vary wildly depending on the platform. This will likely launch what makes sense to handle a specific URL's protocol (a web browser for <code><a href="http://">http://</a></code>, etc), but it might also be able to launch file managers for directories and other things.</p>
 <p>What happens when you open a URL varies wildly as well: your game window may lose focus (and may or may not lose focus if your game was fullscreen or grabbing input at the time). On mobile devices, your app will likely move to the background or your process might be paused. Any given platform may or may not handle a given URL.</p>
 <p>If this is unimplemented (or simply unavailable) for a platform, this will fail with an error. A successful result does not mean the URL loaded, just that we launched <em>something</em> to handle it (or at least believe we did).</p>
@@ -125,8 +122,6 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__misc_8h_source.html#l00048">48</a> of file <a class="el" href="SDL3pp__misc_8h_source.html">SDL3pp_misc.h</a>.</p>
 
 </div>
 </div>

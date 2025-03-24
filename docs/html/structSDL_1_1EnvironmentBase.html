@@ -83,6 +83,8 @@ $(function() {
 
 <p>A thread-safe set of environment variables.  
  <a href="structSDL_1_1EnvironmentBase.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for SDL::EnvironmentBase&lt; T &gt;:</div>
 <div class="dyncontent">
@@ -109,7 +111,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a880debc9b624b80f3879ff6946b9cb7b" id="r_a880debc9b624b80f3879ff6946b9cb7b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a880debc9b624b80f3879ff6946b9cb7b">EnvironmentBase</a> (bool populated)</td></tr>
 <tr class="memdesc:a880debc9b624b80f3879ff6946b9cb7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a set of environment variables.  <br /></td></tr>
 <tr class="separator:a880debc9b624b80f3879ff6946b9cb7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b6abcb1989c00fbf4d2dcb9444ccfc1" id="r_a4b6abcb1989c00fbf4d2dcb9444ccfc1"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a4b6abcb1989c00fbf4d2dcb9444ccfc1">GetVariable</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> name)</td></tr>
+<tr class="memitem:a4b6abcb1989c00fbf4d2dcb9444ccfc1" id="r_a4b6abcb1989c00fbf4d2dcb9444ccfc1"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a4b6abcb1989c00fbf4d2dcb9444ccfc1">GetVariable</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</td></tr>
 <tr class="memdesc:a4b6abcb1989c00fbf4d2dcb9444ccfc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the value of a variable in the environment.  <br /></td></tr>
 <tr class="separator:a4b6abcb1989c00fbf4d2dcb9444ccfc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affb9aa8d60bec51e9af9387a03e8c353" id="r_affb9aa8d60bec51e9af9387a03e8c353"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryOwnPtr.html#ga6de15a6952ddc3d7f9090013d7d7637f">OwnArray</a>&lt; char * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#affb9aa8d60bec51e9af9387a03e8c353">GetVariables</a> ()</td></tr>
@@ -118,10 +120,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac76d82950ec49f67bb71ff7ff7a8e770" id="r_ac76d82950ec49f67bb71ff7ff7a8e770"><td class="memItemLeft" align="right" valign="top">Uint64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#ac76d82950ec49f67bb71ff7ff7a8e770">GetVariableCount</a> ()</td></tr>
 <tr class="memdesc:ac76d82950ec49f67bb71ff7ff7a8e770"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Variables count.  <br /></td></tr>
 <tr class="separator:ac76d82950ec49f67bb71ff7ff7a8e770"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a600ac76d2975e3b14a1ebd1fa6620f51" id="r_a600ac76d2975e3b14a1ebd1fa6620f51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a600ac76d2975e3b14a1ebd1fa6620f51">SetVariable</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> name, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> value, bool overwrite)</td></tr>
+<tr class="memitem:a600ac76d2975e3b14a1ebd1fa6620f51" id="r_a600ac76d2975e3b14a1ebd1fa6620f51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a600ac76d2975e3b14a1ebd1fa6620f51">SetVariable</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> name, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> value, bool overwrite)</td></tr>
 <tr class="memdesc:a600ac76d2975e3b14a1ebd1fa6620f51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the value of a variable in the environment.  <br /></td></tr>
 <tr class="separator:a600ac76d2975e3b14a1ebd1fa6620f51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a188fef4de195e641b259803a7a16e44f" id="r_a188fef4de195e641b259803a7a16e44f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f">UnsetVariable</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> name)</td></tr>
+<tr class="memitem:a188fef4de195e641b259803a7a16e44f" id="r_a188fef4de195e641b259803a7a16e44f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f">UnsetVariable</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</td></tr>
 <tr class="memdesc:a188fef4de195e641b259803a7a16e44f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear a variable from the environment.  <br /></td></tr>
 <tr class="separator:a188fef4de195e641b259803a7a16e44f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4869b8834a581757030a9b7c311eab2" id="r_af4869b8834a581757030a9b7c311eab2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1EnvironmentBase.html#af4869b8834a581757030a9b7c311eab2">Destroy</a> ()</td></tr>
@@ -130,16 +132,13 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt;<br />
-struct SDL::EnvironmentBase&lt; T &gt;</div><p>A thread-safe set of environment variables. </p>
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+struct SDL::EnvironmentBase&lt; T &gt;</div><dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#gaedb86e9b9bb1aca04f73942d06b1d98f" title="Handle to an owning environment.">Environment</a> </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#ga61951c691e5b53e2c5261c8f3536531e" title="Handle to a non owning environment.">EnvironmentRef</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00464">464</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a880debc9b624b80f3879ff6946b9cb7b" name="a880debc9b624b80f3879ff6946b9cb7b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a880debc9b624b80f3879ff6946b9cb7b">&#9670;&#160;</a></span>EnvironmentBase()</h2>
@@ -166,8 +165,6 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a set of environment variables. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">populated</td><td>true to initialize it from the C runtime environment, false to create an empty environment. </td></tr>
@@ -186,8 +183,6 @@ SDL_SetEnvironmentVariable </dd>
 SDL_UnsetEnvironmentVariable </dd>
 <dd>
 SDL_DestroyEnvironment </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00488">488</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -216,14 +211,10 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Destroy a set of environment variables. </p>
 <p>This object becomes empty after the call.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the environment is no longer in use.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_CreateEnvironment </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00613">613</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -241,7 +232,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
         <tr>
           <td class="memname">const char * <a class="el" href="structSDL_1_1EnvironmentBase.html">SDL::EnvironmentBase</a>&lt; T &gt;::GetVariable </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -252,8 +243,6 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the value of a variable in the environment. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the variable to get. </td></tr>
@@ -272,8 +261,6 @@ SDL_GetEnvironmentVariables </dd>
 SDL_SetEnvironmentVariable </dd>
 <dd>
 SDL_UnsetEnvironmentVariable </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00510">510</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -301,12 +288,8 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the Variables count. </p>
 <dl class="section return"><dt>Returns</dt><dd>the number of existing environment variables</dd></dl>
 <p>This might be slow. </p>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00545">545</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -334,8 +317,6 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get all variables in the environment. </p>
 <dl class="section return"><dt>Returns</dt><dd>a NULL terminated array of pointers to environment variables in the form "variable=value" or NULL on failure; call SDL_GetError() for more information. This is wrapped to be auto-deleted, use FreeWrapper.release() if you want to manage manually.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
@@ -348,8 +329,6 @@ SDL_GetEnvironmentVariables </dd>
 SDL_SetEnvironmentVariable </dd>
 <dd>
 SDL_UnsetEnvironmentVariable </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00533">533</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
@@ -367,13 +346,13 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1EnvironmentBase.html">SDL::EnvironmentBase</a>&lt; T &gt;::SetVariable </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>value</em>, </td>
         </tr>
         <tr>
@@ -394,8 +373,6 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the value of a variable in the environment. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the variable to set. </td></tr>
@@ -417,8 +394,6 @@ SDL_GetEnvironmentVariables </dd>
 <dd>
 SDL_UnsetEnvironmentVariable </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00573">573</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
-
 </div>
 </div>
 <a id="a188fef4de195e641b259803a7a16e44f" name="a188fef4de195e641b259803a7a16e44f"></a>
@@ -435,7 +410,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1EnvironmentBase.html">SDL::EnvironmentBase</a>&lt; T &gt;::UnsetVariable </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -446,8 +421,6 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Clear a variable from the environment. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the variable to unset. </td></tr>
@@ -468,8 +441,6 @@ EnvironmentBase() </dd>
 <a class="el" href="structSDL_1_1EnvironmentBase.html#a600ac76d2975e3b14a1ebd1fa6620f51" title="Set the value of a variable in the environment.">SetVariable()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f" title="Clear a variable from the environment.">UnsetVariable()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00596">596</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
 
 </div>
 </div>
