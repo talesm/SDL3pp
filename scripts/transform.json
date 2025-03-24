@@ -1540,6 +1540,9 @@
       }
     },
     "SDL_properties.h": {
+      "ignoreEntries": [
+        "SDL_DestroyProperties"
+      ],
       "includeAfter": {
         "__begin": [
           {
@@ -1558,31 +1561,8 @@
             "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>"
           },
           {
-            "name": "PropertiesDeleter",
-            "kind": "struct",
-            "entries": {
-              "pointer": {
-                "kind": "alias",
-                "type": "FancyPointer<SDL_PropertiesID>"
-              },
-              "operator()": {
-                "name": "operator()",
-                "kind": "function",
-                "type": "void",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "PropertiesRef",
-                    "name": "props"
-                  }
-                ]
-              }
-            }
-          },
-          {
             "name": "Properties",
-            "kind": "alias",
-            "type": "PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>"
+            "kind": "alias"
           },
           {
             "name": "PropertyType",
@@ -1827,12 +1807,22 @@
               "kind": "function",
               "name": "Enumerate",
               "immutable": true
-            },
-            "SDL_DestroyProperties": "function"
+            }
           }
         },
         "SDL_CreateProperties": {
           "type": "Properties"
+        },
+        "SDL_DestroyProperties": {
+          "name": "ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "FancyPointer<SDL_PropertiesID>",
+              "name": "resource"
+            }
+          ]
         }
       }
     },

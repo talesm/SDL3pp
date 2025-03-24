@@ -7838,36 +7838,9 @@
           "type": "PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>",
           "doc": ""
         },
-        "PropertiesDeleter": {
-          "name": "PropertiesDeleter",
-          "kind": "struct",
-          "entries": {
-            "pointer": {
-              "kind": "alias",
-              "type": "FancyPointer<SDL_PropertiesID>",
-              "name": "pointer",
-              "doc": ""
-            },
-            "operator()": {
-              "name": "operator()",
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "PropertiesRef",
-                  "name": "props"
-                }
-              ],
-              "doc": ""
-            }
-          },
-          "doc": ""
-        },
         "Properties": {
           "name": "Properties",
           "kind": "alias",
-          "type": "PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>",
           "doc": ""
         },
         "PropertyType": {
@@ -8262,15 +8235,7 @@
                 "sourceName": "SDL_EnumerateProperties",
                 "immutable": true
               }
-            ],
-            "Destroy": {
-              "doc": "Destroy a group of properties.\n\nAll properties are deleted and their cleanup functions will be called, if\nany.\n\n@param props the properties to destroy.\n\n@threadsafety This function should not be called while these properties are\n              locked or other threads might be setting or getting values\n              from these properties.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateProperties",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "sourceName": "SDL_DestroyProperties"
-            }
+            ]
           }
         },
         "PropertiesLock": {

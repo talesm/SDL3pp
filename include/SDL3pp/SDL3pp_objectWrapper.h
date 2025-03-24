@@ -84,6 +84,7 @@ private:
 template<class REF>
 struct ObjectDeleter
 {
+  using pointer = REF::pointer;
   const void operator()(REF resource) const { resource.free(); }
 };
 

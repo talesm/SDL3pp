@@ -87,8 +87,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesBase.html">SDL::PropertiesBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap properties id.  <a href="structSDL_1_1PropertiesBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PropertiesDeleter.html">SDL::PropertiesDeleter</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1PropertiesLock.html">SDL::PropertiesLock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrap the lock state for <a class="el" href="structSDL_1_1PropertiesBase.html" title="Wrap properties id.">PropertiesBase</a>.  <a href="classSDL_1_1PropertiesLock.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -98,9 +96,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gaa5faab1a5ca99f759b68b5800ab0697f" id="r_gaa5faab1a5ca99f759b68b5800ab0697f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">SDL::PropertiesRef</a> = <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_PropertiesID, <a class="el" href="classSDL_1_1FancyPointer.html">FancyPointer</a>&lt; SDL_PropertiesID &gt; &gt; &gt;</td></tr>
 <tr class="memdesc:gaa5faab1a5ca99f759b68b5800ab0697f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned properties.  <br /></td></tr>
 <tr class="separator:gaa5faab1a5ca99f759b68b5800ab0697f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8cd8bf33aa8133a2babb593ad1cae7c3" id="r_ga8cd8bf33aa8133a2babb593ad1cae7c3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3">SDL::Properties</a> = <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_PropertiesID, <a class="el" href="structSDL_1_1PropertiesDeleter.html">PropertiesDeleter</a> &gt; &gt;</td></tr>
-<tr class="memdesc:ga8cd8bf33aa8133a2babb593ad1cae7c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned properties.  <br /></td></tr>
-<tr class="separator:ga8cd8bf33aa8133a2babb593ad1cae7c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06dc2e7d322964dbf2cb788b9cbaf7e5" id="r_ga06dc2e7d322964dbf2cb788b9cbaf7e5"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5">SDL::Properties</a> = <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_PropertiesID, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_PropertiesID, <a class="el" href="classSDL_1_1FancyPointer.html">FancyPointer</a>&lt; SDL_PropertiesID &gt; &gt; &gt; &gt; &gt;</td></tr>
+<tr class="memdesc:ga06dc2e7d322964dbf2cb788b9cbaf7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned properties.  <br /></td></tr>
+<tr class="separator:ga06dc2e7d322964dbf2cb788b9cbaf7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga150010e97d120b9ebadf796038d8c07f" id="r_ga150010e97d120b9ebadf796038d8c07f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga150010e97d120b9ebadf796038d8c07f">SDL::PropertyType</a> = SDL_PropertyType</td></tr>
 <tr class="memdesc:ga150010e97d120b9ebadf796038d8c07f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> property type.  <br /></td></tr>
 <tr class="separator:ga150010e97d120b9ebadf796038d8c07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,7 +108,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gaff19b3a34bf82cdd3bd6e32d47e1481a" id="r_gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#gaff19b3a34bf82cdd3bd6e32d47e1481a">SDL::GetGlobalProperties</a> ()</td></tr>
 <tr class="memdesc:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties.  <br /></td></tr>
 <tr class="separator:gaff19b3a34bf82cdd3bd6e32d47e1481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga72ccc4e98aaf7b3e08b7951a65a9f2ce" id="r_ga72ccc4e98aaf7b3e08b7951a65a9f2ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3">Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce">SDL::CreateProperties</a> ()</td></tr>
+<tr class="memitem:ga72ccc4e98aaf7b3e08b7951a65a9f2ce" id="r_ga72ccc4e98aaf7b3e08b7951a65a9f2ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5">Properties</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce">SDL::CreateProperties</a> ()</td></tr>
 <tr class="memdesc:ga72ccc4e98aaf7b3e08b7951a65a9f2ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a group of properties.  <br /></td></tr>
 <tr class="separator:ga72ccc4e98aaf7b3e08b7951a65a9f2ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -185,7 +183,7 @@ Variables</h2></td></tr>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a9154b3fe4cc858baf7442a806266f32c" title="Set a pointer property in a group of properties with a cleanup function that is called when the prope...">PropertiesBase.SetPointerWithCleanup()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00109">109</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00104">104</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -209,7 +207,7 @@ Variables</h2></td></tr>
 result-callback</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#result-callback">Result callback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00120">120</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00115">115</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -239,7 +237,7 @@ result-callback</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8" title="Enumerate the properties contained in a group of properties.">PropertiesBase::Enumerate()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00145">145</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00140">140</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -264,18 +262,18 @@ result-callback</dd></dl>
 immediate-callback</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="callback.html#immediate-callback">Immediate callback</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00159">159</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00154">154</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
-<a id="ga8cd8bf33aa8133a2babb593ad1cae7c3" name="ga8cd8bf33aa8133a2babb593ad1cae7c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8cd8bf33aa8133a2babb593ad1cae7c3">&#9670;&#160;</a></span>Properties</h2>
+<a id="ga06dc2e7d322964dbf2cb788b9cbaf7e5" name="ga06dc2e7d322964dbf2cb788b9cbaf7e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga06dc2e7d322964dbf2cb788b9cbaf7e5">&#9670;&#160;</a></span>Properties</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3">SDL::Properties</a> = typedef <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;SDL_PropertiesID, <a class="el" href="structSDL_1_1PropertiesDeleter.html">PropertiesDeleter</a>&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5">SDL::Properties</a> = typedef <a class="el" href="structSDL_1_1PropertiesBase.html">PropertiesBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_PropertiesID, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;SDL_PropertiesID, <a class="el" href="classSDL_1_1FancyPointer.html">FancyPointer</a>&lt;SDL_PropertiesID&gt; &gt;&gt; &gt;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -288,7 +286,7 @@ immediate-callback</dd></dl>
 <dd>
 <a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f" title="Handle to a non owned properties.">PropertiesRef</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00072">72</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00066">66</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -311,7 +309,7 @@ immediate-callback</dd></dl>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html" title="Wrap properties id.">PropertiesBase</a> </dd>
 <dd>
-<a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3" title="Handle to an owned properties.">Properties</a> </dd>
+<a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5" title="Handle to an owned properties.">Properties</a> </dd>
 <dd>
 <a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce" title="Create a group of properties.">CreateProperties()</a> </dd></dl>
 
@@ -334,7 +332,7 @@ immediate-callback</dd></dl>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> property type. </p>
 <dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00080">80</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00075">75</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -349,7 +347,7 @@ immediate-callback</dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3">Properties</a> SDL::CreateProperties </td>
+          <td class="memname"><a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5">Properties</a> SDL::CreateProperties </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -367,9 +365,9 @@ immediate-callback</dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a valid Properties for a new group of properties, or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProperties.html#ga8cd8bf33aa8133a2babb593ad1cae7c3" title="Handle to an owned properties.">Properties</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5" title="Handle to an owned properties.">Properties</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00826">826</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00821">821</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -399,7 +397,7 @@ immediate-callback</dd></dl>
 <p>Get the global <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> properties. </p>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00807">807</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00802">802</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -424,7 +422,7 @@ immediate-callback</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00799">799</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00794">794</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -448,7 +446,7 @@ immediate-callback</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00797">797</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00792">792</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -472,7 +470,7 @@ immediate-callback</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00789">789</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00784">784</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -496,7 +494,7 @@ immediate-callback</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00795">795</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00790">790</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -520,7 +518,7 @@ immediate-callback</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00791">791</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00786">786</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
@@ -544,7 +542,7 @@ immediate-callback</dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00793">793</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00788">788</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
 </div>
 </div>
