@@ -105,12 +105,19 @@ if (DOXYGEN_FOUND)
     set(DOXYGEN_HTML_OUTPUT "${PROJECT_SOURCE_DIR}/docs/html")
     set(DOXYGEN_GENERATE_XML YES)
     set(DOXYGEN_EXCLUDE 
-        "${PROJECT_SOURCE_DIR}/build/"
-        "${PROJECT_SOURCE_DIR}/dist/"
-        "${PROJECT_SOURCE_DIR}/examples/"
-        "${PROJECT_SOURCE_DIR}/external/"
-        "${PROJECT_SOURCE_DIR}/scripts/"
-        "${PROJECT_SOURCE_DIR}/test/"
+        "android-project/"
+        "build/"
+        "build-config/"
+        "build-scripts/"
+        "dist/"
+        "examples/"
+        "external/"
+        "scripts/"
+        "src/"
+        "test/"
+        "VisualC/"
+        "VisualC-GDK/"
+        "Xcode/"
     )
     set(DOXYGEN_LAYOUT_FILE "${PROJECT_SOURCE_DIR}/docs/DoxygenLayout.xml")
     set(DOXYGEN_BRIEF_MEMBER_DESC YES)
@@ -138,6 +145,20 @@ if (DOXYGEN_FOUND)
     doxygen_add_docs(SDL3pp_doxygen
         COMMENT "Generate API docs for SDL3pp"
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    )
+
+    set(DOXYGEN_GENERATE_HTML NO)
+    set(DOXYGEN_XML_OUTPUT "xml-sdl")
+    doxygen_add_docs(SDL3pp_SdlXml
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/external/SDL/
+    )
+    set(DOXYGEN_XML_OUTPUT "xml-sdl_image")
+    doxygen_add_docs(SDL3pp_SdlImageXml
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/external/SDL_image/
+    )
+    set(DOXYGEN_XML_OUTPUT "xml-sdl_ttf")
+    doxygen_add_docs(SDL3pp_SdlTtfXml
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/external/SDL_ttf/
     )
     
     # Old doxygen
