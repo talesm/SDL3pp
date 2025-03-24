@@ -399,8 +399,8 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </div><div class="memdoc">
 
 <p>Create a 2D rendering context for a window. </p>
-<p>If you want a specific renderer, you can specify its name here. A list of available renderers can be obtained by calling SDL_GetRenderDriver() multiple times, with indices from 0 to SDL_GetNumRenderDrivers()-1. If you don't need a specific renderer, specify NULL and <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will attempt to choose the best option for you, based on what is available on the user's system.</p>
-<p>If <code>name</code> is a comma-separated list, <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will try each name, in the order listed, until one succeeds or all of them fail.</p>
+<p>If you want a specific renderer, you can specify its name here. A list of available renderers can be obtained by calling SDL_GetRenderDriver() multiple times, with indices from 0 to SDL_GetNumRenderDrivers()-1. If you don't need a specific renderer, specify NULL and <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will attempt to choose the best option for you, based on what is available on the user's system.</p>
+<p>If <code>name</code> is a comma-separated list, <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> will try each name, in the order listed, until one succeeds or all of them fail.</p>
 <p>By default the rendering size matches the window size in pixels, but you can call SDL_SetRenderLogicalPresentation() to change the content size and scaling options.</p>
 <p>It renderer creation fails for any reason this object is falsy; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -411,7 +411,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryRender.html#gaeb8dc812e83b8aee07c7bc37d233d599" title="Get the number of 2D rendering drivers available for the current display.">GetNumRenderDrivers()</a> </dd>
 <dd>
 <a class="el" href="group__CategoryRender.html#gaec060bae8c84c9565bf316e335b36c5a" title="Use this function to get the name of a built in 2D rendering driver.">GetRenderDriver()</a> </dd>
@@ -474,7 +474,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryProperties.html#ga06dc2e7d322964dbf2cb788b9cbaf7e5" title="Handle to an owned properties.">Properties</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a25e12268f5d4a0d7fdb63c448762aced" title="Get the name of a renderer.">GetName()</a> </dd></dl>
@@ -520,7 +520,7 @@ StringParam). These can <em>also</em> create a software renderer, but they are i
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00296">296</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -573,7 +573,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderCoordinatesFromWindow </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00726">726</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -608,7 +608,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Destroy the rendering context for a window and free all associated textures. </p>
 <p>This object becomes empty after the call.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_CreateRenderer </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01769">1769</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -642,13 +642,13 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 
 <p>Force the rendering context to flush any pending commands and state. </p>
 <p>You do not need to (and in fact, shouldn't) call this function unless you are planning to call into OpenGL/Direct3D/Metal/whatever directly, in addition to using an SDL_Renderer.</p>
-<p>This is for a very-specific case: if you are using <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s render API, and you plan to make OpenGL/D3D/whatever calls in addition to <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> render API calls. If this applies, you should call this function between calls to <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s render API and the low-level API you're using in cooperation.</p>
+<p>This is for a very-specific case: if you are using <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s render API, and you plan to make OpenGL/D3D/whatever calls in addition to <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> render API calls. If this applies, you should call this function between calls to <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s render API and the low-level API you're using in cooperation.</p>
 <p>In all other cases, you can ignore this function.</p>
-<p>This call makes <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> flush any pending rendering work it was queueing up to do later in a single batch, and marks any internal cached state as invalid, so it'll prepare all its state again later, from scratch.</p>
-<p>This means you do not need to save state in your rendering code to protect the <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> renderer. However, there lots of arbitrary pieces of Direct3D and OpenGL state that can confuse things; you should use your best judgment and be prepared to make changes if specific state needs to be protected.</p>
+<p>This call makes <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> flush any pending rendering work it was queueing up to do later in a single batch, and marks any internal cached state as invalid, so it'll prepare all its state again later, from scratch.</p>
+<p>This means you do not need to save state in your rendering code to protect the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> renderer. However, there lots of arbitrary pieces of Direct3D and OpenGL state that can confuse things; you should use your best judgment and be prepared to make changes if specific state needs to be protected.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01634">1634</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -682,7 +682,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Get the clip rectangle for the current target. </p>
 <dl class="section return"><dt>Returns</dt><dd>the rect filled in with the current clipping area or an empty rectangle if clipping is disabled on success; std::nullopt on failure, call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>ClipEnabled() </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#af6809765651f06b11bd0711c60d24633" title="Set the clip rectangle for rendering on the specified target.">SetClipRect()</a> </dd></dl>
@@ -719,7 +719,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Get the color scale used for render operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>a float representing the current color scale on success or std::nullopt on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a85566531c35dc2c49e56a577fb4fb060" title="Set the color scale used for render operations.">SetColorScale()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01101">1101</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -802,7 +802,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aaffe3a24cc96cd303be80238b537f00b">GetOutputSize()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00391">391</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -867,7 +867,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Get the blend mode used for drawing operations. </p>
 <dl class="section return"><dt>Returns</dt><dd>the current BlendMode on success or std::nullopt on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a9d16732d32a1527f38860ee1cb424953" title="Set the blend mode used for drawing operations (Fill and Line).">SetDrawBlendMode()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01139">1139</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -963,7 +963,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SetDrawColorFloat() </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a5583d29c44a38c505d5fd1d830314c8e">GetDrawColor()</a> </dd></dl>
@@ -1092,7 +1092,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetDrawColorFloat() </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867" title="Set the color used for drawing operations.">SetDrawColor()</a> </dd></dl>
@@ -1155,7 +1155,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00607">607</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1209,7 +1209,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00582">582</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1245,7 +1245,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>This function returns the calculated rectangle used for logical presentation, based on the presentation mode and output size. If logical presentation is disabled, it will fill the rectangle with the output size, in pixels.</p>
 <dl class="section return"><dt>Returns</dt><dd>the rect with the final presentation rectangle on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00631">631</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1280,7 +1280,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Get the name of a renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>the name of the selected renderer, or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00324">324</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -1362,7 +1362,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a77bfed3fbb4b92f116c4e5ca1e96837f">GetCurrentOutputSize()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00355">355</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1425,7 +1425,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </div><div class="memdoc">
 
 <p>Get the properties associated with a renderer. </p>
-<p>The following read-only properties are provided by <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
+<p>The following read-only properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
 <li><code>SDL_PROP_RENDERER_NAME_STRING</code>: the name of the rendering driver</li>
 <li><code>SDL_PROP_RENDERER_WINDOW_POINTER</code>: the window where rendering is displayed, if any</li>
@@ -1469,7 +1469,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </ul>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00479">479</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -1504,7 +1504,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Some devices have portions of the screen which are partially obscured or not interactive, possibly due to on-screen controls, curved edges, camera notches, TV overscan, etc. This function provides the area of the current viewport which is safe to have interactible content. You should continue rendering into the rest of the render target, but it should not contain visually important or interactible content.</p>
 <dl class="section return"><dt>Returns</dt><dd>the rect filled the area that is safe for interactive content on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00823">823</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -1585,7 +1585,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aaf2e2c2a7eab09a2252d67b43a7de7eb" title="Set the drawing scale for rendering on the current target.">SetScale()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00938">938</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1643,7 +1643,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>The default render target is the window for which the renderer was created, and is reported a NULL here.</p>
 <dl class="section return"><dt>Returns</dt><dd>the current render target or NULL for the default render target.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a00f6fe44be445493f8ee9384bf764c87" title="Set a texture as the current rendering target.">SetTarget()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02928">2928</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1679,7 +1679,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Each render target has its own viewport. This function gets the viewport for the current render target.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#ab2908ff72f1fcfe85cd2c9b2ce703fca" title="Return whether an explicit rectangle was set as the viewport.">IsViewportSet()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932" title="Set the drawing area for rendering on the current target.">SetViewport()</a> </dd></dl>
@@ -1716,7 +1716,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Get VSync of the given renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>the current vertical refresh sync interval on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a7f956ae897c56fe35213f70e3d548790" title="Toggle VSync of the given renderer.">SetVSync()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01672">1672</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1751,7 +1751,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Get the window associated with a renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>the window on success or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00311">311</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -1785,7 +1785,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Get whether clipping is enabled on the given renderer. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if clipping is enabled or false if not; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a755bccca740076de95e4a4a889a54b48" title="Get the clip rectangle for the current target.">GetClipRect()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#af6809765651f06b11bd0711c60d24633" title="Set the clip rectangle for rendering on the specified target.">SetClipRect()</a> </dd></dl>
@@ -1824,7 +1824,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Each render target has its own viewport. This function checks the viewport for the current render target.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the viewport was set to a specific rectangle, or false if it was set to NULL (the entire target).</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#ad74c59e900e3ffd5a6ff9f5258fefef8" title="Get the drawing area for the current target.">GetViewport()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a1f48812426d05f0ac160cb1b116c6932" title="Set the drawing area for rendering on the current target.">SetViewport()</a> </dd></dl>
@@ -1859,13 +1859,13 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </div><div class="memdoc">
 
 <p>Update the screen with any rendering performed since the previous call. </p>
-<p><a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s rendering functions operate on a backbuffer; that is, calling a rendering function such as SDL_RenderLine() does not directly put a line on the screen, but rather updates the backbuffer. As such, you compose your entire scene and <em>present</em> the composed backbuffer to the screen as a complete picture.</p>
-<p>Therefore, when using <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s rendering API, one does all drawing intended for the frame, and then calls this function once per frame to present the final drawing to the user.</p>
+<p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s rendering functions operate on a backbuffer; that is, calling a rendering function such as SDL_RenderLine() does not directly put a line on the screen, but rather updates the backbuffer. As such, you compose your entire scene and <em>present</em> the composed backbuffer to the screen as a complete picture.</p>
+<p>Therefore, when using <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s rendering API, one does all drawing intended for the frame, and then calls this function once per frame to present the final drawing to the user.</p>
 <p>The backbuffer should be considered invalidated after each present; do not assume that previous contents will exist between frames. You are strongly encouraged to call SDL_RenderClear() to initialize the backbuffer before starting each new frame's drawing, even if you plan to overwrite every pixel.</p>
 <p>Please note, that in case of rendering to a texture - there is <b>no need</b> to call <code>SDL_RenderPresent</code> after drawing needed objects to a texture, and should not be done; you are only required to change back the rendering target to default via <code>SDL_SetRenderTarget(renderer, NULL)</code> afterwards, as textures by themselves do not have a concept of backbuffers. Calling SDL_RenderPresent while rendering to a texture will still update the screen with any current drawing that has been done <em>to the window itself</em>.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aeb6edc12d14e357905ec3b408f1eaf3b" title="Clear the current rendering target with the drawing color.">RenderClear()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a18cf4e2266ac4aebb2cbe9578f019aa8" title="Fill a rectangle on the current rendering target with the drawing color at subpixel precision.">RenderFillRect()</a> </dd>
@@ -1921,7 +1921,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>This function clears the entire rendering target, ignoring the viewport and the clip rectangle. Note, that clearing will also set/fill all pixels of the rendering target to current renderer draw color, so make sure to invoke SDL_SetRenderDrawColor() when needed.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867" title="Set the color used for drawing operations.">SetDrawColor()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01164">1164</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -1970,7 +1970,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FPoint.html" title="The structure that defines a point (using floating point values).">FPoint</a> containing ther render coordinates on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#aaf2e2c2a7eab09a2252d67b43a7de7eb" title="Set the drawing scale for rendering on the current target.">SetScale()</a> </dd></dl>
@@ -2021,7 +2021,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a <a class="el" href="structSDL_1_1FPoint.html" title="The structure that defines a point (using floating point values).">FPoint</a> filled with window coordinates on success or std::nullopt on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#af6989d7e5c77b8af134de07765c00344" title="Set a device independent resolution and presentation mode for rendering.">SetLogicalPresentation()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#aaf2e2c2a7eab09a2252d67b43a7de7eb" title="Set the drawing scale for rendering on the current target.">SetScale()</a> </dd>
@@ -2089,7 +2089,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>DebugTextFormat() </dd>
 <dd>
 SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE </dd></dl>
@@ -2156,7 +2156,7 @@ template&lt;class... ARGS&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc" title="Draw debug text to an SDL_Renderer.">RenderDebugText()</a> </dd>
 <dd>
 SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE </dd></dl>
@@ -2200,7 +2200,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderFillRects </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01293">1293</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2242,7 +2242,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderFillRect </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01312">1312</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2286,7 +2286,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Render a list of triangles, optionally using a texture and indices into the vertex array <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
+    <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
     <tr><td class="paramname">vertices</td><td>vertices. </td></tr>
     <tr><td class="paramname">indices</td><td>(optional) An array of integer indices into the 'vertices' array, if NULL all vertices will be rendered in sequential order. </td></tr>
   </table>
@@ -2294,7 +2294,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderGeometryRaw </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02996">2996</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2386,7 +2386,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 <p>Render a list of triangles, optionally using a texture and indices into the vertex arrays <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a> and alpha modulation is done per vertex (SDL_SetTextureColorMod and SDL_SetTextureAlphaMod are ignored). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
+    <tr><td class="paramname">texture</td><td>(optional) The <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> texture to use. </td></tr>
     <tr><td class="paramname">xy</td><td>vertex positions. </td></tr>
     <tr><td class="paramname">xy_stride</td><td>byte size to move from one element to the next element. </td></tr>
     <tr><td class="paramname">color</td><td>vertex colors (as SDL_FColor). </td></tr>
@@ -2402,7 +2402,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderGeometry </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l03013">3013</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2455,7 +2455,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderLines </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01214">1214</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2497,7 +2497,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderLine </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01233">1233</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2539,7 +2539,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderPoints </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01179">1179</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2581,7 +2581,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderPoint </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01194">1194</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2624,7 +2624,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a new SDL_Surface on success or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01551">1551</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
 
@@ -2665,7 +2665,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderRects </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01253">1253</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2707,7 +2707,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderRect </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01272">1272</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2759,7 +2759,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTextureRotated </dd>
 <dd>
 SDL_RenderTextureTiled </dd></dl>
@@ -2849,7 +2849,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02975">2975</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2915,7 +2915,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>You may only call this function from the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02954">2954</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -2988,7 +2988,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02942">2942</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -3048,7 +3048,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_RenderTexture </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02965">2965</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -3177,7 +3177,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a755bccca740076de95e4a4a889a54b48" title="Get the clip rectangle for the current target.">GetClipRect()</a> </dd>
 <dd>
 ClipEnabled() </dd></dl>
@@ -3223,7 +3223,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aa3455f1ed5c9673fb3560f769fcfdca1" title="Get the color scale used for render operations.">GetColorScale()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01084">1084</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -3266,7 +3266,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a157ad97e3ed83a6c87b21cb5094c57b4" title="Get the blend mode used for drawing operations.">GetDrawBlendMode()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01122">1122</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -3309,7 +3309,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a5583d29c44a38c505d5fd1d830314c8e">GetDrawColor()</a> </dd>
 <dd>
 SetDrawColorFloat() </dd></dl>
@@ -3354,7 +3354,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetDrawColorFloat() </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#a7dc3966cdb024d1061115f0e79af6867" title="Set the color used for drawing operations.">SetDrawColor()</a> </dd></dl>
@@ -3414,7 +3414,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a8883859100726a7c7f08134ee0fc0229" title="Convert the coordinates in an event to render coordinates.">ConvertEventToRenderCoordinates()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1RendererBase.html#ad0a46c5ec2a153ed79933f1efb2eafbb" title="Get device independent resolution and presentation mode for rendering.">GetLogicalPresentation()</a> </dd>
@@ -3462,7 +3462,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a4bcd884ff71913fb2b29de66ba46573f">GetScale()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l00907">907</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -3497,7 +3497,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#a0a08906b9ff3d00e0ad75107e991f5d1" title="Get the current render target.">GetTarget()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l02922">2922</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>
@@ -3542,7 +3542,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#ad74c59e900e3ffd5a6ff9f5258fefef8" title="Get the drawing area for the current target.">GetViewport()</a> </dd>
 <dd>
 ViewportSet() </dd></dl>
@@ -3588,7 +3588,7 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html#aa7b89b4471bea4dbcab9d63e1aacd871" title="Get VSync of the given renderer.">GetVSync()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__render_8h_source.html#l01658">1658</a> of file <a class="el" href="SDL3pp__render_8h_source.html">SDL3pp_render.h</a>.</p>

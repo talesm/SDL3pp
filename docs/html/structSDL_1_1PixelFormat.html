@@ -162,14 +162,14 @@ Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Pixel format. </p>
-<p><a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s pixel formats have the following naming convention:</p>
+<p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>'s pixel formats have the following naming convention:</p>
 <ul>
 <li>Names with a list of components and a single bit count, such as RGB24 and ABGR32, define a platform-independent encoding into bytes in the order specified. For example, in RGB24 data, each pixel is encoded in 3 bytes (red, green, blue) in that order, and in ABGR32 data, each pixel is encoded in 4 bytes alpha, blue, green, red) in that order. Use these names if the property of a format that is important to you is the order of the bytes in memory or on disk.</li>
 <li>Names with a bit count per component, such as ARGB8888 and XRGB1555, are "packed" into an appropriately-sized integer in the platform's native endianness. For example, ARGB8888 is a sequence of 32-bit integers; in each integer, the most significant bits are alpha, and the least significant bits are blue. On a little-endian CPU such as x86, the least significant bits of each integer are arranged first in memory, but on a big-endian CPU such as s390x, the most significant bits are arranged first. Use these names if the property of a format that is important to you is the meaning of each bit position within a native-endianness integer.</li>
 <li>In indexed formats such as INDEX4LSB, each pixel is represented by encoding an index into the palette into the indicated number of bits, with multiple pixels packed into each byte if appropriate. In LSB formats, the first (leftmost) pixel is stored in the least-significant bits of the byte; in MSB formats, it's stored in the most-significant bits. INDEX8 does not need LSB/MSB variants, because each pixel exactly fills one byte.</li>
 </ul>
 <p>The 32-bit byte-array encodings such as RGBA32 are aliases for the appropriate 8888 encoding for the current platform. For example, RGBA32 is an alias for ABGR8888 on little-endian CPUs like x86, or an alias for RGBA8888 on big-endian CPUs.</p>
-<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This enum is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-state.html">Wrap state</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>wrap-state </dd>
 <dd>
@@ -274,7 +274,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l00333">333</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
@@ -347,7 +347,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the SDL_PixelFormat value corresponding to the format masks, or SDL_PIXELFORMAT_UNKNOWN if there isn't a match.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#abba3ab09ade332b130c4592b0a8669fa" title="Convert one of the enumerated pixel formats to a bpp value and RGBA masks.">GetMasks()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l00540">540</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
@@ -400,7 +400,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a color value.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetPixelFormatDetails() </dd>
 <dd>
 <a class="el" href="group__CategoryPixels.html#ga49d732d7c5ee9b90b1e9634d0716456b" title="Get RGBA values from a pixel in the specified format.">GetRGBA()</a> </dd>
@@ -505,7 +505,7 @@ Public Attributes</h2></td></tr>
 <p>Returned structure may come from a shared global cache (i.e. not newly allocated), and hence should not be modified, especially the palette. Weird errors such as <code>Blit combination not supported</code> may occur.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to a SDL_PixelFormatDetails structure or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l00563">563</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
@@ -608,7 +608,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PixelFormat.html#adf3c56b25390fc768df4519096b5288d" title="Convert a bpp value and RGBA masks to an enumerated pixel format.">ForMasks()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l00511">511</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
@@ -641,7 +641,7 @@ Public Attributes</h2></td></tr>
 <p>Get the human readable name of a pixel format. </p>
 <dl class="section return"><dt>Returns</dt><dd>the human readable name of the specified pixel format or "SDL_PIXELFORMAT_UNKNOWN" if the format isn't recognized.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l00492">492</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
@@ -976,7 +976,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a pixel value.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetPixelFormatDetails() </dd>
 <dd>
 <a class="el" href="structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c" title="Get RGBA values from a pixel in the specified format.">Get()</a> </dd>

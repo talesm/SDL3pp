@@ -469,10 +469,10 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Determine whether a rectangle has no area. </p>
 <p>A rectangle is considered "empty" for this function if <code>r</code> is NULL, or if <code>r</code>'s width and/or height are &lt;= 0.</p>
-<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the rectangle is "empty", false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l01103">1103</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
 
@@ -504,7 +504,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Determine whether two rectangles are equal. </p>
 <p>Rectangles are considered equal if both are not NULL and each of their x, y, width and height match.</p>
-<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
+<p>Note that this is a forced-inline function in a header, and not a public API function available in the <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> library (which is to say, the code is embedded in the calling program and the linker and dynamic loader will not be able to find this function inside <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> itself).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">other</td><td>the second rectangle to test. </td></tr>
@@ -513,7 +513,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the rectangles are equal, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l01128">1128</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
 
@@ -954,7 +954,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a SDL_Rect structure filled in with the minimal enclosing rectangle or std::nullopt if all the points were outside of the clipping rectangle.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l00775">775</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
 
@@ -1108,7 +1108,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an SDL_Rect structure filled in with the intersection of if there is intersection, std::nullopt otherwise.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Rect.html#ade19828e88fe7ba4a55ff4c527538059" title="Determine whether two rectangles intersect.">HasIntersection()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l01194">1194</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
@@ -1237,7 +1237,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> representing union of two rectangles</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l01210">1210</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
 
@@ -1426,7 +1426,7 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Rect.html#a5a0fdfe1fac1286b852d8516d3f974aa" title="Calculate the intersection of two rectangles.">GetIntersection()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l01176">1176</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
@@ -1491,7 +1491,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if there is an intersection, false otherwise.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l01040">1040</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
 
@@ -1600,7 +1600,7 @@ Static Public Member Functions</h2></td></tr>
 <p>Convert an SDL_Rect to SDL_FRect. </p>
 <dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats).">FRect</a> filled in with the floating point representation of <code>rect</code>.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__rect_8h_source.html#l02042">2042</a> of file <a class="el" href="SDL3pp__rect_8h_source.html">SDL3pp_rect.h</a>.</p>
 

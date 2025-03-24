@@ -189,7 +189,7 @@ struct SDL::PropertiesBase&lt; T &gt;</div><p>Wrap properties id. </p>
 </ul>
 <p>Properties can be removed from a group by using SDL_ClearProperty.</p>
 <p>To create a new properties group use <a class="el" href="group__CategoryProperties.html#ga72ccc4e98aaf7b3e08b7951a65a9f2ce" title="Create a group of properties.">CreateProperties()</a>.</p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>
@@ -236,7 +236,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00627">627</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
@@ -278,7 +278,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00219">219</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
@@ -313,7 +313,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 <p>All properties are deleted and their cleanup functions will be called, if any.</p>
 <dl class="section post"><dt>Postcondition</dt><dd>This object becomes empty after the call.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while these properties are locked or other threads might be setting or getting values from these properties.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00705">705</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
@@ -366,7 +366,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00686">686</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
 
@@ -495,7 +495,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 
 <p>Get a boolean property from a group of properties. </p>
 <p>You can use SDL_GetPropertyType() to query whether the property exists and is a boolean property.</p>
-<p>By convention, the names of properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
+<p>By convention, the names of properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the property to query. </td></tr>
@@ -505,7 +505,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a boolean property.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a54840945564bad4d728db1024266916c" title="Get the type of a property.">GetType()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5" title="Return whether a property exists.">Has()</a> </dd>
@@ -586,7 +586,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 
 <p>Get a floating point property from a group of properties. </p>
 <p>You can use SDL_GetPropertyType() to query whether the property exists and is a floating point property.</p>
-<p>By convention, the names of properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
+<p>By convention, the names of properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the property to query. </td></tr>
@@ -596,7 +596,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a float property.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a54840945564bad4d728db1024266916c" title="Get the type of a property.">GetType()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5" title="Return whether a property exists.">Has()</a> </dd>
@@ -645,7 +645,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 
 <p>Get a number property from a group of properties. </p>
 <p>You can use SDL_GetPropertyType() to query whether the property exists and is a number property.</p>
-<p>By convention, the names of properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
+<p>By convention, the names of properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the property to query. </td></tr>
@@ -655,7 +655,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a number property.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a54840945564bad4d728db1024266916c" title="Get the type of a property.">GetType()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5" title="Return whether a property exists.">Has()</a> </dd>
@@ -704,7 +704,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 
 <p>Get a pointer property from a group of properties. </p>
 <p>You can use SDL_GetPropertyType() to query whether the property exists and is a pointer property.</p>
-<p>By convention, the names of properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
+<p>By convention, the names of properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the property to query. </td></tr>
@@ -714,7 +714,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a pointer property.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, although the data returned is not protected and could potentially be freed if you call SetProperty() or ClearProperty() on these properties from another thread. If you need to avoid this, use SDL_LockProperties() and SDL_UnlockProperties().</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a7eacd357cd3eb486b340c26e1b41ff27" title="Get a boolean property from a group of properties.">GetBoolean()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a8b948910f53266d5e482ca8e150dd9ec" title="Get a floating point property from a group of properties.">GetFloat()</a> </dd>
@@ -771,7 +771,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 
 <p>Get a string property from a group of properties. </p>
 <p>You can use SDL_GetPropertyType() to query whether the property exists and is a string property.</p>
-<p>By convention, the names of properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
+<p>By convention, the names of properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> exposes on objects will start with "SDL.", and properties that <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> uses internally will start with "SDL.internal.". These should be considered read-only and should not be modified by applications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>the name of the property to query. </td></tr>
@@ -781,7 +781,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the value of the property, or <code>default_value</code> if it is not set or not a string property.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, although the data returned is not protected and could potentially be freed if you call <a class="el" href="structSDL_1_1PropertiesBase.html#a6d0127edfa671c7c02b0890dd923e41d" title="Set a string property in a group of properties.">SetString()</a> or ClearProperty() on these properties from another thread. If you need to avoid this, use SDL_LockProperties() and SDL_UnlockProperties().</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a54840945564bad4d728db1024266916c" title="Get the type of a property.">PropertiesRef.GetType()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5" title="Return whether a property exists.">PropertiesRef.Has()</a> </dd>
@@ -827,7 +827,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the type of the property, or SDL_PROPERTY_TYPE_INVALID if it is not set.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5" title="Return whether a property exists.">Has()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00452">452</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
@@ -869,7 +869,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true if the property exists, or false if it doesn't.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a54840945564bad4d728db1024266916c" title="Get the type of a property.">GetType()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00437">437</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
@@ -898,7 +898,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 <p>The lock is automatically taken when setting individual properties, this function is only needed when you want to set several properties atomically or want to guarantee that properties being queried aren't freed in another thread.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classSDL_1_1PropertiesLock.html" title="Wrap the lock state for PropertiesBase.">PropertiesLock</a> on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>PropertiesLock.UnlockProperties() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00853">853</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
@@ -951,7 +951,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a7eacd357cd3eb486b340c26e1b41ff27" title="Get a boolean property from a group of properties.">GetBoolean()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00420">420</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
@@ -1004,7 +1004,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a8b948910f53266d5e482ca8e150dd9ec" title="Get a floating point property from a group of properties.">GetFloat()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00401">401</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
@@ -1057,7 +1057,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a51383b28226c124793649d51aec6740d" title="Get a number property from a group of properties.">GetNumber()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00382">382</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>
@@ -1110,7 +1110,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#acb96e7a51b367caef8e2c3b338383335" title="Get a pointer property from a group of properties.">GetPointer()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5" title="Return whether a property exists.">Has()</a> </dd>
@@ -1191,7 +1191,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#acb96e7a51b367caef8e2c3b338383335" title="Get a pointer property from a group of properties.">PropertiesRef.GetPointer</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1PropertiesBase.html#aa9d212a911f4b0127f01192a28e1a4a2" title="Set a pointer property in a group of properties.">PropertiesRef.SetPointer</a> </dd>
@@ -1311,7 +1311,7 @@ template&lt;ObjectBox&lt; <a class="el" href="classSDL_1_1FancyPointer.html">Fan
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PropertiesBase.html#a39972e4c1a747dacef112036482c37fc" title="Get a string property from a group of properties.">GetString()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__properties_8h_source.html#l00363">363</a> of file <a class="el" href="SDL3pp__properties_8h_source.html">SDL3pp_properties.h</a>.</p>

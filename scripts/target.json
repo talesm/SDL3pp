@@ -17362,16 +17362,48 @@
           "kind": "struct",
           "name": "SDL",
           "entries": {
+            "m_active": {
+              "kind": "var",
+              "type": "bool",
+              "name": "m_active",
+              "doc": ""
+            },
+            "updateActive": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "bool",
+                  "name": "active"
+                }
+              ],
+              "name": "updateActive",
+              "doc": ""
+            },
             "SDL": [
               {
                 "kind": "function",
                 "type": "",
+                "template": [
+                  {
+                    "type": "class...",
+                    "name": "FLAGS"
+                  }
+                ],
                 "parameters": [
                   {
-                    "type": "InitFlags",
+                    "type": "FLAGS...",
                     "name": "flags"
                   }
                 ],
+                "name": "SDL",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
                 "name": "SDL",
                 "doc": ""
               },

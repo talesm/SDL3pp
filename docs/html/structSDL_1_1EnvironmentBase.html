@@ -131,7 +131,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt;<br />
 struct SDL::EnvironmentBase&lt; T &gt;</div><p>A thread-safe set of environment variables. </p>
-<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>
@@ -176,7 +176,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
 </dl>
 <dl class="section post"><dt>Postcondition</dt><dd>the new environment (convertible to true) on success or convertible to false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>If <code>populated</code> is false, it is safe to call this function from any thread, otherwise it is safe if no other threads are calling setenv() or unsetenv()</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetEnvironmentVariable </dd>
 <dd>
 SDL_GetEnvironmentVariables </dd>
@@ -220,7 +220,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
 <p>Destroy a set of environment variables. </p>
 <p>This object becomes empty after the call.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the environment is no longer in use.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_CreateEnvironment </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__stdinc_8h_source.html#l00613">613</a> of file <a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a>.</p>
@@ -262,7 +262,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the value of the variable or NULL if it can't be found.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetEnvironment </dd>
 <dd>
 SDL_CreateEnvironment </dd>
@@ -338,7 +338,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
 <p>Get all variables in the environment. </p>
 <dl class="section return"><dt>Returns</dt><dd>a NULL terminated array of pointers to environment variables in the form "variable=value" or NULL on failure; call SDL_GetError() for more information. This is wrapped to be auto-deleted, use FreeWrapper.release() if you want to manage manually.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetEnvironment </dd>
 <dd>
 SDL_CreateEnvironment </dd>
@@ -406,7 +406,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GetEnvironment </dd>
 <dd>
 SDL_CreateEnvironment </dd>
@@ -456,7 +456,7 @@ template&lt;ObjectBox&lt; SDL_Environment * &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#gafc9e4411ee1c8072c58cbfa0566a5660" title="Get the process environment.">GetEnvironment()</a> </dd>
 <dd>
 EnvironmentBase() </dd>

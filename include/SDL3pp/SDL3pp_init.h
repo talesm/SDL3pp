@@ -1,6 +1,7 @@
 #ifndef SDL3PP_INIT_H_
 #define SDL3PP_INIT_H_
 
+#include <atomic>
 #include <SDL3/SDL_init.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_error.h"
@@ -545,7 +546,7 @@ inline bool WasInit(FLAG flag0, FLAG flag1, FLAGS... flags)
 inline void Quit() { return SDL_Quit(); }
 
 /**
- * @brief Initialize the SDL library.
+ * Initialize the SDL library.
  *
  * Also init any subsystem passed as InitFlags
  *
@@ -555,86 +556,84 @@ inline void Quit() { return SDL_Quit(); }
  * The SubSystems are out of the refCount, as SDL itself already keep track
  * internally.
  */
-struct SDL
+class SDL
 {
+  bool m_active = false;
+
+  bool updateActive(bool active);
+
+public:
+  /**
+   * Init given subsystems
+   *
+   * @param flags subsystem initialization flags.
+   * @post convertible to true on success or to false on failure; call
+   * GetError() for more information.
+   *
+   * This class must have only a single initialized instance at any given time,
+   * as it will call Quit() when goes out of scope.
+   */
+  template<class... FLAGS>
+  SDL(FLAGS... flags)
+  {
+    if (updateActive(true)) {
+      if (!InitSubSystem(flags...)) updateActive(false);
+    }
+  }
 
   /**
-   * @brief Init given subsystems
-   * @param flags
+   * Default ctor
    *
-   * This uses a refCount internally, so it is safe to call
-   * this multiple times, the quit will be called only on the last call.
+   * Useful if you plan to create it afterwards
    */
-  SDL(InitFlags flags)
-    : flags(flags)
-  {
-    refCount(+1, true);
-  }
+  constexpr SDL() = default;
 
   // Copy ctor
-  SDL(const SDL& other)
-    : flags(other.flags)
-    , active(other.active)
-  {
-    if (active) refCount(+1);
-  }
+  SDL(const SDL& other) = delete;
 
   // Move ctor
-  SDL(SDL&& other)
-    : flags(other.flags)
-    , active(other.active)
+  constexpr SDL(SDL&& other)
+    : m_active(other.m_active)
   {
-    other.active = false;
+    other.m_active = false;
   }
 
   // Dtor
-  ~SDL()
-  {
-    if (active) refCount(-1);
-  }
+  ~SDL() { reset(); }
 
   SDL& operator=(SDL rhs)
   {
-    std::swap(active, rhs.active);
-    std::swap(flags, rhs.flags);
+    std::swap(m_active, rhs.m_active);
     return *this;
   }
-
-  /**
-   * @brief Check if given subSystems are initialized
-   * @param flags the flags to test or 0 to test all
-   * @return Which subsystem are active
-   */
-  InitFlags WasInit(InitFlags flags = 0) { return SDL_WasInit(flags); }
 
   /**
    * @brief release locking such as reset() does, but never calls SDL_Quit() or
    * SDL_QuitSubSystem()
    * @return false if there are still other locks, true if this was last one
    *
-   * When this returns true it is safe to call SDL_Quit()
+   * When this returns true it is safe to call Quit() directly
    */
   bool release()
   {
-    flags = 0;
-    return refCount(-1, false) == 0;
+    bool wasActive = m_active;
+    if (wasActive) { updateActive(false); }
+    return wasActive;
   }
 
   /**
    * @brief reset the value of this instance, acts like it was destroyed and
-   * then newly instantiated
-   * @return false if there are still other locks, true if this was last one
+   * then newly instantiated with empty ctor
+   * @return true if Quit() was called.
    */
-  bool reset() { return refCount(-1) == 0; }
+  bool reset()
+  {
+    if (release()) Quit();
+    return false;
+  }
 
   /// @brief returns true if active and has no errors
-  operator bool() const { return active; }
-
-private:
-  InitFlags flags = 0;
-  bool active = true;
-
-  int refCount(int delta, bool autoQuit = true);
+  operator bool() const { return m_active; }
 };
 
 /**
@@ -887,30 +886,16 @@ inline const char* GetAppMetadataProperty(StringParam name)
 
 #pragma region impl
 
-inline int SDL::refCount(int delta, bool autoQuit)
+inline bool SDL::updateActive(bool active)
 {
-  // TODO Locking these?
-  static int refCount = 0;
-  if (delta && active) {
-    if (delta > 0) {
-      refCount += 1;
-      if (flags) active = InitSubSystem(flags);
-    } else {
-      SDL_assert_always(refCount > 0);
-      active = false;
-      refCount -= 1;
-
-      if (autoQuit) {
-        if (refCount <= 0) {
-          // TODO Make this under FLAG
-          Quit();
-        } else if (flags) {
-          QuitSubSystem(flags);
-        }
-      }
-    }
-  }
-  return refCount;
+  static std::atomic_bool currentlyInitd{false};
+  bool result = !currentlyInitd.exchange(active);
+  if (active && !result) {
+    SetErrorUnformatted(
+      "Can not initialize, there is already an active instance");
+  } else
+    m_active = active;
+  return result;
 }
 
 #pragma endregion

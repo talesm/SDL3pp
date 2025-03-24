@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['sdl_0',['SDL',['../structSDL_1_1SDL.html',1,'SDL']]],
+  ['sdl_0',['SDL',['../classSDL_1_1SDL.html',1,'SDL']]],
   ['spanref_1',['SpanRef',['../classSDL_1_1SpanRef.html',1,'SDL']]],
   ['stringparamimpl_2',['StringParamImpl',['../classSDL_1_1StringParamImpl.html',1,'SDL']]],
   ['surfacebase_3',['SurfaceBase',['../structSDL_1_1SurfaceBase.html',1,'SDL']]],

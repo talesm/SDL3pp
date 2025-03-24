@@ -153,7 +153,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>This is a unique ID for a display for the time it is connected to the system, and is never reused for the lifetime of the application. </p>
 <p>If the display is disconnected and reconnected, it will get a new ID.</p>
 <p>The value 0 is an invalid ID.</p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00455">455</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -212,7 +212,7 @@ Public Attributes</h2></td></tr>
 <p>Get a list of currently connected displays. </p>
 <dl class="section return"><dt>Returns</dt><dd>a 0 terminated array of display instance IDs or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information. This should be freed with SDL_free() when it is no longer needed.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00477">477</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
@@ -309,7 +309,7 @@ Public Attributes</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the closest display mode equal to or larger than the desired mode on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#a119ab5a8e1719e58d0c2b1342e1e214c" title="Get a list of fullscreen display modes available on a display.">Display.GetFullscreenModes()</a> </dd></dl>
@@ -378,7 +378,7 @@ GetDisplays() </dd></dl>
 </div><div class="memdoc">
 
 <p>Get information about the current display mode. </p>
-<p>There's a difference between this function and SDL_GetDesktopDisplayMode() when <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the current display mode, and not the previous native display mode.</p>
+<p>There's a difference between this function and SDL_GetDesktopDisplayMode() when <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the current display mode, and not the previous native display mode.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the desktop display mode or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a06fc8005d9275739d915d59088ae59b0" title="Get information about the desktop&#39;s display mode.">Display.GetDesktopMode()</a> </dd>
@@ -449,7 +449,7 @@ GetDisplays() </dd></dl>
 </div><div class="memdoc">
 
 <p>Get information about the desktop's display mode. </p>
-<p>There's a difference between this function and SDL_GetCurrentDisplayMode() when <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the previous native display mode, and not the current display mode.</p>
+<p>There's a difference between this function and SDL_GetCurrentDisplayMode() when <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> runs fullscreen and has changed the resolution. In that case this function will return the previous native display mode, and not the current display mode.</p>
 <dl class="section return"><dt>Returns</dt><dd>a pointer to the desktop display mode or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae60fa581de6bf108440cb5da32b92fcb" title="Get information about the current display mode.">Display.GetCurrentMode()</a> </dd>
@@ -495,7 +495,7 @@ GetDisplays() </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the display containing the point or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#a56679cc0b89ce0933cc7a6a50d3bf06e" title="Get the desktop area represented by a display.">GetBounds()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">GetAll()</a> </dd></dl>
@@ -614,7 +614,7 @@ GetDisplays() </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>a NULL terminated array of display mode pointers or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <p>This automatically calls SDL_free after result is out of scope.</p>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7" title="Get a list of currently connected displays.">Display.GetAll()</a> </dd>
 <dd>
 GetDisplays() </dd></dl>
@@ -714,7 +714,7 @@ GetDisplays() </dd></dl>
 <p>Return the primary display. </p>
 <dl class="section return"><dt>Returns</dt><dd>the instance ID of the primary display on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>GetDisplays() </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00496">496</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
@@ -745,7 +745,7 @@ GetDisplays() </dd></dl>
 </div><div class="memdoc">
 
 <p>Get the properties associated with a display. </p>
-<p>The following read-only properties are provided by <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
+<p>The following read-only properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
 <li><code>SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN</code>: true if the display has HDR headroom above the SDR white point. This is for informational and diagnostic purposes only, as not all platforms provide this information at the display level.</li>
 </ul>
@@ -756,7 +756,7 @@ GetDisplays() </dd></dl>
 </ul>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="structSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l00523">523</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
