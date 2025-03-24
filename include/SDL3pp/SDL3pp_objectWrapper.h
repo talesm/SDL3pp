@@ -18,6 +18,7 @@ template<class T, class POINTER>
 concept ObjectBox = requires(const T a, T b) {
   { a.get() } -> std::convertible_to<POINTER>;
   { b.release() } -> std::convertible_to<POINTER>;
+  { b.free() };
 };
 
 template<class T, class POINTER = std::remove_extent_t<T>*>
@@ -61,8 +62,10 @@ public:
     std::swap(m_value, p);
     return p;
   }
+
   void reset(pointer other = nullptr) { return std::swap(m_value, other); }
   void swap(ObjectRef& other) { return std::swap(m_value, other.m_value); }
+  void free() { doFree(release()); }
 
   auto& operator[](ptrdiff_t index)
   {
@@ -74,12 +77,19 @@ public:
     static_assert(std::is_array_v<T>, "T must be an array");
     return m_value[index];
   }
+
+private:
+  static void doFree(pointer p);
 };
 
-template<class T>
-struct ObjectDeleter;
+template<class REF>
+struct ObjectDeleter
+{
+  using pointer = REF::pointer;
+  const void operator()(REF resource) const { resource.free(); }
+};
 
-template<class T, class DELETER = ObjectDeleter<T>>
+template<class T, class DELETER = ObjectDeleter<ObjectRef<T>>>
 class ObjectUnique
 {
   std::unique_ptr<T, DELETER> m_value;
@@ -110,6 +120,7 @@ public:
   pointer release() { return m_value.release(); }
   void reset(pointer other = nullptr) { return m_value.reset(other); }
   void swap(ObjectUnique& other) { return std::swap(m_value, other.m_value); }
+  void free() { reset(); }
 
   auto& operator[](ptrdiff_t index)
   {

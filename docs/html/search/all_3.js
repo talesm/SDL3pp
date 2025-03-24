@@ -34,7 +34,7 @@ var searchData=
   ['clearcolorkey_31',['ClearColorKey',['../structSDL_1_1SurfaceBase.html#a85a345dbd8a5f4ae3936cf4c2b53fdd6',1,'SDL::SurfaceBase']]],
   ['clearerror_32',['ClearError',['../group__CategoryError.html#ga7307f5502856bade5976f55c8adf5326',1,'SDL']]],
   ['clipboardevent_33',['ClipboardEvent',['../group__CategoryEvents.html#ga34d947bd68046b49ad2ee1fa599184b5',1,'SDL']]],
-  ['close_34',['close',['../structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66',1,'SDL::IConvBase::close()'],['../structSDL_1_1IOStreamBase.html#a837589f2802386ac80dc98aac85cba11',1,'SDL::IOStreamBase::Close()']]],
+  ['close_34',['close',['../structSDL_1_1IOStreamBase.html#a837589f2802386ac80dc98aac85cba11',1,'SDL::IOStreamBase::Close()'],['../structSDL_1_1IConvBase.html#ae99c167b7ae250819364ec59b56f2d66',1,'SDL::IConvBase::close()']]],
   ['color_35',['color',['../structSDL_1_1Color.html',1,'SDL::Color'],['../structSDL_1_1Color.html#ad44e0139cb8b1646fbc33c9760393b4e',1,'SDL::Color::Color(SDL_Color color={0})'],['../structSDL_1_1Color.html#a71ce01aa4a42d9c4a9f3543c876fcd6a',1,'SDL::Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a=255)']]],
   ['color_5fprimaries_5fbt2020_36',['COLOR_PRIMARIES_BT2020',['../group__CategoryPixels.html#ga8bd7bd2c015dd8a8af701e9ade454465',1,'SDL']]],
   ['color_5fprimaries_5fbt470bg_37',['COLOR_PRIMARIES_BT470BG',['../group__CategoryPixels.html#ga5d1ddfd06c1ba1f19f88c8a7b2bf902f',1,'SDL']]],

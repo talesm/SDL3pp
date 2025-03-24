@@ -82,6 +82,7 @@ $(function() {
 <div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a> =  <span class="keyword">requires</span>(<span class="keyword">const</span> T a, T b) {</div>
 <div class="line">  { a.get() } -&gt; std::convertible_to&lt;POINTER&gt;;</div>
 <div class="line">  { b.release() } -&gt; std::convertible_to&lt;POINTER&gt;;</div>
+<div class="line">  { b.free() };</div>
 <div class="line">}</div>
 <div class="ttc" id="aconceptSDL_1_1ObjectBox_html"><div class="ttname"><a href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a></div><div class="ttdef"><b>Definition</b> <a href="SDL3pp__objectWrapper_8h_source.html#l00018">SDL3pp_objectWrapper.h:18</a></div></div>
 </div><!-- fragment --><a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

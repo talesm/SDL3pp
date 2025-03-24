@@ -42,12 +42,6 @@ struct AnimationBase;
  */
 using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
 
-template<>
-struct ObjectDeleter<IMG_Animation>
-{
-  void operator()(AnimationRef texture) const;
-};
-
 /**
  * Handle to an owned animation
  *
@@ -2013,10 +2007,27 @@ struct AnimationBase : T
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa LoadAnimation()
+   * @sa AnimationBase::AnimationBase()
    */
-  void Free() { return IMG_FreeAnimation(T::release()); }
+  void Free() { return T::free(); }
 };
+
+/**
+ * Dispose of an IMG_Animation and free its resources.
+ *
+ * The provided `resource` pointer is not valid once this call returns.
+ *
+ * @param resource IMG_Animation to dispose of.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa AnimationBase::AnimationBase()
+ */
+template<>
+inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation* resource)
+{
+  return IMG_FreeAnimation(resource);
+}
 
 /**
  * Load a GIF animation directly.

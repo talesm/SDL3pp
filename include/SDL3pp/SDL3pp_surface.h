@@ -51,12 +51,6 @@ struct SurfaceBase;
  */
 using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
 
-template<>
-struct ObjectDeleter<SDL_Surface>
-{
-  void operator()(SurfaceRef Surface) const;
-};
-
 /**
  * Handle to an owned surface
  *
@@ -223,15 +217,6 @@ struct SurfaceBase : T
     : T(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
   {
   }
-
-  /**
-   * Free a surface.
-   *
-   * This makes this object empty
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Destroy() { return SDL_DestroySurface(T::release()); }
 
   /**
    * Get the properties associated with a surface.
@@ -1797,6 +1782,15 @@ struct SurfaceBase : T
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
   PixelFormat GetFormat() const { return T::get()->format; }
+
+  /**
+   * Free a surface.
+   *
+   * This makes this object empty
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { return T::free(); }
 };
 
 /**
@@ -1878,6 +1872,26 @@ public:
   template<ObjectBox<SDL_Surface*> T>
   friend class SurfaceBase;
 };
+
+/**
+ * Free a surface.
+ *
+ * It is safe to pass NULL to this function.
+ *
+ * @param surface the SDL_Surface to free.
+ *
+ * @threadsafety No other thread should be using the surface when it is freed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface
+ * @sa SurfaceBase
+ */
+template<>
+inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
+{
+  return SDL_DestroySurface(resource);
+}
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -2088,11 +2102,6 @@ inline bool PremultiplyAlpha(int width,
 
 #pragma region impl
 /// @}
-
-inline void ObjectDeleter<SDL_Surface>::operator()(SurfaceRef surface) const
-{
-  surface.Destroy();
-}
 
 template<ObjectBox<SDL_Surface*> T>
 SurfaceLock SurfaceBase<T>::Lock() &

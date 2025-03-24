@@ -227,6 +227,7 @@ template<class T, class POINTER>
 concept ObjectBox = requires(const T a, T b) {
   { a.get() } -> std::convertible_to<POINTER>;
   { b.release() } -> std::convertible_to<POINTER>;
+  { b.free() };
 };
 
 template<class T, class POINTER = std::remove_extent_t<T>*>
@@ -270,8 +271,10 @@ public:
     std::swap(m_value, p);
     return p;
   }
+
   void reset(pointer other = nullptr) { return std::swap(m_value, other); }
   void swap(ObjectRef& other) { return std::swap(m_value, other.m_value); }
+  void free() { doFree(release()); }
 
   auto& operator[](ptrdiff_t index)
   {
@@ -283,12 +286,19 @@ public:
     static_assert(std::is_array_v<T>, "T must be an array");
     return m_value[index];
   }
+
+private:
+  static void doFree(pointer p);
 };
 
-template<class T>
-struct ObjectDeleter;
+template<class REF>
+struct ObjectDeleter
+{
+  using pointer = REF::pointer;
+  const void operator()(REF resource) const { resource.free(); }
+};
 
-template<class T, class DELETER = ObjectDeleter<T>>
+template<class T, class DELETER = ObjectDeleter<ObjectRef<T>>>
 class ObjectUnique
 {
   std::unique_ptr<T, DELETER> m_value;
@@ -319,6 +329,7 @@ public:
   pointer release() { return m_value.release(); }
   void reset(pointer other = nullptr) { return m_value.reset(other); }
   void swap(ObjectUnique& other) { return std::swap(m_value, other.m_value); }
+  void free() { reset(); }
 
   auto& operator[](ptrdiff_t index)
   {
@@ -703,12 +714,6 @@ struct EnvironmentBase;
  */
 using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 
-template<>
-struct ObjectDeleter<SDL_Environment>
-{
-  inline void operator()(EnvironmentRef environment) const;
-};
-
 /**
  * Handle to an owning environment
  *
@@ -734,12 +739,6 @@ struct IConvBase;
  * @sa IConv
  */
 using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
-
-template<>
-struct ObjectDeleter<SDL_iconv_data_t>
-{
-  inline void operator()(IConvRef iconv) const;
-};
 
 /**
  * Handle to an owning iconv
@@ -1297,6 +1296,25 @@ struct EnvironmentBase : T
  * @sa UnsetVariable()
  **/
 inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
+
+/**
+ * Destroy a set of environment variables.
+ *
+ * @param resource the environment to destroy.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the environment is no longer in use.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Environment
+ * @sa EnvironmentBase
+ */
+template<>
+inline void ObjectRef<SDL_Environment>::doFree(SDL_Environment* resource)
+{
+  return SDL_DestroyEnvironment(resource);
+}
 
 /**
  * Get the value of a variable in the environment.
@@ -5441,6 +5459,22 @@ struct IConvBase : T
 };
 
 /**
+ * This function frees a context used for character set conversion.
+ *
+ * @param resource The character set conversion handle.
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa IConv
+ * @sa IConvBase
+ * @sa iconv_string()
+ */
+template<>
+inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_t resource)
+{
+  SDL_iconv_close(resource);
+}
+
+/**
  * Helper function to convert a string's encoding in one call.
  *
  * This function converts a buffer or string between encodings in one pass.
@@ -5541,17 +5575,6 @@ template<class T>
 void PtrBase<T>::free()
 {
   SDL::free(T::release());
-}
-
-inline void ObjectDeleter<SDL_Environment>::operator()(
-  EnvironmentRef environment) const
-{
-  environment.Destroy();
-}
-
-inline void ObjectDeleter<SDL_iconv_data_t>::operator()(IConvRef iconv) const
-{
-  iconv.close();
 }
 
 #pragma endregion impl
@@ -7476,12 +7499,6 @@ struct PaletteBase;
  */
 using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 
-template<>
-struct ObjectDeleter<SDL_Palette>
-{
-  void operator()(PaletteRef palette) const;
-};
-
 /**
  * Handle to an owned surface
  *
@@ -9266,8 +9283,24 @@ struct PaletteBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy() { return SDL_DestroyPalette(T::release()); }
+  void Destroy() { T::free(); }
 };
+
+/**
+ * Free a palette
+ *
+ * After calling, this object becomes empty.
+ *
+ * @threadsafety It is safe to call this function from any thread, as long as
+ *               the palette is not modified or destroyed in another thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+template<>
+inline void ObjectRef<SDL_Palette>::doFree(SDL_Palette* resource)
+{
+  return SDL_DestroyPalette(resource);
+}
 
 /**
  * Map an RGB triple to an opaque pixel value for a given pixel format.
@@ -9441,11 +9474,6 @@ inline void GetRGBA(Uint32 pixel,
 /** @} */
 
 #pragma region impl
-
-inline void ObjectDeleter<SDL_Palette>::operator()(PaletteRef palette) const
-{
-  palette.Destroy();
-}
 
 inline Uint32 Color::Map(const PixelFormatDetails* format,
                          PaletteRef palette = nullptr) const
@@ -10255,12 +10283,6 @@ struct PropertiesBase;
 using PropertiesRef =
   PropertiesBase<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>;
 
-struct PropertiesDeleter
-{
-  using pointer = FancyPointer<SDL_PropertiesID>;
-  inline void operator()(PropertiesRef props) const;
-};
-
 /**
  * Handle to an owned properties
  *
@@ -10270,8 +10292,9 @@ struct PropertiesDeleter
  * @sa PropertiesBase
  * @sa PropertiesRef
  */
-using Properties =
-  PropertiesBase<ObjectUnique<SDL_PropertiesID, PropertiesDeleter>>;
+using Properties = PropertiesBase<ObjectUnique<
+  SDL_PropertiesID,
+  ObjectDeleter<ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>>>>;
 
 /**
  * SDL property type
@@ -10908,7 +10931,7 @@ struct PropertiesBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy() { return SDL_DestroyProperties(T::release()); }
+  void Destroy() { T::free(); }
 
   /**
    * Returns the number of properties this has
@@ -11029,13 +11052,31 @@ inline Properties CreateProperties()
   return Properties{SDL_CreateProperties()};
 }
 
+/**
+ * Destroy a group of properties.
+ *
+ * All properties are deleted and their cleanup functions will be called, if
+ * any.
+ *
+ * @param resource the properties to destroy.
+ *
+ * @threadsafety This function should not be called while these properties are
+ *               locked or other threads might be setting or getting values
+ *               from these properties.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa CreateProperties
+ */
+template<>
+inline void ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree(
+  FancyPointer<SDL_PropertiesID> resource)
+{
+  return SDL_DestroyProperties(resource);
+}
+
 #pragma region impl
 /// @}
-
-inline void PropertiesDeleter::operator()(PropertiesRef props) const
-{
-  props.Destroy();
-}
 
 template<ObjectBox<FancyPointer<SDL_PropertiesID>> T>
 PropertiesLock PropertiesBase<T>::Lock() &
@@ -13518,12 +13559,6 @@ struct IOStreamBase;
  */
 using IOStreamRef = IOStreamBase<ObjectRef<SDL_IOStream>>;
 
-template<>
-struct ObjectDeleter<SDL_IOStream>
-{
-  void operator()(IOStreamRef stream) const;
-};
-
 /**
  * Handle to an owned stream
  *
@@ -13823,7 +13858,7 @@ struct IOStreamBase : T
    *   memory of the stream. This can be set to NULL to transfer ownership of
    *   the memory to the application, which should free the memory with
    *   SDL_free(). If this is done, the next operation on the stream must be
-   *   SDL_CloseIO().
+   *   Close().
    * - `SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in
    *   multiples of this size, defaulting to 1024.
    *
@@ -13883,37 +13918,6 @@ struct IOStreamBase : T
   {
     static_assert(false, "Not implemented");
   }
-
-  /**
-   * Close and free an allocated SDL_IOStream structure.
-   *
-   * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
-   * resources used by the stream and frees the SDL_IOStream itself. This
-   * returns true on success, or false if the stream failed to flush to its
-   * output (e.g. to disk).
-   *
-   * Note that if this fails to flush the stream for any reason, this function
-   * reports an error, but the SDL_IOStream is still invalid once this function
-   * returns.
-   *
-   * This call flushes any buffered writes to the operating system, but there
-   * are no guarantees that those writes have gone to physical media; they might
-   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
-   * crucial that writes go to disk immediately, so they are definitely stored
-   * even if the power fails before the file cache would have caught up, one
-   * should call SDL_FlushIO() before closing. Note that flushing takes time and
-   * makes the system and your app operate less efficiently, so do so sparingly.
-   *
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety This function is not thread safe.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_OpenIO
-   */
-  bool Close() { return SDL_CloseIO(T::release()); }
 
   /**
    * Get the properties associated with an SDL_IOStream.
@@ -14761,7 +14765,74 @@ struct IOStreamBase : T
    * @since This function is available since SDL 3.2.0.
    */
   bool WriteS64BE(Sint64 value) { return SDL_WriteS64BE(T::get(), value); }
+
+  /**
+   * Close and free an allocated SDL_IOStream structure.
+   *
+   * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
+   * resources used by the stream and frees the SDL_IOStream itself. This
+   * returns true on success, or false if the stream failed to flush to its
+   * output (e.g. to disk).
+   *
+   * Note that if this fails to flush the stream for any reason, this function
+   * reports an error, but the SDL_IOStream is still invalid once this function
+   * returns.
+   *
+   * This call flushes any buffered writes to the operating system, but there
+   * are no guarantees that those writes have gone to physical media; they might
+   * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+   * crucial that writes go to disk immediately, so they are definitely stored
+   * even if the power fails before the file cache would have caught up, one
+   * should call SDL_FlushIO() before closing. Note that flushing takes time and
+   * makes the system and your app operate less efficiently, so do so sparingly.
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function is not thread safe.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_OpenIO
+   */
+  bool Close() { return SDL_CloseIO(T::release()); }
 };
+
+/**
+ * Close and free an allocated SDL_IOStream structure.
+ *
+ * SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any
+ * resources used by the stream and frees the SDL_IOStream itself. This
+ * returns true on success, or false if the stream failed to flush to its
+ * output (e.g. to disk).
+ *
+ * Note that if this fails to flush the stream for any reason, this function
+ * reports an error, but the SDL_IOStream is still invalid once this function
+ * returns.
+ *
+ * This call flushes any buffered writes to the operating system, but there
+ * are no guarantees that those writes have gone to physical media; they might
+ * be in the OS's file cache, waiting to go to disk later. If it's absolutely
+ * crucial that writes go to disk immediately, so they are definitely stored
+ * even if the power fails before the file cache would have caught up, one
+ * should call SDL_FlushIO() before closing. Note that flushing takes time and
+ * makes the system and your app operate less efficiently, so do so sparingly.
+ *
+ * @param resource SDL_IOStream structure to close.
+ * @returns true on success or false on failure; call SDL_GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_OpenIO
+ */
+template<>
+inline void ObjectRef<SDL_IOStream>::doFree(SDL_IOStream* resource)
+{
+  SDL_CloseIO(resource);
+}
 
 /**
  * Load all the data from a file path.
@@ -14826,11 +14897,6 @@ inline bool SaveFile(StringParam file, std::string_view str)
 #pragma region impl
 /// @}
 
-inline void ObjectDeleter<SDL_IOStream>::operator()(IOStreamRef stream) const
-{
-  stream.Close();
-}
-
 #pragma endregion impl
 
 /**
@@ -14866,12 +14932,6 @@ struct SurfaceBase;
  * @sa Surface
  */
 using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
-
-template<>
-struct ObjectDeleter<SDL_Surface>
-{
-  void operator()(SurfaceRef Surface) const;
-};
 
 /**
  * Handle to an owned surface
@@ -15039,15 +15099,6 @@ struct SurfaceBase : T
     : T(SDL_CreateSurfaceFrom(width, height, format, pixels, pitch))
   {
   }
-
-  /**
-   * Free a surface.
-   *
-   * This makes this object empty
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  void Destroy() { return SDL_DestroySurface(T::release()); }
 
   /**
    * Get the properties associated with a surface.
@@ -16613,6 +16664,15 @@ struct SurfaceBase : T
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
   PixelFormat GetFormat() const { return T::get()->format; }
+
+  /**
+   * Free a surface.
+   *
+   * This makes this object empty
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
+  void Destroy() { return T::free(); }
 };
 
 /**
@@ -16694,6 +16754,26 @@ public:
   template<ObjectBox<SDL_Surface*> T>
   friend class SurfaceBase;
 };
+
+/**
+ * Free a surface.
+ *
+ * It is safe to pass NULL to this function.
+ *
+ * @param surface the SDL_Surface to free.
+ *
+ * @threadsafety No other thread should be using the surface when it is freed.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Surface
+ * @sa SurfaceBase
+ */
+template<>
+inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
+{
+  return SDL_DestroySurface(resource);
+}
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -16905,11 +16985,6 @@ inline bool PremultiplyAlpha(int width,
 #pragma region impl
 /// @}
 
-inline void ObjectDeleter<SDL_Surface>::operator()(SurfaceRef surface) const
-{
-  surface.Destroy();
-}
-
 template<ObjectBox<SDL_Surface*> T>
 SurfaceLock SurfaceBase<T>::Lock() &
 {
@@ -16959,12 +17034,6 @@ struct WindowBase;
  * @sa WindowBase
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
-
-template<>
-struct ObjectDeleter<SDL_Window>
-{
-  void operator()(WindowRef window) const;
-};
 
 /**
  * Handle to an owned window
@@ -19698,12 +19767,7 @@ struct WindowBase : T
    *
    * @since This function is available since SDL 3.2.0.
    */
-  void Destroy()
-  {
-    auto window = T::release();
-    KeyValueWrapper<SDL_Window*, HitTestCB>::erase(window);
-    return SDL_DestroyWindow(window);
-  }
+  void Destroy() { return T::free(); }
 };
 
 // Forward decl
@@ -19711,12 +19775,6 @@ template<ObjectBox<SDL_GLContext> T>
 struct GLContextBase;
 
 using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
-
-template<>
-struct ObjectDeleter<SDL_GLContextState>
-{
-  void operator()(GLContextRef context) const;
-};
 
 using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
 
@@ -20213,6 +20271,32 @@ inline WindowRef GetWindowFromID(WindowID id)
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
 
 /**
+ * Destroy a window.
+ *
+ * Any child windows owned by the window will be recursively destroyed as
+ * well.
+ *
+ * Note that on some platforms, the visible window may not actually be removed
+ * from the screen until the SDL event loop is pumped again, even though the
+ * SDL_Window is no longer valid after this call.
+ *
+ * @param resource the window to destroy.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Window
+ * @sa WindowBase
+ */
+template<>
+inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
+{
+  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
+  SDL_DestroyWindow(resource);
+}
+
+/**
  * @brief  Check whether the screensaver is currently enabled.
  *
  * The screensaver is disabled by default.
@@ -20648,20 +20732,27 @@ inline bool GL_SwapWindow(WindowRef window)
   return SDL_GL_SwapWindow(window.get());
 }
 
+/**
+ * Delete an OpenGL context.
+ *
+ * @param resource the OpenGL context to be deleted.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GLContext
+ * @sa GLContextBase
+ */
+template<>
+inline void ObjectRef<SDL_GLContextState>::doFree(SDL_GLContext resource)
+{
+  SDL_GL_DestroyContext(resource);
+}
+
 #pragma region impl
 
 /// @}
-
-inline void ObjectDeleter<SDL_Window>::operator()(WindowRef window) const
-{
-  window.Destroy();
-}
-
-inline void ObjectDeleter<SDL_GLContextState>::operator()(
-  GLContextRef context) const
-{
-  context.Destroy();
-}
 
 #pragma endregion impl
 
@@ -22625,13 +22716,6 @@ inline WindowRef GetWindowFromEvent(const Event* event)
  * @{
  */
 
-/**  Deleter */
-template<>
-struct ObjectDeleter<SDL_Renderer>
-{
-  void operator()(RendererRef renderer) const;
-};
-
 /**
  * Handle to an owned renderer
  *
@@ -22657,12 +22741,6 @@ struct TextureBase;
  * @sa Texture
  */
 using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
-
-template<>
-struct ObjectDeleter<SDL_Texture>
-{
-  void operator()(TextureRef texture) const;
-};
 
 /**
  * Handle to an owned texture
@@ -24194,20 +24272,6 @@ struct RendererBase : T
   bool Present() { return SDL_RenderPresent(T::get()); }
 
   /**
-   * Destroy the rendering context for a window and free all associated
-   * textures.
-   *
-   * This object becomes empty after the call.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   *
-   * @sa SDL_CreateRenderer
-   */
-  void Destroy() { return SDL_DestroyRenderer(T::release()); }
-
-  /**
    * Force the rendering context to flush any pending commands and state.
    *
    * You do not need to (and in fact, shouldn't) call this function unless you
@@ -24325,6 +24389,20 @@ struct RendererBase : T
   }
 
   // TODO RenderDebugTextFormat
+
+  /**
+   * Destroy the rendering context for a window and free all associated
+   * textures.
+   *
+   * This object becomes empty after the call.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SDL_CreateRenderer
+   */
+  void Destroy() { return SDL_DestroyRenderer(T::release()); }
 };
 
 /**
@@ -25311,6 +25389,45 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
 }
 
 /**
+ * Destroy the texture.
+ *
+ * This object becomes empty after the call.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Texture
+ * @sa TextureBase
+ */
+template<>
+inline void ObjectRef<SDL_Texture>::doFree(SDL_Texture* resource)
+{
+  return SDL_DestroyTexture(resource);
+}
+
+/**
+ * Destroy the rendering context for a window and free all associated
+ * textures.
+ *
+ * This should be called before destroying the associated window.
+ *
+ * @param renderer the rendering context.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer
+ * @sa RendererBase
+ */
+template<>
+inline void ObjectRef<SDL_Renderer>::doFree(SDL_Renderer* resource)
+{
+  return SDL_DestroyRenderer(resource);
+}
+
+/**
  * Get the CAMetalLayer associated with the given Metal renderer.
  *
  * This function returns `void *`, so SDL doesn't have to include Metal's
@@ -25555,16 +25672,6 @@ bool RendererBase<T>::RenderGeometryRaw(TextureRef texture,
                                size_indices);
 }
 
-inline void ObjectDeleter<SDL_Renderer>::operator()(RendererRef renderer) const
-{
-  renderer.Destroy();
-}
-
-inline void ObjectDeleter<SDL_Texture>::operator()(TextureRef texture) const
-{
-  texture.Destroy();
-}
-
 template<ObjectBox<SDL_Texture*> T>
 TextureLock TextureBase<T>::Lock(OptionalRef<const SDL_Rect> rect) &
 {
@@ -25608,12 +25715,6 @@ struct AnimationBase;
  * @sa Animation
  */
 using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
-
-template<>
-struct ObjectDeleter<IMG_Animation>
-{
-  void operator()(AnimationRef texture) const;
-};
 
 /**
  * Handle to an owned animation
@@ -27580,10 +27681,27 @@ struct AnimationBase : T
    *
    * @since This function is available since SDL_image 3.0.0.
    *
-   * @sa LoadAnimation()
+   * @sa AnimationBase::AnimationBase()
    */
-  void Free() { return IMG_FreeAnimation(T::release()); }
+  void Free() { return T::free(); }
 };
+
+/**
+ * Dispose of an IMG_Animation and free its resources.
+ *
+ * The provided `resource` pointer is not valid once this call returns.
+ *
+ * @param resource IMG_Animation to dispose of.
+ *
+ * @since This function is available since SDL_image 3.0.0.
+ *
+ * @sa AnimationBase::AnimationBase()
+ */
+template<>
+inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation* resource)
+{
+  return IMG_FreeAnimation(resource);
+}
 
 /**
  * Load a GIF animation directly.
