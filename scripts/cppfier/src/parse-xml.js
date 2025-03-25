@@ -92,16 +92,28 @@ async function parseXmlContent(name, content, baseDir, config) {
       };
       switch (kind) {
         case "define": break;
-        case "enum":
+        case "enum": {
           entry.kind = "enum";
+          entry.entries = {};
+          for (const value of member.enumvalue ?? []) {
+            const name = value.name[0].trim();
+            entry.entries[name] = {
+              doc: value.briefdescription?.[0]?.para.join("\n\n"),
+              name,
+              kind: "var",
+              type: ""
+            };
+          }
           break;
+        }
         case "typedef": {
           entry.kind = "alias";
           const type = member.type?.[0];
           if (type) {
             const argsstring = member.argsstring?.[0];
             if (type.startsWith("enum")) {
-              entry.kind = "enum";
+              // TODO check if enum already present
+              continue;
             } else {
               entry.type = type + (argsstring ?? '');
             }
