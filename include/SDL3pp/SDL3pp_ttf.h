@@ -168,6 +168,13 @@ inline void GetHarfBuzzVersion(int* major, int* minor, int* patch)
 }
 
 /**
+ * Internal data for TTF_Text
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ */
+using TextData = TTF_TextData;
+
+/**
  * The internal structure containing font information.
  *
  * @cat resource
@@ -1721,6 +1728,24 @@ struct FontBase : T
  */
 inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
 
+/**
+ * A text engine used to create text objects.
+ *
+ * This is a public interface that can be used by applications and libraries
+ * to perform customize rendering with text objects. See
+ * <SDL3_ttf/SDL_textengine.h> for details.
+ *
+ * There are three text engines provided with the library:
+ *
+ * - Drawing to an SDL_Surface, created with TTF_CreateSurfaceTextEngine()
+ * - Drawing with an SDL 2D renderer, created with
+ *   TTF_CreateRendererTextEngine()
+ * - Drawing with the SDL GPU API, created with TTF_CreateGPUTextEngine()
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ */
+using TextEngine = TTF_TextEngine;
+
 constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
 
 /**
@@ -1763,22 +1788,22 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
 constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID;
 
 /**
- * Left to Right
+ * Left to Right.
  */
 constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR;
 
 /**
- * Right to Left
+ * Right to Left.
  */
 constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL;
 
 /**
- * Top to Bottom
+ * Top to Bottom.
  */
 constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB;
 
 /**
- * Bottom to Top
+ * Bottom to Top.
  */
 constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT;
 
@@ -1822,37 +1847,19 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
 constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID;
 
 /**
- * The color channels are white
+ * The color channels are white.
  */
 constexpr ImageType IMAGE_ALPHA = TTF_IMAGE_ALPHA;
 
 /**
- * The color channels have image data
+ * The color channels have image data.
  */
 constexpr ImageType IMAGE_COLOR = TTF_IMAGE_COLOR;
 
 /**
- * The alpha channel has signed distance field information
+ * The alpha channel has signed distance field information.
  */
 constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
-
-/**
- * A text engine used to create text objects.
- *
- * This is a public interface that can be used by applications and libraries
- * to perform customize rendering with text objects. See
- * <SDL3_ttf/SDL_textengine.h> for details.
- *
- * There are three text engines provided with the library:
- *
- * - Drawing to an SDL_Surface, created with TTF_CreateSurfaceTextEngine()
- * - Drawing with an SDL 2D renderer, created with
- *   TTF_CreateRendererTextEngine()
- * - Drawing with the SDL GPU API, created with TTF_CreateGPUTextEngine()
- *
- * @since This struct is available since SDL_ttf 3.0.0.
- */
-using TextEngine = TTF_TextEngine;
 
 /**
  * Internal data for TTF_Text

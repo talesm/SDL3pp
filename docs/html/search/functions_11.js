@@ -1,16 +1,18 @@
 var searchData=
 [
-  ['tagtostring_0',['TagToString',['../group__CategorySDLTTF.html#ga8e4ae0c77a2f622f7eb2942733e03221',1,'SDL']]],
-  ['tan_1',['tan',['../group__CategoryStdinc.html#ga88b5a6adb928a623a97598a7a154432c',1,'SDL']]],
-  ['tanf_2',['tanf',['../group__CategoryStdinc.html#gaf14c09ac379c8fa038a9fab209b9d4d7',1,'SDL']]],
-  ['tell_3',['Tell',['../structSDL_1_1IOStreamBase.html#af2171a17bcfb8c3e8862160c8ecb8a12',1,'SDL::IOStreamBase']]],
-  ['texturebase_4',['texturebase',['../structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e',1,'SDL::TextureBase::TextureBase(RendererRef renderer, StringParam file)'],['../structSDL_1_1TextureBase.html#adf253d6d8727fca312e9707681ced937',1,'SDL::TextureBase::TextureBase(RendererRef renderer, PropertiesRef props)'],['../structSDL_1_1TextureBase.html#ac9fb768abf109729277163693dfef21e',1,'SDL::TextureBase::TextureBase(RendererRef renderer, SurfaceRef surface)'],['../structSDL_1_1TextureBase.html#a26b12859b23ad925ae7bed0c81ab0f46',1,'SDL::TextureBase::TextureBase(RendererRef renderer, PixelFormat format, TextureAccess access, int w, int h)']]],
-  ['texturelock_5',['texturelock',['../classSDL_1_1TextureLock.html#ac3cd459f3b03edcae5451417253c0444',1,'SDL::TextureLock::TextureLock()'],['../classSDL_1_1TextureLock.html#a7514e0bc1900826f7044a85661784fc5',1,'SDL::TextureLock::TextureLock(const TextureLock &amp;other)=delete'],['../classSDL_1_1TextureLock.html#a3a52d759047dc1b3e33aca59be646261',1,'SDL::TextureLock::TextureLock(TextureLock &amp;&amp;other)']]],
-  ['textwrapwhitespacevisible_6',['TextWrapWhitespaceVisible',['../group__CategorySDLTTF.html#gac3a6495bcdc192e819665f8426200798',1,'SDL']]],
-  ['tolower_7',['tolower',['../group__CategoryStdinc.html#ga77f89764775d85be34bed2bc447d543a',1,'SDL']]],
-  ['tostring_8',['ToString',['../structSDL_1_1GUID.html#ac28093a04bc1ab6ef3b73eab31ac1b0e',1,'SDL::GUID']]],
-  ['toupper_9',['toupper',['../group__CategoryStdinc.html#gaa66528bfccd7f5a86ed7554d049d1930',1,'SDL']]],
-  ['trunc_10',['trunc',['../group__CategoryStdinc.html#gaeb64b2b465e001720dce40bacec1b937',1,'SDL']]],
-  ['truncf_11',['truncf',['../group__CategoryStdinc.html#gae6b046a5844394a19061a8544376ffac',1,'SDL']]],
-  ['ttf_5fversion_12',['TTF_Version',['../group__CategorySDLTTF.html#ga5154c3cde8d6a4944a18dfd88e145c01',1,'SDL']]]
+  ['ucs4toutf8_0',['UCS4ToUTF8',['../group__CategoryStdinc.html#ga032867626ec7d90baa207d817fdbddcf',1,'SDL']]],
+  ['uitoa_1',['uitoa',['../group__CategoryStdinc.html#ga6ca0851c2d9980695748c979e2d15608',1,'SDL']]],
+  ['ultoa_2',['ultoa',['../group__CategoryStdinc.html#ga2450290efea2bebff1f164a6c4a04d38',1,'SDL']]],
+  ['unlock_3',['unlock',['../classSDL_1_1TextureLock.html#a64d4299d0b3b140db84ad04e380d6044',1,'SDL::TextureLock::Unlock()'],['../classSDL_1_1SurfaceLock.html#acf32cd016f3943738f27c6641a7b4807',1,'SDL::SurfaceLock::Unlock()'],['../classSDL_1_1PropertiesLock.html#a7facb4cd33b4fa7ed49a93c22f247d19',1,'SDL::PropertiesLock::Unlock()']]],
+  ['unsetenv_5funsafe_4',['unsetenv_unsafe',['../group__CategoryStdinc.html#ga7dc726179e2ae431d7db8164099e333a',1,'SDL']]],
+  ['unsetvariable_5',['UnsetVariable',['../structSDL_1_1EnvironmentBase.html#a188fef4de195e641b259803a7a16e44f',1,'SDL::EnvironmentBase']]],
+  ['update_6',['Update',['../structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf',1,'SDL::TextureBase']]],
+  ['updatenv_7',['UpdateNV',['../structSDL_1_1TextureBase.html#a03be377c1b2770c7b2d610d280b8ba87',1,'SDL::TextureBase']]],
+  ['updatesurface_8',['UpdateSurface',['../structSDL_1_1WindowBase.html#ac7f41ac26be0841520d8cbb42e63ed33',1,'SDL::WindowBase']]],
+  ['updatesurfacerects_9',['UpdateSurfaceRects',['../structSDL_1_1WindowBase.html#a439ff2ab8a4ea8b8b4cdf5fd88a4d3b2',1,'SDL::WindowBase']]],
+  ['updatetext_10',['UpdateText',['../group__CategorySDLTTF.html#ga070b66cd7147495b1512ff57a07cf0e3',1,'SDL']]],
+  ['updateyuv_11',['UpdateYUV',['../structSDL_1_1TextureBase.html#a7ddf202449e6271ea46e2e1ccfb62f7f',1,'SDL::TextureBase']]],
+  ['utf8strlcpy_12',['utf8strlcpy',['../group__CategoryStdinc.html#ga8ae726c47fde58d11167345dfda765a4',1,'SDL']]],
+  ['utf8strlen_13',['utf8strlen',['../group__CategoryStdinc.html#ga81767a08005a153d60b63896c58c106f',1,'SDL']]],
+  ['utf8strnlen_14',['utf8strnlen',['../group__CategoryStdinc.html#ga82960b752efedfdd3cbfcf166d06161e',1,'SDL']]]
 ];

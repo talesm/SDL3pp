@@ -106,7 +106,7 @@ Collaboration diagram for SDL::FontBase&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad2088904970ac90520ff83ea4ccdb90b" id="r_ad2088904970ac90520ff83ea4ccdb90b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#ad2088904970ac90520ff83ea4ccdb90b">FontBase</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file, float ptsize)</td></tr>
+<tr class="memitem:ad2088904970ac90520ff83ea4ccdb90b" id="r_ad2088904970ac90520ff83ea4ccdb90b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#ad2088904970ac90520ff83ea4ccdb90b">FontBase</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> file, float ptsize)</td></tr>
 <tr class="memdesc:ad2088904970ac90520ff83ea4ccdb90b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a font from a file, using a specified point size.  <br /></td></tr>
 <tr class="separator:ad2088904970ac90520ff83ea4ccdb90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93cc919ac1c08b1881eada50c6e46231" id="r_a93cc919ac1c08b1881eada50c6e46231"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a93cc919ac1c08b1881eada50c6e46231">FontBase</a> (ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src, bool closeio, float ptsize)</td></tr>
@@ -226,7 +226,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae4c3dc2621dc2811a284348680b20f24" id="r_ae4c3dc2621dc2811a284348680b20f24"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#ae4c3dc2621dc2811a284348680b20f24">GetGlyphScript</a> (Uint32 ch) const</td></tr>
 <tr class="memdesc:ae4c3dc2621dc2811a284348680b20f24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the script used by a 32-bit codepoint.  <br /></td></tr>
 <tr class="separator:ae4c3dc2621dc2811a284348680b20f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e9229654b55be73a6ecef726833813b" id="r_a7e9229654b55be73a6ecef726833813b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a7e9229654b55be73a6ecef726833813b">SetLanguage</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> language_bcp47)</td></tr>
+<tr class="memitem:a7e9229654b55be73a6ecef726833813b" id="r_a7e9229654b55be73a6ecef726833813b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a7e9229654b55be73a6ecef726833813b">SetLanguage</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> language_bcp47)</td></tr>
 <tr class="memdesc:a7e9229654b55be73a6ecef726833813b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set language to be used for text shaping by a font.  <br /></td></tr>
 <tr class="separator:a7e9229654b55be73a6ecef726833813b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7425e7615c5e0c011ea8dc1faf0e628" id="r_aa7425e7615c5e0c011ea8dc1faf0e628"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#aa7425e7615c5e0c011ea8dc1faf0e628">HasGlyph</a> (Uint32 ch) const</td></tr>
@@ -301,10 +301,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt;<br />
-struct SDL::FontBase&lt; T &gt;</div><p>The internal structure containing font information. </p>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00177">177</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
+struct SDL::FontBase&lt; T &gt;</div><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad2088904970ac90520ff83ea4ccdb90b" name="ad2088904970ac90520ff83ea4ccdb90b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2088904970ac90520ff83ea4ccdb90b">&#9670;&#160;</a></span>FontBase() <span class="overload">[1/3]</span></h2>
@@ -320,7 +317,7 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase</a>&lt; T &gt;::FontBase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>file</em>, </td>
         </tr>
         <tr>
@@ -341,8 +338,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a font from a file, using a specified point size. </p>
 <p>Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.</p>
 <p>When done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -356,8 +351,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CloseFont </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00201">201</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -402,8 +395,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a font from an SDL_IOStream, using a specified point size. </p>
 <p>Some .fon fonts will have several sizes embedded in the file, so the point size becomes the index of choosing which size. If the value is too high, the last indexed size will be the default.</p>
 <p>If <code>closeio</code> is true, <code>src</code> will be automatically closed once the font is closed. Otherwise you should close <code>src</code> yourself after closing the font.</p>
 <p>When done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.</p>
@@ -419,8 +410,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CloseFont </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00231">231</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -449,8 +438,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a font with the specified properties. </p>
 <p>These are the supported properties:</p>
 <ul>
 <li><code>TTF_PROP_FONT_CREATE_FILENAME_STRING</code>: the font file to open, if an SDL_IOStream isn't being used. This is required if <code>TTF_PROP_FONT_CREATE_IOSTREAM_POINTER</code> and <code>TTF_PROP_FONT_CREATE_EXISTING_FONT</code> aren't set.</li>
@@ -473,8 +460,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CloseFont </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00279">279</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -504,8 +489,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Add a fallback font. </p>
 <p>Add a font that will be used for glyphs that are not in the current font. The fallback font should have the same size and style as the current font.</p>
 <p>If there are multiple fallback fonts, they are used in the order added.</p>
 <p>This updates any TTF_Text objects using this font.</p>
@@ -521,8 +504,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>TTF_ClearFallbackFonts </dd>
 <dd>
 TTF_RemoveFallbackFont </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00365">365</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -550,16 +531,12 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Remove all fallback fonts. </p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_AddFallbackFont </dd>
 <dd>
 TTF_RemoveFallbackFont </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00403">403</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -587,8 +564,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Dispose of a previously-created font. </p>
 <p>Call this when done with a font. This function will free any resources associated with it. It is safe to call this function on NULL, for example on the result of a failed call to TTF_OpenFont().</p>
 <p>The font is not valid after being passed to this function. String pointers from functions that return information on this font, such as TTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid after this call, as well.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should not be called while any other thread is using the font.</dd></dl>
@@ -596,8 +571,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>TTF_OpenFont </dd>
 <dd>
 TTF_OpenFontIO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01701">1701</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -625,16 +598,12 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a copy of an existing font. </p>
 <p>The copy will be distinct from the original, but will share the font file and have the same size and style as the original.</p>
 <p>When done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.</p>
 <dl class="section return"><dt>Returns</dt><dd>a valid TTF_Font, or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the original font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_CloseFont </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00302">302</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -662,14 +631,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the offset from the baseline to the top of a font. </p>
 <p>This is a positive value, relative to the baseline.</p>
 <dl class="section return"><dt>Returns</dt><dd>the font's ascent.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00727">727</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -697,14 +662,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the offset from the baseline to the bottom of a font. </p>
 <p>This is a negative value, relative to the baseline.</p>
 <dl class="section return"><dt>Returns</dt><dd>the font's descent.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00740">740</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -732,14 +693,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the direction to be used for text shaping by a font. </p>
 <p>This defaults to TTF_DIRECTION_INVALID if it hasn't been set.</p>
 <dl class="section return"><dt>Returns</dt><dd>the direction to be used for text shaping.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00911">911</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -778,8 +735,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get font target resolutions, in dots per inch. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hdpi</td><td>a pointer filled in with the target horizontal DPI. </td></tr>
@@ -791,8 +746,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontSizeDPI </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00480">480</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -820,15 +773,11 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query a font's family name. </p>
 <p>This string is dictated by the contents of the font file.</p>
 <p>Note that the returned string is to internal storage, and should not be modified or free'd by the caller. The string becomes invalid, with the rest of the font, when <code>font</code> is handed to TTF_CloseFont().</p>
 <dl class="section return"><dt>Returns</dt><dd>the font's family name.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00858">858</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -856,14 +805,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the font generation. </p>
 <p>The generation is incremented each time font properties change that require rebuilding glyphs, such as style, size, etc.</p>
 <dl class="section return"><dt>Returns</dt><dd>the font generation or 0 on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00341">341</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -902,8 +847,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the pixel image for a UNICODE codepoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ch</td><td>the codepoint to check. </td></tr>
@@ -914,8 +857,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>an SDL_Surface containing the glyph, or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01020">1020</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -954,8 +895,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the pixel image for a character index. </p>
 <p>This is useful for text engine implementations, which can call this with the <code>glyph_index</code> in a TTF_CopyOperation</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -967,8 +906,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>an SDL_Surface containing the glyph, or NULL on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01042">1042</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1007,8 +944,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the kerning size between the glyphs of two UNICODE codepoints. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">previous_ch</td><td>the previous codepoint. </td></tr>
@@ -1019,8 +954,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the kerning size between the two glyphs, in pixels, on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01099">1099</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1083,8 +1016,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the metrics (dimensions) of a font's glyph for a UNICODE codepoint. </p>
 <p>To understand what these metrics mean, here is a useful link:</p>
 <p><a href="https://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html">https://freetype.sourceforge.net/freetype2/docs/tutorial/step2.html</a></p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1101,8 +1032,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01076">1076</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1131,8 +1060,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the script used by a 32-bit codepoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ch</td><td>the character code to check. </td></tr>
@@ -1143,8 +1070,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is thread-safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_TagToString </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00965">965</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1172,14 +1097,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the total height of a font. </p>
 <p>This is usually equal to point size.</p>
 <dl class="section return"><dt>Returns</dt><dd>the font's height.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00714">714</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1207,8 +1128,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query a font's current FreeType hinter setting. </p>
 <p>The hinter setting is a single value:</p>
 <ul>
 <li><code>TTF_HINTING_NORMAL</code></li>
@@ -1221,8 +1140,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontHinting </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00628">628</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1250,14 +1167,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query whether or not kerning is enabled for a font. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if kerning is enabled, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontKerning </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00809">809</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1285,14 +1198,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the spacing between lines of text for a font. </p>
 <dl class="section return"><dt>Returns</dt><dd>the font's recommended spacing.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontLineSkip </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00772">772</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1320,13 +1229,9 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the number of faces of a font. </p>
 <dl class="section return"><dt>Returns</dt><dd>the number of FreeType font faces.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00607">607</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1354,14 +1259,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query a font's current outline. </p>
 <dl class="section return"><dt>Returns</dt><dd>the font's current outline value.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontOutline </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00568">568</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1389,8 +1290,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the properties associated with a font. </p>
 <p>The following read-write properties are provided by <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>:</p>
 <ul>
 <li><code>TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER</code>: The FT_Stroker_LineCap value used when setting the font outline, defaults to <code>FT_STROKER_LINECAP_ROUND</code>.</li>
@@ -1400,8 +1299,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00325">325</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1429,14 +1326,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the script used for text shaping a font. </p>
 <dl class="section return"><dt>Returns</dt><dd>an <a href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 code</a> or 0 if a script hasn't been set.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_TagToString </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00948">948</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1464,14 +1357,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query whether Signed Distance Field rendering is enabled for a font. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if enabled, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontSDF </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00666">666</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1499,16 +1388,12 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the size of a font. </p>
 <dl class="section return"><dt>Returns</dt><dd>the size of the font, or 0.0f on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontSize </dd>
 <dd>
 TTF_SetFontSizeDPI </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00463">463</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1537,8 +1422,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Calculate the dimensions of a rendered string of UTF-8 text. </p>
 <p>This will report the width and height, in pixels, of the space that the specified string will take to fully render.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1549,8 +1432,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>return a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> with the width, height on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01120">1120</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1595,8 +1476,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Calculate the dimensions of a rendered string of UTF-8 text. </p>
 <p>This will report the width and height, in pixels, of the space that the specified string will take to fully render.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1609,8 +1488,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01143">1143</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1649,8 +1526,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Calculate the dimensions of a rendered string of UTF-8 text. </p>
 <p>This will report the width and height, in pixels, of the space that the specified string will take to fully render.</p>
 <p>Text is wrapped to multiple lines on line endings and on word boundaries if it extends beyond <code>wrap_width</code> in pixels.</p>
 <p>If wrap_width is 0, this function will only wrap on newline characters.</p>
@@ -1664,8 +1539,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>return a <a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> with the width, height on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01169">1169</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1716,8 +1589,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Calculate the dimensions of a rendered string of UTF-8 text. </p>
 <p>This will report the width and height, in pixels, of the space that the specified string will take to fully render.</p>
 <p>Text is wrapped to multiple lines on line endings and on word boundaries if it extends beyond <code>wrap_width</code> in pixels.</p>
 <p>If wrap_width is 0, this function will only wrap on newline characters.</p>
@@ -1733,8 +1604,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01199">1199</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1762,8 +1631,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query a font's current style. </p>
 <p>The font styles are a set of bit flags, OR'd together:</p>
 <ul>
 <li><code>TTF_STYLE_NORMAL</code> (is zero)</li>
@@ -1776,8 +1643,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontStyle </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00532">532</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1805,15 +1670,11 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query a font's style name. </p>
 <p>This string is dictated by the contents of the font file.</p>
 <p>Note that the returned string is to internal storage, and should not be modified or free'd by the caller. The string becomes invalid, with the rest of the font, when <code>font</code> is handed to TTF_CloseFont().</p>
 <dl class="section return"><dt>Returns</dt><dd>the font's style name.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00875">875</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1841,14 +1702,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query a font's current wrap alignment option. </p>
 <dl class="section return"><dt>Returns</dt><dd>the font's current wrap alignment option.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontWrapAlignment </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00698">698</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1877,8 +1734,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Check whether a glyph is provided by the font for a UNICODE codepoint. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ch</td><td>the codepoint to check. </td></tr>
@@ -1888,8 +1743,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if font provides a glyph for this character, false if not.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01004">1004</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1917,14 +1770,10 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query whether a font is fixed-width. </p>
 <p>A "fixed-width" font means all glyphs are the same width across; a lowercase 'i' will be the same size across as a capital 'W', for example. This is common for terminals and text editors, and other apps that treat text as a grid. Most other things (WYSIWYG word processors, web pages, etc) are more likely to not be fixed-width in most cases.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the font is fixed-width, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00826">826</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -1952,15 +1801,11 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query whether a font is scalable or not. </p>
 <p>Scalability lets us distinguish between outline and bitmap fonts.</p>
 <dl class="section return"><dt>Returns</dt><dd>true if the font is scalable, false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_SetFontSDF </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00841">841</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2011,8 +1856,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Calculate how much of a UTF-8 string will fit in a given width. </p>
 <p>This reports the number of characters that can be rendered before reaching <code>max_width</code>.</p>
 <p>This does not need to render the string to do this calculation.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2027,8 +1870,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01230">1230</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2057,8 +1898,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Remove a fallback font. </p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2071,8 +1910,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>TTF_AddFallbackFont </dd>
 <dd>
 TTF_ClearFallbackFonts </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00385">385</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2111,8 +1948,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render a single UNICODE codepoint at high quality to a new ARGB surface. </p>
 <p>This function will allocate a new 32-bit, ARGB surface, using alpha blending to dither the font with the given color. This function returns the new surface, or NULL if there was an error.</p>
 <p>The glyph is rendered without any padding or centering in the X direction, and aligned normally in the Y direction.</p>
 <p>You can render at other quality levels with TTF_RenderGlyph_Solid, TTF_RenderGlyph_Shaded, and TTF_RenderGlyph_LCD.</p>
@@ -2131,8 +1966,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 TTF_RenderGlyph_Shaded </dd>
 <dd>
 TTF_RenderGlyph_Solid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01564">1564</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2177,8 +2010,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render a single UNICODE codepoint at LCD subpixel quality to a new ARGB surface. </p>
 <p>This function will allocate a new 32-bit, ARGB surface, and render alpha-blended text using FreeType's LCD subpixel rendering. This function returns the new surface, or NULL if there was an error.</p>
 <p>The glyph is rendered without any padding or centering in the X direction, and aligned normally in the Y direction.</p>
 <p>You can render at other quality levels with TTF_RenderGlyph_Solid, TTF_RenderGlyph_Shaded, and TTF_RenderGlyph_Blended.</p>
@@ -2198,8 +2029,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 TTF_RenderGlyph_Shaded </dd>
 <dd>
 TTF_RenderGlyph_Solid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01676">1676</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2244,8 +2073,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render a single UNICODE codepoint at high quality to a new 8-bit surface. </p>
 <p>This function will allocate a new 8-bit, palettized surface. The surface's 0 pixel will be the specified background color, while other pixels have varying degrees of the foreground color. This function returns the new surface, or NULL if there was an error.</p>
 <p>The glyph is rendered without any padding or centering in the X direction, and aligned normally in the Y direction.</p>
 <p>You can render at other quality levels with TTF_RenderGlyph_Solid, TTF_RenderGlyph_Blended, and TTF_RenderGlyph_LCD.</p>
@@ -2265,8 +2092,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 TTF_RenderGlyph_LCD </dd>
 <dd>
 TTF_RenderGlyph_Solid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01458">1458</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2305,8 +2130,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render a single 32-bit glyph at fast quality to a new 8-bit surface. </p>
 <p>This function will allocate a new 8-bit, palettized surface. The surface's 0 pixel will be the colorkey, giving a transparent background. The 1 pixel will be set to the text color.</p>
 <p>The glyph is rendered without any padding or centering in the X direction, and aligned normally in the Y direction.</p>
 <p>You can render at other quality levels with TTF_RenderGlyph_Shaded, TTF_RenderGlyph_Blended, and TTF_RenderGlyph_LCD.</p>
@@ -2325,8 +2148,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 TTF_RenderGlyph_LCD </dd>
 <dd>
 TTF_RenderGlyph_Shaded </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01345">1345</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2365,8 +2186,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render UTF-8 text at high quality to a new ARGB surface. </p>
 <p>This function will allocate a new 32-bit, ARGB surface, using alpha blending to dither the font with the given color. This function returns the new surface, or NULL if there was an error.</p>
 <p>This will not word-wrap the string; you'll get a surface with a single line of text, as long as the string requires. You can use TTF_RenderText_Blended_Wrapped() instead if you need to wrap the output to multiple lines.</p>
 <p>This will not wrap on newline characters.</p>
@@ -2388,8 +2207,6 @@ TTF_RenderText_LCD </dd>
 TTF_RenderText_Shaded </dd>
 <dd>
 TTF_RenderText_Solid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01494">1494</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2434,8 +2251,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render word-wrapped UTF-8 text at high quality to a new ARGB surface. </p>
 <p>This function will allocate a new 32-bit, ARGB surface, using alpha blending to dither the font with the given color. This function returns the new surface, or NULL if there was an error.</p>
 <p>Text is wrapped to multiple lines on line endings and on word boundaries if it extends beyond <code>wrap_width</code> in pixels.</p>
 <p>If wrap_width is 0, this function will only wrap on newline characters.</p>
@@ -2458,8 +2273,6 @@ TTF_RenderText_LCD_Wrapped </dd>
 TTF_RenderText_Shaded_Wrapped </dd>
 <dd>
 TTF_RenderText_Solid_Wrapped </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01530">1530</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2504,8 +2317,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render UTF-8 text at LCD subpixel quality to a new ARGB surface. </p>
 <p>This function will allocate a new 32-bit, ARGB surface, and render alpha-blended text using FreeType's LCD subpixel rendering. This function returns the new surface, or NULL if there was an error.</p>
 <p>This will not word-wrap the string; you'll get a surface with a single line of text, as long as the string requires. You can use TTF_RenderText_LCD_Wrapped() instead if you need to wrap the output to multiple lines.</p>
 <p>This will not wrap on newline characters.</p>
@@ -2528,8 +2339,6 @@ TTF_RenderText_LCD_Wrapped </dd>
 TTF_RenderText_Shaded </dd>
 <dd>
 TTF_RenderText_Solid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01601">1601</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2580,8 +2389,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render word-wrapped UTF-8 text at LCD subpixel quality to a new ARGB surface. </p>
 <p>This function will allocate a new 32-bit, ARGB surface, and render alpha-blended text using FreeType's LCD subpixel rendering. This function returns the new surface, or NULL if there was an error.</p>
 <p>Text is wrapped to multiple lines on line endings and on word boundaries if it extends beyond <code>wrap_width</code> in pixels.</p>
 <p>If wrap_width is 0, this function will only wrap on newline characters.</p>
@@ -2605,8 +2412,6 @@ TTF_RenderText_LCD </dd>
 TTF_RenderText_Shaded_Wrapped </dd>
 <dd>
 TTF_RenderText_Solid_Wrapped </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01639">1639</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2651,8 +2456,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render UTF-8 text at high quality to a new 8-bit surface. </p>
 <p>This function will allocate a new 8-bit, palettized surface. The surface's 0 pixel will be the specified background color, while other pixels have varying degrees of the foreground color. This function returns the new surface, or NULL if there was an error.</p>
 <p>This will not word-wrap the string; you'll get a surface with a single line of text, as long as the string requires. You can use TTF_RenderText_Shaded_Wrapped() instead if you need to wrap the output to multiple lines.</p>
 <p>This will not wrap on newline characters.</p>
@@ -2675,8 +2478,6 @@ TTF_RenderText_LCD </dd>
 TTF_RenderText_Shaded_Wrapped </dd>
 <dd>
 TTF_RenderText_Solid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01383">1383</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2727,8 +2528,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render word-wrapped UTF-8 text at high quality to a new 8-bit surface. </p>
 <p>This function will allocate a new 8-bit, palettized surface. The surface's 0 pixel will be the specified background color, while other pixels have varying degrees of the foreground color. This function returns the new surface, or NULL if there was an error.</p>
 <p>Text is wrapped to multiple lines on line endings and on word boundaries if it extends beyond <code>wrap_width</code> in pixels.</p>
 <p>If wrap_width is 0, this function will only wrap on newline characters.</p>
@@ -2752,8 +2551,6 @@ TTF_RenderText_LCD_Wrapped </dd>
 TTF_RenderText_Shaded </dd>
 <dd>
 TTF_RenderText_Solid_Wrapped </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01421">1421</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2792,8 +2589,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render UTF-8 text at fast quality to a new 8-bit surface. </p>
 <p>This function will allocate a new 8-bit, palettized surface. The surface's 0 pixel will be the colorkey, giving a transparent background. The 1 pixel will be set to the text color.</p>
 <p>This will not word-wrap the string; you'll get a surface with a single line of text, as long as the string requires. You can use TTF_RenderText_Solid_Wrapped() instead if you need to wrap the output to multiple lines.</p>
 <p>This will not wrap on newline characters.</p>
@@ -2817,8 +2612,6 @@ TTF_RenderText_Shaded </dd>
 TTF_RenderText_Solid </dd>
 <dd>
 TTF_RenderText_Solid_Wrapped </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01275">1275</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2863,8 +2656,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Render word-wrapped UTF-8 text at fast quality to a new 8-bit surface. </p>
 <p>This function will allocate a new 8-bit, palettized surface. The surface's 0 pixel will be the colorkey, giving a transparent background. The 1 pixel will be set to the text color.</p>
 <p>Text is wrapped to multiple lines on line endings and on word boundaries if it extends beyond <code>wrapLength</code> in pixels.</p>
 <p>If wrapLength is 0, this function will only wrap on newline characters.</p>
@@ -2887,8 +2678,6 @@ TTF_RenderText_LCD_Wrapped </dd>
 TTF_RenderText_Shaded_Wrapped </dd>
 <dd>
 TTF_RenderText_Solid </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l01311">1311</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2917,8 +2706,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the direction to be used for text shaping by a font. </p>
 <p>This function only supports left-to-right text shaping if SDL_ttf was not built with HarfBuzz support.</p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -2930,8 +2717,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00894">894</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -2960,8 +2745,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a font's current hinter setting. </p>
 <p>This updates any TTF_Text objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <p>The hinter setting is a single value:</p>
 <ul>
@@ -2980,8 +2763,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontHinting </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00593">593</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3010,8 +2791,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set if kerning is enabled for a font. </p>
 <p>Newly-opened fonts default to allowing kerning. This is generally a good policy unless you have a strong reason to disable it, as it tends to produce better rendering (with kerning disabled, some fonts might render the word <code>kerning</code> as something that looks like <code>keming</code> for example).</p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3023,8 +2802,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontKerning </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00793">793</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3042,7 +2819,7 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
         <tr>
           <td class="memname">bool <a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase</a>&lt; T &gt;::SetLanguage </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>language_bcp47</em></td><td>)</td>
           <td></td>
         </tr>
@@ -3053,8 +2830,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set language to be used for text shaping by a font. </p>
 <p>If SDL_ttf was not built with HarfBuzz support, this function returns false.</p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3066,8 +2841,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00988">988</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3096,8 +2869,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the spacing between lines of text for a font. </p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3108,8 +2879,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontLineSkip </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00756">756</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3138,8 +2907,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a font's current outline. </p>
 <p>This uses the font properties <code>TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER</code>, <code>TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER</code>, and <code>TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER</code> when setting the font outline.</p>
 <p>This updates any TTF_Text objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3152,8 +2919,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontOutline </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00555">555</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3182,8 +2947,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set the script to be used for text shaping by a font. </p>
 <p>This returns false if SDL_ttf isn't built with HarfBuzz support.</p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -3196,8 +2959,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_StringToTag </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00932">932</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3226,8 +2987,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Enable Signed Distance Field rendering for a font. </p>
 <p>SDF is a technique that helps fonts look sharp even when scaling and rotating, and requires special shader support for display.</p>
 <p>This works with Blended APIs, and generates the raw signed distance values in the alpha channel of the resulting texture.</p>
 <p>This updates any TTF_Text objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
@@ -3241,8 +3000,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontSDF </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00653">653</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3271,8 +3028,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a font's size dynamically. </p>
 <p>This updates any TTF_Text objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3284,8 +3039,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontSize </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00422">422</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3330,8 +3083,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set font size dynamically with target resolutions, in dots per inch. </p>
 <p>This updates any TTF_Text objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3347,8 +3098,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontSize </dd>
 <dd>
 TTF_GetFontSizeDPI </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00444">444</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3377,8 +3126,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a font's current style. </p>
 <p>This updates any TTF_Text objects using this font, and clears already-generated glyphs, if any, from the cache.</p>
 <p>The font styles are a set of bit flags, OR'd together:</p>
 <ul>
@@ -3397,8 +3144,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontStyle </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00508">508</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>
@@ -3427,8 +3172,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a font's current wrap alignment option. </p>
 <p>This updates any TTF_Text objects using this font.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -3439,8 +3182,6 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontWrapAlignment </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__ttf_8h_source.html#l00682">682</a> of file <a class="el" href="SDL3pp__ttf_8h_source.html">SDL3pp_ttf.h</a>.</p>
 
 </div>
 </div>

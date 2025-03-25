@@ -1,0 +1,31 @@
+{
+  "sources": [
+    "SDL3pp_stdinc.h",
+    "SDL3pp_error.h",
+    "SDL3pp_assert.h",
+    "SDL3pp_log.h",
+    "SDL3pp_misc.h",
+    "SDL3pp_guid.h",
+    "SDL3pp_version.h",
+    "SDL3pp_locale.h",
+    "SDL3pp_iostream.h",
+    "SDL3pp_pixels.h",
+    "SDL3pp_blendmode.h",
+    "SDL3pp_hints.h",
+    "SDL3pp_properties.h",
+    "SDL3pp_rect.h",
+    "SDL3pp_surface.h",
+    "SDL3pp_video.h",
+    "SDL3pp_render.h",
+    "SDL3pp_timer.h",
+    "SDL3pp_events.h",
+    "SDL3pp_init.h",
+    "SDL3pp_image.h",
+    "SDL3pp_ttf.h"
+  ],
+  "api": "scripts/target.json",
+  "baseDir": "include/SDL3pp/",
+  "outputFile": "scripts/current.json",
+  "sourceApi": "scripts/source.json",
+  "transform": "scripts/transform.json"
+}

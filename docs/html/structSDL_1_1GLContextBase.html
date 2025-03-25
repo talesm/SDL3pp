@@ -118,11 +118,8 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_GLContext &gt; T&gt;<br />
-struct SDL::GLContextBase&lt; T &gt;</div><p>An opaque handle to an OpenGL context. </p>
-<dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
+struct SDL::GLContextBase&lt; T &gt;</div><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02811">2811</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ac5f6bf0e223c0589577cfe729ad791fd" name="ac5f6bf0e223c0589577cfe729ad791fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac5f6bf0e223c0589577cfe729ad791fd">&#9670;&#160;</a></span>GLContextBase()</h2>
@@ -149,8 +146,6 @@ template&lt;ObjectBox&lt; SDL_GLContext &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create an OpenGL context for an OpenGL window, and make it current. </p>
 <p>Windows users new to OpenGL should note that, for historical reasons, GL functions added after OpenGL version 1.1 are not available by default. Those functions must be loaded at run-time, either with an OpenGL extension-handling library or with SDL_GL_GetProcAddress() and its related functions.</p>
 <p>SDL_GLContext is opaque to the application.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -165,8 +160,6 @@ template&lt;ObjectBox&lt; SDL_GLContext &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1GLContextBase.html#a45b0691b5ffe9bf9e7bfc187c6fd8177" title="Delete an OpenGL context.">Destroy()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1GLContextBase.html#ab6bc8c2c2c6a8d18f3f4453310ecfdc5" title="Set up an OpenGL context for rendering into an OpenGL window.">MakeCurrent()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02837">2837</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -195,14 +188,10 @@ template&lt;ObjectBox&lt; SDL_GLContext &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Delete an OpenGL context. </p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GL_CreateContext </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02874">2874</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>
@@ -231,8 +220,6 @@ template&lt;ObjectBox&lt; SDL_GLContext &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set up an OpenGL context for rendering into an OpenGL window. </p>
 <p>The context must have been created with a compatible window.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -244,8 +231,6 @@ template&lt;ObjectBox&lt; SDL_GLContext &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_GL_CreateContext </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__video_8h_source.html#l02857">2857</a> of file <a class="el" href="SDL3pp__video_8h_source.html">SDL3pp_video.h</a>.</p>
 
 </div>
 </div>

@@ -4,11 +4,6 @@
       "name": "SDL_stdinc.h",
       "doc": "# CategoryStdinc\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like SDL_memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\nSDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like SDL_strlcpy(), which functions as a safer form of strcpy().",
       "entries": {
-        "SDL_INCLUDE_STDBOOL_H": {
-          "doc": "",
-          "name": "SDL_INCLUDE_STDBOOL_H",
-          "kind": "def"
-        },
         "bool": {
           "doc": "",
           "name": "bool",
@@ -29,6 +24,15 @@
           "name": "__bool_true_false_are_defined",
           "kind": "def"
         },
+        "alloca": {
+          "doc": "",
+          "name": "alloca",
+          "kind": "function",
+          "type": "void *",
+          "parameters": [
+            "size_t"
+          ]
+        },
         "SDL_NOLONGLONG": {
           "doc": "Don't let SDL use \"long long\" C types.\n\nSDL will define this if it believes the compiler doesn't understand the\n\"long long\" syntax for C datatypes. This can happen on older compilers.\n\nIf _your_ compiler doesn't support \"long long\" but SDL doesn't know it, it\nis safe to define this yourself to build against the SDL headers.\n\nIf this is defined, it will remove access to some C runtime support\nfunctions, like SDL_ulltoa and SDL_strtoll that refer to this datatype\nexplicitly. The rest of SDL will still be available.\n\nSDL's own source code cannot be built with a compiler that has this\ndefined, for various technical reasons.",
           "name": "SDL_NOLONGLONG",
@@ -38,15 +42,6 @@
           "doc": "The largest value that a `size_t` can hold for the target platform.\n\n`size_t` is generally the same size as a pointer in modern times, but this\ncan get weird on very old and very esoteric machines. For example, on a\n16-bit Intel 286, you might have a 32-bit \"far\" pointer (16-bit segment\nplus 16-bit offset), but `size_t` is 16 bits, because it can only deal with\nthe offset into an individual segment.\n\nIn modern times, it's generally expected to cover an entire linear address\nspace. But be careful!\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_SIZE_MAX",
           "kind": "def"
-        },
-        "SDL_COMPILE_TIME_ASSERT": {
-          "doc": "A compile-time assertion.\n\nThis can check constant values _known to the compiler at build time_ for\ncorrectness, and end the compile with the error if they fail.\n\nOften times these are used to verify basic truths, like the size of a\ndatatype is what is expected:\n\n```c\nSDL_COMPILE_TIME_ASSERT(uint32_size, sizeof(Uint32) == 4);\n```\n\nThe `name` parameter must be a valid C symbol, and must be unique across\nall compile-time asserts in the same compilation unit (one run of the\ncompiler), or the build might fail with cryptic errors on some targets.\nThis is used with a C language trick that works on older compilers that\ndon't support better assertion techniques.\n\nIf you need an assertion that operates at runtime, on variable data, you\nshould try SDL_assert instead.\n\n\\param name a unique identifier for this assertion.\n\\param x the value to test. Must be a boolean value.\n\n\\threadsafety This macro doesn't generate any code to run.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_assert",
-          "name": "SDL_COMPILE_TIME_ASSERT",
-          "kind": "def",
-          "parameters": [
-            "name",
-            "x"
-          ]
         },
         "SDL_arraysize": {
           "doc": "The number of elements in a static array.\n\nThis will compile but return incorrect results for a pointer to an array;\nit has to be an array the compiler knows the size of.\n\nThis macro looks like it double-evaluates the argument, but it does so\ninside of `sizeof`, so there are no side-effects here, as expressions do\nnot actually run any code in these cases.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -308,7 +303,7 @@
           "kind": "def"
         },
         "SDL_PRILL_PREFIX": {
-          "doc": "A printf-formatting string prefix for a `long long` value.\n\nThis is just the prefix! You probably actually want SDL_PRILLd, SDL_PRILLu,\nSDL_PRILLx, or SDL_PRILLX instead.\n\nUse it like this:\n\n```c\nSDL_Log(\"There are %\" SDL_PRILL_PREFIX \"d bottles of beer on the wall.\", bottles);\n```\n\n\\since This macro is available since SDL 3.2.0.",
+          "doc": "",
           "name": "SDL_PRILL_PREFIX",
           "kind": "def"
         },
@@ -437,38 +432,6 @@
           "parameters": [
             "fmtargnumber"
           ]
-        },
-        "SDL_alignment_test": {
-          "doc": "",
-          "name": "SDL_alignment_test",
-          "kind": "struct",
-          "entries": {
-            "a": {
-              "doc": "",
-              "name": "a",
-              "kind": "var",
-              "type": "Uint8"
-            },
-            "b": {
-              "doc": "",
-              "name": "b",
-              "kind": "var",
-              "type": "void *"
-            }
-          }
-        },
-        "SDL_DUMMY_ENUM": {
-          "doc": "",
-          "name": "SDL_DUMMY_ENUM",
-          "kind": "enum",
-          "entries": {
-            "DUMMY_ENUM_VALUE": {
-              "doc": "",
-              "name": "DUMMY_ENUM_VALUE",
-              "kind": "var",
-              "type": ""
-            }
-          }
         },
         "SDL_INIT_INTERFACE": {
           "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nSDL_IOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = SDL_OpenIO(&iface, NULL);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nSDL_IOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = SDL_OpenIO(&iface, NULL);\n```\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_IOStreamInterface\n\\sa SDL_StorageInterface\n\\sa SDL_VirtualJoystickDesc",
@@ -1996,46 +1959,6 @@
             }
           ]
         },
-        "SDL_lltoa": {
-          "doc": "Convert a long long integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexidecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget possible negative\nsigns, null terminator bytes, etc).\n\n\\param value the long long integer to convert.\n\\param str the buffer to write the string into.\n\\param radix the radix to use for string generation.\n\\returns `str`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_ulltoa\n\\sa SDL_itoa\n\\sa SDL_ltoa",
-          "name": "SDL_lltoa",
-          "kind": "function",
-          "type": "char *",
-          "parameters": [
-            {
-              "name": "value",
-              "type": "long long"
-            },
-            {
-              "name": "str",
-              "type": "char *"
-            },
-            {
-              "name": "radix",
-              "type": "int"
-            }
-          ]
-        },
-        "SDL_ulltoa": {
-          "doc": "Convert an unsigned long long integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexidecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget null terminator\nbytes, etc).\n\n\\param value the unsigned long long integer to convert.\n\\param str the buffer to write the string into.\n\\param radix the radix to use for string generation.\n\\returns `str`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_lltoa\n\\sa SDL_uitoa\n\\sa SDL_ultoa",
-          "name": "SDL_ulltoa",
-          "kind": "function",
-          "type": "char *",
-          "parameters": [
-            {
-              "name": "value",
-              "type": "unsigned long long"
-            },
-            {
-              "name": "str",
-              "type": "char *"
-            },
-            {
-              "name": "radix",
-              "type": "int"
-            }
-          ]
-        },
         "SDL_atoi": {
           "doc": "Parse an `int` from a string.\n\nThe result of calling `SDL_atoi(str)` is equivalent to\n`(int)SDL_strtol(str, NULL, 10)`.\n\n\\param str The null-terminated string to read. Must not be NULL.\n\\returns the parsed `int`.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_atof\n\\sa SDL_strtol\n\\sa SDL_strtoul\n\\sa SDL_strtoll\n\\sa SDL_strtoull\n\\sa SDL_strtod\n\\sa SDL_itoa",
           "name": "SDL_atoi",
@@ -2085,46 +2008,6 @@
           "name": "SDL_strtoul",
           "kind": "function",
           "type": "unsigned long",
-          "parameters": [
-            {
-              "name": "str",
-              "type": "const char *"
-            },
-            {
-              "name": "endp",
-              "type": "char **"
-            },
-            {
-              "name": "base",
-              "type": "int"
-            }
-          ]
-        },
-        "SDL_strtoll": {
-          "doc": "Parse a `long long` from a string.\n\nIf `str` starts with whitespace, then those whitespace characters are\nskipped before attempting to parse the number.\n\nIf the parsed number does not fit inside a `long long`, the result is\nclamped to the minimum and maximum representable `long long` values.\n\n\\param str The null-terminated string to read. Must not be NULL.\n\\param endp If not NULL, the address of the first invalid character (i.e.\n            the next character after the parsed number) will be written to\n            this pointer.\n\\param base The base of the integer to read. Supported values are 0 and 2\n            to 36 inclusive. If 0, the base will be inferred from the\n            number's prefix (0x for hexadecimal, 0 for octal, decimal\n            otherwise).\n\\returns the parsed `long long`, or 0 if no number could be parsed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_atoi\n\\sa SDL_atof\n\\sa SDL_strtol\n\\sa SDL_strtoul\n\\sa SDL_strtoull\n\\sa SDL_strtod\n\\sa SDL_lltoa",
-          "name": "SDL_strtoll",
-          "kind": "function",
-          "type": "long long",
-          "parameters": [
-            {
-              "name": "str",
-              "type": "const char *"
-            },
-            {
-              "name": "endp",
-              "type": "char **"
-            },
-            {
-              "name": "base",
-              "type": "int"
-            }
-          ]
-        },
-        "SDL_strtoull": {
-          "doc": "Parse an `unsigned long long` from a string.\n\nIf `str` starts with whitespace, then those whitespace characters are\nskipped before attempting to parse the number.\n\nIf the parsed number does not fit inside an `unsigned long long`, the\nresult is clamped to the maximum representable `unsigned long long` value.\n\n\\param str The null-terminated string to read. Must not be NULL.\n\\param endp If not NULL, the address of the first invalid character (i.e.\n            the next character after the parsed number) will be written to\n            this pointer.\n\\param base The base of the integer to read. Supported values are 0 and 2\n            to 36 inclusive. If 0, the base will be inferred from the\n            number's prefix (0x for hexadecimal, 0 for octal, decimal\n            otherwise).\n\\returns the parsed `unsigned long long`, or 0 if no number could be\n         parsed.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_atoi\n\\sa SDL_atof\n\\sa SDL_strtol\n\\sa SDL_strtoll\n\\sa SDL_strtoul\n\\sa SDL_strtod\n\\sa SDL_ulltoa",
-          "name": "SDL_strtoull",
-          "kind": "function",
-          "type": "unsigned long long",
           "parameters": [
             {
               "name": "str",
@@ -3331,49 +3214,9 @@
             }
           ]
         },
-        "SDL_size_mul_check_overflow_builtin": {
-          "doc": "",
-          "name": "SDL_size_mul_check_overflow_builtin",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "size_t"
-            },
-            {
-              "name": "b",
-              "type": "size_t"
-            },
-            {
-              "name": "ret",
-              "type": "size_t *"
-            }
-          ]
-        },
         "SDL_size_add_check_overflow": {
           "doc": "Add two integers, checking for overflow.\n\nIf `a + b` would overflow, return false.\n\nOtherwise store `a + b` via ret and return true.\n\n\\param a the first addend.\n\\param b the second addend.\n\\param ret on non-overflow output, stores the addition result, may not be\n           NULL.\n\\returns false on overflow, true if result is added without overflow.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
           "name": "SDL_size_add_check_overflow",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "a",
-              "type": "size_t"
-            },
-            {
-              "name": "b",
-              "type": "size_t"
-            },
-            {
-              "name": "ret",
-              "type": "size_t *"
-            }
-          ]
-        },
-        "SDL_size_add_check_overflow_builtin": {
-          "doc": "",
-          "name": "SDL_size_add_check_overflow_builtin",
           "kind": "function",
           "type": "bool",
           "parameters": [
@@ -3482,13 +3325,6 @@
           "doc": "Attempt to tell an attached debugger to pause.\n\nThis allows an app to programmatically halt (\"break\") the debugger as if it\nhad hit a breakpoint, allowing the developer to examine program state, etc.\n\nThis is a macro--not a function--so that the debugger breaks on the source\ncode line that used SDL_TriggerBreakpoint and not in some random guts of\nSDL. SDL_assert uses this macro for the same reason.\n\nIf the program is not running under a debugger, SDL_TriggerBreakpoint will\nlikely terminate the app, possibly without warning. If the current platform\nisn't supported, this macro is left undefined.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_TriggerBreakpoint",
           "kind": "def"
-        },
-        "__debugbreak": {
-          "doc": "",
-          "name": "__debugbreak",
-          "kind": "function",
-          "type": "void __cdecl",
-          "parameters": []
         },
         "SDL_FUNCTION": {
           "doc": "A macro that reports the current function being compiled.\n\nIf SDL can't figure how the compiler reports this, it will use \"???\".\n\n\\since This macro is available since SDL 3.2.0.",
@@ -3600,7 +3436,7 @@
               "doc": "next item in the linked list.",
               "name": "next",
               "kind": "var",
-              "type": "const struct SDL_AssertData *"
+              "type": "SDL_AssertData"
             }
           }
         },
@@ -3623,10 +3459,15 @@
               "type": "const char *"
             },
             {
-              "name": "SDL_TriggerBreakpoint(",
-              "type": "int line) SDL_ANALYZER_NORETURN;\n\n\n#ifdef SDL_WIKI_DOCUMENTATION_SECTION\n\n/***The macro used when an assertion triggers a breakpoint.\n **This isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint *instead.\n **\\since This macro is available since SDL 3.2.0.\n */\n#define SDL_AssertBreakpoint()"
+              "name": "SDL_ANALYZER_NORETUR",
+              "type": "int line)"
             }
           ]
+        },
+        "SDL_AssertBreakpoint": {
+          "doc": "The macro used when an assertion triggers a breakpoint.\n\nThis isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint\ninstead.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_AssertBreakpoint",
+          "kind": "def"
         },
         "SDL_enabled_assert": {
           "doc": "The macro used when an assertion is enabled.\n\nThis isn't for direct use by apps, but this is the code that is inserted\nwhen an SDL_assert is enabled.\n\nThe `do {} while(0)` avoids dangling else problems:\n\n```c\nif (x) SDL_assert(y); else blah();\n```\n\n... without the do/while, the \"else\" could attach to this macro's \"if\". We\ntry to handle just the minimum we need here in a macro...the loop, the\nstatic vars, and break points. The heavy lifting is handled in\nSDL_ReportAssertion().\n\n\\param condition the condition to assert.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -3674,7 +3515,14 @@
           "kind": "callback",
           "type": "SDL_AssertState",
           "parameters": [
-            ");"
+            {
+              "name": "data",
+              "type": "const SDL_AssertData *"
+            },
+            {
+              "name": "userdata",
+              "type": "void *"
+            }
           ]
         },
         "SDL_SetAssertionHandler": {
@@ -4133,10 +3981,7 @@
               "name": "fmt",
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
-            {
-              "name": "SDL_PRINTF_VARARG_FUNC(3",
-              "type": "...)"
-            }
+            "..."
           ]
         },
         "SDL_LogMessageV": {
@@ -4158,8 +4003,8 @@
               "type": "SDL_PRINTF_FORMAT_STRING const char *"
             },
             {
-              "name": "SDL_PRINTF_VARARG_FUNCV(3",
-              "type": "va_list ap)"
+              "name": "ap",
+              "type": "va_list"
             }
           ]
         },
@@ -4253,8 +4098,15 @@
         "SDL_GUID": {
           "doc": "An SDL_GUID is a 128-bit identifier for an input device that identifies\nthat device across runs of SDL programs on the same platform.\n\nIf the device is detached and then re-attached to a different port, or if\nthe base system is rebooted, the device should still report the same GUID.\n\nGUIDs are as precise as possible but are not guaranteed to distinguish\nphysically distinct but equivalent devices. For example, two game\ncontrollers from the same vendor with the same product ID and revision may\nhave the same GUID.\n\nGUIDs may be platform-dependent (i.e., the same device may report different\nGUIDs on different operating systems).\n\n\\since This struct is available since SDL 3.2.0.",
           "name": "SDL_GUID",
-          "kind": "var",
-          "type": "typedef struct"
+          "kind": "struct",
+          "entries": {
+            "data": {
+              "doc": "",
+              "name": "data",
+              "kind": "var",
+              "type": "Uint8"
+            }
+          }
         },
         "SDL_GUIDToString": {
           "doc": "Get an ASCII string representation for a given SDL_GUID.\n\n\\param guid the SDL_GUID you wish to convert to string.\n\\param pszGUID buffer in which to write the ASCII string.\n\\param cbGUID the size of pszGUID, should be at least 33 bytes.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_StringToGUID",
@@ -4378,11 +4230,6 @@
       "name": "SDL_locale.h",
       "doc": "# CategoryLocale\n\nSDL locale services.\n\nThis provides a way to get a list of preferred locales (language plus\ncountry) for the user. There is exactly one function:\nSDL_GetPreferredLocales(), which handles all the heavy lifting, and offers\ndocumentation on all the strange ways humans might have configured their\nlanguage settings.",
       "entries": {
-        "SDL_locale_h": {
-          "doc": "",
-          "name": "SDL_locale_h",
-          "kind": "def"
-        },
         "SDL_Locale": {
           "doc": "A struct to provide locale data.\n\nLocale data is split into a spoken language, like English, and an optional\ncountry, like Canada. The language will be in ISO-639 format (so English\nwould be \"en\"), and the country, if not NULL, will be an ISO-3166 country\ncode (so Canada would be \"CA\").\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_GetPreferredLocales",
           "name": "SDL_Locale",
@@ -4432,31 +4279,31 @@
               "type": ""
             },
             "SDL_IO_STATUS_ERROR": {
-              "doc": "Read or write I/O error",
+              "doc": "Read or write I/O error.",
               "name": "SDL_IO_STATUS_ERROR",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_EOF": {
-              "doc": "End of file",
+              "doc": "End of file.",
               "name": "SDL_IO_STATUS_EOF",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_NOT_READY": {
-              "doc": "Non blocking I/O, not ready",
+              "doc": "Non blocking I/O, not ready.",
               "name": "SDL_IO_STATUS_NOT_READY",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_READONLY": {
-              "doc": "Tried to write a read-only buffer",
+              "doc": "Tried to write a read-only buffer.",
               "name": "SDL_IO_STATUS_READONLY",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_STATUS_WRITEONLY": {
-              "doc": "Tried to read a write-only buffer",
+              "doc": "Tried to read a write-only buffer.",
               "name": "SDL_IO_STATUS_WRITEONLY",
               "kind": "var",
               "type": ""
@@ -4469,19 +4316,19 @@
           "kind": "enum",
           "entries": {
             "SDL_IO_SEEK_SET": {
-              "doc": "Seek from the beginning of data",
+              "doc": "Seek from the beginning of data.",
               "name": "SDL_IO_SEEK_SET",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_SEEK_CUR": {
-              "doc": "Seek relative to current read point",
+              "doc": "Seek relative to current read point.",
               "name": "SDL_IO_SEEK_CUR",
               "kind": "var",
               "type": ""
             },
             "SDL_IO_SEEK_END": {
-              "doc": "Seek relative to the end of data",
+              "doc": "Seek relative to the end of data.",
               "name": "SDL_IO_SEEK_END",
               "kind": "var",
               "type": ""
@@ -4499,66 +4346,36 @@
               "kind": "var",
               "type": "Uint32"
             },
-            "Sint64": [
-              {
-                "doc": "Return the number of bytes in this SDL_IOStream\n\n \\return the total size of the data stream, or -1 on error.",
-                "name": "Sint64",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  "*size"
-                ]
-              },
-              {
-                "doc": "Seek to `offset` relative to `whence`, one of stdio's whence values:\n SDL_IO_SEEK_SET, SDL_IO_SEEK_CUR, SDL_IO_SEEK_END\n\n \\return the final offset in the data stream, or -1 on error.",
-                "name": "Sint64",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  "*seek"
-                ]
-              }
-            ],
-            "size_t": [
-              {
-                "doc": "Read up to `size` bytes from the data stream to the area pointed\n at by `ptr`.\n\n On an incomplete read, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful read.\n\n \\return the number of bytes read",
-                "name": "size_t",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  "*read"
-                ]
-              },
-              {
-                "doc": "Write exactly `size` bytes from the area pointed at by `ptr`\n to data stream.\n\n On an incomplete write, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful write.\n\n \\return the number of bytes written",
-                "name": "size_t",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  "*write"
-                ]
-              }
-            ],
-            "bool": [
-              {
-                "doc": "If the stream is buffering, make sure the data is written out.\n\n On failure, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a successful flush.\n\n \\return true if successful or false on write error when flushing data.",
-                "name": "bool",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  "*flush"
-                ]
-              },
-              {
-                "doc": "Close and free any allocated resources.\n\n This does not guarantee file writes will sync to physical media; they\n can be in the system's file cache, waiting to go to disk.\n\n The SDL_IOStream is still destroyed even if this fails, so clean up anything\n even if flushing buffers, etc, returns an error.\n\n \\return true if successful or false on write error when flushing data.",
-                "name": "bool",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  "*close"
-                ]
-              }
-            ]
+            "offset": {
+              "doc": "Seek to `offset` relative to `whence`, one of stdio's whence values:\n SDL_IO_SEEK_SET, SDL_IO_SEEK_CUR, SDL_IO_SEEK_END\n\n \\return the final offset in the data stream, or -1 on error.",
+              "name": "offset",
+              "kind": "var",
+              "type": "Sint64"
+            },
+            "whence": {
+              "doc": "Seek to `offset` relative to `whence`, one of stdio's whence values:\n SDL_IO_SEEK_SET, SDL_IO_SEEK_CUR, SDL_IO_SEEK_END\n\n \\return the final offset in the data stream, or -1 on error.",
+              "name": "whence",
+              "kind": "var",
+              "type": "Sint64"
+            },
+            "ptr": {
+              "doc": "Write exactly `size` bytes from the area pointed at by `ptr`\n to data stream.\n\n On an incomplete write, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful write.\n\n \\return the number of bytes written",
+              "name": "ptr",
+              "kind": "var",
+              "type": "const void *"
+            },
+            "size": {
+              "doc": "Write exactly `size` bytes from the area pointed at by `ptr`\n to data stream.\n\n On an incomplete write, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a complete, successful write.\n\n \\return the number of bytes written",
+              "name": "size",
+              "kind": "var",
+              "type": "size_t"
+            },
+            "status": {
+              "doc": "If the stream is buffering, make sure the data is written out.\n\n On failure, you should set `*status` to a value from the\n SDL_IOStatus enum. You do not have to explicitly set this on\n a successful flush.\n\n \\return true if successful or false on write error when flushing data.",
+              "name": "status",
+              "kind": "var",
+              "type": "SDL_IOStatus *"
+            }
           }
         },
         "SDL_IOStream": {
@@ -6145,13 +5962,13 @@
               "type": ""
             },
             "SDL_PIXELFORMAT_YV12": {
-              "doc": "Planar mode: Y + V + U  (3 planes)",
+              "doc": "Planar mode: Y + V + U (3 planes)",
               "name": "SDL_PIXELFORMAT_YV12",
               "kind": "var",
               "type": ""
             },
             "SDL_PIXELFORMAT_IYUV": {
-              "doc": "Planar mode: Y + U + V  (3 planes)",
+              "doc": "Planar mode: Y + U + V (3 planes)",
               "name": "SDL_PIXELFORMAT_IYUV",
               "kind": "var",
               "type": ""
@@ -6175,31 +5992,31 @@
               "type": ""
             },
             "SDL_PIXELFORMAT_NV12": {
-              "doc": "Planar mode: Y + U/V interleaved  (2 planes)",
+              "doc": "Planar mode: Y + U/V interleaved (2 planes)",
               "name": "SDL_PIXELFORMAT_NV12",
               "kind": "var",
               "type": ""
             },
             "SDL_PIXELFORMAT_NV21": {
-              "doc": "Planar mode: Y + V/U interleaved  (2 planes)",
+              "doc": "Planar mode: Y + V/U interleaved (2 planes)",
               "name": "SDL_PIXELFORMAT_NV21",
               "kind": "var",
               "type": ""
             },
             "SDL_PIXELFORMAT_P010": {
-              "doc": "Planar mode: Y + U/V interleaved  (2 planes)",
+              "doc": "Planar mode: Y + U/V interleaved (2 planes)",
               "name": "SDL_PIXELFORMAT_P010",
               "kind": "var",
               "type": ""
             },
             "SDL_PIXELFORMAT_EXTERNAL_OES": {
-              "doc": "Android video texture format",
+              "doc": "Android video texture format.",
               "name": "SDL_PIXELFORMAT_EXTERNAL_OES",
               "kind": "var",
               "type": ""
             },
             "SDL_PIXELFORMAT_MJPG": {
-              "doc": "Motion JPEG",
+              "doc": "Motion JPEG.",
               "name": "SDL_PIXELFORMAT_MJPG",
               "kind": "var",
               "type": ""
@@ -6291,13 +6108,13 @@
               "type": ""
             },
             "SDL_COLOR_RANGE_LIMITED": {
-              "doc": "Narrow range, e.g. 16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma",
+              "doc": "Narrow range, e.g.  16-235 for 8-bit RGB and luma, and 16-240 for 8-bit chroma",
               "name": "SDL_COLOR_RANGE_LIMITED",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_RANGE_FULL": {
-              "doc": "Full range, e.g. 0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma",
+              "doc": "Full range, e.g.  0-255 for 8-bit RGB and luma, and 1-255 for 8-bit chroma",
               "name": "SDL_COLOR_RANGE_FULL",
               "kind": "var",
               "type": ""
@@ -6316,7 +6133,7 @@
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_BT709": {
-              "doc": "ITU-R BT.709-6",
+              "doc": "ITU-R BT.709-6.",
               "name": "SDL_COLOR_PRIMARIES_BT709",
               "kind": "var",
               "type": ""
@@ -6328,25 +6145,25 @@
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_BT470M": {
-              "doc": "ITU-R BT.470-6 System M",
+              "doc": "ITU-R BT.470-6 System M.",
               "name": "SDL_COLOR_PRIMARIES_BT470M",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_BT470BG": {
-              "doc": "ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625",
+              "doc": "ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625.",
               "name": "SDL_COLOR_PRIMARIES_BT470BG",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_BT601": {
-              "doc": "ITU-R BT.601-7 525, SMPTE 170M",
+              "doc": "ITU-R BT.601-7 525, SMPTE 170M.",
               "name": "SDL_COLOR_PRIMARIES_BT601",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_SMPTE240": {
-              "doc": "SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601",
+              "doc": "SMPTE 240M, functionally the same as SDL_COLOR_PRIMARIES_BT601.",
               "name": "SDL_COLOR_PRIMARIES_SMPTE240",
               "kind": "var",
               "type": ""
@@ -6358,31 +6175,31 @@
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_BT2020": {
-              "doc": "ITU-R BT.2020-2 / ITU-R BT.2100-0",
+              "doc": "ITU-R BT.2020-2 / ITU-R BT.2100-0.",
               "name": "SDL_COLOR_PRIMARIES_BT2020",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_XYZ": {
-              "doc": "SMPTE ST 428-1",
+              "doc": "SMPTE ST 428-1.",
               "name": "SDL_COLOR_PRIMARIES_XYZ",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_SMPTE431": {
-              "doc": "SMPTE RP 431-2",
+              "doc": "SMPTE RP 431-2.",
               "name": "SDL_COLOR_PRIMARIES_SMPTE431",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_SMPTE432": {
-              "doc": "SMPTE EG 432-1 / DCI P3",
+              "doc": "SMPTE EG 432-1 / DCI P3.",
               "name": "SDL_COLOR_PRIMARIES_SMPTE432",
               "kind": "var",
               "type": ""
             },
             "SDL_COLOR_PRIMARIES_EBU3213": {
-              "doc": "EBU Tech. 3213-E",
+              "doc": "EBU Tech.  3213-E",
               "name": "SDL_COLOR_PRIMARIES_EBU3213",
               "kind": "var",
               "type": ""
@@ -6407,7 +6224,7 @@
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_BT709": {
-              "doc": "Rec. ITU-R BT.709-6 / ITU-R BT1361",
+              "doc": "Rec.  ITU-R BT.709-6 / ITU-R BT1361",
               "name": "SDL_TRANSFER_CHARACTERISTICS_BT709",
               "kind": "var",
               "type": ""
@@ -6419,25 +6236,25 @@
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_GAMMA22": {
-              "doc": "ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM",
+              "doc": "ITU-R BT.470-6 System M / ITU-R BT1700 625 PAL & SECAM.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_GAMMA22",
               "kind": "var",
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_GAMMA28": {
-              "doc": "ITU-R BT.470-6 System B, G",
+              "doc": "ITU-R BT.470-6 System B, G.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_GAMMA28",
               "kind": "var",
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_BT601": {
-              "doc": "SMPTE ST 170M / ITU-R BT.601-7 525 or 625",
+              "doc": "SMPTE ST 170M / ITU-R BT.601-7 525 or 625.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_BT601",
               "kind": "var",
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_SMPTE240": {
-              "doc": "SMPTE ST 240M",
+              "doc": "SMPTE ST 240M.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_SMPTE240",
               "kind": "var",
               "type": ""
@@ -6461,13 +6278,13 @@
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_IEC61966": {
-              "doc": "IEC 61966-2-4",
+              "doc": "IEC 61966-2-4.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_IEC61966",
               "kind": "var",
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_BT1361": {
-              "doc": "ITU-R BT1361 Extended Colour Gamut",
+              "doc": "ITU-R BT1361 Extended Colour Gamut.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_BT1361",
               "kind": "var",
               "type": ""
@@ -6479,25 +6296,25 @@
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT": {
-              "doc": "ITU-R BT2020 for 10-bit system",
+              "doc": "ITU-R BT2020 for 10-bit system.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_BT2020_10BIT",
               "kind": "var",
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT": {
-              "doc": "ITU-R BT2020 for 12-bit system",
+              "doc": "ITU-R BT2020 for 12-bit system.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_BT2020_12BIT",
               "kind": "var",
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_PQ": {
-              "doc": "SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems",
+              "doc": "SMPTE ST 2084 for 10-, 12-, 14- and 16-bit systems.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_PQ",
               "kind": "var",
               "type": ""
             },
             "SDL_TRANSFER_CHARACTERISTICS_SMPTE428": {
-              "doc": "SMPTE ST 428-1",
+              "doc": "SMPTE ST 428-1.",
               "name": "SDL_TRANSFER_CHARACTERISTICS_SMPTE428",
               "kind": "var",
               "type": ""
@@ -6528,7 +6345,7 @@
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_BT709": {
-              "doc": "ITU-R BT.709-6",
+              "doc": "ITU-R BT.709-6.",
               "name": "SDL_MATRIX_COEFFICIENTS_BT709",
               "kind": "var",
               "type": ""
@@ -6540,25 +6357,25 @@
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_FCC": {
-              "doc": "US FCC Title 47",
+              "doc": "US FCC Title 47.",
               "name": "SDL_MATRIX_COEFFICIENTS_FCC",
               "kind": "var",
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_BT470BG": {
-              "doc": "ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as SDL_MATRIX_COEFFICIENTS_BT601",
+              "doc": "ITU-R BT.470-6 System B, G / ITU-R BT.601-7 625, functionally the same as SDL_MATRIX_COEFFICIENTS_BT601.",
               "name": "SDL_MATRIX_COEFFICIENTS_BT470BG",
               "kind": "var",
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_BT601": {
-              "doc": "ITU-R BT.601-7 525",
+              "doc": "ITU-R BT.601-7 525.",
               "name": "SDL_MATRIX_COEFFICIENTS_BT601",
               "kind": "var",
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_SMPTE240": {
-              "doc": "SMPTE 240M",
+              "doc": "SMPTE 240M.",
               "name": "SDL_MATRIX_COEFFICIENTS_SMPTE240",
               "kind": "var",
               "type": ""
@@ -6570,19 +6387,19 @@
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_BT2020_NCL": {
-              "doc": "ITU-R BT.2020-2 non-constant luminance",
+              "doc": "ITU-R BT.2020-2 non-constant luminance.",
               "name": "SDL_MATRIX_COEFFICIENTS_BT2020_NCL",
               "kind": "var",
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_BT2020_CL": {
-              "doc": "ITU-R BT.2020-2 constant luminance",
+              "doc": "ITU-R BT.2020-2 constant luminance.",
               "name": "SDL_MATRIX_COEFFICIENTS_BT2020_CL",
               "kind": "var",
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_SMPTE2085": {
-              "doc": "SMPTE ST 2085",
+              "doc": "SMPTE ST 2085.",
               "name": "SDL_MATRIX_COEFFICIENTS_SMPTE2085",
               "kind": "var",
               "type": ""
@@ -6600,7 +6417,7 @@
               "type": ""
             },
             "SDL_MATRIX_COEFFICIENTS_ICTCP": {
-              "doc": "ITU-R BT.2100-0 ICTCP",
+              "doc": "ITU-R BT.2100-0 ICTCP.",
               "name": "SDL_MATRIX_COEFFICIENTS_ICTCP",
               "kind": "var",
               "type": ""
@@ -6619,19 +6436,19 @@
           "kind": "enum",
           "entries": {
             "SDL_CHROMA_LOCATION_NONE": {
-              "doc": "RGB, no chroma sampling",
+              "doc": "RGB, no chroma sampling.",
               "name": "SDL_CHROMA_LOCATION_NONE",
               "kind": "var",
               "type": ""
             },
             "SDL_CHROMA_LOCATION_LEFT": {
-              "doc": "In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge of the 2x2 square. In other words, they have the same horizontal location as the top-left pixel, but is shifted one-half pixel down vertically.",
+              "doc": "In MPEG-2, MPEG-4, and AVC, Cb and Cr are taken on midpoint of the left-edge of the 2x2 square.  In other words, they have the same horizontal location as the top-left pixel, but is shifted one-half pixel down vertically.",
               "name": "SDL_CHROMA_LOCATION_LEFT",
               "kind": "var",
               "type": ""
             },
             "SDL_CHROMA_LOCATION_CENTER": {
-              "doc": "In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2 square. In other words, they are offset one-half pixel to the right and one-half pixel down compared to the top-left pixel.",
+              "doc": "In JPEG/JFIF, H.261, and MPEG-1, Cb and Cr are taken at the center of the 2x2 square.  In other words, they are offset one-half pixel to the right and one-half pixel down compared to the top-left pixel.",
               "name": "SDL_CHROMA_LOCATION_CENTER",
               "kind": "var",
               "type": ""
@@ -6757,73 +6574,73 @@
               "type": ""
             },
             "SDL_COLORSPACE_SRGB": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709.",
               "name": "SDL_COLORSPACE_SRGB",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_SRGB_LINEAR": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709",
+              "doc": "[object Object]",
               "name": "SDL_COLORSPACE_SRGB_LINEAR",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_HDR10": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020",
+              "doc": "[object Object]",
               "name": "SDL_COLORSPACE_HDR10",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_JPEG": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_NONE_P709_X601.",
               "name": "SDL_COLORSPACE_JPEG",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_BT601_LIMITED": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.",
               "name": "SDL_COLORSPACE_BT601_LIMITED",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_BT601_FULL": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P601.",
               "name": "SDL_COLORSPACE_BT601_FULL",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_BT709_LIMITED": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.",
               "name": "SDL_COLORSPACE_BT709_LIMITED",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_BT709_FULL": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709.",
               "name": "SDL_COLORSPACE_BT709_FULL",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_BT2020_LIMITED": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P2020.",
               "name": "SDL_COLORSPACE_BT2020_LIMITED",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_BT2020_FULL": {
-              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020",
+              "doc": "Equivalent to DXGI_COLOR_SPACE_YCBCR_FULL_G22_LEFT_P2020.",
               "name": "SDL_COLORSPACE_BT2020_FULL",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_RGB_DEFAULT": {
-              "doc": "The default colorspace for RGB surfaces if no colorspace is specified",
+              "doc": "The default colorspace for RGB surfaces if no colorspace is specified.",
               "name": "SDL_COLORSPACE_RGB_DEFAULT",
               "kind": "var",
               "type": ""
             },
             "SDL_COLORSPACE_YUV_DEFAULT": {
-              "doc": "The default colorspace for YUV surfaces if no colorspace is specified",
+              "doc": "The default colorspace for YUV surfaces if no colorspace is specified.",
               "name": "SDL_COLORSPACE_YUV_DEFAULT",
               "kind": "var",
               "type": ""
@@ -6907,7 +6724,7 @@
               "doc": "an array of colors, `ncolors` long.",
               "name": "colors",
               "kind": "var",
-              "type": "SDL_Color *"
+              "type": "SDL_Color"
             },
             "version": {
               "doc": "internal use only, do not touch.",
@@ -9344,17 +9161,29 @@
           "name": "SDL_Rect",
           "kind": "struct",
           "entries": {
+            "x": {
+              "doc": "",
+              "name": "x",
+              "kind": "var",
+              "type": "int"
+            },
             "y": {
               "doc": "",
               "name": "y",
               "kind": "var",
-              "type": "int x,"
+              "type": "int"
+            },
+            "w": {
+              "doc": "",
+              "name": "w",
+              "kind": "var",
+              "type": "int"
             },
             "h": {
               "doc": "",
               "name": "h",
               "kind": "var",
-              "type": "int w,"
+              "type": "int"
             }
           }
         },
@@ -9800,7 +9629,7 @@
           "kind": "enum",
           "entries": {
             "SDL_FLIP_NONE": {
-              "doc": "Do not flip",
+              "doc": "Do not flip.",
               "name": "SDL_FLIP_NONE",
               "kind": "var",
               "type": ""
@@ -11188,19 +11017,19 @@
           "kind": "enum",
           "entries": {
             "SDL_SYSTEM_THEME_UNKNOWN": {
-              "doc": "Unknown system theme",
+              "doc": "Unknown system theme.",
               "name": "SDL_SYSTEM_THEME_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_THEME_LIGHT": {
-              "doc": "Light colored system theme",
+              "doc": "Light colored system theme.",
               "name": "SDL_SYSTEM_THEME_LIGHT",
               "kind": "var",
               "type": ""
             },
             "SDL_SYSTEM_THEME_DARK": {
-              "doc": "Dark colored system theme",
+              "doc": "Dark colored system theme.",
               "name": "SDL_SYSTEM_THEME_DARK",
               "kind": "var",
               "type": ""
@@ -11280,31 +11109,31 @@
           "kind": "enum",
           "entries": {
             "SDL_ORIENTATION_UNKNOWN": {
-              "doc": "The display orientation can't be determined",
+              "doc": "The display orientation can't be determined.",
               "name": "SDL_ORIENTATION_UNKNOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_LANDSCAPE": {
-              "doc": "The display is in landscape mode, with the right side up, relative to portrait mode",
+              "doc": "The display is in landscape mode, with the right side up, relative to portrait mode.",
               "name": "SDL_ORIENTATION_LANDSCAPE",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_LANDSCAPE_FLIPPED": {
-              "doc": "The display is in landscape mode, with the left side up, relative to portrait mode",
+              "doc": "The display is in landscape mode, with the left side up, relative to portrait mode.",
               "name": "SDL_ORIENTATION_LANDSCAPE_FLIPPED",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_PORTRAIT": {
-              "doc": "The display is in portrait mode",
+              "doc": "The display is in portrait mode.",
               "name": "SDL_ORIENTATION_PORTRAIT",
               "kind": "var",
               "type": ""
             },
             "SDL_ORIENTATION_PORTRAIT_FLIPPED": {
-              "doc": "The display is in portrait mode, upside down",
+              "doc": "The display is in portrait mode, upside down.",
               "name": "SDL_ORIENTATION_PORTRAIT_FLIPPED",
               "kind": "var",
               "type": ""
@@ -11506,19 +11335,19 @@
           "kind": "enum",
           "entries": {
             "SDL_FLASH_CANCEL": {
-              "doc": "Cancel any window flash state",
+              "doc": "Cancel any window flash state.",
               "name": "SDL_FLASH_CANCEL",
               "kind": "var",
               "type": ""
             },
             "SDL_FLASH_BRIEFLY": {
-              "doc": "Flash the window briefly to get attention",
+              "doc": "Flash the window briefly to get attention.",
               "name": "SDL_FLASH_BRIEFLY",
               "kind": "var",
               "type": ""
             },
             "SDL_FLASH_UNTIL_FOCUSED": {
-              "doc": "Flash the window until it gets focus",
+              "doc": "Flash the window until it gets focus.",
               "name": "SDL_FLASH_UNTIL_FOCUSED",
               "kind": "var",
               "type": ""
@@ -11719,7 +11548,7 @@
               "type": ""
             },
             "SDL_GL_CONTEXT_PROFILE_MASK": {
-              "doc": "type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default value depends on platform.",
+              "doc": "type of GL context (Core, Compatibility, ES).  See SDL_GLProfile; default value depends on platform.",
               "name": "SDL_GL_CONTEXT_PROFILE_MASK",
               "kind": "var",
               "type": ""
@@ -11737,13 +11566,13 @@
               "type": ""
             },
             "SDL_GL_CONTEXT_RELEASE_BEHAVIOR": {
-              "doc": "sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to FLUSH.",
+              "doc": "sets context the release behavior.  See SDL_GLContextReleaseFlag; defaults to FLUSH.",
               "name": "SDL_GL_CONTEXT_RELEASE_BEHAVIOR",
               "kind": "var",
               "type": ""
             },
             "SDL_GL_CONTEXT_RESET_NOTIFICATION": {
-              "doc": "set context reset notification. See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.",
+              "doc": "set context reset notification.  See SDL_GLContextResetNotification; defaults to NO_NOTIFICATION.",
               "name": "SDL_GL_CONTEXT_RESET_NOTIFICATION",
               "kind": "var",
               "type": ""
@@ -13433,7 +13262,7 @@
           "kind": "enum",
           "entries": {
             "SDL_HITTEST_NORMAL": {
-              "doc": "Region is normal. No special properties.",
+              "doc": "Region is normal.  No special properties.",
               "name": "SDL_HITTEST_NORMAL",
               "kind": "var",
               "type": ""
@@ -13508,7 +13337,10 @@
               "name": "area",
               "type": "const SDL_Point *"
             },
-            ");"
+            {
+              "name": "data",
+              "type": "void *"
+            }
           ]
         },
         "SDL_SetWindowHitTest": {
@@ -13872,19 +13704,19 @@
           "kind": "enum",
           "entries": {
             "SDL_TEXTUREACCESS_STATIC": {
-              "doc": "Changes rarely, not lockable",
+              "doc": "Changes rarely, not lockable.",
               "name": "SDL_TEXTUREACCESS_STATIC",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTUREACCESS_STREAMING": {
-              "doc": "Changes frequently, lockable",
+              "doc": "Changes frequently, lockable.",
               "name": "SDL_TEXTUREACCESS_STREAMING",
               "kind": "var",
               "type": ""
             },
             "SDL_TEXTUREACCESS_TARGET": {
-              "doc": "Texture can be used as a render target",
+              "doc": "Texture can be used as a render target.",
               "name": "SDL_TEXTUREACCESS_TARGET",
               "kind": "var",
               "type": ""
@@ -13897,31 +13729,31 @@
           "kind": "enum",
           "entries": {
             "SDL_LOGICAL_PRESENTATION_DISABLED": {
-              "doc": "There is no logical size in effect",
+              "doc": "There is no logical size in effect.",
               "name": "SDL_LOGICAL_PRESENTATION_DISABLED",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_STRETCH": {
-              "doc": "The rendered content is stretched to the output resolution",
+              "doc": "The rendered content is stretched to the output resolution.",
               "name": "SDL_LOGICAL_PRESENTATION_STRETCH",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_LETTERBOX": {
-              "doc": "The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars",
+              "doc": "The rendered content is fit to the largest dimension and the other dimension is letterboxed with black bars.",
               "name": "SDL_LOGICAL_PRESENTATION_LETTERBOX",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_OVERSCAN": {
-              "doc": "The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds",
+              "doc": "The rendered content is fit to the smallest dimension and the other dimension extends beyond the output bounds.",
               "name": "SDL_LOGICAL_PRESENTATION_OVERSCAN",
               "kind": "var",
               "type": ""
             },
             "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE": {
-              "doc": "The rendered content is scaled up by integer multiples to fit the output resolution",
+              "doc": "The rendered content is scaled up by integer multiples to fit the output resolution.",
               "name": "SDL_LOGICAL_PRESENTATION_INTEGER_SCALE",
               "kind": "var",
               "type": ""
@@ -16419,43 +16251,43 @@
               "type": ""
             },
             "SDL_EVENT_QUIT": {
-              "doc": "User-requested quit",
+              "doc": "User-requested quit.",
               "name": "SDL_EVENT_QUIT",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_TERMINATING": {
-              "doc": "",
+              "doc": "The application is being terminated by the OS.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillTerminate() Called on Android in onDestroy()",
               "name": "SDL_EVENT_TERMINATING",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_LOW_MEMORY": {
-              "doc": "",
+              "doc": "The application is low on memory, free memory if possible.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()",
               "name": "SDL_EVENT_LOW_MEMORY",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WILL_ENTER_BACKGROUND": {
-              "doc": "",
+              "doc": "The application is about to enter the background.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillResignActive() Called on Android in onPause()",
               "name": "SDL_EVENT_WILL_ENTER_BACKGROUND",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DID_ENTER_BACKGROUND": {
-              "doc": "",
+              "doc": "The application did enter the background and may not get CPU for some time.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidEnterBackground() Called on Android in onPause()",
               "name": "SDL_EVENT_DID_ENTER_BACKGROUND",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WILL_ENTER_FOREGROUND": {
-              "doc": "",
+              "doc": "The application is about to enter the foreground.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationWillEnterForeground() Called on Android in onResume()",
               "name": "SDL_EVENT_WILL_ENTER_FOREGROUND",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DID_ENTER_FOREGROUND": {
-              "doc": "",
+              "doc": "The application is now interactive.  This event must be handled in a callback set with SDL_AddEventWatch(). Called on iOS in applicationDidBecomeActive() Called on Android in onResume()",
               "name": "SDL_EVENT_DID_ENTER_FOREGROUND",
               "kind": "var",
               "type": ""
@@ -16467,49 +16299,49 @@
               "type": ""
             },
             "SDL_EVENT_SYSTEM_THEME_CHANGED": {
-              "doc": "The system theme changed",
+              "doc": "The system theme changed.",
               "name": "SDL_EVENT_SYSTEM_THEME_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_ORIENTATION": {
-              "doc": "Display orientation has changed to data1",
+              "doc": "Display orientation has changed to data1.",
               "name": "SDL_EVENT_DISPLAY_ORIENTATION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_ADDED": {
-              "doc": "Display has been added to the system",
+              "doc": "Display has been added to the system.",
               "name": "SDL_EVENT_DISPLAY_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_REMOVED": {
-              "doc": "Display has been removed from the system",
+              "doc": "Display has been removed from the system.",
               "name": "SDL_EVENT_DISPLAY_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_MOVED": {
-              "doc": "Display has changed position",
+              "doc": "Display has changed position.",
               "name": "SDL_EVENT_DISPLAY_MOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED": {
-              "doc": "Display has changed desktop mode",
+              "doc": "Display has changed desktop mode.",
               "name": "SDL_EVENT_DISPLAY_DESKTOP_MODE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED": {
-              "doc": "Display has changed current mode",
+              "doc": "Display has changed current mode.",
               "name": "SDL_EVENT_DISPLAY_CURRENT_MODE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED": {
-              "doc": "Display has changed content scale",
+              "doc": "Display has changed content scale.",
               "name": "SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED",
               "kind": "var",
               "type": ""
@@ -16527,151 +16359,151 @@
               "type": ""
             },
             "SDL_EVENT_WINDOW_SHOWN": {
-              "doc": "Window has been shown",
+              "doc": "Window has been shown.",
               "name": "SDL_EVENT_WINDOW_SHOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_HIDDEN": {
-              "doc": "Window has been hidden",
+              "doc": "Window has been hidden.",
               "name": "SDL_EVENT_WINDOW_HIDDEN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_EXPOSED": {
-              "doc": "Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event",
+              "doc": "Window has been exposed and should be redrawn, and can be redrawn directly from event watchers for this event.",
               "name": "SDL_EVENT_WINDOW_EXPOSED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MOVED": {
-              "doc": "Window has been moved to data1, data2",
+              "doc": "Window has been moved to data1, data2.",
               "name": "SDL_EVENT_WINDOW_MOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_RESIZED": {
-              "doc": "Window has been resized to data1xdata2",
+              "doc": "Window has been resized to data1xdata2.",
               "name": "SDL_EVENT_WINDOW_RESIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED": {
-              "doc": "The pixel size of the window has changed to data1xdata2",
+              "doc": "The pixel size of the window has changed to data1xdata2.",
               "name": "SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_METAL_VIEW_RESIZED": {
-              "doc": "The pixel size of a Metal view associated with the window has changed",
+              "doc": "The pixel size of a Metal view associated with the window has changed.",
               "name": "SDL_EVENT_WINDOW_METAL_VIEW_RESIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MINIMIZED": {
-              "doc": "Window has been minimized",
+              "doc": "Window has been minimized.",
               "name": "SDL_EVENT_WINDOW_MINIMIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MAXIMIZED": {
-              "doc": "Window has been maximized",
+              "doc": "Window has been maximized.",
               "name": "SDL_EVENT_WINDOW_MAXIMIZED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_RESTORED": {
-              "doc": "Window has been restored to normal size and position",
+              "doc": "Window has been restored to normal size and position.",
               "name": "SDL_EVENT_WINDOW_RESTORED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MOUSE_ENTER": {
-              "doc": "Window has gained mouse focus",
+              "doc": "Window has gained mouse focus.",
               "name": "SDL_EVENT_WINDOW_MOUSE_ENTER",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_MOUSE_LEAVE": {
-              "doc": "Window has lost mouse focus",
+              "doc": "Window has lost mouse focus.",
               "name": "SDL_EVENT_WINDOW_MOUSE_LEAVE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_FOCUS_GAINED": {
-              "doc": "Window has gained keyboard focus",
+              "doc": "Window has gained keyboard focus.",
               "name": "SDL_EVENT_WINDOW_FOCUS_GAINED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_FOCUS_LOST": {
-              "doc": "Window has lost keyboard focus",
+              "doc": "Window has lost keyboard focus.",
               "name": "SDL_EVENT_WINDOW_FOCUS_LOST",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_CLOSE_REQUESTED": {
-              "doc": "The window manager requests that the window be closed",
+              "doc": "The window manager requests that the window be closed.",
               "name": "SDL_EVENT_WINDOW_CLOSE_REQUESTED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_HIT_TEST": {
-              "doc": "Window had a hit test that wasn't SDL_HITTEST_NORMAL",
+              "doc": "Window had a hit test that wasn't SDL_HITTEST_NORMAL.",
               "name": "SDL_EVENT_WINDOW_HIT_TEST",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_ICCPROF_CHANGED": {
-              "doc": "The ICC profile of the window's display has changed",
+              "doc": "The ICC profile of the window's display has changed.",
               "name": "SDL_EVENT_WINDOW_ICCPROF_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_DISPLAY_CHANGED": {
-              "doc": "Window has been moved to display data1",
+              "doc": "Window has been moved to display data1.",
               "name": "SDL_EVENT_WINDOW_DISPLAY_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED": {
-              "doc": "Window display scale has been changed",
+              "doc": "Window display scale has been changed.",
               "name": "SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_SAFE_AREA_CHANGED": {
-              "doc": "The window safe area has been changed",
+              "doc": "The window safe area has been changed.",
               "name": "SDL_EVENT_WINDOW_SAFE_AREA_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_OCCLUDED": {
-              "doc": "The window has been occluded",
+              "doc": "The window has been occluded.",
               "name": "SDL_EVENT_WINDOW_OCCLUDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_ENTER_FULLSCREEN": {
-              "doc": "The window has entered fullscreen mode",
+              "doc": "The window has entered fullscreen mode.",
               "name": "SDL_EVENT_WINDOW_ENTER_FULLSCREEN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_LEAVE_FULLSCREEN": {
-              "doc": "The window has left fullscreen mode",
+              "doc": "The window has left fullscreen mode.",
               "name": "SDL_EVENT_WINDOW_LEAVE_FULLSCREEN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_DESTROYED": {
-              "doc": "",
+              "doc": "The window with the associated ID is being or has been destroyed.  If this message is being handled in an event watcher, the window handle is still valid and can still be used to retrieve any properties associated with the window. Otherwise, the handle has already been destroyed and all resources associated with it are invalid",
               "name": "SDL_EVENT_WINDOW_DESTROYED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_WINDOW_HDR_STATE_CHANGED": {
-              "doc": "Window HDR properties have changed",
+              "doc": "Window HDR properties have changed.",
               "name": "SDL_EVENT_WINDOW_HDR_STATE_CHANGED",
               "kind": "var",
               "type": ""
@@ -16689,13 +16521,13 @@
               "type": ""
             },
             "SDL_EVENT_KEY_DOWN": {
-              "doc": "Key pressed",
+              "doc": "Key pressed.",
               "name": "SDL_EVENT_KEY_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEY_UP": {
-              "doc": "Key released",
+              "doc": "Key released.",
               "name": "SDL_EVENT_KEY_UP",
               "kind": "var",
               "type": ""
@@ -16707,193 +16539,193 @@
               "type": ""
             },
             "SDL_EVENT_TEXT_INPUT": {
-              "doc": "Keyboard text input",
+              "doc": "Keyboard text input.",
               "name": "SDL_EVENT_TEXT_INPUT",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEYMAP_CHANGED": {
-              "doc": "",
+              "doc": "Keymap changed due to a system event such as an input language or keyboard layout change.",
               "name": "SDL_EVENT_KEYMAP_CHANGED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEYBOARD_ADDED": {
-              "doc": "A new keyboard has been inserted into the system",
+              "doc": "A new keyboard has been inserted into the system.",
               "name": "SDL_EVENT_KEYBOARD_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_KEYBOARD_REMOVED": {
-              "doc": "A keyboard has been removed",
+              "doc": "A keyboard has been removed.",
               "name": "SDL_EVENT_KEYBOARD_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_TEXT_EDITING_CANDIDATES": {
-              "doc": "Keyboard text editing candidates",
+              "doc": "Keyboard text editing candidates.",
               "name": "SDL_EVENT_TEXT_EDITING_CANDIDATES",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_MOTION": {
-              "doc": "Mouse moved",
+              "doc": "Mouse moved.",
               "name": "SDL_EVENT_MOUSE_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_BUTTON_DOWN": {
-              "doc": "Mouse button pressed",
+              "doc": "Mouse button pressed.",
               "name": "SDL_EVENT_MOUSE_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_BUTTON_UP": {
-              "doc": "Mouse button released",
+              "doc": "Mouse button released.",
               "name": "SDL_EVENT_MOUSE_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_WHEEL": {
-              "doc": "Mouse wheel motion",
+              "doc": "Mouse wheel motion.",
               "name": "SDL_EVENT_MOUSE_WHEEL",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_ADDED": {
-              "doc": "A new mouse has been inserted into the system",
+              "doc": "A new mouse has been inserted into the system.",
               "name": "SDL_EVENT_MOUSE_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_MOUSE_REMOVED": {
-              "doc": "A mouse has been removed",
+              "doc": "A mouse has been removed.",
               "name": "SDL_EVENT_MOUSE_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_AXIS_MOTION": {
-              "doc": "Joystick axis motion",
+              "doc": "Joystick axis motion.",
               "name": "SDL_EVENT_JOYSTICK_AXIS_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BALL_MOTION": {
-              "doc": "Joystick trackball motion",
+              "doc": "Joystick trackball motion.",
               "name": "SDL_EVENT_JOYSTICK_BALL_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_HAT_MOTION": {
-              "doc": "Joystick hat position change",
+              "doc": "Joystick hat position change.",
               "name": "SDL_EVENT_JOYSTICK_HAT_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BUTTON_DOWN": {
-              "doc": "Joystick button pressed",
+              "doc": "Joystick button pressed.",
               "name": "SDL_EVENT_JOYSTICK_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BUTTON_UP": {
-              "doc": "Joystick button released",
+              "doc": "Joystick button released.",
               "name": "SDL_EVENT_JOYSTICK_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_ADDED": {
-              "doc": "A new joystick has been inserted into the system",
+              "doc": "A new joystick has been inserted into the system.",
               "name": "SDL_EVENT_JOYSTICK_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_REMOVED": {
-              "doc": "An opened joystick has been removed",
+              "doc": "An opened joystick has been removed.",
               "name": "SDL_EVENT_JOYSTICK_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_BATTERY_UPDATED": {
-              "doc": "Joystick battery level change",
+              "doc": "Joystick battery level change.",
               "name": "SDL_EVENT_JOYSTICK_BATTERY_UPDATED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_JOYSTICK_UPDATE_COMPLETE": {
-              "doc": "Joystick update is complete",
+              "doc": "Joystick update is complete.",
               "name": "SDL_EVENT_JOYSTICK_UPDATE_COMPLETE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_AXIS_MOTION": {
-              "doc": "Gamepad axis motion",
+              "doc": "Gamepad axis motion.",
               "name": "SDL_EVENT_GAMEPAD_AXIS_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_BUTTON_DOWN": {
-              "doc": "Gamepad button pressed",
+              "doc": "Gamepad button pressed.",
               "name": "SDL_EVENT_GAMEPAD_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_BUTTON_UP": {
-              "doc": "Gamepad button released",
+              "doc": "Gamepad button released.",
               "name": "SDL_EVENT_GAMEPAD_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_ADDED": {
-              "doc": "A new gamepad has been inserted into the system",
+              "doc": "A new gamepad has been inserted into the system.",
               "name": "SDL_EVENT_GAMEPAD_ADDED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_REMOVED": {
-              "doc": "A gamepad has been removed",
+              "doc": "A gamepad has been removed.",
               "name": "SDL_EVENT_GAMEPAD_REMOVED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_REMAPPED": {
-              "doc": "The gamepad mapping was updated",
+              "doc": "The gamepad mapping was updated.",
               "name": "SDL_EVENT_GAMEPAD_REMAPPED",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN": {
-              "doc": "Gamepad touchpad was touched",
+              "doc": "Gamepad touchpad was touched.",
               "name": "SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION": {
-              "doc": "Gamepad touchpad finger was moved",
+              "doc": "Gamepad touchpad finger was moved.",
               "name": "SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_TOUCHPAD_UP": {
-              "doc": "Gamepad touchpad finger was lifted",
+              "doc": "Gamepad touchpad finger was lifted.",
               "name": "SDL_EVENT_GAMEPAD_TOUCHPAD_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_SENSOR_UPDATE": {
-              "doc": "Gamepad sensor was updated",
+              "doc": "Gamepad sensor was updated.",
               "name": "SDL_EVENT_GAMEPAD_SENSOR_UPDATE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_UPDATE_COMPLETE": {
-              "doc": "Gamepad update is complete",
+              "doc": "Gamepad update is complete.",
               "name": "SDL_EVENT_GAMEPAD_UPDATE_COMPLETE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED": {
-              "doc": "Gamepad Steam handle has changed",
+              "doc": "Gamepad Steam handle has changed.",
               "name": "SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED",
               "kind": "var",
               "type": ""
@@ -16923,13 +16755,13 @@
               "type": ""
             },
             "SDL_EVENT_CLIPBOARD_UPDATE": {
-              "doc": "The clipboard or primary selection changed",
+              "doc": "The clipboard or primary selection changed.",
               "name": "SDL_EVENT_CLIPBOARD_UPDATE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_DROP_FILE": {
-              "doc": "The system requests a file open",
+              "doc": "The system requests a file open.",
               "name": "SDL_EVENT_DROP_FILE",
               "kind": "var",
               "type": ""
@@ -16953,13 +16785,13 @@
               "type": ""
             },
             "SDL_EVENT_DROP_POSITION": {
-              "doc": "Position while moving over the window",
+              "doc": "Position while moving over the window.",
               "name": "SDL_EVENT_DROP_POSITION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_AUDIO_DEVICE_ADDED": {
-              "doc": "A new audio device is available",
+              "doc": "A new audio device is available.",
               "name": "SDL_EVENT_AUDIO_DEVICE_ADDED",
               "kind": "var",
               "type": ""
@@ -16977,61 +16809,61 @@
               "type": ""
             },
             "SDL_EVENT_SENSOR_UPDATE": {
-              "doc": "A sensor was updated",
+              "doc": "A sensor was updated.",
               "name": "SDL_EVENT_SENSOR_UPDATE",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_PROXIMITY_IN": {
-              "doc": "Pressure-sensitive pen has become available",
+              "doc": "Pressure-sensitive pen has become available.",
               "name": "SDL_EVENT_PEN_PROXIMITY_IN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_PROXIMITY_OUT": {
-              "doc": "Pressure-sensitive pen has become unavailable",
+              "doc": "Pressure-sensitive pen has become unavailable.",
               "name": "SDL_EVENT_PEN_PROXIMITY_OUT",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_DOWN": {
-              "doc": "Pressure-sensitive pen touched drawing surface",
+              "doc": "Pressure-sensitive pen touched drawing surface.",
               "name": "SDL_EVENT_PEN_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_UP": {
-              "doc": "Pressure-sensitive pen stopped touching drawing surface",
+              "doc": "Pressure-sensitive pen stopped touching drawing surface.",
               "name": "SDL_EVENT_PEN_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_BUTTON_DOWN": {
-              "doc": "Pressure-sensitive pen button pressed",
+              "doc": "Pressure-sensitive pen button pressed.",
               "name": "SDL_EVENT_PEN_BUTTON_DOWN",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_BUTTON_UP": {
-              "doc": "Pressure-sensitive pen button released",
+              "doc": "Pressure-sensitive pen button released.",
               "name": "SDL_EVENT_PEN_BUTTON_UP",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_MOTION": {
-              "doc": "Pressure-sensitive pen is moving on the tablet",
+              "doc": "Pressure-sensitive pen is moving on the tablet.",
               "name": "SDL_EVENT_PEN_MOTION",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_PEN_AXIS": {
-              "doc": "Pressure-sensitive pen angle/pressure/etc changed",
+              "doc": "Pressure-sensitive pen angle/pressure/etc changed.",
               "name": "SDL_EVENT_PEN_AXIS",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_CAMERA_DEVICE_ADDED": {
-              "doc": "A new camera device is available",
+              "doc": "A new camera device is available.",
               "name": "SDL_EVENT_CAMERA_DEVICE_ADDED",
               "kind": "var",
               "type": ""
@@ -17055,13 +16887,13 @@
               "type": ""
             },
             "SDL_EVENT_RENDER_TARGETS_RESET": {
-              "doc": "The render targets have been reset and their contents need to be updated",
+              "doc": "The render targets have been reset and their contents need to be updated.",
               "name": "SDL_EVENT_RENDER_TARGETS_RESET",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_RENDER_DEVICE_RESET": {
-              "doc": "The device has been reset and all textures need to be recreated",
+              "doc": "The device has been reset and all textures need to be recreated.",
               "name": "SDL_EVENT_RENDER_DEVICE_RESET",
               "kind": "var",
               "type": ""
@@ -17097,19 +16929,19 @@
               "type": ""
             },
             "SDL_EVENT_POLL_SENTINEL": {
-              "doc": "Signals the end of an event poll cycle",
+              "doc": "Signals the end of an event poll cycle.",
               "name": "SDL_EVENT_POLL_SENTINEL",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_USER": {
-              "doc": "Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use,\n and should be allocated with SDL_RegisterEvents()",
+              "doc": "Events SDL_EVENT_USER through SDL_EVENT_LAST are for your use, and should be allocated with SDL_RegisterEvents()",
               "name": "SDL_EVENT_USER",
               "kind": "var",
               "type": ""
             },
             "SDL_EVENT_LAST": {
-              "doc": "This last event is only for bounding internal arrays",
+              "doc": "This last event is only for bounding internal arrays.",
               "name": "SDL_EVENT_LAST",
               "kind": "var",
               "type": ""
@@ -17419,7 +17251,7 @@
               "doc": "The list of candidates, or NULL if there are no candidates available",
               "name": "candidates",
               "kind": "var",
-              "type": "const char *const *"
+              "type": "const char *const  *"
             },
             "num_candidates": {
               "doc": "The number of strings in `candidates`",
@@ -17910,7 +17742,7 @@
               "type": "Uint8"
             },
             "padding1": {
-              "doc": "",
+              "doc": "Joystick hat position change event structure (event.jhat.*)\n\n\\since This struct is available since SDL 3.2.0.\n/\ntypedef struct SDL_JoyHatEvent\n{\n    SDL_EventType type; /**< SDL_EVENT_JOYSTICK_HAT_MOTION */\n    Uint32 reserved;\n    Uint64 timestamp;   /**< In nanoseconds, populated using SDL_GetTicksNS() */\n    SDL_JoystickID which; /**< The joystick instance id */\n    Uint8 hat;          /**< The joystick hat index */\n    Uint8 value;        /**< The hat position value.\n  \\sa SDL_HAT_LEFTUP SDL_HAT_UP SDL_HAT_RIGHTUP\n  \\sa SDL_HAT_LEFT SDL_HAT_CENTERED SDL_HAT_RIGHT\n  \\sa SDL_HAT_LEFTDOWN SDL_HAT_DOWN SDL_HAT_RIGHTDOWN\n\n  Note that zero means the POV is centered.",
               "name": "padding1",
               "kind": "var",
               "type": "Uint8"
@@ -20420,11 +20252,17 @@
           "name": "IMG_Animation",
           "kind": "struct",
           "entries": {
+            "w": {
+              "doc": "",
+              "name": "w",
+              "kind": "var",
+              "type": "int"
+            },
             "h": {
               "doc": "",
               "name": "h",
               "kind": "var",
-              "type": "int w,"
+              "type": "int"
             },
             "count": {
               "doc": "",
@@ -20613,6 +20451,109 @@
             }
           ]
         },
+        "TTF_TextData": {
+          "doc": "",
+          "name": "TTF_TextData",
+          "kind": "struct",
+          "entries": {
+            "font": {
+              "doc": "",
+              "name": "font",
+              "kind": "var",
+              "type": "TTF_Font *"
+            },
+            "color": {
+              "doc": "",
+              "name": "color",
+              "kind": "var",
+              "type": "SDL_FColor"
+            },
+            "needs_layout_update": {
+              "doc": "",
+              "name": "needs_layout_update",
+              "kind": "var",
+              "type": "bool"
+            },
+            "layout": {
+              "doc": "The internal structure containing font information.\n\nOpaque data!",
+              "name": "layout",
+              "kind": "var",
+              "type": "TTF_TextLayout *"
+            },
+            "x": {
+              "doc": "",
+              "name": "x",
+              "kind": "var",
+              "type": "int"
+            },
+            "y": {
+              "doc": "",
+              "name": "y",
+              "kind": "var",
+              "type": "int"
+            },
+            "w": {
+              "doc": "",
+              "name": "w",
+              "kind": "var",
+              "type": "int"
+            },
+            "h": {
+              "doc": "",
+              "name": "h",
+              "kind": "var",
+              "type": "int"
+            },
+            "num_ops": {
+              "doc": "",
+              "name": "num_ops",
+              "kind": "var",
+              "type": "int"
+            },
+            "ops": {
+              "doc": "",
+              "name": "ops",
+              "kind": "var",
+              "type": "TTF_DrawOperation"
+            },
+            "num_clusters": {
+              "doc": "",
+              "name": "num_clusters",
+              "kind": "var",
+              "type": "int"
+            },
+            "clusters": {
+              "doc": "",
+              "name": "clusters",
+              "kind": "var",
+              "type": "TTF_SubString"
+            },
+            "props": {
+              "doc": "",
+              "name": "props",
+              "kind": "var",
+              "type": "SDL_PropertiesID"
+            },
+            "needs_engine_update": {
+              "doc": "",
+              "name": "needs_engine_update",
+              "kind": "var",
+              "type": "bool"
+            },
+            "engine": {
+              "doc": "",
+              "name": "engine",
+              "kind": "var",
+              "type": "TTF_TextEngine"
+            },
+            "engine_text": {
+              "doc": "",
+              "name": "engine_text",
+              "kind": "var",
+              "type": "void *"
+            }
+          }
+        },
         "TTF_Font": {
           "doc": "The internal structure containing font information.\n\nOpaque data!",
           "name": "TTF_Font",
@@ -20625,6 +20566,31 @@
           "kind": "function",
           "type": "bool",
           "parameters": []
+        },
+        "TTF_TextEngine": {
+          "doc": "",
+          "name": "TTF_TextEngine",
+          "kind": "struct",
+          "entries": {
+            "version": {
+              "doc": "",
+              "name": "version",
+              "kind": "var",
+              "type": "Uint32"
+            },
+            "userdata": {
+              "doc": "",
+              "name": "userdata",
+              "kind": "var",
+              "type": "void"
+            },
+            "text": {
+              "doc": "",
+              "name": "text",
+              "kind": "var",
+              "type": "TTF_Text"
+            }
+          }
         },
         "TTF_OpenFont": {
           "doc": "Create a font from a file, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nWhen done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.\n\n\\param file path to font file.\n\\param ptsize point size to use for the newly-opened font.\n\\returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more\n         information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL_ttf 3.0.0.\n\n\\sa TTF_CloseFont",
@@ -21295,25 +21261,25 @@
               "type": ""
             },
             "TTF_DIRECTION_LTR": {
-              "doc": "Left to Right",
+              "doc": "Left to Right.",
               "name": "TTF_DIRECTION_LTR",
               "kind": "var",
               "type": ""
             },
             "TTF_DIRECTION_RTL": {
-              "doc": "Right to Left",
+              "doc": "Right to Left.",
               "name": "TTF_DIRECTION_RTL",
               "kind": "var",
               "type": ""
             },
             "TTF_DIRECTION_TTB": {
-              "doc": "Top to Bottom",
+              "doc": "Top to Bottom.",
               "name": "TTF_DIRECTION_TTB",
               "kind": "var",
               "type": ""
             },
             "TTF_DIRECTION_BTT": {
-              "doc": "Bottom to Top",
+              "doc": "Bottom to Top.",
               "name": "TTF_DIRECTION_BTT",
               "kind": "var",
               "type": ""
@@ -21464,19 +21430,19 @@
               "type": ""
             },
             "TTF_IMAGE_ALPHA": {
-              "doc": "The color channels are white",
+              "doc": "The color channels are white.",
               "name": "TTF_IMAGE_ALPHA",
               "kind": "var",
               "type": ""
             },
             "TTF_IMAGE_COLOR": {
-              "doc": "The color channels have image data",
+              "doc": "The color channels have image data.",
               "name": "TTF_IMAGE_COLOR",
               "kind": "var",
               "type": ""
             },
             "TTF_IMAGE_SDF": {
-              "doc": "The alpha channel has signed distance field information",
+              "doc": "The alpha channel has signed distance field information.",
               "name": "TTF_IMAGE_SDF",
               "kind": "var",
               "type": ""
@@ -21987,18 +21953,6 @@
             }
           ]
         },
-        "TTF_TextEngine": {
-          "doc": "A text engine used to create text objects.\n\nThis is a public interface that can be used by applications and libraries\nto perform customize rendering with text objects. See\n<SDL3_ttf/SDL_textengine.h> for details.\n\nThere are three text engines provided with the library:\n\n- Drawing to an SDL_Surface, created with TTF_CreateSurfaceTextEngine()\n- Drawing with an SDL 2D renderer, created with\n  TTF_CreateRendererTextEngine()\n- Drawing with the SDL GPU API, created with TTF_CreateGPUTextEngine()\n\n\\since This struct is available since SDL_ttf 3.0.0.",
-          "name": "TTF_TextEngine",
-          "kind": "alias",
-          "type": "struct TTF_TextEngine"
-        },
-        "TTF_TextData": {
-          "doc": "Internal data for TTF_Text\n\n\\since This struct is available since SDL_ttf 3.0.0.",
-          "name": "TTF_TextData",
-          "kind": "alias",
-          "type": "struct TTF_TextData"
-        },
         "TTF_Text": {
           "doc": "Text created with TTF_CreateText()\n\n\\since This struct is available since SDL_ttf 3.0.0.\n\n\\sa TTF_CreateText\n\\sa TTF_GetTextProperties\n\\sa TTF_DestroyText",
           "name": "TTF_Text",
@@ -22026,7 +21980,7 @@
               "doc": "Private",
               "name": "internal",
               "kind": "var",
-              "type": "TTF_TextData *"
+              "type": "TTF_TextData"
             }
           }
         },
@@ -22224,7 +22178,7 @@
               "doc": "The next sequence (will be NULL in case of the last sequence)",
               "name": "next",
               "kind": "var",
-              "type": "struct TTF_GPUAtlasDrawSequence *"
+              "type": "TTF_GPUAtlasDrawSequence"
             }
           }
         },

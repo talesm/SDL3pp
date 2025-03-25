@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.27)
-project(SDL3pp)
+project(SDL3pp DESCRIPTION "A slim C++ wrapper for SDL3")
 
 add_subdirectory(external/SDL)
 
@@ -10,7 +10,6 @@ set(SDL3PP_ORIGINAL_INCLUDE_DIRS
     ${PROJECT_SOURCE_DIR}/external/SDL_image/include/SDL3_image/
     ${PROJECT_SOURCE_DIR}/external/SDL_ttf/include/SDL3_ttf/
 )
-list(TRANSFORM SDL3PP_ORIGINAL_INCLUDE_DIRS PREPEND "-d;" OUTPUT_VARIABLE SDL3PP_PARSE_DIR_PARAMS)
 list(TRANSFORM SDL3PP_ORIGINAL_INCLUDE_DIRS APPEND "*.h" OUTPUT_VARIABLE SDL3PP_HEADER_GLOB)
 
 file(GLOB SDL3PP_ORIGINAL_HEADERS CONFIGURE_DEPENDS ${SDL3PP_HEADER_GLOB})
@@ -101,27 +100,104 @@ add_test(NAME SDL3pp_unitTests COMMAND SDL3pp_unitTests)
 # check if Doxygen is installed
 find_package(Doxygen REQUIRED dot)
 if (DOXYGEN_FOUND)
+    # Main doc
     doxygen_add_docs(SDL3pp_doxygen
         COMMENT "Generate API docs for SDL3pp"
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         CONFIG_FILE ${PROJECT_SOURCE_DIR}/docs/Doxyfile
     )
+    # New Doxygen
+    set(DOXYGEN_GENERATE_HTML NO)
+    set(DOXYGEN_GENERATE_XML YES)
+    set(DOXYGEN_EXCLUDE 
+        "android-project/"
+        "build/"
+        "build-config/"
+        "build-scripts/"
+        "dist/"
+        "examples/"
+        "external/"
+        "scripts/"
+        "src/"
+        "test/"
+        "VisualC/"
+        "VisualC-GDK/"
+        "Xcode/"
+    )
+    set(DOXYGEN_BRIEF_MEMBER_DESC YES)
+    set(DOXYGEN_REPEAT_BRIEF NO)
+    set(DOXYGEN_JAVADOC_AUTOBRIEF YES)
+    set(DOXYGEN_ALIASES
+        "threadsafety=@par Thread safety:^^"
+        "cat=@par Category:^^@ref "
+    )
+    set(DOXYGEN_BUILTIN_STL_SUPPORT YES)
+    set(DOXYGEN_STRIP_FROM_PATH "include/")
+    set(DOXYGEN_MACRO_EXPANSION YES)
+    set(DOXYGEN_EXPAND_ONLY_PREDEF YES)
+    set(DOXYGEN_PREDEFINED
+        "SDL_VERSION_ATLEAST(x,y,z)=1"
+        "SDL3PP_DOC=1"
+        "DOXYGEN_SHOULD_IGNORE_THIS=1"
+        "SDL_WIKI_DOCUMENTATION_SECTION=1"
+        "SDL_ALLOC_SIZE2(x,y)="
+        "SDL_ALLOC_SIZE(x)="
+        "SDL_DECLSPEC="
+        "SDL_MALLOC="
+        "SDL_OUT_Z_CAP(x)="
+        "SDL_INOUT_Z_CAP(x)="
+        "SDL_OUT_BYTECAP(x)="
+        "SDL_IN_BYTECAP(x)="
+        "SDL_SLOW_MEMCPY=1"
+        "SDL_SLOW_MEMMOVE=1"
+        "SDL_SLOW_MEMSET=1"
+        "SDL_PRINTF_VARARG_FUNCV(x)="
+        "SDL_PRINTF_VARARG_FUNC(x)="
+        "SDL_SCANF_VARARG_FUNC(x)="
+        "SDL_SCANF_VARARG_FUNCV(x)="
+        "SDL_WPRINTF_VARARG_FUNC(x)="
+        "SDL_WPRINTF_VARARG_FUNCV(x)="
+    )
+    set(DOXYGEN_MARKDOWN_ID_STYLE GITHUB)
+    set(DOXYGEN_SHOW_HEADERFILE NO)
+    set(DOXYGEN_SHOW_INCLUDE_FILES NO)
+    set(DOXYGEN_INCLUDE_GRAPH NO)
+    set(DOXYGEN_INCLUDED_BY_GRAPH NO)
+    set(DOXYGEN_CALL_GRAPH NO)
+    set(DOXYGEN_CALLER_GRAPH NO)
+    set(DOXYGEN_GROUP_GRAPHS NO)
+
+    set(SDL3PP_PARSE_DIR_PARAMS ${SDL3PP_PARSE_DIR_PARAMS} -x "${PROJECT_BINARY_DIR}/xml-sdl")
+    set(DOXYGEN_XML_OUTPUT "xml-sdl")
+    doxygen_add_docs(SDL3pp_SdlXml
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/external/SDL/
+    )
+    set(SDL3PP_PARSE_DIR_PARAMS ${SDL3PP_PARSE_DIR_PARAMS} -x "${PROJECT_BINARY_DIR}/xml-sdl_image")
+    set(DOXYGEN_XML_OUTPUT "xml-sdl_image")
+    doxygen_add_docs(SDL3pp_SdlImageXml
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/external/SDL_image/
+    )
+    set(SDL3PP_PARSE_DIR_PARAMS ${SDL3PP_PARSE_DIR_PARAMS} -x "${PROJECT_BINARY_DIR}/xml-sdl_ttf")
+    set(DOXYGEN_XML_OUTPUT "xml-sdl_ttf")
+    doxygen_add_docs(SDL3pp_SdlTtfXml
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/external/SDL_ttf/
+    )
 endif (DOXYGEN_FOUND)
 
 # Refresh the headers
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
-    COMMAND node scripts/cppfier parse ${SDL3PP_PARSE_DIR_PARAMS} scripts/config.json 
-    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config.json
+    COMMAND node scripts/cppfier xml scripts/config-source.json ${SDL3PP_PARSE_DIR_PARAMS}
+    DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json SDL3pp_SdlXml SDL3pp_SdlImageXml SDL3pp_SdlTtfXml
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
-    COMMAND node scripts/cppfier transform scripts/config.json
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json  ${PROJECT_SOURCE_DIR}/scripts/transform.json
+    COMMAND node scripts/cppfier transform scripts/config-target.json
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json scripts/config-target.json ${PROJECT_SOURCE_DIR}/scripts/transform.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
 add_custom_target(SDL3pp_refresh
-    COMMAND node scripts/cppfier update scripts/config.json
+    COMMAND node scripts/cppfier update scripts/config-target.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}

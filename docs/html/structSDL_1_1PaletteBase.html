@@ -109,9 +109,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af7a8456013b5d87afaf714783f98f891" id="r_af7a8456013b5d87afaf714783f98f891"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#af7a8456013b5d87afaf714783f98f891">PaletteBase</a> (int ncolors)</td></tr>
 <tr class="memdesc:af7a8456013b5d87afaf714783f98f891"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a palette structure with the specified number of color entries.  <br /></td></tr>
 <tr class="separator:af7a8456013b5d87afaf714783f98f891"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac89c5d4d1d2f9712e633e90113d2090e" id="r_ac89c5d4d1d2f9712e633e90113d2090e"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#ac89c5d4d1d2f9712e633e90113d2090e">GetSize</a> () const</td></tr>
+<tr class="memitem:ac89c5d4d1d2f9712e633e90113d2090e" id="r_ac89c5d4d1d2f9712e633e90113d2090e"><td class="memItemLeft" align="right" valign="top"><a id="ac89c5d4d1d2f9712e633e90113d2090e" name="ac89c5d4d1d2f9712e633e90113d2090e"></a>
+constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
 <tr class="separator:ac89c5d4d1d2f9712e633e90113d2090e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ea21122bc06522344aee70aecdf90de" id="r_a8ea21122bc06522344aee70aecdf90de"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#a8ea21122bc06522344aee70aecdf90de">operator[]</a> (int index) const</td></tr>
+<tr class="memitem:a8ea21122bc06522344aee70aecdf90de" id="r_a8ea21122bc06522344aee70aecdf90de"><td class="memItemLeft" align="right" valign="top"><a id="a8ea21122bc06522344aee70aecdf90de" name="a8ea21122bc06522344aee70aecdf90de"></a>
+constexpr <a class="el" href="structSDL_1_1Color.html">Color</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator[]</b> (int index) const</td></tr>
 <tr class="separator:a8ea21122bc06522344aee70aecdf90de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2d8f415ea4792f619e4635b6ea0e831" id="r_ae2d8f415ea4792f619e4635b6ea0e831"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831">SetColors</a> (const <a class="el" href="structSDL_1_1Color.html">Color</a> *colors, int firstcolor, int ncolors)</td></tr>
 <tr class="memdesc:ae2d8f415ea4792f619e4635b6ea0e831"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a range of colors in a palette.  <br /></td></tr>
@@ -125,15 +127,12 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
-struct SDL::PaletteBase&lt; T &gt;</div><p>A set of indexed colors representing a palette. </p>
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+struct SDL::PaletteBase&lt; T &gt;</div><dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>
 <a class="el" href="group__CategoryPixels.html#ga82736cd9bdf83b4850b54726f51e9644" title="Handle to an owned surface.">Palette</a> </dd>
 <dd>
 <a class="el" href="group__CategoryPixels.html#ga8e1ece7b927ff75a946a84bddb60e991" title="Handle to a non owned surface.">PaletteRef</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01796">1796</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af7a8456013b5d87afaf714783f98f891" name="af7a8456013b5d87afaf714783f98f891"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af7a8456013b5d87afaf714783f98f891">&#9670;&#160;</a></span>PaletteBase()</h2>
@@ -160,8 +159,6 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a palette structure with the specified number of color entries. </p>
 <p>The palette entries are initialized to white.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -175,8 +172,6 @@ template&lt;class T &gt; </div>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1PaletteBase.html#ae2d8f415ea4792f619e4635b6ea0e831" title="Set a range of colors in a palette.">SetColors()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1SurfaceBase.html#affe172cd76054e60ecbb95ae22141d84" title="Set the palette used by a surface.">Surface.SetPalette()</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01818">1818</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -205,72 +200,9 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Free a palette. </p>
 <p>After calling, this object becomes empty.</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01873">1873</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
-
-</div>
-</div>
-<a id="ac89c5d4d1d2f9712e633e90113d2090e" name="ac89c5d4d1d2f9712e633e90113d2090e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac89c5d4d1d2f9712e633e90113d2090e">&#9670;&#160;</a></span>GetSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr int <a class="el" href="structSDL_1_1PaletteBase.html">SDL::PaletteBase</a>&lt; T &gt;::GetSize </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01823">1823</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
-
-</div>
-</div>
-<a id="a8ea21122bc06522344aee70aecdf90de" name="a8ea21122bc06522344aee70aecdf90de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ea21122bc06522344aee70aecdf90de">&#9670;&#160;</a></span>operator[]()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="structSDL_1_1Color.html">Color</a> <a class="el" href="structSDL_1_1PaletteBase.html">SDL::PaletteBase</a>&lt; T &gt;::operator[] </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>index</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01825">1825</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -315,8 +247,6 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a range of colors in a palette. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">colors</td><td>an array of SDL_Color structures to copy into the palette. </td></tr>
@@ -328,8 +258,6 @@ template&lt;class T &gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01841">1841</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>
@@ -368,8 +296,6 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Set a range of colors in a palette. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">colors</td><td>a span of SDL_Color structures to copy into the palette. </td></tr>
@@ -379,8 +305,6 @@ template&lt;class T &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread, as long as the palette is not modified or destroyed in another thread. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__pixels_8h_source.html#l01857">1857</a> of file <a class="el" href="SDL3pp__pixels_8h_source.html">SDL3pp_pixels.h</a>.</p>
 
 </div>
 </div>

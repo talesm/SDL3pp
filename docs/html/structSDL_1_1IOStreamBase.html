@@ -106,7 +106,7 @@ Collaboration diagram for SDL::IOStreamBase&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a79455ffde3d382a7b6c23b9966df2b95" id="r_a79455ffde3d382a7b6c23b9966df2b95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a79455ffde3d382a7b6c23b9966df2b95">IOStreamBase</a> (<a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> file, <a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a> mode)</td></tr>
+<tr class="memitem:a79455ffde3d382a7b6c23b9966df2b95" id="r_a79455ffde3d382a7b6c23b9966df2b95"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a79455ffde3d382a7b6c23b9966df2b95">IOStreamBase</a> (<a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> file, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> mode)</td></tr>
 <tr class="memdesc:a79455ffde3d382a7b6c23b9966df2b95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named file.  <br /></td></tr>
 <tr class="separator:a79455ffde3d382a7b6c23b9966df2b95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e8412803b9d68bc3d5b5a7454b56e94" id="r_a0e8412803b9d68bc3d5b5a7454b56e94"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a0e8412803b9d68bc3d5b5a7454b56e94">IOStreamBase</a> (void *mem, size_t size)</td></tr>
@@ -121,8 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a61811856398503ebcc4e8526e904ff44" id="r_a61811856398503ebcc4e8526e904ff44"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a61811856398503ebcc4e8526e904ff44">IOStreamBase</a> (const <a class="el" href="group__CategoryIOStream.html#gabc1c1a21fb3754b7ecd223f665cb2cd6">IOStreamInterface</a> *iface, void *userdata)</td></tr>
 <tr class="memdesc:a61811856398503ebcc4e8526e904ff44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a custom SDL_IOStream.  <br /></td></tr>
 <tr class="separator:a61811856398503ebcc4e8526e904ff44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b16aac0f483a52e75d22a8ec51783af" id="r_a9b16aac0f483a52e75d22a8ec51783af"><td class="memTemplParams" colspan="2">template&lt;class U &gt; </td></tr>
-<tr class="memitem:a9b16aac0f483a52e75d22a8ec51783af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a9b16aac0f483a52e75d22a8ec51783af">IOStreamBase</a> (std::span&lt; U &gt; mem)</td></tr>
+<tr class="memitem:a9b16aac0f483a52e75d22a8ec51783af" id="r_a9b16aac0f483a52e75d22a8ec51783af"><td class="memTemplParams" colspan="2"><a id="a9b16aac0f483a52e75d22a8ec51783af" name="a9b16aac0f483a52e75d22a8ec51783af"></a>
+template&lt;class U &gt; </td></tr>
+<tr class="memitem:a9b16aac0f483a52e75d22a8ec51783af"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><b>IOStreamBase</b> (std::span&lt; U &gt; mem)</td></tr>
 <tr class="separator:a9b16aac0f483a52e75d22a8ec51783af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12f212e6a54c09f78eb3dcff16364a8d" id="r_a12f212e6a54c09f78eb3dcff16364a8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a12f212e6a54c09f78eb3dcff16364a8d">GetProperties</a> () const</td></tr>
 <tr class="memdesc:a12f212e6a54c09f78eb3dcff16364a8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with an SDL_IOStream.  <br /></td></tr>
@@ -142,10 +143,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a58ad90d4eaf26b97fc2428889d7aff62" id="r_a58ad90d4eaf26b97fc2428889d7aff62"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a58ad90d4eaf26b97fc2428889d7aff62">Read</a> (void *ptr, size_t size)</td></tr>
 <tr class="memdesc:a58ad90d4eaf26b97fc2428889d7aff62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read from a data source.  <br /></td></tr>
 <tr class="separator:a58ad90d4eaf26b97fc2428889d7aff62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab334e7286cb0f1b070c1901b5e0d228a" id="r_ab334e7286cb0f1b070c1901b5e0d228a"><td class="memTemplParams" colspan="2">template&lt;class U &gt; </td></tr>
-<tr class="memitem:ab334e7286cb0f1b070c1901b5e0d228a"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#ab334e7286cb0f1b070c1901b5e0d228a">Write</a> (std::span&lt; U &gt; data)</td></tr>
+<tr class="memitem:ab334e7286cb0f1b070c1901b5e0d228a" id="r_ab334e7286cb0f1b070c1901b5e0d228a"><td class="memTemplParams" colspan="2"><a id="ab334e7286cb0f1b070c1901b5e0d228a" name="ab334e7286cb0f1b070c1901b5e0d228a"></a>
+template&lt;class U &gt; </td></tr>
+<tr class="memitem:ab334e7286cb0f1b070c1901b5e0d228a"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Write</b> (std::span&lt; U &gt; data)</td></tr>
 <tr class="separator:ab334e7286cb0f1b070c1901b5e0d228a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5370bbfbddbfdaf18724be5d8a71cd9e" id="r_a5370bbfbddbfdaf18724be5d8a71cd9e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a5370bbfbddbfdaf18724be5d8a71cd9e">Write</a> (std::string_view str)</td></tr>
+<tr class="memitem:a5370bbfbddbfdaf18724be5d8a71cd9e" id="r_a5370bbfbddbfdaf18724be5d8a71cd9e"><td class="memItemLeft" align="right" valign="top"><a id="a5370bbfbddbfdaf18724be5d8a71cd9e" name="a5370bbfbddbfdaf18724be5d8a71cd9e"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (std::string_view str)</td></tr>
 <tr class="separator:a5370bbfbddbfdaf18724be5d8a71cd9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af56531f3accee3fa5140a06926c63f87" id="r_af56531f3accee3fa5140a06926c63f87"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#af56531f3accee3fa5140a06926c63f87">Write</a> (const void *ptr, size_t size)</td></tr>
 <tr class="memdesc:af56531f3accee3fa5140a06926c63f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write to an SDL_IOStream data stream.  <br /></td></tr>
@@ -166,10 +169,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af05ef3379e8a39adbe413e5908e73bc0" id="r_af05ef3379e8a39adbe413e5908e73bc0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryOwnPtr.html#ga6de15a6952ddc3d7f9090013d7d7637f">OwnArray</a>&lt; std::byte &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#af05ef3379e8a39adbe413e5908e73bc0">LoadFile</a> ()</td></tr>
 <tr class="memdesc:af05ef3379e8a39adbe413e5908e73bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all the data from an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream.  <br /></td></tr>
 <tr class="separator:af05ef3379e8a39adbe413e5908e73bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47f1da651796c0cb85b932b229936835" id="r_a47f1da651796c0cb85b932b229936835"><td class="memTemplParams" colspan="2">template&lt;class U &gt; </td></tr>
-<tr class="memitem:a47f1da651796c0cb85b932b229936835"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a47f1da651796c0cb85b932b229936835">SaveFile</a> (std::span&lt; U &gt; data)</td></tr>
+<tr class="memitem:a47f1da651796c0cb85b932b229936835" id="r_a47f1da651796c0cb85b932b229936835"><td class="memTemplParams" colspan="2"><a id="a47f1da651796c0cb85b932b229936835" name="a47f1da651796c0cb85b932b229936835"></a>
+template&lt;class U &gt; </td></tr>
+<tr class="memitem:a47f1da651796c0cb85b932b229936835"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SaveFile</b> (std::span&lt; U &gt; data)</td></tr>
 <tr class="separator:a47f1da651796c0cb85b932b229936835"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a2f9f7f8406ddc256de3530c84d0f1f" id="r_a0a2f9f7f8406ddc256de3530c84d0f1f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a0a2f9f7f8406ddc256de3530c84d0f1f">SaveFile</a> (std::string_view str)</td></tr>
+<tr class="memitem:a0a2f9f7f8406ddc256de3530c84d0f1f" id="r_a0a2f9f7f8406ddc256de3530c84d0f1f"><td class="memItemLeft" align="right" valign="top"><a id="a0a2f9f7f8406ddc256de3530c84d0f1f" name="a0a2f9f7f8406ddc256de3530c84d0f1f"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>SaveFile</b> (std::string_view str)</td></tr>
 <tr class="separator:a0a2f9f7f8406ddc256de3530c84d0f1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3023db7998509f1a74ec7148946fdbd5" id="r_a3023db7998509f1a74ec7148946fdbd5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IOStreamBase.html#a3023db7998509f1a74ec7148946fdbd5">SaveFile</a> (const void *data, size_t datasize)</td></tr>
 <tr class="memdesc:a3023db7998509f1a74ec7148946fdbd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save all the data into an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream.  <br /></td></tr>
@@ -264,15 +269,12 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt;<br />
-struct SDL::IOStreamBase&lt; T &gt;</div><p>The read/write operation structure. </p>
-<p>This operates as an opaque handle. There are several APIs to create various types of I/O streams, or an app can supply an SDL_IOStreamInterface to SDL_OpenIO() to provide their own stream implementation behind this struct's abstract interface.</p>
+struct SDL::IOStreamBase&lt; T &gt;</div><p>This operates as an opaque handle. There are several APIs to create various types of I/O streams, or an app can supply an SDL_IOStreamInterface to SDL_OpenIO() to provide their own stream implementation behind this struct's abstract interface.</p>
 <dl class="section since"><dt>Since</dt><dd>This struct is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a> </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00147">147</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a79455ffde3d382a7b6c23b9966df2b95" name="a79455ffde3d382a7b6c23b9966df2b95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79455ffde3d382a7b6c23b9966df2b95">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a79455ffde3d382a7b6c23b9966df2b95">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -285,13 +287,13 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::IOStreamBase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>file</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespaceSDL.html#a45d670c7ee9fe78ad2950c1da8664ba1">StringParam</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>mode</em>&#160;</td>
         </tr>
         <tr>
@@ -306,8 +308,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to create a new SDL_IOStream structure for reading from and/or writing to a named file. </p>
 <p>The <code>mode</code> string is treated roughly the same as in a call to the C library's fopen(), even if <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> doesn't happen to use fopen() behind the scenes.</p>
 <p>Available <code>mode</code> strings:</p>
 <ul>
@@ -351,12 +351,10 @@ SDL_TellIO </dd>
 <dd>
 SDL_WriteIO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00233">233</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="a0e8412803b9d68bc3d5b5a7454b56e94" name="a0e8412803b9d68bc3d5b5a7454b56e94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e8412803b9d68bc3d5b5a7454b56e94">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e8412803b9d68bc3d5b5a7454b56e94">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -390,8 +388,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to prepare a read-write memory buffer for use with SDL_IOStream. </p>
 <p>This function sets up an SDL_IOStream struct based on a memory area of a certain size, for both read and write access.</p>
 <p>This memory buffer is not copied by the SDL_IOStream; the pointer you provide must remain valid until you close the stream. Closing the stream will not free the original buffer.</p>
 <p>If you need to make sure the SDL_IOStream never writes to the memory buffer, you should use SDL_IOFromConstMem() with a read-only buffer of memory instead.</p>
@@ -424,12 +420,10 @@ SDL_TellIO </dd>
 <dd>
 SDL_WriteIO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00277">277</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="a4220381fef986935ab98b22f04db516e" name="a4220381fef986935ab98b22f04db516e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4220381fef986935ab98b22f04db516e">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4220381fef986935ab98b22f04db516e">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -463,8 +457,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to prepare a read-only memory buffer for use with SDL_IOStream. </p>
 <p>This function sets up an SDL_IOStream struct based on a memory area of a certain size. It assumes the memory area is not writable.</p>
 <p>Attempting to write to this SDL_IOStream stream will report an error without writing to the memory buffer.</p>
 <p>This memory buffer is not copied by the SDL_IOStream; the pointer you provide must remain valid until you close the stream. Closing the stream will not free the original buffer.</p>
@@ -494,12 +486,10 @@ SDL_SeekIO </dd>
 <dd>
 SDL_TellIO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00321">321</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="ae97505e663f4683e64bd563e3d4d3319" name="ae97505e663f4683e64bd563e3d4d3319"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae97505e663f4683e64bd563e3d4d3319">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae97505e663f4683e64bd563e3d4d3319">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -523,8 +513,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to create an SDL_IOStream that is backed by dynamically allocated memory. </p>
 <p>This supports the following properties to provide access to the memory and control over allocations:</p>
 <ul>
 <li><code>SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER</code>: a pointer to the internal memory of the stream. This can be set to NULL to transfer ownership of the memory to the application, which should free the memory with SDL_free(). If this is done, the next operation on the stream must be <a class="el" href="structSDL_1_1IOStreamBase.html#a837589f2802386ac80dc98aac85cba11" title="Close and free an allocated SDL_IOStream structure.">Close()</a>.</li>
@@ -543,12 +531,10 @@ SDL_TellIO </dd>
 <dd>
 SDL_WriteIO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00354">354</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="a61811856398503ebcc4e8526e904ff44" name="a61811856398503ebcc4e8526e904ff44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61811856398503ebcc4e8526e904ff44">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a61811856398503ebcc4e8526e904ff44">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -582,8 +568,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Create a custom SDL_IOStream. </p>
 <p>Applications do not need to use this function unless they are providing their own SDL_IOStream implementation. If you just need an SDL_IOStream to read/write a common data source, you should use the built-in implementations in <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a>, like SDL_IOFromFile() or SDL_IOFromMem(), etc.</p>
 <p>This function makes a copy of <code>iface</code> and the caller does not need to keep it around after this call.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -605,40 +589,6 @@ SDL_IOFromConstMem </dd>
 SDL_IOFromFile </dd>
 <dd>
 SDL_IOFromMem </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00386">386</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
-</div>
-</div>
-<a id="a9b16aac0f483a52e75d22a8ec51783af" name="a9b16aac0f483a52e75d22a8ec51783af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b16aac0f483a52e75d22a8ec51783af">&#9670;&#160;</a></span>IOStreamBase() <span class="overload">[6/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
-<div class="memtemplate">
-template&lt;class U &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::IOStreamBase </td>
-          <td>(</td>
-          <td class="paramtype">std::span&lt; U &gt;&#160;</td>
-          <td class="paramname"><em>mem</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00392">392</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -667,8 +617,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Close and free an allocated SDL_IOStream structure. </p>
 <p>SDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any resources used by the stream and frees the SDL_IOStream itself. This returns true on success, or false if the stream failed to flush to its output (e.g. to disk).</p>
 <p>Note that if this fails to flush the stream for any reason, this function reports an error, but the SDL_IOStream is still invalid once this function returns.</p>
 <p>This call flushes any buffered writes to the operating system, but there are no guarantees that those writes have gone to physical media; they might be in the OS's file cache, waiting to go to disk later. If it's absolutely crucial that writes go to disk immediately, so they are definitely stored even if the power fails before the file cache would have caught up, one should call SDL_FlushIO() before closing. Note that flushing takes time and makes the system and your app operate less efficiently, so do so sparingly.</p>
@@ -676,8 +624,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_OpenIO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01274">1274</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -705,8 +651,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Flush any buffered data in the stream. </p>
 <p>This function makes sure that any buffered data is written to the stream. Normally this isn't necessary but if the stream is a pipe or socket it guarantees that any pending data is sent.</p>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
@@ -714,8 +658,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_OpenIO </dd>
 <dd>
 SDL_WriteIO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00652">652</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -743,13 +685,9 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Get the properties associated with an SDL_IOStream. </p>
 <dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00408">408</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -777,13 +715,9 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to get the size of the data stream in an SDL_IOStream. </p>
 <dl class="section return"><dt>Returns</dt><dd>the size of the data stream in the SDL_IOStream on success or a negative error code on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00440">440</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -811,15 +745,11 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Query the stream status of an SDL_IOStream. </p>
 <p>This information can be useful to decide if a short read or write was due to an error, an EOF, or a non-blocking operation that isn't yet ready to complete.</p>
 <p>An SDL_IOStream's status is only expected to change after a SDL_ReadIO or SDL_WriteIO call; don't expect it to change if you just call this query function in a tight loop.</p>
 <dl class="section return"><dt>Returns</dt><dd>an SDL_IOStatus enum with the current state.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00427">427</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -847,8 +777,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Load all the data from an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream. </p>
 <p>The data is allocated with a zero byte at the end (null terminated) for convenience. This extra byte is not included in the value reported via <code>datasize</code>.</p>
 <dl class="section return"><dt>Returns</dt><dd>the data or NULL on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
@@ -856,8 +784,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_LoadFile </dd>
 <dd>
 SDL_SaveFile_IO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00670">670</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -898,8 +824,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 </div><div class="memdoc">
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00564">564</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="a8d5d01f533b12bc30e5f42472e74c0c5" name="a8d5d01f533b12bc30e5f42472e74c0c5"></a>
@@ -937,8 +861,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Print to an SDL_IOStream data stream. </p>
 <dl class="section warning"><dt>Warning</dt><dd>this is not typesafe! Prefer using <a class="el" href="structSDL_1_1IOStreamBase.html#add216e6c0528f3bb5a99b2ef27673b3c">print()</a> and <a class="el" href="structSDL_1_1IOStreamBase.html#aa66f43e6d2249328e9c88094337fd4d0">println()</a></dd></dl>
 <p>This function does formatted printing to the stream.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -954,8 +876,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_IOvprintf </dd>
 <dd>
 SDL_WriteIO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00599">599</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -996,8 +916,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 </div><div class="memdoc">
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="formatted-string.html">Formatted string</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00572">572</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="a58ad90d4eaf26b97fc2428889d7aff62" name="a58ad90d4eaf26b97fc2428889d7aff62"></a>
@@ -1035,8 +953,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Read from a data source. </p>
 <p>This function reads up <code>size</code> bytes from the data source to the area pointed at by <code>ptr</code>. This function may read less bytes than requested.</p>
 <p>This function will return zero when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If zero is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1052,8 +968,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_WriteIO </dd>
 <dd>
 SDL_GetIOStatus </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00514">514</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1082,8 +996,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 16 bits of big-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1095,8 +1007,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00831">831</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1125,8 +1035,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 16 bits of little-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1138,8 +1046,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00787">787</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1168,8 +1074,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 32 bits of big-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1181,8 +1085,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00919">919</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1211,8 +1113,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 32 bits of little-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1224,8 +1124,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00875">875</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1254,8 +1152,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 64 bits of big-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1267,8 +1163,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01007">1007</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1297,8 +1191,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 64 bits of little-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1310,8 +1202,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00963">963</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1340,8 +1230,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read a signed byte from an SDL_IOStream. </p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1352,8 +1240,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00743">743</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1382,8 +1268,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 16 bits of big-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1395,8 +1279,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00809">809</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1425,8 +1307,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 16 bits of little-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1438,8 +1318,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00765">765</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1468,8 +1346,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 32 bits of big-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1481,8 +1357,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00897">897</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1511,8 +1385,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 32 bits of little-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1524,8 +1396,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00853">853</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1554,8 +1424,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 64 bits of big-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1567,8 +1435,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00985">985</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1597,8 +1463,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read 64 bits of little-endian data from an SDL_IOStream and return in native format. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the data returned will be in the native byte order.</p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1610,8 +1474,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00941">941</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1640,8 +1502,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to read a byte from an SDL_IOStream. </p>
 <p>This function will return false when the data stream is completely read, and SDL_GetIOStatus() will return SDL_IO_STATUS_EOF. If false is returned and the stream is not at EOF, SDL_GetIOStatus() will return a different error value and SDL_GetError() will offer a human-readable message.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -1653,12 +1513,10 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00725">725</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="a3023db7998509f1a74ec7148946fdbd5" name="a3023db7998509f1a74ec7148946fdbd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3023db7998509f1a74ec7148946fdbd5">&#9670;&#160;</a></span>SaveFile() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3023db7998509f1a74ec7148946fdbd5">&#9670;&#160;</a></span>SaveFile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1692,8 +1550,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Save all the data into an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> data stream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>the data to be written. If datasize is 0, may be NULL or a invalid pointer. </td></tr>
@@ -1707,70 +1563,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section see"><dt>See also</dt><dd>SDL_SaveFile </dd>
 <dd>
 SDL_LoadFile_IO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00705">705</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
-</div>
-</div>
-<a id="a47f1da651796c0cb85b932b229936835" name="a47f1da651796c0cb85b932b229936835"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47f1da651796c0cb85b932b229936835">&#9670;&#160;</a></span>SaveFile() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
-<div class="memtemplate">
-template&lt;class U &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::SaveFile </td>
-          <td>(</td>
-          <td class="paramtype">std::span&lt; U &gt;&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00679">679</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
-</div>
-</div>
-<a id="a0a2f9f7f8406ddc256de3530c84d0f1f" name="a0a2f9f7f8406ddc256de3530c84d0f1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a2f9f7f8406ddc256de3530c84d0f1f">&#9670;&#160;</a></span>SaveFile() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::SaveFile </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>str</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00684">684</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1809,8 +1601,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Seek within an SDL_IOStream data stream. </p>
 <p>This function seeks to byte <code>offset</code>, relative to <code>whence</code>.</p>
 <p><code>whence</code> may be any of the following values:</p>
 <ul>
@@ -1830,8 +1620,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_TellIO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00468">468</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1859,15 +1647,11 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Determine the current read/write offset in an SDL_IOStream data stream. </p>
 <p>SDL_TellIO is actually a wrapper function that calls the SDL_IOStream's <code>seek</code> method, with an offset of 0 bytes from <code>SDL_IO_SEEK_CUR</code>, to simplify application development.</p>
 <dl class="section return"><dt>Returns</dt><dd>the current offset in the stream, or -1 if the information can not be determined.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SeekIO </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00489">489</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -1906,8 +1690,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Print to an SDL_IOStream data stream. </p>
 <dl class="section warning"><dt>Warning</dt><dd>this is not typesafe! Prefer using <a class="el" href="structSDL_1_1IOStreamBase.html#add216e6c0528f3bb5a99b2ef27673b3c">print()</a> and <a class="el" href="structSDL_1_1IOStreamBase.html#aa66f43e6d2249328e9c88094337fd4d0">println()</a></dd></dl>
 <p>This function does formatted printing to the stream.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1924,12 +1706,10 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dd>
 SDL_WriteIO </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00630">630</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
 </div>
 </div>
 <a id="af56531f3accee3fa5140a06926c63f87" name="af56531f3accee3fa5140a06926c63f87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af56531f3accee3fa5140a06926c63f87">&#9670;&#160;</a></span>Write() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af56531f3accee3fa5140a06926c63f87">&#9670;&#160;</a></span>Write()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1963,8 +1743,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Write to an SDL_IOStream data stream. </p>
 <p>This function writes exactly <code>size</code> bytes from the area pointed at by <code>ptr</code> to the stream. If this fails for any reason, it'll return less than <code>size</code> to demonstrate how far the write progressed. On success, it returns <code>size</code>.</p>
 <p>On error, this function still attempts to write as much as possible, so it might return a positive value less than the requested write size.</p>
 <p>The caller can use SDL_GetIOStatus() to determine if the problem is recoverable, such as a non-blocking write that can simply be retried later, or a fatal error.</p>
@@ -1987,70 +1765,6 @@ SDL_SeekIO </dd>
 SDL_FlushIO </dd>
 <dd>
 SDL_GetIOStatus </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00556">556</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
-</div>
-</div>
-<a id="ab334e7286cb0f1b070c1901b5e0d228a" name="ab334e7286cb0f1b070c1901b5e0d228a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab334e7286cb0f1b070c1901b5e0d228a">&#9670;&#160;</a></span>Write() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
-<div class="memtemplate">
-template&lt;class U &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t <a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::Write </td>
-          <td>(</td>
-          <td class="paramtype">std::span&lt; U &gt;&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00520">520</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
-
-</div>
-</div>
-<a id="a5370bbfbddbfdaf18724be5d8a71cd9e" name="a5370bbfbddbfdaf18724be5d8a71cd9e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5370bbfbddbfdaf18724be5d8a71cd9e">&#9670;&#160;</a></span>Write() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t <a class="el" href="structSDL_1_1IOStreamBase.html">SDL::IOStreamBase</a>&lt; T &gt;::Write </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>str</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l00525">525</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2079,8 +1793,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 16 bits in native format to an SDL_IOStream as big-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in big-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2091,8 +1803,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01103">1103</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2121,8 +1831,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 16 bits in native format to an SDL_IOStream as little-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in little-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2133,8 +1841,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01069">1069</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2163,8 +1869,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 32 bits in native format to an SDL_IOStream as big-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in big-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2175,8 +1879,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01173">1173</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2205,8 +1907,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 32 bits in native format to an SDL_IOStream as little-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in little-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2217,8 +1917,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01139">1139</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2247,8 +1945,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 64 bits in native format to an SDL_IOStream as big-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in big-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2259,8 +1955,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01243">1243</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2289,8 +1983,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 64 bits in native format to an SDL_IOStream as little-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in little-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2301,8 +1993,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01209">1209</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2331,8 +2021,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write a signed byte to an SDL_IOStream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">value</td><td>the byte value to write. </td></tr>
@@ -2342,8 +2030,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01033">1033</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2372,8 +2058,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 16 bits in native format to an SDL_IOStream as big-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in big-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2384,8 +2068,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01086">1086</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2414,8 +2096,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 16 bits in native format to an SDL_IOStream as little-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in little-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2426,8 +2106,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01051">1051</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2456,8 +2134,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 32 bits in native format to an SDL_IOStream as big-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in big-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2468,8 +2144,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01156">1156</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2498,8 +2172,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 32 bits in native format to an SDL_IOStream as little-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in little-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2510,8 +2182,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01121">1121</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2540,8 +2210,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 64 bits in native format to an SDL_IOStream as big-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in big-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2552,8 +2220,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01226">1226</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2582,8 +2248,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write 64 bits in native format to an SDL_IOStream as little-endian data. </p>
 <p><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> byteswaps the data only if necessary, so the application always specifies native format, and the data written will be in little-endian format.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2594,8 +2258,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01191">1191</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>
@@ -2624,8 +2286,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Use this function to write a byte to an SDL_IOStream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">value</td><td>the byte value to write. </td></tr>
@@ -2635,8 +2295,6 @@ template&lt;ObjectBox&lt; SDL_IOStream * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on successful write or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function is not thread safe.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__iostream_8h_source.html#l01020">1020</a> of file <a class="el" href="SDL3pp__iostream_8h_source.html">SDL3pp_iostream.h</a>.</p>
 
 </div>
 </div>

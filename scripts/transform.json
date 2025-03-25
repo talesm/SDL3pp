@@ -51,7 +51,8 @@
         "SDL_alignment_test",
         "SDL_DUMMY_ENUM",
         "SDL_size_mul_check_overflow_builtin",
-        "SDL_size_add_check_overflow_builtin"
+        "SDL_size_add_check_overflow_builtin",
+        "alloca"
       ],
       "includeAfter": {
         "__begin": [

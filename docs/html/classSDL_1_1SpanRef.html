@@ -82,310 +82,40 @@ $(function() {
 <div class="contents">
 
 <p>A wrapper around span that works for out derived-wrapper pattern (eg, <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a>)  
- <a href="classSDL_1_1SpanRef.html#details">More...</a></p>
+</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a67d46cc357fe4e008988eb2445885b6c" id="r_a67d46cc357fe4e008988eb2445885b6c"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#a67d46cc357fe4e008988eb2445885b6c">SpanRef</a> ()=default</td></tr>
-<tr class="separator:a67d46cc357fe4e008988eb2445885b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c670b8ef90204998512cea3c94d4ce7" id="r_a1c670b8ef90204998512cea3c94d4ce7"><td class="memTemplParams" colspan="2">template&lt;DerivedWrapper&lt; T &gt; U, size_t N&gt; </td></tr>
-<tr class="memitem:a1c670b8ef90204998512cea3c94d4ce7"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#a1c670b8ef90204998512cea3c94d4ce7">SpanRef</a> (U(&amp;other)[N])</td></tr>
+<tr class="memitem:a1c670b8ef90204998512cea3c94d4ce7" id="r_a1c670b8ef90204998512cea3c94d4ce7"><td class="memTemplParams" colspan="2"><a id="a1c670b8ef90204998512cea3c94d4ce7" name="a1c670b8ef90204998512cea3c94d4ce7"></a>
+template&lt;DerivedWrapper&lt; T &gt; U, size_t N&gt; </td></tr>
+<tr class="memitem:a1c670b8ef90204998512cea3c94d4ce7"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SpanRef</b> (U(&amp;other)[N])</td></tr>
 <tr class="separator:a1c670b8ef90204998512cea3c94d4ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87359d5d39f045ef007f8e14390403b3" id="r_a87359d5d39f045ef007f8e14390403b3"><td class="memTemplParams" colspan="2">template&lt;DerivedWrapper&lt; T &gt; U&gt; </td></tr>
-<tr class="memitem:a87359d5d39f045ef007f8e14390403b3"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#a87359d5d39f045ef007f8e14390403b3">SpanRef</a> (const std::span&lt; U &gt; &amp;other)</td></tr>
+<tr class="memitem:a87359d5d39f045ef007f8e14390403b3" id="r_a87359d5d39f045ef007f8e14390403b3"><td class="memTemplParams" colspan="2"><a id="a87359d5d39f045ef007f8e14390403b3" name="a87359d5d39f045ef007f8e14390403b3"></a>
+template&lt;DerivedWrapper&lt; T &gt; U&gt; </td></tr>
+<tr class="memitem:a87359d5d39f045ef007f8e14390403b3"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SpanRef</b> (const std::span&lt; U &gt; &amp;other)</td></tr>
 <tr class="separator:a87359d5d39f045ef007f8e14390403b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f9d0e24a5cc75258dbad6c437367848" id="r_a4f9d0e24a5cc75258dbad6c437367848"><td class="memTemplParams" colspan="2">template&lt;std::contiguous_iterator It&gt; <br />
+<tr class="memitem:a4f9d0e24a5cc75258dbad6c437367848" id="r_a4f9d0e24a5cc75258dbad6c437367848"><td class="memTemplParams" colspan="2"><a id="a4f9d0e24a5cc75258dbad6c437367848" name="a4f9d0e24a5cc75258dbad6c437367848"></a>
+template&lt;std::contiguous_iterator It&gt; <br />
 requires DerivedWrapper&lt;std::iter_value_t&lt;It&gt;, T&gt;</td></tr>
-<tr class="memitem:a4f9d0e24a5cc75258dbad6c437367848"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#a4f9d0e24a5cc75258dbad6c437367848">SpanRef</a> (It first, size_t count)</td></tr>
+<tr class="memitem:a4f9d0e24a5cc75258dbad6c437367848"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SpanRef</b> (It first, size_t count)</td></tr>
 <tr class="separator:a4f9d0e24a5cc75258dbad6c437367848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1798ddef14b328a12e9850996b5cd224" id="r_a1798ddef14b328a12e9850996b5cd224"><td class="memTemplParams" colspan="2">template&lt;std::contiguous_iterator It, std::sized_sentinel_for&lt; It &gt; End&gt; <br />
+<tr class="memitem:a1798ddef14b328a12e9850996b5cd224" id="r_a1798ddef14b328a12e9850996b5cd224"><td class="memTemplParams" colspan="2"><a id="a1798ddef14b328a12e9850996b5cd224" name="a1798ddef14b328a12e9850996b5cd224"></a>
+template&lt;std::contiguous_iterator It, std::sized_sentinel_for&lt; It &gt; End&gt; <br />
 requires DerivedWrapper&lt;std::iter_value_t&lt;It&gt;, T&gt;</td></tr>
-<tr class="memitem:a1798ddef14b328a12e9850996b5cd224"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#a1798ddef14b328a12e9850996b5cd224">SpanRef</a> (It first, End last)</td></tr>
+<tr class="memitem:a1798ddef14b328a12e9850996b5cd224"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SpanRef</b> (It first, End last)</td></tr>
 <tr class="separator:a1798ddef14b328a12e9850996b5cd224"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab13adb44025265f807523676092405f6" id="r_ab13adb44025265f807523676092405f6"><td class="memTemplParams" colspan="2">template&lt;std::ranges::contiguous_range R&gt; <br />
+<tr class="memitem:ab13adb44025265f807523676092405f6" id="r_ab13adb44025265f807523676092405f6"><td class="memTemplParams" colspan="2"><a id="ab13adb44025265f807523676092405f6" name="ab13adb44025265f807523676092405f6"></a>
+template&lt;std::ranges::contiguous_range R&gt; <br />
 requires DerivedWrapper&lt;std::iter_value_t&lt;std::ranges::iterator_t&lt;R&gt;&gt;, T&gt;</td></tr>
-<tr class="memitem:ab13adb44025265f807523676092405f6"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#ab13adb44025265f807523676092405f6">SpanRef</a> (R &amp;&amp;range)</td></tr>
+<tr class="memitem:ab13adb44025265f807523676092405f6"><td class="memTemplItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><b>SpanRef</b> (R &amp;&amp;range)</td></tr>
 <tr class="separator:ab13adb44025265f807523676092405f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2f850fb52fefb67e54ac2e416d4a711" id="r_ab2f850fb52fefb67e54ac2e416d4a711"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#ab2f850fb52fefb67e54ac2e416d4a711">size</a> () const</td></tr>
+<tr class="memitem:ab2f850fb52fefb67e54ac2e416d4a711" id="r_ab2f850fb52fefb67e54ac2e416d4a711"><td class="memItemLeft" align="right" valign="top"><a id="ab2f850fb52fefb67e54ac2e416d4a711" name="ab2f850fb52fefb67e54ac2e416d4a711"></a>
+constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> () const</td></tr>
 <tr class="separator:ab2f850fb52fefb67e54ac2e416d4a711"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23d68d09a1e467f402d05938133cec4a" id="r_a23d68d09a1e467f402d05938133cec4a"><td class="memItemLeft" align="right" valign="top">constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1SpanRef.html#a23d68d09a1e467f402d05938133cec4a">data</a> () const</td></tr>
+<tr class="memitem:a23d68d09a1e467f402d05938133cec4a" id="r_a23d68d09a1e467f402d05938133cec4a"><td class="memItemLeft" align="right" valign="top"><a id="a23d68d09a1e467f402d05938133cec4a" name="a23d68d09a1e467f402d05938133cec4a"></a>
+constexpr T *&#160;</td><td class="memItemRight" valign="bottom"><b>data</b> () const</td></tr>
 <tr class="separator:a23d68d09a1e467f402d05938133cec4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
-class SDL::SpanRef&lt; T &gt;</div><p>A wrapper around span that works for out derived-wrapper pattern (eg, <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a>, <a class="el" href="structSDL_1_1Color.html" title="A structure that represents a color as RGBA components.">Color</a>) </p>
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00020">20</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a67d46cc357fe4e008988eb2445885b6c" name="a67d46cc357fe4e008988eb2445885b6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67d46cc357fe4e008988eb2445885b6c">&#9670;&#160;</a></span>SpanRef() <span class="overload">[1/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::SpanRef </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">default</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1c670b8ef90204998512cea3c94d4ce7" name="a1c670b8ef90204998512cea3c94d4ce7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c670b8ef90204998512cea3c94d4ce7">&#9670;&#160;</a></span>SpanRef() <span class="overload">[2/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;DerivedWrapper&lt; T &gt; U, size_t N&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::SpanRef </td>
-          <td>(</td>
-          <td class="paramtype">U(&amp;)&#160;</td>
-          <td class="paramname"><em>other</em>[N]</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00028">28</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-
-</div>
-</div>
-<a id="a87359d5d39f045ef007f8e14390403b3" name="a87359d5d39f045ef007f8e14390403b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87359d5d39f045ef007f8e14390403b3">&#9670;&#160;</a></span>SpanRef() <span class="overload">[3/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;DerivedWrapper&lt; T &gt; U&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::SpanRef </td>
-          <td>(</td>
-          <td class="paramtype">const std::span&lt; U &gt; &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00034">34</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-
-</div>
-</div>
-<a id="a4f9d0e24a5cc75258dbad6c437367848" name="a4f9d0e24a5cc75258dbad6c437367848"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f9d0e24a5cc75258dbad6c437367848">&#9670;&#160;</a></span>SpanRef() <span class="overload">[4/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;std::contiguous_iterator It&gt; <br />
-requires DerivedWrapper&lt;std::iter_value_t&lt;It&gt;, T&gt;</div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::SpanRef </td>
-          <td>(</td>
-          <td class="paramtype">It&#160;</td>
-          <td class="paramname"><em>first</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>count</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00041">41</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-
-</div>
-</div>
-<a id="a1798ddef14b328a12e9850996b5cd224" name="a1798ddef14b328a12e9850996b5cd224"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1798ddef14b328a12e9850996b5cd224">&#9670;&#160;</a></span>SpanRef() <span class="overload">[5/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;std::contiguous_iterator It, std::sized_sentinel_for&lt; It &gt; End&gt; <br />
-requires DerivedWrapper&lt;std::iter_value_t&lt;It&gt;, T&gt;</div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::SpanRef </td>
-          <td>(</td>
-          <td class="paramtype">It&#160;</td>
-          <td class="paramname"><em>first</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">End&#160;</td>
-          <td class="paramname"><em>last</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00048">48</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-
-</div>
-</div>
-<a id="ab13adb44025265f807523676092405f6" name="ab13adb44025265f807523676092405f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab13adb44025265f807523676092405f6">&#9670;&#160;</a></span>SpanRef() <span class="overload">[6/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;std::ranges::contiguous_range R&gt; <br />
-requires DerivedWrapper&lt;std::iter_value_t&lt;std::ranges::iterator_t&lt;R&gt;&gt;, T&gt;</div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::SpanRef </td>
-          <td>(</td>
-          <td class="paramtype">R &amp;&amp;&#160;</td>
-          <td class="paramname"><em>range</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00054">54</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a23d68d09a1e467f402d05938133cec4a" name="a23d68d09a1e467f402d05938133cec4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23d68d09a1e467f402d05938133cec4a">&#9670;&#160;</a></span>data()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr T * <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::data </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00061">61</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-
-</div>
-</div>
-<a id="ab2f850fb52fefb67e54ac2e416d4a711" name="ab2f850fb52fefb67e54ac2e416d4a711"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2f850fb52fefb67e54ac2e416d4a711">&#9670;&#160;</a></span>size()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr size_t <a class="el" href="classSDL_1_1SpanRef.html">SDL::SpanRef</a>&lt; T &gt;::size </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="SDL3pp__spanRef_8h_source.html#l00059">59</a> of file <a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a>.</p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__spanRef_8h_source.html">SDL3pp_spanRef.h</a></li>
 </ul>
