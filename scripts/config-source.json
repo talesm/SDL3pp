@@ -24,7 +24,11 @@
     "SDL_ttf.h"
   ],
   "api": "scripts/target.json",
-  "baseDir": "include/SDL3pp/",
+  "baseDir": [
+    "external/SDL/include/SDL3/",
+    "external/SDL_image/include/SDL3_image/",
+    "external/SDL_ttf/include/SDL3_ttf/"
+  ],
   "outputFile": "scripts/source.json",
   "sourceApi": "scripts/source.json",
   "transform": "scripts/transform.json"
