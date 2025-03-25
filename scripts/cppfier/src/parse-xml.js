@@ -95,9 +95,19 @@ async function parseXmlContent(name, content, baseDir, config) {
         case "enum":
           entry.kind = "enum";
           break;
-        case "typedef":
+        case "typedef": {
           entry.kind = "alias";
+          const type = member.type?.[0];
+          if (type) {
+            const argsstring = member.argsstring?.[0];
+            if (type.startsWith("enum")) {
+              entry.kind = "enum";
+            } else {
+              entry.type = type + (argsstring ?? '');
+            }
+          }
           break;
+        }
         case "function":
           entry.kind = "function";
           entry.type = normalizeType(member.type[0]); // TODO Remove SDL_DECLSPEC
@@ -128,6 +138,19 @@ function stringLocation(location) {
   return `${location?.file ?? "Unknown"}:${location?.line ?? 0}`;
 }
 
+/**
+ * Unwrap docstring
+ * @param {string[]} contentLines 
+ * @param {{line: number, bodyend: number}} location 
+ */
+function unwrapDoc(contentLines, location) {
+  const startIndex = location.line - 1;
+  if (location.bodyend == -1) {
+    const m = /\/\*\*<(.*)\*\//.exec(contentLines[startIndex]);
+    if (m) return m[1].trim();
+  }
+  return "";
+}
 
 /** @param {string} typeString  */
 function normalizeType(typeString) {
