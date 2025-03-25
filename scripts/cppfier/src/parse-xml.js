@@ -99,7 +99,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
           for (const value of member.enumvalue ?? []) {
             const name = value.name[0].trim();
             entry.entries[name] = {
-              doc: value.briefdescription?.[0]?.para.join("\n\n"),
+              doc: value.briefdescription?.[0]?.para?.join("\n\n") ?? "",
               name,
               kind: "var",
               type: ""
@@ -110,22 +110,30 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
         case "typedef": {
           entry.kind = "alias";
           const type = member.type?.[0];
+          // if (name == "SDL_Event") console.log(member);
           if (type) {
             if (typeof type != "string") {
-              if (type._?.startsWith('struct')) {
+              const typeString = type._ ?? "";
+              if (typeString.startsWith('struct')) {
                 entry.kind = "struct";
-                const structXml = await loadStructXml(name, xmlDir);
+                const structXml = await loadTypeXml(name, xmlDir, "struct");
                 const location = structXml.location[0]?.$;
                 entry.doc = unwrapDoc(sourceContent, location);
                 entry.decl = +location.line;
                 entry.entries = parseXmlStruct(structXml.sectiondef[0].memberdef, sourceContent);
+              } else if (typeString.startsWith("union")) {
+                entry.kind = "union";
+                const unionXml = await loadTypeXml(name, xmlDir, "union");
+                const location = unionXml.location[0]?.$;
+                entry.doc = unwrapDoc(sourceContent, location);
+                entry.decl = +location.line;
               } else {
                 system.warn(`At ${stringLocation(location)}: could not parse type from ${name}`, type);
               }
             } else {
               const argsstring = member.argsstring?.[0];
               if (type.startsWith("enum")) {
-                // TODO check if enum already present
+                // TODO ensure enum is correctly named
                 continue;
               } else if (argsstring) {
                 entry.kind = "callback";
@@ -202,9 +210,10 @@ function sortAndAddEntries(entriesArray, entries = {}) {
  * 
  * @param {string} name 
  * @param {string} dir 
+ * @param {"struct"|"union"} kind 
  */
-async function loadStructXml(name, dir) {
-  const filename = `${dir}struct${name.replace(/_/g, "__")}.xml`;
+async function loadTypeXml(name, dir, kind) {
+  const filename = `${dir}${kind}${name.replace(/_/g, "__")}.xml`;
   const content = await readFile(filename, "utf-8");
   const xml = await parseStringPromise(content);;
   return xml.doxygen.compounddef[0];
