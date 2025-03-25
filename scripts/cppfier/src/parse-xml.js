@@ -74,6 +74,8 @@ async function parseXmlContent(name, content, baseDir, config) {
   const xmlObj = await parseStringPromise(content, {});
   system.log(`Reading ${name}`);
   const sections = xmlObj.doxygen?.compounddef?.[0]?.sectiondef || [];
+  /** @type {ApiEntry[]} */
+  const entriesArray = [];
   for (const section of sections) {
     for (const member of section.memberdef) {
       const kind = member.$.kind;
@@ -83,7 +85,7 @@ async function parseXmlContent(name, content, baseDir, config) {
       const entry = {
         kind: "def",
         name,
-        decl: location.line,
+        decl: +location.line,
       };
       switch (kind) {
         case "define": break;
@@ -103,10 +105,14 @@ async function parseXmlContent(name, content, baseDir, config) {
           system.warn(`Error at ${stringLocation(location)}: Unknown kind for ${name} (${kind})`);
           continue;
       }
-      apiFile.entries[name] = entry;
+      entriesArray.push(entry);
     }
   }
-  // TODO sort by file order
+  entriesArray.sort((a, b) => a.decl - b.decl).forEach(e => {
+    apiFile.entries[e.name] = e;
+    delete e.decl;
+  });
+
   return apiFile;
 }
 
