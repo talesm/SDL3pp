@@ -167,14 +167,41 @@ concept AppClass = requires(T& app, const Event& event) {
 };
 
 template<class T>
+concept AppClassWithEmptyInit = AppClass<T> && requires(T& app) {
+  { app.Init() } -> std::convertible_to<AppResult>;
+};
+
+template<class T>
+concept AppClassWithFullInit =
+  AppClass<T> && requires(T& app, int argc, char** argv) {
+    { app.Init(argc, argv) } -> std::convertible_to<AppResult>;
+  };
+
+template<class T>
 concept AppClassWithQuit = AppClass<T> && requires(T& app, AppResult result) {
   { app.Quit(result) };
 };
 
 namespace detail {
 
-void AppQuit(AppClass auto& app, AppResult) {}
-void AppQuit(AppClassWithQuit auto& app, AppResult result) { app.Quit(result); }
+inline AppResult AppInit(AppClass auto& app, int argc, char** argv)
+{
+  return APP_CONTINUE;
+}
+inline AppResult AppInit(AppClassWithEmptyInit auto& app, int argc, char** argv)
+{
+  return app.Init();
+}
+inline AppResult AppInit(AppClassWithFullInit auto& app, int argc, char** argv)
+{
+  return app.Init(argc, argv);
+}
+
+inline void AppQuit(AppClass auto& app, AppResult) {}
+inline void AppQuit(AppClassWithQuit auto& app, AppResult result)
+{
+  app.Quit(result);
+}
 
 } // namespace detail
 
@@ -194,7 +221,7 @@ inline SDL::AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
   try {
     auto* state = new SDL3PP_APP_CLASS{argc, argv};
     *appstate = state;
-    return state->Init(argc, argv);
+    return SDL::detail::AppInit(*state, argc, argv);
   } catch (std::exception& e) {
     SDL::Log("Fatal Error: {}", e.what());
   } catch (...) {

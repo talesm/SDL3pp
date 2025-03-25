@@ -17,27 +17,15 @@ struct Main
   Main(int, char**)
     : init(SDL::INIT_VIDEO)
   {
-  }
-
-  SDL::AppResult Init(int argc, char* argv[])
-  {
-    if (!init) {
-      SDL::LogUnformatted(SDL::GetError());
-      return SDL::APP_FAILURE;
-    }
+    if (!init) throw std::runtime_error{SDL::GetError()};
     std::tie(window, renderer) =
       SDL::CreateWindowAndRenderer("Test", {400, 400});
-    if (!window) {
-      SDL::LogUnformatted(SDL::GetError());
-      return SDL::APP_FAILURE;
-    }
+    if (!window) throw std::runtime_error{SDL::GetError()};
     characterTexture = {renderer, "assets/smiley.png"};
-    if (!characterTexture) {
-      SDL::LogUnformatted(SDL::GetError());
-      return SDL::APP_FAILURE;
-    }
-    return SDL::APP_CONTINUE;
+    if (!characterTexture) throw std::runtime_error{SDL::GetError()};
   }
+
+  // SDL::AppResult Init(int argc, char* argv[]) {}
 
   SDL::AppResult Iterate()
   {
