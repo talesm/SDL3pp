@@ -2,7 +2,7 @@ const { parseStringPromise } = require("xml2js");
 const { system } = require("./utils");
 const { existsSync } = require("fs");
 const { readFile } = require("fs/promises");
-const { readContent } = require("./parse");
+const { readContent, parseParams } = require("./parse");
 
 /**
  * @typedef {object} ParseXmlConfig
@@ -115,8 +115,13 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
             if (type.startsWith("enum")) {
               // TODO check if enum already present
               continue;
+            } else if (argsstring) {
+              entry.kind = "callback";
+              entry.type = normalizeType(type.slice(0, type.indexOf('(')));
+              const params = argsstring.slice(2, argsstring.length - 1);
+              entry.parameters = parseParams(params);
             } else {
-              entry.type = type + (argsstring ?? '');
+              entry.type = type;
             }
           }
           break;

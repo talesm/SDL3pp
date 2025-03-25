@@ -382,4 +382,5 @@ exports.parseApi = parseApi;
 exports.parseContent = parseContent;
 exports.insertEntry = insertEntry;
 exports.readContent = readContent;
+exports.parseParams = parseParams;
 exports.removeEntryLineNumbers = removeEntryLineNumbers;
