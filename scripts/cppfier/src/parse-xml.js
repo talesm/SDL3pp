@@ -139,12 +139,16 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
           }
           break;
         }
-        case "function":
+        case "function": {
           entry.kind = "function";
+          // if (member.type[0].startsWith("SDL_FORCE_INLINE")) entry.constexpr = true;
           entry.type = normalizeType(member.type[0]); // TODO Remove SDL_DECLSPEC
           entry.static = member.$.static === 'yes';
-          entry.parameters = member.argsstring[0] === "(void)" ? [] : member.param.map(p => ({ type: normalizeType(p.type.join(" ")), name: p.declname.join(" ") }));
+          const argsstring = member.argsstring[0];
+          const params = argsstring.slice(1, argsstring.length - 1);
+          entry.parameters = parseParams(params);
           break;
+        }
         default:
           system.warn(`Error at ${stringLocation(location)}: Unknown kind for ${name} (${kind})`);
           continue;
@@ -275,7 +279,7 @@ function normalizeDocLine(line) {
 function normalizeType(typeString) {
   if (!typeString) return "";
   return typeString
-    .replace(/SDL_DECLSPEC|SDLCALL/g, "")
+    .replace(/SDL_DECLSPEC|SDLCALL|SDL_FORCE_INLINE/g, "")
     .replace(/(\w+)\s*([&*])/g, "$1 $2")
     .replace(/(\w+)\s+(\w+)/g, "$1 $2")
     .replace(/([*&])\s+(&*)/g, "$1$2").trim();
