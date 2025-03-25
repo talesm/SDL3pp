@@ -17464,6 +17464,98 @@
         }
       }
     },
+    "SDL3pp_main.h": {
+      "name": "SDL3pp_main.h",
+      "doc": "@defgroup CategoryMain Category Main\n\nRedefine main() if necessary so that it is called by SDL.\n\nIn order to make this consistent on all platforms, the application's main()\nshould look like this:\n\n```c\n#include <SDL3/SDL.h>\n#include <SDL3/SDL_main.h>\n\nint main(int argc, char *argv[])\n{\n}\n```\n\nSDL will take care of platform specific details on how it gets called.\n\nThis is also where an app can be configured to use the main callbacks, via\nthe SDL_MAIN_USE_CALLBACKS macro.\n\nSDL_main.h is a \"single-header library,\" which is to say that including\nthis header inserts code into your program, and you should only include it\nonce in most cases. SDL.h does not include this header automatically.\n\nFor more information, see:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions",
+      "entries": {
+        "SDL_MAIN_USE_CALLBACKS": {
+          "kind": "def",
+          "name": "SDL_MAIN_USE_CALLBACKS",
+          "doc": ""
+        },
+        "main_func": {
+          "doc": "The prototype for the application's main() function\n\n@param argc an ANSI-C style main function's argc.\n@param argv an ANSI-C style main function's argv.\n@returns an ANSI-C main return code; generally 0 is considered successful\n         program completion, and small non-zero values are considered\n         errors.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "main_func",
+          "kind": "alias",
+          "type": "SDL_main_func",
+          "sourceName": "SDL_main_func"
+        },
+        "SetMainReady": {
+          "doc": "Circumvent failure of SDL_Init() when not using SDL_main() as an entry\npoint.\n\nThis function is defined in SDL_main.h, along with the preprocessor rule to\nredefine main() as SDL_main(). Thus to ensure that your main() function\nwill not be changed it is necessary to define SDL_MAIN_HANDLED before\nincluding SDL.h.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_Init",
+          "name": "SetMainReady",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_SetMainReady"
+        },
+        "RunApp": {
+          "doc": "Initializes and launches an SDL application, by doing platform-specific\ninitialization before calling your mainFunction and cleanups after it\nreturns, if that is needed for a specific platform, otherwise it just calls\nmainFunction.\n\nYou can use this if you want to use your own main() implementation without\nusing SDL_main (like when using SDL_MAIN_HANDLED). When using this, you do\n*not* need SDL_SetMainReady().\n\n@param argc the argc parameter from the application's main() function, or 0\n            if the platform's main-equivalent has no argc.\n@param argv the argv parameter from the application's main() function, or\n            NULL if the platform's main-equivalent has no argv.\n@param mainFunction your SDL app's C-style main(). NOT the function you're\n                    calling this from! Its name doesn't matter; it doesn't\n                    literally have to be `main`.\n@param reserved should be NULL (reserved for future use, will probably be\n                platform-specific then).\n@returns the return value from mainFunction: 0 on success, otherwise\n         failure; SDL_GetError() might have more information on the\n         failure.\n\n@threadsafety Generally this is called once, near startup, from the\n              process's initial thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "RunApp",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            },
+            {
+              "name": "mainFunction",
+              "type": "main_func"
+            },
+            {
+              "name": "reserved",
+              "type": "void *"
+            }
+          ],
+          "sourceName": "SDL_RunApp"
+        },
+        "EnterAppMainCallbacks": {
+          "doc": "An entry point for SDL's use in SDL_MAIN_USE_CALLBACKS.\n\nGenerally, you should not call this function directly. This only exists to\nhand off work into SDL as soon as possible, where it has a lot more control\nand functionality available, and make the inline code in SDL_main.h as\nsmall as possible.\n\nNot all platforms use this, it's actual use is hidden in a magic\nheader-only library, and you should not call this directly unless you\n_really_ know what you're doing.\n\n@param argc standard Unix main argc.\n@param argv standard Unix main argv.\n@param appinit the application's SDL_AppInit function.\n@param appiter the application's SDL_AppIterate function.\n@param appevent the application's SDL_AppEvent function.\n@param appquit the application's SDL_AppQuit function.\n@returns standard Unix main return value.\n\n@threadsafety It is not safe to call this anywhere except as the only\n              function call in SDL_main.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "EnterAppMainCallbacks",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            },
+            {
+              "name": "appinit",
+              "type": "AppInit_func"
+            },
+            {
+              "name": "appiter",
+              "type": "AppIterate_func"
+            },
+            {
+              "name": "appevent",
+              "type": "AppEvent_func"
+            },
+            {
+              "name": "appquit",
+              "type": "AppQuit_func"
+            }
+          ],
+          "sourceName": "SDL_EnterAppMainCallbacks"
+        },
+        "GDKSuspendComplete": {
+          "doc": "Callback from the application to let the suspend continue.\n\nThis function is only needed for Xbox GDK support; all other platforms will\ndo nothing and set an \"unsupported\" error message.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GDKSuspendComplete",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
+          "sourceName": "SDL_GDKSuspendComplete"
+        }
+      }
+    },
     "SDL3pp_image.h": {
       "name": "SDL3pp_image.h",
       "doc": "@defgroup CategorySDLImage Category SDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",

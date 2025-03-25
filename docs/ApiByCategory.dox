@@ -7,6 +7,7 @@
 
 Category                 | Header
 ------------------------ | --------------------
+@ref CategoryMain        | SDL3pp_main.h
 @ref CategoryInit        | SDL3pp_init.h
 @ref CategoryHints       | SDL3pp_hints.h
 @ref CategoryProperties  | SDL3pp_properties.h
@@ -79,6 +80,7 @@ You probably want to see @ref ApiByCategory
 
 @defgroup CategoriesBasics Basics
 @{
+@addtogroup CategoryMain
 @addtogroup CategoryInit
 @addtogroup CategoryHints
 @addtogroup CategoryProperties

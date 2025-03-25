@@ -43,7 +43,7 @@ var searchData=
   ['renderdebugtext_40',['RenderDebugText',['../structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc',1,'SDL::RendererBase']]],
   ['renderdebugtextformat_41',['RenderDebugTextFormat',['../structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7',1,'SDL::RendererBase']]],
   ['renderer_42',['Renderer',['../group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068',1,'SDL']]],
-  ['rendererbase_43',['rendererbase',['../structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92',1,'SDL::RendererBase::RendererBase(SurfaceRef surface)'],['../structSDL_1_1RendererBase.html#a6cd596ee84afc3ead3c26a6c429a797c',1,'SDL::RendererBase::RendererBase(WindowRef window)'],['../structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc',1,'SDL::RendererBase::RendererBase(PropertiesRef props)'],['../structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413',1,'SDL::RendererBase::RendererBase(WindowRef window, StringParam name)'],['../structSDL_1_1RendererBase.html',1,'SDL::RendererBase&lt; T &gt;']]],
+  ['rendererbase_43',['rendererbase',['../structSDL_1_1RendererBase.html',1,'SDL::RendererBase&lt; T &gt;'],['../structSDL_1_1RendererBase.html#a6cd596ee84afc3ead3c26a6c429a797c',1,'SDL::RendererBase::RendererBase(WindowRef window)'],['../structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413',1,'SDL::RendererBase::RendererBase(WindowRef window, StringParam name)'],['../structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc',1,'SDL::RendererBase::RendererBase(PropertiesRef props)'],['../structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92',1,'SDL::RendererBase::RendererBase(SurfaceRef surface)']]],
   ['rendererlogicalpresentation_44',['RendererLogicalPresentation',['../group__CategoryRender.html#ga91be24b12fa4efe591c43f2ece44e32d',1,'SDL']]],
   ['rendererref_45',['RendererRef',['../group__CategoryVideo.html#ga3c15747c0c3091d37a2f14511aba1c7d',1,'SDL']]],
   ['renderevent_46',['RenderEvent',['../group__CategoryEvents.html#ga2659db701de06c5a2e1632526c4f6345',1,'SDL']]],
@@ -92,5 +92,6 @@ var searchData=
   ['roundf_89',['roundf',['../group__CategoryStdinc.html#ga9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
   ['routines_90',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
   ['rules_91',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
-  ['runonmainthread_92',['runonmainthread',['../group__CategoryInit.html#ga7d0f101553ddca55df18779d038c0dd4',1,'SDL::RunOnMainThread(MainThreadCB callback, bool wait_complete)'],['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)']]]
+  ['runapp_92',['RunApp',['../group__CategoryMain.html#ga1b98e9c138e52fc85ce439efec6205f1',1,'SDL']]],
+  ['runonmainthread_93',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga7d0f101553ddca55df18779d038c0dd4',1,'SDL::RunOnMainThread(MainThreadCB callback, bool wait_complete)']]]
 ];

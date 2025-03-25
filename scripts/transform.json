@@ -5452,6 +5452,23 @@
         }
       }
     },
+    "SDL_main.h": {
+      "ignoreEntries": [
+        "SDL_main",
+        "SDL_AppInit",
+        "SDL_AppIterate",
+        "SDL_AppEvent",
+        "SDL_AppQuit"
+      ],
+      "includeAfter": {
+        "__begin": [
+          {
+            "kind": "def",
+            "name": "SDL_MAIN_USE_CALLBACKS"
+          }
+        ]
+      }
+    },
     "SDL_image.h": {
       "ignoreEntries": [
         "IMG_LoadBMP_IO"

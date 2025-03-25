@@ -1,6 +1,6 @@
 #include <iostream>
-#include <SDL3/SDL_main.h>
 #include <SDL3pp/SDL3pp.h>
+#include <SDL3pp/SDL3pp_main.h>
 
 int main()
 {

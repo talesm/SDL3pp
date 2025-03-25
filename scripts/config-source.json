@@ -20,6 +20,7 @@
     "SDL_timer.h",
     "SDL_events.h",
     "SDL_init.h",
+    "SDL_main.h",
     "SDL_image.h",
     "SDL_ttf.h"
   ],

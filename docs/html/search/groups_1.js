@@ -8,6 +8,7 @@ var searchData=
   ['and_20shutdown_5',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]],
   ['and_20simple_20drawing_6',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['and_20window_20management_7',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
-  ['assertions_8',['Assertions',['../group__CategoryAssert.html',1,'']]],
-  ['async_20callback_20helpers_9',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]]
+  ['application_20entry_20points_8',['Application entry points',['../group__CategoryMain.html',1,'']]],
+  ['assertions_9',['Assertions',['../group__CategoryAssert.html',1,'']]],
+  ['async_20callback_20helpers_10',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]]
 ];

@@ -19486,6 +19486,208 @@
         }
       }
     },
+    "SDL_main.h": {
+      "name": "SDL_main.h",
+      "doc": "# CategoryMain\n\nRedefine main() if necessary so that it is called by SDL.\n\nIn order to make this consistent on all platforms, the application's main()\nshould look like this:\n\n```c\n#include <SDL3/SDL.h>\n#include <SDL3/SDL_main.h>\n\nint main(int argc, char *argv[])\n{\n}\n```\n\nSDL will take care of platform specific details on how it gets called.\n\nThis is also where an app can be configured to use the main callbacks, via\nthe SDL_MAIN_USE_CALLBACKS macro.\n\nSDL_main.h is a \"single-header library,\" which is to say that including\nthis header inserts code into your program, and you should only include it\nonce in most cases. SDL.h does not include this header automatically.\n\nFor more information, see:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions",
+      "entries": {
+        "SDL_MAIN_HANDLED": {
+          "doc": "Inform SDL that the app is providing an entry point instead of SDL.\n\nSDL does not define this macro, but will check if it is defined when\nincluding `SDL_main.h`. If defined, SDL will expect the app to provide the\nproper entry point for the platform, and all the other magic details\nneeded, like manually calling SDL_SetMainReady.\n\nPlease see [README/main-functions](README/main-functions), (or\ndocs/README-main-functions.md in the source tree) for a more detailed\nexplanation.\n\n\\since This macro is used by the headers since SDL 3.2.0.",
+          "name": "SDL_MAIN_HANDLED",
+          "kind": "def"
+        },
+        "SDL_MAIN_USE_CALLBACKS": {
+          "doc": "Inform SDL to use the main callbacks instead of main.\n\nSDL does not define this macro, but will check if it is defined when\nincluding `SDL_main.h`. If defined, SDL will expect the app to provide\nseveral functions: SDL_AppInit, SDL_AppEvent, SDL_AppIterate, and\nSDL_AppQuit. The app should not provide a `main` function in this case, and\ndoing so will likely cause the build to fail.\n\nPlease see [README/main-functions](README/main-functions), (or\ndocs/README-main-functions.md in the source tree) for a more detailed\nexplanation.\n\n\\since This macro is used by the headers since SDL 3.2.0.\n\n\\sa SDL_AppInit\n\\sa SDL_AppEvent\n\\sa SDL_AppIterate\n\\sa SDL_AppQuit",
+          "name": "SDL_MAIN_USE_CALLBACKS",
+          "kind": "def"
+        },
+        "SDL_MAIN_AVAILABLE": {
+          "doc": "Defined if the target platform offers a special mainline through SDL.\n\nThis won't be defined otherwise. If defined, SDL's headers will redefine\n`main` to `SDL_main`.\n\nThis macro is defined by `SDL_main.h`, which is not automatically included\nby `SDL.h`.\n\nEven if available, an app can define SDL_MAIN_HANDLED and provide their\nown, if they know what they're doing.\n\nThis macro is used internally by SDL, and apps probably shouldn't rely on it.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_MAIN_AVAILABLE",
+          "kind": "def"
+        },
+        "SDL_MAIN_NEEDED": {
+          "doc": "Defined if the target platform _requires_ a special mainline through SDL.\n\nThis won't be defined otherwise. If defined, SDL's headers will redefine\n`main` to `SDL_main`.\n\nThis macro is defined by `SDL_main.h`, which is not automatically included\nby `SDL.h`.\n\nEven if required, an app can define SDL_MAIN_HANDLED and provide their\nown, if they know what they're doing.\n\nThis macro is used internally by SDL, and apps probably shouldn't rely on it.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_MAIN_NEEDED",
+          "kind": "def"
+        },
+        "SDLMAIN_DECLSPEC": {
+          "doc": "A macro to tag a main entry point function as exported.\n\nMost platforms don't need this, and the macro will be defined to nothing.\nSome, like Android, keep the entry points in a shared library and need to\nexplicitly export the symbols.\n\nExternal code rarely needs this, and if it needs something, it's almost\nalways SDL_DECLSPEC instead.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_DECLSPEC",
+          "name": "SDLMAIN_DECLSPEC",
+          "kind": "def"
+        },
+        "main": {
+          "doc": "",
+          "name": "main",
+          "kind": "def"
+        },
+        "SDL_AppInit": {
+          "doc": "App-implemented initial entry point for SDL_MAIN_USE_CALLBACKS apps.\n\nApps implement this function when using SDL_MAIN_USE_CALLBACKS. If using a\nstandard \"main\" function, you should not supply this.\n\nThis function is called by SDL once, at startup. The function should\ninitialize whatever is necessary, possibly create windows and open audio\ndevices, etc. The `argc` and `argv` parameters work like they would with a\nstandard \"main\" function.\n\nThis function should not go into an infinite mainloop; it should do any\none-time setup it requires and then return.\n\nThe app may optionally assign a pointer to `*appstate`. This pointer will\nbe provided on every future call to the other entry points, to allow\napplication state to be preserved between functions without the app needing\nto use a global variable. If this isn't set, the pointer will be NULL in\nfuture entry points.\n\nIf this function returns SDL_APP_CONTINUE, the app will proceed to normal\noperation, and will begin receiving repeated calls to SDL_AppIterate and\nSDL_AppEvent for the life of the program. If this function returns\nSDL_APP_FAILURE, SDL will call SDL_AppQuit and terminate the process with\nan exit code that reports an error to the platform. If it returns\nSDL_APP_SUCCESS, SDL calls SDL_AppQuit and terminates with an exit code\nthat reports success to the platform.\n\nThis function is called by SDL on the main thread.\n\n\\param appstate a place where the app can optionally store a pointer for\n                future use.\n\\param argc the standard ANSI C main's argc; number of elements in `argv`.\n\\param argv the standard ANSI C main's argv; array of command line\n            arguments.\n\\returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to\n         terminate with success, SDL_APP_CONTINUE to continue.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AppIterate\n\\sa SDL_AppEvent\n\\sa SDL_AppQuit",
+          "name": "SDL_AppInit",
+          "kind": "function",
+          "type": "SDLMAIN_DECLSPEC SDL_AppResult",
+          "parameters": [
+            {
+              "name": "appstate",
+              "type": "void **"
+            },
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            }
+          ]
+        },
+        "SDL_AppIterate": {
+          "doc": "App-implemented iteration entry point for SDL_MAIN_USE_CALLBACKS apps.\n\nApps implement this function when using SDL_MAIN_USE_CALLBACKS. If using a\nstandard \"main\" function, you should not supply this.\n\nThis function is called repeatedly by SDL after SDL_AppInit returns 0. The\nfunction should operate as a single iteration the program's primary loop;\nit should update whatever state it needs and draw a new frame of video,\nusually.\n\nOn some platforms, this function will be called at the refresh rate of the\ndisplay (which might change during the life of your app!). There are no\npromises made about what frequency this function might run at. You should\nuse SDL's timer functions if you need to see how much time has passed since\nthe last iteration.\n\nThere is no need to process the SDL event queue during this function; SDL\nwill send events as they arrive in SDL_AppEvent, and in most cases the\nevent queue will be empty when this function runs anyhow.\n\nThis function should not go into an infinite mainloop; it should do one\niteration of whatever the program does and return.\n\nThe `appstate` parameter is an optional pointer provided by the app during\nSDL_AppInit(). If the app never provided a pointer, this will be NULL.\n\nIf this function returns SDL_APP_CONTINUE, the app will continue normal\noperation, receiving repeated calls to SDL_AppIterate and SDL_AppEvent for\nthe life of the program. If this function returns SDL_APP_FAILURE, SDL will\ncall SDL_AppQuit and terminate the process with an exit code that reports\nan error to the platform. If it returns SDL_APP_SUCCESS, SDL calls\nSDL_AppQuit and terminates with an exit code that reports success to the\nplatform.\n\nThis function is called by SDL on the main thread.\n\n\\param appstate an optional pointer, provided by the app in SDL_AppInit.\n\\returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to\n         terminate with success, SDL_APP_CONTINUE to continue.\n\n\\threadsafety This function may get called concurrently with SDL_AppEvent()\n              for events not pushed on the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AppInit\n\\sa SDL_AppEvent",
+          "name": "SDL_AppIterate",
+          "kind": "function",
+          "type": "SDLMAIN_DECLSPEC SDL_AppResult",
+          "parameters": [
+            {
+              "name": "appstate",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_AppEvent": {
+          "doc": "App-implemented event entry point for SDL_MAIN_USE_CALLBACKS apps.\n\nApps implement this function when using SDL_MAIN_USE_CALLBACKS. If using a\nstandard \"main\" function, you should not supply this.\n\nThis function is called as needed by SDL after SDL_AppInit returns\nSDL_APP_CONTINUE. It is called once for each new event.\n\nThere is (currently) no guarantee about what thread this will be called\nfrom; whatever thread pushes an event onto SDL's queue will trigger this\nfunction. SDL is responsible for pumping the event queue between each call\nto SDL_AppIterate, so in normal operation one should only get events in a\nserial fashion, but be careful if you have a thread that explicitly calls\nSDL_PushEvent. SDL itself will push events to the queue on the main thread.\n\nEvents sent to this function are not owned by the app; if you need to save\nthe data, you should copy it.\n\nThis function should not go into an infinite mainloop; it should handle the\nprovided event appropriately and return.\n\nThe `appstate` parameter is an optional pointer provided by the app during\nSDL_AppInit(). If the app never provided a pointer, this will be NULL.\n\nIf this function returns SDL_APP_CONTINUE, the app will continue normal\noperation, receiving repeated calls to SDL_AppIterate and SDL_AppEvent for\nthe life of the program. If this function returns SDL_APP_FAILURE, SDL will\ncall SDL_AppQuit and terminate the process with an exit code that reports\nan error to the platform. If it returns SDL_APP_SUCCESS, SDL calls\nSDL_AppQuit and terminates with an exit code that reports success to the\nplatform.\n\n\\param appstate an optional pointer, provided by the app in SDL_AppInit.\n\\param event the new event for the app to examine.\n\\returns SDL_APP_FAILURE to terminate with an error, SDL_APP_SUCCESS to\n         terminate with success, SDL_APP_CONTINUE to continue.\n\n\\threadsafety This function may get called concurrently with\n              SDL_AppIterate() or SDL_AppQuit() for events not pushed from\n              the main thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AppInit\n\\sa SDL_AppIterate",
+          "name": "SDL_AppEvent",
+          "kind": "function",
+          "type": "SDLMAIN_DECLSPEC SDL_AppResult",
+          "parameters": [
+            {
+              "name": "appstate",
+              "type": "void *"
+            },
+            {
+              "name": "event",
+              "type": "SDL_Event *"
+            }
+          ]
+        },
+        "SDL_AppQuit": {
+          "doc": "App-implemented deinit entry point for SDL_MAIN_USE_CALLBACKS apps.\n\nApps implement this function when using SDL_MAIN_USE_CALLBACKS. If using a\nstandard \"main\" function, you should not supply this.\n\nThis function is called once by SDL before terminating the program.\n\nThis function will be called no matter what, even if SDL_AppInit requests\ntermination.\n\nThis function should not go into an infinite mainloop; it should\ndeinitialize any resources necessary, perform whatever shutdown activities,\nand return.\n\nYou do not need to call SDL_Quit() in this function, as SDL will call it\nafter this function returns and before the process terminates, but it is\nsafe to do so.\n\nThe `appstate` parameter is an optional pointer provided by the app during\nSDL_AppInit(). If the app never provided a pointer, this will be NULL. This\nfunction call is the last time this pointer will be provided, so any\nresources to it should be cleaned up here.\n\nThis function is called by SDL on the main thread.\n\n\\param appstate an optional pointer, provided by the app in SDL_AppInit.\n\\param result the result code that terminated the app (success or failure).\n\n\\threadsafety SDL_AppEvent() may get called concurrently with this function\n              if other threads that push events are still active.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_AppInit",
+          "name": "SDL_AppQuit",
+          "kind": "function",
+          "type": "SDLMAIN_DECLSPEC void",
+          "parameters": [
+            {
+              "name": "appstate",
+              "type": "void *"
+            },
+            {
+              "name": "result",
+              "type": "SDL_AppResult"
+            }
+          ]
+        },
+        "SDL_main_func": {
+          "doc": "The prototype for the application's main() function\n\n\\param argc an ANSI-C style main function's argc.\n\\param argv an ANSI-C style main function's argv.\n\\returns an ANSI-C main return code; generally 0 is considered successful\n         program completion, and small non-zero values are considered\n         errors.\n\n\\since This datatype is available since SDL 3.2.0.",
+          "name": "SDL_main_func",
+          "kind": "callback",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            }
+          ]
+        },
+        "SDL_main": {
+          "doc": "An app-supplied function for program entry.\n\nApps do not directly create this function; they should create a standard\nANSI-C `main` function instead. If SDL needs to insert some startup code\nbefore `main` runs, or the platform doesn't actually _use_ a function\ncalled \"main\", SDL will do some macro magic to redefine `main` to\n`SDL_main` and provide its own `main`.\n\nApps should include `SDL_main.h` in the same file as their `main` function,\nand they should not use that symbol for anything else in that file, as it\nmight get redefined.\n\nThis function is only provided by the app if it isn't using\nSDL_MAIN_USE_CALLBACKS.\n\nProgram startup is a surprisingly complex topic. Please see\n[README/main-functions](README/main-functions), (or\ndocs/README-main-functions.md in the source tree) for a more detailed\nexplanation.\n\n\\param argc an ANSI-C style main function's argc.\n\\param argv an ANSI-C style main function's argv.\n\\returns an ANSI-C main return code; generally 0 is considered successful\n         program completion, and small non-zero values are considered\n         errors.\n\n\\threadsafety This is the program entry point.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_main",
+          "kind": "function",
+          "type": "SDLMAIN_DECLSPEC int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            }
+          ]
+        },
+        "SDL_SetMainReady": {
+          "doc": "Circumvent failure of SDL_Init() when not using SDL_main() as an entry\npoint.\n\nThis function is defined in SDL_main.h, along with the preprocessor rule to\nredefine main() as SDL_main(). Thus to ensure that your main() function\nwill not be changed it is necessary to define SDL_MAIN_HANDLED before\nincluding SDL.h.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_Init",
+          "name": "SDL_SetMainReady",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        },
+        "SDL_RunApp": {
+          "doc": "Initializes and launches an SDL application, by doing platform-specific\ninitialization before calling your mainFunction and cleanups after it\nreturns, if that is needed for a specific platform, otherwise it just calls\nmainFunction.\n\nYou can use this if you want to use your own main() implementation without\nusing SDL_main (like when using SDL_MAIN_HANDLED). When using this, you do\n*not* need SDL_SetMainReady().\n\n\\param argc the argc parameter from the application's main() function, or 0\n            if the platform's main-equivalent has no argc.\n\\param argv the argv parameter from the application's main() function, or\n            NULL if the platform's main-equivalent has no argv.\n\\param mainFunction your SDL app's C-style main(). NOT the function you're\n                    calling this from! Its name doesn't matter; it doesn't\n                    literally have to be `main`.\n\\param reserved should be NULL (reserved for future use, will probably be\n                platform-specific then).\n\\returns the return value from mainFunction: 0 on success, otherwise\n         failure; SDL_GetError() might have more information on the\n         failure.\n\n\\threadsafety Generally this is called once, near startup, from the\n              process's initial thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_RunApp",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            },
+            {
+              "name": "mainFunction",
+              "type": "SDL_main_func"
+            },
+            {
+              "name": "reserved",
+              "type": "void *"
+            }
+          ]
+        },
+        "SDL_EnterAppMainCallbacks": {
+          "doc": "An entry point for SDL's use in SDL_MAIN_USE_CALLBACKS.\n\nGenerally, you should not call this function directly. This only exists to\nhand off work into SDL as soon as possible, where it has a lot more control\nand functionality available, and make the inline code in SDL_main.h as\nsmall as possible.\n\nNot all platforms use this, it's actual use is hidden in a magic\nheader-only library, and you should not call this directly unless you\n_really_ know what you're doing.\n\n\\param argc standard Unix main argc.\n\\param argv standard Unix main argv.\n\\param appinit the application's SDL_AppInit function.\n\\param appiter the application's SDL_AppIterate function.\n\\param appevent the application's SDL_AppEvent function.\n\\param appquit the application's SDL_AppQuit function.\n\\returns standard Unix main return value.\n\n\\threadsafety It is not safe to call this anywhere except as the only\n              function call in SDL_main.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_EnterAppMainCallbacks",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "argc",
+              "type": "int"
+            },
+            {
+              "name": "argv[]",
+              "type": "char *"
+            },
+            {
+              "name": "appinit",
+              "type": "SDL_AppInit_func"
+            },
+            {
+              "name": "appiter",
+              "type": "SDL_AppIterate_func"
+            },
+            {
+              "name": "appevent",
+              "type": "SDL_AppEvent_func"
+            },
+            {
+              "name": "appquit",
+              "type": "SDL_AppQuit_func"
+            }
+          ]
+        },
+        "SDL_GDKSuspendComplete": {
+          "doc": "Callback from the application to let the suspend continue.\n\nThis function is only needed for Xbox GDK support; all other platforms will\ndo nothing and set an \"unsupported\" error message.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_GDKSuspendComplete",
+          "kind": "function",
+          "type": "void",
+          "parameters": []
+        }
+      }
+    },
     "SDL_image.h": {
       "name": "SDL_image.h",
       "doc": "# CategorySDLImage\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",
