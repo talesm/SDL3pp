@@ -110,8 +110,10 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
           entry.entries = {};
           for (const value of member.enumvalue ?? []) {
             const name = value.name[0].trim();
+            const briefDoc = value.briefdescription?.[0]?.para?.join("\n\n") ?? "";
+            const detailDoc = value.detaileddescription?.[0]?.para?.join("\n\n") ?? "";
             entry.entries[name] = {
-              doc: value.briefdescription?.[0]?.para?.join("\n\n") ?? "",
+              doc: (briefDoc + " " + detailDoc).trim(),
               name,
               kind: "var",
               type: ""
@@ -163,7 +165,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
           // if (member.type[0].startsWith("SDL_FORCE_INLINE")) entry.constexpr = true;
           const definition = member.definition[0];
           entry.type = normalizeType(definition.slice(0, definition.length - name.length - 1));
-          entry.static = member.$.static === 'yes';
+          if (member.$.static === 'yes') entry.static = true;
           const argsstring = member.argsstring[0];
           const params = argsstring.slice(1, argsstring.length - 1);
           entry.parameters = parseParams(params);
@@ -196,7 +198,7 @@ function parseXmlStruct(members, sourceContent) {
       doc,
       name,
       kind: "var",
-      type,
+      type: typeof type === "string" ? type : type.ref?.[0]?._,
       decl: +location.line,
     };
     return entry;
@@ -247,11 +249,7 @@ function stringLocation(location) {
  */
 function unwrapDoc(content, location) {
   const startIndex = location.line - 1;
-  if (location.bodyend == -1) {
-    const m = /\/\*\*<(.*)\*\//.exec(content[startIndex]);
-    if (m) return m[1].trim();
-  }
-  if (content[startIndex - 1].endsWith('*/')) {
+  if (content[startIndex - 1].trim() === '*/') {
     const doc = [];
     for (let i = startIndex - 2; i > 0; --i) {
       const line = content[i];
@@ -263,6 +261,10 @@ function unwrapDoc(content, location) {
       doc.unshift(normalizeDocLine(line));
     }
     return doc.join('\n').trim();
+  }
+  if (location.bodyend == -1) {
+    const m = /\/\*\*<(.*)\*\//.exec(content[startIndex]);
+    if (m) return m[1].trim();
   }
   return "";
 }

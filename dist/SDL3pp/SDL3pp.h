@@ -3046,68 +3046,6 @@ inline char* ultoa(unsigned long value, char* str, int radix)
 }
 
 /**
- * Convert a long long integer into a string.
- *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
- * to 36.
- *
- * Note that this function will overflow a buffer if `str` is not large enough
- * to hold the output! It may be safer to use SDL_snprintf to clamp output, or
- * SDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget possible negative
- * signs, null terminator bytes, etc).
- *
- * @param value the long long integer to convert.
- * @param str the buffer to write the string into.
- * @param radix the radix to use for string generation.
- * @returns `str`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_ulltoa
- * @sa SDL_itoa
- * @sa SDL_ltoa
- **/
-inline char* lltoa(long long value, char* str, int radix)
-{
-  return SDL_lltoa(value, str, radix);
-}
-
-/**
- * Convert an unsigned long long integer into a string.
- *
- * This requires a radix to specified for string format. Specifying 10
- * produces a decimal number, 16 hexidecimal, etc. Must be in the range of 2
- * to 36.
- *
- * Note that this function will overflow a buffer if `str` is not large enough
- * to hold the output! It may be safer to use SDL_snprintf to clamp output, or
- * SDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate
- * much more space than you expect to use (and don't forget null terminator
- * bytes, etc).
- *
- * @param value the unsigned long long integer to convert.
- * @param str the buffer to write the string into.
- * @param radix the radix to use for string generation.
- * @returns `str`.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_lltoa
- * @sa SDL_uitoa
- * @sa SDL_ultoa
- **/
-inline char* ulltoa(unsigned long long value, char* str, int radix)
-{
-  return SDL_ulltoa(value, str, radix);
-}
-
-/**
  * Parse an `int` from a string.
  *
  * The result of calling `SDL_atoi(str)` is equivalent to
@@ -3223,79 +3161,6 @@ inline long strtol(StringParam str, char** endp, int base)
 inline unsigned long strtoul(StringParam str, char** endp, int base)
 {
   return SDL_strtoul(str, endp, base);
-}
-
-/**
- * Parse a `long long` from a string.
- *
- * If `str` starts with whitespace, then those whitespace characters are
- * skipped before attempting to parse the number.
- *
- * If the parsed number does not fit inside a `long long`, the result is
- * clamped to the minimum and maximum representable `long long` values.
- *
- * @param str The null-terminated string to read. Must not be NULL.
- * @param endp If not NULL, the address of the first invalid character (i.e.
- *             the next character after the parsed number) will be written to
- *             this pointer.
- * @param base The base of the integer to read. Supported values are 0 and 2
- *             to 36 inclusive. If 0, the base will be inferred from the
- *             number's prefix (0x for hexadecimal, 0 for octal, decimal
- *             otherwise).
- * @returns the parsed `long long`, or 0 if no number could be parsed.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_atoi
- * @sa SDL_atof
- * @sa SDL_strtol
- * @sa SDL_strtoul
- * @sa SDL_strtoull
- * @sa SDL_strtod
- * @sa SDL_lltoa
- **/
-inline long long strtoll(StringParam str, char** endp, int base)
-{
-  return SDL_strtoll(str, endp, base);
-}
-
-/**
- * Parse an `unsigned long long` from a string.
- *
- * If `str` starts with whitespace, then those whitespace characters are
- * skipped before attempting to parse the number.
- *
- * If the parsed number does not fit inside an `unsigned long long`, the
- * result is clamped to the maximum representable `unsigned long long` value.
- *
- * @param str The null-terminated string to read. Must not be NULL.
- * @param endp If not NULL, the address of the first invalid character (i.e.
- *             the next character after the parsed number) will be written to
- *             this pointer.
- * @param base The base of the integer to read. Supported values are 0 and 2
- *             to 36 inclusive. If 0, the base will be inferred from the
- *             number's prefix (0x for hexadecimal, 0 for octal, decimal
- *             otherwise).
- * @returns the parsed `unsigned long long`, or 0 if no number could be
- *          parsed.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa SDL_atoi
- * @sa SDL_atof
- * @sa SDL_strtol
- * @sa SDL_strtoll
- * @sa SDL_strtoul
- * @sa SDL_strtod
- * @sa SDL_ulltoa
- **/
-inline unsigned long long strtoull(StringParam str, char** endp, int base)
-{
-  return SDL_strtoull(str, endp, base);
 }
 
 /**
@@ -21007,18 +20872,48 @@ constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST;
  */
 constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT;
 
+/**
+ * The application is being terminated by the OS.  This event must be handled in
+ * a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationWillTerminate() Called on Android in onDestroy()
+ */
 constexpr EventType EVENT_TERMINATING = SDL_EVENT_TERMINATING;
 
+/**
+ * The application is low on memory, free memory if possible.  This event must
+ * be handled in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
+ */
 constexpr EventType EVENT_LOW_MEMORY = SDL_EVENT_LOW_MEMORY;
 
+/**
+ * The application is about to enter the background.  This event must be handled
+ * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationWillResignActive() Called on Android in onPause()
+ */
 constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
   SDL_EVENT_WILL_ENTER_BACKGROUND;
 
+/**
+ * The application did enter the background and may not get CPU for some time.
+ * This event must be handled in a callback set with SDL_AddEventWatch(). Called
+ * on iOS in applicationDidEnterBackground() Called on Android in onPause()
+ */
 constexpr EventType EVENT_DID_ENTER_BACKGROUND = SDL_EVENT_DID_ENTER_BACKGROUND;
 
+/**
+ * The application is about to enter the foreground.  This event must be handled
+ * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationWillEnterForeground() Called on Android in onResume()
+ */
 constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
   SDL_EVENT_WILL_ENTER_FOREGROUND;
 
+/**
+ * The application is now interactive.  This event must be handled in a callback
+ * set with SDL_AddEventWatch(). Called on iOS in applicationDidBecomeActive()
+ * Called on Android in onResume()
+ */
 constexpr EventType EVENT_DID_ENTER_FOREGROUND = SDL_EVENT_DID_ENTER_FOREGROUND;
 
 /**
@@ -21198,6 +21093,13 @@ constexpr EventType EVENT_WINDOW_ENTER_FULLSCREEN =
 constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
   SDL_EVENT_WINDOW_LEAVE_FULLSCREEN;
 
+/**
+ * The window with the associated ID is being or has been destroyed.  If this
+ * message is being handled in an event watcher, the window handle is still
+ * valid and can still be used to retrieve any properties associated with the
+ * window. Otherwise, the handle has already been destroyed and all resources
+ * associated with it are invalid
+ */
 constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 
 /**
@@ -21230,6 +21132,10 @@ constexpr EventType EVENT_TEXT_EDITING = SDL_EVENT_TEXT_EDITING;
  */
 constexpr EventType EVENT_TEXT_INPUT = SDL_EVENT_TEXT_INPUT;
 
+/**
+ * Keymap changed due to a system event such as an input language or keyboard
+ * layout change.
+ */
 constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
 
 /**
@@ -28172,6 +28078,13 @@ inline void GetHarfBuzzVersion(int* major, int* minor, int* patch)
 }
 
 /**
+ * Internal data for TTF_Text
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ */
+using TextData = TTF_TextData;
+
+/**
  * The internal structure containing font information.
  *
  * @cat resource
@@ -29725,6 +29638,24 @@ struct FontBase : T
  */
 inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
 
+/**
+ * A text engine used to create text objects.
+ *
+ * This is a public interface that can be used by applications and libraries
+ * to perform customize rendering with text objects. See
+ * <SDL3_ttf/SDL_textengine.h> for details.
+ *
+ * There are three text engines provided with the library:
+ *
+ * - Drawing to an SDL_Surface, created with TTF_CreateSurfaceTextEngine()
+ * - Drawing with an SDL 2D renderer, created with
+ *   TTF_CreateRendererTextEngine()
+ * - Drawing with the SDL GPU API, created with TTF_CreateGPUTextEngine()
+ *
+ * @since This struct is available since SDL_ttf 3.0.0.
+ */
+using TextEngine = TTF_TextEngine;
+
 constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
 
 /**
@@ -29767,22 +29698,22 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
 constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID;
 
 /**
- * Left to Right
+ * Left to Right.
  */
 constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR;
 
 /**
- * Right to Left
+ * Right to Left.
  */
 constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL;
 
 /**
- * Top to Bottom
+ * Top to Bottom.
  */
 constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB;
 
 /**
- * Bottom to Top
+ * Bottom to Top.
  */
 constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT;
 
@@ -29826,37 +29757,19 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
 constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID;
 
 /**
- * The color channels are white
+ * The color channels are white.
  */
 constexpr ImageType IMAGE_ALPHA = TTF_IMAGE_ALPHA;
 
 /**
- * The color channels have image data
+ * The color channels have image data.
  */
 constexpr ImageType IMAGE_COLOR = TTF_IMAGE_COLOR;
 
 /**
- * The alpha channel has signed distance field information
+ * The alpha channel has signed distance field information.
  */
 constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
-
-/**
- * A text engine used to create text objects.
- *
- * This is a public interface that can be used by applications and libraries
- * to perform customize rendering with text objects. See
- * <SDL3_ttf/SDL_textengine.h> for details.
- *
- * There are three text engines provided with the library:
- *
- * - Drawing to an SDL_Surface, created with TTF_CreateSurfaceTextEngine()
- * - Drawing with an SDL 2D renderer, created with
- *   TTF_CreateRendererTextEngine()
- * - Drawing with the SDL GPU API, created with TTF_CreateGPUTextEngine()
- *
- * @since This struct is available since SDL_ttf 3.0.0.
- */
-using TextEngine = TTF_TextEngine;
 
 /**
  * Internal data for TTF_Text

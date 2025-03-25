@@ -1,7 +1,7 @@
 var searchData=
 [
   ['text_0',['Text',['../group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9',1,'SDL']]],
-  ['textdata_1',['TextData',['../group__CategorySDLTTF.html#gacdab2afd1ce45f6a6326400051ce4779',1,'SDL']]],
+  ['textdata_1',['TextData',['../group__CategorySDLTTF.html#gac1958d6d930069b6c6b22753620e390d',1,'SDL']]],
   ['texteditingcandidatesevent_2',['TextEditingCandidatesEvent',['../group__CategoryEvents.html#gaa26d4fc42ea136ac94ddc5d5f9d2698b',1,'SDL']]],
   ['texteditingevent_3',['TextEditingEvent',['../group__CategoryEvents.html#ga928bb11f8839819f01e2b1e866795e8d',1,'SDL']]],
   ['textengine_4',['TextEngine',['../group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e',1,'SDL']]],

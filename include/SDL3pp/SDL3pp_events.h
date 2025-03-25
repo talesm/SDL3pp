@@ -69,18 +69,48 @@ constexpr EventType EVENT_FIRST = SDL_EVENT_FIRST;
  */
 constexpr EventType EVENT_QUIT = SDL_EVENT_QUIT;
 
+/**
+ * The application is being terminated by the OS.  This event must be handled in
+ * a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationWillTerminate() Called on Android in onDestroy()
+ */
 constexpr EventType EVENT_TERMINATING = SDL_EVENT_TERMINATING;
 
+/**
+ * The application is low on memory, free memory if possible.  This event must
+ * be handled in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationDidReceiveMemoryWarning() Called on Android in onTrimMemory()
+ */
 constexpr EventType EVENT_LOW_MEMORY = SDL_EVENT_LOW_MEMORY;
 
+/**
+ * The application is about to enter the background.  This event must be handled
+ * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationWillResignActive() Called on Android in onPause()
+ */
 constexpr EventType EVENT_WILL_ENTER_BACKGROUND =
   SDL_EVENT_WILL_ENTER_BACKGROUND;
 
+/**
+ * The application did enter the background and may not get CPU for some time.
+ * This event must be handled in a callback set with SDL_AddEventWatch(). Called
+ * on iOS in applicationDidEnterBackground() Called on Android in onPause()
+ */
 constexpr EventType EVENT_DID_ENTER_BACKGROUND = SDL_EVENT_DID_ENTER_BACKGROUND;
 
+/**
+ * The application is about to enter the foreground.  This event must be handled
+ * in a callback set with SDL_AddEventWatch(). Called on iOS in
+ * applicationWillEnterForeground() Called on Android in onResume()
+ */
 constexpr EventType EVENT_WILL_ENTER_FOREGROUND =
   SDL_EVENT_WILL_ENTER_FOREGROUND;
 
+/**
+ * The application is now interactive.  This event must be handled in a callback
+ * set with SDL_AddEventWatch(). Called on iOS in applicationDidBecomeActive()
+ * Called on Android in onResume()
+ */
 constexpr EventType EVENT_DID_ENTER_FOREGROUND = SDL_EVENT_DID_ENTER_FOREGROUND;
 
 /**
@@ -260,6 +290,13 @@ constexpr EventType EVENT_WINDOW_ENTER_FULLSCREEN =
 constexpr EventType EVENT_WINDOW_LEAVE_FULLSCREEN =
   SDL_EVENT_WINDOW_LEAVE_FULLSCREEN;
 
+/**
+ * The window with the associated ID is being or has been destroyed.  If this
+ * message is being handled in an event watcher, the window handle is still
+ * valid and can still be used to retrieve any properties associated with the
+ * window. Otherwise, the handle has already been destroyed and all resources
+ * associated with it are invalid
+ */
 constexpr EventType EVENT_WINDOW_DESTROYED = SDL_EVENT_WINDOW_DESTROYED;
 
 /**
@@ -292,6 +329,10 @@ constexpr EventType EVENT_TEXT_EDITING = SDL_EVENT_TEXT_EDITING;
  */
 constexpr EventType EVENT_TEXT_INPUT = SDL_EVENT_TEXT_INPUT;
 
+/**
+ * Keymap changed due to a system event such as an input language or keyboard
+ * layout change.
+ */
 constexpr EventType EVENT_KEYMAP_CHANGED = SDL_EVENT_KEYMAP_CHANGED;
 
 /**
