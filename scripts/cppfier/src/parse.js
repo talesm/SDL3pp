@@ -381,4 +381,5 @@ function normalizeType(typeString) {
 exports.parseApi = parseApi;
 exports.parseContent = parseContent;
 exports.insertEntry = insertEntry;
+exports.readContent = readContent;
 exports.removeEntryLineNumbers = removeEntryLineNumbers;

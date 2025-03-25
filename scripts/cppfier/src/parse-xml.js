@@ -2,6 +2,7 @@ const { parseStringPromise } = require("xml2js");
 const { system } = require("./utils");
 const { existsSync } = require("fs");
 const { readFile } = require("fs/promises");
+const { readContent } = require("./parse");
 
 /**
  * @typedef {object} ParseXmlConfig
@@ -59,20 +60,20 @@ async function parseXmlFile(name, config = {}) {
 /**
  * 
  * @param {string} name 
- * @param {string} content 
+ * @param {string} xmlContent 
  * @param {string} xmlDir 
  * @param {ParseXmlContentConfig} config 
  * @returns 
  */
-async function parseXmlContent(name, content, xmlDir, config) {
+async function parseXmlContent(name, xmlContent, xmlDir, config) {
   /** @type {ApiFile} */
   const apiFile = {
     name,
     doc: '',
     entries: {},
   };
-  const xmlObj = await parseStringPromise(content, {});
-  const contentLines = content.split('\n');
+  const xmlObj = await parseStringPromise(xmlContent, {});
+  const sourceContent = readContent(name, config.baseDir ?? []);
   system.log(`Reading ${name}`);
   const sections = xmlObj.doxygen?.compounddef?.[0]?.sectiondef || [];
   /** @type {ApiEntry[]} */
@@ -82,7 +83,7 @@ async function parseXmlContent(name, content, xmlDir, config) {
       const name = member.name[0];
       const kind = member.$.kind;
       const location = member.location[0].$;
-      const doc = unwrapDoc(contentLines, location);
+      const doc = unwrapDoc(sourceContent, location);
       /** @type {ApiEntry} */
       const entry = {
         doc,
