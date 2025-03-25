@@ -57,6 +57,10 @@ async function parseXmlFile(name, config = {}) {
  * @prop {string[]=} baseDir
  */
 
+const nameBlacklist = new Set([
+  "SDL_COMPILE_TIME_ASSERT",
+]);
+
 /**
  * 
  * @param {string} name 
@@ -81,6 +85,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
   for (const section of sections) {
     for (const member of section.memberdef) {
       const name = member.name[0];
+      if (nameBlacklist.has(name)) continue;
       const kind = member.$.kind;
       const location = member.location[0].$;
       const doc = unwrapDoc(sourceContent, location);
@@ -92,7 +97,14 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
         decl: +location.line,
       };
       switch (kind) {
-        case "define": break;
+        case "define": {
+          const params = member.param;
+          if (params?.length) {
+            entry.parameters = params.map(p => p.defname?.[0]);
+            if (entry.parameters.length === 1 && !entry.parameters[0]) delete entry.parameters;
+          }
+          break;
+        }
         case "enum": {
           entry.kind = "enum";
           entry.entries = {};
@@ -110,7 +122,6 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
         case "typedef": {
           entry.kind = "alias";
           const type = member.type?.[0];
-          // if (name == "SDL_Event") console.log(member);
           if (type) {
             if (typeof type != "string") {
               const typeString = type._ ?? "";
@@ -150,7 +161,8 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
         case "function": {
           entry.kind = "function";
           // if (member.type[0].startsWith("SDL_FORCE_INLINE")) entry.constexpr = true;
-          entry.type = normalizeType(member.type[0]); // TODO Remove SDL_DECLSPEC
+          const definition = member.definition[0];
+          entry.type = normalizeType(definition.slice(0, definition.length - name.length - 1));
           entry.static = member.$.static === 'yes';
           const argsstring = member.argsstring[0];
           const params = argsstring.slice(1, argsstring.length - 1);
