@@ -72,19 +72,22 @@ async function parseXmlContent(name, content, baseDir, config) {
     entries: {},
   };
   const xmlObj = await parseStringPromise(content, {});
+  const contentLines = content.split('\n');
   system.log(`Reading ${name}`);
   const sections = xmlObj.doxygen?.compounddef?.[0]?.sectiondef || [];
   /** @type {ApiEntry[]} */
   const entriesArray = [];
   for (const section of sections) {
     for (const member of section.memberdef) {
-      const kind = member.$.kind;
       const name = member.name[0];
+      const kind = member.$.kind;
       const location = member.location[0].$;
+      const doc = unwrapDoc(contentLines, location);
       /** @type {ApiEntry} */
       const entry = {
-        kind: "def",
+        doc,
         name,
+        kind: "def",
         decl: +location.line,
       };
       switch (kind) {
@@ -97,9 +100,9 @@ async function parseXmlContent(name, content, baseDir, config) {
           break;
         case "function":
           entry.kind = "function";
-          entry.type = member.type[0]; // TODO Remove SDL_DECLSPEC
+          entry.type = normalizeType(member.type[0]); // TODO Remove SDL_DECLSPEC
           entry.static = member.$.static === 'yes';
-          entry.parameters = member.argsstring[0] === "(void)" ? [] : member.param.map(p => ({ type: p.type.join(" "), name: p.declname.join(" ") }));
+          entry.parameters = member.argsstring[0] === "(void)" ? [] : member.param.map(p => ({ type: normalizeType(p.type.join(" ")), name: p.declname.join(" ") }));
           break;
         default:
           system.warn(`Error at ${stringLocation(location)}: Unknown kind for ${name} (${kind})`);
@@ -123,6 +126,17 @@ async function parseXmlContent(name, content, baseDir, config) {
  */
 function stringLocation(location) {
   return `${location?.file ?? "Unknown"}:${location?.line ?? 0}`;
+}
+
+
+/** @param {string} typeString  */
+function normalizeType(typeString) {
+  if (!typeString) return "";
+  return typeString
+    .replace(/SDL_DECLSPEC|SDLCALL/g, "")
+    .replace(/(\w+)\s*([&*])/g, "$1 $2")
+    .replace(/(\w+)\s+(\w+)/g, "$1 $2")
+    .replace(/([*&])\s+(&*)/g, "$1$2").trim();
 }
 
 exports.parseXmlApi = parseXmlApi;
