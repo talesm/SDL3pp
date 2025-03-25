@@ -32,6 +32,6 @@ var searchData=
   ['blituncheckedscaled_29',['BlitUncheckedScaled',['../structSDL_1_1SurfaceBase.html#a179d7007783477815fd684f5ea6ef301',1,'SDL::SurfaceBase']]],
   ['bsearch_30',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
   ['bsearch_5fr_31',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
-  ['building_32',['building',['../index.html#building',1,'Building'],['../sdl3pp.html#building-1',1,'Building']]],
+  ['building_32',['Building',['../index.html#building',1,'']]],
   ['by_20category_33',['API by Category',['../ApiByCategory.html',1,'']]]
 ];

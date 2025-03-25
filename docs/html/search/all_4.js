@@ -23,7 +23,7 @@ var searchData=
   ['displaymode_20',['DisplayMode',['../group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a',1,'SDL']]],
   ['displaymodedata_21',['DisplayModeData',['../group__CategoryVideo.html#ga767d0eff87f8af9d61ac0624d582c78c',1,'SDL']]],
   ['displayorientation_22',['DisplayOrientation',['../group__CategoryVideo.html#ga0576b193a1d4adcb648fc1242fbc5cb8',1,'SDL']]],
-  ['documentation_23',['documentation',['../sdl3pp.html#documentation-1',1,'Documentation'],['../index.html#documentation',1,'Documentation']]],
+  ['documentation_23',['Documentation',['../index.html#documentation',1,'']]],
   ['drawing_24',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['drawrenderertext_25',['DrawRendererText',['../group__CategorySDLTTF.html#gad1a57f4997961c4eb32f3240716e2fa5',1,'SDL']]],
   ['drawsurfacetext_26',['DrawSurfaceText',['../group__CategorySDLTTF.html#gad858a328962f07805863c4d0b5089369',1,'SDL']]],

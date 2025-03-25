@@ -12,7 +12,7 @@ var searchData=
   ['images_20from_20several_20formats_9',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
   ['imagetype_10',['ImageType',['../group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8',1,'SDL']]],
   ['img_5fversion_11',['IMG_Version',['../group__CategorySDLImage.html#ga1e0107db9eb6bcb7870bb7863a82c89b',1,'SDL']]],
-  ['immediate_20callback_12',['immediate callback',['../callback.html#immediate-callback',1,'Immediate callback'],['../todo.html#_todo000001',1,'Immediate callback']]],
+  ['immediate_20callback_12',['immediate callback',['../callback.html#immediate-callback',1,'Immediate callback'],['../todo.html#_todo000002',1,'Immediate callback']]],
   ['info_13',['Locale Info',['../group__CategoryLocale.html',1,'']]],
   ['init_5faudio_14',['INIT_AUDIO',['../group__CategoryInit.html#ga65bdd3a913bd08eea41fd70fb49e5079',1,'SDL']]],
   ['init_5fcamera_15',['INIT_CAMERA',['../group__CategoryInit.html#gaecde345a1ce196a269e1f25c70b9878a',1,'SDL']]],
