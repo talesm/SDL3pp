@@ -159,9 +159,33 @@ inline void GDKSuspendComplete() { return SDL_GDKSuspendComplete(); }
 
 /// @}
 
+#ifdef SDL3PP_MAIN_USE_THIS_CLASS
+template<class T>
+concept AppClass = requires(T& app, const Event& event) {
+  { app.Iterate() } -> std::convertible_to<AppResult>;
+  { app.Event(event) } -> std::convertible_to<AppResult>;
+};
+
+template<class T>
+concept AppClassWithQuit = AppClass<T> && requires(T& app, AppResult result) {
+  { app.Quit(result) };
+};
+
+namespace detail {
+
+void AppQuit(AppClass auto& app, AppResult) {}
+void AppQuit(AppClassWithQuit auto& app, AppResult result) { app.Quit(result); }
+
+} // namespace detail
+
+#endif // SDL3PP_MAIN_USE_THIS_CLASS
+
 } // namespace SDL
 
 #ifdef SDL3PP_MAIN_USE_THIS_CLASS
+
+static_assert(SDL::AppClass<SDL3PP_MAIN_USE_THIS_CLASS>,
+              "Main class not compatible");
 
 #define SDL3PP_APP_CLASS SDL3PP_MAIN_USE_THIS_CLASS
 
@@ -206,7 +230,7 @@ inline void SDL_AppQuit(void* appstate, SDL::AppResult result)
 {
   try {
     auto* state = static_cast<SDL3PP_APP_CLASS*>(appstate);
-    state->Quit(result);
+    if (state != nullptr) SDL::detail::AppQuit(*state, result);
     delete state;
   } catch (std::exception& e) {
     SDL::Log("Fatal Error: {}", e.what());

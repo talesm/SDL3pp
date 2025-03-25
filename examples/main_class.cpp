@@ -57,7 +57,7 @@ struct Main
     return SDL::APP_CONTINUE;
   }
 
-  void Quit(SDL::AppResult) {}
+  void Quit(SDL::AppResult) { SDL::Log("Bye"); }
 };
 
 #define SDL3PP_MAIN_USE_THIS_CLASS Main
