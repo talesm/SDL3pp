@@ -67,7 +67,7 @@ async function parseXmlFile(name, config = {}) {
  */
 async function parseXmlContent(name, xmlContent, xmlDir, config) {
   system.log(`Reading ${name}`);
-  const xmlObj = await parseStringPromise(xmlContent, {});
+  const xmlObj = await parseStringPromise(xmlContent);
   const sourceContent = readContent(name, config.baseDir ?? []);
   /** @type {ApiFile} */
   const apiFile = {
@@ -111,17 +111,30 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
           entry.kind = "alias";
           const type = member.type?.[0];
           if (type) {
-            const argsstring = member.argsstring?.[0];
-            if (type.startsWith("enum")) {
-              // TODO check if enum already present
-              continue;
-            } else if (argsstring) {
-              entry.kind = "callback";
-              entry.type = normalizeType(type.slice(0, type.indexOf('(')));
-              const params = argsstring.slice(2, argsstring.length - 1);
-              entry.parameters = parseParams(params);
+            if (typeof type != "string") {
+              if (type._?.startsWith('struct')) {
+                entry.kind = "struct";
+                const structXml = await loadStructXml(name, xmlDir);
+                const location = structXml.location[0]?.$;
+                entry.doc = unwrapDoc(sourceContent, location);
+                entry.decl = +location.line;
+                entry.entries = parseXmlStruct(structXml.sectiondef[0].memberdef, sourceContent);
+              } else {
+                system.warn(`At ${stringLocation(location)}: could not parse type from ${name}`, type);
+              }
             } else {
-              entry.type = type;
+              const argsstring = member.argsstring?.[0];
+              if (type.startsWith("enum")) {
+                // TODO check if enum already present
+                continue;
+              } else if (argsstring) {
+                entry.kind = "callback";
+                entry.type = normalizeType(type.slice(0, type.indexOf('(')));
+                const params = argsstring.slice(2, argsstring.length - 1);
+                entry.parameters = parseParams(params);
+              } else {
+                entry.type = type;
+              }
             }
           }
           break;
@@ -139,12 +152,58 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
       entriesArray.push(entry);
     }
   }
+  sortAndAddEntries(entriesArray, apiFile.entries);
+  return apiFile;
+}
+
+/**
+ * 
+ * @param {*}         members 
+ * @param {string[]}  sourceContent 
+ */
+function parseXmlStruct(members, sourceContent) {
+  /** @type {ApiEntry[]} */
+  const entriesArray = members.map(member => {
+    const name = member.name[0];
+    const location = member.location[0].$;
+    const doc = unwrapDoc(sourceContent, location);
+    const type = member.type[0];
+    const entry = {
+      doc,
+      name,
+      kind: "var",
+      type,
+      decl: +location.line,
+    };
+    return entry;
+  });
+  return sortAndAddEntries(entriesArray);
+}
+
+/**
+ * 
+ * @param {ApiEntry[]} entriesArray 
+ * @param {ApiEntries} entries 
+ * @returns 
+ */
+function sortAndAddEntries(entriesArray, entries = {}) {
   entriesArray.sort((a, b) => a.decl - b.decl).forEach(e => {
-    apiFile.entries[e.name] = e;
+    entries[e.name] = e;
     delete e.decl;
   });
+  return entries;
+}
 
-  return apiFile;
+/**
+ * 
+ * @param {string} name 
+ * @param {string} dir 
+ */
+async function loadStructXml(name, dir) {
+  const filename = `${dir}struct${name.replace(/_/g, "__")}.xml`;
+  const content = await readFile(filename, "utf-8");
+  const xml = await parseStringPromise(content);;
+  return xml.doxygen.compounddef[0];
 }
 
 /**
