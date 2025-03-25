@@ -5,9 +5,9 @@ const { readFile } = require("fs/promises");
 
 /**
  * @typedef {object} ParseXmlConfig
+ * @prop {string[]} xmlDir
  * @prop {string[]} baseDir
  * @prop {string[]} sources
- * @prop {boolean=} storeLineNumbers
  */
 
 /**
@@ -26,8 +26,8 @@ async function parseXmlApi(config) {
 
 /**
  * @typedef {object} ParseXmlFileConfig
+ * @prop {string[]=} xmlDir
  * @prop {string[]=} baseDir
- * @prop {boolean=} storeLineNumbers
  */
 
 /**
@@ -36,15 +36,15 @@ async function parseXmlApi(config) {
  * @param {ParseXmlFileConfig} config 
  */
 async function parseXmlFile(name, config = {}) {
-  const baseDirs = config?.baseDir ?? ["./"];
+  const xmlDirs = config?.xmlDir ?? ["./"];
   const mangledName = name.replace(/_/g, '__').replace(/\./g, '_8') + ".xml";
 
-  for (const dir of baseDirs) {
-    const baseDir = dir.endsWith('/') ? dir : dir + "/";
-    const candidate = baseDir + mangledName;
+  for (const dir of xmlDirs) {
+    const xmlDir = dir.endsWith('/') ? dir : dir + "/";
+    const candidate = xmlDir + mangledName;
     if (existsSync(candidate)) {
       const content = await readFile(candidate, "utf-8");
-      return parseXmlContent(name, content, baseDir, config);
+      return parseXmlContent(name, content, xmlDir, config);
     }
   }
   throw new Error(`Could not find ${name}`);
@@ -53,18 +53,18 @@ async function parseXmlFile(name, config = {}) {
 
 /**
  * @typedef {object} ParseXmlContentConfig
- * @prop {boolean=} storeLineNumbers
+ * @prop {string[]=} baseDir
  */
 
 /**
  * 
  * @param {string} name 
  * @param {string} content 
- * @param {string} baseDir 
+ * @param {string} xmlDir 
  * @param {ParseXmlContentConfig} config 
  * @returns 
  */
-async function parseXmlContent(name, content, baseDir, config) {
+async function parseXmlContent(name, content, xmlDir, config) {
   /** @type {ApiFile} */
   const apiFile = {
     name,

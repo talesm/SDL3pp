@@ -148,6 +148,7 @@ async function parseXML(args) {
     outputFile: "",
     /** @type {*} */
     api: null,
+    xmlDir: [],
     baseDir: [],
   };
   let printConfig = false;
@@ -167,6 +168,8 @@ async function parseXML(args) {
     switch (arg) {
       case '--outputFile':
       case '-o': config.outputFile = args[++i].replaceAll("\\", '/'); break;
+      case '--xmlDir':
+      case '-x': config.xmlDir.push(args[++i].replaceAll("\\", '/')); break;
       case '--baseDir':
       case '-d': config.baseDir.push(args[++i].replaceAll("\\", '/')); break;
       case '--config':
