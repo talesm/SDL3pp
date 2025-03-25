@@ -3,9 +3,12 @@
 
 #include "SDL3pp.h"
 
-#ifdef SDL3PP_MAIN_USE_CALLBACKS
+#if defined(SDL3PP_MAIN_USE_CALLBACKS) || defined(SDL3PP_MAIN_USE_THIS_CLASS)
 #define SDL_MAIN_USE_CALLBACKS
-#endif // SDL3PP_MAIN_USE_CALLBACKS
+#ifdef SDL3PP_MAIN_USE_THIS_CLASS
+#include <stdexcept>
+#endif // SDL3PP_MAIN_USE_THIS_CLASS
+#endif
 
 #include <SDL3/SDL_main.h>
 
@@ -157,5 +160,60 @@ inline void GDKSuspendComplete() { return SDL_GDKSuspendComplete(); }
 /// @}
 
 } // namespace SDL
+
+#ifdef SDL3PP_MAIN_USE_THIS_CLASS
+
+#define SDL3PP_APP_CLASS SDL3PP_MAIN_USE_THIS_CLASS
+
+inline SDL::AppResult SDL_AppInit(void** appstate, int argc, char* argv[])
+{
+  try {
+    auto* state = new SDL3PP_APP_CLASS{argc, argv};
+    *appstate = state;
+    return state->Init(argc, argv);
+  } catch (std::exception& e) {
+    SDL::Log("Fatal Error: {}", e.what());
+  } catch (...) {
+  }
+  return SDL::APP_FAILURE;
+}
+
+inline SDL::AppResult SDL_AppIterate(void* appstate)
+{
+  try {
+    auto* state = static_cast<SDL3PP_APP_CLASS*>(appstate);
+    return state->Iterate();
+  } catch (std::exception& e) {
+    SDL::Log("Fatal Error: {}", e.what());
+  } catch (...) {
+  }
+  return SDL::APP_FAILURE;
+}
+
+inline SDL::AppResult SDL_AppEvent(void* appstate, SDL::Event* event)
+{
+  try {
+    auto* state = static_cast<SDL3PP_APP_CLASS*>(appstate);
+    return state->Event(*event);
+  } catch (std::exception& e) {
+    SDL::Log("Fatal Error: {}", e.what());
+  } catch (...) {
+  }
+  return SDL::APP_FAILURE;
+}
+
+inline void SDL_AppQuit(void* appstate, SDL::AppResult result)
+{
+  try {
+    auto* state = static_cast<SDL3PP_APP_CLASS*>(appstate);
+    state->Quit(result);
+    delete state;
+  } catch (std::exception& e) {
+    SDL::Log("Fatal Error: {}", e.what());
+  } catch (...) {
+  }
+}
+#undef SDL3PP_APP_CLASS
+#endif // SDL3PP_MAIN_USE_THIS_CLASS
 
 #endif /* SDL3PP_MAIN_H_ */
