@@ -107,14 +107,9 @@ export interface ApiResource extends ApiEntryTransform {
   type?: string;
 
   /**
-   * The Reference type. Defaults to _name_`<ObjectRef<`_type_`>>`
+   * The type of pointer. Defaults to _type_`*`
    */
-  refType?: string;
-
-  /**
-   * The Unique type. Defaults to _name_`<ObjectUnique<`_type_`>>`
-   */
-  uniqueType?: string;
+  pointerType?: string;
 
   /**
    * If not false it prepends the aliases for refType and uniqueType at the beginning

@@ -167,10 +167,15 @@ function expandResources(resources, transform, context) {
     const name = resourceEntry.name || (uniqueName + "Base");
     const refName = resourceEntry.refName || (uniqueName + "Ref");
     const type = resourceEntry.type ?? sourceName;
-    const uniqueType = resourceEntry.uniqueType ?? `${name}<ObjectUnique<${type}>>`;
+    const customPointerType = resourceEntry.pointerType;
+    const pointerType = customPointerType ?? `${type} *`;
+
+    const refTypeParams = customPointerType ? `${type}, ${customPointerType}` : type;
+    const refType = `${name}<ObjectRef<${refTypeParams}>>`;
+    const uniqueTypeParams = customPointerType ? `${type}, ObjectDeleter<ObjectRef<${refTypeParams}>>` : type;
+    const uniqueType = `${name}<ObjectUnique<${uniqueTypeParams}>>`;
+
     const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
-    const refType = resourceEntry.uniqueType ?? `${name}<ObjectRef<${type}>>`;
-    const pointerType = type + " *";
     const template = resourceEntry.template ?? [{ type: `ObjectBox<${pointerType}>`, name: "T" }];
     const replaceType = sourceName;
     const replaceTypeConst = "const " + replaceType;
@@ -181,7 +186,7 @@ function expandResources(resources, transform, context) {
     if (freeFunction) {
       /** @type {ApiEntry} */
       const freeEntry = {
-        name: `ObjectRef<${type}>::doFree`,
+        name: `ObjectRef<${refTypeParams}>::doFree`,
         type: "void",
         kind: "function",
         doc: `Callback for ${title} resource cleanup\n\n@private`,

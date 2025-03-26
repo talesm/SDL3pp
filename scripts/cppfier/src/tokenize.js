@@ -215,7 +215,7 @@ class Tokenizer {
         system.warn(`Unknown token at line ${this.lineCount}: ${member}`);
         return this.next();
       }
-      token.value = m[3];
+      let name = m[3];
       const typeWords = m[1]?.trim()?.split(/\s+/) ?? [];
       let type = "";
       for (let i = 0; i < typeWords.length; i++) {
@@ -229,6 +229,17 @@ class Tokenizer {
           case "static": token.static = true; break;
         }
       }
+      while (type.endsWith(',')) {
+        const ind = type.lastIndexOf(' ');
+        if (ind === -1) {
+          name = type + " " + name;
+          type = "";
+          break;
+        }
+        name = type.slice(ind + 1) + " " + name;
+        type = type.slice(0, ind);
+      }
+      token.value = name;
       token.type = type;
 
       if (m[4]) {

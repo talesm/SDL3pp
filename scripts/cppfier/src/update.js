@@ -18,14 +18,22 @@ const { readLinesSync, system, writeLinesSync } = require("./utils.js");
 function updateApi(config) {
   const { api, baseDir } = config;
   const files = Object.keys(api.files);
+  let totalChanges = 0;
   for (const name of files) {
-    system.log(`Updating ${name}`);
+    system.log(`Checking ${name}`);
     const filename = baseDir + name;
     const content = readLinesSync(filename);
     const targetFile = api.files[name];
 
-    if (updateContent(content, targetFile) == 0) continue;
+    const fileChanges = updateContent(content, targetFile);
+    if (fileChanges == 0) continue;
+    totalChanges += 1;
     writeLinesSync(filename, content);
+  }
+  if (totalChanges) {
+    system.log(`Total of ${totalChanges} file(s) updated`);
+  } else {
+    system.log("Nothing to update");
   }
 }
 
@@ -41,7 +49,6 @@ function updateContent(content, targetFile) {
   const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
   const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd, "").reverse();
   if (!changes.length) {
-    system.log(`No changes for ${name}`);
     return 0;
   }
   if (targetFile.doc && !sourceFile.doc) {

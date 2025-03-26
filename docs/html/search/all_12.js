@@ -1,8 +1,8 @@
 var searchData=
 [
   ['raise_0',['Raise',['../structSDL_1_1WindowBase.html#ad2e6a8e788af1805e9c6afafffdb9b38',1,'SDL::WindowBase']]],
-  ['rand_1',['rand',['../group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7',1,'SDL::rand()'],['../classSDL_1_1Random.html#ad5771bdda506ab8688534d7300c3e644',1,'SDL::Random::rand(Sint32 n)']]],
-  ['rand_5fbits_2',['rand_bits',['../classSDL_1_1Random.html#ab111c38ff6274e4e74a299bb843a3591',1,'SDL::Random::rand_bits()'],['../group__CategoryStdinc.html#gae6517052066ab937273e6a89c7d1eca8',1,'SDL::rand_bits()']]],
+  ['rand_1',['rand',['../group__CategoryStdinc.html#gaa0d119f7b42130eb3a652f7e243c8cf7',1,'SDL::rand()'],['../classSDL_1_1Random.html#ad5771bdda506ab8688534d7300c3e644',1,'SDL::Random::rand()']]],
+  ['rand_5fbits_2',['rand_bits',['../group__CategoryStdinc.html#gae6517052066ab937273e6a89c7d1eca8',1,'SDL::rand_bits()'],['../classSDL_1_1Random.html#ab111c38ff6274e4e74a299bb843a3591',1,'SDL::Random::rand_bits()']]],
   ['randf_3',['randf',['../group__CategoryStdinc.html#gaab0a933463eebe63f34b3acec7e96c6e',1,'SDL::randf()'],['../classSDL_1_1Random.html#a32f2952323afd4757c825260dee2e806',1,'SDL::Random::randf()']]],
   ['random_4',['Random',['../classSDL_1_1Random.html',1,'SDL']]],
   ['read_5',['Read',['../structSDL_1_1IOStreamBase.html#a58ad90d4eaf26b97fc2428889d7aff62',1,'SDL::IOStreamBase']]],
@@ -30,10 +30,10 @@ var searchData=
   ['refarray_27',['RefArray',['../group__CategoryOwnPtr.html#ga32f8cdb48052c736f47b8b0dbef45595',1,'SDL']]],
   ['refptr_28',['RefPtr',['../group__CategoryOwnPtr.html#ga24f5e412a5178a7e8ff7f99e458254e3',1,'SDL']]],
   ['registerevents_29',['RegisterEvents',['../group__CategoryEvents.html#ga5817c98a343be4119321d4593710dfe7',1,'SDL']]],
-  ['release_30',['release',['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::release()'],['../classSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546',1,'SDL::SDL::release()']]],
+  ['release_30',['release',['../classSDL_1_1SDL.html#af59afb2f4b848cdb4c2492a5023a7546',1,'SDL::SDL::release()'],['../structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c',1,'SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::release()']]],
   ['remarks_31',['remarks',['../group__CategoryEvents.html#remarks',1,'']]],
   ['removealternateimages_32',['RemoveAlternateImages',['../structSDL_1_1SurfaceBase.html#a30e0264fc8334e57770b1307d25b5371',1,'SDL::SurfaceBase']]],
-  ['removeeventwatch_33',['removeeventwatch',['../group__CategoryEvents.html#ga0dd505606d83231d360fa75243a005f0',1,'SDL::RemoveEventWatch(EventFilter filter, void *userdata)'],['../group__CategoryEvents.html#gafa524f0b36188ca0c048f169500628d4',1,'SDL::RemoveEventWatch(EventWatchHandle handle)']]],
+  ['removeeventwatch_33',['removeeventwatch',['../group__CategoryEvents.html#gafa524f0b36188ca0c048f169500628d4',1,'SDL::RemoveEventWatch(EventWatchHandle handle)'],['../group__CategoryEvents.html#ga0dd505606d83231d360fa75243a005f0',1,'SDL::RemoveEventWatch(EventFilter filter, void *userdata)']]],
   ['removefallback_34',['RemoveFallback',['../structSDL_1_1FontBase.html#a3f8bd695fb731654a8ee835fe7519bdd',1,'SDL::FontBase']]],
   ['removehintcallback_35',['RemoveHintCallback',['../group__CategoryHints.html#gacd539b8e58b229520381376dda93705f',1,'SDL']]],
   ['removetimer_36',['RemoveTimer',['../group__CategoryTimer.html#ga316ad0cf487c0d9ca4fa27c1c23ee2cf',1,'SDL']]],
@@ -87,11 +87,11 @@ var searchData=
   ['resource_84',['Resource',['../resource.html',1,'DesignNotes']]],
   ['resource_20type_20wrapping_85',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
   ['restore_86',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
-  ['result_20callback_87',['result callback',['../todo.html#_todo000003',1,'Result callback'],['../callback.html#result-callback',1,'Result callback']]],
+  ['result_20callback_87',['result callback',['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000003',1,'Result callback']]],
   ['round_88',['round',['../group__CategoryStdinc.html#ga58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
   ['roundf_89',['roundf',['../group__CategoryStdinc.html#ga9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
   ['routines_90',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
   ['rules_91',['rules',['../transformations.html#callback-rules',1,'Callback rules'],['../transformations.html#function-rules',1,'Function rules'],['../transformations.html#general-rules',1,'General rules'],['../transformations.html#type-rules',1,'Type rules']]],
   ['runapp_92',['RunApp',['../group__CategoryMain.html#ga1b98e9c138e52fc85ce439efec6205f1',1,'SDL']]],
-  ['runonmainthread_93',['runonmainthread',['../group__CategoryInit.html#ga7d0f101553ddca55df18779d038c0dd4',1,'SDL::RunOnMainThread(MainThreadCB callback, bool wait_complete)'],['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)']]]
+  ['runonmainthread_93',['runonmainthread',['../group__CategoryInit.html#gaf819cae500f98321d9ec860a18c50f9b',1,'SDL::RunOnMainThread(MainThreadCallback callback, void *userdata, bool wait_complete)'],['../group__CategoryInit.html#ga7d0f101553ddca55df18779d038c0dd4',1,'SDL::RunOnMainThread(MainThreadCB callback, bool wait_complete)']]]
 ];

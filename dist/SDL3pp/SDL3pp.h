@@ -10340,7 +10340,6 @@ using PropertiesRef =
  *
  * @cat resource
  *
- * @sa resource
  * @sa PropertiesBase
  * @sa PropertiesRef
  */
@@ -11001,6 +11000,18 @@ struct PropertiesBase : T
 };
 
 /**
+ * Callback for properties resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree(
+  FancyPointer<SDL_PropertiesID> resource)
+{
+  return SDL_DestroyProperties(resource);
+}
+
+/**
  * Wrap the lock state for PropertiesBase
  *
  */
@@ -11102,29 +11113,6 @@ inline PropertiesRef GetGlobalProperties()
 inline Properties CreateProperties()
 {
   return Properties{SDL_CreateProperties()};
-}
-
-/**
- * Destroy a group of properties.
- *
- * All properties are deleted and their cleanup functions will be called, if
- * any.
- *
- * @param resource the properties to destroy.
- *
- * @threadsafety This function should not be called while these properties are
- *               locked or other threads might be setting or getting values
- *               from these properties.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa CreateProperties
- */
-template<>
-inline void ObjectRef<SDL_PropertiesID, FancyPointer<SDL_PropertiesID>>::doFree(
-  FancyPointer<SDL_PropertiesID> resource)
-{
-  return SDL_DestroyProperties(resource);
 }
 
 #pragma region impl

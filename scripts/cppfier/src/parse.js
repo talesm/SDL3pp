@@ -379,7 +379,12 @@ function parseParams(params) {
 /** @param {string} typeString  */
 function normalizeType(typeString) {
   if (!typeString) return "";
-  return typeString.replace(/(\w+)\s*([&*])/g, "$1 $2").replace(/([*&])\s+(&*)/g, "$1$2");
+  return typeString
+    .replace(/(\w+)\s*([&*])/g, "$1 $2")
+    .replace(/([*&])\s+(&*)/g, "$1$2")
+    .replace(/([<(\[])\s+/g, "$1")
+    .replace(/\s+([>)\]])/g, "$1")
+    .replace(/\s\s+/g, " ");
 }
 
 exports.parseApi = parseApi;
