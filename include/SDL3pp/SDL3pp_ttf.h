@@ -1862,13 +1862,6 @@ constexpr ImageType IMAGE_COLOR = TTF_IMAGE_COLOR;
 constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
 
 /**
- * Internal data for TTF_Text
- *
- * @since This struct is available since SDL_ttf 3.0.0.
- */
-using TextData = TTF_TextData;
-
-/**
  * Text created with TTF_CreateText()
  *
  * @since This struct is available since SDL_ttf 3.0.0.
