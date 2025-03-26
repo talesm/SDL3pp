@@ -52,8 +52,8 @@ struct WindowBase;
  *
  * @cat resource
  *
- * @sa resource
  * @sa WindowBase
+ * @sa Window
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 
@@ -62,8 +62,8 @@ using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
  *
  * @cat resource
  *
- * @sa resource
  * @sa WindowBase
+ * @sa WindowRef
  */
 using Window = WindowBase<ObjectUnique<SDL_Window>>;
 
@@ -441,6 +441,30 @@ using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
 /// @}
+
+// Forward decl
+template<ObjectBox<SDL_GLContextState*> T>
+struct GLContextBase;
+
+/**
+ * Handle to a non owned GL Context
+ *
+ * @cat resource
+ *
+ * @sa GLContextBase
+ * @sa GLContext
+ */
+using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
+
+/**
+ * Handle to an owned GL Context
+ *
+ * @cat resource
+ *
+ * @sa GLContextBase
+ * @sa GLContextRef
+ */
+using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -2792,13 +2816,17 @@ struct WindowBase : T
   void Destroy() { return T::free(); }
 };
 
-// Forward decl
-template<ObjectBox<SDL_GLContext> T>
-struct GLContextBase;
-
-using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
-
-using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
+/**
+ * Callback for window resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
+{
+  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
+  SDL_DestroyWindow(resource);
+}
 
 /**
  * An opaque handle to an OpenGL context.
@@ -2807,7 +2835,7 @@ using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
  *
  * @cat resource
  */
-template<ObjectBox<SDL_GLContext> T>
+template<ObjectBox<SDL_GLContextState*> T>
 struct GLContextBase : T
 {
   using T::T;
@@ -3291,32 +3319,6 @@ inline WindowRef GetWindowFromID(WindowID id)
  * @sa SetKeyboardGrab()
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
-
-/**
- * Destroy a window.
- *
- * Any child windows owned by the window will be recursively destroyed as
- * well.
- *
- * Note that on some platforms, the visible window may not actually be removed
- * from the screen until the SDL event loop is pumped again, even though the
- * SDL_Window is no longer valid after this call.
- *
- * @param resource the window to destroy.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window
- * @sa WindowBase
- */
-template<>
-inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
-{
-  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
-  SDL_DestroyWindow(resource);
-}
 
 /**
  * @brief  Check whether the screensaver is currently enabled.

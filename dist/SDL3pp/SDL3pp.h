@@ -726,7 +726,7 @@ using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
 
 // Forward decl
-template<ObjectBox<SDL_iconv_t> T>
+template<ObjectBox<SDL_iconv_data_t*> T>
 struct IConvBase;
 
 /**
@@ -1274,28 +1274,6 @@ struct EnvironmentBase : T
    */
   void Destroy() { return SDL_DestroyEnvironment(T::release()); }
 };
-/**
- * Get the process environment.
- *
- * This is initialized at application start and is not affected by setenv()
- * and unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and
- * SDL_UnsetEnvironmentVariable() if you want to modify this environment, or
- * SDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist
- * in the C runtime environment after SDL_Quit().
- *
- * @returns a pointer to the environment for the process or NULL on failure;
- *          call SDL_GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetVariable()
- * @sa GetVariables()
- * @sa SetVariable()
- * @sa UnsetVariable()
- **/
-inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
 /**
  * Destroy a set of environment variables.
@@ -1315,6 +1293,29 @@ inline void ObjectRef<SDL_Environment>::doFree(SDL_Environment* resource)
 {
   return SDL_DestroyEnvironment(resource);
 }
+
+/**
+ * Get the process environment.
+ *
+ * This is initialized at application start and is not affected by setenv()
+ * and unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and
+ * SDL_UnsetEnvironmentVariable() if you want to modify this environment, or
+ * SDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist
+ * in the C runtime environment after SDL_Quit().
+ *
+ * @returns a pointer to the environment for the process or NULL on failure;
+ *          call SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetEnvironmentVariable
+ * @sa SDL_GetEnvironmentVariables
+ * @sa SDL_SetEnvironmentVariable
+ * @sa SDL_UnsetEnvironmentVariable
+ */
+inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
 /**
  * Get the value of a variable in the environment.
@@ -5239,11 +5240,10 @@ inline float tanf(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa resource
  * @sa IConv
  * @sa IConvRef
  */
-template<ObjectBox<SDL_iconv_t> T>
+template<ObjectBox<SDL_iconv_data_t*> T>
 struct IConvBase : T
 {
   using T::T;
@@ -5298,7 +5298,7 @@ struct IConvBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa iconv_string
+   * @sa iconv_string()
    */
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
@@ -5324,17 +5324,12 @@ struct IConvBase : T
 };
 
 /**
- * This function frees a context used for character set conversion.
+ * Callback for iConv resource cleanup
  *
- * @param resource The character set conversion handle.
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IConv
- * @sa IConvBase
- * @sa iconv_string()
+ * @private
  */
 template<>
-inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_t resource)
+inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_data_t* resource)
 {
   SDL_iconv_close(resource);
 }
@@ -7350,33 +7345,31 @@ inline void ResetLogOutputFunction()
  */
 
 // Forward decl
-template<class T>
+struct Color;
+
+// Forward decl
+template<ObjectBox<SDL_Palette*> T>
 struct PaletteBase;
 
 /**
- * Handle to a non owned surface
+ * Handle to a non owned palette
  *
  * @cat resource
  *
- * @sa resource
  * @sa PaletteBase
  * @sa Palette
  */
 using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 
 /**
- * Handle to an owned surface
+ * Handle to an owned palette
  *
  * @cat resource
  *
- * @sa resource
  * @sa PaletteBase
  * @sa PaletteRef
  */
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
-
-// Forward decl
-struct Color;
 
 /**
  * @name PixelTypes
@@ -9070,7 +9063,7 @@ struct FColor : SDL_FColor
  * @sa Palette
  * @sa PaletteRef
  */
-template<class T>
+template<ObjectBox<SDL_Palette *> T>
 struct PaletteBase : T
 {
   // Make default ctors available
@@ -14978,6 +14971,9 @@ inline bool SaveFile(StringParam file, std::string_view str)
  */
 
 // Forward decl
+struct SurfaceLock;
+
+// Forward decl
 template<ObjectBox<SDL_Surface*> T>
 struct SurfaceBase;
 
@@ -14986,7 +14982,6 @@ struct SurfaceBase;
  *
  * @cat resource
  *
- * @sa resource
  * @sa SurfaceBase
  * @sa Surface
  */
@@ -14997,14 +14992,10 @@ using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
  *
  * @cat resource
  *
- * @sa resource
  * @sa SurfaceBase
  * @sa SurfaceRef
  */
 using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
-
-// Forward decl
-struct SurfaceLock;
 
 /**
  * The flags on an SDL_Surface.
@@ -16735,6 +16726,17 @@ struct SurfaceBase : T
 };
 
 /**
+ * Callback for surface resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
+{
+  return SDL_DestroySurface(resource);
+}
+
+/**
  * Locks a Surface for access to its pixels
  *
  * Only really necessary if Surface.MustLock() returns t
@@ -16813,26 +16815,6 @@ public:
   template<ObjectBox<SDL_Surface*> T>
   friend class SurfaceBase;
 };
-
-/**
- * Free a surface.
- *
- * It is safe to pass NULL to this function.
- *
- * @param surface the SDL_Surface to free.
- *
- * @threadsafety No other thread should be using the surface when it is freed.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Surface
- * @sa SurfaceBase
- */
-template<>
-inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
-{
-  return SDL_DestroySurface(resource);
-}
 
 /**
  * Load a BMP image from a seekable SDL data stream.
@@ -17089,8 +17071,8 @@ struct WindowBase;
  *
  * @cat resource
  *
- * @sa resource
  * @sa WindowBase
+ * @sa Window
  */
 using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
 
@@ -17099,8 +17081,8 @@ using WindowRef = WindowBase<ObjectRef<SDL_Window>>;
  *
  * @cat resource
  *
- * @sa resource
  * @sa WindowBase
+ * @sa WindowRef
  */
 using Window = WindowBase<ObjectUnique<SDL_Window>>;
 
@@ -17478,6 +17460,30 @@ using HitTestCB =
   std::function<HitTestResult(WindowRef window, const Point& area)>;
 
 /// @}
+
+// Forward decl
+template<ObjectBox<SDL_GLContextState*> T>
+struct GLContextBase;
+
+/**
+ * Handle to a non owned GL Context
+ *
+ * @cat resource
+ *
+ * @sa GLContextBase
+ * @sa GLContext
+ */
+using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
+
+/**
+ * Handle to an owned GL Context
+ *
+ * @cat resource
+ *
+ * @sa GLContextBase
+ * @sa GLContextRef
+ */
+using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
 
 /**
  * This is a unique ID for a display for the time it is connected to the
@@ -19829,13 +19835,17 @@ struct WindowBase : T
   void Destroy() { return T::free(); }
 };
 
-// Forward decl
-template<ObjectBox<SDL_GLContext> T>
-struct GLContextBase;
-
-using GLContextRef = GLContextBase<ObjectRef<SDL_GLContextState>>;
-
-using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
+/**
+ * Callback for window resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
+{
+  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
+  SDL_DestroyWindow(resource);
+}
 
 /**
  * An opaque handle to an OpenGL context.
@@ -19844,7 +19854,7 @@ using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
  *
  * @cat resource
  */
-template<ObjectBox<SDL_GLContext> T>
+template<ObjectBox<SDL_GLContextState*> T>
 struct GLContextBase : T
 {
   using T::T;
@@ -20328,32 +20338,6 @@ inline WindowRef GetWindowFromID(WindowID id)
  * @sa SetKeyboardGrab()
  */
 inline WindowRef GetGrabbedWindow() { return SDL_GetGrabbedWindow(); }
-
-/**
- * Destroy a window.
- *
- * Any child windows owned by the window will be recursively destroyed as
- * well.
- *
- * Note that on some platforms, the visible window may not actually be removed
- * from the screen until the SDL event loop is pumped again, even though the
- * SDL_Window is no longer valid after this call.
- *
- * @param resource the window to destroy.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Window
- * @sa WindowBase
- */
-template<>
-inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
-{
-  KeyValueWrapper<SDL_Window*, HitTestCB>::erase(resource);
-  SDL_DestroyWindow(resource);
-}
 
 /**
  * @brief  Check whether the screensaver is currently enabled.
@@ -22816,12 +22800,28 @@ inline WindowRef GetWindowFromEvent(const Event* event)
  * @{
  */
 
+// Forward decl
+struct TextureLock;
+
+// Forward decl
+template<ObjectBox<SDL_Renderer*> T>
+struct RendererBase;
+
+/**
+ * Handle to a non owned renderer
+ *
+ * @cat resource
+ *
+ * @sa RendererBase
+ * @sa Renderer
+ */
+using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
+
 /**
  * Handle to an owned renderer
  *
  * @cat resource
  *
- * @sa resource
  * @sa RendererBase
  * @sa RendererRef
  */
@@ -22836,7 +22836,6 @@ struct TextureBase;
  *
  * @cat resource
  *
- * @sa resource
  * @sa TextureBase
  * @sa Texture
  */
@@ -22847,14 +22846,10 @@ using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
  *
  * @cat resource
  *
- * @sa resource
  * @sa TextureBase
  * @sa TextureRef
  */
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
-
-// Forward decl
-struct TextureLock;
 
 /**
  * Vertex structure.
@@ -24517,11 +24512,8 @@ struct RendererBase : T
   template<class... ARGS>
   bool RenderDebugTextFormat(FPoint p, StringParam fmt, ARGS... args)
   {
-    return SDL_RenderDebugText(
-      T::get(),
-      p.x,
-      p.y,
-      std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+    return RenderDebugText(
+      p, std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
   }
 
   /**
@@ -24538,6 +24530,27 @@ struct RendererBase : T
    */
   void Destroy() { return SDL_DestroyRenderer(T::release()); }
 };
+
+/**
+ * Destroy the rendering context for a window and free all associated
+ * textures.
+ *
+ * This should be called before destroying the associated window.
+ *
+ * @param renderer the rendering context.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer
+ * @sa RendererBase
+ */
+template<>
+inline void ObjectRef<SDL_Renderer>::doFree(SDL_Renderer* resource)
+{
+  return SDL_DestroyRenderer(resource);
+}
 
 /**
  * An efficient driver-specific representation of pixel data
@@ -25346,6 +25359,17 @@ struct TextureBase : T
 };
 
 /**
+ * Callback for texture resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Texture>::doFree(SDL_Texture* resource)
+{
+  return SDL_DestroyTexture(resource);
+}
+
+/**
  * Locks a Texture for access to its pixels
  */
 class TextureLock
@@ -25520,45 +25544,6 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   SDL_CreateWindowAndRenderer(
     title, size.x, size.y, window_flags, &window, &renderer);
   return {Window{window}, Renderer{renderer}};
-}
-
-/**
- * Destroy the texture.
- *
- * This object becomes empty after the call.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Texture
- * @sa TextureBase
- */
-template<>
-inline void ObjectRef<SDL_Texture>::doFree(SDL_Texture* resource)
-{
-  return SDL_DestroyTexture(resource);
-}
-
-/**
- * Destroy the rendering context for a window and free all associated
- * textures.
- *
- * This should be called before destroying the associated window.
- *
- * @param renderer the rendering context.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Renderer
- * @sa RendererBase
- */
-template<>
-inline void ObjectRef<SDL_Renderer>::doFree(SDL_Renderer* resource)
-{
-  return SDL_DestroyRenderer(resource);
 }
 
 /**
@@ -27821,18 +27806,12 @@ struct AnimationBase : T
 };
 
 /**
- * Dispose of an IMG_Animation and free its resources.
+ * Callback for animation resource cleanup
  *
- * The provided `resource` pointer is not valid once this call returns.
- *
- * @param resource IMG_Animation to dispose of.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa AnimationBase::AnimationBase()
+ * @private
  */
 template<>
-inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation* resource)
+inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation * resource)
 {
   return IMG_FreeAnimation(resource);
 }
@@ -27942,30 +27921,6 @@ namespace SDL {
  * @{
  */
 
-// Forward decl
-template<ObjectBox<TTF_Font*> T>
-struct FontBase;
-
-/**
- * Handle to a non owned font
- *
- * @cat resource
- *
- * @sa FontBase
- * @sa Font
- */
-using FontRef = FontBase<ObjectRef<TTF_Font>>;
-
-/**
- * Handle to an owned font
- *
- * @cat resource
- *
- * @sa FontBase
- * @sa FontRef
- */
-using Font = FontBase<ObjectUnique<TTF_Font>>;
-
 /**
  * Flag to init TTF
  *
@@ -28027,6 +27982,30 @@ using Direction = TTF_Direction;
  * @since This enum is available since SDL_ttf 3.0.0.
  */
 using ImageType = TTF_ImageType;
+
+// Forward decl
+template<ObjectBox<TTF_Font*> T>
+struct FontBase;
+
+/**
+ * Handle to a non owned font
+ *
+ * @cat resource
+ *
+ * @sa FontBase
+ * @sa Font
+ */
+using FontRef = FontBase<ObjectRef<TTF_Font>>;
+
+/**
+ * Handle to an owned font
+ *
+ * @cat resource
+ *
+ * @sa FontBase
+ * @sa FontRef
+ */
+using Font = FontBase<ObjectUnique<TTF_Font>>;
 
 /**
  * This function gets the version of the dynamically linked SDL_ttf library.
@@ -29619,6 +29598,17 @@ struct FontBase : T
 };
 
 /**
+ * Callback for font resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<TTF_Font>::doFree(TTF_Font * resource)
+{
+  return TTF_CloseFont(resource);
+}
+
+/**
  * Initialize SDL_ttf.
  *
  * You must successfully call this function before it is safe to call any
@@ -30920,34 +30910,6 @@ inline bool UpdateText(Text* text) { return TTF_UpdateText(text); }
  * @sa TTF_CreateText
  */
 inline void DestroyText(Text* text) { return TTF_DestroyText(text); }
-
-/**
- * Dispose of a previously-created font.
- *
- * Call this when done with a font. This function will free any resources
- * associated with it. It is safe to call this function on NULL, for example
- * on the result of a failed call to FontBase::FontBase().
- *
- * The font is not valid after being passed to this function. String pointers
- * from functions that return information on this font, such as
- * FontBase::GetFamilyName() andFontBase::GetStyleName(), are no longer valid
- * after this call, as well.
- *
- * @param resource the font to dispose of.
- *
- * @threadsafety This function should not be called while any other thread is
- *               using the font.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa TTF_Font
- * @sa TTF_FontBase
- */
-template<>
-inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
-{
-  return TTF_CloseFont(resource);
-}
 
 /**
  * Deinitialize SDL_ttf.

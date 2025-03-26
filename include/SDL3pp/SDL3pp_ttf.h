@@ -32,30 +32,6 @@ namespace SDL {
  * @{
  */
 
-// Forward decl
-template<ObjectBox<TTF_Font*> T>
-struct FontBase;
-
-/**
- * Handle to a non owned font
- *
- * @cat resource
- *
- * @sa FontBase
- * @sa Font
- */
-using FontRef = FontBase<ObjectRef<TTF_Font>>;
-
-/**
- * Handle to an owned font
- *
- * @cat resource
- *
- * @sa FontBase
- * @sa FontRef
- */
-using Font = FontBase<ObjectUnique<TTF_Font>>;
-
 /**
  * Flag to init TTF
  *
@@ -117,6 +93,30 @@ using Direction = TTF_Direction;
  * @since This enum is available since SDL_ttf 3.0.0.
  */
 using ImageType = TTF_ImageType;
+
+// Forward decl
+template<ObjectBox<TTF_Font*> T>
+struct FontBase;
+
+/**
+ * Handle to a non owned font
+ *
+ * @cat resource
+ *
+ * @sa FontBase
+ * @sa Font
+ */
+using FontRef = FontBase<ObjectRef<TTF_Font>>;
+
+/**
+ * Handle to an owned font
+ *
+ * @cat resource
+ *
+ * @sa FontBase
+ * @sa FontRef
+ */
+using Font = FontBase<ObjectUnique<TTF_Font>>;
 
 /**
  * This function gets the version of the dynamically linked SDL_ttf library.
@@ -1709,6 +1709,17 @@ struct FontBase : T
 };
 
 /**
+ * Callback for font resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<TTF_Font>::doFree(TTF_Font * resource)
+{
+  return TTF_CloseFont(resource);
+}
+
+/**
  * Initialize SDL_ttf.
  *
  * You must successfully call this function before it is safe to call any
@@ -3010,34 +3021,6 @@ inline bool UpdateText(Text* text) { return TTF_UpdateText(text); }
  * @sa TTF_CreateText
  */
 inline void DestroyText(Text* text) { return TTF_DestroyText(text); }
-
-/**
- * Dispose of a previously-created font.
- *
- * Call this when done with a font. This function will free any resources
- * associated with it. It is safe to call this function on NULL, for example
- * on the result of a failed call to FontBase::FontBase().
- *
- * The font is not valid after being passed to this function. String pointers
- * from functions that return information on this font, such as
- * FontBase::GetFamilyName() andFontBase::GetStyleName(), are no longer valid
- * after this call, as well.
- *
- * @param resource the font to dispose of.
- *
- * @threadsafety This function should not be called while any other thread is
- *               using the font.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa TTF_Font
- * @sa TTF_FontBase
- */
-template<>
-inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
-{
-  return TTF_CloseFont(resource);
-}
 
 /**
  * Deinitialize SDL_ttf.

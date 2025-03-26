@@ -118,28 +118,29 @@ test("structs transform resources", () => {
       ],
       files: {
         "structs.h": {
-          transform: {
+          resources: {
             MyType1: {
-              name: "Type1Base",
-              type: "T",
-              kind: "struct",
-              template: [{ type: "class", name: "T" }],
+              prependAliases: false,
+              template: [{
+                type: "class", name: "T"
+              }],
               entries: {
-                "T::T": { kind: "alias", name: "T::T" },
                 MyCreateType1: "ctor",
-                MyType1Check: "function",
-                MyGetType1Var1: "function",
+                MyType1Check: "immutable",
+                MyGetType1Var1: "immutable",
                 MySetType1Var1: "function",
-                MyType1GetVar2: "function",
+                MyType1GetVar2: "immutable",
                 MyType1SetVar2: "function",
               },
             },
+          },
+          transform: {
             MyType2: {
               type: "MyType2",
               kind: "struct",
               entries: {},
             },
-          },
+          }
         },
       },
     },

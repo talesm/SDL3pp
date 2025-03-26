@@ -117,12 +117,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae99c167b7ae250819364ec59b56f2d66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt;<br />
+<div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; SDL_iconv_data_t * &gt; T&gt;<br />
 struct SDL::IConvBase&lt; T &gt;</div><dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd>resource </dd>
-<dd>
-<a class="el" href="group__CategoryStdinc.html#ga95fcbc65252fd494d78ce162e1340bea" title="Handle to an owning iconv.">IConv</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#ga95fcbc65252fd494d78ce162e1340bea" title="Handle to an owning iconv.">IConv</a> </dd>
 <dd>
 <a class="el" href="group__CategoryStdinc.html#ga3d2eecfc83ea54cacb89f4fec27fa0b0" title="Handle to a non owning iconv.">IConvRef</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -132,7 +130,7 @@ struct SDL::IConvBase&lt; T &gt;</div><dl class="section since"><dt>Since</dt><d
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt; </div>
+template&lt;ObjectBox&lt; SDL_iconv_data_t * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -185,7 +183,7 @@ iconv_close() </dd>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt; </div>
+template&lt;ObjectBox&lt; SDL_iconv_data_t * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -219,7 +217,7 @@ SDL_iconv_string </dd></dl>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt; </div>
+template&lt;ObjectBox&lt; SDL_iconv_data_t * &gt; T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -279,7 +277,7 @@ template&lt;ObjectBox&lt; SDL_iconv_t &gt; T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the number of conversions on success, or a negative error code.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#ga8101a1c19844c8cb72600a9aa6238327" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategoryStdinc.html#ga8101a1c19844c8cb72600a9aa6238327" title="Helper function to convert a string&#39;s encoding in one call.">iconv_string()</a> </dd></dl>
 
 </div>
 </div>

@@ -1,8 +1,8 @@
 const { insertEntry } = require("./parse");
-const { system, combineObject } = require("./utils");
+const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, FileTransform, ReplacementRule, StringMap } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, FileTransform, ReplacementRule, StringMap } from "./types"
  */
 
 /**
@@ -85,6 +85,8 @@ function transformEntries(sourceEntries, context, transform) {
   if (!transform.transform) transform.transform = transformMap;
   if (!transform.includeAfter) transform.includeAfter = {};
 
+  if (transform.resources) expandResources(transform.resources, transform, context);
+
   insertEntryAndCheck(targetEntries, transform.includeAfter?.__begin ?? [], context, transform);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
@@ -149,6 +151,130 @@ function transformEntries(sourceEntries, context, transform) {
   validateEntries(targetEntries);
 
   return targetEntries;
+}
+
+/**
+ * 
+ * @param {Dict<ApiResource>} resources 
+ * @param {FileTransform} transform 
+ * @param {ApiContext} context 
+ */
+function expandResources(resources, transform, context) {
+  /** @type {ApiEntry[]} */
+  const referenceAliases = [];
+  for (const [sourceName, resourceEntry] of Object.entries(resources)) {
+    const uniqueName = resourceEntry.uniqueName || transformName(sourceName, context);
+    const name = resourceEntry.name || (uniqueName + "Base");
+    const refName = resourceEntry.refName || (uniqueName + "Ref");
+    const type = resourceEntry.type ?? sourceName;
+    const uniqueType = resourceEntry.uniqueType ?? `${name}<ObjectUnique<${type}>>`;
+    const title = uniqueName[0].toLowerCase() + uniqueName.slice(1);
+    const refType = resourceEntry.uniqueType ?? `${name}<ObjectRef<${type}>>`;
+    const pointerType = type + " *";
+    const template = resourceEntry.template ?? [{ type: `ObjectBox<${pointerType}>`, name: "T" }];
+    const replaceType = sourceName;
+    const replaceTypeConst = "const " + replaceType;
+    const replacePointerType = pointerType;
+    const replacePointerTypeConst = "const " + replacePointerType;
+    const freeFunction = resourceEntry.free ?? scanFreeFunction(resourceEntry.entries ?? {});
+
+    if (freeFunction) {
+      /** @type {ApiEntry} */
+      const freeEntry = {
+        name: `ObjectRef<${type}>::doFree`,
+        type: "void",
+        kind: "function",
+        doc: `Callback for ${title} resource cleanup\n\n@private`,
+        template: [],
+        parameters: [
+          {
+            "type": pointerType,
+            "name": "resource"
+          }
+        ],
+        sourceName: freeFunction
+      };
+
+      if (Array.isArray(transform.includeAfter[sourceName])) {
+        transform.includeAfter[sourceName].unshift(freeEntry);
+      } else if (transform.includeAfter[sourceName]) {
+        transform.includeAfter[sourceName] = [freeEntry, transform.includeAfter[sourceName]];
+      } else transform.includeAfter[sourceName] = freeEntry;
+    }
+    if (resourceEntry.prependAliases !== false) {
+      referenceAliases.push({ name, kind: "forward", template, },
+        {
+          name: refName, kind: "alias", type: refType,
+          doc: `Handle to a non owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${uniqueName}`
+        },
+        {
+          name: uniqueName, kind: "alias", type: uniqueType,
+          doc: `Handle to an owned ${title}\n\n@cat resource\n\n@sa ${name}\n@sa ${refName}`
+        },
+      );
+    }
+    switch (resourceEntry.paramType) {
+      case "none": break;
+      case "unique":
+        context.paramTypeMap[replaceType] = uniqueName;
+        if (!context.paramTypeMap[replaceTypeConst]) context.paramTypeMap[replaceTypeConst] = uniqueName;
+        if (!context.paramTypeMap[replacePointerType]) context.paramTypeMap[replacePointerType] = uniqueName;
+        if (!context.paramTypeMap[replacePointerTypeConst]) context.paramTypeMap[replacePointerTypeConst] = uniqueName;
+        break;
+      default:
+        context.paramTypeMap[replaceType] = refName;
+        if (!context.paramTypeMap[replaceTypeConst]) context.paramTypeMap[replaceTypeConst] = refName;
+        if (!context.paramTypeMap[replacePointerType]) context.paramTypeMap[replacePointerType] = refName;
+        if (!context.paramTypeMap[replacePointerTypeConst]) context.paramTypeMap[replacePointerTypeConst] = refName;
+        break;
+    }
+    switch (resourceEntry.returnType) {
+      case "none": break;
+      case "unique":
+        context.returnTypeMap[replaceType] = uniqueName;
+        if (!context.returnTypeMap[replaceTypeConst]) context.returnTypeMap[replaceTypeConst] = uniqueName;
+        if (!context.returnTypeMap[replacePointerType]) context.returnTypeMap[replacePointerType] = uniqueName;
+        if (!context.returnTypeMap[replacePointerTypeConst]) context.returnTypeMap[replacePointerTypeConst] = uniqueName;
+        break;
+      default:
+        context.returnTypeMap[replaceType] = refName;
+        if (!context.returnTypeMap[replaceTypeConst]) context.returnTypeMap[replaceTypeConst] = refName;
+        if (!context.returnTypeMap[replacePointerType]) context.returnTypeMap[replacePointerType] = refName;
+        if (!context.returnTypeMap[replacePointerTypeConst]) context.returnTypeMap[replacePointerTypeConst] = refName;
+        break;
+    }
+    const subEntries = resourceEntry.entries || {};
+    /** @type {ApiEntryTransform} */
+    const entry = {
+      name,
+      kind: "struct",
+      type: "T",
+      template,
+      entries: {
+        "T::T": "alias",
+        ...subEntries
+      }
+    };
+    // TODO if (resourceEntry.insertAfter) {...}
+    transform.transform[sourceName] = entry;
+  }
+  if (!transform.includeAfter.__begin) {
+    transform.includeAfter.__begin = referenceAliases;
+  } else if (Array.isArray(transform.includeAfter.__begin)) {
+    transform.includeAfter.__begin.push(...referenceAliases);
+  } else {
+    transform.includeAfter.__begin = [transform.includeAfter.__begin, ...referenceAliases];
+  }
+}
+
+/**
+ * 
+ * @param {ApiSubEntryTransformMap} entries 
+ */
+function scanFreeFunction(entries) {
+  for (const sourceName of Object.keys(entries)) {
+    if (looksLikeFreeFunction(sourceName)) return sourceName;
+  }
 }
 
 /**

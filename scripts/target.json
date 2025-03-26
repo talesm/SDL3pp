@@ -9,8 +9,8 @@
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "ObjectBox<SDL_Environment *>"
+              "type": "ObjectBox<SDL_Environment *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -19,21 +19,21 @@
           "name": "EnvironmentRef",
           "kind": "alias",
           "type": "EnvironmentBase<ObjectRef<SDL_Environment>>",
-          "doc": ""
+          "doc": "Handle to a non owned environment\n\n@cat resource\n\n@sa EnvironmentBase\n@sa Environment"
         },
         "Environment": {
           "name": "Environment",
           "kind": "alias",
           "type": "EnvironmentBase<ObjectUnique<SDL_Environment>>",
-          "doc": ""
+          "doc": "Handle to an owned environment\n\n@cat resource\n\n@sa EnvironmentBase\n@sa EnvironmentRef"
         },
         "IConvBase-forward": {
           "name": "IConvBase",
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "ObjectBox<SDL_iconv_t>"
+              "type": "ObjectBox<SDL_iconv_data_t *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -42,13 +42,13 @@
           "name": "IConvRef",
           "kind": "alias",
           "type": "IConvBase<ObjectRef<SDL_iconv_data_t>>",
-          "doc": ""
+          "doc": "Handle to a non owned iConv\n\n@cat resource\n\n@sa IConvBase\n@sa IConv"
         },
         "IConv": {
           "name": "IConv",
           "kind": "alias",
           "type": "IConvBase<ObjectUnique<SDL_iconv_data_t>>",
-          "doc": ""
+          "doc": "Handle to an owned iConv\n\n@cat resource\n\n@sa IConvBase\n@sa IConvRef"
         },
         "FourCC": {
           "doc": "Define a four character code as a Uint32.\n\n@param A the first ASCII character.\n@param B the second ASCII character.\n@param C the third ASCII character.\n@param D the fourth ASCII character.\n@returns the four characters converted into a Uint32, one character\n         per-byte.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
@@ -377,8 +377,30 @@
                 }
               ],
               "sourceName": "SDL_UnsetEnvironmentVariable"
+            },
+            "Destroy": {
+              "doc": "Destroy a set of environment variables.\n\n@param env the environment to destroy.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateEnvironment",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyEnvironment"
             }
           }
+        },
+        "ObjectRef<SDL_Environment>::doFree": {
+          "name": "ObjectRef<SDL_Environment>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for environment resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Environment *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroyEnvironment"
         },
         "GetEnvironment": {
           "doc": "Get the process environment.\n\nThis is initialized at application start and is not affected by setenv()\nand unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and\nSDL_UnsetEnvironmentVariable() if you want to modify this environment, or\nSDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist\nin the C runtime environment after SDL_Quit().\n\n@returns a pointer to the environment for the process or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
@@ -387,20 +409,6 @@
           "type": "EnvironmentRef",
           "parameters": [],
           "sourceName": "SDL_GetEnvironment"
-        },
-        "ObjectRef<SDL_Environment>::doFree": {
-          "doc": "Destroy a set of environment variables.\n\n@param env the environment to destroy.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateEnvironment",
-          "name": "ObjectRef<SDL_Environment>::doFree",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "resource",
-              "type": "SDL_Environment *"
-            }
-          ],
-          "sourceName": "SDL_DestroyEnvironment",
-          "template": []
         },
         "getenv": {
           "doc": "Get the value of a variable in the environment.\n\nThis function uses SDL's cached copy of the environment and is thread-safe.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2751,7 +2759,7 @@
           "sourceName": "SDL_iconv_t",
           "template": [
             {
-              "type": "ObjectBox<SDL_iconv_t>",
+              "type": "ObjectBox<SDL_iconv_data_t *>",
               "name": "T"
             }
           ],
@@ -2803,22 +2811,30 @@
                 }
               ],
               "sourceName": "SDL_iconv"
+            },
+            "close": {
+              "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_open\n@sa SDL_iconv_string",
+              "name": "close",
+              "kind": "function",
+              "type": "int",
+              "parameters": [],
+              "sourceName": "SDL_iconv_close"
             }
           }
         },
         "ObjectRef<SDL_iconv_data_t>::doFree": {
-          "doc": "This function frees a context used for character set conversion.\n\n@param cd The character set conversion handle.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_open\n@sa SDL_iconv_string",
           "name": "ObjectRef<SDL_iconv_data_t>::doFree",
-          "kind": "function",
           "type": "void",
+          "kind": "function",
+          "doc": "Callback for iConv resource cleanup\n\n@private",
+          "template": [],
           "parameters": [
             {
-              "name": "resource",
-              "type": "SDL_iconv_t"
+              "type": "SDL_iconv_data_t *",
+              "name": "resource"
             }
           ],
-          "sourceName": "SDL_iconv_close",
-          "template": []
+          "sourceName": "SDL_iconv_close"
         },
         "iconv_string": {
           "doc": "Helper function to convert a string's encoding in one call.\n\nThis function converts a buffer or string between encodings in one pass.\n\nThe string does not need to be NULL-terminated; this function operates on\nthe number of bytes specified in `inbytesleft` whether there is a NULL\ncharacter anywhere in the buffer.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param tocode the character encoding of the output string. Examples are\n              \"UTF-8\", \"UCS-4\", etc.\n@param fromcode the character encoding of data in `inbuf`.\n@param inbuf the string to convert to a different encoding.\n@param inbytesleft the size of the input string _in bytes_.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv",
@@ -3960,8 +3976,8 @@
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "ObjectBox<SDL_IOStream *>"
+              "type": "ObjectBox<SDL_IOStream *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -3970,13 +3986,13 @@
           "name": "IOStreamRef",
           "kind": "alias",
           "type": "IOStreamBase<ObjectRef<SDL_IOStream>>",
-          "doc": ""
+          "doc": "Handle to a non owned iOStream\n\n@cat resource\n\n@sa IOStreamBase\n@sa IOStream"
         },
         "IOStream": {
           "name": "IOStream",
           "kind": "alias",
           "type": "IOStreamBase<ObjectUnique<SDL_IOStream>>",
-          "doc": ""
+          "doc": "Handle to an owned iOStream\n\n@cat resource\n\n@sa IOStreamBase\n@sa IOStreamRef"
         },
         "IOFromDynamicMem_CtorTag": {
           "name": "IOFromDynamicMem_CtorTag",
@@ -4809,22 +4825,30 @@
                 }
               ],
               "sourceName": "SDL_WriteS64BE"
+            },
+            "Close": {
+              "doc": "Close and free an allocated SDL_IOStream structure.\n\nSDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any\nresources used by the stream and frees the SDL_IOStream itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the SDL_IOStream is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call SDL_FlushIO() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context SDL_IOStream structure to close.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_OpenIO",
+              "name": "Close",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_CloseIO"
             }
           }
         },
         "ObjectRef<SDL_IOStream>::doFree": {
-          "doc": "Close and free an allocated SDL_IOStream structure.\n\nSDL_CloseIO() closes and cleans up the SDL_IOStream stream. It releases any\nresources used by the stream and frees the SDL_IOStream itself. This\nreturns true on success, or false if the stream failed to flush to its\noutput (e.g. to disk).\n\nNote that if this fails to flush the stream for any reason, this function\nreports an error, but the SDL_IOStream is still invalid once this function\nreturns.\n\nThis call flushes any buffered writes to the operating system, but there\nare no guarantees that those writes have gone to physical media; they might\nbe in the OS's file cache, waiting to go to disk later. If it's absolutely\ncrucial that writes go to disk immediately, so they are definitely stored\neven if the power fails before the file cache would have caught up, one\nshould call SDL_FlushIO() before closing. Note that flushing takes time and\nmakes the system and your app operate less efficiently, so do so sparingly.\n\n@param context SDL_IOStream structure to close.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_OpenIO",
           "name": "ObjectRef<SDL_IOStream>::doFree",
-          "kind": "function",
           "type": "void",
+          "kind": "function",
+          "doc": "Callback for iOStream resource cleanup\n\n@private",
+          "template": [],
           "parameters": [
             {
-              "name": "resource",
-              "type": "SDL_IOStream *"
+              "type": "SDL_IOStream *",
+              "name": "resource"
             }
           ],
-          "sourceName": "SDL_CloseIO",
-          "template": []
+          "sourceName": "SDL_CloseIO"
         },
         "LoadFile": {
           "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with SDL_free().\n\n@param file the path to read all available data from.\n@param datasize if not NULL, will store the number of bytes read.\n@returns the data or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LoadFile_IO\n@sa SDL_SaveFile",
@@ -4906,13 +4930,18 @@
       "name": "SDL3pp_pixels.h",
       "doc": "@defgroup CategoryPixels Category Pixels\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
       "entries": {
+        "Color-forward": {
+          "name": "Color",
+          "kind": "forward",
+          "doc": ""
+        },
         "PaletteBase-forward": {
           "name": "PaletteBase",
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "class"
+              "type": "ObjectBox<SDL_Palette *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -4921,18 +4950,13 @@
           "name": "PaletteRef",
           "kind": "alias",
           "type": "PaletteBase<ObjectRef<SDL_Palette>>",
-          "doc": ""
+          "doc": "Handle to a non owned palette\n\n@cat resource\n\n@sa PaletteBase\n@sa Palette"
         },
         "Palette": {
           "name": "Palette",
           "kind": "alias",
           "type": "PaletteBase<ObjectUnique<SDL_Palette>>",
-          "doc": ""
-        },
-        "Color-forward": {
-          "name": "Color",
-          "kind": "forward",
-          "doc": ""
+          "doc": "Handle to an owned palette\n\n@cat resource\n\n@sa PaletteBase\n@sa PaletteRef"
         },
         "PixelType": {
           "doc": "Pixel type.\n\n@since This enum is available since SDL 3.2.0.",
@@ -7140,7 +7164,7 @@
           "type": "T",
           "template": [
             {
-              "type": "class",
+              "type": "ObjectBox<SDL_Palette *>",
               "name": "T"
             }
           ],
@@ -7227,22 +7251,30 @@
                 ],
                 "doc": ""
               }
-            ]
+            ],
+            "Destroy": {
+              "doc": "Free a palette created with SDL_CreatePalette().\n\n@param palette the SDL_Palette structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePalette",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyPalette"
+            }
           }
         },
         "ObjectRef<SDL_Palette>::doFree": {
-          "doc": "Free a palette created with SDL_CreatePalette().\n\n@param palette the SDL_Palette structure to be freed.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified or destroyed in another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePalette",
           "name": "ObjectRef<SDL_Palette>::doFree",
-          "kind": "function",
           "type": "void",
+          "kind": "function",
+          "doc": "Callback for palette resource cleanup\n\n@private",
+          "template": [],
           "parameters": [
             {
-              "name": "resource",
-              "type": "SDL_Palette *"
+              "type": "SDL_Palette *",
+              "name": "resource"
             }
           ],
-          "sourceName": "SDL_DestroyPalette",
-          "template": []
+          "sourceName": "SDL_DestroyPalette"
         },
         "MapRGB": {
           "doc": "Map an RGB triple to an opaque pixel value for a given pixel format.\n\nThis function maps the RGB color value to the specified pixel format and\nreturns the pixel value best approximating the given RGB color value for\nthe given pixel format.\n\nIf the format has a palette (8-bit) the index of the closest matching color\nin the palette will be returned.\n\nIf the specified pixel format has an alpha component it will be returned as\nall 1 bits (fully opaque).\n\nIf the pixel format bpp (color depth) is less than 32-bpp then the unused\nupper bits of the return value can safely be ignored (e.g., with a 16-bpp\nformat the return value can be assigned to a Uint16, and similarly a Uint8\nfor an 8-bpp format).\n\n@param format a pointer to SDL_PixelFormatDetails describing the pixel\n              format.\n@param palette an optional palette for indexed formats, may be NULL.\n@param r the red component of the pixel in the range 0-255.\n@param g the green component of the pixel in the range 0-255.\n@param b the blue component of the pixel in the range 0-255.\n@returns a pixel value.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the palette is not modified.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetPixelFormatDetails\n@sa SDL_GetRGB\n@sa SDL_MapRGBA\n@sa SDL_MapSurfaceRGB",
@@ -9088,13 +9120,18 @@
       "name": "SDL3pp_surface.h",
       "doc": "@defgroup CategorySurface Category Surface\n\nSDL surfaces are buffers of pixels in system RAM. These are useful for\npassing around and manipulating images that are not stored in GPU memory.\n\nSDL_Surface makes serious efforts to manage images in various formats, and\nprovides a reasonable toolbox for transforming the data, including copying\nbetween surfaces, filling rectangles in the image data, etc.\n\nThere is also a simple .bmp loader, SDL_LoadBMP(). SDL itself does not\nprovide loaders for various other file formats, but there are several\nexcellent external libraries that do, including its own satellite library,\nSDL_image:\n\nhttps://github.com/libsdl-org/SDL_image",
       "entries": {
+        "SurfaceLock-forward": {
+          "name": "SurfaceLock",
+          "kind": "forward",
+          "doc": ""
+        },
         "SurfaceBase-forward": {
           "name": "SurfaceBase",
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "ObjectBox<SDL_Surface *>"
+              "type": "ObjectBox<SDL_Surface *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -9103,18 +9140,13 @@
           "name": "SurfaceRef",
           "kind": "alias",
           "type": "SurfaceBase<ObjectRef<SDL_Surface>>",
-          "doc": ""
+          "doc": "Handle to a non owned surface\n\n@cat resource\n\n@sa SurfaceBase\n@sa Surface"
         },
         "Surface": {
           "name": "Surface",
           "kind": "alias",
           "type": "SurfaceBase<ObjectUnique<SDL_Surface>>",
-          "doc": ""
-        },
-        "SurfaceLock-forward": {
-          "name": "SurfaceLock",
-          "kind": "forward",
-          "doc": ""
+          "doc": "Handle to an owned surface\n\n@cat resource\n\n@sa SurfaceBase\n@sa SurfaceRef"
         },
         "SurfaceFlags": {
           "doc": "The flags on an SDL_Surface.\n\nThese are generally considered read-only.\n\n@since This datatype is available since SDL 3.2.0.",
@@ -10404,8 +10436,62 @@
                 ],
                 "sourceName": "SDL_WriteSurfacePixelFloat"
               }
-            ]
+            ],
+            "GetWidth": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": [],
+              "name": "GetWidth",
+              "doc": ""
+            },
+            "GetHeight": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": [],
+              "name": "GetHeight",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "immutable": true,
+              "type": "Point",
+              "parameters": [],
+              "name": "GetSize",
+              "doc": ""
+            },
+            "GetFormat": {
+              "kind": "function",
+              "immutable": true,
+              "type": "PixelFormat",
+              "parameters": [],
+              "name": "GetFormat",
+              "doc": ""
+            },
+            "Destroy": {
+              "doc": "Free a surface.\n\nIt is safe to pass NULL to this function.\n\n@param surface the SDL_Surface to free.\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateSurface\n@sa SDL_CreateSurfaceFrom",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroySurface"
+            }
           }
+        },
+        "ObjectRef<SDL_Surface>::doFree": {
+          "name": "ObjectRef<SDL_Surface>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for surface resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Surface *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroySurface"
         },
         "SurfaceLock": {
           "name": "SurfaceLock",
@@ -10524,20 +10610,6 @@
             }
           },
           "doc": ""
-        },
-        "ObjectRef<SDL_Surface>::doFree": {
-          "doc": "Free a surface.\n\nIt is safe to pass NULL to this function.\n\n@param surface the SDL_Surface to free.\n\n@threadsafety No other thread should be using the surface when it is freed.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateSurface\n@sa SDL_CreateSurfaceFrom",
-          "name": "ObjectRef<SDL_Surface>::doFree",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "resource",
-              "type": "SDL_Surface *"
-            }
-          ],
-          "sourceName": "SDL_DestroySurface",
-          "template": []
         },
         "LoadBMP": [
           {
@@ -10757,8 +10829,8 @@
           "kind": "forward",
           "template": [
             {
-              "name": "T",
-              "type": "ObjectBox<SDL_Window *>"
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
             }
           ],
           "doc": ""
@@ -10767,13 +10839,13 @@
           "name": "WindowRef",
           "kind": "alias",
           "type": "WindowBase<ObjectRef<SDL_Window>>",
-          "doc": ""
+          "doc": "Handle to a non owned window\n\n@cat resource\n\n@sa WindowBase\n@sa Window"
         },
         "Window": {
           "name": "Window",
           "kind": "alias",
           "type": "WindowBase<ObjectUnique<SDL_Window>>",
-          "doc": ""
+          "doc": "Handle to an owned window\n\n@cat resource\n\n@sa WindowBase\n@sa WindowRef"
         },
         "RendererBase-forward": {
           "name": "RendererBase",
@@ -11189,6 +11261,29 @@
           "kind": "alias",
           "name": "HitTestCB",
           "doc": "@sa HitTest"
+        },
+        "GLContextBase-forward": {
+          "name": "GLContextBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_GLContextState *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "GLContextRef": {
+          "name": "GLContextRef",
+          "kind": "alias",
+          "type": "GLContextBase<ObjectRef<SDL_GLContextState>>",
+          "doc": "Handle to a non owned gLContext\n\n@cat resource\n\n@sa GLContextBase\n@sa GLContext"
+        },
+        "GLContext": {
+          "name": "GLContext",
+          "kind": "alias",
+          "type": "GLContextBase<ObjectUnique<SDL_GLContextState>>",
+          "doc": "Handle to an owned gLContext\n\n@cat resource\n\n@sa GLContextBase\n@sa GLContextRef"
         },
         "Display": {
           "doc": "This is a unique ID for a display for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the display is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n@since This datatype is available since SDL 3.2.0.",
@@ -12299,31 +12394,30 @@
                 }
               ],
               "sourceName": "SDL_FlashWindow"
+            },
+            "Destroy": {
+              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@param window the window to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePopupWindow\n@sa SDL_CreateWindow\n@sa SDL_CreateWindowWithProperties",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyWindow"
             }
           }
         },
-        "GLContextBase-forward": {
-          "name": "GLContextBase",
-          "kind": "forward",
-          "template": [
+        "ObjectRef<SDL_Window>::doFree": {
+          "name": "ObjectRef<SDL_Window>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for window resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
             {
-              "name": "T",
-              "type": "ObjectBox<SDL_GLContext>"
+              "type": "SDL_Window *",
+              "name": "resource"
             }
           ],
-          "doc": ""
-        },
-        "GLContextRef": {
-          "name": "GLContextRef",
-          "kind": "alias",
-          "type": "GLContextBase<ObjectRef<SDL_GLContextState>>",
-          "doc": ""
-        },
-        "GLContext": {
-          "name": "GLContext",
-          "kind": "alias",
-          "type": "GLContextBase<ObjectUnique<SDL_GLContextState>>",
-          "doc": ""
+          "sourceName": "SDL_DestroyWindow"
         },
         "GLContextBase": {
           "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
@@ -12333,7 +12427,7 @@
           "sourceName": "SDL_GLContext",
           "template": [
             {
-              "type": "ObjectBox<SDL_GLContext>",
+              "type": "ObjectBox<SDL_GLContextState *>",
               "name": "T"
             }
           ],
@@ -12370,6 +12464,14 @@
               ],
               "sourceName": "SDL_GL_MakeCurrent",
               "static": false
+            },
+            "Destroy": {
+              "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_GL_DestroyContext"
             }
           }
         },
@@ -12747,20 +12849,6 @@
           "parameters": [],
           "sourceName": "SDL_GetGrabbedWindow"
         },
-        "ObjectRef<SDL_Window>::doFree": {
-          "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@param window the window to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreatePopupWindow\n@sa SDL_CreateWindow\n@sa SDL_CreateWindowWithProperties",
-          "name": "ObjectRef<SDL_Window>::doFree",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "resource",
-              "type": "SDL_Window *"
-            }
-          ],
-          "sourceName": "SDL_DestroyWindow",
-          "template": []
-        },
         "ScreenSaverEnabled": {
           "doc": "Check whether the screensaver is currently enabled.\n\nThe screensaver is disabled by default.\n\nThe default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`.\n\n@returns true if the screensaver is enabled, false if it is disabled.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DisableScreenSaver\n@sa SDL_EnableScreenSaver",
           "name": "ScreenSaverEnabled",
@@ -12995,20 +13083,6 @@
             }
           ],
           "sourceName": "SDL_GL_SwapWindow"
-        },
-        "ObjectRef<SDL_GLContextState>::doFree": {
-          "doc": "Delete an OpenGL context.\n\n@param context the OpenGL context to be deleted.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
-          "name": "ObjectRef<SDL_GLContextState>::doFree",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "resource",
-              "type": "SDL_GLContext"
-            }
-          ],
-          "sourceName": "SDL_GL_DestroyContext",
-          "template": []
         }
       }
     },
@@ -13016,11 +13090,33 @@
       "name": "SDL3pp_render.h",
       "doc": "@defgroup CategoryRender Category Render\n\nHeader file for SDL 2D rendering functions.\n\nThis API supports the following features:\n\n- single pixel points\n- single pixel lines\n- filled rectangles\n- texture images\n- 2D polygons\n\nThe primitives may be drawn in opaque, blended, or additive modes.\n\nThe texture images may be drawn in opaque, blended, or additive modes. They\ncan have an additional color tint or alpha modulation applied to them, and\nmay also be stretched with linear interpolation.\n\nThis API is designed to accelerate simple 2D operations. You may want more\nfunctionality such as polygons and particle effects and in that case you\nshould use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the\nmany good 3D engines.\n\nThese functions must be called from the main thread. See this bug for\ndetails: https://github.com/libsdl-org/SDL/issues/986",
       "entries": {
+        "TextureLock-forward": {
+          "name": "TextureLock",
+          "kind": "forward",
+          "doc": ""
+        },
+        "RendererBase-forward": {
+          "name": "RendererBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Renderer *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "RendererRef": {
+          "name": "RendererRef",
+          "kind": "alias",
+          "type": "RendererBase<ObjectRef<SDL_Renderer>>",
+          "doc": "Handle to a non owned renderer\n\n@cat resource\n\n@sa RendererBase\n@sa Renderer"
+        },
         "Renderer": {
           "name": "Renderer",
           "kind": "alias",
           "type": "RendererBase<ObjectUnique<SDL_Renderer>>",
-          "doc": ""
+          "doc": "Handle to an owned renderer\n\n@cat resource\n\n@sa RendererBase\n@sa RendererRef"
         },
         "TextureBase-forward": {
           "name": "TextureBase",
@@ -13037,18 +13133,13 @@
           "name": "TextureRef",
           "kind": "alias",
           "type": "TextureBase<ObjectRef<SDL_Texture>>",
-          "doc": ""
+          "doc": "Handle to a non owned texture\n\n@cat resource\n\n@sa TextureBase\n@sa Texture"
         },
         "Texture": {
           "name": "Texture",
           "kind": "alias",
           "type": "TextureBase<ObjectUnique<SDL_Texture>>",
-          "doc": ""
-        },
-        "TextureLock-forward": {
-          "name": "TextureLock",
-          "kind": "forward",
-          "doc": ""
+          "doc": "Handle to an owned texture\n\n@cat resource\n\n@sa TextureBase\n@sa TextureRef"
         },
         "Vertex": {
           "doc": "Vertex structure.\n\n@since This struct is available since SDL 3.2.0.",
@@ -14190,8 +14281,56 @@
                 }
               ],
               "sourceName": "SDL_RenderDebugText"
+            },
+            "RenderDebugTextFormat": {
+              "kind": "function",
+              "type": "bool",
+              "template": [
+                {
+                  "type": "class...",
+                  "name": "ARGS"
+                }
+              ],
+              "parameters": [
+                {
+                  "type": "FPoint",
+                  "name": "p"
+                },
+                {
+                  "type": "StringParam",
+                  "name": "fmt"
+                },
+                {
+                  "type": "ARGS...",
+                  "name": "args"
+                }
+              ],
+              "name": "RenderDebugTextFormat",
+              "doc": ""
+            },
+            "Destroy": {
+              "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyRenderer"
             }
           }
+        },
+        "ObjectRef<SDL_Renderer>::doFree": {
+          "name": "ObjectRef<SDL_Renderer>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for renderer resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Renderer *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroyRenderer"
         },
         "TextureBase": {
           "doc": "An efficient driver-specific representation of pixel data\n\n@since This struct is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface\n@sa SDL_CreateTextureWithProperties\n@sa SDL_DestroyTexture",
@@ -14717,8 +14856,30 @@
               "sourceName": "SDL_LockTexture",
               "static": false,
               "reference": 1
+            },
+            "Destroy": {
+              "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "SDL_DestroyTexture"
             }
           }
+        },
+        "ObjectRef<SDL_Texture>::doFree": {
+          "name": "ObjectRef<SDL_Texture>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for texture resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "SDL_Texture *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "SDL_DestroyTexture"
         },
         "TextureLock": {
           "name": "TextureLock",
@@ -14890,34 +15051,6 @@
             }
           ],
           "sourceName": "SDL_CreateWindowAndRenderer"
-        },
-        "ObjectRef<SDL_Texture>::doFree": {
-          "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",
-          "name": "ObjectRef<SDL_Texture>::doFree",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "resource",
-              "type": "SDL_Texture *"
-            }
-          ],
-          "sourceName": "SDL_DestroyTexture",
-          "template": []
-        },
-        "ObjectRef<SDL_Renderer>::doFree": {
-          "doc": "Destroy the rendering context for a window and free all associated\ntextures.\n\nThis should be called before destroying the associated window.\n\n@param renderer the rendering context.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateRenderer",
-          "name": "ObjectRef<SDL_Renderer>::doFree",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "resource",
-              "type": "SDL_Renderer *"
-            }
-          ],
-          "sourceName": "SDL_DestroyRenderer",
-          "template": []
         },
         "GetRenderMetalLayer": {
           "doc": "Get the CAMetalLayer associated with the given Metal renderer.\n\nThis function returns `void *`, so SDL doesn't have to include Metal's\nheaders, but it can be safely cast to a `CAMetalLayer *`.\n\n@param renderer the renderer to query.\n@returns a `CAMetalLayer *` on success, or NULL if the renderer isn't a\n         Metal renderer.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderMetalCommandEncoder",
@@ -17579,13 +17712,13 @@
           "name": "AnimationRef",
           "kind": "alias",
           "type": "AnimationBase<ObjectRef<IMG_Animation>>",
-          "doc": ""
+          "doc": "Handle to a non owned animation\n\n@cat resource\n\n@sa AnimationBase\n@sa Animation"
         },
         "Animation": {
           "name": "Animation",
           "kind": "alias",
           "type": "AnimationBase<ObjectUnique<IMG_Animation>>",
-          "doc": ""
+          "doc": "Handle to an owned animation\n\n@cat resource\n\n@sa AnimationBase\n@sa AnimationRef"
         },
         "IMG_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_image library.\n\n@returns SDL_image version.\n\n@since This function is available since SDL_image 3.0.0.",
@@ -18401,22 +18534,30 @@
                 "sourceName": "IMG_LoadAnimationTyped_IO",
                 "static": false
               }
-            ]
+            ],
+            "Free": {
+              "doc": "Dispose of an IMG_Animation and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim IMG_Animation to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO",
+              "name": "Free",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "IMG_FreeAnimation"
+            }
           }
         },
         "ObjectRef<IMG_Animation>::doFree": {
-          "doc": "Dispose of an IMG_Animation and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim IMG_Animation to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO",
           "name": "ObjectRef<IMG_Animation>::doFree",
-          "kind": "function",
           "type": "void",
+          "kind": "function",
+          "doc": "Callback for animation resource cleanup\n\n@private",
+          "template": [],
           "parameters": [
             {
-              "name": "resource",
-              "type": "IMG_Animation *"
+              "type": "IMG_Animation *",
+              "name": "resource"
             }
           ],
-          "sourceName": "IMG_FreeAnimation",
-          "template": []
+          "sourceName": "IMG_FreeAnimation"
         },
         "LoadGIFAnimation": {
           "doc": "Load a GIF animation directly.\n\nIf you know you definitely have a GIF image, you can call this function,\nwhich will skip SDL_image's file format detection routines. Generally it's\nbetter to use the abstract interfaces; also, there is only an SDL_IOStream\ninterface available here.\n\n@param src an SDL_IOStream that data will be read from.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO\n@sa IMG_FreeAnimation",
@@ -18453,29 +18594,6 @@
         "SDL3PP_ENABLE_TTF": {
           "name": "SDL3PP_ENABLE_TTF",
           "kind": "def",
-          "doc": ""
-        },
-        "FontBase-forward": {
-          "name": "FontBase",
-          "kind": "forward",
-          "template": [
-            {
-              "name": "T",
-              "type": "ObjectBox<TTF_Font *>"
-            }
-          ],
-          "doc": ""
-        },
-        "FontRef": {
-          "name": "FontRef",
-          "kind": "alias",
-          "type": "FontBase<ObjectRef<TTF_Font>>",
-          "doc": ""
-        },
-        "Font": {
-          "name": "Font",
-          "kind": "alias",
-          "type": "FontBase<ObjectUnique<TTF_Font>>",
           "doc": ""
         },
         "TtfInitFlag": {
@@ -18519,6 +18637,29 @@
           "kind": "alias",
           "sourceName": "TTF_ImageType",
           "type": "TTF_ImageType"
+        },
+        "FontBase-forward": {
+          "name": "FontBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<TTF_Font *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "FontRef": {
+          "name": "FontRef",
+          "kind": "alias",
+          "type": "FontBase<ObjectRef<TTF_Font>>",
+          "doc": "Handle to a non owned font\n\n@cat resource\n\n@sa FontBase\n@sa Font"
+        },
+        "Font": {
+          "name": "Font",
+          "kind": "alias",
+          "type": "FontBase<ObjectUnique<TTF_Font>>",
+          "doc": "Handle to an owned font\n\n@cat resource\n\n@sa FontBase\n@sa FontRef"
         },
         "TTF_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_ttf library.\n\n@returns SDL_ttf version.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.",
@@ -19546,8 +19687,30 @@
               ],
               "sourceName": "TTF_RenderGlyph_LCD",
               "immutable": true
+            },
+            "Close": {
+              "doc": "Dispose of a previously-created font.\n\nCall this when done with a font. This function will free any resources\nassociated with it. It is safe to call this function on NULL, for example\non the result of a failed call to TTF_OpenFont().\n\nThe font is not valid after being passed to this function. String pointers\nfrom functions that return information on this font, such as\nTTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid\nafter this call, as well.\n\n@param font the font to dispose of.\n\n@threadsafety This function should not be called while any other thread is\n              using the font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_OpenFont\n@sa TTF_OpenFontIO",
+              "name": "Close",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "TTF_CloseFont"
             }
           }
+        },
+        "ObjectRef<TTF_Font>::doFree": {
+          "name": "ObjectRef<TTF_Font>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for font resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "TTF_Font *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "TTF_CloseFont"
         },
         "InitSubSystem": {
           "doc": "Initialize SDL_ttf.\n\nYou must successfully call this function before it is safe to call any\nother function in this library.\n\nIt is safe to call this more than once, and each successful TTF_Init() call\nshould be paired with a matching TTF_Quit() call.\n\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_Quit",
@@ -20650,20 +20813,6 @@
             }
           ],
           "sourceName": "TTF_DestroyText"
-        },
-        "ObjectRef<TTF_Font>::doFree": {
-          "doc": "Dispose of a previously-created font.\n\nCall this when done with a font. This function will free any resources\nassociated with it. It is safe to call this function on NULL, for example\non the result of a failed call to TTF_OpenFont().\n\nThe font is not valid after being passed to this function. String pointers\nfrom functions that return information on this font, such as\nTTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid\nafter this call, as well.\n\n@param font the font to dispose of.\n\n@threadsafety This function should not be called while any other thread is\n              using the font.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_OpenFont\n@sa TTF_OpenFontIO",
-          "name": "ObjectRef<TTF_Font>::doFree",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "resource",
-              "type": "TTF_Font *"
-            }
-          ],
-          "sourceName": "TTF_CloseFont",
-          "template": []
         },
         "QuitSubSystem": {
           "doc": "Deinitialize SDL_ttf.\n\nYou must call this when done with the library, to free internal resources.\nIt is safe to call this when the library isn't initialized, as it will just\nreturn immediately.\n\nOnce you have as many quit calls as you have had successful calls to\nTTF_Init, the library will actually deinitialize.\n\nPlease note that this does not automatically close any fonts that are still\nopen at the time of deinitialization, and it is possibly not safe to close\nthem afterwards, as parts of the library will no longer be initialized to\ndeal with it. A well-written program should call TTF_CloseFont() on any\nopen fonts before calling this function!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.",

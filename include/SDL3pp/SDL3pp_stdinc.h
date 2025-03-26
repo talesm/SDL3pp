@@ -64,7 +64,7 @@ using EnvironmentRef = EnvironmentBase<ObjectRef<SDL_Environment>>;
 using Environment = EnvironmentBase<ObjectUnique<SDL_Environment>>;
 
 // Forward decl
-template<ObjectBox<SDL_iconv_t> T>
+template<ObjectBox<SDL_iconv_data_t*> T>
 struct IConvBase;
 
 /**
@@ -612,28 +612,6 @@ struct EnvironmentBase : T
    */
   void Destroy() { return SDL_DestroyEnvironment(T::release()); }
 };
-/**
- * Get the process environment.
- *
- * This is initialized at application start and is not affected by setenv()
- * and unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and
- * SDL_UnsetEnvironmentVariable() if you want to modify this environment, or
- * SDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist
- * in the C runtime environment after SDL_Quit().
- *
- * @returns a pointer to the environment for the process or NULL on failure;
- *          call SDL_GetError() for more information.
- *
- * @threadsafety It is safe to call this function from any thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa GetVariable()
- * @sa GetVariables()
- * @sa SetVariable()
- * @sa UnsetVariable()
- **/
-inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
 /**
  * Destroy a set of environment variables.
@@ -653,6 +631,29 @@ inline void ObjectRef<SDL_Environment>::doFree(SDL_Environment* resource)
 {
   return SDL_DestroyEnvironment(resource);
 }
+
+/**
+ * Get the process environment.
+ *
+ * This is initialized at application start and is not affected by setenv()
+ * and unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and
+ * SDL_UnsetEnvironmentVariable() if you want to modify this environment, or
+ * SDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist
+ * in the C runtime environment after SDL_Quit().
+ *
+ * @returns a pointer to the environment for the process or NULL on failure;
+ *          call SDL_GetError() for more information.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetEnvironmentVariable
+ * @sa SDL_GetEnvironmentVariables
+ * @sa SDL_SetEnvironmentVariable
+ * @sa SDL_UnsetEnvironmentVariable
+ */
+inline EnvironmentRef GetEnvironment() { return SDL_GetEnvironment(); }
 
 /**
  * Get the value of a variable in the environment.
@@ -4577,11 +4578,10 @@ inline float tanf(float x) { return SDL_tanf(x); }
  *
  * @cat resource
  *
- * @sa resource
  * @sa IConv
  * @sa IConvRef
  */
-template<ObjectBox<SDL_iconv_t> T>
+template<ObjectBox<SDL_iconv_data_t*> T>
 struct IConvBase : T
 {
   using T::T;
@@ -4636,7 +4636,7 @@ struct IConvBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa iconv_string
+   * @sa iconv_string()
    */
   size_t iconv(const char** inbuf,
                size_t* inbytesleft,
@@ -4662,17 +4662,12 @@ struct IConvBase : T
 };
 
 /**
- * This function frees a context used for character set conversion.
+ * Callback for iConv resource cleanup
  *
- * @param resource The character set conversion handle.
- * @since This function is available since SDL 3.2.0.
- *
- * @sa IConv
- * @sa IConvBase
- * @sa iconv_string()
+ * @private
  */
 template<>
-inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_t resource)
+inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_data_t* resource)
 {
   SDL_iconv_close(resource);
 }

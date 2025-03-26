@@ -46,12 +46,28 @@ namespace SDL {
  * @{
  */
 
+// Forward decl
+struct TextureLock;
+
+// Forward decl
+template<ObjectBox<SDL_Renderer*> T>
+struct RendererBase;
+
+/**
+ * Handle to a non owned renderer
+ *
+ * @cat resource
+ *
+ * @sa RendererBase
+ * @sa Renderer
+ */
+using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
+
 /**
  * Handle to an owned renderer
  *
  * @cat resource
  *
- * @sa resource
  * @sa RendererBase
  * @sa RendererRef
  */
@@ -66,7 +82,6 @@ struct TextureBase;
  *
  * @cat resource
  *
- * @sa resource
  * @sa TextureBase
  * @sa Texture
  */
@@ -77,14 +92,10 @@ using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
  *
  * @cat resource
  *
- * @sa resource
  * @sa TextureBase
  * @sa TextureRef
  */
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
-
-// Forward decl
-struct TextureLock;
 
 /**
  * Vertex structure.
@@ -1747,11 +1758,8 @@ struct RendererBase : T
   template<class... ARGS>
   bool RenderDebugTextFormat(FPoint p, StringParam fmt, ARGS... args)
   {
-    return SDL_RenderDebugText(
-      T::get(),
-      p.x,
-      p.y,
-      std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+    return RenderDebugText(
+      p, std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
   }
 
   /**
@@ -1768,6 +1776,27 @@ struct RendererBase : T
    */
   void Destroy() { return SDL_DestroyRenderer(T::release()); }
 };
+
+/**
+ * Destroy the rendering context for a window and free all associated
+ * textures.
+ *
+ * This should be called before destroying the associated window.
+ *
+ * @param renderer the rendering context.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Renderer
+ * @sa RendererBase
+ */
+template<>
+inline void ObjectRef<SDL_Renderer>::doFree(SDL_Renderer* resource)
+{
+  return SDL_DestroyRenderer(resource);
+}
 
 /**
  * An efficient driver-specific representation of pixel data
@@ -2576,6 +2605,17 @@ struct TextureBase : T
 };
 
 /**
+ * Callback for texture resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Texture>::doFree(SDL_Texture* resource)
+{
+  return SDL_DestroyTexture(resource);
+}
+
+/**
  * Locks a Texture for access to its pixels
  */
 class TextureLock
@@ -2750,45 +2790,6 @@ inline std::pair<Window, Renderer> CreateWindowAndRenderer(
   SDL_CreateWindowAndRenderer(
     title, size.x, size.y, window_flags, &window, &renderer);
   return {Window{window}, Renderer{renderer}};
-}
-
-/**
- * Destroy the texture.
- *
- * This object becomes empty after the call.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Texture
- * @sa TextureBase
- */
-template<>
-inline void ObjectRef<SDL_Texture>::doFree(SDL_Texture* resource)
-{
-  return SDL_DestroyTexture(resource);
-}
-
-/**
- * Destroy the rendering context for a window and free all associated
- * textures.
- *
- * This should be called before destroying the associated window.
- *
- * @param renderer the rendering context.
- *
- * @threadsafety This function should only be called on the main thread.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Renderer
- * @sa RendererBase
- */
-template<>
-inline void ObjectRef<SDL_Renderer>::doFree(SDL_Renderer* resource)
-{
-  return SDL_DestroyRenderer(resource);
 }
 
 /**

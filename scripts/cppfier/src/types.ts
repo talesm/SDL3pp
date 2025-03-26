@@ -66,14 +66,72 @@ export interface FileTransform {
   doc?: string;
   includeDefs?: string[];
   ignoreEntries?: string[];
-  transform?: Dict<ApiEntryTransform>;
   includeAfter?: ApiEntryTransformMap;
+  transform?: Dict<ApiEntryTransform>;
+  resources?: Dict<ApiResource>;
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
 
 export interface ApiEntryTransform extends ApiEntryBase {
   entries?: ApiSubEntryTransformMap;
+}
+
+export interface ApiResource extends ApiEntryTransform {
+  kind?: "struct";
+
+  /**
+   * Name of free function. By default it uses the first subentry with
+   * containing "Destroy", "Close" or "free" substring, in that order.
+   */
+  free?: string
+
+  /**
+   * The name of base resource class, defaults to _uniqueName_`Base`
+   */
+  name?: string;
+
+  /**
+   * The Reference name. Defaults to _uniqueName_`Ref`
+   */
+  refName?: string;
+
+  /**
+   * The Unique name. Defaults to the converted name from the original type
+   */
+  uniqueName?: string;
+
+  /**
+   * The wrapped type, defaults to the original type
+   */
+  type?: string;
+
+  /**
+   * The Reference type. Defaults to _name_`<ObjectRef<`_type_`>>`
+   */
+  refType?: string;
+
+  /**
+   * The Unique type. Defaults to _name_`<ObjectUnique<`_type_`>>`
+   */
+  uniqueType?: string;
+
+  /**
+   * If not false it prepends the aliases for refType and uniqueType at the beginning
+   */
+  prependAliases?: boolean;
+
+  /**
+   * The type to replace on parameters, defaults to "ref"
+   * 
+   */
+  paramType?: "ref" | "unique" | "none";
+
+  /**
+   * The type to replace on return types, defaults to "ref"
+   * 
+   */
+  returnType?: "ref" | "unique" | "none";
 }
 
 export type QuickTransform = "placeholder" | "immutable" | "ctor" | ApiEntryKind;

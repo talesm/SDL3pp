@@ -37,6 +37,9 @@ namespace SDL {
  */
 
 // Forward decl
+struct SurfaceLock;
+
+// Forward decl
 template<ObjectBox<SDL_Surface*> T>
 struct SurfaceBase;
 
@@ -45,7 +48,6 @@ struct SurfaceBase;
  *
  * @cat resource
  *
- * @sa resource
  * @sa SurfaceBase
  * @sa Surface
  */
@@ -56,14 +58,10 @@ using SurfaceRef = SurfaceBase<ObjectRef<SDL_Surface>>;
  *
  * @cat resource
  *
- * @sa resource
  * @sa SurfaceBase
  * @sa SurfaceRef
  */
 using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
-
-// Forward decl
-struct SurfaceLock;
 
 /**
  * The flags on an SDL_Surface.
@@ -1794,6 +1792,17 @@ struct SurfaceBase : T
 };
 
 /**
+ * Callback for surface resource cleanup
+ *
+ * @private
+ */
+template<>
+inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
+{
+  return SDL_DestroySurface(resource);
+}
+
+/**
  * Locks a Surface for access to its pixels
  *
  * Only really necessary if Surface.MustLock() returns t
@@ -1872,26 +1881,6 @@ public:
   template<ObjectBox<SDL_Surface*> T>
   friend class SurfaceBase;
 };
-
-/**
- * Free a surface.
- *
- * It is safe to pass NULL to this function.
- *
- * @param surface the SDL_Surface to free.
- *
- * @threadsafety No other thread should be using the surface when it is freed.
- *
- * @since This function is available since SDL 3.2.0.
- *
- * @sa Surface
- * @sa SurfaceBase
- */
-template<>
-inline void ObjectRef<SDL_Surface>::doFree(SDL_Surface* resource)
-{
-  return SDL_DestroySurface(resource);
-}
 
 /**
  * Load a BMP image from a seekable SDL data stream.

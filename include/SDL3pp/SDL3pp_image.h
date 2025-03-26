@@ -2013,18 +2013,12 @@ struct AnimationBase : T
 };
 
 /**
- * Dispose of an IMG_Animation and free its resources.
+ * Callback for animation resource cleanup
  *
- * The provided `resource` pointer is not valid once this call returns.
- *
- * @param resource IMG_Animation to dispose of.
- *
- * @since This function is available since SDL_image 3.0.0.
- *
- * @sa AnimationBase::AnimationBase()
+ * @private
  */
 template<>
-inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation* resource)
+inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation * resource)
 {
   return IMG_FreeAnimation(resource);
 }

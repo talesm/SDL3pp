@@ -72,33 +72,31 @@ namespace SDL {
  */
 
 // Forward decl
-template<class T>
+struct Color;
+
+// Forward decl
+template<ObjectBox<SDL_Palette*> T>
 struct PaletteBase;
 
 /**
- * Handle to a non owned surface
+ * Handle to a non owned palette
  *
  * @cat resource
  *
- * @sa resource
  * @sa PaletteBase
  * @sa Palette
  */
 using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 
 /**
- * Handle to an owned surface
+ * Handle to an owned palette
  *
  * @cat resource
  *
- * @sa resource
  * @sa PaletteBase
  * @sa PaletteRef
  */
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
-
-// Forward decl
-struct Color;
 
 /**
  * @name PixelTypes
@@ -1792,7 +1790,7 @@ struct FColor : SDL_FColor
  * @sa Palette
  * @sa PaletteRef
  */
-template<class T>
+template<ObjectBox<SDL_Palette *> T>
 struct PaletteBase : T
 {
   // Make default ctors available

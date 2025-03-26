@@ -81,6 +81,15 @@ function combineObject(target, source) {
   return target;
 }
 
+/**
+ * Returns true if this seems like a free() function
+ * @param {string} name 
+ */
+function looksLikeFreeFunction(name) {
+  return /^[A-Z]+_([Dd]estroy|[Cc]lose|[Ff]ree)[A-Z]/.test(name)
+    || /_([Dd]estroy|[Cc]lose|[Ff]ree)$/.test(name);
+}
+
 var system = {
   silent: true,
   stopOnWarn: true,
@@ -104,4 +113,5 @@ exports.readJSONSync = readJSONSync;
 exports.writeJSONSync = writeJSONSync;
 exports.combineArray = combineArray;
 exports.combineObject = combineObject;
+exports.looksLikeFreeFunction = looksLikeFreeFunction;
 exports.system = system;
