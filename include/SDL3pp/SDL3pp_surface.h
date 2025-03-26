@@ -1775,7 +1775,7 @@ struct SurfaceBase : T
   // Convenience functions to avoid dereferencing
   int GetWidth() const { return T::get()->w; }
 
-  int GetHeight() const { return T::get()->w; }
+  int GetHeight() const { return T::get()->h; }
 
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 

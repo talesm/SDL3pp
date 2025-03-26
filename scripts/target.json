@@ -18558,6 +18558,64 @@
                 "static": false
               }
             ],
+            "GetWidth": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": [],
+              "name": "GetWidth",
+              "doc": ""
+            },
+            "GetHeight": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": [],
+              "name": "GetHeight",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "immutable": true,
+              "type": "Point",
+              "parameters": [],
+              "name": "GetSize",
+              "doc": ""
+            },
+            "GetCount": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": [],
+              "name": "GetCount",
+              "doc": ""
+            },
+            "GetFrame": {
+              "kind": "function",
+              "type": "SurfaceRef",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "index"
+                }
+              ],
+              "name": "GetFrame",
+              "doc": ""
+            },
+            "GetDelay": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "index"
+                }
+              ],
+              "name": "GetDelay",
+              "doc": ""
+            },
             "Free": {
               "doc": "Dispose of an IMG_Animation and free its resources.\n\nThe provided `anim` pointer is not valid once this call returns.\n\n@param anim IMG_Animation to dispose of.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_LoadAnimation\n@sa IMG_LoadAnimation_IO\n@sa IMG_LoadAnimationTyped_IO",
               "name": "Free",

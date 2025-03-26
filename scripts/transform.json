@@ -5244,6 +5244,52 @@
                 }
               ]
             },
+            "GetWidth": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": []
+            },
+            "GetHeight": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": []
+            },
+            "GetSize": {
+              "kind": "function",
+              "immutable": true,
+              "type": "Point",
+              "parameters": []
+            },
+            "GetCount": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": []
+            },
+            "GetFrame": {
+              "kind": "function",
+              "type": "SurfaceRef",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "index"
+                }
+              ]
+            },
+            "GetDelay": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "index"
+                }
+              ]
+            },
             "IMG_FreeAnimation": "function"
           }
         }

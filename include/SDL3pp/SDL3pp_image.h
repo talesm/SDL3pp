@@ -2002,6 +2002,19 @@ struct AnimationBase : T
   {
   }
 
+  // Convenience functions to avoid dereferencing
+  int GetWidth() const { return T::get()->w; }
+
+  int GetHeight() const { return T::get()->h; }
+
+  Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+
+  int GetCount() const { return T::get()->count; }
+
+  SurfaceRef GetFrame(int index) const { return T::get()->frames[index]; }
+
+  int GetDelay(int index) const { return T::get()->delays[index]; }
+
   /**
    * Dispose of an IMG_Animation and free its resources.
    *
@@ -2018,7 +2031,7 @@ struct AnimationBase : T
  * @private
  */
 template<>
-inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation * resource)
+inline void ObjectRef<IMG_Animation>::doFree(IMG_Animation* resource)
 {
   return IMG_FreeAnimation(resource);
 }

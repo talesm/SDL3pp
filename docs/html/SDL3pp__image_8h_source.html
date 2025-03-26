@@ -421,75 +421,88 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l02003" name="l02003"></a><span class="lineno"> 2003</span>  }</div>
 </div>
 <div class="line"><a id="l02004" name="l02004"></a><span class="lineno"> 2004</span> </div>
-<div class="line"><a id="l02012" name="l02012"></a><span class="lineno"><a class="line" href="structSDL_1_1AnimationBase.html#a68e5acd1268092c8eb8fc5447581c536"> 2012</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1AnimationBase.html#a68e5acd1268092c8eb8fc5447581c536">Free</a>() { <span class="keywordflow">return</span> T::free(); }</div>
-<div class="line"><a id="l02013" name="l02013"></a><span class="lineno"> 2013</span>};</div>
+<div class="line"><a id="l02005" name="l02005"></a><span class="lineno"> 2005</span>  <span class="comment">// Convenience functions to avoid dereferencing</span></div>
+<div class="line"><a id="l02006" name="l02006"></a><span class="lineno"> 2006</span>  <span class="keywordtype">int</span> GetWidth()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> T::get()-&gt;w; }</div>
+<div class="line"><a id="l02007" name="l02007"></a><span class="lineno"> 2007</span> </div>
+<div class="line"><a id="l02008" name="l02008"></a><span class="lineno"> 2008</span>  <span class="keywordtype">int</span> GetHeight()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> T::get()-&gt;h; }</div>
+<div class="line"><a id="l02009" name="l02009"></a><span class="lineno"> 2009</span> </div>
+<div class="line"><a id="l02010" name="l02010"></a><span class="lineno"> 2010</span>  Point GetSize()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> Point(GetWidth(), GetHeight()); }</div>
+<div class="line"><a id="l02011" name="l02011"></a><span class="lineno"> 2011</span> </div>
+<div class="line"><a id="l02012" name="l02012"></a><span class="lineno"> 2012</span>  <span class="keywordtype">int</span> GetCount()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> T::get()-&gt;count; }</div>
+<div class="line"><a id="l02013" name="l02013"></a><span class="lineno"> 2013</span> </div>
+<div class="line"><a id="l02014" name="l02014"></a><span class="lineno"> 2014</span>  <a class="code hl_typedef" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2">SurfaceRef</a> GetFrame(<span class="keywordtype">int</span> index)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> T::get()-&gt;frames[index]; }</div>
+<div class="line"><a id="l02015" name="l02015"></a><span class="lineno"> 2015</span> </div>
+<div class="line"><a id="l02016" name="l02016"></a><span class="lineno"> 2016</span>  <span class="keywordtype">int</span> GetDelay(<span class="keywordtype">int</span> index)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> T::get()-&gt;delays[index]; }</div>
+<div class="line"><a id="l02017" name="l02017"></a><span class="lineno"> 2017</span> </div>
+<div class="line"><a id="l02025" name="l02025"></a><span class="lineno"><a class="line" href="structSDL_1_1AnimationBase.html#a68e5acd1268092c8eb8fc5447581c536"> 2025</a></span>  <span class="keywordtype">void</span> <a class="code hl_function" href="structSDL_1_1AnimationBase.html#a68e5acd1268092c8eb8fc5447581c536">Free</a>() { <span class="keywordflow">return</span> T::free(); }</div>
+<div class="line"><a id="l02026" name="l02026"></a><span class="lineno"> 2026</span>};</div>
 </div>
-<div class="line"><a id="l02014" name="l02014"></a><span class="lineno"> 2014</span> </div>
-<div class="line"><a id="l02020" name="l02020"></a><span class="lineno"> 2020</span><span class="keyword">template</span>&lt;&gt;</div>
-<div class="line"><a id="l02021" name="l02021"></a><span class="lineno"> 2021</span><span class="keyword">inline</span> <span class="keywordtype">void</span> ObjectRef&lt;IMG_Animation&gt;::doFree(IMG_Animation * resource)</div>
-<div class="line"><a id="l02022" name="l02022"></a><span class="lineno"> 2022</span>{</div>
-<div class="line"><a id="l02023" name="l02023"></a><span class="lineno"> 2023</span>  <span class="keywordflow">return</span> IMG_FreeAnimation(resource);</div>
-<div class="line"><a id="l02024" name="l02024"></a><span class="lineno"> 2024</span>}</div>
-<div class="line"><a id="l02025" name="l02025"></a><span class="lineno"> 2025</span> </div>
-<div class="foldopen" id="foldopen02044" data-start="{" data-end="}">
-<div class="line"><a id="l02044" name="l02044"></a><span class="lineno"><a class="line" href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a"> 2044</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a> <a class="code hl_function" href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a">LoadGIFAnimation</a>(<a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; src)</div>
-<div class="line"><a id="l02045" name="l02045"></a><span class="lineno"> 2045</span>{</div>
-<div class="line"><a id="l02046" name="l02046"></a><span class="lineno"> 2046</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a>{IMG_LoadGIFAnimation_IO(src.get())};</div>
-<div class="line"><a id="l02047" name="l02047"></a><span class="lineno"> 2047</span>}</div>
+<div class="line"><a id="l02027" name="l02027"></a><span class="lineno"> 2027</span> </div>
+<div class="line"><a id="l02033" name="l02033"></a><span class="lineno"> 2033</span><span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a id="l02034" name="l02034"></a><span class="lineno"> 2034</span><span class="keyword">inline</span> <span class="keywordtype">void</span> ObjectRef&lt;IMG_Animation&gt;::doFree(IMG_Animation* resource)</div>
+<div class="line"><a id="l02035" name="l02035"></a><span class="lineno"> 2035</span>{</div>
+<div class="line"><a id="l02036" name="l02036"></a><span class="lineno"> 2036</span>  <span class="keywordflow">return</span> IMG_FreeAnimation(resource);</div>
+<div class="line"><a id="l02037" name="l02037"></a><span class="lineno"> 2037</span>}</div>
+<div class="line"><a id="l02038" name="l02038"></a><span class="lineno"> 2038</span> </div>
+<div class="foldopen" id="foldopen02057" data-start="{" data-end="}">
+<div class="line"><a id="l02057" name="l02057"></a><span class="lineno"><a class="line" href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a"> 2057</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a> <a class="code hl_function" href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a">LoadGIFAnimation</a>(<a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; src)</div>
+<div class="line"><a id="l02058" name="l02058"></a><span class="lineno"> 2058</span>{</div>
+<div class="line"><a id="l02059" name="l02059"></a><span class="lineno"> 2059</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a>{IMG_LoadGIFAnimation_IO(src.get())};</div>
+<div class="line"><a id="l02060" name="l02060"></a><span class="lineno"> 2060</span>}</div>
 </div>
-<div class="line"><a id="l02048" name="l02048"></a><span class="lineno"> 2048</span> </div>
-<div class="foldopen" id="foldopen02064" data-start="{" data-end="}">
-<div class="line"><a id="l02064" name="l02064"></a><span class="lineno"><a class="line" href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87"> 2064</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a> <a class="code hl_function" href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87">LoadWEBPAnimation</a>(<a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; src)</div>
-<div class="line"><a id="l02065" name="l02065"></a><span class="lineno"> 2065</span>{</div>
-<div class="line"><a id="l02066" name="l02066"></a><span class="lineno"> 2066</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a>{IMG_LoadWEBPAnimation_IO(src.get())};</div>
-<div class="line"><a id="l02067" name="l02067"></a><span class="lineno"> 2067</span>}</div>
+<div class="line"><a id="l02061" name="l02061"></a><span class="lineno"> 2061</span> </div>
+<div class="foldopen" id="foldopen02077" data-start="{" data-end="}">
+<div class="line"><a id="l02077" name="l02077"></a><span class="lineno"><a class="line" href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87"> 2077</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a> <a class="code hl_function" href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87">LoadWEBPAnimation</a>(<a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; src)</div>
+<div class="line"><a id="l02078" name="l02078"></a><span class="lineno"> 2078</span>{</div>
+<div class="line"><a id="l02079" name="l02079"></a><span class="lineno"> 2079</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1AnimationBase.html">Animation</a>{IMG_LoadWEBPAnimation_IO(src.get())};</div>
+<div class="line"><a id="l02080" name="l02080"></a><span class="lineno"> 2080</span>}</div>
 </div>
-<div class="line"><a id="l02068" name="l02068"></a><span class="lineno"> 2068</span> </div>
-<div class="line"><a id="l02069" name="l02069"></a><span class="lineno"> 2069</span><span class="preprocessor">#pragma region impl</span></div>
-<div class="line"><a id="l02070" name="l02070"></a><span class="lineno"> 2070</span> </div>
-<div class="line"><a id="l02072" name="l02072"></a><span class="lineno"> 2072</span> </div>
-<div class="line"><a id="l02073" name="l02073"></a><span class="lineno"> 2073</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Surface*&gt; T&gt;</div>
-<div class="foldopen" id="foldopen02074" data-start="{" data-end="}">
-<div class="line"><a id="l02074" name="l02074"></a><span class="lineno"><a class="line" href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23"> 2074</a></span><a class="code hl_function" href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23">SurfaceBase&lt;T&gt;::SurfaceBase</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> file)</div>
-<div class="line"><a id="l02075" name="l02075"></a><span class="lineno"> 2075</span>  : T(<a class="code hl_function" href="group__CategorySDLImage.html#gab05fc43c1768e2203c52e4faa8d44164">LoadSurface</a>(std::move(file)))</div>
-<div class="line"><a id="l02076" name="l02076"></a><span class="lineno"> 2076</span>{</div>
-<div class="line"><a id="l02077" name="l02077"></a><span class="lineno"> 2077</span>}</div>
+<div class="line"><a id="l02081" name="l02081"></a><span class="lineno"> 2081</span> </div>
+<div class="line"><a id="l02082" name="l02082"></a><span class="lineno"> 2082</span><span class="preprocessor">#pragma region impl</span></div>
+<div class="line"><a id="l02083" name="l02083"></a><span class="lineno"> 2083</span> </div>
+<div class="line"><a id="l02085" name="l02085"></a><span class="lineno"> 2085</span> </div>
+<div class="line"><a id="l02086" name="l02086"></a><span class="lineno"> 2086</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Surface*&gt; T&gt;</div>
+<div class="foldopen" id="foldopen02087" data-start="{" data-end="}">
+<div class="line"><a id="l02087" name="l02087"></a><span class="lineno"><a class="line" href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23"> 2087</a></span><a class="code hl_function" href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23">SurfaceBase&lt;T&gt;::SurfaceBase</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> file)</div>
+<div class="line"><a id="l02088" name="l02088"></a><span class="lineno"> 2088</span>  : T(<a class="code hl_function" href="group__CategorySDLImage.html#gab05fc43c1768e2203c52e4faa8d44164">LoadSurface</a>(std::move(file)))</div>
+<div class="line"><a id="l02089" name="l02089"></a><span class="lineno"> 2089</span>{</div>
+<div class="line"><a id="l02090" name="l02090"></a><span class="lineno"> 2090</span>}</div>
 </div>
-<div class="line"><a id="l02078" name="l02078"></a><span class="lineno"> 2078</span> </div>
-<div class="line"><a id="l02079" name="l02079"></a><span class="lineno"> 2079</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Texture*&gt; T&gt;</div>
-<div class="foldopen" id="foldopen02080" data-start="{" data-end="}">
-<div class="line"><a id="l02080" name="l02080"></a><span class="lineno"><a class="line" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e"> 2080</a></span><a class="code hl_function" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">TextureBase&lt;T&gt;::TextureBase</a>(<a class="code hl_struct" href="structSDL_1_1RendererBase.html">RendererRef</a> renderer, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> file)</div>
-<div class="line"><a id="l02081" name="l02081"></a><span class="lineno"> 2081</span>  : T(<a class="code hl_function" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9">LoadTexture</a>(renderer, std::move(file)))</div>
-<div class="line"><a id="l02082" name="l02082"></a><span class="lineno"> 2082</span>{</div>
-<div class="line"><a id="l02083" name="l02083"></a><span class="lineno"> 2083</span>}</div>
+<div class="line"><a id="l02091" name="l02091"></a><span class="lineno"> 2091</span> </div>
+<div class="line"><a id="l02092" name="l02092"></a><span class="lineno"> 2092</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Texture*&gt; T&gt;</div>
+<div class="foldopen" id="foldopen02093" data-start="{" data-end="}">
+<div class="line"><a id="l02093" name="l02093"></a><span class="lineno"><a class="line" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e"> 2093</a></span><a class="code hl_function" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">TextureBase&lt;T&gt;::TextureBase</a>(<a class="code hl_struct" href="structSDL_1_1RendererBase.html">RendererRef</a> renderer, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> file)</div>
+<div class="line"><a id="l02094" name="l02094"></a><span class="lineno"> 2094</span>  : T(<a class="code hl_function" href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9">LoadTexture</a>(renderer, std::move(file)))</div>
+<div class="line"><a id="l02095" name="l02095"></a><span class="lineno"> 2095</span>{</div>
+<div class="line"><a id="l02096" name="l02096"></a><span class="lineno"> 2096</span>}</div>
 </div>
 </div>
-<div class="line"><a id="l02084" name="l02084"></a><span class="lineno"> 2084</span> </div>
-<div class="line"><a id="l02085" name="l02085"></a><span class="lineno"> 2085</span><span class="preprocessor">#pragma endregion impl</span></div>
-<div class="line"><a id="l02086" name="l02086"></a><span class="lineno"> 2086</span> </div>
-<div class="line"><a id="l02087" name="l02087"></a><span class="lineno"> 2087</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l02088" name="l02088"></a><span class="lineno"> 2088</span> </div>
-<div class="line"><a id="l02089" name="l02089"></a><span class="lineno"> 2089</span><span class="preprocessor">#else </span><span class="comment">// defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)</span></div>
-<div class="line"><a id="l02090" name="l02090"></a><span class="lineno"> 2090</span> </div>
-<div class="line"><a id="l02091" name="l02091"></a><span class="lineno"> 2091</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
-<div class="line"><a id="l02092" name="l02092"></a><span class="lineno"> 2092</span> </div>
-<div class="line"><a id="l02093" name="l02093"></a><span class="lineno"> 2093</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Surface*&gt; T&gt;</div>
-<div class="line"><a id="l02094" name="l02094"></a><span class="lineno"> 2094</span><a class="code hl_function" href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23">SurfaceBase&lt;T&gt;::SurfaceBase</a>(StringParam file)</div>
-<div class="line"><a id="l02095" name="l02095"></a><span class="lineno"> 2095</span>  : T(<a class="code hl_function" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">LoadBMP</a>(std::move(file)))</div>
-<div class="line"><a id="l02096" name="l02096"></a><span class="lineno"> 2096</span>{</div>
-<div class="line"><a id="l02097" name="l02097"></a><span class="lineno"> 2097</span>}</div>
-<div class="line"><a id="l02098" name="l02098"></a><span class="lineno"> 2098</span> </div>
-<div class="line"><a id="l02099" name="l02099"></a><span class="lineno"> 2099</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Texture*&gt; T&gt;</div>
-<div class="line"><a id="l02100" name="l02100"></a><span class="lineno"> 2100</span><a class="code hl_function" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">TextureBase&lt;T&gt;::TextureBase</a>(<a class="code hl_typedef" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, StringParam file)</div>
-<div class="line"><a id="l02101" name="l02101"></a><span class="lineno"> 2101</span>  : T(<a class="code hl_function" href="group__CategoryRender.html#ga55becfff281d094fc47916ab05fc947b">LoadTextureBMP</a>(renderer, std::move(file)))</div>
-<div class="line"><a id="l02102" name="l02102"></a><span class="lineno"> 2102</span>{</div>
-<div class="line"><a id="l02103" name="l02103"></a><span class="lineno"> 2103</span>}</div>
-<div class="line"><a id="l02104" name="l02104"></a><span class="lineno"> 2104</span> </div>
-<div class="line"><a id="l02105" name="l02105"></a><span class="lineno"> 2105</span>}</div>
-<div class="line"><a id="l02106" name="l02106"></a><span class="lineno"> 2106</span> </div>
-<div class="line"><a id="l02107" name="l02107"></a><span class="lineno"> 2107</span><span class="preprocessor">#endif </span><span class="comment">// defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)</span></div>
-<div class="line"><a id="l02108" name="l02108"></a><span class="lineno"> 2108</span> </div>
-<div class="line"><a id="l02109" name="l02109"></a><span class="lineno"> 2109</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_IMAGE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l02097" name="l02097"></a><span class="lineno"> 2097</span> </div>
+<div class="line"><a id="l02098" name="l02098"></a><span class="lineno"> 2098</span><span class="preprocessor">#pragma endregion impl</span></div>
+<div class="line"><a id="l02099" name="l02099"></a><span class="lineno"> 2099</span> </div>
+<div class="line"><a id="l02100" name="l02100"></a><span class="lineno"> 2100</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l02101" name="l02101"></a><span class="lineno"> 2101</span> </div>
+<div class="line"><a id="l02102" name="l02102"></a><span class="lineno"> 2102</span><span class="preprocessor">#else </span><span class="comment">// defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)</span></div>
+<div class="line"><a id="l02103" name="l02103"></a><span class="lineno"> 2103</span> </div>
+<div class="line"><a id="l02104" name="l02104"></a><span class="lineno"> 2104</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
+<div class="line"><a id="l02105" name="l02105"></a><span class="lineno"> 2105</span> </div>
+<div class="line"><a id="l02106" name="l02106"></a><span class="lineno"> 2106</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Surface*&gt; T&gt;</div>
+<div class="line"><a id="l02107" name="l02107"></a><span class="lineno"> 2107</span><a class="code hl_function" href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23">SurfaceBase&lt;T&gt;::SurfaceBase</a>(StringParam file)</div>
+<div class="line"><a id="l02108" name="l02108"></a><span class="lineno"> 2108</span>  : T(<a class="code hl_function" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">LoadBMP</a>(std::move(file)))</div>
+<div class="line"><a id="l02109" name="l02109"></a><span class="lineno"> 2109</span>{</div>
+<div class="line"><a id="l02110" name="l02110"></a><span class="lineno"> 2110</span>}</div>
+<div class="line"><a id="l02111" name="l02111"></a><span class="lineno"> 2111</span> </div>
+<div class="line"><a id="l02112" name="l02112"></a><span class="lineno"> 2112</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Texture*&gt; T&gt;</div>
+<div class="line"><a id="l02113" name="l02113"></a><span class="lineno"> 2113</span><a class="code hl_function" href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">TextureBase&lt;T&gt;::TextureBase</a>(<a class="code hl_typedef" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer, StringParam file)</div>
+<div class="line"><a id="l02114" name="l02114"></a><span class="lineno"> 2114</span>  : T(<a class="code hl_function" href="group__CategoryRender.html#ga55becfff281d094fc47916ab05fc947b">LoadTextureBMP</a>(renderer, std::move(file)))</div>
+<div class="line"><a id="l02115" name="l02115"></a><span class="lineno"> 2115</span>{</div>
+<div class="line"><a id="l02116" name="l02116"></a><span class="lineno"> 2116</span>}</div>
+<div class="line"><a id="l02117" name="l02117"></a><span class="lineno"> 2117</span> </div>
+<div class="line"><a id="l02118" name="l02118"></a><span class="lineno"> 2118</span>}</div>
+<div class="line"><a id="l02119" name="l02119"></a><span class="lineno"> 2119</span> </div>
+<div class="line"><a id="l02120" name="l02120"></a><span class="lineno"> 2120</span><span class="preprocessor">#endif </span><span class="comment">// defined(SDL3PP_ENABLE_IMAGE) || defined(SDL3PP_DOC)</span></div>
+<div class="line"><a id="l02121" name="l02121"></a><span class="lineno"> 2121</span> </div>
+<div class="line"><a id="l02122" name="l02122"></a><span class="lineno"> 2122</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_IMAGE_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1StringParamImpl_html"><div class="ttname"><a href="classSDL_1_1StringParamImpl.html">SDL::StringParamImpl</a></div><div class="ttdoc">A safe and mostly efficient wrapper to std::string and std::string_view parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:27</div></div>
 <div class="ttc" id="aconceptSDL_1_1ObjectBox_html"><div class="ttname"><a href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a></div><div class="ttdef"><b>Definition</b> SDL3pp_objectWrapper.h:18</div></div>
 <div class="ttc" id="agroup__CategoryRender_html_ga3c15747c0c3091d37a2f14511aba1c7d"><div class="ttname"><a href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">SDL::RendererRef</a></div><div class="ttdeci">RendererBase&lt; ObjectRef&lt; SDL_Renderer &gt; &gt; RendererRef</div><div class="ttdoc">Handle to a non owned renderer.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:64</div></div>
@@ -501,7 +514,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategorySDLImage_html_ga1e0107db9eb6bcb7870bb7863a82c89b"><div class="ttname"><a href="group__CategorySDLImage.html#ga1e0107db9eb6bcb7870bb7863a82c89b">SDL::IMG_Version</a></div><div class="ttdeci">int IMG_Version()</div><div class="ttdoc">This function gets the version of the dynamically linked SDL_image library.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:63</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_ga20df00b3bee4e9e966c97d13703a8763"><div class="ttname"><a href="group__CategorySDLImage.html#ga20df00b3bee4e9e966c97d13703a8763">SDL::LoadXCF</a></div><div class="ttdeci">Surface LoadXCF(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a XCF image directly.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1626</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_ga28121673ad349cadaa3d70edb4b40969"><div class="ttname"><a href="group__CategorySDLImage.html#ga28121673ad349cadaa3d70edb4b40969">SDL::isGIF</a></div><div class="ttdeci">bool isGIF(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Detect GIF image data on a readable/seekable SDL_IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:512</div></div>
-<div class="ttc" id="agroup__CategorySDLImage_html_ga356c020deb78e7a3b790e2e3f9deee87"><div class="ttname"><a href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87">SDL::LoadWEBPAnimation</a></div><div class="ttdeci">Animation LoadWEBPAnimation(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a WEBP animation directly.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2064</div></div>
+<div class="ttc" id="agroup__CategorySDLImage_html_ga356c020deb78e7a3b790e2e3f9deee87"><div class="ttname"><a href="group__CategorySDLImage.html#ga356c020deb78e7a3b790e2e3f9deee87">SDL::LoadWEBPAnimation</a></div><div class="ttdeci">Animation LoadWEBPAnimation(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a WEBP animation directly.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2077</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_ga3621316a40f47372866d08e08be4703f"><div class="ttname"><a href="group__CategorySDLImage.html#ga3621316a40f47372866d08e08be4703f">SDL::isXV</a></div><div class="ttdeci">bool isXV(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Detect XV image data on a readable/seekable SDL_IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1028</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_ga43f9db88359d28b6e0b721d48fa886e6"><div class="ttname"><a href="group__CategorySDLImage.html#ga43f9db88359d28b6e0b721d48fa886e6">SDL::LoadICO</a></div><div class="ttdeci">Surface LoadICO(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a ICO image directly.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1145</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_ga4565bb2de11ec36afa8a0f5ac36e1688"><div class="ttname"><a href="group__CategorySDLImage.html#ga4565bb2de11ec36afa8a0f5ac36e1688">SDL::SavePNG</a></div><div class="ttdeci">bool SavePNG(SurfaceRef surface, StringParam file)</div><div class="ttdoc">Save an SDL_Surface into a PNG image file.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1870</div></div>
@@ -529,7 +542,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategorySDLImage_html_gaa5e2f324e0f2b3a28aa76e6d3890532c"><div class="ttname"><a href="group__CategorySDLImage.html#gaa5e2f324e0f2b3a28aa76e6d3890532c">SDL::isQOI</a></div><div class="ttdeci">bool isQOI(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Detect QOI image data on a readable/seekable SDL_IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:856</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_gab05fc43c1768e2203c52e4faa8d44164"><div class="ttname"><a href="group__CategorySDLImage.html#gab05fc43c1768e2203c52e4faa8d44164">SDL::LoadSurface</a></div><div class="ttdeci">Surface LoadSurface(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src, StringParam type)</div><div class="ttdoc">Load an image from an SDL data source into a software surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:108</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_gab17113bcbee35432188045ea5ecbb99b"><div class="ttname"><a href="group__CategorySDLImage.html#gab17113bcbee35432188045ea5ecbb99b">SDL::LoadGIF</a></div><div class="ttdeci">Surface LoadGIF(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a GIF image directly.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1219</div></div>
-<div class="ttc" id="agroup__CategorySDLImage_html_gaba0ec4998ab10ae77400f9eadad60e5a"><div class="ttname"><a href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a">SDL::LoadGIFAnimation</a></div><div class="ttdeci">Animation LoadGIFAnimation(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a GIF animation directly.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2044</div></div>
+<div class="ttc" id="agroup__CategorySDLImage_html_gaba0ec4998ab10ae77400f9eadad60e5a"><div class="ttname"><a href="group__CategorySDLImage.html#gaba0ec4998ab10ae77400f9eadad60e5a">SDL::LoadGIFAnimation</a></div><div class="ttdeci">Animation LoadGIFAnimation(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a GIF animation directly.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2057</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_gabcd229ffde1b7f347c13a039d8f97d86"><div class="ttname"><a href="group__CategorySDLImage.html#gabcd229ffde1b7f347c13a039d8f97d86">SDL::isSVG</a></div><div class="ttdeci">bool isSVG(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Detect SVG image data on a readable/seekable SDL_IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:813</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_gabcd78d17a7e2819f2a3798deb8f3d55c"><div class="ttname"><a href="group__CategorySDLImage.html#gabcd78d17a7e2819f2a3798deb8f3d55c">SDL::isAVIF</a></div><div class="ttdeci">bool isAVIF(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Detect AVIF image data on a readable/seekable SDL_IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:337</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_gabdb011cc5326525f8f1f64bfcf36c5f9"><div class="ttname"><a href="group__CategorySDLImage.html#gabdb011cc5326525f8f1f64bfcf36c5f9">SDL::LoadTexture</a></div><div class="ttdeci">Texture LoadTexture(RendererRef renderer, StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a GPU texture.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:216</div></div>
@@ -542,17 +555,18 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategorySDLImage_html_gafa56d4e948a5246f206d3bc3b970abf8"><div class="ttname"><a href="group__CategorySDLImage.html#gafa56d4e948a5246f206d3bc3b970abf8">SDL::isXPM</a></div><div class="ttdeci">bool isXPM(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Detect XPM image data on a readable/seekable SDL_IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:985</div></div>
 <div class="ttc" id="agroup__CategorySDLImage_html_gafb85006ddaaff2ca5e1e209f96c9d53d"><div class="ttname"><a href="group__CategorySDLImage.html#gafb85006ddaaff2ca5e1e209f96c9d53d">SDL::SaveAVIF</a></div><div class="ttdeci">bool SaveAVIF(SurfaceRef surface, StringParam file, int quality)</div><div class="ttdoc">Save an SDL_Surface into a AVIF image file.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1828</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga167ee35d4370ada89dfe40d6d8501be7"><div class="ttname"><a href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">SDL::LoadBMP</a></div><div class="ttdeci">Surface LoadBMP(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a BMP image from a seekable SDL data stream.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1898</div></div>
+<div class="ttc" id="agroup__CategorySurface_html_ga2ea8e6016ec594c51738ef06f469d5d2"><div class="ttname"><a href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2">SDL::SurfaceRef</a></div><div class="ttdeci">SurfaceBase&lt; ObjectRef&lt; SDL_Surface &gt; &gt; SurfaceRef</div><div class="ttdoc">Handle to a non owned surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:54</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
 <div class="ttc" id="astructSDL_1_1AnimationBase_html"><div class="ttname"><a href="structSDL_1_1AnimationBase.html">SDL::AnimationBase</a></div><div class="ttdoc">Animated image support.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1950</div></div>
 <div class="ttc" id="astructSDL_1_1AnimationBase_html_a0f00521e178a0b79f0c3711fab6749be"><div class="ttname"><a href="structSDL_1_1AnimationBase.html#a0f00521e178a0b79f0c3711fab6749be">SDL::AnimationBase::AnimationBase</a></div><div class="ttdeci">AnimationBase(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load an animation from an SDL_IOStream.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1978</div></div>
 <div class="ttc" id="astructSDL_1_1AnimationBase_html_a1212c3da0afcdeb206278a856cffd90e"><div class="ttname"><a href="structSDL_1_1AnimationBase.html#a1212c3da0afcdeb206278a856cffd90e">SDL::AnimationBase::AnimationBase</a></div><div class="ttdeci">AnimationBase(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src, StringParam type)</div><div class="ttdoc">Load an animation from an SDL datasource.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2000</div></div>
 <div class="ttc" id="astructSDL_1_1AnimationBase_html_a14775d3f36c7f6d6cf70eeef5908290f"><div class="ttname"><a href="structSDL_1_1AnimationBase.html#a14775d3f36c7f6d6cf70eeef5908290f">SDL::AnimationBase::AnimationBase</a></div><div class="ttdeci">AnimationBase(StringParam file)</div><div class="ttdoc">Load an animation from a file.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:1963</div></div>
-<div class="ttc" id="astructSDL_1_1AnimationBase_html_a68e5acd1268092c8eb8fc5447581c536"><div class="ttname"><a href="structSDL_1_1AnimationBase.html#a68e5acd1268092c8eb8fc5447581c536">SDL::AnimationBase::Free</a></div><div class="ttdeci">void Free()</div><div class="ttdoc">Dispose of an IMG_Animation and free its resources.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2012</div></div>
+<div class="ttc" id="astructSDL_1_1AnimationBase_html_a68e5acd1268092c8eb8fc5447581c536"><div class="ttname"><a href="structSDL_1_1AnimationBase.html#a68e5acd1268092c8eb8fc5447581c536">SDL::AnimationBase::Free</a></div><div class="ttdeci">void Free()</div><div class="ttdoc">Dispose of an IMG_Animation and free its resources.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2025</div></div>
 <div class="ttc" id="astructSDL_1_1RendererBase_html"><div class="ttname"><a href="structSDL_1_1RendererBase.html">SDL::RendererBase</a></div><div class="ttdoc">A structure representing rendering state.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:177</div></div>
 <div class="ttc" id="astructSDL_1_1SurfaceBase_html"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html">SDL::SurfaceBase</a></div><div class="ttdoc">A collection of pixels used in software blitting.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:151</div></div>
-<div class="ttc" id="astructSDL_1_1SurfaceBase_html_aa4c664b3d7ce46351eb8d44d87532c23"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23">SDL::SurfaceBase::SurfaceBase</a></div><div class="ttdeci">SurfaceBase(StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a software surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2074</div></div>
+<div class="ttc" id="astructSDL_1_1SurfaceBase_html_aa4c664b3d7ce46351eb8d44d87532c23"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#aa4c664b3d7ce46351eb8d44d87532c23">SDL::SurfaceBase::SurfaceBase</a></div><div class="ttdeci">SurfaceBase(StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a software surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2087</div></div>
 <div class="ttc" id="astructSDL_1_1TextureBase_html"><div class="ttname"><a href="structSDL_1_1TextureBase.html">SDL::TextureBase</a></div><div class="ttdoc">An efficient driver-specific representation of pixel data.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:1815</div></div>
-<div class="ttc" id="astructSDL_1_1TextureBase_html_a2c14018fb1df594e498b6ac5a1cd996e"><div class="ttname"><a href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">SDL::TextureBase::TextureBase</a></div><div class="ttdeci">TextureBase(RendererRef renderer, StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a GPU texture.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2080</div></div>
+<div class="ttc" id="astructSDL_1_1TextureBase_html_a2c14018fb1df594e498b6ac5a1cd996e"><div class="ttname"><a href="structSDL_1_1TextureBase.html#a2c14018fb1df594e498b6ac5a1cd996e">SDL::TextureBase::TextureBase</a></div><div class="ttdeci">TextureBase(RendererRef renderer, StringParam file)</div><div class="ttdoc">Load an image from a filesystem path into a GPU texture.</div><div class="ttdef"><b>Definition</b> SDL3pp_image.h:2093</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
