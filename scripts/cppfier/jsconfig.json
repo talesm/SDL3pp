@@ -2,12 +2,14 @@
   "include": [
     "src/*.js",
     "tests/*.js",
+    "src/*.ts",
+    "tests/*.ts",
   ],
   "compilerOptions": {
     "lib": [
       "ES2024"
     ],
     "resolveJsonModule": true,
-    "checkJs": true
+    "checkJs": true,
   }
 }

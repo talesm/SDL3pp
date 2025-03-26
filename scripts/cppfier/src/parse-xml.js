@@ -5,6 +5,10 @@ const { readFile } = require("fs/promises");
 const { readContent, parseParams } = require("./parse");
 
 /**
+ * @import { Api, ApiEntries, ApiEntry, ApiFile } from "./types"
+ */
+
+/**
  * @typedef {object} ParseXmlConfig
  * @prop {string[]} xmlDir
  * @prop {string[]} baseDir

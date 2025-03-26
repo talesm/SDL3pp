@@ -8,10 +8,13 @@ const structsResourcesApi = require("./samples/structs_resources.json");
 const enumsApi = require("./samples/enums.json");
 const enumsAliasesApi = require("./samples/enums_aliases.json");
 
+/**
+ * @import {Api, ApiEntry} from "../src/types"
+ */
+
 test("empty transform loopback", () => {
   const modifiedApi = transformApi({
     sourceApi: emptyApi,
-    transform: {},
   });
   expect(modifiedApi).toEqual(emptyApi);
 });
@@ -19,7 +22,6 @@ test("empty transform loopback", () => {
 test("functions transform loopback", () => {
   const modifiedApi = transformApi({
     sourceApi: /** @type {Api} */(functionsApi),
-    transform: {},
   });
   expect(modifiedApi).toMatchObject(functionsApi);
 });

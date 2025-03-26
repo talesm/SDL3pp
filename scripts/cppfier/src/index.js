@@ -3,6 +3,9 @@ const { parseApi } = require("./parse.js");
 const { transformApi } = require("./transform.js");
 const { updateApi } = require("./update.js");
 const { readJSONSync, system, writeJSONSync, writeLinesSync } = require("./utils.js");
+/**
+ * @import {Api, ApiTransform} from "./types"
+ */
 
 /**
  * Process the main

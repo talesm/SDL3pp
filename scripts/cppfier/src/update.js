@@ -2,6 +2,10 @@ const { parseContent } = require("./parse.js");
 const { readLinesSync, system, writeLinesSync } = require("./utils.js");
 
 /**
+ * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters } from "./types"
+ */
+
+/**
  * @typedef {object} UpdateApiConfig
  * @prop {Api}       api
  * @prop {string}    baseDir

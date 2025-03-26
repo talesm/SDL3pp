@@ -2,9 +2,13 @@ const { insertEntry } = require("./parse");
 const { system, combineObject } = require("./utils");
 
 /**
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiTransform, Dict, FileTransform, ReplacementRule, StringMap } from "./types"
+ */
+
+/**
  * @typedef {object} TransformConfig
- * @prop {Api}          sourceApi
- * @prop {ApiTransform} transform
+ * @prop {Api}            sourceApi
+ * @prop {ApiTransform=}  transform
  */
 
 /**
@@ -15,13 +19,13 @@ const { system, combineObject } = require("./utils");
  */
 function transformApi(config) {
   const source = config.sourceApi;
-  const transform = config.transform;
+  const transform = config.transform ?? { files: {} };
   /** @type {ApiContext} */
   const context = new ApiContext(transform);
 
-  /** @type {ApiFileMap} */
+  /** @type {Dict<ApiFile>} */
   const files = {};
-  const fileTransformMap = transform?.files ?? {};
+  const fileTransformMap = transform.files ?? {};
   for (const [sourceName, sourceFile] of Object.entries(source.files)) {
     const fileConfig = fileTransformMap[sourceName] ?? {};
     const targetName = fileConfig.name || transformIncludeName(sourceName, context);
@@ -29,7 +33,7 @@ function transformApi(config) {
 
     files[targetName] = {
       name: targetName,
-      doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context, targetName),
+      doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context, targetName) || "",
       entries: transformEntries(sourceFile.entries, context, fileConfig)
     };
   }
@@ -150,11 +154,11 @@ function transformEntries(sourceEntries, context, transform) {
 /**
  * Insert entry into entries
  * 
- * @param {ApiEntries}          entries 
- * @param {ApiEntry|ApiEntry[]} entry 
- * @param {ApiContext}          context 
- * @param {FileTransform}       transform
- * @param {string=}             defaultName
+ * @param {ApiEntries}                    entries 
+ * @param {ApiEntryTransform|ApiEntryTransform[]}  entry 
+ * @param {ApiContext}                    context 
+ * @param {FileTransform}                 transform
+ * @param {string=}                       defaultName
  */
 function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
   if (Array.isArray(entry)) {
@@ -162,15 +166,15 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
     return;
   }
   if (entry.entries) entry.entries = transformSubEntries(entry, context, transform, entries);
-  insertEntry(entries, entry, defaultName);
+  insertEntry(entries, /** @type {ApiEntry}*/(entry), defaultName);
 }
 
 /**
  * 
- * @param {ApiEntry}      targetEntry 
- * @param {ApiContext}    context 
- * @param {FileTransform} transform 
- * @param {ApiEntries}    targetEntries
+ * @param {ApiEntryTransform} targetEntry 
+ * @param {ApiContext}        context 
+ * @param {FileTransform}     transform 
+ * @param {ApiEntries}        targetEntries
  */
 function transformSubEntries(targetEntry, context, transform, targetEntries) {
   /** @type {ApiEntries} */
@@ -179,7 +183,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     const nameCandidate = transformName(key, context);
     if (Array.isArray(entry) || nameCandidate === key) {
-      insertEntry(entries, entry, key);
+      insertEntry(entries, /** @type {ApiEntry}*/(entry), key);
       continue;
     }
     const nameChange = makeRenameEntry(entry, nameCandidate, type);
@@ -242,7 +246,7 @@ function validateEntries(targetEntries) {
 
 /**
  * Marshal name of member functions
- * @param {ApiEntry|string} entry 
+ * @param {ApiEntryTransform|string} entry 
  * @param {string}          name 
  * @param {string}          typeName 
  */

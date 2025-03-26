@@ -2,6 +2,10 @@ const { readLinesSync, system } = require("./utils");
 const { Tokenizer } = require("./tokenize.js");
 
 /**
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiFile, ApiParameters, FileTokenKind } from "./types"
+ */
+
+/**
  * @typedef {object} ParseConfig
  * @prop {string[]} baseDir
  * @prop {string[]} sources

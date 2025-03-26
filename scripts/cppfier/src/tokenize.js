@@ -1,4 +1,7 @@
 const { system } = require("./utils");
+/**
+ * @import {FileToken} from "./types"
+ */
 
 const ignorePrefixes = [
   'void *alloca',
