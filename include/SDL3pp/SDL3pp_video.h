@@ -75,6 +75,7 @@ struct RendererBase;
  * Handle to a non owned renderer
  *
  * @cat resource
+ * @ingroup CategoryRender
  *
  * @sa resource
  * @sa RendererBase
@@ -476,16 +477,28 @@ using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-struct Display
+class Display
 {
   SDL_DisplayID displayID;
 
+public:
+  /// Constructor
   constexpr Display(SDL_DisplayID displayID = 0)
     : displayID(displayID)
   {
   }
 
+  /// True if a valid display
   constexpr operator bool() const { return displayID != 0; }
+
+  /// Converts to SDL_DisplayID
+  constexpr operator SDL_DisplayID() const { return displayID; }
+
+  /// Comparison
+  constexpr bool operator==(Display other) const
+  {
+    return displayID == other.displayID;
+  }
 
   /**
    * Get a list of currently connected displays.
@@ -3159,10 +3172,13 @@ constexpr GLAttr GL_CONTEXT_RELEASE_BEHAVIOR = SDL_GL_CONTEXT_RELEASE_BEHAVIOR;
 constexpr GLAttr GL_CONTEXT_RESET_NOTIFICATION =
   SDL_GL_CONTEXT_RESET_NOTIFICATION;
 
+/// No Error
 constexpr GLAttr GL_CONTEXT_NO_ERROR = SDL_GL_CONTEXT_NO_ERROR;
 
+/// Float buffers
 constexpr GLAttr GL_FLOATBUFFERS = SDL_GL_FLOATBUFFERS;
 
+/// EGL
 constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
 
 /// @}

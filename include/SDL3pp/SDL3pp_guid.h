@@ -44,6 +44,7 @@ struct GUID : SDL_GUID
   {
   }
 
+  /// Constructor from underling type
   constexpr GUID(SDL_GUID guid)
     : SDL_GUID(guid)
   {

@@ -3460,6 +3460,25 @@
               "constexpr": true,
               "parameters": []
             },
+            "operator SDL_DisplayID": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": []
+            },
+            "operator==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Display",
+                  "name": "other"
+                }
+              ]
+            },
             "SDL_GetDisplays": {
               "kind": "function",
               "name": "GetAll",
@@ -3669,10 +3688,17 @@
         "SDL_GetTextureSize"
       ],
       "includeAfter": {
-        "__begin": {
-          "name": "TextureLock",
-          "kind": "forward"
-        },
+        "__begin": [
+          {
+            "name": "TextureLock",
+            "kind": "forward"
+          },
+          {
+            "name": "Renderer",
+            "kind": "alias",
+            "type": "RendererBase<ObjectUnique<SDL_Renderer>>"
+          }
+        ],
         "SDL_Texture": {
           "name": "TextureLock",
           "kind": "struct",
@@ -3777,6 +3803,7 @@
       },
       "resources": {
         "SDL_Renderer": {
+          "prependAliases": false,
           "entries": {
             "RendererBase": {
               "kind": "function",
@@ -3796,49 +3823,23 @@
               "name": "GetWindow"
             },
             "SDL_GetRendererName": "immutable",
-            "GetOutputSize": [
-              {
-                "kind": "function",
-                "type": "std::optional<Point>",
-                "immutable": true,
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Point *",
-                    "name": "size"
-                  }
-                ]
-              }
-            ],
+            "GetOutputSize": {
+              "kind": "function",
+              "type": "std::optional<Point>",
+              "immutable": true,
+              "parameters": []
+            },
             "SDL_GetRenderOutputSize": {
               "kind": "function",
               "name": "GetOutputSize",
               "immutable": true
             },
-            "GetCurrentOutputSize": [
-              {
-                "kind": "function",
-                "type": "std::optional<Point>",
-                "immutable": true,
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Point *",
-                    "name": "size"
-                  }
-                ]
-              }
-            ],
+            "GetCurrentOutputSize": {
+              "kind": "function",
+              "type": "std::optional<Point>",
+              "immutable": true,
+              "parameters": []
+            },
             "SDL_GetCurrentRenderOutputSize": {
               "kind": "function",
               "name": "GetCurrentOutputSize",
@@ -3984,25 +3985,12 @@
                 }
               ]
             },
-            "GetScale": [
-              {
-                "kind": "function",
-                "immutable": true,
-                "type": "std::optional<FPoint>",
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "immutable": true,
-                "type": "bool",
-                "parameters": [
-                  {
-                    "type": "FPoint *",
-                    "name": "scale"
-                  }
-                ]
-              }
-            ],
+            "GetScale": {
+              "kind": "function",
+              "immutable": true,
+              "type": "std::optional<FPoint>",
+              "parameters": []
+            },
             "SDL_GetRenderScale": {
               "name": "GetScale",
               "immutable": true

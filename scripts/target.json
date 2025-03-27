@@ -11335,6 +11335,29 @@
               "name": "operator bool",
               "doc": ""
             },
+            "operator SDL_DisplayID": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "name": "operator SDL_DisplayID",
+              "doc": ""
+            },
+            "operator==": {
+              "kind": "function",
+              "type": "bool",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "Display",
+                  "name": "other"
+                }
+              ],
+              "name": "operator==",
+              "doc": ""
+            },
             "GetAll": {
               "doc": "Get a list of currently connected displays.\n\n@param count a pointer filled in with the number of displays returned, may\n             be NULL.\n@returns a 0 terminated array of display instance IDs or NULL on failure;\n         call SDL_GetError() for more information. This should be freed\n         with SDL_free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetAll",
@@ -13107,28 +13130,11 @@
           "kind": "forward",
           "doc": ""
         },
-        "RendererBase-forward": {
-          "name": "RendererBase",
-          "kind": "forward",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Renderer *>",
-              "name": "T"
-            }
-          ],
-          "doc": ""
-        },
-        "RendererRef": {
-          "name": "RendererRef",
-          "kind": "alias",
-          "type": "RendererBase<ObjectRef<SDL_Renderer>>",
-          "doc": "Handle to a non owned renderer\n\n@cat resource\n\n@sa RendererBase\n@sa Renderer"
-        },
         "Renderer": {
           "name": "Renderer",
           "kind": "alias",
           "type": "RendererBase<ObjectUnique<SDL_Renderer>>",
-          "doc": "Handle to an owned renderer\n\n@cat resource\n\n@sa RendererBase\n@sa RendererRef"
+          "doc": ""
         },
         "TextureBase-forward": {
           "name": "TextureBase",
@@ -13340,19 +13346,6 @@
                 "doc": ""
               },
               {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Point *",
-                    "name": "size"
-                  }
-                ],
-                "name": "GetOutputSize",
-                "doc": ""
-              },
-              {
                 "doc": "Get the output size in pixels of a rendering context.\n\nThis returns the true output size in pixels, ignoring any render targets or\nlogical size and presentation.\n\nFor the output size of the current rendering target, with logical size\nadjustments, use SDL_GetCurrentRenderOutputSize() instead.\n\n@param renderer the rendering context.\n@param w a pointer filled in with the width in pixels.\n@param h a pointer filled in with the height in pixels.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetCurrentRenderOutputSize",
                 "name": "GetOutputSize",
                 "kind": "function",
@@ -13377,19 +13370,6 @@
                 "type": "std::optional<Point>",
                 "immutable": true,
                 "parameters": [],
-                "name": "GetCurrentOutputSize",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "SDL_Point *",
-                    "name": "size"
-                  }
-                ],
                 "name": "GetCurrentOutputSize",
                 "doc": ""
               },
@@ -13668,19 +13648,6 @@
                 "immutable": true,
                 "type": "std::optional<FPoint>",
                 "parameters": [],
-                "name": "GetScale",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "immutable": true,
-                "type": "bool",
-                "parameters": [
-                  {
-                    "type": "FPoint *",
-                    "name": "scale"
-                  }
-                ],
                 "name": "GetScale",
                 "doc": ""
               },

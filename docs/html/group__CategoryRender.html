@@ -84,11 +84,11 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure representing rendering state.  <a href="structSDL_1_1RendererBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An efficient driver-specific representation of pixel data.  <a href="structSDL_1_1TextureBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html">SDL::RendererBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A structure representing rendering state.  <a href="structSDL_1_1RendererBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1TextureLock.html">SDL::TextureLock</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Locks a Texture for access to its pixels.  <a href="classSDL_1_1TextureLock.html#details">More...</a><br /></td></tr>
@@ -96,9 +96,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga3c15747c0c3091d37a2f14511aba1c7d" id="r_ga3c15747c0c3091d37a2f14511aba1c7d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">SDL::RendererRef</a> = <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Renderer &gt; &gt;</td></tr>
-<tr class="memdesc:ga3c15747c0c3091d37a2f14511aba1c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned renderer.  <br /></td></tr>
-<tr class="separator:ga3c15747c0c3091d37a2f14511aba1c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf76226a4b7cbb3af8578bdbd93f6b068" id="r_gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068">SDL::Renderer</a> = <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_Renderer &gt; &gt;</td></tr>
 <tr class="memdesc:gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned renderer.  <br /></td></tr>
 <tr class="separator:gaf76226a4b7cbb3af8578bdbd93f6b068"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,6 +117,9 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::TextureAccess</
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::RendererLogicalPresentation</b> = SDL_RendererLogicalPresentation</td></tr>
 <tr class="memdesc:ga91be24b12fa4efe591c43f2ece44e32d"><td class="mdescLeft">&#160;</td><td class="mdescRight">How the logical size is mapped to the output. <br /></td></tr>
 <tr class="separator:ga91be24b12fa4efe591c43f2ece44e32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c15747c0c3091d37a2f14511aba1c7d" id="r_ga3c15747c0c3091d37a2f14511aba1c7d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">SDL::RendererRef</a> = <a class="el" href="structSDL_1_1RendererBase.html">RendererBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; SDL_Renderer &gt; &gt;</td></tr>
+<tr class="memdesc:ga3c15747c0c3091d37a2f14511aba1c7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned renderer.  <br /></td></tr>
+<tr class="separator:ga3c15747c0c3091d37a2f14511aba1c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -221,10 +221,6 @@ constexpr <a class="el" href="group__CategoryRender.html#ga736d13caaeee38a712dfb
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1RendererBase.html" title="A structure representing rendering state.">RendererBase</a> </dd>
-<dd>
-<a class="el" href="group__CategoryRender.html#gaf76226a4b7cbb3af8578bdbd93f6b068" title="Handle to an owned renderer.">Renderer</a></dd></dl>
 <dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>resource </dd>
 <dd>

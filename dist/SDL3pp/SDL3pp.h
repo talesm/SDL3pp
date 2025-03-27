@@ -3833,11 +3833,15 @@ class Random
   Uint64 m_state;
 
 public:
-  constexpr Random(Uint64 state = 0)
+  /**
+   * Init state with the given value
+   */
+  constexpr Random(Uint64 state)
     : m_state(state)
   {
   }
 
+  /// Convert to the underlying type
   constexpr operator Uint64() { return m_state; }
 
   /**
@@ -6118,6 +6122,7 @@ struct GUID : SDL_GUID
   {
   }
 
+  /// Constructor from underling type
   constexpr GUID(SDL_GUID guid)
     : SDL_GUID(guid)
   {
@@ -17093,6 +17098,7 @@ struct RendererBase;
  * Handle to a non owned renderer
  *
  * @cat resource
+ * @ingroup CategoryRender
  *
  * @sa resource
  * @sa RendererBase
@@ -17494,16 +17500,28 @@ using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-struct Display
+class Display
 {
   SDL_DisplayID displayID;
 
+public:
+  /// Constructor
   constexpr Display(SDL_DisplayID displayID = 0)
     : displayID(displayID)
   {
   }
 
+  /// True if a valid display
   constexpr operator bool() const { return displayID != 0; }
+
+  /// Converts to SDL_DisplayID
+  constexpr operator SDL_DisplayID() const { return displayID; }
+
+  /// Comparison
+  constexpr bool operator==(Display other) const
+  {
+    return displayID == other.displayID;
+  }
 
   /**
    * Get a list of currently connected displays.
@@ -20177,10 +20195,13 @@ constexpr GLAttr GL_CONTEXT_RELEASE_BEHAVIOR = SDL_GL_CONTEXT_RELEASE_BEHAVIOR;
 constexpr GLAttr GL_CONTEXT_RESET_NOTIFICATION =
   SDL_GL_CONTEXT_RESET_NOTIFICATION;
 
+/// No Error
 constexpr GLAttr GL_CONTEXT_NO_ERROR = SDL_GL_CONTEXT_NO_ERROR;
 
+/// Float buffers
 constexpr GLAttr GL_FLOATBUFFERS = SDL_GL_FLOATBUFFERS;
 
+/// EGL
 constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
 
 /// @}
@@ -22802,20 +22823,6 @@ inline WindowRef GetWindowFromEvent(const Event* event)
 // Forward decl
 struct TextureLock;
 
-// Forward decl
-template<ObjectBox<SDL_Renderer*> T>
-struct RendererBase;
-
-/**
- * Handle to a non owned renderer
- *
- * @cat resource
- *
- * @sa RendererBase
- * @sa Renderer
- */
-using RendererRef = RendererBase<ObjectRef<SDL_Renderer>>;
-
 /**
  * Handle to an owned renderer
  *
@@ -23087,16 +23094,19 @@ struct RendererBase : T
    */
   const char* GetName() const { return SDL_GetRendererName(T::get()); }
 
+  /**
+   * Get the output size in pixels of a rendering context.
+   *
+   * This returns the true output size in pixels, ignoring any render targets or
+   * logical size and presentation.
+   *
+   * @returns Point on success or std::nullopt on failure; call GetError() for
+   *          more information.
+   */
   std::optional<Point> GetOutputSize() const
   {
-    if (Point size; GetOutputSize(&size)) return size;
+    if (Point p; GetOutputSize(&p.x, &p.y)) return p;
     return std::nullopt;
-  }
-
-  bool GetOutputSize(SDL_Point* size) const
-  {
-    if (!size) return GetOutputSize(nullptr, nullptr);
-    return GetOutputSize(&size->x, &size->y);
   }
 
   /**
@@ -23107,7 +23117,7 @@ struct RendererBase : T
    *
    * @param w a pointer filled in with the width in pixels.
    * @param h a pointer filled in with the height in pixels.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -23120,17 +23130,27 @@ struct RendererBase : T
   {
     return SDL_GetRenderOutputSize(T::get(), w, h);
   }
-
+  /**
+   * Get the current output size in pixels of a rendering context.
+   *
+   * If a rendering target is active, this will return the size of the rendering
+   * target in pixels, otherwise if a logical size is set, it will return the
+   * logical size, otherwise it will return the value of
+   * SDL_GetRenderOutputSize().
+   *
+   * @returns the size on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetOutputSize()
+   */
   std::optional<Point> GetCurrentOutputSize() const
   {
-    if (Point size; GetCurrentOutputSize(&size)) return size;
+    if (Point p; GetCurrentOutputSize(&p.x, &p.y)) return p;
     return std::nullopt;
-  }
-
-  bool GetCurrentOutputSize(SDL_Point* size) const
-  {
-    if (!size) return GetCurrentOutputSize(nullptr, nullptr);
-    return GetCurrentOutputSize(&size->x, &size->y);
   }
 
   /**
@@ -23143,7 +23163,7 @@ struct RendererBase : T
    *
    * @param w a pointer filled in with the current width.
    * @param h a pointer filled in with the current height.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -23245,14 +23265,29 @@ struct RendererBase : T
     return PropertiesRef{SDL_GetRendererProperties(T::get())};
   }
 
-  bool ResetTarget() { return SetTarget({}); }
+  /**
+   * Set target texture back to window
+   *
+   * This is equivalent to SetTaget(nullptr)
+   *
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetTarget(nullptr)
+   * @sa GetTarget()
+   */
+  bool ResetTarget() { return SetTarget(nullptr); }
 
   /**
    * Set a texture as the current rendering target.
    *
    * The default render target is the window for which the renderer was created.
    * To stop rendering to a texture and render to the window again, call this
-   * function with a NULL `texture`.
+   * function with a nullptr `texture`.
    *
    * @param texture the targeted texture, which must be created with the
    *                `SDL_TEXTUREACCESS_TARGET` flag, or NULL to render to the
@@ -23491,8 +23526,23 @@ struct RendererBase : T
   {
     return SDL_ConvertEventToRenderCoordinates(T::get(), event);
   }
-
-  bool ResetViewport() { return SetViewport({}); }
+  /**
+   * Reset the drawing area for rendering to the entire target
+   *
+   * This is equivalent to `SetViewport(std::nullopt)`
+   *
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetViewport()
+   * @sa SetViewport()
+   * @sa ViewportSet()
+   */
+  bool ResetViewport() { return SetViewport(std::nullopt); }
 
   /**
    * Set the drawing area for rendering on the current target.
@@ -23508,7 +23558,7 @@ struct RendererBase : T
    *
    * @param rect the SDL_Rect structure representing the drawing area, or
    *             std::nullopt to set the viewport to the entire target.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -23516,6 +23566,7 @@ struct RendererBase : T
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetViewport()
+   * @sa ResetViewport()
    * @sa ViewportSet()
    */
   bool SetViewport(OptionalRef<const SDL_Rect> rect)
@@ -23590,14 +23641,12 @@ struct RendererBase : T
     return {};
   }
 
-  bool ResetClipRect() { return SetClipRect({}); }
-
   /**
-   * Set the clip rectangle for rendering on the specified target.
+   * Reset the clip rectangle for rendering to the entire render target
    *
-   * @param rect an SDL_Rect structure representing the clip area, relative to
-   *             the viewport, or NULL to disable clipping.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * This is equivalent to `SetClipRect(std::nullopt)`
+   *
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -23605,6 +23654,25 @@ struct RendererBase : T
    * @since This function is available since SDL 3.2.0.
    *
    * @sa GetClipRect()
+   * @sa SetClipRect()
+   * @sa ClipEnabled()
+   */
+  bool ResetClipRect() { return SetClipRect({}); }
+
+  /**
+   * Set the clip rectangle for rendering on the specified target.
+   *
+   * @param rect an SDL_Rect structure representing the clip area, relative to
+   *             the viewport, or NULL to disable clipping.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetClipRect()
+   * @sa ResetClipRect()
    * @sa ClipEnabled()
    */
   bool SetClipRect(OptionalRef<const SDL_Rect> rect)
@@ -23673,16 +23741,22 @@ struct RendererBase : T
     return SDL_SetRenderScale(T::get(), scale);
   }
 
+  /**
+   * Get the drawing scale for the current target.
+   *
+   * @returns the scaling factors on success or std::nullopt on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa SetScale()
+   */
   std::optional<FPoint> GetScale() const
   {
-    if (FPoint scale; GetScale(&scale)) return scale;
+    if (FPoint p; GetScale(&p.x, &p.y)) return p;
     return std::nullopt;
-  }
-
-  bool GetScale(FPoint* scale) const
-  {
-    if (!scale) return GetScale(nullptr, nullptr);
-    return GetScale(&scale->x, &scale->y);
   }
 
   /**
@@ -23690,7 +23764,7 @@ struct RendererBase : T
    *
    * @param scaleX a pointer filled in with the horizontal scaling factor.
    * @param scaleY a pointer filled in with the vertical scaling factor.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
@@ -23748,12 +23822,40 @@ struct RendererBase : T
     return SDL_SetRenderDrawColorFloat(T::get(), c.r, c.g, c.b, c.a);
   }
 
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @returns the color on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetDrawColor(SDL_FColor*)
+   * @sa SetDrawColor()
+   */
   std::optional<FColor> GetDrawColor() const
   {
     if (FColor color; GetDrawColor(&color)) return color;
     return std::nullopt;
   }
 
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @param c a pointer filled in with the color channel values used to draw on
+   *          the rendering target.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetDrawColor(SDL_FColor*)
+   * @sa SetDrawColor()
+   */
   bool GetDrawColor(SDL_Color* c) const
   {
     if (!c) {
@@ -23763,6 +23865,21 @@ struct RendererBase : T
     return GetDrawColor(&c->r, &c->g, &c->b, &c->a);
   }
 
+  /**
+   * Get the color used for drawing operations (Rect, Line and Clear).
+   *
+   * @param c a pointer filled in with the color channel values used to draw on
+   *          the rendering target.
+   * @returns true on success or false on failure; call SDL_GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetDrawColor(SDL_Color*)
+   * @sa SetDrawColor()
+   */
   bool GetDrawColor(SDL_FColor* c) const
   {
     if (!c) {
@@ -23790,7 +23907,7 @@ struct RendererBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa GetDrawColorFloat()
+   * @sa GetDrawColor(SDL_Color*)
    * @sa SetDrawColor()
    */
   bool GetDrawColor(Uint8* r, Uint8* g, Uint8* b, Uint8* a) const
@@ -24863,28 +24980,115 @@ struct TextureBase : T
     return SDL_GetRendererFromTexture(T::get());
   }
 
+  /**
+   * Set an additional color and alpha values multiplied into render copy
+   * operations.
+   *
+   * When this texture is rendered, during the copy operation each source color
+   * and alpha channels are modulated by the appropriate color value according
+   * to the following formula:
+   *
+   *      srcC = srcC * (color / 255)
+   *      srcA = srcA * (alpha / 255)
+   *
+   * Color and alpha modulation is not always supported by the renderer; it will
+   * return false if either modulation is not supported.
+   *
+   * @param c the color and alpha channel values multiplied into copy
+   *          operations.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   bool SetColorAndAlphaMod(Color c)
   {
     return SetColorMod(c.r, c.g, c.b) && SetAlphaMod(c.a);
   }
 
+  /**
+   * Set an additional color and alpha values multiplied into render copy
+   * operations.
+   *
+   * When this texture is rendered, during the copy operation each source color
+   * and alpha channels are modulated by the appropriate color value according
+   * to the following formula:
+   *
+   *      srcC = srcC * (color / 255)
+   *      srcA = srcA * (alpha / 255)
+   *
+   * Color and alpha modulation is not always supported by the renderer; it will
+   * return false if either modulation is not supported.
+   *
+   * @param c the color and alpha channel values multiplied into copy
+   *          operations.
+   * @returns true on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   */
   bool SetColorAndAlphaMod(FColor c)
   {
     return SetColorMod(c.r, c.g, c.b) && SetAlphaMod(c.a);
   }
 
+  /**
+   * Get the additional color value multiplied into render copy operations.
+   *
+   * @returns the color channels (0-1) on success or false on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
+   */
   std::optional<FColor> GetColorAndAlphaMod() const
   {
     if (FColor color; GetColorAndAlphaMod(&color)) return color;
     return std::nullopt;
   }
 
+  /**
+   * Get the additional color value multiplied into render copy operations.
+   *
+   * @param c a pointer filled in with the current color and alpha mod values.
+   * @returns true success or false on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
+   */
   bool GetColorAndAlphaMod(Color* c) const
   {
     SDL_assert(c != nullptr);
     return GetColorMod(&c->r, &c->g, &c->b) && GetAlphaMod(&c->a);
   }
 
+  /**
+   * Get the additional color value multiplied into render copy operations.
+   *
+   * @param c a pointer filled in with the current color and alpha mod values.
+   * @returns true success or false on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   *
+   * @since This function is available since SDL 3.2.0.
+   *
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
+   */
   bool GetColorAndAlphaMod(FColor* c) const
   {
     SDL_assert(c != nullptr);
@@ -24906,16 +25110,15 @@ struct TextureBase : T
    * @param r the red color value multiplied into copy operations.
    * @param g the green color value multiplied into copy operations.
    * @param b the blue color value multiplied into copy operations.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should only be called on the main thread.
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetTextureColorMod
-   * @sa SDL_SetTextureAlphaMod
-   * @sa SDL_SetTextureColorModFloat
+   * @sa GetColorMod()
+   * @sa SetAlphaMod()
    */
   bool SetColorMod(Uint8 r, Uint8 g, Uint8 b)
   {
@@ -24966,9 +25169,8 @@ struct TextureBase : T
    *
    * @since This function is available since SDL 3.2.0.
    *
-   * @sa SDL_GetTextureAlphaMod
-   * @sa SDL_GetTextureColorModFloat
-   * @sa SDL_SetTextureColorMod
+   * @sa GetAlphaMod()
+   * @sa SetColorMod()
    */
   bool GetColorMod(Uint8* r, Uint8* g, Uint8* b) const
   {
@@ -25053,6 +25255,14 @@ struct TextureBase : T
     return SDL_SetTextureAlphaModFloat(T::get(), alpha);
   }
 
+  /**
+   * Get the additional alpha value multiplied into render copy operations.
+   *
+   * @returns the current alpha value on success or false on failure; call
+   *          GetError() for more information.
+   *
+   * @threadsafety This function should only be called on the main thread.
+   */
   std::optional<float> GetAlphaMod() const
   {
     if (float alpha; GetAlphaMod(&alpha)) return alpha;
@@ -25381,7 +25591,7 @@ class TextureLock
   }
 
 public:
-  // default ctor
+  /// default ctor
   TextureLock()
     : texture(nullptr)
     , surface(nullptr)
@@ -25391,7 +25601,7 @@ public:
   // Copy ctor
   TextureLock(const TextureLock& other) = delete;
 
-  // Move ctor
+  /// Move ctor
   TextureLock(TextureLock&& other)
     : texture(other.texture.release())
     , surface(other.surface.release())
@@ -25404,7 +25614,7 @@ public:
    */
   ~TextureLock() { Unlock(); }
 
-  // Assignment operator
+  /// Assignment operator
   TextureLock& operator=(TextureLock other)
   {
     std::swap(texture, other.texture);

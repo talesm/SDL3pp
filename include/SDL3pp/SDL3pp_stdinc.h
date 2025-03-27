@@ -3171,11 +3171,15 @@ class Random
   Uint64 m_state;
 
 public:
-  constexpr Random(Uint64 state = 0)
+  /**
+   * Init state with the given value
+   */
+  constexpr Random(Uint64 state)
     : m_state(state)
   {
   }
 
+  /// Convert to the underlying type
   constexpr operator Uint64() { return m_state; }
 
   /**
