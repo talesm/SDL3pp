@@ -1,7 +1,7 @@
 var searchData=
 [
   ['basics_0',['basics',['../ApiByCategory.html#basics',1,'Basics'],['../group__CategoriesBasics.html',1,'Basics']]],
-  ['begin_1',['begin',['../classSDL_1_1ArrayBase.html#a738c40207f2ce6edab17ac09cb723bb4',1,'SDL::ArrayBase']]],
+  ['begin_1',['begin',['../structSDL_1_1TextBase.html#a6f722fb0a4228daeb072d0963d9dbb3a',1,'SDL::TextBase::begin()'],['../classSDL_1_1ArrayBase.html#a738c40207f2ce6edab17ac09cb723bb4',1,'SDL::ArrayBase::begin()']]],
   ['bitmaporder_2',['BitmapOrder',['../group__CategoryPixels.html#gae9b29b1df0025781f2edb0ff695f8586',1,'SDL']]],
   ['blend_20modes_3',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
   ['blendfactor_4',['BlendFactor',['../group__CategoryBlendmode.html#ga34d032507f571bcbdc683ad23d55176b',1,'SDL']]],

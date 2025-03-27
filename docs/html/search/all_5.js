@@ -14,7 +14,7 @@ var searchData=
   ['eglsurface_11',['EGLSurface',['../group__CategoryVideo.html#ga9ae1cbfc15bbe39de9d99d383c7e2eb8',1,'SDL']]],
   ['empty_12',['empty',['../structSDL_1_1FRect.html#a815a929d9f6b4e0866f458155d07c23e',1,'SDL::FRect::Empty()'],['../structSDL_1_1Rect.html#a69592160d95cc8d1d81dcf321559bfae',1,'SDL::Rect::Empty()']]],
   ['enablescreensaver_13',['EnableScreenSaver',['../group__CategoryVideo.html#ga881c12afac49a4ab69332d736885dfc2',1,'SDL']]],
-  ['end_14',['end',['../classSDL_1_1ArrayBase.html#a73e67314a7c019b7dd6edcd6cbca27f4',1,'SDL::ArrayBase']]],
+  ['end_14',['end',['../structSDL_1_1TextBase.html#a59528f3d2ec133ac4404bdd6695b521a',1,'SDL::TextBase::end()'],['../classSDL_1_1ArrayBase.html#a73e67314a7c019b7dd6edcd6cbca27f4',1,'SDL::ArrayBase::end()']]],
   ['enterappmaincallbacks_15',['EnterAppMainCallbacks',['../group__CategoryMain.html#ga2e1cbd26b90891eef642549754780b48',1,'SDL']]],
   ['entry_20points_16',['Application entry points',['../group__CategoryMain.html',1,'']]],
   ['enumerate_17',['enumerate',['../structSDL_1_1PropertiesBase.html#a6cfd7d258d2c11f46af02cbb5f6d808a',1,'SDL::PropertiesBase::Enumerate(EnumeratePropertiesCallback callback, void *userdata) const'],['../structSDL_1_1PropertiesBase.html#affcc775f95de74420a59748b3298a429',1,'SDL::PropertiesBase::Enumerate(EnumeratePropertiesCB callback) const'],['../structSDL_1_1PropertiesBase.html#a4af964a08fffefee30928dbc517812b8',1,'SDL::PropertiesBase::Enumerate(IT outputIter) const']]],

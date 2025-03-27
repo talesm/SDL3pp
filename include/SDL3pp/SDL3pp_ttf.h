@@ -1976,6 +1976,9 @@ constexpr SubStringFlags SUBSTRING_TEXT_END = TTF_SUBSTRING_TEXT_END;
  */
 using SubString = TTF_SubString;
 
+// Forward decl
+struct SubStringIterator;
+
 constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
 
 /**
@@ -2844,6 +2847,33 @@ struct TextBase : T
   }
 
   /**
+   * Get iterator to first substring
+   */
+  SubStringIterator begin() const;
+
+  /**
+   * Get iterator to one past last substring
+   */
+  SubStringIterator end() const;
+
+  /**
+   * Get iterator to substring of a text object that contains the given line.
+   *
+   * If `line` is greater than or equal to `text->num_lines` this will return an
+   * iterator equal to end().
+   *
+   * @param line a zero-based line index, in the range [0 .. text->num_lines-1].
+   * @returns iterator on success or false on failure; call GetError() for more
+   *          information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               text.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   */
+  SubStringIterator GetSubStringForLine(int line) const;
+
+  /**
    * Get the substring of a text object that contains the given line.
    *
    * If `line` is less than 0, this will return a zero length substring at the
@@ -2854,7 +2884,7 @@ struct TextBase : T
    * @param line a zero-based line index, in the range [0 .. text->num_lines-1].
    * @param substring a pointer filled in with the substring containing the
    *                  offset.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -2903,6 +2933,23 @@ struct TextBase : T
     auto data = TTF_GetTextSubStringsForRange(T::get(), offset, length, &count);
     return OwnArray<SubString*>{data, count};
   }
+
+  /**
+   * Get the portion of a text string that is closest to a point.
+   *
+   * This will return the closest substring of text to the given point.
+   *
+   * @param p the coordinates relative to the top-left side of the text, may be
+   *          outside the bounds of the text area.
+   * @returns the iterator on success or false on failure; call GetError() for
+   *          more information.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               text.
+   *
+   * @since This function is available since SDL_ttf 3.0.0.
+   */
+  SubStringIterator GetSubStringForPoint(Point p) const;
 
   /**
    * Get the portion of a text string that is closest to a point.
@@ -3019,6 +3066,70 @@ inline void ObjectRef<TTF_Text>::doFree(TTF_Text* resource)
 {
   TTF_DestroyText(resource);
 }
+
+/**
+ * SubString iterator.
+ *
+ * @todo document the iterator invalidation characteristics.
+ *
+ */
+class SubStringIterator
+{
+  TextRef m_text;
+  SubString m_subString;
+
+  constexpr SubStringIterator(TextRef text)
+    : m_text(std::move(text))
+    , m_subString(0)
+  {
+  }
+
+public:
+  constexpr SubStringIterator()
+    : SubStringIterator(nullptr)
+  {
+  }
+
+  constexpr operator bool() const { return m_text != nullptr; }
+
+  constexpr const SubString& operator*() const { return m_subString; }
+
+  constexpr const SubString* operator->() const { return &m_subString; }
+
+  constexpr bool operator==(const SubStringIterator& other) const
+  {
+    return m_subString.offset == other.m_subString.offset;
+  }
+
+  constexpr SubStringIterator& operator++()
+  {
+    m_text.GetNextSubString(&m_subString, &m_subString);
+    return *this;
+  }
+
+  constexpr SubStringIterator operator++(int)
+  {
+    auto curr = *this;
+    m_text.GetNextSubString(&m_subString, &m_subString);
+    return curr;
+  }
+
+  constexpr SubStringIterator& operator--()
+  {
+    m_text.GetPreviousSubString(&m_subString, &m_subString);
+    return *this;
+  }
+
+  constexpr SubStringIterator operator--(int)
+  {
+    auto curr = *this;
+    m_text.GetPreviousSubString(&m_subString, &m_subString);
+    return curr;
+  }
+
+  template<ObjectBox<TTF_Text*> T>
+  friend class TextBase;
+};
 
 /**
  * Create a text engine for drawing text on SDL surfaces.
@@ -3208,6 +3319,44 @@ inline void QuitSubSystem(TtfInitFlag _) { TTF_Quit(); }
 inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 
 /// @}
+
+#pragma region impl
+
+template<ObjectBox<TTF_Text*> T>
+SubStringIterator TextBase<T>::begin() const
+{
+  if (SubStringIterator it{*this}; GetSubString(0, &it.m_subString)) return it;
+  return {};
+}
+
+template<ObjectBox<TTF_Text*> T>
+SubStringIterator TextBase<T>::end() const
+{
+  if (SubStringIterator it{*this}; GetSubString(INT_MAX, &it.m_subString)) {
+    return it;
+  }
+  return {};
+}
+
+template<ObjectBox<TTF_Text*> T>
+SubStringIterator TextBase<T>::GetSubStringForLine(int line) const
+{
+  if (SubStringIterator it{*this}; GetSubStringForLine(line, &it.m_subString)) {
+    return it;
+  }
+  return {};
+}
+
+template<ObjectBox<TTF_Text*> T>
+SubStringIterator TextBase<T>::GetSubStringForPoint(Point p) const
+{
+  if (SubStringIterator it{*this}; GetSubStringForPoint(p, &it.m_subString)) {
+    return it;
+  }
+  return {};
+}
+
+#pragma endregion impl
 
 } // namespace SDL
 

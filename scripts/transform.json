@@ -5993,6 +5993,29 @@
             },
             "TTF_GetTextSize": "immutable",
             "TTF_GetTextSubString": "immutable",
+            "begin": {
+              "kind": "function",
+              "type": "SubStringIterator",
+              "immutable": true,
+              "parameters": []
+            },
+            "end": {
+              "kind": "function",
+              "type": "SubStringIterator",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetSubStringForLine": {
+              "kind": "function",
+              "type": "SubStringIterator",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "line"
+                }
+              ]
+            },
             "TTF_GetTextSubStringForLine": "immutable",
             "GetSubStrings": {
               "kind": "function",
@@ -6007,6 +6030,17 @@
                 {},
                 {},
                 {}
+              ]
+            },
+            "GetSubStringForPoint": {
+              "kind": "function",
+              "immutable": true,
+              "type": "SubStringIterator",
+              "parameters": [
+                {
+                  "type": "Point",
+                  "name": "p"
+                }
               ]
             },
             "TTF_GetTextSubStringForPoint": {
@@ -6144,8 +6178,110 @@
           {
             "name": "SubString",
             "kind": "placeholder"
+          },
+          {
+            "name": "SubStringIterator",
+            "kind": "forward"
           }
         ],
+        "TTF_Text": {
+          "name": "SubStringIterator",
+          "kind": "struct",
+          "entries": {
+            "m_text": {
+              "kind": "var",
+              "type": "TextRef"
+            },
+            "m_subString": {
+              "kind": "var",
+              "type": "SubString"
+            },
+            "SubStringIterator": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "text",
+                    "type": "TextRef"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": []
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "operator*": {
+              "kind": "function",
+              "type": "const SubString &",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "operator->": {
+              "kind": "function",
+              "type": "const SubString *",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "operator==": {
+              "kind": "function",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const SubStringIterator &"
+                }
+              ]
+            },
+            "operator++": [
+              {
+                "kind": "function",
+                "type": "SubStringIterator &",
+                "constexpr": true,
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "SubStringIterator",
+                "constexpr": true,
+                "parameters": [
+                  "int"
+                ]
+              }
+            ],
+            "operator--": [
+              {
+                "kind": "function",
+                "type": "SubStringIterator &",
+                "constexpr": true,
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "SubStringIterator",
+                "constexpr": true,
+                "parameters": [
+                  "int"
+                ]
+              }
+            ]
+          }
+        },
         "TTF_Init": {
           "name": "GPUTextEngineWinding",
           "kind": "placeholder"

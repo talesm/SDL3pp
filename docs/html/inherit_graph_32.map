@@ -1,41 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,499,44,525"/>
-<area shape="rect" id="Node000001" href="$structSDL_1_1PropertiesBase.html" title=" " alt="" coords="92,5,332,75"/>
-<area shape="poly" id="edge9_Node000000_Node000001" title=" " alt="" coords="24,485,28,397,39,278,59,163,73,117,90,85,102,73,106,77,94,88,77,119,64,164,44,279,34,397,29,486"/>
-<area shape="rect" id="Node000002" href="$structSDL_1_1SurfaceBase.html" title=" " alt="" coords="115,99,309,139"/>
-<area shape="poly" id="edge10_Node000000_Node000002" title=" " alt="" coords="25,486,30,409,41,308,61,213,74,175,90,149,113,132,117,136,94,152,79,177,66,214,47,309,35,409,30,486"/>
-<area shape="rect" id="Node000003" href="$structSDL_1_1TextureBase.html" title=" " alt="" coords="116,163,308,203"/>
-<area shape="poly" id="edge11_Node000000_Node000003" title=" " alt="" coords="26,485,33,421,46,340,65,264,76,234,90,213,114,195,117,200,94,217,81,236,70,265,51,341,38,422,31,486"/>
-<area shape="rect" id="Node000004" href="$structSDL_1_1AnimationBase.html" title="Animated image support." alt="" coords="116,227,308,253"/>
-<area shape="poly" id="edge12_Node000000_Node000004" title=" " alt="" coords="27,485,49,364,67,302,78,279,90,262,114,247,117,251,94,266,83,281,72,304,54,365,32,486"/>
-<area shape="rect" id="Node000005" href="$structSDL_1_1EnvironmentBase.html" title="A thread&#45;safe set of environment variables." alt="" coords="108,277,316,302"/>
-<area shape="poly" id="edge13_Node000000_Node000005" title=" " alt="" coords="24,485,28,446,39,399,59,352,73,330,90,311,107,300,110,304,94,315,77,333,63,354,44,401,34,447,29,485"/>
-<area shape="rect" id="Node000006" href="$structSDL_1_1FontBase.html" title="The internal structure containing font information." alt="" coords="135,326,289,351"/>
-<area shape="poly" id="edge14_Node000000_Node000006" title=" " alt="" coords="27,485,35,456,47,422,65,389,90,361,111,348,134,340,136,345,113,353,94,365,69,392,51,424,40,458,33,487"/>
-<area shape="rect" id="Node000007" href="$structSDL_1_1GLContextBase.html" title="An opaque handle to an OpenGL context." alt="" coords="115,375,309,401"/>
-<area shape="poly" id="edge15_Node000000_Node000007" title=" " alt="" coords="34,485,56,446,71,426,91,410,114,398,116,403,93,414,75,430,60,449,38,488"/>
-<area shape="rect" id="Node000008" href="$structSDL_1_1IConvBase.html" title="An opaque handle representing string encoding conversion state." alt="" coords="131,425,293,450"/>
-<area shape="poly" id="edge16_Node000000_Node000008" title=" " alt="" coords="47,488,68,472,91,459,130,446,131,451,93,464,71,477,51,492"/>
-<area shape="rect" id="Node000009" href="$structSDL_1_1IOStreamBase.html" title="The read/write operation structure." alt="" coords="119,474,305,499"/>
-<area shape="poly" id="edge17_Node000000_Node000009" title=" " alt="" coords="57,505,118,497,119,502,58,510"/>
-<area shape="rect" id="Node000010" href="$structSDL_1_1PaletteBase.html" title="A set of indexed colors representing a palette." alt="" coords="127,523,297,549"/>
-<area shape="poly" id="edge18_Node000000_Node000010" title=" " alt="" coords="58,513,127,522,126,528,57,519"/>
-<area shape="rect" id="Node000011" href="$structSDL_1_1PropertiesBase.html" title="Wrap properties id." alt="" coords="117,573,307,598"/>
-<area shape="poly" id="edge19_Node000000_Node000011" title=" " alt="" coords="52,531,93,558,130,570,128,575,91,562,49,536"/>
-<area shape="rect" id="Node000012" href="$structSDL_1_1PtrBase.html" title="Base class for SDL memory allocated pointer wrap." alt="" coords="141,622,283,647"/>
-<area shape="poly" id="edge20_Node000000_Node000012" title=" " alt="" coords="39,536,61,574,76,592,93,607,116,619,141,626,140,631,114,624,91,612,72,596,56,577,34,539"/>
-<area shape="rect" id="Node000014" href="$structSDL_1_1RendererBase.html" title="A structure representing rendering state." alt="" coords="120,671,304,697"/>
-<area shape="poly" id="edge22_Node000000_Node000014" title=" " alt="" coords="33,538,40,566,52,599,70,630,94,657,121,672,118,676,90,661,65,633,47,601,35,568,28,539"/>
-<area shape="rect" id="Node000015" href="$structSDL_1_1SurfaceBase.html" title="A collection of pixels used in software blitting." alt="" coords="125,721,299,746"/>
-<area shape="poly" id="edge23_Node000000_Node000015" title=" " alt="" coords="30,538,34,576,45,622,64,668,77,688,94,706,109,716,126,724,123,729,106,721,90,710,73,691,59,670,39,623,29,577,24,539"/>
-<area shape="rect" id="Node000016" href="$structSDL_1_1TextBase.html" title="Text." alt="" coords="136,770,288,795"/>
-<area shape="poly" id="edge24_Node000000_Node000016" title=" " alt="" coords="27,539,29,586,38,644,58,704,74,732,94,755,113,769,137,777,135,782,111,773,90,759,69,735,53,707,32,646,24,586,22,539"/>
-<area shape="rect" id="Node000017" href="$structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects." alt="" coords="114,819,310,845"/>
-<area shape="poly" id="edge25_Node000000_Node000017" title=" " alt="" coords="31,538,38,602,51,682,69,757,81,786,94,805,115,819,112,824,90,809,76,788,64,759,46,683,33,603,26,539"/>
-<area shape="rect" id="Node000018" href="$structSDL_1_1TextureBase.html" title="An efficient driver&#45;specific representation of pixel data." alt="" coords="125,869,299,894"/>
-<area shape="poly" id="edge26_Node000000_Node000018" title=" " alt="" coords="30,538,36,612,47,707,66,797,79,831,94,854,109,866,126,873,124,878,106,870,90,858,74,833,61,798,42,708,30,612,25,538"/>
-<area shape="rect" id="Node000019" href="$structSDL_1_1WindowBase.html" title="Represents a handle to a window." alt="" coords="123,918,301,943"/>
-<area shape="poly" id="edge27_Node000000_Node000019" title=" " alt="" coords="29,539,34,622,44,732,63,836,77,877,94,904,108,915,124,922,122,927,105,919,90,907,72,879,58,838,39,733,28,623,24,539"/>
-<area shape="rect" id="Node000013" href="$classSDL_1_1ArrayBase.html" title="Base class for SDL memory allocated array wrap." alt="" coords="380,622,540,647"/>
-<area shape="poly" id="edge21_Node000012_Node000013" title=" " alt="" coords="297,632,380,632,380,637,297,637"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,88,31"/>
+<area shape="rect" id="Node000001" href="$structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers)." alt="" coords="136,5,220,31"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="102,15,136,15,136,21,102,21"/>
 </map>

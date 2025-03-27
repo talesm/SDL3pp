@@ -19974,6 +19974,11 @@
           "sourceName": "TTF_SubString",
           "type": "TTF_SubString"
         },
+        "SubStringIterator-forward": {
+          "name": "SubStringIterator",
+          "kind": "forward",
+          "doc": ""
+        },
         "HINTING_INVALID": {
           "doc": "",
           "name": "HINTING_INVALID",
@@ -20652,24 +20657,55 @@
               "sourceName": "TTF_GetTextSubString",
               "immutable": true
             },
-            "GetSubStringForLine": {
-              "doc": "Get the substring of a text object that contains the given line.\n\nIf `line` is less than 0, this will return a zero length substring at the\nbeginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If `line`\nis greater than or equal to `text->num_lines` this will return a zero\nlength substring at the end of the text with the TTF_SUBSTRING_TEXT_END\nflag set.\n\n@param text the TTF_Text to query.\n@param line a zero-based line index, in the range [0 .. text->num_lines-1].\n@param substring a pointer filled in with the substring containing the\n                 offset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-              "name": "GetSubStringForLine",
+            "begin": {
               "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "line",
-                  "type": "int"
-                },
-                {
-                  "name": "substring",
-                  "type": "SubString *"
-                }
-              ],
-              "sourceName": "TTF_GetTextSubStringForLine",
-              "immutable": true
+              "type": "SubStringIterator",
+              "immutable": true,
+              "parameters": [],
+              "name": "begin",
+              "doc": ""
             },
+            "end": {
+              "kind": "function",
+              "type": "SubStringIterator",
+              "immutable": true,
+              "parameters": [],
+              "name": "end",
+              "doc": ""
+            },
+            "GetSubStringForLine": [
+              {
+                "kind": "function",
+                "type": "SubStringIterator",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "line"
+                  }
+                ],
+                "name": "GetSubStringForLine",
+                "doc": ""
+              },
+              {
+                "doc": "Get the substring of a text object that contains the given line.\n\nIf `line` is less than 0, this will return a zero length substring at the\nbeginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If `line`\nis greater than or equal to `text->num_lines` this will return a zero\nlength substring at the end of the text with the TTF_SUBSTRING_TEXT_END\nflag set.\n\n@param text the TTF_Text to query.\n@param line a zero-based line index, in the range [0 .. text->num_lines-1].\n@param substring a pointer filled in with the substring containing the\n                 offset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+                "name": "GetSubStringForLine",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "line",
+                    "type": "int"
+                  },
+                  {
+                    "name": "substring",
+                    "type": "SubString *"
+                  }
+                ],
+                "sourceName": "TTF_GetTextSubStringForLine",
+                "immutable": true
+              }
+            ],
             "GetSubStrings": {
               "kind": "function",
               "immutable": true,
@@ -20696,25 +20732,40 @@
               "sourceName": "TTF_GetTextSubStringsForRange",
               "immutable": true
             },
-            "GetSubStringForPoint": {
-              "doc": "Get the portion of a text string that is closest to a point.\n\nThis will return the closest substring of text to the given point.\n\n@param text the TTF_Text to query.\n@param x the x coordinate relative to the left side of the text, may be\n         outside the bounds of the text area.\n@param y the y coordinate relative to the top side of the text, may be\n         outside the bounds of the text area.\n@param substring a pointer filled in with the closest substring of text to\n                 the given point.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-              "name": "GetSubStringForPoint",
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "p",
-                  "type": "Point"
-                },
-                {
-                  "name": "substring",
-                  "type": "SubString *"
-                }
-              ],
-              "sourceName": "TTF_GetTextSubStringForPoint",
-              "immutable": true,
-              "static": false
-            },
+            "GetSubStringForPoint": [
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "SubStringIterator",
+                "parameters": [
+                  {
+                    "type": "Point",
+                    "name": "p"
+                  }
+                ],
+                "name": "GetSubStringForPoint",
+                "doc": ""
+              },
+              {
+                "doc": "Get the portion of a text string that is closest to a point.\n\nThis will return the closest substring of text to the given point.\n\n@param text the TTF_Text to query.\n@param x the x coordinate relative to the left side of the text, may be\n         outside the bounds of the text area.\n@param y the y coordinate relative to the top side of the text, may be\n         outside the bounds of the text area.\n@param substring a pointer filled in with the closest substring of text to\n                 the given point.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+                "name": "GetSubStringForPoint",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "p",
+                    "type": "Point"
+                  },
+                  {
+                    "name": "substring",
+                    "type": "SubString *"
+                  }
+                ],
+                "sourceName": "TTF_GetTextSubStringForPoint",
+                "immutable": true,
+                "static": false
+              }
+            ],
             "GetPreviousSubString": {
               "doc": "Get the previous substring in a text object\n\nIf called at the start of the text, this will return a zero length\nsubstring with the TTF_SUBSTRING_TEXT_START flag set.\n\n@param text the TTF_Text to query.\n@param substring the TTF_SubString to query.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
               "name": "GetPreviousSubString",
@@ -20798,6 +20849,129 @@
             }
           ],
           "sourceName": "TTF_DestroyText"
+        },
+        "SubStringIterator": {
+          "name": "SubStringIterator",
+          "kind": "struct",
+          "entries": {
+            "m_text": {
+              "kind": "var",
+              "type": "TextRef",
+              "name": "m_text",
+              "doc": ""
+            },
+            "m_subString": {
+              "kind": "var",
+              "type": "SubString",
+              "name": "m_subString",
+              "doc": ""
+            },
+            "SubStringIterator": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "name": "text",
+                    "type": "TextRef"
+                  }
+                ],
+                "name": "SubStringIterator",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [],
+                "name": "SubStringIterator",
+                "doc": ""
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "operator bool",
+              "doc": ""
+            },
+            "operator*": {
+              "kind": "function",
+              "type": "const SubString &",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "operator*",
+              "doc": ""
+            },
+            "operator->": {
+              "kind": "function",
+              "type": "const SubString *",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "operator->",
+              "doc": ""
+            },
+            "operator==": {
+              "kind": "function",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const SubStringIterator &"
+                }
+              ],
+              "name": "operator==",
+              "doc": ""
+            },
+            "operator++": [
+              {
+                "kind": "function",
+                "type": "SubStringIterator &",
+                "constexpr": true,
+                "parameters": [],
+                "name": "operator++",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "SubStringIterator",
+                "constexpr": true,
+                "parameters": [
+                  "int"
+                ],
+                "name": "operator++",
+                "doc": ""
+              }
+            ],
+            "operator--": [
+              {
+                "kind": "function",
+                "type": "SubStringIterator &",
+                "constexpr": true,
+                "parameters": [],
+                "name": "operator--",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "SubStringIterator",
+                "constexpr": true,
+                "parameters": [
+                  "int"
+                ],
+                "name": "operator--",
+                "doc": ""
+              }
+            ]
+          },
+          "doc": ""
         },
         "CreateSurfaceTextEngine": {
           "doc": "Create a text engine for drawing text on SDL surfaces.\n\n@returns a TTF_TextEngine object or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroySurfaceTextEngine\n@sa TTF_DrawSurfaceText",
