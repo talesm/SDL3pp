@@ -888,12 +888,6 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <p><code>text</code> must have been created using a TTF_TextEngine from TTF_CreateGPUTextEngine().</p>
 <p>The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the SDL_GPU API. If you want to use a different coordinate system you will need to transform the vertices yourself.</p>
 <p>If the text looks blocky use linear filtering.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to draw. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>a NULL terminated linked list of TTF_GPUAtlasDrawSequence objects or NULL if the passed text is empty or in case of failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
@@ -1071,6 +1065,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">substring</td><td>the SubString to query. </td></tr>
+    <tr><td class="paramname">previous</td><td>a pointer filled in with the previous substring. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1533,12 +1528,6 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">wrap_width</td><td>a pointer filled in with the maximum width in pixels or 0 if the text is being wrapped on newline characters. </td></tr>
-  </table>
-  </dd>
-</dl>
 <dl class="section return"><dt>Returns</dt><dd>an int with the maximum width in pixels or 0 if the text is being wrapped on newline characters on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
@@ -1897,7 +1886,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <p>This returns false if SDL_ttf isn't built with HarfBuzz support.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">script</td><td>an <a href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 code</a></td></tr>
+    <tr><td class="paramname">script</td><td>an <a href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 code</a>. </td></tr>
   </table>
   </dd>
 </dl>

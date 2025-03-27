@@ -37,7 +37,7 @@ namespace SDL {
  */
 constexpr struct TtfInitFlag : InitFlagsExtra
 {
-} INIT_TTF;
+} INIT_TTF; ///< Flag to init TTF support
 
 /**
  * Font style flags for TTF_Font
@@ -97,6 +97,7 @@ using ImageType = TTF_ImageType;
  * Wraps the TTF_TextEngine so we can store its
  * Destroy function with it
  *
+ * @private
  */
 class TextEngineWrapper
 {
@@ -1979,6 +1980,7 @@ using SubString = TTF_SubString;
 // Forward decl
 struct SubStringIterator;
 
+/// Invalid grid-fitting
 constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
 
 /**
@@ -2007,6 +2009,15 @@ constexpr HintingFlags HINTING_NONE = TTF_HINTING_NONE;
  */
 constexpr HintingFlags HINTING_LIGHT_SUBPIXEL = TTF_HINTING_LIGHT_SUBPIXEL;
 
+/**
+ * @name HorizontalAlignments
+ * @{
+ *
+ * Possible value for HorizontalAlignment
+ *
+ */
+
+/// Invalid alignment
 constexpr HorizontalAlignment HORIZONTAL_ALIGN_INVALID =
   TTF_HORIZONTAL_ALIGN_INVALID;
 
@@ -2018,6 +2029,9 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_CENTER =
 constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
   TTF_HORIZONTAL_ALIGN_RIGHT;
 
+/// @}
+
+/// Invalid direction
 constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID;
 
 /**
@@ -2077,6 +2091,7 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
   return TTF_TagToString(tag, string, size);
 }
 
+/// Invalid state
 constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID;
 
 /**
@@ -2168,7 +2183,6 @@ struct TextBase : T
    *
    * If the text looks blocky use linear filtering.
    *
-   * @param text the text to draw.
    * @returns a NULL terminated linked list of TTF_GPUAtlasDrawSequence objects
    *          or NULL if the passed text is empty or in case of failure; call
    *          SDL_GetError() for more information.
@@ -2339,8 +2353,7 @@ struct TextBase : T
    * This returns false if SDL_ttf isn't built with HarfBuzz support.
    *
    * @param script an [ISO 15924
-   * code](https://unicode.org/iso15924/iso15924-codes.html)
-   *               .
+   * code](https://unicode.org/iso15924/iso15924-codes.html).
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -2612,8 +2625,6 @@ struct TextBase : T
   /**
    * Get whether wrapping is enabled on a text object.
    *
-   * @param wrap_width a pointer filled in with the maximum width in pixels or 0
-   *                   if the text is being wrapped on newline characters.
    * @returns an int with the maximum width in pixels or 0 if the text is being
    *          wrapped on newline characters on success or std::nullopt on
    *          failure; call GetError() for more information.
@@ -2980,6 +2991,7 @@ struct TextBase : T
    * substring with the SUBSTRING_TEXT_START flag set.
    *
    * @param substring the SubString to query.
+   * @param previous a pointer filled in with the previous substring.
    * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
@@ -3263,6 +3275,14 @@ inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
                       TTF_DestroyGPUTextEngine}};
 }
 
+/**
+ * @name GPUTextEngineWindings
+ *
+ * Possible values for GPUTextEngineWinding
+ * @{
+ */
+
+/// Invalid state
 constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
   TTF_GPU_TEXTENGINE_WINDING_INVALID;
 
@@ -3271,6 +3291,8 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
 
 constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
   TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE;
+
+/// @}
 
 /**
  * Deinitialize SDL_ttf.

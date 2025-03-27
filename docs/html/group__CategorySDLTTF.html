@@ -87,9 +87,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to init TTF.  <a href="structSDL_1_1TtfInitFlag.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1TextEngineWrapper.html">SDL::TextEngineWrapper</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the TTF_TextEngine so we can store its Destroy function with it.  <a href="classSDL_1_1TextEngineWrapper.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal structure containing font information.  <a href="structSDL_1_1FontBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,10 +123,10 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga4dd382dc093e6f59f96c32663e22a20e" id="r_ga4dd382dc093e6f59f96c32663e22a20e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga4dd382dc093e6f59f96c32663e22a20e">SDL::Font</a> = <a class="el" href="structSDL_1_1FontBase.html">FontBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; TTF_Font &gt; &gt;</td></tr>
 <tr class="memdesc:ga4dd382dc093e6f59f96c32663e22a20e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned font.  <br /></td></tr>
 <tr class="separator:ga4dd382dc093e6f59f96c32663e22a20e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga353ebcc938c7df420c331dbad1a05fbd" id="r_ga353ebcc938c7df420c331dbad1a05fbd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga353ebcc938c7df420c331dbad1a05fbd">SDL::TextEngineRef</a> = <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a> &gt; &gt;</td></tr>
+<tr class="memitem:ga353ebcc938c7df420c331dbad1a05fbd" id="r_ga353ebcc938c7df420c331dbad1a05fbd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga353ebcc938c7df420c331dbad1a05fbd">SDL::TextEngineRef</a> = <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_TextEngine, TextEngineWrapper &gt; &gt;</td></tr>
 <tr class="memdesc:ga353ebcc938c7df420c331dbad1a05fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned textEngine.  <br /></td></tr>
 <tr class="separator:ga353ebcc938c7df420c331dbad1a05fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ef67dbf9a663bf8d9b8140c676e0075" id="r_ga3ef67dbf9a663bf8d9b8140c676e0075"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">SDL::TextEngine</a> = <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; TTF_TextEngine, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a> &gt; &gt; &gt; &gt;</td></tr>
+<tr class="memitem:ga3ef67dbf9a663bf8d9b8140c676e0075" id="r_ga3ef67dbf9a663bf8d9b8140c676e0075"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">SDL::TextEngine</a> = <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; TTF_TextEngine, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_TextEngine, TextEngineWrapper &gt; &gt; &gt; &gt;</td></tr>
 <tr class="memdesc:ga3ef67dbf9a663bf8d9b8140c676e0075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned textEngine.  <br /></td></tr>
 <tr class="separator:ga3ef67dbf9a663bf8d9b8140c676e0075"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2ecae3d82f2ea8b3797c664a8cb2e8c1" id="r_ga2ecae3d82f2ea8b3797c664a8cb2e8c1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga2ecae3d82f2ea8b3797c664a8cb2e8c1">SDL::TextRef</a> = <a class="el" href="structSDL_1_1TextBase.html">TextBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_Text &gt; &gt;</td></tr>
@@ -200,6 +197,7 @@ Functions</h2></td></tr>
 Variables</h2></td></tr>
 <tr class="memitem:gaa30f945c03b7abc08b5436d6369d1486" id="r_gaa30f945c03b7abc08b5436d6369d1486"><td class="memItemLeft" align="right" valign="top"><a id="gaa30f945c03b7abc08b5436d6369d1486" name="gaa30f945c03b7abc08b5436d6369d1486"></a>
 <a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_TTF</b></td></tr>
+<tr class="memdesc:gaa30f945c03b7abc08b5436d6369d1486"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to init TTF support. <br /></td></tr>
 <tr class="separator:gaa30f945c03b7abc08b5436d6369d1486"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad6749da7024fb8040410ba94bc642138" id="r_gad6749da7024fb8040410ba94bc642138"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SubStringFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad6749da7024fb8040410ba94bc642138">SDL::SUBSTRING_DIRECTION_MASK</a></td></tr>
 <tr class="memdesc:gad6749da7024fb8040410ba94bc642138"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mask for the flow direction for this substring.  <br /></td></tr>
@@ -222,6 +220,7 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11fa
 <tr class="separator:gad3e8dbf15fed5ed67be431c818d55d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga576a1a7aeea3dbc65191a6bbef75aa05" id="r_ga576a1a7aeea3dbc65191a6bbef75aa05"><td class="memItemLeft" align="right" valign="top"><a id="ga576a1a7aeea3dbc65191a6bbef75aa05" name="ga576a1a7aeea3dbc65191a6bbef75aa05"></a>
 constexpr <a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::HINTING_INVALID</b> = TTF_HINTING_INVALID</td></tr>
+<tr class="memdesc:ga576a1a7aeea3dbc65191a6bbef75aa05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid grid-fitting. <br /></td></tr>
 <tr class="separator:ga576a1a7aeea3dbc65191a6bbef75aa05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa3488933d07a8c78c4a67c3fc49c1587" id="r_gaa3488933d07a8c78c4a67c3fc49c1587"><td class="memItemLeft" align="right" valign="top"><a id="gaa3488933d07a8c78c4a67c3fc49c1587" name="gaa3488933d07a8c78c4a67c3fc49c1587"></a>
 constexpr <a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::HINTING_NORMAL</b> = TTF_HINTING_NORMAL</td></tr>
@@ -243,17 +242,9 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c3
 constexpr <a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::HINTING_LIGHT_SUBPIXEL</b> = TTF_HINTING_LIGHT_SUBPIXEL</td></tr>
 <tr class="memdesc:gae13fae3bf463e4d087a570baea4795e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Light hinting with subpixel rendering for more precise font edges. <br /></td></tr>
 <tr class="separator:gae13fae3bf463e4d087a570baea4795e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4665509130118595b83595133636d79" id="r_gaa4665509130118595b83595133636d79"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaa4665509130118595b83595133636d79">SDL::HORIZONTAL_ALIGN_INVALID</a></td></tr>
-<tr class="separator:gaa4665509130118595b83595133636d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeeb4b223acc119f6794518b4f0cd3f26" id="r_gaeeb4b223acc119f6794518b4f0cd3f26"><td class="memItemLeft" align="right" valign="top"><a id="gaeeb4b223acc119f6794518b4f0cd3f26" name="gaeeb4b223acc119f6794518b4f0cd3f26"></a>
-constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::HORIZONTAL_ALIGN_LEFT</b> = TTF_HORIZONTAL_ALIGN_LEFT</td></tr>
-<tr class="separator:gaeeb4b223acc119f6794518b4f0cd3f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga10037fc10ce97a8d512348994aa759a3" id="r_ga10037fc10ce97a8d512348994aa759a3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga10037fc10ce97a8d512348994aa759a3">SDL::HORIZONTAL_ALIGN_CENTER</a></td></tr>
-<tr class="separator:ga10037fc10ce97a8d512348994aa759a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga12feb0703bbcca09c281e8815bf3eb1e" id="r_ga12feb0703bbcca09c281e8815bf3eb1e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga12feb0703bbcca09c281e8815bf3eb1e">SDL::HORIZONTAL_ALIGN_RIGHT</a></td></tr>
-<tr class="separator:ga12feb0703bbcca09c281e8815bf3eb1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa73de2e87c111101855358181b25eff8" id="r_gaa73de2e87c111101855358181b25eff8"><td class="memItemLeft" align="right" valign="top"><a id="gaa73de2e87c111101855358181b25eff8" name="gaa73de2e87c111101855358181b25eff8"></a>
 constexpr <a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::DIRECTION_INVALID</b> = TTF_DIRECTION_INVALID</td></tr>
+<tr class="memdesc:gaa73de2e87c111101855358181b25eff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid direction. <br /></td></tr>
 <tr class="separator:gaa73de2e87c111101855358181b25eff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3690dc79b8e678e974ff56a5767cc45d" id="r_ga3690dc79b8e678e974ff56a5767cc45d"><td class="memItemLeft" align="right" valign="top"><a id="ga3690dc79b8e678e974ff56a5767cc45d" name="ga3690dc79b8e678e974ff56a5767cc45d"></a>
 constexpr <a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::DIRECTION_LTR</b> = TTF_DIRECTION_LTR</td></tr>
@@ -273,6 +264,7 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f
 <tr class="separator:ga7736c2c1042faa8734ec526ab3a78740"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4dd9f3045551989a7c5190ab92f2d358" id="r_ga4dd9f3045551989a7c5190ab92f2d358"><td class="memItemLeft" align="right" valign="top"><a id="ga4dd9f3045551989a7c5190ab92f2d358" name="ga4dd9f3045551989a7c5190ab92f2d358"></a>
 constexpr <a class="el" href="group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8">ImageType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::IMAGE_INVALID</b> = TTF_IMAGE_INVALID</td></tr>
+<tr class="memdesc:ga4dd9f3045551989a7c5190ab92f2d358"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid state. <br /></td></tr>
 <tr class="separator:ga4dd9f3045551989a7c5190ab92f2d358"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaac774949dbaf241044133f1cf318d9cc" id="r_gaac774949dbaf241044133f1cf318d9cc"><td class="memItemLeft" align="right" valign="top"><a id="gaac774949dbaf241044133f1cf318d9cc" name="gaac774949dbaf241044133f1cf318d9cc"></a>
 constexpr <a class="el" href="group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8">ImageType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::IMAGE_ALPHA</b> = TTF_IMAGE_ALPHA</td></tr>
@@ -286,7 +278,26 @@ constexpr <a class="el" href="group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce8
 constexpr <a class="el" href="group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8">ImageType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::IMAGE_SDF</b> = TTF_IMAGE_SDF</td></tr>
 <tr class="memdesc:gafb184a192b4d29859fa5c8b7fa4c4a6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The alpha channel has signed distance field information. <br /></td></tr>
 <tr class="separator:gafb184a192b4d29859fa5c8b7fa4c4a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">HorizontalAlignments</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>Possible value for HorizontalAlignment </p>
+</td></tr>
+<tr class="memitem:gaa4665509130118595b83595133636d79" id="r_gaa4665509130118595b83595133636d79"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaa4665509130118595b83595133636d79">SDL::HORIZONTAL_ALIGN_INVALID</a></td></tr>
+<tr class="memdesc:gaa4665509130118595b83595133636d79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid alignment.  <br /></td></tr>
+<tr class="separator:gaa4665509130118595b83595133636d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeeb4b223acc119f6794518b4f0cd3f26" id="r_gaeeb4b223acc119f6794518b4f0cd3f26"><td class="memItemLeft" align="right" valign="top"><a id="gaeeb4b223acc119f6794518b4f0cd3f26" name="gaeeb4b223acc119f6794518b4f0cd3f26"></a>
+constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::HORIZONTAL_ALIGN_LEFT</b> = TTF_HORIZONTAL_ALIGN_LEFT</td></tr>
+<tr class="separator:gaeeb4b223acc119f6794518b4f0cd3f26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga10037fc10ce97a8d512348994aa759a3" id="r_ga10037fc10ce97a8d512348994aa759a3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga10037fc10ce97a8d512348994aa759a3">SDL::HORIZONTAL_ALIGN_CENTER</a></td></tr>
+<tr class="separator:ga10037fc10ce97a8d512348994aa759a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12feb0703bbcca09c281e8815bf3eb1e" id="r_ga12feb0703bbcca09c281e8815bf3eb1e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga12feb0703bbcca09c281e8815bf3eb1e">SDL::HORIZONTAL_ALIGN_RIGHT</a></td></tr>
+<tr class="separator:ga12feb0703bbcca09c281e8815bf3eb1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">GPUTextEngineWindings</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>Possible values for GPUTextEngineWinding </p>
+</td></tr>
 <tr class="memitem:gabdc8227b3b317ba7f71aabee6444c935" id="r_gabdc8227b3b317ba7f71aabee6444c935"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gabdc8227b3b317ba7f71aabee6444c935">SDL::GPU_TEXTENGINE_WINDING_INVALID</a></td></tr>
+<tr class="memdesc:gabdc8227b3b317ba7f71aabee6444c935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid state.  <br /></td></tr>
 <tr class="separator:gabdc8227b3b317ba7f71aabee6444c935"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafe0eb36e626eac783a6882b286c0942a" id="r_gafe0eb36e626eac783a6882b286c0942a"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gafe0eb36e626eac783a6882b286c0942a">SDL::GPU_TEXTENGINE_WINDING_CLOCKWISE</a></td></tr>
 <tr class="separator:gafe0eb36e626eac783a6882b286c0942a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -532,7 +543,7 @@ GetSubStringsForRange() </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">SDL::TextEngine</a> = typedef <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;TTF_TextEngine, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a>&gt; &gt;&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">SDL::TextEngine</a> = typedef <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;TTF_TextEngine, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;TTF_TextEngine, TextEngineWrapper&gt; &gt;&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -550,7 +561,7 @@ GetSubStringsForRange() </dd></dl>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#ga353ebcc938c7df420c331dbad1a05fbd">SDL::TextEngineRef</a> = typedef <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a>&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#ga353ebcc938c7df420c331dbad1a05fbd">SDL::TextEngineRef</a> = typedef <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;TTF_TextEngine, TextEngineWrapper&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
