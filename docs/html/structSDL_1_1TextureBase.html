@@ -124,15 +124,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8b9e1d066fc334790c62565de16abfb6" id="r_a8b9e1d066fc334790c62565de16abfb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a8b9e1d066fc334790c62565de16abfb6">GetRenderer</a> () const</td></tr>
 <tr class="memdesc:a8b9e1d066fc334790c62565de16abfb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the renderer that created an SDL_Texture.  <br /></td></tr>
 <tr class="separator:a8b9e1d066fc334790c62565de16abfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8c2276d3c39fc28b1d185f14f23828b" id="r_ae8c2276d3c39fc28b1d185f14f23828b"><td class="memItemLeft" align="right" valign="top"><a id="ae8c2276d3c39fc28b1d185f14f23828b" name="ae8c2276d3c39fc28b1d185f14f23828b"></a>
-std::optional&lt; <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
-<tr class="separator:ae8c2276d3c39fc28b1d185f14f23828b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa19f25b26c06046bc117f7813a43f75" id="r_aaa19f25b26c06046bc117f7813a43f75"><td class="memItemLeft" align="right" valign="top"><a id="aaa19f25b26c06046bc117f7813a43f75" name="aaa19f25b26c06046bc117f7813a43f75"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> *size) const</td></tr>
-<tr class="separator:aaa19f25b26c06046bc117f7813a43f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a849768b5342e6bb1f6948f6e2c7b4e0a" id="r_a849768b5342e6bb1f6948f6e2c7b4e0a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a849768b5342e6bb1f6948f6e2c7b4e0a">GetSize</a> (float *w, float *h) const</td></tr>
-<tr class="memdesc:a849768b5342e6bb1f6948f6e2c7b4e0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a texture, as floating point values.  <br /></td></tr>
-<tr class="separator:a849768b5342e6bb1f6948f6e2c7b4e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89325d1df6c6c5d0b8bb3500c78b913f" id="r_a89325d1df6c6c5d0b8bb3500c78b913f"><td class="memItemLeft" align="right" valign="top"><a id="a89325d1df6c6c5d0b8bb3500c78b913f" name="a89325d1df6c6c5d0b8bb3500c78b913f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>SetColorAndAlphaMod</b> (<a class="el" href="structSDL_1_1Color.html">Color</a> c)</td></tr>
 <tr class="separator:a89325d1df6c6c5d0b8bb3500c78b913f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,6 +190,22 @@ std::optional&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom">
 <tr class="memitem:ae22af7ea5864e54b16641a14ee17f6fc" id="r_ae22af7ea5864e54b16641a14ee17f6fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSDL_1_1TextureLock.html">TextureLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#ae22af7ea5864e54b16641a14ee17f6fc">Lock</a> (<a class="el" href="classSDL_1_1OptionalRef.html">OptionalRef</a>&lt; const SDL_Rect &gt; rect) &amp;</td></tr>
 <tr class="memdesc:ae22af7ea5864e54b16641a14ee17f6fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lock a portion of the texture for <b>write-only</b> pixel access.  <br /></td></tr>
 <tr class="separator:ae22af7ea5864e54b16641a14ee17f6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a069c798a18a68b100d2c00aa41b48259" id="r_a069c798a18a68b100d2c00aa41b48259"><td class="memItemLeft" align="right" valign="top"><a id="a069c798a18a68b100d2c00aa41b48259" name="a069c798a18a68b100d2c00aa41b48259"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> () const</td></tr>
+<tr class="memdesc:a069c798a18a68b100d2c00aa41b48259"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the width in pixels. <br /></td></tr>
+<tr class="separator:a069c798a18a68b100d2c00aa41b48259"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0afbed4aabf8fa701f21ea8aa7a1330f" id="r_a0afbed4aabf8fa701f21ea8aa7a1330f"><td class="memItemLeft" align="right" valign="top"><a id="a0afbed4aabf8fa701f21ea8aa7a1330f" name="a0afbed4aabf8fa701f21ea8aa7a1330f"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const</td></tr>
+<tr class="memdesc:a0afbed4aabf8fa701f21ea8aa7a1330f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height in pixels. <br /></td></tr>
+<tr class="separator:a0afbed4aabf8fa701f21ea8aa7a1330f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add9752d57f39147c87f4275aa84147d1" id="r_add9752d57f39147c87f4275aa84147d1"><td class="memItemLeft" align="right" valign="top"><a id="add9752d57f39147c87f4275aa84147d1" name="add9752d57f39147c87f4275aa84147d1"></a>
+<a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
+<tr class="memdesc:add9752d57f39147c87f4275aa84147d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size in pixels. <br /></td></tr>
+<tr class="separator:add9752d57f39147c87f4275aa84147d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab552e0e40f6591643b74cb20a867938f" id="r_ab552e0e40f6591643b74cb20a867938f"><td class="memItemLeft" align="right" valign="top"><a id="ab552e0e40f6591643b74cb20a867938f" name="ab552e0e40f6591643b74cb20a867938f"></a>
+<a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormat</b> () const</td></tr>
+<tr class="memdesc:ab552e0e40f6591643b74cb20a867938f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format. <br /></td></tr>
+<tr class="separator:ab552e0e40f6591643b74cb20a867938f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64977c5b509bb54fc412ec577c7db2e5" id="r_a64977c5b509bb54fc412ec577c7db2e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextureBase.html#a64977c5b509bb54fc412ec577c7db2e5">Destroy</a> ()</td></tr>
 <tr class="memdesc:a64977c5b509bb54fc412ec577c7db2e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the texture.  <br /></td></tr>
 <tr class="separator:a64977c5b509bb54fc412ec577c7db2e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -324,7 +331,7 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>GetSize() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html#add9752d57f39147c87f4275aa84147d1" title="Get the size in pixels.">GetSize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf" title="Update the given texture rectangle with new pixel data.">Update()</a> </dd></dl>
 
@@ -378,7 +385,7 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section post"><dt>Postcondition</dt><dd>the created texture is convertible to true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>GetSize() </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextureBase.html#add9752d57f39147c87f4275aa84147d1" title="Get the size in pixels.">GetSize()</a> </dd>
 <dd>
 <a class="el" href="structSDL_1_1TextureBase.html#a81636b580893caa1f578d7caae0419cf" title="Update the given texture rectangle with new pixel data.">Update()</a> </dd></dl>
 
@@ -879,54 +886,6 @@ template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_SetTextureScaleMode </dd></dl>
-
-</div>
-</div>
-<a id="a849768b5342e6bb1f6948f6e2c7b4e0a" name="a849768b5342e6bb1f6948f6e2c7b4e0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a849768b5342e6bb1f6948f6e2c7b4e0a">&#9670;&#160;</a></span>GetSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; SDL_Texture * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="structSDL_1_1TextureBase.html">SDL::TextureBase</a>&lt; T &gt;::GetSize </td>
-          <td>(</td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>w</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>h</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">w</td><td>a pointer filled in with the width of the texture in pixels. This argument can be NULL if you don't need this information. </td></tr>
-    <tr><td class="paramname">h</td><td>a pointer filled in with the height of the texture in pixels. This argument can be NULL if you don't need this information. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>

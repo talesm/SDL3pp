@@ -1772,13 +1772,24 @@ struct SurfaceBase : T
     return SDL_WriteSurfacePixelFloat(T::get(), x, y, r, g, b, a);
   }
 
-  // Convenience functions to avoid dereferencing
+  /**
+   * Get the width in pixels.
+   */
   int GetWidth() const { return T::get()->w; }
 
+  /**
+   * Get the height in pixels.
+   */
   int GetHeight() const { return T::get()->h; }
 
+  /**
+   * Get the size in pixels.
+   */
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
+  /**
+   * Get the pixel format.
+   */
   PixelFormat GetFormat() const { return T::get()->format; }
 
   /**
@@ -1827,10 +1838,10 @@ public:
   {
   }
 
-  // Copy ctor
+  /// Copy ctor
   SurfaceLock(const SurfaceLock& other) = delete;
 
-  // Move ctor
+  /// Move ctor
   SurfaceLock(SurfaceLock&& other)
     : surface(other.surface.release())
   {
@@ -1842,7 +1853,7 @@ public:
    */
   ~SurfaceLock() { Unlock(); }
 
-  // Assignment operator
+  /// Assignment operator
   SurfaceLock& operator=(SurfaceLock other)
   {
     std::swap(surface, other.surface);

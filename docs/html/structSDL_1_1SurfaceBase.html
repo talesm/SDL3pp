@@ -318,15 +318,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a21194db75082ce88a0d84e05ed9e9f4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0893c19652b9a9be5375f8b93e58a8c0" id="r_a0893c19652b9a9be5375f8b93e58a8c0"><td class="memItemLeft" align="right" valign="top"><a id="a0893c19652b9a9be5375f8b93e58a8c0" name="a0893c19652b9a9be5375f8b93e58a8c0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetWidth</b> () const</td></tr>
+<tr class="memdesc:a0893c19652b9a9be5375f8b93e58a8c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the width in pixels. <br /></td></tr>
 <tr class="separator:a0893c19652b9a9be5375f8b93e58a8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c8673b15f18d70806226154812c1eb5" id="r_a8c8673b15f18d70806226154812c1eb5"><td class="memItemLeft" align="right" valign="top"><a id="a8c8673b15f18d70806226154812c1eb5" name="a8c8673b15f18d70806226154812c1eb5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHeight</b> () const</td></tr>
+<tr class="memdesc:a8c8673b15f18d70806226154812c1eb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the height in pixels. <br /></td></tr>
 <tr class="separator:a8c8673b15f18d70806226154812c1eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72181d5fbd483938b12fafaabf3fbc4e" id="r_a72181d5fbd483938b12fafaabf3fbc4e"><td class="memItemLeft" align="right" valign="top"><a id="a72181d5fbd483938b12fafaabf3fbc4e" name="a72181d5fbd483938b12fafaabf3fbc4e"></a>
 <a class="el" href="structSDL_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSize</b> () const</td></tr>
+<tr class="memdesc:a72181d5fbd483938b12fafaabf3fbc4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size in pixels. <br /></td></tr>
 <tr class="separator:a72181d5fbd483938b12fafaabf3fbc4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad44c4a1a19094feae1b873f0d2a1ce32" id="r_ad44c4a1a19094feae1b873f0d2a1ce32"><td class="memItemLeft" align="right" valign="top"><a id="ad44c4a1a19094feae1b873f0d2a1ce32" name="ad44c4a1a19094feae1b873f0d2a1ce32"></a>
 <a class="el" href="structSDL_1_1PixelFormat.html">PixelFormat</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetFormat</b> () const</td></tr>
+<tr class="memdesc:ad44c4a1a19094feae1b873f0d2a1ce32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the pixel format. <br /></td></tr>
 <tr class="separator:ad44c4a1a19094feae1b873f0d2a1ce32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae35a2d03e5429009c55289a504d49ecb" id="r_ae35a2d03e5429009c55289a504d49ecb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1SurfaceBase.html#ae35a2d03e5429009c55289a504d49ecb">Destroy</a> ()</td></tr>
 <tr class="memdesc:ae35a2d03e5429009c55289a504d49ecb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Free a surface.  <br /></td></tr>
@@ -2319,7 +2323,7 @@ template&lt;ObjectBox&lt; SDL_Surface * &gt; T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Between calls to <a class="el" href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3" title="Set up a surface for directly accessing the pixels.">SurfaceBase.Lock()</a> / Unlock(), you can write to and read from <code>GetPixels()</code>, using the pixel format stored in <code>GetFormat()</code>. Once you are done accessing the surface, you should use Unlock() to release it or let the destructor take care of this for you.</p>
+<p>Between calls to <a class="el" href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3" title="Set up a surface for directly accessing the pixels.">SurfaceBase.Lock()</a> / Unlock(), you can write to and read from <code>GetPixels()</code>, using the pixel format stored in <code><a class="el" href="structSDL_1_1SurfaceBase.html#ad44c4a1a19094feae1b873f0d2a1ce32" title="Get the pixel format.">GetFormat()</a></code>. Once you are done accessing the surface, you should use Unlock() to release it or let the destructor take care of this for you.</p>
 <p>Not all surfaces require locking. If <code>SurfaceBase.MustLock(surface)</code> evaluates to false, then you can read and write to the surface at any time, and the pixel format of the surface will not change.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classSDL_1_1SurfaceLock.html" title="Locks a Surface for access to its pixels.">SurfaceLock</a> object that converts to true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>

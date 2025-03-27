@@ -14458,47 +14458,6 @@
               "sourceName": "SDL_GetRendererFromTexture",
               "immutable": true
             },
-            "GetSize": [
-              {
-                "kind": "function",
-                "type": "std::optional<FPoint>",
-                "immutable": true,
-                "parameters": [],
-                "name": "GetSize",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "FPoint *",
-                    "name": "size"
-                  }
-                ],
-                "name": "GetSize",
-                "doc": ""
-              },
-              {
-                "doc": "Get the size of a texture, as floating point values.\n\n@param texture the texture to query.\n@param w a pointer filled in with the width of the texture in pixels. This\n         argument can be NULL if you don't need this information.\n@param h a pointer filled in with the height of the texture in pixels. This\n         argument can be NULL if you don't need this information.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-                "name": "GetSize",
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "name": "w",
-                    "type": "float *"
-                  },
-                  {
-                    "name": "h",
-                    "type": "float *"
-                  }
-                ],
-                "sourceName": "SDL_GetTextureSize",
-                "immutable": true
-              }
-            ],
             "SetColorAndAlphaMod": [
               {
                 "kind": "function",
@@ -14862,6 +14821,38 @@
               "sourceName": "SDL_LockTexture",
               "static": false,
               "reference": 1
+            },
+            "GetWidth": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": [],
+              "name": "GetWidth",
+              "doc": ""
+            },
+            "GetHeight": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": [],
+              "name": "GetHeight",
+              "doc": ""
+            },
+            "GetSize": {
+              "kind": "function",
+              "immutable": true,
+              "type": "Point",
+              "parameters": [],
+              "name": "GetSize",
+              "doc": ""
+            },
+            "GetFormat": {
+              "kind": "function",
+              "immutable": true,
+              "type": "PixelFormat",
+              "parameters": [],
+              "name": "GetFormat",
+              "doc": ""
             },
             "Destroy": {
               "doc": "Destroy the specified texture.\n\nPassing NULL or an otherwise invalid texture will set the SDL error message\nto \"Invalid texture\".\n\n@param texture the texture to destroy.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface",

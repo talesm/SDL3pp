@@ -3665,7 +3665,8 @@
       "ignoreEntries": [
         "SDL_LockTextureToSurface",
         "SDL_RenderDebugTextFormat",
-        "SDL_GetRenderer"
+        "SDL_GetRenderer",
+        "SDL_GetTextureSize"
       ],
       "includeAfter": {
         "__begin": {
@@ -4401,26 +4402,6 @@
               "name": "GetRenderer",
               "immutable": true
             },
-            "GetSize": [
-              {
-                "kind": "function",
-                "type": "std::optional<FPoint>",
-                "immutable": true,
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "bool",
-                "immutable": true,
-                "parameters": [
-                  {
-                    "type": "FPoint *",
-                    "name": "size"
-                  }
-                ]
-              }
-            ],
-            "SDL_GetTextureSize": "immutable",
             "SetColorAndAlphaMod": [
               {
                 "kind": "function",
@@ -4550,6 +4531,30 @@
                   "type": "OptionalRef<const SDL_Rect>"
                 }
               ]
+            },
+            "GetWidth": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": []
+            },
+            "GetHeight": {
+              "kind": "function",
+              "immutable": true,
+              "type": "int",
+              "parameters": []
+            },
+            "GetSize": {
+              "kind": "function",
+              "immutable": true,
+              "type": "Point",
+              "parameters": []
+            },
+            "GetFormat": {
+              "kind": "function",
+              "immutable": true,
+              "type": "PixelFormat",
+              "parameters": []
             },
             "SDL_DestroyTexture": "function"
           }

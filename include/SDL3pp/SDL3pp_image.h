@@ -2002,17 +2002,38 @@ struct AnimationBase : T
   {
   }
 
-  // Convenience functions to avoid dereferencing
+  /**
+   * Get the width in pixels.
+   */
   int GetWidth() const { return T::get()->w; }
 
+  /**
+   * Get the height in pixels.
+   */
   int GetHeight() const { return T::get()->h; }
 
+  /**
+   * Get the size in pixels.
+   */
   Point GetSize() const { return Point(GetWidth(), GetHeight()); }
 
+  /**
+   * Return the number of frames.
+   */
   int GetCount() const { return T::get()->count; }
 
+  /**
+   * Return the frame image under given index.
+   *
+   * @param index the index to get frame, within [0, GetCount() - 1]
+   */
   SurfaceRef GetFrame(int index) const { return T::get()->frames[index]; }
 
+  /**
+   * Return the frame delay under given index.
+   *
+   * @param index the index to get frame, within [0, GetCount() - 1]
+   */
   int GetDelay(int index) const { return T::get()->delays[index]; }
 
   /**

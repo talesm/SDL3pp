@@ -2110,37 +2110,6 @@ struct TextureBase : T
     return SDL_GetRendererFromTexture(T::get());
   }
 
-  std::optional<FPoint> GetSize() const
-  {
-    if (FPoint size; GetSize(&size)) return size;
-    return std::nullopt;
-  }
-
-  bool GetSize(FPoint* size) const
-  {
-    if (!size) return GetSize(nullptr, nullptr);
-    return GetSize(&size->x, &size->y);
-  }
-
-  /**
-   * Get the size of a texture, as floating point values.
-   *
-   * @param w a pointer filled in with the width of the texture in pixels. This
-   *          argument can be NULL if you don't need this information.
-   * @param h a pointer filled in with the height of the texture in pixels. This
-   *          argument can be NULL if you don't need this information.
-   * @returns true on success or false on failure; call SDL_GetError() for more
-   *          information.
-   *
-   * @threadsafety This function should only be called on the main thread.
-   *
-   * @since This function is available since SDL 3.2.0.
-   */
-  bool GetSize(float* w, float* h) const
-  {
-    return SDL_GetTextureSize(T::get(), w, h);
-  }
-
   bool SetColorAndAlphaMod(Color c)
   {
     return SetColorMod(c.r, c.g, c.b) && SetAlphaMod(c.a);
@@ -2588,6 +2557,26 @@ struct TextureBase : T
    * @sa TextureLock.UnlockTexture
    */
   TextureLock Lock(OptionalRef<const SDL_Rect> rect) &;
+
+  /**
+   * Get the width in pixels.
+   */
+  int GetWidth() const { return T::get()->w; }
+
+  /**
+   * Get the height in pixels.
+   */
+  int GetHeight() const { return T::get()->h; }
+
+  /**
+   * Get the size in pixels.
+   */
+  Point GetSize() const { return Point(GetWidth(), GetHeight()); }
+
+  /**
+   * Get the pixel format.
+   */
+  PixelFormat GetFormat() const { return T::get()->format; }
 
   /**
    * Destroy the texture.
