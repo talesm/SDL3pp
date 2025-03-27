@@ -313,8 +313,7 @@
                   "type": "bool"
                 }
               ],
-              "sourceName": "SDL_CreateEnvironment",
-              "static": false
+              "sourceName": "SDL_CreateEnvironment"
             },
             "GetVariable": {
               "doc": "Get the value of a variable in the environment.\n\n@param env the environment to query.\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
@@ -2784,8 +2783,7 @@
                   "type": "StringParam"
                 }
               ],
-              "sourceName": "SDL_iconv_open",
-              "static": false
+              "sourceName": "SDL_iconv_open"
             },
             "iconv": {
               "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of succesful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n@param cd The character set conversion context, created in\n          SDL_iconv_open().\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success, or a negative error code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv_string",
@@ -3907,8 +3905,7 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "SDL_StringToGUID",
-                "static": false
+                "sourceName": "SDL_StringToGUID"
               }
             ],
             "ToString": {
@@ -4731,8 +4728,7 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "SDL_IOFromFile",
-                "static": false
+                "sourceName": "SDL_IOFromFile"
               },
               {
                 "doc": "Use this function to prepare a read-write memory buffer for use with\nSDL_IOStream.\n\nThis function sets up an SDL_IOStream struct based on a memory area of a\ncertain size, for both read and write access.\n\nThis memory buffer is not copied by the SDL_IOStream; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to make sure the SDL_IOStream never writes to the memory\nbuffer, you should use SDL_IOFromConstMem() with a read-only buffer of\nmemory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a buffer to feed an SDL_IOStream stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new SDL_IOStream structure or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_IOFromConstMem\n@sa SDL_CloseIO\n@sa SDL_FlushIO\n@sa SDL_ReadIO\n@sa SDL_SeekIO\n@sa SDL_TellIO\n@sa SDL_WriteIO",
@@ -4749,8 +4745,7 @@
                     "type": "size_t"
                   }
                 ],
-                "sourceName": "SDL_IOFromMem",
-                "static": false
+                "sourceName": "SDL_IOFromMem"
               },
               {
                 "doc": "Use this function to prepare a read-only memory buffer for use with\nSDL_IOStream.\n\nThis function sets up an SDL_IOStream struct based on a memory area of a\ncertain size. It assumes the memory area is not writable.\n\nAttempting to write to this SDL_IOStream stream will report an error\nwithout writing to the memory buffer.\n\nThis memory buffer is not copied by the SDL_IOStream; the pointer you\nprovide must remain valid until you close the stream. Closing the stream\nwill not free the original buffer.\n\nIf you need to write to a memory buffer, you should use SDL_IOFromMem()\nwith a writable buffer of memory instead.\n\nThe following properties will be set at creation time by SDL:\n\n- `SDL_PROP_IOSTREAM_MEMORY_POINTER`: this will be the `mem` parameter that\n  was passed to this function.\n- `SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER`: this will be the `size` parameter\n  that was passed to this function.\n\n@param mem a pointer to a read-only buffer to feed an SDL_IOStream stream.\n@param size the buffer size, in bytes.\n@returns a pointer to a new SDL_IOStream structure or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_IOFromMem\n@sa SDL_CloseIO\n@sa SDL_ReadIO\n@sa SDL_SeekIO\n@sa SDL_TellIO",
@@ -4767,8 +4762,7 @@
                     "type": "size_t"
                   }
                 ],
-                "sourceName": "SDL_IOFromConstMem",
-                "static": false
+                "sourceName": "SDL_IOFromConstMem"
               },
               {
                 "doc": "Use this function to create an SDL_IOStream that is backed by dynamically\nallocated memory.\n\nThis supports the following properties to provide access to the memory and\ncontrol over allocations:\n\n- `SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER`: a pointer to the internal\n  memory of the stream. This can be set to NULL to transfer ownership of\n  the memory to the application, which should free the memory with\n  SDL_free(). If this is done, the next operation on the stream must be\n  SDL_CloseIO().\n- `SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER`: memory will be allocated in\n  multiples of this size, defaulting to 1024.\n\n@returns a pointer to a new SDL_IOStream structure or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CloseIO\n@sa SDL_ReadIO\n@sa SDL_SeekIO\n@sa SDL_TellIO\n@sa SDL_WriteIO",
@@ -4792,8 +4786,8 @@
                     "type": "const IOStreamInterface *"
                   },
                   {
-                    "type": "void *",
-                    "name": "userdata"
+                    "name": "userdata",
+                    "type": "void *"
                   }
                 ],
                 "sourceName": "SDL_OpenIO"
@@ -7789,8 +7783,7 @@
                   "type": "int"
                 }
               ],
-              "sourceName": "SDL_CreatePalette",
-              "static": false
+              "sourceName": "SDL_CreatePalette"
             },
             "GetSize": {
               "kind": "function",
@@ -9290,8 +9283,7 @@
                     "type": "PixelFormat"
                   }
                 ],
-                "sourceName": "SDL_CreateSurface",
-                "static": false
+                "sourceName": "SDL_CreateSurface"
               },
               {
                 "doc": "Allocate a new surface with a specific pixel format and existing pixel\ndata.\n\nNo copy is made of the pixel data. Pixel data is not managed automatically;\nyou must free the surface before you free the pixel data.\n\nPitch is the offset in bytes from one row of pixels to the next, e.g.\n`width*4` for `SDL_PIXELFORMAT_RGBA8888`.\n\nYou may pass NULL for pixels and 0 for pitch to create a surface that you\nwill fill in with valid values later.\n\n@param width the width of the surface.\n@param height the height of the surface.\n@param format the SDL_PixelFormat for the new surface's pixel format.\n@param pixels a pointer to existing pixel data.\n@param pitch the number of bytes between each row, including padding.\n@returns the new SDL_Surface structure that is created or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateSurface\n@sa SDL_DestroySurface",
@@ -9320,8 +9312,7 @@
                     "type": "int"
                   }
                 ],
-                "sourceName": "SDL_CreateSurfaceFrom",
-                "static": false
+                "sourceName": "SDL_CreateSurfaceFrom"
               }
             ],
             "GetProperties": {
@@ -11623,8 +11614,7 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "SDL_CreateWindowWithProperties",
-                "static": false
+                "sourceName": "SDL_CreateWindowWithProperties"
               }
             ],
             "GetDisplay": {
@@ -12471,8 +12461,7 @@
                   "type": "WindowRef"
                 }
               ],
-              "sourceName": "SDL_GL_CreateContext",
-              "static": false
+              "sourceName": "SDL_GL_CreateContext"
             },
             "MakeCurrent": {
               "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@param context the OpenGL context to associate with the window.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
@@ -13295,8 +13284,7 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "SDL_CreateRenderer",
-                "static": false
+                "sourceName": "SDL_CreateRenderer"
               },
               {
                 "doc": "Create a 2D rendering context for a window, with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_RENDERER_CREATE_NAME_STRING`: the name of the rendering driver\n  to use, if a specific one is desired\n- `SDL_PROP_RENDERER_CREATE_WINDOW_POINTER`: the window where rendering is\n  displayed, required if this isn't a software renderer using a surface\n- `SDL_PROP_RENDERER_CREATE_SURFACE_POINTER`: the surface where rendering\n  is displayed, if you want a software renderer without a window\n- `SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER`: an SDL_Colorspace\n  value describing the colorspace for output to the display, defaults to\n  SDL_COLORSPACE_SRGB. The direct3d11, direct3d12, and metal renderers\n  support SDL_COLORSPACE_SRGB_LINEAR, which is a linear color space and\n  supports HDR output. If you select SDL_COLORSPACE_SRGB_LINEAR, drawing\n  still uses the sRGB colorspace, but values can go beyond 1.0 and float\n  (linear) format textures can be used for HDR content.\n- `SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER`: non-zero if you want\n  present synchronized with the refresh rate. This property can take any\n  value that is supported by SDL_SetRenderVSync() for the renderer.\n\nWith the vulkan renderer:\n\n- `SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER`: the VkInstance to use\n  with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER`: the VkSurfaceKHR to use\n  with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER`: the\n  VkPhysicalDevice to use with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER`: the VkDevice to use\n  with the renderer, optional.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for rendering.\n- `SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER`: the\n  queue family index used for presentation.\n\n@param props the properties to use.\n@returns a valid rendering context or NULL if there was an error; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateProperties\n@sa SDL_CreateRenderer\n@sa SDL_CreateSoftwareRenderer\n@sa SDL_DestroyRenderer\n@sa SDL_GetRendererName",
@@ -13309,8 +13297,7 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "SDL_CreateRendererWithProperties",
-                "static": false
+                "sourceName": "SDL_CreateRendererWithProperties"
               },
               {
                 "doc": "Create a 2D software rendering context for a surface.\n\nTwo other API which can be used to create SDL_Renderer:\nSDL_CreateRenderer() and SDL_CreateWindowAndRenderer(). These can _also_\ncreate a software renderer, but they are intended to be used with an\nSDL_Window as the final destination and not an SDL_Surface.\n\n@param surface the SDL_Surface structure representing the surface where\n               rendering is done.\n@returns a valid rendering context or NULL if there was an error; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_DestroyRenderer",
@@ -13323,8 +13310,7 @@
                     "type": "SurfaceRef"
                   }
                 ],
-                "sourceName": "SDL_CreateSoftwareRenderer",
-                "static": false
+                "sourceName": "SDL_CreateSoftwareRenderer"
               }
             ],
             "GetWindow": {
@@ -14417,8 +14403,7 @@
                     "type": "int"
                   }
                 ],
-                "sourceName": "SDL_CreateTexture",
-                "static": false
+                "sourceName": "SDL_CreateTexture"
               },
               {
                 "doc": "Create a texture from an existing surface.\n\nThe surface is not modified or freed by this function.\n\nThe SDL_TextureAccess hint for the created texture is\n`SDL_TEXTUREACCESS_STATIC`.\n\nThe pixel format of the created texture may be different from the pixel\nformat of the surface, and can be queried using the\nSDL_PROP_TEXTURE_FORMAT_NUMBER property.\n\n@param renderer the rendering context.\n@param surface the SDL_Surface structure containing pixel data used to fill\n               the texture.\n@returns the created texture or NULL on failure; call SDL_GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureWithProperties\n@sa SDL_DestroyTexture",
@@ -14435,8 +14420,7 @@
                     "type": "SurfaceRef"
                   }
                 ],
-                "sourceName": "SDL_CreateTextureFromSurface",
-                "static": false
+                "sourceName": "SDL_CreateTextureFromSurface"
               },
               {
                 "doc": "Create a texture for a rendering context with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER`: an SDL_Colorspace value\n  describing the texture colorspace, defaults to SDL_COLORSPACE_SRGB_LINEAR\n  for floating point textures, SDL_COLORSPACE_HDR10 for 10-bit textures,\n  SDL_COLORSPACE_SRGB for other RGB textures and SDL_COLORSPACE_JPEG for\n  YUV textures.\n- `SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER`: one of the enumerated values in\n  SDL_PixelFormat, defaults to the best RGBA format for the renderer\n- `SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER`: one of the enumerated values in\n  SDL_TextureAccess, defaults to SDL_TEXTUREACCESS_STATIC\n- `SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER`: the width of the texture in\n  pixels, required\n- `SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER`: the height of the texture in\n  pixels, required\n- `SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT`: for HDR10 and floating\n  point textures, this defines the value of 100% diffuse white, with higher\n  values being displayed in the High Dynamic Range headroom. This defaults\n  to 100 for HDR10 textures and 1.0 for floating point textures.\n- `SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT`: for HDR10 and floating\n  point textures, this defines the maximum dynamic range used by the\n  content, in terms of the SDR white point. This would be equivalent to\n  maxCLL / SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT for HDR10 content.\n  If this is defined, any values outside the range supported by the display\n  will be scaled into the available HDR headroom, otherwise they are\n  clipped.\n\nWith the direct3d11 renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER`: the ID3D11Texture2D\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER`: the ID3D11Texture2D\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER`: the ID3D11Texture2D\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the direct3d12 renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER`: the ID3D12Resource\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER`: the ID3D12Resource\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER`: the ID3D12Resource\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the metal renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER`: the CVPixelBufferRef\n  associated with the texture, if you want to create a texture from an\n  existing pixel buffer.\n\nWith the opengl renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the opengles2 renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER`: the GLuint texture\n  associated with the texture, if you want to wrap an existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER`: the GLuint texture\n  associated with the UV plane of an NV12 texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER`: the GLuint texture\n  associated with the U plane of a YUV texture, if you want to wrap an\n  existing texture.\n- `SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER`: the GLuint texture\n  associated with the V plane of a YUV texture, if you want to wrap an\n  existing texture.\n\nWith the vulkan renderer:\n\n- `SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER`: the VkImage with layout\n  VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL associated with the texture, if\n  you want to wrap an existing texture.\n\n@param renderer the rendering context.\n@param props the properties to use.\n@returns the created texture or NULL on failure; call SDL_GetError() for\n         more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateProperties\n@sa SDL_CreateTexture\n@sa SDL_CreateTextureFromSurface\n@sa SDL_DestroyTexture\n@sa SDL_GetTextureSize\n@sa SDL_UpdateTexture",
@@ -14453,8 +14437,7 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "SDL_CreateTextureWithProperties",
-                "static": false
+                "sourceName": "SDL_CreateTextureWithProperties"
               }
             ],
             "GetProperties": {
@@ -18522,8 +18505,7 @@
                     "type": "StringParam"
                   }
                 ],
-                "sourceName": "IMG_LoadAnimation",
-                "static": false
+                "sourceName": "IMG_LoadAnimation"
               },
               {
                 "doc": "Load an animation from an SDL_IOStream.\n\nIf `closeio` is true, `src` will be closed before returning, whether this\nfunction succeeds or not. SDL_image reads everything it needs from `src`\nduring this call in any case.\n\nWhen done with the returned animation, the app should dispose of it with a\ncall to IMG_FreeAnimation().\n\n@param src an SDL_IOStream that data will be read from.\n@param closeio true to close/free the SDL_IOStream before returning, false\n               to leave it open.\n@returns a new IMG_Animation, or NULL on error.\n\n@since This function is available since SDL_image 3.0.0.\n\n@sa IMG_FreeAnimation",
@@ -18719,6 +18701,19 @@
           "sourceName": "TTF_ImageType",
           "type": "TTF_ImageType"
         },
+        "TextEngineWrapper": {
+          "name": "TextEngineWrapper",
+          "kind": "struct",
+          "entries": {
+            "m_ptr": {
+              "kind": "var",
+              "type": "TTF_TextEngine *",
+              "name": "m_ptr",
+              "doc": ""
+            }
+          },
+          "doc": ""
+        },
         "FontBase-forward": {
           "name": "FontBase",
           "kind": "forward",
@@ -18741,6 +18736,52 @@
           "kind": "alias",
           "type": "FontBase<ObjectUnique<TTF_Font>>",
           "doc": "Handle to an owned font\n\n@cat resource\n\n@sa FontBase\n@sa FontRef"
+        },
+        "TextEngineBase-forward": {
+          "name": "TextEngineBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<TextEngineWrapper>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "TextEngineRef": {
+          "name": "TextEngineRef",
+          "kind": "alias",
+          "type": "TextEngineBase<ObjectRef<TTF_TextEngine, TextEngineWrapper>>",
+          "doc": "Handle to a non owned textEngine\n\n@cat resource\n\n@sa TextEngineBase\n@sa TextEngine"
+        },
+        "TextEngine": {
+          "name": "TextEngine",
+          "kind": "alias",
+          "type": "TextEngineBase<ObjectUnique<TTF_TextEngine, ObjectDeleter<ObjectRef<TTF_TextEngine, TextEngineWrapper>>>>",
+          "doc": "Handle to an owned textEngine\n\n@cat resource\n\n@sa TextEngineBase\n@sa TextEngineRef"
+        },
+        "TextBase-forward": {
+          "name": "TextBase",
+          "kind": "forward",
+          "template": [
+            {
+              "type": "ObjectBox<TTF_Text *>",
+              "name": "T"
+            }
+          ],
+          "doc": ""
+        },
+        "TextRef": {
+          "name": "TextRef",
+          "kind": "alias",
+          "type": "TextBase<ObjectRef<TTF_Text>>",
+          "doc": "Handle to a non owned text\n\n@cat resource\n\n@sa TextBase\n@sa Text"
+        },
+        "Text": {
+          "name": "Text",
+          "kind": "alias",
+          "type": "TextBase<ObjectUnique<TTF_Text>>",
+          "doc": "Handle to an owned text\n\n@cat resource\n\n@sa TextBase\n@sa TextRef"
         },
         "TTF_Version": {
           "doc": "This function gets the version of the dynamically linked SDL_ttf library.\n\n@returns SDL_ttf version.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.",
@@ -18833,8 +18874,7 @@
                     "type": "float"
                   }
                 ],
-                "sourceName": "TTF_OpenFont",
-                "static": false
+                "sourceName": "TTF_OpenFont"
               },
               {
                 "doc": "Create a font from an SDL_IOStream, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should close `src` yourself after closing the font.\n\nWhen done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.\n\n@param src an SDL_IOStream to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CloseFont",
@@ -18855,8 +18895,7 @@
                     "type": "float"
                   }
                 ],
-                "sourceName": "TTF_OpenFontIO",
-                "static": false
+                "sourceName": "TTF_OpenFontIO"
               },
               {
                 "doc": "Create a font with the specified properties.\n\nThese are the supported properties:\n\n- `TTF_PROP_FONT_CREATE_FILENAME_STRING`: the font file to open, if an\n  SDL_IOStream isn't being used. This is required if\n  `TTF_PROP_FONT_CREATE_IOSTREAM_POINTER` and\n  `TTF_PROP_FONT_CREATE_EXISTING_FONT` aren't set.\n- `TTF_PROP_FONT_CREATE_IOSTREAM_POINTER`: an SDL_IOStream containing the\n  font to be opened. This should not be closed until the font is closed.\n  This is required if `TTF_PROP_FONT_CREATE_FILENAME_STRING` and\n  `TTF_PROP_FONT_CREATE_EXISTING_FONT` aren't set.\n- `TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream\n  for the beginning of the font, defaults to 0.\n- `TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the\n  font should also close the associated SDL_IOStream.\n- `TTF_PROP_FONT_CREATE_SIZE_FLOAT`: the point size of the font. Some .fon\n  fonts will have several sizes embedded in the file, so the point size\n  becomes the index of choosing which size. If the value is too high, the\n  last indexed size will be the default.\n- `TTF_PROP_FONT_CREATE_FACE_NUMBER`: the face index of the font, if the\n  font contains multiple font faces.\n- `TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use\n  for font rendering, defaults to\n  `TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.\n- `TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for\n  font rendering, defaults to `TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER`\n  if set, or 72 otherwise.\n- `TTF_PROP_FONT_CREATE_EXISTING_FONT`: an optional TTF_Font that, if set,\n  will be used as the font data source and the initial size and style of\n  the new font.\n\n@param props the properties to use.\n@returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CloseFont",
@@ -18869,8 +18908,7 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "sourceName": "TTF_OpenFontWithProperties",
-                "static": false
+                "sourceName": "TTF_OpenFontWithProperties"
               }
             ],
             "Copy": {
@@ -19806,12 +19844,135 @@
           ],
           "sourceName": "TTF_Init"
         },
-        "TextEngine": {
-          "doc": "",
-          "name": "TextEngine",
+        "GPUTextEngineWinding": {
+          "doc": "The winding order of the vertices returned by TTF_GetGPUTextDrawData\n\n@since This enum is available since SDL_ttf 3.0.0.",
+          "name": "GPUTextEngineWinding",
           "kind": "alias",
+          "sourceName": "TTF_GPUTextEngineWinding",
+          "type": "TTF_GPUTextEngineWinding"
+        },
+        "TextEngineBase": {
+          "doc": "",
+          "name": "TextEngineBase",
+          "kind": "struct",
           "sourceName": "TTF_TextEngine",
-          "type": "TTF_TextEngine"
+          "type": "T",
+          "template": [
+            {
+              "type": "ObjectBox<TextEngineWrapper>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "SetGPUWinding": {
+              "doc": "Sets the winding order of the vertices returned by TTF_GetGPUTextDrawData\nfor a particular GPU text engine.\n\n@param engine a TTF_TextEngine object created with\n              TTF_CreateGPUTextEngine().\n@param winding the new winding order option.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetGPUTextEngineWinding",
+              "name": "SetGPUWinding",
+              "kind": "function",
+              "type": "void",
+              "parameters": [
+                {
+                  "name": "winding",
+                  "type": "GPUTextEngineWinding"
+                }
+              ],
+              "sourceName": "TTF_SetGPUTextEngineWinding"
+            },
+            "GetGPUWinding": {
+              "doc": "Get the winding order of the vertices returned by TTF_GetGPUTextDrawData\nfor a particular GPU text engine\n\n@param engine a TTF_TextEngine object created with\n              TTF_CreateGPUTextEngine().\n@returns the winding order used by the GPU text engine or\n         TTF_GPU_TEXTENGINE_WINDING_INVALID in case of error.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetGPUTextEngineWinding",
+              "name": "GetGPUWinding",
+              "kind": "function",
+              "type": "GPUTextEngineWinding",
+              "parameters": [],
+              "sourceName": "TTF_GetGPUTextEngineWinding",
+              "immutable": true
+            },
+            "Destroy": {
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "name": "Destroy",
+              "doc": ""
+            }
+          }
+        },
+        "ObjectRef<TTF_TextEngine, TextEngineWrapper>::doFree": {
+          "name": "ObjectRef<TTF_TextEngine, TextEngineWrapper>::doFree",
+          "kind": "function",
+          "type": "void",
+          "template": [],
+          "parameters": [
+            {
+              "type": "TextEngineWrapper",
+              "name": "resource"
+            }
+          ],
+          "doc": ""
+        },
+        "GPUAtlasDrawSequence": {
+          "doc": "Draw sequence returned by TTF_GetGPUTextDrawData\n\n@since This struct is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetGPUTextDrawData",
+          "name": "GPUAtlasDrawSequence",
+          "kind": "alias",
+          "sourceName": "TTF_GPUAtlasDrawSequence",
+          "type": "TTF_GPUAtlasDrawSequence"
+        },
+        "SubStringFlags": {
+          "doc": "Flags for TTF_SubString\n\n@since This datatype is available since SDL_ttf 3.0.0.\n\n@sa TTF_SubString",
+          "name": "SubStringFlags",
+          "kind": "alias",
+          "type": "TTF_SubStringFlags",
+          "sourceName": "TTF_SubStringFlags"
+        },
+        "SUBSTRING_DIRECTION_MASK": {
+          "name": "SUBSTRING_DIRECTION_MASK",
+          "kind": "var",
+          "type": "SubStringFlags",
+          "constexpr": true,
+          "sourceName": "TTF_SUBSTRING_DIRECTION_MASK",
+          "doc": "The mask for the flow direction for this substring"
+        },
+        "SUBSTRING_TEXT_START": {
+          "name": "SUBSTRING_TEXT_START",
+          "kind": "var",
+          "type": "SubStringFlags",
+          "constexpr": true,
+          "sourceName": "TTF_SUBSTRING_TEXT_START",
+          "doc": "This substring contains the beginning of the text"
+        },
+        "SUBSTRING_LINE_START": {
+          "name": "SUBSTRING_LINE_START",
+          "kind": "var",
+          "type": "SubStringFlags",
+          "constexpr": true,
+          "sourceName": "TTF_SUBSTRING_LINE_START",
+          "doc": "This substring contains the beginning of line `line_index`"
+        },
+        "SUBSTRING_LINE_END": {
+          "name": "SUBSTRING_LINE_END",
+          "kind": "var",
+          "type": "SubStringFlags",
+          "constexpr": true,
+          "sourceName": "TTF_SUBSTRING_LINE_END",
+          "doc": "This substring contains the end of line `line_index`"
+        },
+        "SUBSTRING_TEXT_END": {
+          "name": "SUBSTRING_TEXT_END",
+          "kind": "var",
+          "type": "SubStringFlags",
+          "constexpr": true,
+          "sourceName": "TTF_SUBSTRING_TEXT_END",
+          "doc": "This substring contains the end of the text"
+        },
+        "SubString": {
+          "doc": "The representation of a substring within text.\n\n@since This struct is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetNextTextSubString\n@sa TTF_GetPreviousTextSubString\n@sa TTF_GetTextSubString\n@sa TTF_GetTextSubStringForLine\n@sa TTF_GetTextSubStringForPoint\n@sa TTF_GetTextSubStringsForRange",
+          "name": "SubString",
+          "kind": "alias",
+          "sourceName": "TTF_SubString",
+          "type": "TTF_SubString"
         },
         "HINTING_INVALID": {
           "doc": "",
@@ -19999,64 +20160,658 @@
           "sourceName": "TTF_IMAGE_SDF",
           "constexpr": true
         },
-        "Text": {
+        "TextBase": {
           "doc": "Text created with TTF_CreateText()\n\n@since This struct is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateText\n@sa TTF_GetTextProperties\n@sa TTF_DestroyText",
-          "name": "Text",
-          "kind": "alias",
+          "name": "TextBase",
+          "kind": "struct",
           "sourceName": "TTF_Text",
-          "type": "TTF_Text"
+          "type": "T",
+          "template": [
+            {
+              "type": "ObjectBox<TTF_Text *>",
+              "name": "T"
+            }
+          ],
+          "entries": {
+            "T::T": {
+              "kind": "alias",
+              "name": "T::T",
+              "doc": ""
+            },
+            "DrawSurface": {
+              "doc": "Draw text to an SDL surface.\n\n`text` must have been created using a TTF_TextEngine from\nTTF_CreateSurfaceTextEngine().\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@param surface the surface to draw on.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateSurfaceTextEngine\n@sa TTF_CreateText",
+              "name": "DrawSurface",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "p",
+                  "type": "Point"
+                },
+                {
+                  "name": "surface",
+                  "type": "SurfaceRef"
+                }
+              ],
+              "sourceName": "TTF_DrawSurfaceText",
+              "immutable": true,
+              "static": false
+            },
+            "DrawRenderer": {
+              "doc": "Draw text to an SDL renderer.\n\n`text` must have been created using a TTF_TextEngine from\nTTF_CreateRendererTextEngine(), and will draw using the renderer passed to\nthat function.\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateRendererTextEngine\n@sa TTF_CreateText",
+              "name": "DrawRenderer",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "p",
+                  "type": "FPoint"
+                }
+              ],
+              "sourceName": "TTF_DrawRendererText",
+              "immutable": true,
+              "static": false
+            },
+            "GetGPUDrawData": {
+              "doc": "Get the geometry data needed for drawing the text.\n\n`text` must have been created using a TTF_TextEngine from\nTTF_CreateGPUTextEngine().\n\nThe positive X-axis is taken towards the right and the positive Y-axis is\ntaken upwards for both the vertex and the texture coordinates, i.e, it\nfollows the same convention used by the SDL_GPU API. If you want to use a\ndifferent coordinate system you will need to transform the vertices\nyourself.\n\nIf the text looks blocky use linear filtering.\n\n@param text the text to draw.\n@returns a NULL terminated linked list of TTF_GPUAtlasDrawSequence objects\n         or NULL if the passed text is empty or in case of failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateGPUTextEngine\n@sa TTF_CreateText",
+              "name": "GetGPUDrawData",
+              "kind": "function",
+              "type": "GPUAtlasDrawSequence *",
+              "parameters": [],
+              "sourceName": "TTF_GetGPUTextDrawData",
+              "immutable": true
+            },
+            "TextBase": {
+              "doc": "Create a text object from UTF-8 text and a text engine.\n\n@param engine the text engine to use when creating the text object, may be\n              NULL.\n@param font the font to render with.\n@param text the text to use, in UTF-8 encoding.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns a TTF_Text object or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              font and text engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroyText",
+              "name": "TextBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "engine",
+                  "type": "TextEngineRef"
+                },
+                {
+                  "name": "font",
+                  "type": "FontRef"
+                },
+                {
+                  "name": "text",
+                  "type": "std::string_view"
+                }
+              ],
+              "sourceName": "TTF_CreateText"
+            },
+            "GetProperties": {
+              "doc": "Get the properties associated with a text object.\n\n@param text the TTF_Text to query.\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetProperties",
+              "kind": "function",
+              "type": "PropertiesRef",
+              "parameters": [],
+              "sourceName": "TTF_GetTextProperties",
+              "immutable": true
+            },
+            "SetEngine": {
+              "doc": "Set the text engine used by a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param engine the text engine to use for drawing.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextEngine",
+              "name": "SetEngine",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "engine",
+                  "type": "TextEngineRef"
+                }
+              ],
+              "sourceName": "TTF_SetTextEngine"
+            },
+            "GetEngine": {
+              "doc": "Get the text engine used by a text object.\n\n@param text the TTF_Text to query.\n@returns the TTF_TextEngine used by the text on success or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextEngine",
+              "name": "GetEngine",
+              "kind": "function",
+              "type": "TextEngineRef",
+              "parameters": [],
+              "sourceName": "TTF_GetTextEngine",
+              "immutable": true
+            },
+            "SetFont": {
+              "doc": "Set the font used by a text object.\n\nWhen a text object has a font, any changes to the font will automatically\nregenerate the text. If you set the font to NULL, the text will continue to\nrender but changes to the font will no longer affect the text.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param font the font to use, may be NULL.\n@returns false if the text pointer is null; otherwise, true. call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextFont",
+              "name": "SetFont",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "font",
+                  "type": "FontRef"
+                }
+              ],
+              "sourceName": "TTF_SetTextFont"
+            },
+            "GetFont": {
+              "doc": "Get the font used by a text object.\n\n@param text the TTF_Text to query.\n@returns the TTF_Font used by the text on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextFont",
+              "name": "GetFont",
+              "kind": "function",
+              "type": "FontRef",
+              "parameters": [],
+              "sourceName": "TTF_GetTextFont",
+              "immutable": true
+            },
+            "SetDirection": {
+              "doc": "Set the direction to be used for text shaping a text object.\n\nThis function only supports left-to-right text shaping if SDL_ttf was not\nbuilt with HarfBuzz support.\n\n@param text the text to modify.\n@param direction the new direction for text to flow.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "SetDirection",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "direction",
+                  "type": "Direction"
+                }
+              ],
+              "sourceName": "TTF_SetTextDirection"
+            },
+            "GetDirection": {
+              "doc": "Get the direction to be used for text shaping a text object.\n\nThis defaults to the direction of the font used by the text object.\n\n@param text the text to query.\n@returns the direction to be used for text shaping.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetDirection",
+              "kind": "function",
+              "type": "Direction",
+              "parameters": [],
+              "sourceName": "TTF_GetTextDirection",
+              "immutable": true
+            },
+            "SetScript": {
+              "doc": "Set the script to be used for text shaping a text object.\n\nThis returns false if SDL_ttf isn't built with HarfBuzz support.\n\n@param text the text to modify.\n@param script an\n              [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)\n              .\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_StringToTag",
+              "name": "SetScript",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "script",
+                  "type": "Uint32"
+                }
+              ],
+              "sourceName": "TTF_SetTextScript"
+            },
+            "GetScript": {
+              "doc": "Get the script used for text shaping a text object.\n\nThis defaults to the script of the font used by the text object.\n\n@param text the text to query.\n@returns an\n         [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)\n         or 0 if a script hasn't been set on either the text object or the\n         font.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_TagToString",
+              "name": "GetScript",
+              "kind": "function",
+              "type": "Uint32",
+              "parameters": [],
+              "sourceName": "TTF_GetTextScript",
+              "immutable": true
+            },
+            "SetColor": [
+              {
+                "doc": "Set the color of a text object.\n\nThe default text color is white (255, 255, 255, 255).\n\n@param text the TTF_Text to modify.\n@param r the red color value in the range of 0-255.\n@param g the green color value in the range of 0-255.\n@param b the blue color value in the range of 0-255.\n@param a the alpha value in the range of 0-255.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColor\n@sa TTF_SetTextColorFloat",
+                "name": "SetColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "c",
+                    "type": "Color"
+                  }
+                ],
+                "sourceName": "TTF_SetTextColor",
+                "static": false
+              },
+              {
+                "doc": "Set the color of a text object.\n\nThe default text color is white (1.0f, 1.0f, 1.0f, 1.0f).\n\n@param text the TTF_Text to modify.\n@param r the red color value, normally in the range of 0-1.\n@param g the green color value, normally in the range of 0-1.\n@param b the blue color value, normally in the range of 0-1.\n@param a the alpha value in the range of 0-1.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColorFloat\n@sa TTF_SetTextColor",
+                "name": "SetColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "c",
+                    "type": "FColor"
+                  }
+                ],
+                "sourceName": "TTF_SetTextColorFloat",
+                "static": false
+              }
+            ],
+            "GetColor": [
+              {
+                "kind": "function",
+                "type": "std::optional<FColor>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetColor",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "Color *",
+                    "name": "c"
+                  }
+                ],
+                "name": "GetColor",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "FColor *",
+                    "name": "c"
+                  }
+                ],
+                "name": "GetColor",
+                "doc": ""
+              },
+              {
+                "doc": "Get the color of a text object.\n\n@param text the TTF_Text to query.\n@param r a pointer filled in with the red color value in the range of\n         0-255, may be NULL.\n@param g a pointer filled in with the green color value in the range of\n         0-255, may be NULL.\n@param b a pointer filled in with the blue color value in the range of\n         0-255, may be NULL.\n@param a a pointer filled in with the alpha value in the range of 0-255,\n         may be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColorFloat\n@sa TTF_SetTextColor",
+                "name": "GetColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "g",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "b",
+                    "type": "Uint8 *"
+                  },
+                  {
+                    "name": "a",
+                    "type": "Uint8 *"
+                  }
+                ],
+                "sourceName": "TTF_GetTextColor",
+                "immutable": true
+              },
+              {
+                "doc": "Get the color of a text object.\n\n@param text the TTF_Text to query.\n@param r a pointer filled in with the red color value, normally in the\n         range of 0-1, may be NULL.\n@param g a pointer filled in with the green color value, normally in the\n         range of 0-1, may be NULL.\n@param b a pointer filled in with the blue color value, normally in the\n         range of 0-1, may be NULL.\n@param a a pointer filled in with the alpha value in the range of 0-1, may\n         be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColor\n@sa TTF_SetTextColorFloat",
+                "name": "GetColor",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "r",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "g",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "b",
+                    "type": "float *"
+                  },
+                  {
+                    "name": "a",
+                    "type": "float *"
+                  }
+                ],
+                "sourceName": "TTF_GetTextColorFloat",
+                "immutable": true
+              }
+            ],
+            "SetPosition": {
+              "doc": "Set the position of a text object.\n\nThis can be used to position multiple text objects within a single wrapping\ntext area.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param x the x offset of the upper left corner of this text in pixels.\n@param y the y offset of the upper left corner of this text in pixels.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextPosition",
+              "name": "SetPosition",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "p",
+                  "type": "Point"
+                }
+              ],
+              "sourceName": "TTF_SetTextPosition",
+              "static": false
+            },
+            "GetPosition": [
+              {
+                "kind": "function",
+                "immutable": true,
+                "type": "std::optional<Point>",
+                "parameters": [],
+                "name": "GetPosition",
+                "doc": ""
+              },
+              {
+                "doc": "Get the position of a text object.\n\n@param text the TTF_Text to query.\n@param x a pointer filled in with the x offset of the upper left corner of\n         this text in pixels, may be NULL.\n@param y a pointer filled in with the y offset of the upper left corner of\n         this text in pixels, may be NULL.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextPosition",
+                "name": "GetPosition",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "x",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "y",
+                    "type": "int *"
+                  }
+                ],
+                "sourceName": "TTF_GetTextPosition",
+                "immutable": true
+              }
+            ],
+            "SetWrapWidth": {
+              "doc": "Set whether wrapping is enabled on a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param wrap_width the maximum width in pixels, 0 to wrap on newline\n                  characters.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextWrapWidth",
+              "name": "SetWrapWidth",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "wrap_width",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "TTF_SetTextWrapWidth"
+            },
+            "GetWrapWidth": {
+              "doc": "Get whether wrapping is enabled on a text object.\n\n@param text the TTF_Text to query.\n@param wrap_width a pointer filled in with the maximum width in pixels or 0\n                  if the text is being wrapped on newline characters.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextWrapWidth",
+              "name": "GetWrapWidth",
+              "kind": "function",
+              "type": "std::optional<int>",
+              "parameters": [],
+              "sourceName": "TTF_GetTextWrapWidth",
+              "immutable": true
+            },
+            "SetWrapWhitespaceVisible": {
+              "doc": "Set whether whitespace should be visible when wrapping a text object.\n\nIf the whitespace is visible, it will take up space for purposes of\nalignment and wrapping. This is good for editing, but looks better when\ncentered or aligned if whitespace around line wrapping is hidden. This\ndefaults false.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param visible true to show whitespace when wrapping text, false to hide\n               it.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_TextWrapWhitespaceVisible",
+              "name": "SetWrapWhitespaceVisible",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "visible",
+                  "type": "bool"
+                }
+              ],
+              "sourceName": "TTF_SetTextWrapWhitespaceVisible"
+            },
+            "IsWrapWhitespaceVisible": {
+              "doc": "Return whether whitespace is shown when wrapping a text object.\n\n@param text the TTF_Text to query.\n@returns true if whitespace is shown when wrapping text, or false\n         otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextWrapWhitespaceVisible",
+              "name": "IsWrapWhitespaceVisible",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "TTF_TextWrapWhitespaceVisible",
+              "immutable": true
+            },
+            "SetString": {
+              "doc": "Set the UTF-8 text used by a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param string the UTF-8 text to use, may be NULL.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_AppendTextString\n@sa TTF_DeleteTextString\n@sa TTF_InsertTextString",
+              "name": "SetString",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "string",
+                  "type": "std::string_view"
+                }
+              ],
+              "sourceName": "TTF_SetTextString",
+              "static": false
+            },
+            "InsertString": {
+              "doc": "Insert UTF-8 text into a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param offset the offset, in bytes, from the beginning of the string if >=\n              0, the offset from the end of the string if < 0. Note that\n              this does not do UTF-8 validation, so you should only insert\n              at UTF-8 sequence boundaries.\n@param string the UTF-8 text to insert.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_AppendTextString\n@sa TTF_DeleteTextString\n@sa TTF_SetTextString",
+              "name": "InsertString",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "offset",
+                  "type": "int"
+                },
+                {
+                  "name": "string",
+                  "type": "std::string_view"
+                }
+              ],
+              "sourceName": "TTF_InsertTextString",
+              "static": false
+            },
+            "AppendString": {
+              "doc": "Append UTF-8 text to a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param string the UTF-8 text to insert.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DeleteTextString\n@sa TTF_InsertTextString\n@sa TTF_SetTextString",
+              "name": "AppendString",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "string",
+                  "type": "std::string_view"
+                }
+              ],
+              "sourceName": "TTF_AppendTextString",
+              "static": false
+            },
+            "DeleteString": {
+              "doc": "Delete UTF-8 text from a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param offset the offset, in bytes, from the beginning of the string if >=\n              0, the offset from the end of the string if < 0. Note that\n              this does not do UTF-8 validation, so you should only delete\n              at UTF-8 sequence boundaries.\n@param length the length of text to delete, in bytes, or -1 for the\n              remainder of the string.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_AppendTextString\n@sa TTF_InsertTextString\n@sa TTF_SetTextString",
+              "name": "DeleteString",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "offset",
+                  "type": "int"
+                },
+                {
+                  "name": "length",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "TTF_DeleteTextString"
+            },
+            "GetSize": [
+              {
+                "kind": "function",
+                "type": "std::optional<Point>",
+                "immutable": true,
+                "parameters": [],
+                "name": "GetSize",
+                "doc": ""
+              },
+              {
+                "doc": "Get the size of a text object.\n\nThe size of the text may change when the font or font style and size\nchange.\n\n@param text the TTF_Text to query.\n@param w a pointer filled in with the width of the text, in pixels, may be\n         NULL.\n@param h a pointer filled in with the height of the text, in pixels, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+                "name": "GetSize",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "w",
+                    "type": "int *"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int *"
+                  }
+                ],
+                "sourceName": "TTF_GetTextSize",
+                "immutable": true
+              }
+            ],
+            "GetSubString": {
+              "doc": "Get the substring of a text object that surrounds a text offset.\n\nIf `offset` is less than 0, this will return a zero length substring at the\nbeginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If\n`offset` is greater than or equal to the length of the text string, this\nwill return a zero length substring at the end of the text with the\nTTF_SUBSTRING_TEXT_END flag set.\n\n@param text the TTF_Text to query.\n@param offset a byte offset into the text string.\n@param substring a pointer filled in with the substring containing the\n                 offset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetSubString",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "offset",
+                  "type": "int"
+                },
+                {
+                  "name": "substring",
+                  "type": "SubString *"
+                }
+              ],
+              "sourceName": "TTF_GetTextSubString",
+              "immutable": true
+            },
+            "GetSubStringForLine": {
+              "doc": "Get the substring of a text object that contains the given line.\n\nIf `line` is less than 0, this will return a zero length substring at the\nbeginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If `line`\nis greater than or equal to `text->num_lines` this will return a zero\nlength substring at the end of the text with the TTF_SUBSTRING_TEXT_END\nflag set.\n\n@param text the TTF_Text to query.\n@param line a zero-based line index, in the range [0 .. text->num_lines-1].\n@param substring a pointer filled in with the substring containing the\n                 offset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetSubStringForLine",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "line",
+                  "type": "int"
+                },
+                {
+                  "name": "substring",
+                  "type": "SubString *"
+                }
+              ],
+              "sourceName": "TTF_GetTextSubStringForLine",
+              "immutable": true
+            },
+            "GetSubStrings": {
+              "kind": "function",
+              "immutable": true,
+              "type": "OwnArray<SubString *>",
+              "parameters": [],
+              "name": "GetSubStrings",
+              "doc": ""
+            },
+            "GetSubStringsForRange": {
+              "doc": "Get the substrings of a text object that contain a range of text.\n\n@param text the TTF_Text to query.\n@param offset a byte offset into the text string.\n@param length the length of the range being queried, in bytes, or -1 for\n              the remainder of the string.\n@param count a pointer filled in with the number of substrings returned,\n             may be NULL.\n@returns a NULL terminated array of substring pointers or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetSubStringsForRange",
+              "kind": "function",
+              "type": "OwnArray<SubString *>",
+              "parameters": [
+                {
+                  "name": "offset",
+                  "type": "int"
+                },
+                {
+                  "name": "length",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "TTF_GetTextSubStringsForRange",
+              "immutable": true
+            },
+            "GetSubStringForPoint": {
+              "doc": "Get the portion of a text string that is closest to a point.\n\nThis will return the closest substring of text to the given point.\n\n@param text the TTF_Text to query.\n@param x the x coordinate relative to the left side of the text, may be\n         outside the bounds of the text area.\n@param y the y coordinate relative to the top side of the text, may be\n         outside the bounds of the text area.\n@param substring a pointer filled in with the closest substring of text to\n                 the given point.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetSubStringForPoint",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "p",
+                  "type": "Point"
+                },
+                {
+                  "name": "substring",
+                  "type": "SubString *"
+                }
+              ],
+              "sourceName": "TTF_GetTextSubStringForPoint",
+              "immutable": true,
+              "static": false
+            },
+            "GetPreviousSubString": {
+              "doc": "Get the previous substring in a text object\n\nIf called at the start of the text, this will return a zero length\nsubstring with the TTF_SUBSTRING_TEXT_START flag set.\n\n@param text the TTF_Text to query.\n@param substring the TTF_SubString to query.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetPreviousSubString",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "substring",
+                  "type": "const SubString *"
+                },
+                {
+                  "name": "previous",
+                  "type": "SubString *"
+                }
+              ],
+              "sourceName": "TTF_GetPreviousTextSubString",
+              "immutable": true
+            },
+            "GetNextSubString": {
+              "doc": "Get the next substring in a text object\n\nIf called at the end of the text, this will return a zero length substring\nwith the TTF_SUBSTRING_TEXT_END flag set.\n\n@param text the TTF_Text to query.\n@param substring the TTF_SubString to query.\n@param next a pointer filled in with the next substring.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "GetNextSubString",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "substring",
+                  "type": "const SubString *"
+                },
+                {
+                  "name": "next",
+                  "type": "SubString *"
+                }
+              ],
+              "sourceName": "TTF_GetNextTextSubString",
+              "immutable": true
+            },
+            "Update": {
+              "doc": "Update the layout of a text object.\n\nThis is automatically done when the layout is requested or the text is\nrendered, but you can call this if you need more control over the timing of\nwhen the layout and text engine representation are updated.\n\n@param text the TTF_Text to update.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
+              "name": "Update",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "TTF_UpdateText"
+            },
+            "GetText": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "doc": "A copy of the UTF-8 string that this text object represents, useful for layout, debugging and retrieving substring text",
+              "parameters": [],
+              "name": "GetText"
+            },
+            "GetNumLines": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "doc": "The number of lines in the text, 0 if it's empty",
+              "parameters": [],
+              "name": "GetNumLines"
+            },
+            "Destroy": {
+              "doc": "Destroy a text object created by a text engine.\n\n@param text the text to destroy.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateText",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "sourceName": "TTF_DestroyText"
+            }
+          }
+        },
+        "ObjectRef<TTF_Text>::doFree": {
+          "name": "ObjectRef<TTF_Text>::doFree",
+          "type": "void",
+          "kind": "function",
+          "doc": "Callback for text resource cleanup\n\n@private",
+          "template": [],
+          "parameters": [
+            {
+              "type": "TTF_Text *",
+              "name": "resource"
+            }
+          ],
+          "sourceName": "TTF_DestroyText"
         },
         "CreateSurfaceTextEngine": {
           "doc": "Create a text engine for drawing text on SDL surfaces.\n\n@returns a TTF_TextEngine object or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroySurfaceTextEngine\n@sa TTF_DrawSurfaceText",
           "name": "CreateSurfaceTextEngine",
           "kind": "function",
-          "type": "TextEngine *",
+          "type": "TextEngine",
           "parameters": [],
           "sourceName": "TTF_CreateSurfaceTextEngine"
-        },
-        "DrawSurfaceText": {
-          "doc": "Draw text to an SDL surface.\n\n`text` must have been created using a TTF_TextEngine from\nTTF_CreateSurfaceTextEngine().\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@param surface the surface to draw on.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateSurfaceTextEngine\n@sa TTF_CreateText",
-          "name": "DrawSurfaceText",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "x",
-              "type": "int"
-            },
-            {
-              "name": "y",
-              "type": "int"
-            },
-            {
-              "name": "surface",
-              "type": "SurfaceRef"
-            }
-          ],
-          "sourceName": "TTF_DrawSurfaceText"
-        },
-        "DestroySurfaceTextEngine": {
-          "doc": "Destroy a text engine created for drawing text on SDL surfaces.\n\nAll text created by this engine should be destroyed before calling this\nfunction.\n\n@param engine a TTF_TextEngine object created with\n              TTF_CreateSurfaceTextEngine().\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateSurfaceTextEngine",
-          "name": "DestroySurfaceTextEngine",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "engine",
-              "type": "TextEngine *"
-            }
-          ],
-          "sourceName": "TTF_DestroySurfaceTextEngine"
         },
         "CreateRendererTextEngine": {
           "doc": "Create a text engine for drawing text on an SDL renderer.\n\n@param renderer the renderer to use for creating textures and drawing text.\n@returns a TTF_TextEngine object or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroyRendererTextEngine\n@sa TTF_DrawRendererText\n@sa TTF_CreateRendererTextEngineWithProperties",
           "name": "CreateRendererTextEngine",
           "kind": "function",
-          "type": "TextEngine *",
+          "type": "TextEngine",
           "parameters": [
             {
               "name": "renderer",
@@ -20069,7 +20824,7 @@
           "doc": "Create a text engine for drawing text on an SDL renderer, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER`: the renderer to use for\n  creating textures and drawing text\n- `TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE`: the size of the\n  texture atlas\n\n@param props the properties to use.\n@returns a TTF_TextEngine object or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              renderer.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateRendererTextEngine\n@sa TTF_DestroyRendererTextEngine\n@sa TTF_DrawRendererText",
           "name": "CreateRendererTextEngineWithProperties",
           "kind": "function",
-          "type": "TextEngine *",
+          "type": "TextEngine",
           "parameters": [
             {
               "name": "props",
@@ -20078,45 +20833,11 @@
           ],
           "sourceName": "TTF_CreateRendererTextEngineWithProperties"
         },
-        "DrawRendererText": {
-          "doc": "Draw text to an SDL renderer.\n\n`text` must have been created using a TTF_TextEngine from\nTTF_CreateRendererTextEngine(), and will draw using the renderer passed to\nthat function.\n\n@param text the text to draw.\n@param x the x coordinate in pixels, positive from the left edge towards\n         the right.\n@param y the y coordinate in pixels, positive from the top edge towards the\n         bottom.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateRendererTextEngine\n@sa TTF_CreateText",
-          "name": "DrawRendererText",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "x",
-              "type": "float"
-            },
-            {
-              "name": "y",
-              "type": "float"
-            }
-          ],
-          "sourceName": "TTF_DrawRendererText"
-        },
-        "DestroyRendererTextEngine": {
-          "doc": "Destroy a text engine created for drawing text on an SDL renderer.\n\nAll text created by this engine should be destroyed before calling this\nfunction.\n\n@param engine a TTF_TextEngine object created with\n              TTF_CreateRendererTextEngine().\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateRendererTextEngine",
-          "name": "DestroyRendererTextEngine",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "engine",
-              "type": "TextEngine *"
-            }
-          ],
-          "sourceName": "TTF_DestroyRendererTextEngine"
-        },
         "CreateGPUTextEngine": {
           "doc": "Create a text engine for drawing text with the SDL GPU API.\n\n@param device the SDL_GPUDevice to use for creating textures and drawing\n              text.\n@returns a TTF_TextEngine object or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateGPUTextEngineWithProperties\n@sa TTF_DestroyGPUTextEngine\n@sa TTF_GetGPUTextDrawData",
           "name": "CreateGPUTextEngine",
           "kind": "function",
-          "type": "TextEngine *",
+          "type": "TextEngine",
           "parameters": [
             {
               "name": "device",
@@ -20129,7 +20850,7 @@
           "doc": "Create a text engine for drawing text with the SDL GPU API, with the\nspecified properties.\n\nThese are the supported properties:\n\n- `TTF_PROP_GPU_TEXT_ENGINE_DEVICE`: the SDL_GPUDevice to use for creating\n  textures and drawing text.\n- `TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE`: the size of the texture\n  atlas\n\n@param props the properties to use.\n@returns a TTF_TextEngine object or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateGPUTextEngine\n@sa TTF_DestroyGPUTextEngine\n@sa TTF_GetGPUTextDrawData",
           "name": "CreateGPUTextEngineWithProperties",
           "kind": "function",
-          "type": "TextEngine *",
+          "type": "TextEngine",
           "parameters": [
             {
               "name": "props",
@@ -20137,46 +20858,6 @@
             }
           ],
           "sourceName": "TTF_CreateGPUTextEngineWithProperties"
-        },
-        "GPUAtlasDrawSequence": {
-          "doc": "Draw sequence returned by TTF_GetGPUTextDrawData\n\n@since This struct is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetGPUTextDrawData",
-          "name": "GPUAtlasDrawSequence",
-          "kind": "alias",
-          "sourceName": "TTF_GPUAtlasDrawSequence",
-          "type": "TTF_GPUAtlasDrawSequence"
-        },
-        "GetGPUTextDrawData": {
-          "doc": "Get the geometry data needed for drawing the text.\n\n`text` must have been created using a TTF_TextEngine from\nTTF_CreateGPUTextEngine().\n\nThe positive X-axis is taken towards the right and the positive Y-axis is\ntaken upwards for both the vertex and the texture coordinates, i.e, it\nfollows the same convention used by the SDL_GPU API. If you want to use a\ndifferent coordinate system you will need to transform the vertices\nyourself.\n\nIf the text looks blocky use linear filtering.\n\n@param text the text to draw.\n@returns a NULL terminated linked list of TTF_GPUAtlasDrawSequence objects\n         or NULL if the passed text is empty or in case of failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateGPUTextEngine\n@sa TTF_CreateText",
-          "name": "GetGPUTextDrawData",
-          "kind": "function",
-          "type": "GPUAtlasDrawSequence *",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_GetGPUTextDrawData"
-        },
-        "DestroyGPUTextEngine": {
-          "doc": "Destroy a text engine created for drawing text with the SDL GPU API.\n\nAll text created by this engine should be destroyed before calling this\nfunction.\n\n@param engine a TTF_TextEngine object created with\n              TTF_CreateGPUTextEngine().\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateGPUTextEngine",
-          "name": "DestroyGPUTextEngine",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "engine",
-              "type": "TextEngine *"
-            }
-          ],
-          "sourceName": "TTF_DestroyGPUTextEngine"
-        },
-        "GPUTextEngineWinding": {
-          "doc": "The winding order of the vertices returned by TTF_GetGPUTextDrawData\n\n@since This enum is available since SDL_ttf 3.0.0.",
-          "name": "GPUTextEngineWinding",
-          "kind": "alias",
-          "sourceName": "TTF_GPUTextEngineWinding",
-          "type": "TTF_GPUTextEngineWinding"
         },
         "GPU_TEXTENGINE_WINDING_INVALID": {
           "doc": "",
@@ -20201,699 +20882,6 @@
           "type": "GPUTextEngineWinding",
           "sourceName": "TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE",
           "constexpr": true
-        },
-        "SetGPUTextEngineWinding": {
-          "doc": "Sets the winding order of the vertices returned by TTF_GetGPUTextDrawData\nfor a particular GPU text engine.\n\n@param engine a TTF_TextEngine object created with\n              TTF_CreateGPUTextEngine().\n@param winding the new winding order option.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetGPUTextEngineWinding",
-          "name": "SetGPUTextEngineWinding",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "engine",
-              "type": "TextEngine *"
-            },
-            {
-              "name": "winding",
-              "type": "GPUTextEngineWinding"
-            }
-          ],
-          "sourceName": "TTF_SetGPUTextEngineWinding"
-        },
-        "GetGPUTextEngineWinding": {
-          "doc": "Get the winding order of the vertices returned by TTF_GetGPUTextDrawData\nfor a particular GPU text engine\n\n@param engine a TTF_TextEngine object created with\n              TTF_CreateGPUTextEngine().\n@returns the winding order used by the GPU text engine or\n         TTF_GPU_TEXTENGINE_WINDING_INVALID in case of error.\n\n@threadsafety This function should be called on the thread that created the\n              engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetGPUTextEngineWinding",
-          "name": "GetGPUTextEngineWinding",
-          "kind": "function",
-          "type": "GPUTextEngineWinding",
-          "parameters": [
-            {
-              "name": "engine",
-              "type": "const TextEngine *"
-            }
-          ],
-          "sourceName": "TTF_GetGPUTextEngineWinding"
-        },
-        "CreateText": {
-          "doc": "Create a text object from UTF-8 text and a text engine.\n\n@param engine the text engine to use when creating the text object, may be\n              NULL.\n@param font the font to render with.\n@param text the text to use, in UTF-8 encoding.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns a TTF_Text object or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              font and text engine.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DestroyText",
-          "name": "CreateText",
-          "kind": "function",
-          "type": "Text *",
-          "parameters": [
-            {
-              "name": "engine",
-              "type": "TextEngine *"
-            },
-            {
-              "name": "font",
-              "type": "FontRef"
-            },
-            {
-              "name": "text",
-              "type": "StringParam"
-            },
-            {
-              "name": "length",
-              "type": "size_t"
-            }
-          ],
-          "sourceName": "TTF_CreateText"
-        },
-        "GetTextProperties": {
-          "doc": "Get the properties associated with a text object.\n\n@param text the TTF_Text to query.\n@returns a valid property ID on success or 0 on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetTextProperties",
-          "kind": "function",
-          "type": "PropertiesRef",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_GetTextProperties"
-        },
-        "SetTextEngine": {
-          "doc": "Set the text engine used by a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param engine the text engine to use for drawing.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextEngine",
-          "name": "SetTextEngine",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "engine",
-              "type": "TextEngine *"
-            }
-          ],
-          "sourceName": "TTF_SetTextEngine"
-        },
-        "GetTextEngine": {
-          "doc": "Get the text engine used by a text object.\n\n@param text the TTF_Text to query.\n@returns the TTF_TextEngine used by the text on success or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextEngine",
-          "name": "GetTextEngine",
-          "kind": "function",
-          "type": "TextEngine *",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_GetTextEngine"
-        },
-        "SetTextFont": {
-          "doc": "Set the font used by a text object.\n\nWhen a text object has a font, any changes to the font will automatically\nregenerate the text. If you set the font to NULL, the text will continue to\nrender but changes to the font will no longer affect the text.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param font the font to use, may be NULL.\n@returns false if the text pointer is null; otherwise, true. call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextFont",
-          "name": "SetTextFont",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "font",
-              "type": "FontRef"
-            }
-          ],
-          "sourceName": "TTF_SetTextFont"
-        },
-        "GetTextFont": {
-          "doc": "Get the font used by a text object.\n\n@param text the TTF_Text to query.\n@returns the TTF_Font used by the text on success or NULL on failure; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextFont",
-          "name": "GetTextFont",
-          "kind": "function",
-          "type": "FontRef",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_GetTextFont"
-        },
-        "SetTextDirection": {
-          "doc": "Set the direction to be used for text shaping a text object.\n\nThis function only supports left-to-right text shaping if SDL_ttf was not\nbuilt with HarfBuzz support.\n\n@param text the text to modify.\n@param direction the new direction for text to flow.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "SetTextDirection",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "direction",
-              "type": "Direction"
-            }
-          ],
-          "sourceName": "TTF_SetTextDirection"
-        },
-        "GetTextDirection": {
-          "doc": "Get the direction to be used for text shaping a text object.\n\nThis defaults to the direction of the font used by the text object.\n\n@param text the text to query.\n@returns the direction to be used for text shaping.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetTextDirection",
-          "kind": "function",
-          "type": "Direction",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_GetTextDirection"
-        },
-        "SetTextScript": {
-          "doc": "Set the script to be used for text shaping a text object.\n\nThis returns false if SDL_ttf isn't built with HarfBuzz support.\n\n@param text the text to modify.\n@param script an\n              [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)\n              .\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_StringToTag",
-          "name": "SetTextScript",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "script",
-              "type": "Uint32"
-            }
-          ],
-          "sourceName": "TTF_SetTextScript"
-        },
-        "GetTextScript": {
-          "doc": "Get the script used for text shaping a text object.\n\nThis defaults to the script of the font used by the text object.\n\n@param text the text to query.\n@returns an\n         [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)\n         or 0 if a script hasn't been set on either the text object or the\n         font.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_TagToString",
-          "name": "GetTextScript",
-          "kind": "function",
-          "type": "Uint32",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_GetTextScript"
-        },
-        "SetTextColor": {
-          "doc": "Set the color of a text object.\n\nThe default text color is white (255, 255, 255, 255).\n\n@param text the TTF_Text to modify.\n@param r the red color value in the range of 0-255.\n@param g the green color value in the range of 0-255.\n@param b the blue color value in the range of 0-255.\n@param a the alpha value in the range of 0-255.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColor\n@sa TTF_SetTextColorFloat",
-          "name": "SetTextColor",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "r",
-              "type": "Uint8"
-            },
-            {
-              "name": "g",
-              "type": "Uint8"
-            },
-            {
-              "name": "b",
-              "type": "Uint8"
-            },
-            {
-              "name": "a",
-              "type": "Uint8"
-            }
-          ],
-          "sourceName": "TTF_SetTextColor"
-        },
-        "SetTextColorFloat": {
-          "doc": "Set the color of a text object.\n\nThe default text color is white (1.0f, 1.0f, 1.0f, 1.0f).\n\n@param text the TTF_Text to modify.\n@param r the red color value, normally in the range of 0-1.\n@param g the green color value, normally in the range of 0-1.\n@param b the blue color value, normally in the range of 0-1.\n@param a the alpha value in the range of 0-1.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColorFloat\n@sa TTF_SetTextColor",
-          "name": "SetTextColorFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "r",
-              "type": "float"
-            },
-            {
-              "name": "g",
-              "type": "float"
-            },
-            {
-              "name": "b",
-              "type": "float"
-            },
-            {
-              "name": "a",
-              "type": "float"
-            }
-          ],
-          "sourceName": "TTF_SetTextColorFloat"
-        },
-        "GetTextColor": {
-          "doc": "Get the color of a text object.\n\n@param text the TTF_Text to query.\n@param r a pointer filled in with the red color value in the range of\n         0-255, may be NULL.\n@param g a pointer filled in with the green color value in the range of\n         0-255, may be NULL.\n@param b a pointer filled in with the blue color value in the range of\n         0-255, may be NULL.\n@param a a pointer filled in with the alpha value in the range of 0-255,\n         may be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColorFloat\n@sa TTF_SetTextColor",
-          "name": "GetTextColor",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "r",
-              "type": "Uint8 *"
-            },
-            {
-              "name": "g",
-              "type": "Uint8 *"
-            },
-            {
-              "name": "b",
-              "type": "Uint8 *"
-            },
-            {
-              "name": "a",
-              "type": "Uint8 *"
-            }
-          ],
-          "sourceName": "TTF_GetTextColor"
-        },
-        "GetTextColorFloat": {
-          "doc": "Get the color of a text object.\n\n@param text the TTF_Text to query.\n@param r a pointer filled in with the red color value, normally in the\n         range of 0-1, may be NULL.\n@param g a pointer filled in with the green color value, normally in the\n         range of 0-1, may be NULL.\n@param b a pointer filled in with the blue color value, normally in the\n         range of 0-1, may be NULL.\n@param a a pointer filled in with the alpha value in the range of 0-1, may\n         be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextColor\n@sa TTF_SetTextColorFloat",
-          "name": "GetTextColorFloat",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "r",
-              "type": "float *"
-            },
-            {
-              "name": "g",
-              "type": "float *"
-            },
-            {
-              "name": "b",
-              "type": "float *"
-            },
-            {
-              "name": "a",
-              "type": "float *"
-            }
-          ],
-          "sourceName": "TTF_GetTextColorFloat"
-        },
-        "SetTextPosition": {
-          "doc": "Set the position of a text object.\n\nThis can be used to position multiple text objects within a single wrapping\ntext area.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param x the x offset of the upper left corner of this text in pixels.\n@param y the y offset of the upper left corner of this text in pixels.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextPosition",
-          "name": "SetTextPosition",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "x",
-              "type": "int"
-            },
-            {
-              "name": "y",
-              "type": "int"
-            }
-          ],
-          "sourceName": "TTF_SetTextPosition"
-        },
-        "GetTextPosition": {
-          "doc": "Get the position of a text object.\n\n@param text the TTF_Text to query.\n@param x a pointer filled in with the x offset of the upper left corner of\n         this text in pixels, may be NULL.\n@param y a pointer filled in with the y offset of the upper left corner of\n         this text in pixels, may be NULL.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextPosition",
-          "name": "GetTextPosition",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "x",
-              "type": "int *"
-            },
-            {
-              "name": "y",
-              "type": "int *"
-            }
-          ],
-          "sourceName": "TTF_GetTextPosition"
-        },
-        "SetTextWrapWidth": {
-          "doc": "Set whether wrapping is enabled on a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param wrap_width the maximum width in pixels, 0 to wrap on newline\n                  characters.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetTextWrapWidth",
-          "name": "SetTextWrapWidth",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "wrap_width",
-              "type": "int"
-            }
-          ],
-          "sourceName": "TTF_SetTextWrapWidth"
-        },
-        "GetTextWrapWidth": {
-          "doc": "Get whether wrapping is enabled on a text object.\n\n@param text the TTF_Text to query.\n@param wrap_width a pointer filled in with the maximum width in pixels or 0\n                  if the text is being wrapped on newline characters.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextWrapWidth",
-          "name": "GetTextWrapWidth",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "wrap_width",
-              "type": "int *"
-            }
-          ],
-          "sourceName": "TTF_GetTextWrapWidth"
-        },
-        "SetTextWrapWhitespaceVisible": {
-          "doc": "Set whether whitespace should be visible when wrapping a text object.\n\nIf the whitespace is visible, it will take up space for purposes of\nalignment and wrapping. This is good for editing, but looks better when\ncentered or aligned if whitespace around line wrapping is hidden. This\ndefaults false.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param visible true to show whitespace when wrapping text, false to hide\n               it.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_TextWrapWhitespaceVisible",
-          "name": "SetTextWrapWhitespaceVisible",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "visible",
-              "type": "bool"
-            }
-          ],
-          "sourceName": "TTF_SetTextWrapWhitespaceVisible"
-        },
-        "TextWrapWhitespaceVisible": {
-          "doc": "Return whether whitespace is shown when wrapping a text object.\n\n@param text the TTF_Text to query.\n@returns true if whitespace is shown when wrapping text, or false\n         otherwise.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_SetTextWrapWhitespaceVisible",
-          "name": "TextWrapWhitespaceVisible",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_TextWrapWhitespaceVisible"
-        },
-        "SetTextString": {
-          "doc": "Set the UTF-8 text used by a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param string the UTF-8 text to use, may be NULL.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_AppendTextString\n@sa TTF_DeleteTextString\n@sa TTF_InsertTextString",
-          "name": "SetTextString",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "string",
-              "type": "StringParam"
-            },
-            {
-              "name": "length",
-              "type": "size_t"
-            }
-          ],
-          "sourceName": "TTF_SetTextString"
-        },
-        "InsertTextString": {
-          "doc": "Insert UTF-8 text into a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param offset the offset, in bytes, from the beginning of the string if >=\n              0, the offset from the end of the string if < 0. Note that\n              this does not do UTF-8 validation, so you should only insert\n              at UTF-8 sequence boundaries.\n@param string the UTF-8 text to insert.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_AppendTextString\n@sa TTF_DeleteTextString\n@sa TTF_SetTextString",
-          "name": "InsertTextString",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "offset",
-              "type": "int"
-            },
-            {
-              "name": "string",
-              "type": "StringParam"
-            },
-            {
-              "name": "length",
-              "type": "size_t"
-            }
-          ],
-          "sourceName": "TTF_InsertTextString"
-        },
-        "AppendTextString": {
-          "doc": "Append UTF-8 text to a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param string the UTF-8 text to insert.\n@param length the length of the text, in bytes, or 0 for null terminated\n              text.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_DeleteTextString\n@sa TTF_InsertTextString\n@sa TTF_SetTextString",
-          "name": "AppendTextString",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "string",
-              "type": "StringParam"
-            },
-            {
-              "name": "length",
-              "type": "size_t"
-            }
-          ],
-          "sourceName": "TTF_AppendTextString"
-        },
-        "DeleteTextString": {
-          "doc": "Delete UTF-8 text from a text object.\n\nThis function may cause the internal text representation to be rebuilt.\n\n@param text the TTF_Text to modify.\n@param offset the offset, in bytes, from the beginning of the string if >=\n              0, the offset from the end of the string if < 0. Note that\n              this does not do UTF-8 validation, so you should only delete\n              at UTF-8 sequence boundaries.\n@param length the length of text to delete, in bytes, or -1 for the\n              remainder of the string.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_AppendTextString\n@sa TTF_InsertTextString\n@sa TTF_SetTextString",
-          "name": "DeleteTextString",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "offset",
-              "type": "int"
-            },
-            {
-              "name": "length",
-              "type": "int"
-            }
-          ],
-          "sourceName": "TTF_DeleteTextString"
-        },
-        "GetTextSize": {
-          "doc": "Get the size of a text object.\n\nThe size of the text may change when the font or font style and size\nchange.\n\n@param text the TTF_Text to query.\n@param w a pointer filled in with the width of the text, in pixels, may be\n         NULL.\n@param h a pointer filled in with the height of the text, in pixels, may be\n         NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetTextSize",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "w",
-              "type": "int *"
-            },
-            {
-              "name": "h",
-              "type": "int *"
-            }
-          ],
-          "sourceName": "TTF_GetTextSize"
-        },
-        "SubStringFlags": {
-          "doc": "Flags for TTF_SubString\n\n@since This datatype is available since SDL_ttf 3.0.0.\n\n@sa TTF_SubString",
-          "name": "SubStringFlags",
-          "kind": "alias",
-          "type": "TTF_SubStringFlags",
-          "sourceName": "TTF_SubStringFlags"
-        },
-        "SubString": {
-          "doc": "The representation of a substring within text.\n\n@since This struct is available since SDL_ttf 3.0.0.\n\n@sa TTF_GetNextTextSubString\n@sa TTF_GetPreviousTextSubString\n@sa TTF_GetTextSubString\n@sa TTF_GetTextSubStringForLine\n@sa TTF_GetTextSubStringForPoint\n@sa TTF_GetTextSubStringsForRange",
-          "name": "SubString",
-          "kind": "alias",
-          "sourceName": "TTF_SubString",
-          "type": "TTF_SubString"
-        },
-        "GetTextSubString": {
-          "doc": "Get the substring of a text object that surrounds a text offset.\n\nIf `offset` is less than 0, this will return a zero length substring at the\nbeginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If\n`offset` is greater than or equal to the length of the text string, this\nwill return a zero length substring at the end of the text with the\nTTF_SUBSTRING_TEXT_END flag set.\n\n@param text the TTF_Text to query.\n@param offset a byte offset into the text string.\n@param substring a pointer filled in with the substring containing the\n                 offset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetTextSubString",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "offset",
-              "type": "int"
-            },
-            {
-              "name": "substring",
-              "type": "SubString *"
-            }
-          ],
-          "sourceName": "TTF_GetTextSubString"
-        },
-        "GetTextSubStringForLine": {
-          "doc": "Get the substring of a text object that contains the given line.\n\nIf `line` is less than 0, this will return a zero length substring at the\nbeginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If `line`\nis greater than or equal to `text->num_lines` this will return a zero\nlength substring at the end of the text with the TTF_SUBSTRING_TEXT_END\nflag set.\n\n@param text the TTF_Text to query.\n@param line a zero-based line index, in the range [0 .. text->num_lines-1].\n@param substring a pointer filled in with the substring containing the\n                 offset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetTextSubStringForLine",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "line",
-              "type": "int"
-            },
-            {
-              "name": "substring",
-              "type": "SubString *"
-            }
-          ],
-          "sourceName": "TTF_GetTextSubStringForLine"
-        },
-        "GetTextSubStringsForRange": {
-          "doc": "Get the substrings of a text object that contain a range of text.\n\n@param text the TTF_Text to query.\n@param offset a byte offset into the text string.\n@param length the length of the range being queried, in bytes, or -1 for\n              the remainder of the string.\n@param count a pointer filled in with the number of substrings returned,\n             may be NULL.\n@returns a NULL terminated array of substring pointers or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetTextSubStringsForRange",
-          "kind": "function",
-          "type": "TTF_SubString **",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "offset",
-              "type": "int"
-            },
-            {
-              "name": "length",
-              "type": "int"
-            },
-            {
-              "name": "count",
-              "type": "int *"
-            }
-          ],
-          "sourceName": "TTF_GetTextSubStringsForRange"
-        },
-        "GetTextSubStringForPoint": {
-          "doc": "Get the portion of a text string that is closest to a point.\n\nThis will return the closest substring of text to the given point.\n\n@param text the TTF_Text to query.\n@param x the x coordinate relative to the left side of the text, may be\n         outside the bounds of the text area.\n@param y the y coordinate relative to the top side of the text, may be\n         outside the bounds of the text area.\n@param substring a pointer filled in with the closest substring of text to\n                 the given point.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetTextSubStringForPoint",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "x",
-              "type": "int"
-            },
-            {
-              "name": "y",
-              "type": "int"
-            },
-            {
-              "name": "substring",
-              "type": "SubString *"
-            }
-          ],
-          "sourceName": "TTF_GetTextSubStringForPoint"
-        },
-        "GetPreviousTextSubString": {
-          "doc": "Get the previous substring in a text object\n\nIf called at the start of the text, this will return a zero length\nsubstring with the TTF_SUBSTRING_TEXT_START flag set.\n\n@param text the TTF_Text to query.\n@param substring the TTF_SubString to query.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetPreviousTextSubString",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "substring",
-              "type": "const SubString *"
-            },
-            {
-              "name": "previous",
-              "type": "SubString *"
-            }
-          ],
-          "sourceName": "TTF_GetPreviousTextSubString"
-        },
-        "GetNextTextSubString": {
-          "doc": "Get the next substring in a text object\n\nIf called at the end of the text, this will return a zero length substring\nwith the TTF_SUBSTRING_TEXT_END flag set.\n\n@param text the TTF_Text to query.\n@param substring the TTF_SubString to query.\n@param next a pointer filled in with the next substring.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "GetNextTextSubString",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            },
-            {
-              "name": "substring",
-              "type": "const SubString *"
-            },
-            {
-              "name": "next",
-              "type": "SubString *"
-            }
-          ],
-          "sourceName": "TTF_GetNextTextSubString"
-        },
-        "UpdateText": {
-          "doc": "Update the layout of a text object.\n\nThis is automatically done when the layout is requested or the text is\nrendered, but you can call this if you need more control over the timing of\nwhen the layout and text engine representation are updated.\n\n@param text the TTF_Text to update.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.",
-          "name": "UpdateText",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_UpdateText"
-        },
-        "DestroyText": {
-          "doc": "Destroy a text object created by a text engine.\n\n@param text the text to destroy.\n\n@threadsafety This function should be called on the thread that created the\n              text.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateText",
-          "name": "DestroyText",
-          "kind": "function",
-          "type": "void",
-          "parameters": [
-            {
-              "name": "text",
-              "type": "Text *"
-            }
-          ],
-          "sourceName": "TTF_DestroyText"
         },
         "QuitSubSystem": {
           "doc": "Deinitialize SDL_ttf.\n\nYou must call this when done with the library, to free internal resources.\nIt is safe to call this when the library isn't initialized, as it will just\nreturn immediately.\n\nOnce you have as many quit calls as you have had successful calls to\nTTF_Init, the library will actually deinitialize.\n\nPlease note that this does not automatically close any fonts that are still\nopen at the time of deinitialization, and it is possibly not safe to close\nthem afterwards, as parts of the library will no longer be initialized to\ndeal with it. A well-written program should call TTF_CloseFont() on any\nopen fonts before calling this function!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.",

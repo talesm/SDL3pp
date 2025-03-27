@@ -87,8 +87,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to init TTF.  <a href="structSDL_1_1TtfInitFlag.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1TextEngineWrapper.html">SDL::TextEngineWrapper</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps the TTF_TextEngine so we can store its Destroy function with it.  <a href="classSDL_1_1TextEngineWrapper.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal structure containing font information.  <a href="structSDL_1_1FontBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineBase.html">SDL::TextEngineBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A text engine used to create text objects.  <a href="structSDL_1_1TextEngineBase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextBase.html">SDL::TextBase&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text.  <a href="structSDL_1_1TextBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -114,21 +123,27 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga4dd382dc093e6f59f96c32663e22a20e" id="r_ga4dd382dc093e6f59f96c32663e22a20e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga4dd382dc093e6f59f96c32663e22a20e">SDL::Font</a> = <a class="el" href="structSDL_1_1FontBase.html">FontBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; TTF_Font &gt; &gt;</td></tr>
 <tr class="memdesc:ga4dd382dc093e6f59f96c32663e22a20e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned font.  <br /></td></tr>
 <tr class="separator:ga4dd382dc093e6f59f96c32663e22a20e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga353ebcc938c7df420c331dbad1a05fbd" id="r_ga353ebcc938c7df420c331dbad1a05fbd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga353ebcc938c7df420c331dbad1a05fbd">SDL::TextEngineRef</a> = <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a> &gt; &gt;</td></tr>
+<tr class="memdesc:ga353ebcc938c7df420c331dbad1a05fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned textEngine.  <br /></td></tr>
+<tr class="separator:ga353ebcc938c7df420c331dbad1a05fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3ef67dbf9a663bf8d9b8140c676e0075" id="r_ga3ef67dbf9a663bf8d9b8140c676e0075"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">SDL::TextEngine</a> = <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; TTF_TextEngine, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a> &gt; &gt; &gt; &gt;</td></tr>
+<tr class="memdesc:ga3ef67dbf9a663bf8d9b8140c676e0075"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned textEngine.  <br /></td></tr>
+<tr class="separator:ga3ef67dbf9a663bf8d9b8140c676e0075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2ecae3d82f2ea8b3797c664a8cb2e8c1" id="r_ga2ecae3d82f2ea8b3797c664a8cb2e8c1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga2ecae3d82f2ea8b3797c664a8cb2e8c1">SDL::TextRef</a> = <a class="el" href="structSDL_1_1TextBase.html">TextBase</a>&lt; <a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt; TTF_Text &gt; &gt;</td></tr>
+<tr class="memdesc:ga2ecae3d82f2ea8b3797c664a8cb2e8c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to a non owned text.  <br /></td></tr>
+<tr class="separator:ga2ecae3d82f2ea8b3797c664a8cb2e8c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadbf3670898935dd5845748b7b523e2aa" id="r_gadbf3670898935dd5845748b7b523e2aa"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa">SDL::Text</a> = <a class="el" href="structSDL_1_1TextBase.html">TextBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; TTF_Text &gt; &gt;</td></tr>
+<tr class="memdesc:gadbf3670898935dd5845748b7b523e2aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owned text.  <br /></td></tr>
+<tr class="separator:gadbf3670898935dd5845748b7b523e2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacdab2afd1ce45f6a6326400051ce4779" id="r_gacdab2afd1ce45f6a6326400051ce4779"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gacdab2afd1ce45f6a6326400051ce4779">SDL::TextData</a> = TTF_TextData</td></tr>
 <tr class="memdesc:gacdab2afd1ce45f6a6326400051ce4779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal data for TTF_Text.  <br /></td></tr>
 <tr class="separator:gacdab2afd1ce45f6a6326400051ce4779"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf7bcb1a357adc5b175717e53257bea6e" id="r_gaf7bcb1a357adc5b175717e53257bea6e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">SDL::TextEngine</a> = TTF_TextEngine</td></tr>
-<tr class="memdesc:gaf7bcb1a357adc5b175717e53257bea6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A text engine used to create text objects.  <br /></td></tr>
-<tr class="separator:gaf7bcb1a357adc5b175717e53257bea6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafd1ac0ab0f6441490b484d528af01bc9" id="r_gafd1ac0ab0f6441490b484d528af01bc9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">SDL::Text</a> = TTF_Text</td></tr>
-<tr class="memdesc:gafd1ac0ab0f6441490b484d528af01bc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text created with TTF_CreateText()  <br /></td></tr>
-<tr class="separator:gafd1ac0ab0f6441490b484d528af01bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga17c2da9e5590f3d41f47b36b90bd6dc1" id="r_ga17c2da9e5590f3d41f47b36b90bd6dc1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1">SDL::GPUAtlasDrawSequence</a> = TTF_GPUAtlasDrawSequence</td></tr>
-<tr class="memdesc:ga17c2da9e5590f3d41f47b36b90bd6dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw sequence returned by TTF_GetGPUTextDrawData.  <br /></td></tr>
-<tr class="separator:ga17c2da9e5590f3d41f47b36b90bd6dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9014aa44268f39e3094f96194d4efd5a" id="r_ga9014aa44268f39e3094f96194d4efd5a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">SDL::GPUTextEngineWinding</a> = TTF_GPUTextEngineWinding</td></tr>
-<tr class="memdesc:ga9014aa44268f39e3094f96194d4efd5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The winding order of the vertices returned by TTF_GetGPUTextDrawData.  <br /></td></tr>
+<tr class="memdesc:ga9014aa44268f39e3094f96194d4efd5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The winding order of the vertices returned by <a class="el" href="structSDL_1_1TextBase.html#add6e82874d307b670b766858f935a37d" title="Get the geometry data needed for drawing the text.">TextBase::GetGPUDrawData</a>.  <br /></td></tr>
 <tr class="separator:ga9014aa44268f39e3094f96194d4efd5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga17c2da9e5590f3d41f47b36b90bd6dc1" id="r_ga17c2da9e5590f3d41f47b36b90bd6dc1"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1">SDL::GPUAtlasDrawSequence</a> = TTF_GPUAtlasDrawSequence</td></tr>
+<tr class="memdesc:ga17c2da9e5590f3d41f47b36b90bd6dc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw sequence returned by GetGPUDrawData.  <br /></td></tr>
+<tr class="separator:ga17c2da9e5590f3d41f47b36b90bd6dc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf0736b7f0840c5cdc11faa430d851420" id="r_gaf0736b7f0840c5cdc11faa430d851420"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SDL::SubStringFlags</a> = TTF_SubStringFlags</td></tr>
 <tr class="memdesc:gaf0736b7f0840c5cdc11faa430d851420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flags for TTF_SubString.  <br /></td></tr>
 <tr class="separator:gaf0736b7f0840c5cdc11faa430d851420"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,144 +171,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8e4ae0c77a2f622f7eb2942733e03221" id="r_ga8e4ae0c77a2f622f7eb2942733e03221"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga8e4ae0c77a2f622f7eb2942733e03221">SDL::TagToString</a> (Uint32 tag, char *string, size_t size)</td></tr>
 <tr class="memdesc:ga8e4ae0c77a2f622f7eb2942733e03221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from a 32-bit tag to a 4 character string.  <br /></td></tr>
 <tr class="separator:ga8e4ae0c77a2f622f7eb2942733e03221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3d787afe3b1c4870f27f9d53333a7797" id="r_ga3d787afe3b1c4870f27f9d53333a7797"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3d787afe3b1c4870f27f9d53333a7797">SDL::CreateSurfaceTextEngine</a> ()</td></tr>
-<tr class="memdesc:ga3d787afe3b1c4870f27f9d53333a7797"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surfaces.  <br /></td></tr>
-<tr class="separator:ga3d787afe3b1c4870f27f9d53333a7797"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad858a328962f07805863c4d0b5089369" id="r_gad858a328962f07805863c4d0b5089369"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad858a328962f07805863c4d0b5089369">SDL::DrawSurfaceText</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int x, int y, <a class="el" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2">SurfaceRef</a> surface)</td></tr>
-<tr class="memdesc:gad858a328962f07805863c4d0b5089369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw text to an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surface.  <br /></td></tr>
-<tr class="separator:gad858a328962f07805863c4d0b5089369"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad68d2453b2aaa6cfc128ab2b9784a520" id="r_gad68d2453b2aaa6cfc128ab2b9784a520"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad68d2453b2aaa6cfc128ab2b9784a520">SDL::DestroySurfaceTextEngine</a> (<a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *engine)</td></tr>
-<tr class="memdesc:gad68d2453b2aaa6cfc128ab2b9784a520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text engine created for drawing text on <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surfaces.  <br /></td></tr>
-<tr class="separator:gad68d2453b2aaa6cfc128ab2b9784a520"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae1535326615b0ed13d3ab5f104af88d4" id="r_gae1535326615b0ed13d3ab5f104af88d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gae1535326615b0ed13d3ab5f104af88d4">SDL::CreateRendererTextEngine</a> (<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
-<tr class="memdesc:gae1535326615b0ed13d3ab5f104af88d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> renderer.  <br /></td></tr>
-<tr class="separator:gae1535326615b0ed13d3ab5f104af88d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9cb96cb6150f8313edcc62799b5addcb" id="r_ga9cb96cb6150f8313edcc62799b5addcb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga9cb96cb6150f8313edcc62799b5addcb">SDL::CreateRendererTextEngineWithProperties</a> (<a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props)</td></tr>
-<tr class="memdesc:ga9cb96cb6150f8313edcc62799b5addcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> renderer, with the specified properties.  <br /></td></tr>
-<tr class="separator:ga9cb96cb6150f8313edcc62799b5addcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad1a57f4997961c4eb32f3240716e2fa5" id="r_gad1a57f4997961c4eb32f3240716e2fa5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad1a57f4997961c4eb32f3240716e2fa5">SDL::DrawRendererText</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, float x, float y)</td></tr>
-<tr class="memdesc:gad1a57f4997961c4eb32f3240716e2fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw text to an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> renderer.  <br /></td></tr>
-<tr class="separator:gad1a57f4997961c4eb32f3240716e2fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga45229a06d0d8fbaedbef173fa730bbc1" id="r_ga45229a06d0d8fbaedbef173fa730bbc1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga45229a06d0d8fbaedbef173fa730bbc1">SDL::DestroyRendererTextEngine</a> (<a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *engine)</td></tr>
-<tr class="memdesc:ga45229a06d0d8fbaedbef173fa730bbc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text engine created for drawing text on an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> renderer.  <br /></td></tr>
-<tr class="separator:ga45229a06d0d8fbaedbef173fa730bbc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga72cb4769c3745d37e43a1888af90740e" id="r_ga72cb4769c3745d37e43a1888af90740e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga72cb4769c3745d37e43a1888af90740e">SDL::CreateGPUTextEngine</a> (SDL_GPUDevice *device)</td></tr>
-<tr class="memdesc:ga72cb4769c3745d37e43a1888af90740e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> GPU API.  <br /></td></tr>
-<tr class="separator:ga72cb4769c3745d37e43a1888af90740e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6ed0e1544a54c081af2020d2581254ff" id="r_ga6ed0e1544a54c081af2020d2581254ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga6ed0e1544a54c081af2020d2581254ff">SDL::CreateGPUTextEngineWithProperties</a> (<a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props)</td></tr>
-<tr class="memdesc:ga6ed0e1544a54c081af2020d2581254ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> GPU API, with the specified properties.  <br /></td></tr>
-<tr class="separator:ga6ed0e1544a54c081af2020d2581254ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga59d942fcf991f6f5d401507df403c77d" id="r_ga59d942fcf991f6f5d401507df403c77d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1">GPUAtlasDrawSequence</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga59d942fcf991f6f5d401507df403c77d">SDL::GetGPUTextDrawData</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga59d942fcf991f6f5d401507df403c77d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the geometry data needed for drawing the text.  <br /></td></tr>
-<tr class="separator:ga59d942fcf991f6f5d401507df403c77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3a369b1f34305aa31ea83688ddfa17b4" id="r_ga3a369b1f34305aa31ea83688ddfa17b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga3a369b1f34305aa31ea83688ddfa17b4">SDL::DestroyGPUTextEngine</a> (<a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *engine)</td></tr>
-<tr class="memdesc:ga3a369b1f34305aa31ea83688ddfa17b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text engine created for drawing text with the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> GPU API.  <br /></td></tr>
-<tr class="separator:ga3a369b1f34305aa31ea83688ddfa17b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga394ec0ec43ee1d2545fed5bc8eaf0abd" id="r_ga394ec0ec43ee1d2545fed5bc8eaf0abd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga394ec0ec43ee1d2545fed5bc8eaf0abd">SDL::SetGPUTextEngineWinding</a> (<a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *engine, <a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> winding)</td></tr>
-<tr class="memdesc:ga394ec0ec43ee1d2545fed5bc8eaf0abd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the winding order of the vertices returned by TTF_GetGPUTextDrawData for a particular GPU text engine.  <br /></td></tr>
-<tr class="separator:ga394ec0ec43ee1d2545fed5bc8eaf0abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8b6e048ca257c586498b6fa8691615b8" id="r_ga8b6e048ca257c586498b6fa8691615b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga8b6e048ca257c586498b6fa8691615b8">SDL::GetGPUTextEngineWinding</a> (const <a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *engine)</td></tr>
-<tr class="memdesc:ga8b6e048ca257c586498b6fa8691615b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the winding order of the vertices returned by TTF_GetGPUTextDrawData for a particular GPU text engine.  <br /></td></tr>
-<tr class="separator:ga8b6e048ca257c586498b6fa8691615b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga40950c3dd0d80c598f8130da510645af" id="r_ga40950c3dd0d80c598f8130da510645af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga40950c3dd0d80c598f8130da510645af">SDL::CreateText</a> (<a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *engine, <a class="el" href="group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960">FontRef</a> font, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> text, size_t length)</td></tr>
-<tr class="memdesc:ga40950c3dd0d80c598f8130da510645af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text object from UTF-8 text and a text engine.  <br /></td></tr>
-<tr class="separator:ga40950c3dd0d80c598f8130da510645af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1f190dc7284f4895291dc10e36bbbb52" id="r_ga1f190dc7284f4895291dc10e36bbbb52"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga1f190dc7284f4895291dc10e36bbbb52">SDL::GetTextProperties</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga1f190dc7284f4895291dc10e36bbbb52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a text object.  <br /></td></tr>
-<tr class="separator:ga1f190dc7284f4895291dc10e36bbbb52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga15fd88feb83d7da34fb198401ccaecb7" id="r_ga15fd88feb83d7da34fb198401ccaecb7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga15fd88feb83d7da34fb198401ccaecb7">SDL::SetTextEngine</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, <a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *engine)</td></tr>
-<tr class="memdesc:ga15fd88feb83d7da34fb198401ccaecb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the text engine used by a text object.  <br /></td></tr>
-<tr class="separator:ga15fd88feb83d7da34fb198401ccaecb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga42d2bd3f3e4ce900b0a9fcb8303865bf" id="r_ga42d2bd3f3e4ce900b0a9fcb8303865bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga42d2bd3f3e4ce900b0a9fcb8303865bf">SDL::GetTextEngine</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga42d2bd3f3e4ce900b0a9fcb8303865bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the text engine used by a text object.  <br /></td></tr>
-<tr class="separator:ga42d2bd3f3e4ce900b0a9fcb8303865bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae8644ddf0f07bced29f4f92473273cea" id="r_gae8644ddf0f07bced29f4f92473273cea"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gae8644ddf0f07bced29f4f92473273cea">SDL::SetTextFont</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, <a class="el" href="group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960">FontRef</a> font)</td></tr>
-<tr class="memdesc:gae8644ddf0f07bced29f4f92473273cea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the font used by a text object.  <br /></td></tr>
-<tr class="separator:gae8644ddf0f07bced29f4f92473273cea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga88fcb3e9d390818e15cb9ade2c1fb2cb" id="r_ga88fcb3e9d390818e15cb9ade2c1fb2cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960">FontRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga88fcb3e9d390818e15cb9ade2c1fb2cb">SDL::GetTextFont</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga88fcb3e9d390818e15cb9ade2c1fb2cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the font used by a text object.  <br /></td></tr>
-<tr class="separator:ga88fcb3e9d390818e15cb9ade2c1fb2cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga46cbb427148d0a901fcca9fb32b55883" id="r_ga46cbb427148d0a901fcca9fb32b55883"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga46cbb427148d0a901fcca9fb32b55883">SDL::SetTextDirection</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, <a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a> direction)</td></tr>
-<tr class="memdesc:ga46cbb427148d0a901fcca9fb32b55883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the direction to be used for text shaping a text object.  <br /></td></tr>
-<tr class="separator:ga46cbb427148d0a901fcca9fb32b55883"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1faf5ebed6c4d322037b77620c936923" id="r_ga1faf5ebed6c4d322037b77620c936923"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga1faf5ebed6c4d322037b77620c936923">SDL::GetTextDirection</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga1faf5ebed6c4d322037b77620c936923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the direction to be used for text shaping a text object.  <br /></td></tr>
-<tr class="separator:ga1faf5ebed6c4d322037b77620c936923"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab8374611729929913c7618dbe720bad2" id="r_gab8374611729929913c7618dbe720bad2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gab8374611729929913c7618dbe720bad2">SDL::SetTextScript</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, Uint32 script)</td></tr>
-<tr class="memdesc:gab8374611729929913c7618dbe720bad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the script to be used for text shaping a text object.  <br /></td></tr>
-<tr class="separator:gab8374611729929913c7618dbe720bad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6085116854cca88620cc7a4365d1c59d" id="r_ga6085116854cca88620cc7a4365d1c59d"><td class="memItemLeft" align="right" valign="top">Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga6085116854cca88620cc7a4365d1c59d">SDL::GetTextScript</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga6085116854cca88620cc7a4365d1c59d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the script used for text shaping a text object.  <br /></td></tr>
-<tr class="separator:ga6085116854cca88620cc7a4365d1c59d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2c1560dd57022054aaf302242e8742f7" id="r_ga2c1560dd57022054aaf302242e8742f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga2c1560dd57022054aaf302242e8742f7">SDL::SetTextColor</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, Uint8 r, Uint8 g, Uint8 b, Uint8 a)</td></tr>
-<tr class="memdesc:ga2c1560dd57022054aaf302242e8742f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the color of a text object.  <br /></td></tr>
-<tr class="separator:ga2c1560dd57022054aaf302242e8742f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacf8d632365c233749289e0e91d07dade" id="r_gacf8d632365c233749289e0e91d07dade"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gacf8d632365c233749289e0e91d07dade">SDL::SetTextColorFloat</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, float r, float g, float b, float a)</td></tr>
-<tr class="memdesc:gacf8d632365c233749289e0e91d07dade"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the color of a text object.  <br /></td></tr>
-<tr class="separator:gacf8d632365c233749289e0e91d07dade"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabe874b8c92642e828774d2c85da9064e" id="r_gabe874b8c92642e828774d2c85da9064e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gabe874b8c92642e828774d2c85da9064e">SDL::GetTextColor</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, Uint8 *r, Uint8 *g, Uint8 *b, Uint8 *a)</td></tr>
-<tr class="memdesc:gabe874b8c92642e828774d2c85da9064e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the color of a text object.  <br /></td></tr>
-<tr class="separator:gabe874b8c92642e828774d2c85da9064e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4bfd933267636cf9824c17962f965ed4" id="r_ga4bfd933267636cf9824c17962f965ed4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga4bfd933267636cf9824c17962f965ed4">SDL::GetTextColorFloat</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, float *r, float *g, float *b, float *a)</td></tr>
-<tr class="memdesc:ga4bfd933267636cf9824c17962f965ed4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the color of a text object.  <br /></td></tr>
-<tr class="separator:ga4bfd933267636cf9824c17962f965ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab96e162f2983e849761b9a5bb2b83884" id="r_gab96e162f2983e849761b9a5bb2b83884"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gab96e162f2983e849761b9a5bb2b83884">SDL::SetTextPosition</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int x, int y)</td></tr>
-<tr class="memdesc:gab96e162f2983e849761b9a5bb2b83884"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the position of a text object.  <br /></td></tr>
-<tr class="separator:gab96e162f2983e849761b9a5bb2b83884"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad6dba0f59b6484d2bb74d0ca6b1e7707" id="r_gad6dba0f59b6484d2bb74d0ca6b1e7707"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad6dba0f59b6484d2bb74d0ca6b1e7707">SDL::GetTextPosition</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int *x, int *y)</td></tr>
-<tr class="memdesc:gad6dba0f59b6484d2bb74d0ca6b1e7707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position of a text object.  <br /></td></tr>
-<tr class="separator:gad6dba0f59b6484d2bb74d0ca6b1e7707"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga38630a78988b83a731e6ab1e78b23f41" id="r_ga38630a78988b83a731e6ab1e78b23f41"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga38630a78988b83a731e6ab1e78b23f41">SDL::SetTextWrapWidth</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int wrap_width)</td></tr>
-<tr class="memdesc:ga38630a78988b83a731e6ab1e78b23f41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether wrapping is enabled on a text object.  <br /></td></tr>
-<tr class="separator:ga38630a78988b83a731e6ab1e78b23f41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad296b6080d3f788ee8cef8e7145fc1ac" id="r_gad296b6080d3f788ee8cef8e7145fc1ac"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad296b6080d3f788ee8cef8e7145fc1ac">SDL::GetTextWrapWidth</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int *wrap_width)</td></tr>
-<tr class="memdesc:gad296b6080d3f788ee8cef8e7145fc1ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether wrapping is enabled on a text object.  <br /></td></tr>
-<tr class="separator:gad296b6080d3f788ee8cef8e7145fc1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacfde5983d2f5c8aaf2d096200a593793" id="r_gacfde5983d2f5c8aaf2d096200a593793"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gacfde5983d2f5c8aaf2d096200a593793">SDL::SetTextWrapWhitespaceVisible</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, bool visible)</td></tr>
-<tr class="memdesc:gacfde5983d2f5c8aaf2d096200a593793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether whitespace should be visible when wrapping a text object.  <br /></td></tr>
-<tr class="separator:gacfde5983d2f5c8aaf2d096200a593793"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac3a6495bcdc192e819665f8426200798" id="r_gac3a6495bcdc192e819665f8426200798"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gac3a6495bcdc192e819665f8426200798">SDL::TextWrapWhitespaceVisible</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:gac3a6495bcdc192e819665f8426200798"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return whether whitespace is shown when wrapping a text object.  <br /></td></tr>
-<tr class="separator:gac3a6495bcdc192e819665f8426200798"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad8b948702cdf255f8cd8615418f2a95a" id="r_gad8b948702cdf255f8cd8615418f2a95a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad8b948702cdf255f8cd8615418f2a95a">SDL::SetTextString</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> string, size_t length)</td></tr>
-<tr class="memdesc:gad8b948702cdf255f8cd8615418f2a95a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the UTF-8 text used by a text object.  <br /></td></tr>
-<tr class="separator:gad8b948702cdf255f8cd8615418f2a95a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga78481e346834d003091b3769acd4f879" id="r_ga78481e346834d003091b3769acd4f879"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga78481e346834d003091b3769acd4f879">SDL::InsertTextString</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int offset, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> string, size_t length)</td></tr>
-<tr class="memdesc:ga78481e346834d003091b3769acd4f879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert UTF-8 text into a text object.  <br /></td></tr>
-<tr class="separator:ga78481e346834d003091b3769acd4f879"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaba2b4b678586f3b7ea094e19668a7124" id="r_gaba2b4b678586f3b7ea094e19668a7124"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaba2b4b678586f3b7ea094e19668a7124">SDL::AppendTextString</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, <a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a> string, size_t length)</td></tr>
-<tr class="memdesc:gaba2b4b678586f3b7ea094e19668a7124"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append UTF-8 text to a text object.  <br /></td></tr>
-<tr class="separator:gaba2b4b678586f3b7ea094e19668a7124"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga851fb9b16f0b509566caf0a30e40fda8" id="r_ga851fb9b16f0b509566caf0a30e40fda8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga851fb9b16f0b509566caf0a30e40fda8">SDL::DeleteTextString</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int offset, int length)</td></tr>
-<tr class="memdesc:ga851fb9b16f0b509566caf0a30e40fda8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete UTF-8 text from a text object.  <br /></td></tr>
-<tr class="separator:ga851fb9b16f0b509566caf0a30e40fda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga18b21c51035d19e2146dafa9f63570b8" id="r_ga18b21c51035d19e2146dafa9f63570b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga18b21c51035d19e2146dafa9f63570b8">SDL::GetTextSize</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int *w, int *h)</td></tr>
-<tr class="memdesc:ga18b21c51035d19e2146dafa9f63570b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a text object.  <br /></td></tr>
-<tr class="separator:ga18b21c51035d19e2146dafa9f63570b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaede8d6967c19431cfec3b724005f7c02" id="r_gaede8d6967c19431cfec3b724005f7c02"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaede8d6967c19431cfec3b724005f7c02">SDL::GetTextSubString</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int offset, <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *substring)</td></tr>
-<tr class="memdesc:gaede8d6967c19431cfec3b724005f7c02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the substring of a text object that surrounds a text offset.  <br /></td></tr>
-<tr class="separator:gaede8d6967c19431cfec3b724005f7c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5bf28699e4d2ff0ba8aad84b1ce4e31" id="r_gac5bf28699e4d2ff0ba8aad84b1ce4e31"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gac5bf28699e4d2ff0ba8aad84b1ce4e31">SDL::GetTextSubStringForLine</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int line, <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *substring)</td></tr>
-<tr class="memdesc:gac5bf28699e4d2ff0ba8aad84b1ce4e31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the substring of a text object that contains the given line.  <br /></td></tr>
-<tr class="separator:gac5bf28699e4d2ff0ba8aad84b1ce4e31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2aebcc9d474cc35867a6b6c8ea665560" id="r_ga2aebcc9d474cc35867a6b6c8ea665560"><td class="memItemLeft" align="right" valign="top">TTF_SubString **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga2aebcc9d474cc35867a6b6c8ea665560">SDL::GetTextSubStringsForRange</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int offset, int length, int *count)</td></tr>
-<tr class="memdesc:ga2aebcc9d474cc35867a6b6c8ea665560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the substrings of a text object that contain a range of text.  <br /></td></tr>
-<tr class="separator:ga2aebcc9d474cc35867a6b6c8ea665560"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab179fe5c93b761827f41aa0a38a7903c" id="r_gab179fe5c93b761827f41aa0a38a7903c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gab179fe5c93b761827f41aa0a38a7903c">SDL::GetTextSubStringForPoint</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, int x, int y, <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *substring)</td></tr>
-<tr class="memdesc:gab179fe5c93b761827f41aa0a38a7903c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the portion of a text string that is closest to a point.  <br /></td></tr>
-<tr class="separator:gab179fe5c93b761827f41aa0a38a7903c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaad69ac389eb7b86cd7d7d27c40edad90" id="r_gaad69ac389eb7b86cd7d7d27c40edad90"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaad69ac389eb7b86cd7d7d27c40edad90">SDL::GetPreviousTextSubString</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, const <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *substring, <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *previous)</td></tr>
-<tr class="memdesc:gaad69ac389eb7b86cd7d7d27c40edad90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the previous substring in a text object.  <br /></td></tr>
-<tr class="separator:gaad69ac389eb7b86cd7d7d27c40edad90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6d2ed0acccd8316ed4d196e101762b5f" id="r_ga6d2ed0acccd8316ed4d196e101762b5f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga6d2ed0acccd8316ed4d196e101762b5f">SDL::GetNextTextSubString</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text, const <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *substring, <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *next)</td></tr>
-<tr class="memdesc:ga6d2ed0acccd8316ed4d196e101762b5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the next substring in a text object.  <br /></td></tr>
-<tr class="separator:ga6d2ed0acccd8316ed4d196e101762b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga070b66cd7147495b1512ff57a07cf0e3" id="r_ga070b66cd7147495b1512ff57a07cf0e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga070b66cd7147495b1512ff57a07cf0e3">SDL::UpdateText</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga070b66cd7147495b1512ff57a07cf0e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the layout of a text object.  <br /></td></tr>
-<tr class="separator:ga070b66cd7147495b1512ff57a07cf0e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0d3ed35907f459110e0e47d636d83db2" id="r_ga0d3ed35907f459110e0e47d636d83db2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga0d3ed35907f459110e0e47d636d83db2">SDL::DestroyText</a> (<a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *text)</td></tr>
-<tr class="memdesc:ga0d3ed35907f459110e0e47d636d83db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy a text object created by a text engine.  <br /></td></tr>
-<tr class="separator:ga0d3ed35907f459110e0e47d636d83db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f2b7b5ad87122d3a58e1172395e4896" id="r_ga0f2b7b5ad87122d3a58e1172395e4896"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896">SDL::CreateSurfaceTextEngine</a> ()</td></tr>
+<tr class="memdesc:ga0f2b7b5ad87122d3a58e1172395e4896"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> surfaces.  <br /></td></tr>
+<tr class="separator:ga0f2b7b5ad87122d3a58e1172395e4896"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa8cc41ddfc03bdd1fcd884cf2e6c3384" id="r_gaa8cc41ddfc03bdd1fcd884cf2e6c3384"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384">SDL::CreateRendererTextEngine</a> (<a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a> renderer)</td></tr>
+<tr class="memdesc:gaa8cc41ddfc03bdd1fcd884cf2e6c3384"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> renderer.  <br /></td></tr>
+<tr class="separator:gaa8cc41ddfc03bdd1fcd884cf2e6c3384"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga32a642b867e97d23d6a09982ad4f1a38" id="r_ga32a642b867e97d23d6a09982ad4f1a38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga32a642b867e97d23d6a09982ad4f1a38">SDL::CreateRendererTextEngineWithProperties</a> (<a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props)</td></tr>
+<tr class="memdesc:ga32a642b867e97d23d6a09982ad4f1a38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text on an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> renderer, with the specified properties.  <br /></td></tr>
+<tr class="separator:ga32a642b867e97d23d6a09982ad4f1a38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33a84b9756cccdd0a25118e113e1da47" id="r_ga33a84b9756cccdd0a25118e113e1da47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47">SDL::CreateGPUTextEngine</a> (SDL_GPUDevice *device)</td></tr>
+<tr class="memdesc:ga33a84b9756cccdd0a25118e113e1da47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> GPU API.  <br /></td></tr>
+<tr class="separator:ga33a84b9756cccdd0a25118e113e1da47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga316f50bbd9447d72d5fdb95dfcb38747" id="r_ga316f50bbd9447d72d5fdb95dfcb38747"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga316f50bbd9447d72d5fdb95dfcb38747">SDL::CreateGPUTextEngineWithProperties</a> (<a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> props)</td></tr>
+<tr class="memdesc:ga316f50bbd9447d72d5fdb95dfcb38747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a text engine for drawing text with the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> GPU API, with the specified properties.  <br /></td></tr>
+<tr class="separator:ga316f50bbd9447d72d5fdb95dfcb38747"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga82f9e1056eeaa39c50c5cf5408dde405" id="r_ga82f9e1056eeaa39c50c5cf5408dde405"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#ga82f9e1056eeaa39c50c5cf5408dde405">SDL::QuitSubSystem</a> (<a class="el" href="structSDL_1_1TtfInitFlag.html">TtfInitFlag</a> _)</td></tr>
 <tr class="memdesc:ga82f9e1056eeaa39c50c5cf5408dde405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deinitialize SDL_ttf.  <br /></td></tr>
 <tr class="separator:ga82f9e1056eeaa39c50c5cf5408dde405"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,6 +198,25 @@ Variables</h2></td></tr>
 <tr class="memitem:gaa30f945c03b7abc08b5436d6369d1486" id="r_gaa30f945c03b7abc08b5436d6369d1486"><td class="memItemLeft" align="right" valign="top"><a id="gaa30f945c03b7abc08b5436d6369d1486" name="gaa30f945c03b7abc08b5436d6369d1486"></a>
 <a class="el" href="structSDL_1_1TtfInitFlag.html">SDL::TtfInitFlag</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::INIT_TTF</b></td></tr>
 <tr class="separator:gaa30f945c03b7abc08b5436d6369d1486"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad6749da7024fb8040410ba94bc642138" id="r_gad6749da7024fb8040410ba94bc642138"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SubStringFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategorySDLTTF.html#gad6749da7024fb8040410ba94bc642138">SDL::SUBSTRING_DIRECTION_MASK</a></td></tr>
+<tr class="memdesc:gad6749da7024fb8040410ba94bc642138"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mask for the flow direction for this substring.  <br /></td></tr>
+<tr class="separator:gad6749da7024fb8040410ba94bc642138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2283d5b47d435c74becaa40a60ede64c" id="r_ga2283d5b47d435c74becaa40a60ede64c"><td class="memItemLeft" align="right" valign="top"><a id="ga2283d5b47d435c74becaa40a60ede64c" name="ga2283d5b47d435c74becaa40a60ede64c"></a>
+constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SubStringFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SUBSTRING_TEXT_START</b> = TTF_SUBSTRING_TEXT_START</td></tr>
+<tr class="memdesc:ga2283d5b47d435c74becaa40a60ede64c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This substring contains the beginning of the text. <br /></td></tr>
+<tr class="separator:ga2283d5b47d435c74becaa40a60ede64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga33944c0fbffb9ddc3357b49f47b83ab5" id="r_ga33944c0fbffb9ddc3357b49f47b83ab5"><td class="memItemLeft" align="right" valign="top"><a id="ga33944c0fbffb9ddc3357b49f47b83ab5" name="ga33944c0fbffb9ddc3357b49f47b83ab5"></a>
+constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SubStringFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SUBSTRING_LINE_START</b> = TTF_SUBSTRING_LINE_START</td></tr>
+<tr class="memdesc:ga33944c0fbffb9ddc3357b49f47b83ab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">This substring contains the beginning of line <code>line_index</code> <br /></td></tr>
+<tr class="separator:ga33944c0fbffb9ddc3357b49f47b83ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0b09f85af0facf42430af57894626d2c" id="r_ga0b09f85af0facf42430af57894626d2c"><td class="memItemLeft" align="right" valign="top"><a id="ga0b09f85af0facf42430af57894626d2c" name="ga0b09f85af0facf42430af57894626d2c"></a>
+constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SubStringFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SUBSTRING_LINE_END</b> = TTF_SUBSTRING_LINE_END</td></tr>
+<tr class="memdesc:ga0b09f85af0facf42430af57894626d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This substring contains the end of line <code>line_index</code> <br /></td></tr>
+<tr class="separator:ga0b09f85af0facf42430af57894626d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad3e8dbf15fed5ed67be431c818d55d86" id="r_gad3e8dbf15fed5ed67be431c818d55d86"><td class="memItemLeft" align="right" valign="top"><a id="gad3e8dbf15fed5ed67be431c818d55d86" name="gad3e8dbf15fed5ed67be431c818d55d86"></a>
+constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SubStringFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::SUBSTRING_TEXT_END</b> = TTF_SUBSTRING_TEXT_END</td></tr>
+<tr class="memdesc:gad3e8dbf15fed5ed67be431c818d55d86"><td class="mdescLeft">&#160;</td><td class="mdescRight">This substring contains the end of the text. <br /></td></tr>
+<tr class="separator:gad3e8dbf15fed5ed67be431c818d55d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga576a1a7aeea3dbc65191a6bbef75aa05" id="r_ga576a1a7aeea3dbc65191a6bbef75aa05"><td class="memItemLeft" align="right" valign="top"><a id="ga576a1a7aeea3dbc65191a6bbef75aa05" name="ga576a1a7aeea3dbc65191a6bbef75aa05"></a>
 constexpr <a class="el" href="group__CategorySDLTTF.html#ga45c17da1112591a8709c37afb95e7dba">HintingFlags</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::HINTING_INVALID</b> = TTF_HINTING_INVALID</td></tr>
 <tr class="separator:ga576a1a7aeea3dbc65191a6bbef75aa05"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -466,7 +377,7 @@ TTF_GetFontStyle </dd></dl>
       </table>
 </div><div class="memdoc">
 <dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetGPUTextDrawData </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#add6e82874d307b670b766858f935a37d" title="Get the geometry data needed for drawing the text.">TextBase::GetGPUDrawData()</a> </dd></dl>
 
 </div>
 </div>
@@ -546,17 +457,19 @@ TTF_GetFontHinting </dd></dl>
       </table>
 </div><div class="memdoc">
 <dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetNextTextSubString </dd>
+<dl class="section see"><dt>See also</dt><dd>GetNextSubString() </dd>
 <dd>
-TTF_GetPreviousTextSubString </dd>
+GetPreviousSubString() </dd>
 <dd>
-TTF_GetTextSubString </dd>
+GetSubString() </dd>
 <dd>
-TTF_GetTextSubStringForLine </dd>
+GetSubStrings() </dd>
 <dd>
-TTF_GetTextSubStringForPoint </dd>
+GetSubStringForLine() </dd>
 <dd>
-TTF_GetTextSubStringsForRange </dd></dl>
+GetSubStringForPoint() </dd>
+<dd>
+GetSubStringsForRange() </dd></dl>
 
 </div>
 </div>
@@ -576,23 +489,21 @@ TTF_GetTextSubStringsForRange </dd></dl>
 
 </div>
 </div>
-<a id="gafd1ac0ab0f6441490b484d528af01bc9" name="gafd1ac0ab0f6441490b484d528af01bc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafd1ac0ab0f6441490b484d528af01bc9">&#9670;&#160;</a></span>Text</h2>
+<a id="gadbf3670898935dd5845748b7b523e2aa" name="gadbf3670898935dd5845748b7b523e2aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadbf3670898935dd5845748b7b523e2aa">&#9670;&#160;</a></span>Text</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">SDL::Text</a> = typedef TTF_Text</td>
+          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa">SDL::Text</a> = typedef <a class="el" href="structSDL_1_1TextBase.html">TextBase</a>&lt;<a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;TTF_Text&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateText </dd>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> </dd>
 <dd>
-TTF_GetTextProperties </dd>
-<dd>
-TTF_DestroyText </dd></dl>
+<a class="el" href="group__CategorySDLTTF.html#ga2ecae3d82f2ea8b3797c664a8cb2e8c1" title="Handle to a non owned text.">TextRef</a> </dd></dl>
 
 </div>
 </div>
@@ -611,31 +522,63 @@ TTF_DestroyText </dd></dl>
 
 </div>
 </div>
-<a id="gaf7bcb1a357adc5b175717e53257bea6e" name="gaf7bcb1a357adc5b175717e53257bea6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf7bcb1a357adc5b175717e53257bea6e">&#9670;&#160;</a></span>TextEngine</h2>
+<a id="ga3ef67dbf9a663bf8d9b8140c676e0075" name="ga3ef67dbf9a663bf8d9b8140c676e0075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3ef67dbf9a663bf8d9b8140c676e0075">&#9670;&#160;</a></span>TextEngine</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">SDL::TextEngine</a> = typedef TTF_TextEngine</td>
+          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">SDL::TextEngine</a> = typedef <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt;TTF_TextEngine, <a class="el" href="structSDL_1_1ObjectDeleter.html">ObjectDeleter</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a>&gt; &gt;&gt; &gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>This is a public interface that can be used by applications and libraries to perform customize rendering with text objects. See &lt;SDL3_ttf/SDL_textengine.h&gt; for details.</p>
-<p>There are three text engines provided with the library:</p>
-<ul>
-<li>Drawing to an SDL_Surface, created with TTF_CreateSurfaceTextEngine()</li>
-<li>Drawing with an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 2D renderer, created with TTF_CreateRendererTextEngine()</li>
-<li>Drawing with the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> GPU API, created with TTF_CreateGPUTextEngine()</li>
-</ul>
-<dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0. </dd></dl>
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a> </dd>
+<dd>
+<a class="el" href="group__CategorySDLTTF.html#ga353ebcc938c7df420c331dbad1a05fbd" title="Handle to a non owned textEngine.">TextEngineRef</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga353ebcc938c7df420c331dbad1a05fbd" name="ga353ebcc938c7df420c331dbad1a05fbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga353ebcc938c7df420c331dbad1a05fbd">&#9670;&#160;</a></span>TextEngineRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#ga353ebcc938c7df420c331dbad1a05fbd">SDL::TextEngineRef</a> = typedef <a class="el" href="structSDL_1_1TextEngineBase.html">TextEngineBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;TTF_TextEngine, <a class="el" href="classSDL_1_1TextEngineWrapper.html">TextEngineWrapper</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a> </dd>
+<dd>
+<a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075" title="Handle to an owned textEngine.">TextEngine</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga2ecae3d82f2ea8b3797c664a8cb2e8c1" name="ga2ecae3d82f2ea8b3797c664a8cb2e8c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2ecae3d82f2ea8b3797c664a8cb2e8c1">&#9670;&#160;</a></span>TextRef</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="group__CategorySDLTTF.html#ga2ecae3d82f2ea8b3797c664a8cb2e8c1">SDL::TextRef</a> = typedef <a class="el" href="structSDL_1_1TextBase.html">TextBase</a>&lt;<a class="el" href="classSDL_1_1ObjectRef.html">ObjectRef</a>&lt;TTF_Text&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section user"><dt>Category:</dt><dd><a class="el" href="resource.html">Resource</a></dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> </dd>
+<dd>
+<a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa" title="Handle to an owned text.">Text</a> </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="gaba2b4b678586f3b7ea094e19668a7124" name="gaba2b4b678586f3b7ea094e19668a7124"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaba2b4b678586f3b7ea094e19668a7124">&#9670;&#160;</a></span>AppendTextString()</h2>
+<a id="ga33a84b9756cccdd0a25118e113e1da47" name="ga33a84b9756cccdd0a25118e113e1da47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga33a84b9756cccdd0a25118e113e1da47">&#9670;&#160;</a></span>CreateGPUTextEngine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -644,66 +587,7 @@ TTF_DestroyText </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool SDL::AppendTextString </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>string</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">string</td><td>the UTF-8 text to insert. </td></tr>
-    <tr><td class="paramname">length</td><td>the length of the text, in bytes, or 0 for null terminated text. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_DeleteTextString </dd>
-<dd>
-TTF_InsertTextString </dd>
-<dd>
-TTF_SetTextString </dd></dl>
-
-</div>
-</div>
-<a id="ga72cb4769c3745d37e43a1888af90740e" name="ga72cb4769c3745d37e43a1888af90740e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga72cb4769c3745d37e43a1888af90740e">&#9670;&#160;</a></span>CreateGPUTextEngine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> * SDL::CreateGPUTextEngine </td>
+          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a> SDL::CreateGPUTextEngine </td>
           <td>(</td>
           <td class="paramtype">SDL_GPUDevice *&#160;</td>
           <td class="paramname"><em>device</em></td><td>)</td>
@@ -722,19 +606,21 @@ TTF_SetTextString </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or nullptr on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the device.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateGPUTextEngineWithProperties </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga316f50bbd9447d72d5fdb95dfcb38747" title="Create a text engine for drawing text with the SDL GPU API, with the specified properties.">CreateGPUTextEngineWithProperties()</a> </dd>
 <dd>
-TTF_DestroyGPUTextEngine </dd>
+<a class="el" href="structSDL_1_1TextBase.html#add6e82874d307b670b766858f935a37d" title="Get the geometry data needed for drawing the text.">TextBase::GetGPUDrawData()</a> </dd>
 <dd>
-TTF_GetGPUTextDrawData </dd></dl>
+<a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa" title="Handle to an owned text.">Text</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga6ed0e1544a54c081af2020d2581254ff" name="ga6ed0e1544a54c081af2020d2581254ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6ed0e1544a54c081af2020d2581254ff">&#9670;&#160;</a></span>CreateGPUTextEngineWithProperties()</h2>
+<a id="ga316f50bbd9447d72d5fdb95dfcb38747" name="ga316f50bbd9447d72d5fdb95dfcb38747"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga316f50bbd9447d72d5fdb95dfcb38747">&#9670;&#160;</a></span>CreateGPUTextEngineWithProperties()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -743,7 +629,7 @@ TTF_GetGPUTextDrawData </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> * SDL::CreateGPUTextEngineWithProperties </td>
+          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a> SDL::CreateGPUTextEngineWithProperties </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td>
           <td class="paramname"><em>props</em></td><td>)</td>
@@ -767,19 +653,21 @@ TTF_GetGPUTextDrawData </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or nullptr on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the device.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateGPUTextEngine </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine()</a> </dd>
 <dd>
-TTF_DestroyGPUTextEngine </dd>
+<a class="el" href="structSDL_1_1TextBase.html#add6e82874d307b670b766858f935a37d" title="Get the geometry data needed for drawing the text.">TextBase::GetGPUDrawData()</a> </dd>
 <dd>
-TTF_GetGPUTextDrawData </dd></dl>
+<a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa" title="Handle to an owned text.">Text</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> </dd></dl>
 
 </div>
 </div>
-<a id="gae1535326615b0ed13d3ab5f104af88d4" name="gae1535326615b0ed13d3ab5f104af88d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae1535326615b0ed13d3ab5f104af88d4">&#9670;&#160;</a></span>CreateRendererTextEngine()</h2>
+<a id="gaa8cc41ddfc03bdd1fcd884cf2e6c3384" name="gaa8cc41ddfc03bdd1fcd884cf2e6c3384"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa8cc41ddfc03bdd1fcd884cf2e6c3384">&#9670;&#160;</a></span>CreateRendererTextEngine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -788,7 +676,7 @@ TTF_GetGPUTextDrawData </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> * SDL::CreateRendererTextEngine </td>
+          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a> SDL::CreateRendererTextEngine </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__CategoryRender.html#ga3c15747c0c3091d37a2f14511aba1c7d">RendererRef</a>&#160;</td>
           <td class="paramname"><em>renderer</em></td><td>)</td>
@@ -807,19 +695,21 @@ TTF_GetGPUTextDrawData </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or nullptr on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the renderer.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_DestroyRendererTextEngine </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga32a642b867e97d23d6a09982ad4f1a38" title="Create a text engine for drawing text on an SDL renderer, with the specified properties.">CreateRendererTextEngineWithProperties()</a> </dd>
 <dd>
-TTF_DrawRendererText </dd>
+<a class="el" href="structSDL_1_1TextBase.html#ad9a3c5a14cb2c54e55ac923a41c58837" title="Draw text to an SDL renderer.">TextBase::DrawRenderer()</a> </dd>
 <dd>
-TTF_CreateRendererTextEngineWithProperties </dd></dl>
+<a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa" title="Handle to an owned text.">Text</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga9cb96cb6150f8313edcc62799b5addcb" name="ga9cb96cb6150f8313edcc62799b5addcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9cb96cb6150f8313edcc62799b5addcb">&#9670;&#160;</a></span>CreateRendererTextEngineWithProperties()</h2>
+<a id="ga32a642b867e97d23d6a09982ad4f1a38" name="ga32a642b867e97d23d6a09982ad4f1a38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga32a642b867e97d23d6a09982ad4f1a38">&#9670;&#160;</a></span>CreateRendererTextEngineWithProperties()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -828,7 +718,7 @@ TTF_CreateRendererTextEngineWithProperties </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> * SDL::CreateRendererTextEngineWithProperties </td>
+          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a> SDL::CreateRendererTextEngineWithProperties </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td>
           <td class="paramname"><em>props</em></td><td>)</td>
@@ -852,19 +742,21 @@ TTF_CreateRendererTextEngineWithProperties </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a TextEngine object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the renderer.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateRendererTextEngine </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine()</a> </dd>
 <dd>
-TTF_DestroyRendererTextEngine </dd>
+<a class="el" href="structSDL_1_1TextBase.html#ad9a3c5a14cb2c54e55ac923a41c58837" title="Draw text to an SDL renderer.">TextBase::DrawRenderer()</a> </dd>
 <dd>
-TTF_DrawRendererText </dd></dl>
+<a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa" title="Handle to an owned text.">Text</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> </dd></dl>
 
 </div>
 </div>
-<a id="ga3d787afe3b1c4870f27f9d53333a7797" name="ga3d787afe3b1c4870f27f9d53333a7797"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3d787afe3b1c4870f27f9d53333a7797">&#9670;&#160;</a></span>CreateSurfaceTextEngine()</h2>
+<a id="ga0f2b7b5ad87122d3a58e1172395e4896" name="ga0f2b7b5ad87122d3a58e1172395e4896"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0f2b7b5ad87122d3a58e1172395e4896">&#9670;&#160;</a></span>CreateSurfaceTextEngine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -873,7 +765,7 @@ TTF_DrawRendererText </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> * SDL::CreateSurfaceTextEngine </td>
+          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga3ef67dbf9a663bf8d9b8140c676e0075">TextEngine</a> SDL::CreateSurfaceTextEngine </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -885,396 +777,14 @@ TTF_DrawRendererText </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a TTF_TextEngine object or nullptr on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_DestroySurfaceTextEngine </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a0dd2b594c714d397f7255e74919acbdb" title="Draw text to an SDL surface.">TextBase::DrawSurface()</a> </dd>
 <dd>
-TTF_DrawSurfaceText </dd></dl>
-
-</div>
-</div>
-<a id="ga40950c3dd0d80c598f8130da510645af" name="ga40950c3dd0d80c598f8130da510645af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga40950c3dd0d80c598f8130da510645af">&#9670;&#160;</a></span>CreateText()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> * SDL::CreateText </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td>
-          <td class="paramname"><em>engine</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960">FontRef</a>&#160;</td>
-          <td class="paramname"><em>font</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">engine</td><td>the text engine to use when creating the text object, may be NULL. </td></tr>
-    <tr><td class="paramname">font</td><td>the font to render with. </td></tr>
-    <tr><td class="paramname">text</td><td>the text to use, in UTF-8 encoding. </td></tr>
-    <tr><td class="paramname">length</td><td>the length of the text, in bytes, or 0 for null terminated text. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a TTF_Text object or NULL on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font and text engine.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_DestroyText </dd></dl>
-
-</div>
-</div>
-<a id="ga851fb9b16f0b509566caf0a30e40fda8" name="ga851fb9b16f0b509566caf0a30e40fda8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga851fb9b16f0b509566caf0a30e40fda8">&#9670;&#160;</a></span>DeleteTextString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::DeleteTextString </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">offset</td><td>the offset, in bytes, from the beginning of the string if &gt;= 0, the offset from the end of the string if &lt; 0. Note that this does not do UTF-8 validation, so you should only delete at UTF-8 sequence boundaries. </td></tr>
-    <tr><td class="paramname">length</td><td>the length of text to delete, in bytes, or -1 for the remainder of the string. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_AppendTextString </dd>
+<a class="el" href="group__CategorySDLTTF.html#gadbf3670898935dd5845748b7b523e2aa" title="Handle to an owned text.">Text</a> </dd>
 <dd>
-TTF_InsertTextString </dd>
-<dd>
-TTF_SetTextString </dd></dl>
-
-</div>
-</div>
-<a id="ga3a369b1f34305aa31ea83688ddfa17b4" name="ga3a369b1f34305aa31ea83688ddfa17b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3a369b1f34305aa31ea83688ddfa17b4">&#9670;&#160;</a></span>DestroyGPUTextEngine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::DestroyGPUTextEngine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td>
-          <td class="paramname"><em>engine</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>All text created by this engine should be destroyed before calling this function.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">engine</td><td>a TTF_TextEngine object created with TTF_CreateGPUTextEngine().</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateGPUTextEngine </dd></dl>
-
-</div>
-</div>
-<a id="ga45229a06d0d8fbaedbef173fa730bbc1" name="ga45229a06d0d8fbaedbef173fa730bbc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga45229a06d0d8fbaedbef173fa730bbc1">&#9670;&#160;</a></span>DestroyRendererTextEngine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::DestroyRendererTextEngine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td>
-          <td class="paramname"><em>engine</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>All text created by this engine should be destroyed before calling this function.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">engine</td><td>a TTF_TextEngine object created with TTF_CreateRendererTextEngine().</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateRendererTextEngine </dd></dl>
-
-</div>
-</div>
-<a id="gad68d2453b2aaa6cfc128ab2b9784a520" name="gad68d2453b2aaa6cfc128ab2b9784a520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad68d2453b2aaa6cfc128ab2b9784a520">&#9670;&#160;</a></span>DestroySurfaceTextEngine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::DestroySurfaceTextEngine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td>
-          <td class="paramname"><em>engine</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>All text created by this engine should be destroyed before calling this function.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">engine</td><td>a TTF_TextEngine object created with TTF_CreateSurfaceTextEngine().</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateSurfaceTextEngine </dd></dl>
-
-</div>
-</div>
-<a id="ga0d3ed35907f459110e0e47d636d83db2" name="ga0d3ed35907f459110e0e47d636d83db2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0d3ed35907f459110e0e47d636d83db2">&#9670;&#160;</a></span>DestroyText()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::DestroyText </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to destroy.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateText </dd></dl>
-
-</div>
-</div>
-<a id="gad1a57f4997961c4eb32f3240716e2fa5" name="gad1a57f4997961c4eb32f3240716e2fa5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad1a57f4997961c4eb32f3240716e2fa5">&#9670;&#160;</a></span>DrawRendererText()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::DrawRendererText </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p><code>text</code> must have been created using a TTF_TextEngine from TTF_CreateRendererTextEngine(), and will draw using the renderer passed to that function.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to draw. </td></tr>
-    <tr><td class="paramname">x</td><td>the x coordinate in pixels, positive from the left edge towards the right. </td></tr>
-    <tr><td class="paramname">y</td><td>the y coordinate in pixels, positive from the top edge towards the bottom. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateRendererTextEngine </dd>
-<dd>
-TTF_CreateText </dd></dl>
-
-</div>
-</div>
-<a id="gad858a328962f07805863c4d0b5089369" name="gad858a328962f07805863c4d0b5089369"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad858a328962f07805863c4d0b5089369">&#9670;&#160;</a></span>DrawSurfaceText()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::DrawSurfaceText </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySurface.html#ga2ea8e6016ec594c51738ef06f469d5d2">SurfaceRef</a>&#160;</td>
-          <td class="paramname"><em>surface</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p><code>text</code> must have been created using a TTF_TextEngine from TTF_CreateSurfaceTextEngine().</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to draw. </td></tr>
-    <tr><td class="paramname">x</td><td>the x coordinate in pixels, positive from the left edge towards the right. </td></tr>
-    <tr><td class="paramname">y</td><td>the y coordinate in pixels, positive from the top edge towards the bottom. </td></tr>
-    <tr><td class="paramname">surface</td><td>the surface to draw on. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateSurfaceTextEngine </dd>
-<dd>
-TTF_CreateText </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> </dd></dl>
 
 </div>
 </div>
@@ -1332,83 +842,6 @@ TTF_CreateText </dd></dl>
 
 </div>
 </div>
-<a id="ga59d942fcf991f6f5d401507df403c77d" name="ga59d942fcf991f6f5d401507df403c77d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga59d942fcf991f6f5d401507df403c77d">&#9670;&#160;</a></span>GetGPUTextDrawData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1">GPUAtlasDrawSequence</a> * SDL::GetGPUTextDrawData </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p><code>text</code> must have been created using a TTF_TextEngine from TTF_CreateGPUTextEngine().</p>
-<p>The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the SDL_GPU API. If you want to use a different coordinate system you will need to transform the vertices yourself.</p>
-<p>If the text looks blocky use linear filtering.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to draw. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a NULL terminated linked list of TTF_GPUAtlasDrawSequence objects or NULL if the passed text is empty or in case of failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateGPUTextEngine </dd>
-<dd>
-TTF_CreateText </dd></dl>
-
-</div>
-</div>
-<a id="ga8b6e048ca257c586498b6fa8691615b8" name="ga8b6e048ca257c586498b6fa8691615b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8b6e048ca257c586498b6fa8691615b8">&#9670;&#160;</a></span>GetGPUTextEngineWinding()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> SDL::GetGPUTextEngineWinding </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td>
-          <td class="paramname"><em>engine</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">engine</td><td>a TTF_TextEngine object created with TTF_CreateGPUTextEngine(). </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the winding order used by the GPU text engine or TTF_GPU_TEXTENGINE_WINDING_INVALID in case of error.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetGPUTextEngineWinding </dd></dl>
-
-</div>
-</div>
 <a id="ga53fae27b8ce171ef679ffcc3b27f9327" name="ga53fae27b8ce171ef679ffcc3b27f9327"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga53fae27b8ce171ef679ffcc3b27f9327">&#9670;&#160;</a></span>GetHarfBuzzVersion()</h2>
 
@@ -1462,817 +895,6 @@ TTF_CreateText </dd></dl>
 
 </div>
 </div>
-<a id="ga6d2ed0acccd8316ed4d196e101762b5f" name="ga6d2ed0acccd8316ed4d196e101762b5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6d2ed0acccd8316ed4d196e101762b5f">&#9670;&#160;</a></span>GetNextTextSubString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetNextTextSubString </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *&#160;</td>
-          <td class="paramname"><em>substring</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *&#160;</td>
-          <td class="paramname"><em>next</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If called at the end of the text, this will return a zero length substring with the TTF_SUBSTRING_TEXT_END flag set.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">substring</td><td>the TTF_SubString to query. </td></tr>
-    <tr><td class="paramname">next</td><td>a pointer filled in with the next substring. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="gaad69ac389eb7b86cd7d7d27c40edad90" name="gaad69ac389eb7b86cd7d7d27c40edad90"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaad69ac389eb7b86cd7d7d27c40edad90">&#9670;&#160;</a></span>GetPreviousTextSubString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetPreviousTextSubString </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *&#160;</td>
-          <td class="paramname"><em>substring</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *&#160;</td>
-          <td class="paramname"><em>previous</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If called at the start of the text, this will return a zero length substring with the TTF_SUBSTRING_TEXT_START flag set.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">substring</td><td>the TTF_SubString to query. </td></tr>
-    <tr><td class="paramname">previous</td><td>a pointer filled in with the previous substring. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="gabe874b8c92642e828774d2c85da9064e" name="gabe874b8c92642e828774d2c85da9064e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gabe874b8c92642e828774d2c85da9064e">&#9670;&#160;</a></span>GetTextColor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextColor </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8 *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8 *&#160;</td>
-          <td class="paramname"><em>g</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8 *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8 *&#160;</td>
-          <td class="paramname"><em>a</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">r</td><td>a pointer filled in with the red color value in the range of 0-255, may be NULL. </td></tr>
-    <tr><td class="paramname">g</td><td>a pointer filled in with the green color value in the range of 0-255, may be NULL. </td></tr>
-    <tr><td class="paramname">b</td><td>a pointer filled in with the blue color value in the range of 0-255, may be NULL. </td></tr>
-    <tr><td class="paramname">a</td><td>a pointer filled in with the alpha value in the range of 0-255, may be NULL. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextColorFloat </dd>
-<dd>
-TTF_SetTextColor </dd></dl>
-
-</div>
-</div>
-<a id="ga4bfd933267636cf9824c17962f965ed4" name="ga4bfd933267636cf9824c17962f965ed4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4bfd933267636cf9824c17962f965ed4">&#9670;&#160;</a></span>GetTextColorFloat()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextColorFloat </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>g</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float *&#160;</td>
-          <td class="paramname"><em>a</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">r</td><td>a pointer filled in with the red color value, normally in the range of 0-1, may be NULL. </td></tr>
-    <tr><td class="paramname">g</td><td>a pointer filled in with the green color value, normally in the range of 0-1, may be NULL. </td></tr>
-    <tr><td class="paramname">b</td><td>a pointer filled in with the blue color value, normally in the range of 0-1, may be NULL. </td></tr>
-    <tr><td class="paramname">a</td><td>a pointer filled in with the alpha value in the range of 0-1, may be NULL. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextColor </dd>
-<dd>
-TTF_SetTextColorFloat </dd></dl>
-
-</div>
-</div>
-<a id="ga1faf5ebed6c4d322037b77620c936923" name="ga1faf5ebed6c4d322037b77620c936923"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1faf5ebed6c4d322037b77620c936923">&#9670;&#160;</a></span>GetTextDirection()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a> SDL::GetTextDirection </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This defaults to the direction of the font used by the text object.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to query. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the direction to be used for text shaping.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="ga42d2bd3f3e4ce900b0a9fcb8303865bf" name="ga42d2bd3f3e4ce900b0a9fcb8303865bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga42d2bd3f3e4ce900b0a9fcb8303865bf">&#9670;&#160;</a></span>GetTextEngine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> * SDL::GetTextEngine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the TTF_TextEngine used by the text on success or NULL on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetTextEngine </dd></dl>
-
-</div>
-</div>
-<a id="ga88fcb3e9d390818e15cb9ade2c1fb2cb" name="ga88fcb3e9d390818e15cb9ade2c1fb2cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga88fcb3e9d390818e15cb9ade2c1fb2cb">&#9670;&#160;</a></span>GetTextFont()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960">FontRef</a> SDL::GetTextFont </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>the TTF_Font used by the text on success or NULL on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetTextFont </dd></dl>
-
-</div>
-</div>
-<a id="gad6dba0f59b6484d2bb74d0ca6b1e7707" name="gad6dba0f59b6484d2bb74d0ca6b1e7707"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad6dba0f59b6484d2bb74d0ca6b1e7707">&#9670;&#160;</a></span>GetTextPosition()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextPosition </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">x</td><td>a pointer filled in with the x offset of the upper left corner of this text in pixels, may be NULL. </td></tr>
-    <tr><td class="paramname">y</td><td>a pointer filled in with the y offset of the upper left corner of this text in pixels, may be NULL.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetTextPosition </dd></dl>
-
-</div>
-</div>
-<a id="ga1f190dc7284f4895291dc10e36bbbb52" name="ga1f190dc7284f4895291dc10e36bbbb52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1f190dc7284f4895291dc10e36bbbb52">&#9670;&#160;</a></span>GetTextProperties()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a> SDL::GetTextProperties </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="ga6085116854cca88620cc7a4365d1c59d" name="ga6085116854cca88620cc7a4365d1c59d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga6085116854cca88620cc7a4365d1c59d">&#9670;&#160;</a></span>GetTextScript()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Uint32 SDL::GetTextScript </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This defaults to the script of the font used by the text object.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to query. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>an <a href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 code</a> or 0 if a script hasn't been set on either the text object or the font.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_TagToString </dd></dl>
-
-</div>
-</div>
-<a id="ga18b21c51035d19e2146dafa9f63570b8" name="ga18b21c51035d19e2146dafa9f63570b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga18b21c51035d19e2146dafa9f63570b8">&#9670;&#160;</a></span>GetTextSize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextSize </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>w</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>h</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The size of the text may change when the font or font style and size change.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">w</td><td>a pointer filled in with the width of the text, in pixels, may be NULL. </td></tr>
-    <tr><td class="paramname">h</td><td>a pointer filled in with the height of the text, in pixels, may be NULL. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="gaede8d6967c19431cfec3b724005f7c02" name="gaede8d6967c19431cfec3b724005f7c02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaede8d6967c19431cfec3b724005f7c02">&#9670;&#160;</a></span>GetTextSubString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextSubString </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *&#160;</td>
-          <td class="paramname"><em>substring</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If <code>offset</code> is less than 0, this will return a zero length substring at the beginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If <code>offset</code> is greater than or equal to the length of the text string, this will return a zero length substring at the end of the text with the TTF_SUBSTRING_TEXT_END flag set.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">offset</td><td>a byte offset into the text string. </td></tr>
-    <tr><td class="paramname">substring</td><td>a pointer filled in with the substring containing the offset. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="gac5bf28699e4d2ff0ba8aad84b1ce4e31" name="gac5bf28699e4d2ff0ba8aad84b1ce4e31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac5bf28699e4d2ff0ba8aad84b1ce4e31">&#9670;&#160;</a></span>GetTextSubStringForLine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextSubStringForLine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>line</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *&#160;</td>
-          <td class="paramname"><em>substring</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If <code>line</code> is less than 0, this will return a zero length substring at the beginning of the text with the TTF_SUBSTRING_TEXT_START flag set. If <code>line</code> is greater than or equal to <code>text-&gt;num_lines</code> this will return a zero length substring at the end of the text with the TTF_SUBSTRING_TEXT_END flag set.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">line</td><td>a zero-based line index, in the range [0 .. text-&gt;num_lines-1]. </td></tr>
-    <tr><td class="paramname">substring</td><td>a pointer filled in with the substring containing the offset. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="gab179fe5c93b761827f41aa0a38a7903c" name="gab179fe5c93b761827f41aa0a38a7903c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab179fe5c93b761827f41aa0a38a7903c">&#9670;&#160;</a></span>GetTextSubStringForPoint()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextSubStringForPoint </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>y</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaaa299ce4a5588786e5e5e5df4af76c89">SubString</a> *&#160;</td>
-          <td class="paramname"><em>substring</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This will return the closest substring of text to the given point.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">x</td><td>the x coordinate relative to the left side of the text, may be outside the bounds of the text area. </td></tr>
-    <tr><td class="paramname">y</td><td>the y coordinate relative to the top side of the text, may be outside the bounds of the text area. </td></tr>
-    <tr><td class="paramname">substring</td><td>a pointer filled in with the closest substring of text to the given point. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="ga2aebcc9d474cc35867a6b6c8ea665560" name="ga2aebcc9d474cc35867a6b6c8ea665560"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2aebcc9d474cc35867a6b6c8ea665560">&#9670;&#160;</a></span>GetTextSubStringsForRange()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TTF_SubString ** SDL::GetTextSubStringsForRange </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>length</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>count</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">offset</td><td>a byte offset into the text string. </td></tr>
-    <tr><td class="paramname">length</td><td>the length of the range being queried, in bytes, or -1 for the remainder of the string. </td></tr>
-    <tr><td class="paramname">count</td><td>a pointer filled in with the number of substrings returned, may be NULL. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>a NULL terminated array of substring pointers or NULL on failure; call SDL_GetError() for more information. This is a single allocation that should be freed with SDL_free() when it is no longer needed.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="gad296b6080d3f788ee8cef8e7145fc1ac" name="gad296b6080d3f788ee8cef8e7145fc1ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad296b6080d3f788ee8cef8e7145fc1ac">&#9670;&#160;</a></span>GetTextWrapWidth()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::GetTextWrapWidth </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>wrap_width</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-    <tr><td class="paramname">wrap_width</td><td>a pointer filled in with the maximum width in pixels or 0 if the text is being wrapped on newline characters. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetTextWrapWidth </dd></dl>
-
-</div>
-</div>
 <a id="ga4fa4ab293e3f58f5b15c84daa338ffd3" name="ga4fa4ab293e3f58f5b15c84daa338ffd3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4fa4ab293e3f58f5b15c84daa338ffd3">&#9670;&#160;</a></span>InitSubSystem()</h2>
 
@@ -2306,73 +928,7 @@ TTF_SetTextColorFloat </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_Quit </dd></dl>
-
-</div>
-</div>
-<a id="ga78481e346834d003091b3769acd4f879" name="ga78481e346834d003091b3769acd4f879"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga78481e346834d003091b3769acd4f879">&#9670;&#160;</a></span>InsertTextString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::InsertTextString </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>offset</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>string</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">offset</td><td>the offset, in bytes, from the beginning of the string if &gt;= 0, the offset from the end of the string if &lt; 0. Note that this does not do UTF-8 validation, so you should only insert at UTF-8 sequence boundaries. </td></tr>
-    <tr><td class="paramname">string</td><td>the UTF-8 text to insert. </td></tr>
-    <tr><td class="paramname">length</td><td>the length of the text, in bytes, or 0 for null terminated text. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_AppendTextString </dd>
-<dd>
-TTF_DeleteTextString </dd>
-<dd>
-TTF_SetTextString </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga82f9e1056eeaa39c50c5cf5408dde405" title="Deinitialize SDL_ttf.">QuitSubSystem(TtfInitFlag)</a> </dd></dl>
 
 </div>
 </div>
@@ -2404,597 +960,6 @@ TTF_SetTextString </dd></dl>
 <p>Please note that this does not automatically close any fonts that are still open at the time of deinitialization, and it is possibly not safe to close them afterwards, as parts of the library will no longer be initialized to deal with it. A well-written program should call TTF_CloseFont() on any open fonts before calling this function!</p>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="ga394ec0ec43ee1d2545fed5bc8eaf0abd" name="ga394ec0ec43ee1d2545fed5bc8eaf0abd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga394ec0ec43ee1d2545fed5bc8eaf0abd">&#9670;&#160;</a></span>SetGPUTextEngineWinding()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SDL::SetGPUTextEngineWinding </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td>
-          <td class="paramname"><em>engine</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td>
-          <td class="paramname"><em>winding</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">engine</td><td>a TTF_TextEngine object created with TTF_CreateGPUTextEngine(). </td></tr>
-    <tr><td class="paramname">winding</td><td>the new winding order option.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetGPUTextEngineWinding </dd></dl>
-
-</div>
-</div>
-<a id="ga2c1560dd57022054aaf302242e8742f7" name="ga2c1560dd57022054aaf302242e8742f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2c1560dd57022054aaf302242e8742f7">&#9670;&#160;</a></span>SetTextColor()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextColor </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8&#160;</td>
-          <td class="paramname"><em>g</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint8&#160;</td>
-          <td class="paramname"><em>a</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The default text color is white (255, 255, 255, 255).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">r</td><td>the red color value in the range of 0-255. </td></tr>
-    <tr><td class="paramname">g</td><td>the green color value in the range of 0-255. </td></tr>
-    <tr><td class="paramname">b</td><td>the blue color value in the range of 0-255. </td></tr>
-    <tr><td class="paramname">a</td><td>the alpha value in the range of 0-255. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextColor </dd>
-<dd>
-TTF_SetTextColorFloat </dd></dl>
-
-</div>
-</div>
-<a id="gacf8d632365c233749289e0e91d07dade" name="gacf8d632365c233749289e0e91d07dade"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacf8d632365c233749289e0e91d07dade">&#9670;&#160;</a></span>SetTextColorFloat()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextColorFloat </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>g</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>a</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>The default text color is white (1.0f, 1.0f, 1.0f, 1.0f).</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">r</td><td>the red color value, normally in the range of 0-1. </td></tr>
-    <tr><td class="paramname">g</td><td>the green color value, normally in the range of 0-1. </td></tr>
-    <tr><td class="paramname">b</td><td>the blue color value, normally in the range of 0-1. </td></tr>
-    <tr><td class="paramname">a</td><td>the alpha value in the range of 0-1. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextColorFloat </dd>
-<dd>
-TTF_SetTextColor </dd></dl>
-
-</div>
-</div>
-<a id="ga46cbb427148d0a901fcca9fb32b55883" name="ga46cbb427148d0a901fcca9fb32b55883"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga46cbb427148d0a901fcca9fb32b55883">&#9670;&#160;</a></span>SetTextDirection()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextDirection </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaf7bd9c3d8e546a09ac49f2f82eb16f3a">Direction</a>&#160;</td>
-          <td class="paramname"><em>direction</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function only supports left-to-right text shaping if SDL_ttf was not built with HarfBuzz support.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to modify. </td></tr>
-    <tr><td class="paramname">direction</td><td>the new direction for text to flow. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="ga15fd88feb83d7da34fb198401ccaecb7" name="ga15fd88feb83d7da34fb198401ccaecb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga15fd88feb83d7da34fb198401ccaecb7">&#9670;&#160;</a></span>SetTextEngine()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextEngine </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gaf7bcb1a357adc5b175717e53257bea6e">TextEngine</a> *&#160;</td>
-          <td class="paramname"><em>engine</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">engine</td><td>the text engine to use for drawing. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextEngine </dd></dl>
-
-</div>
-</div>
-<a id="gae8644ddf0f07bced29f4f92473273cea" name="gae8644ddf0f07bced29f4f92473273cea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae8644ddf0f07bced29f4f92473273cea">&#9670;&#160;</a></span>SetTextFont()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextFont </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960">FontRef</a>&#160;</td>
-          <td class="paramname"><em>font</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>When a text object has a font, any changes to the font will automatically regenerate the text. If you set the font to NULL, the text will continue to render but changes to the font will no longer affect the text.</p>
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">font</td><td>the font to use, may be NULL. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>false if the text pointer is null; otherwise, true. call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextFont </dd></dl>
-
-</div>
-</div>
-<a id="gab96e162f2983e849761b9a5bb2b83884" name="gab96e162f2983e849761b9a5bb2b83884"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab96e162f2983e849761b9a5bb2b83884">&#9670;&#160;</a></span>SetTextPosition()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextPosition </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>x</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>y</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This can be used to position multiple text objects within a single wrapping text area.</p>
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">x</td><td>the x offset of the upper left corner of this text in pixels. </td></tr>
-    <tr><td class="paramname">y</td><td>the y offset of the upper left corner of this text in pixels.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextPosition </dd></dl>
-
-</div>
-</div>
-<a id="gab8374611729929913c7618dbe720bad2" name="gab8374611729929913c7618dbe720bad2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab8374611729929913c7618dbe720bad2">&#9670;&#160;</a></span>SetTextScript()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextScript </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Uint32&#160;</td>
-          <td class="paramname"><em>script</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This returns false if SDL_ttf isn't built with HarfBuzz support.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the text to modify. </td></tr>
-    <tr><td class="paramname">script</td><td>an <a href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 * code</a>. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_StringToTag </dd></dl>
-
-</div>
-</div>
-<a id="gad8b948702cdf255f8cd8615418f2a95a" name="gad8b948702cdf255f8cd8615418f2a95a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad8b948702cdf255f8cd8615418f2a95a">&#9670;&#160;</a></span>SetTextString()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextString </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParamImpl.html">StringParam</a>&#160;</td>
-          <td class="paramname"><em>string</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">string</td><td>the UTF-8 text to use, may be NULL. </td></tr>
-    <tr><td class="paramname">length</td><td>the length of the text, in bytes, or 0 for null terminated text. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_AppendTextString </dd>
-<dd>
-TTF_DeleteTextString </dd>
-<dd>
-TTF_InsertTextString </dd></dl>
-
-</div>
-</div>
-<a id="gacfde5983d2f5c8aaf2d096200a593793" name="gacfde5983d2f5c8aaf2d096200a593793"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacfde5983d2f5c8aaf2d096200a593793">&#9670;&#160;</a></span>SetTextWrapWhitespaceVisible()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextWrapWhitespaceVisible </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>visible</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>If the whitespace is visible, it will take up space for purposes of alignment and wrapping. This is good for editing, but looks better when centered or aligned if whitespace around line wrapping is hidden. This defaults false.</p>
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">visible</td><td>true to show whitespace when wrapping text, false to hide it. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_TextWrapWhitespaceVisible </dd></dl>
-
-</div>
-</div>
-<a id="ga38630a78988b83a731e6ab1e78b23f41" name="ga38630a78988b83a731e6ab1e78b23f41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga38630a78988b83a731e6ab1e78b23f41">&#9670;&#160;</a></span>SetTextWrapWidth()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::SetTextWrapWidth </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>wrap_width</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This function may cause the internal text representation to be rebuilt.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to modify. </td></tr>
-    <tr><td class="paramname">wrap_width</td><td>the maximum width in pixels, 0 to wrap on newline characters. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextWrapWidth </dd></dl>
 
 </div>
 </div>
@@ -3087,42 +1052,6 @@ TTF_InsertTextString </dd></dl>
 
 </div>
 </div>
-<a id="gac3a6495bcdc192e819665f8426200798" name="gac3a6495bcdc192e819665f8426200798"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac3a6495bcdc192e819665f8426200798">&#9670;&#160;</a></span>TextWrapWhitespaceVisible()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::TextWrapWhitespaceVisible </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to query. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true if whitespace is shown when wrapping text, or false otherwise.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetTextWrapWhitespaceVisible </dd></dl>
-
-</div>
-</div>
 <a id="ga5154c3cde8d6a4944a18dfd88e145c01" name="ga5154c3cde8d6a4944a18dfd88e145c01"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga5154c3cde8d6a4944a18dfd88e145c01">&#9670;&#160;</a></span>TTF_Version()</h2>
 
@@ -3147,42 +1076,6 @@ TTF_InsertTextString </dd></dl>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>SDL_ttf version.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
-
-</div>
-</div>
-<a id="ga070b66cd7147495b1512ff57a07cf0e3" name="ga070b66cd7147495b1512ff57a07cf0e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga070b66cd7147495b1512ff57a07cf0e3">&#9670;&#160;</a></span>UpdateText()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SDL::UpdateText </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gafd1ac0ab0f6441490b484d528af01bc9">Text</a> *&#160;</td>
-          <td class="paramname"><em>text</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This is automatically done when the layout is requested or the text is rendered, but you can call this if you need more control over the timing of when the layout and text engine representation are updated.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">text</td><td>the TTF_Text to update. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
 </div>
@@ -3364,6 +1257,30 @@ TTF_Quit </dd></dl>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  TTF_HORIZONTAL_ALIGN_RIGHT</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gad6749da7024fb8040410ba94bc642138" name="gad6749da7024fb8040410ba94bc642138"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad6749da7024fb8040410ba94bc642138">&#9670;&#160;</a></span>SUBSTRING_DIRECTION_MASK</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategorySDLTTF.html#gaf0736b7f0840c5cdc11faa430d851420">SubStringFlags</a> SDL::SUBSTRING_DIRECTION_MASK</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  TTF_SUBSTRING_DIRECTION_MASK</div>
 </div><!-- fragment -->
 </div>
 </div>

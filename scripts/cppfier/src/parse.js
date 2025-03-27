@@ -105,7 +105,13 @@ function insertEntry(entries, entry, defaultName = "") {
     if (Array.isArray(currEntry)) {
       currEntry.push(entry);
     } else if (currEntry.kind != 'function') {
-      if (entry.doc || !currEntry.doc) entries[name] = entry;
+      if (entry.doc || !currEntry.doc) {
+        if (entry.kind === "def") {
+          currEntry.doc = entry.doc;
+        } else {
+          entries[name] = entry;
+        }
+      }
     } else if (entry.kind == 'function') {
       entries[name] = [currEntry, entry];
     }

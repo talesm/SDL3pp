@@ -386,7 +386,7 @@ function makeRenameEntry(entry, name, typeName) {
   if (entry === "placeholder") {
     newEntry = {};
   } else if (entry === "ctor") {
-    newEntry = { kind: "function", name: typeName, type: "", static: false };
+    newEntry = { kind: "function", name: typeName, type: "" };
   } else if (entry === "immutable") {
     newEntry = { kind: "function", immutable: true };
   } else if (typeof entry !== "object") {
@@ -417,8 +417,9 @@ function makeNaturalName(name, typeName) {
  * @param {string} typeName 
  */
 function prepareForTypeInsert(entry, name, typeName) {
-  typeName = normalizeTypeName(typeName);
   entry.name = name;
+  if (name === typeName) return;
+  typeName = normalizeTypeName(typeName);
   const parameters = entry.parameters;
   if (!parameters?.length) return;
   const parameter = parameters[0];

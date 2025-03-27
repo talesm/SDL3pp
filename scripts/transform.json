@@ -16,7 +16,11 @@
     "const SDL_Point *": "const SDL_Point &",
     "const SDL_FPoint *": "const SDL_FPoint &",
     "const SDL_Rect *": "const SDL_Rect &",
-    "const SDL_FRect *": "const SDL_FRect &"
+    "const SDL_FRect *": "const SDL_FRect &",
+    "TTF_TextEngine *": "TextEngineRef"
+  },
+  "returnTypeMap": {
+    "TTF_TextEngine *": "TextEngine"
   },
   "files": {
     "SDL_stdinc.h": {
@@ -958,23 +962,7 @@
                 "IOFromDynamicMem_CtorTag"
               ]
             },
-            "SDL_OpenIO": {
-              "type": "",
-              "name": "IOStreamBase",
-              "parameters": [
-                {
-                  "type": "IOStream *"
-                },
-                {
-                  "type": "const IOStreamInterface *",
-                  "name": "iface"
-                },
-                {
-                  "type": "void *",
-                  "name": "userdata"
-                }
-              ]
-            },
+            "SDL_OpenIO": "ctor",
             "SDL_GetIOProperties": {
               "name": "GetProperties",
               "immutable": true
@@ -3213,7 +3201,6 @@
               "name": "WindowBase",
               "type": "",
               "parameters": [
-                {},
                 {
                   "name": "parent",
                   "type": "WindowRef"
@@ -5501,6 +5488,11 @@
       }
     },
     "SDL_ttf.h": {
+      "ignoreEntries": [
+        "TTF_DestroySurfaceTextEngine",
+        "TTF_DestroyRendererTextEngine",
+        "TTF_DestroyGPUTextEngine"
+      ],
       "resources": {
         "TTF_Font": {
           "entries": {
@@ -5808,6 +5800,247 @@
             },
             "TTF_CloseFont": "function"
           }
+        },
+        "TTF_TextEngine": {
+          "pointerType": "TextEngineWrapper",
+          "freeFunction": "",
+          "paramType": "ref",
+          "returnType": "unique",
+          "entries": {
+            "TTF_SetGPUTextEngineWinding": {
+              "name": "SetGPUWinding"
+            },
+            "TTF_GetGPUTextEngineWinding": {
+              "immutable": true,
+              "name": "GetGPUWinding"
+            },
+            "Destroy": {
+              "kind": "function",
+              "type": "void",
+              "parameters": []
+            }
+          }
+        },
+        "TTF_Text": {
+          "entries": {
+            "TTF_DrawSurfaceText": {
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Point",
+                  "name": "p"
+                },
+                {
+                  "type": "SurfaceRef",
+                  "name": "surface"
+                }
+              ]
+            },
+            "TTF_DrawRendererText": {
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "FPoint",
+                  "name": "p"
+                }
+              ]
+            },
+            "TTF_GetGPUTextDrawData": "immutable",
+            "TTF_CreateText": {
+              "name": "TextBase",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "TextEngineRef",
+                  "name": "engine"
+                },
+                {
+                  "type": "FontRef",
+                  "name": "font"
+                },
+                {
+                  "type": "std::string_view",
+                  "name": "text"
+                }
+              ]
+            },
+            "TTF_GetTextProperties": "immutable",
+            "TTF_SetTextEngine": "function",
+            "TTF_GetTextEngine": {
+              "type": "TextEngineRef",
+              "immutable": true
+            },
+            "TTF_SetTextFont": "function",
+            "TTF_GetTextFont": "immutable",
+            "TTF_SetTextDirection": "function",
+            "TTF_GetTextDirection": "immutable",
+            "TTF_SetTextScript": "function",
+            "TTF_GetTextScript": "immutable",
+            "TTF_SetTextColor": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "Color",
+                  "name": "c"
+                }
+              ]
+            },
+            "TTF_SetTextColorFloat": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "FColor",
+                  "name": "c"
+                }
+              ]
+            },
+            "GetColor": [
+              {
+                "kind": "function",
+                "type": "std::optional<FColor>",
+                "immutable": true,
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "Color *",
+                    "name": "c"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "immutable": true,
+                "parameters": [
+                  {
+                    "type": "FColor *",
+                    "name": "c"
+                  }
+                ]
+              }
+            ],
+            "TTF_GetTextColor": "immutable",
+            "TTF_GetTextColorFloat": "immutable",
+            "TTF_SetTextPosition": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "Point",
+                  "name": "p"
+                }
+              ]
+            },
+            "GetPosition": {
+              "kind": "function",
+              "immutable": true,
+              "type": "std::optional<Point>",
+              "parameters": []
+            },
+            "TTF_GetTextPosition": "immutable",
+            "TTF_SetTextWrapWidth": "function",
+            "TTF_GetTextWrapWidth": {
+              "immutable": true,
+              "type": "std::optional<int>",
+              "parameters": []
+            },
+            "TTF_SetTextWrapWhitespaceVisible": "function",
+            "TTF_TextWrapWhitespaceVisible": {
+              "name": "IsWrapWhitespaceVisible",
+              "immutable": true
+            },
+            "TTF_SetTextString": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "string"
+                }
+              ]
+            },
+            "TTF_InsertTextString": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "offset"
+                },
+                {
+                  "type": "std::string_view",
+                  "name": "string"
+                }
+              ]
+            },
+            "TTF_AppendTextString": {
+              "static": false,
+              "parameters": [
+                {
+                  "type": "std::string_view",
+                  "name": "string"
+                }
+              ]
+            },
+            "TTF_DeleteTextString": "function",
+            "GetSize": {
+              "kind": "function",
+              "type": "std::optional<Point>",
+              "immutable": true,
+              "parameters": []
+            },
+            "TTF_GetTextSize": "immutable",
+            "TTF_GetTextSubString": "immutable",
+            "TTF_GetTextSubStringForLine": "immutable",
+            "GetSubStrings": {
+              "kind": "function",
+              "immutable": true,
+              "type": "OwnArray<SubString *>",
+              "parameters": []
+            },
+            "TTF_GetTextSubStringsForRange": {
+              "immutable": true,
+              "type": "OwnArray<SubString *>",
+              "parameters": [
+                {},
+                {},
+                {}
+              ]
+            },
+            "TTF_GetTextSubStringForPoint": {
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Point",
+                  "name": "p"
+                },
+                {
+                  "type": "SubString *",
+                  "name": "substring"
+                }
+              ]
+            },
+            "TTF_GetPreviousTextSubString": "immutable",
+            "TTF_GetNextTextSubString": "immutable",
+            "TTF_UpdateText": "function",
+            "GetText": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "doc": "A copy of the UTF-8 string that this text object represents, useful for layout, debugging and retrieving substring text",
+              "parameters": []
+            },
+            "GetNumLines": {
+              "kind": "function",
+              "type": "int",
+              "immutable": true,
+              "doc": "The number of lines in the text, 0 if it's empty",
+              "parameters": []
+            },
+            "TTF_DestroyText": "function"
+          }
         }
       },
       "includeAfter": {
@@ -5823,25 +6056,100 @@
           },
           {
             "name": "FontStyleFlags",
-            "type": "placeholder"
+            "kind": "placeholder"
           },
           {
             "name": "HintingFlags",
-            "type": "placeholder"
+            "kind": "placeholder"
           },
           {
             "name": "HorizontalAlignment",
-            "type": "placeholder"
+            "kind": "placeholder"
           },
           {
             "name": "Direction",
-            "type": "placeholder"
+            "kind": "placeholder"
           },
           {
             "name": "ImageType",
-            "type": "placeholder"
+            "kind": "placeholder"
+          },
+          {
+            "name": "TextEngineWrapper",
+            "kind": "struct",
+            "entries": {
+              "m_ptr": {
+                "kind": "var",
+                "type": "TTF_TextEngine *"
+              }
+            }
           }
-        ]
+        ],
+        "TTF_TextEngine": [
+          {
+            "name": "ObjectRef<TTF_TextEngine, TextEngineWrapper>::doFree",
+            "kind": "function",
+            "type": "void",
+            "template": [],
+            "parameters": [
+              {
+                "type": "TextEngineWrapper",
+                "name": "resource"
+              }
+            ]
+          },
+          {
+            "name": "GPUAtlasDrawSequence",
+            "kind": "placeholder"
+          },
+          {
+            "name": "SubStringFlags",
+            "kind": "placeholder"
+          },
+          {
+            "name": "SUBSTRING_DIRECTION_MASK",
+            "kind": "var",
+            "type": "SubStringFlags",
+            "constexpr": true,
+            "sourceName": "TTF_SUBSTRING_DIRECTION_MASK"
+          },
+          {
+            "name": "SUBSTRING_TEXT_START",
+            "kind": "var",
+            "type": "SubStringFlags",
+            "constexpr": true,
+            "sourceName": "TTF_SUBSTRING_TEXT_START"
+          },
+          {
+            "name": "SUBSTRING_LINE_START",
+            "kind": "var",
+            "type": "SubStringFlags",
+            "constexpr": true,
+            "sourceName": "TTF_SUBSTRING_LINE_START"
+          },
+          {
+            "name": "SUBSTRING_LINE_END",
+            "kind": "var",
+            "type": "SubStringFlags",
+            "constexpr": true,
+            "sourceName": "TTF_SUBSTRING_LINE_END"
+          },
+          {
+            "name": "SUBSTRING_TEXT_END",
+            "kind": "var",
+            "type": "SubStringFlags",
+            "constexpr": true,
+            "sourceName": "TTF_SUBSTRING_TEXT_END"
+          },
+          {
+            "name": "SubString",
+            "kind": "placeholder"
+          }
+        ],
+        "TTF_Init": {
+          "name": "GPUTextEngineWinding",
+          "kind": "placeholder"
+        }
       },
       "transform": {
         "TTF_Version": {

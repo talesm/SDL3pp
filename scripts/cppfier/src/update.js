@@ -1,5 +1,5 @@
 const { parseContent } = require("./parse.js");
-const { readLinesSync, system, writeLinesSync } = require("./utils.js");
+const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require("./utils.js");
 
 /**
  * @import { Api, ApiEntries, ApiEntry, ApiFile, ApiParameter, ApiParameters } from "./types"
@@ -346,12 +346,23 @@ function generateBody(entry, prefix) {
   const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
-  if (!prefix || entry.static) {
-    return `{\n${prefix}  return ${entry.sourceName}(${paramStr});\n${prefix}}`;
+  const return_ = entry.type === "void" ? "" : "return ";
+  if (!entry.type) {
+    return `  : T(${entry.sourceName}(${paramStr}))\n${prefix}{}`;
   }
-  if (!entry.type) return `  : T(${entry.sourceName}(${paramStr}))\n${prefix}{}`;
-  if (!paramStr) return `{\n${prefix}  return ${entry.sourceName}(T::get());\n${prefix}}`;
-  return `{\n${prefix}  return ${entry.sourceName}(T::get(), ${paramStr});\n${prefix}}`;
+  if (!prefix || entry.static) {
+    return `{\n${prefix}  ${return_}${entry.sourceName}(${paramStr});\n${prefix}}`;
+  }
+  if (paramStr) {
+    return `{\n${prefix}  ${return_}${entry.sourceName}(T::get(), ${paramStr});\n${prefix}}`;
+  }
+  if (looksLikeFreeFunction(entry.sourceName)) {
+    if (!return_) {
+      return `{\n${prefix}  T::free();\n${prefix}}`;
+    }
+    return `{\n${prefix}  ${return_}${entry.sourceName}(T::release());\n${prefix}}`;
+  }
+  return `{\n${prefix}  ${return_}${entry.sourceName}(T::get());\n${prefix}}`;
 }
 
 /**
