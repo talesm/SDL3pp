@@ -89,6 +89,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1IConvBase.html">SDL::IConvBase&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An opaque handle representing string encoding conversion state.  <a href="structSDL_1_1IConvBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Time.html">SDL::Time</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1, 1970).  <a href="classSDL_1_1Time.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Random.html">SDL::Random</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A independent pseudo random state.  <a href="classSDL_1_1Random.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -107,9 +110,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ga95fcbc65252fd494d78ce162e1340bea" id="r_ga95fcbc65252fd494d78ce162e1340bea"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga95fcbc65252fd494d78ce162e1340bea">SDL::IConv</a> = <a class="el" href="structSDL_1_1IConvBase.html">IConvBase</a>&lt; <a class="el" href="classSDL_1_1ObjectUnique.html">ObjectUnique</a>&lt; SDL_iconv_data_t &gt; &gt;</td></tr>
 <tr class="memdesc:ga95fcbc65252fd494d78ce162e1340bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle to an owning iconv.  <br /></td></tr>
 <tr class="separator:ga95fcbc65252fd494d78ce162e1340bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4cdca510cc08a5569b9e76462e19242f" id="r_ga4cdca510cc08a5569b9e76462e19242f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f">SDL::Time</a> = SDL_Time</td></tr>
-<tr class="memdesc:ga4cdca510cc08a5569b9e76462e19242f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1, 1970).  <br /></td></tr>
-<tr class="separator:ga4cdca510cc08a5569b9e76462e19242f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga20e849be3a477a832c3f5b49aa71f793" id="r_ga20e849be3a477a832c3f5b49aa71f793"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga20e849be3a477a832c3f5b49aa71f793">SDL::malloc_func</a> = SDL_malloc_func</td></tr>
 <tr class="memdesc:ga20e849be3a477a832c3f5b49aa71f793"><td class="mdescLeft">&#160;</td><td class="mdescRight">A callback used to implement SDL_malloc().  <br /></td></tr>
 <tr class="separator:ga20e849be3a477a832c3f5b49aa71f793"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -871,25 +871,6 @@ SDL_GetOriginalMemoryFunctions </dd>
 SDL_GetMemoryFunctions </dd>
 <dd>
 SDL_SetMemoryFunctions </dd></dl>
-
-</div>
-</div>
-<a id="ga4cdca510cc08a5569b9e76462e19242f" name="ga4cdca510cc08a5569b9e76462e19242f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4cdca510cc08a5569b9e76462e19242f">&#9670;&#160;</a></span>Time</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="group__CategoryStdinc.html#ga4cdca510cc08a5569b9e76462e19242f">SDL::Time</a> = typedef SDL_Time</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>They can be converted between POSIX time_t values with SDL_NS_TO_SECONDS() and SDL_SECONDS_TO_NS(), and between Windows FILETIME values with SDL_TimeToWindows() and SDL_TimeFromWindows().</p>
-<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SDL_MAX_SINT64 </dd>
-<dd>
-SDL_MIN_SINT64 </dd></dl>
 
 </div>
 </div>

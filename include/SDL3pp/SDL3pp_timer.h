@@ -29,6 +29,39 @@ namespace SDL {
  */
 
 /**
+ * Convert seconds to nanoseconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @param time the number of seconds to convert.
+ * @returns the converted Time.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Time Time::FromPosix(Sint64 time)
+{
+  return Time::FromNS(SDL_SECONDS_TO_NS(time));
+}
+
+/**
+ * Convert nanoseconds to seconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @returns Posix time (in seconds).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Sint64 Time::ToPosix() const
+{
+  return SDL_NS_TO_SECONDS(m_value.count());
+}
+
+/**
  * Get the time elapsed since SDL library initialization.
  *
  * @returns a std::chrono::nanoseconds value representing the number of

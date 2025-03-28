@@ -1,7 +1,7 @@
 var searchData=
 [
   ['gdksuspendcomplete_0',['GDKSuspendComplete',['../group__CategoryMain.html#gad6169770a6501a3fb0191bf1438f06cc',1,'SDL']]],
-  ['get_1',['get',['../structSDL_1_1Color.html#a40edbd2367980b4ee5d8442ac98b2650',1,'SDL::Color::Get()'],['../structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c',1,'SDL::PixelFormat::Get()'],['../classSDL_1_1EventWatchHandle.html#a5b6fb632f1fdd3f6173b18fb19a113ff',1,'SDL::EventWatchHandle::get()']]],
+  ['get_1',['get',['../structSDL_1_1PixelFormat.html#ab2770572204fc028e87c914fed6e744c',1,'SDL::PixelFormat::Get()'],['../classSDL_1_1EventWatchHandle.html#a5b6fb632f1fdd3f6173b18fb19a113ff',1,'SDL::EventWatchHandle::get()'],['../structSDL_1_1Color.html#a40edbd2367980b4ee5d8442ac98b2650',1,'SDL::Color::Get()']]],
   ['getall_2',['GetAll',['../classSDL_1_1Display.html#ae196b7d3fea1b9a05e0dc2505d4ed8a7',1,'SDL::Display']]],
   ['getalpha_3',['getalpha',['../structSDL_1_1Color.html#a8b63cca27f58dccc4f58834030aa9e2d',1,'SDL::Color::GetAlpha()'],['../structSDL_1_1FColor.html#ab001f0d7442ca81dbd7c4015fe9d10e6',1,'SDL::FColor::GetAlpha()']]],
   ['getalphamod_4',['getalphamod',['../structSDL_1_1TextureBase.html#ae2982c1ed7424b984cccfd8853b2672c',1,'SDL::TextureBase::GetAlphaMod(Uint8 *alpha) const'],['../structSDL_1_1TextureBase.html#acc7d66e8309fcf784ffae07c85decae5',1,'SDL::TextureBase::GetAlphaMod() const'],['../structSDL_1_1TextureBase.html#a4206de1417b0b360c2a6639ee9d2831e',1,'SDL::TextureBase::GetAlphaMod(float *alpha) const'],['../structSDL_1_1SurfaceBase.html#a1d427f5931308f81a8fc8656ccd9fe22',1,'SDL::SurfaceBase::GetAlphaMod()']]],

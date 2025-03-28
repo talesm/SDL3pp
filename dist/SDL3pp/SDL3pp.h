@@ -837,16 +837,62 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
  * SDL times are signed, 64-bit integers representing nanoseconds since the
  * Unix epoch (Jan 1, 1970).
  *
- * They can be converted between POSIX time_t values with SDL_NS_TO_SECONDS()
- * and SDL_SECONDS_TO_NS(), and between Windows FILETIME values with
- * SDL_TimeToWindows() and SDL_TimeFromWindows().
+ * They can be converted between POSIX time_t values with ToPosix()
+ * and FromPosix(), and between Windows FILETIME values with
+ * ToWindows() and FromWindows().
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This type is available since SDL 3.2.0.
  *
  * @sa SDL_MAX_SINT64
  * @sa SDL_MIN_SINT64
- **/
-using Time = SDL_Time;
+ */
+class Time
+{
+  std::chrono::nanoseconds m_value;
+
+public:
+  /// Constructs from a nanoseconds period.
+  constexpr explicit Time(std::chrono::nanoseconds time = {})
+    : m_value(time)
+  {
+  }
+
+  /// Converts to nanoseconds period
+  constexpr operator std::chrono::nanoseconds() const { return m_value; }
+
+  static Time Current();
+
+  /// Create from a nanoseconds Sint64.
+  static constexpr Time FromNS(Sint64 time)
+  {
+    return Time{std::chrono::nanoseconds{time}};
+  }
+
+  /// Converts to nanoseconds Sint64
+  constexpr Sint64 ToNS() const { return m_value.count(); }
+
+  static constexpr Time FromPosix(Sint64 time);
+
+  constexpr Sint64 ToPosix() const;
+
+  static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
+
+  void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
+
+  /// Increment time
+  constexpr Time& operator+=(std::chrono::nanoseconds interval)
+  {
+    m_value += interval;
+    return *this;
+  }
+
+  /// Decrement
+  constexpr Time& operator-=(std::chrono::nanoseconds interval)
+  {
+    m_value -= interval;
+    return *this;
+  }
+};
 
 /**
  * Allocate uninitialized memory.
@@ -13247,6 +13293,39 @@ constexpr Rect::operator FRect() const
  *
  * @{
  */
+
+/**
+ * Convert seconds to nanoseconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @param time the number of seconds to convert.
+ * @returns the converted Time.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Time Time::FromPosix(Sint64 time)
+{
+  return Time::FromNS(SDL_SECONDS_TO_NS(time));
+}
+
+/**
+ * Convert nanoseconds to seconds.
+ *
+ * This only converts whole numbers, not fractional seconds.
+ *
+ * @returns Posix time (in seconds).
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Sint64 Time::ToPosix() const
+{
+  return SDL_NS_TO_SECONDS(m_value.count());
+}
 
 /**
  * Get the time elapsed since SDL library initialization.

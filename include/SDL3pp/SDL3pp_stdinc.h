@@ -1,6 +1,7 @@
 #ifndef SDL3PP_STDINC_H_
 #define SDL3PP_STDINC_H_
 
+#include <chrono>
 #include <SDL3/SDL_stdinc.h>
 #include "SDL3pp_callbackWrapper.h"
 #include "SDL3pp_objectWrapper.h"
@@ -112,16 +113,62 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
  * SDL times are signed, 64-bit integers representing nanoseconds since the
  * Unix epoch (Jan 1, 1970).
  *
- * They can be converted between POSIX time_t values with SDL_NS_TO_SECONDS()
- * and SDL_SECONDS_TO_NS(), and between Windows FILETIME values with
- * SDL_TimeToWindows() and SDL_TimeFromWindows().
+ * They can be converted between POSIX time_t values with ToPosix()
+ * and FromPosix(), and between Windows FILETIME values with
+ * ToWindows() and FromWindows().
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This type is available since SDL 3.2.0.
  *
  * @sa SDL_MAX_SINT64
  * @sa SDL_MIN_SINT64
- **/
-using Time = SDL_Time;
+ */
+class Time
+{
+  std::chrono::nanoseconds m_value;
+
+public:
+  /// Constructs from a nanoseconds period.
+  constexpr explicit Time(std::chrono::nanoseconds time = {})
+    : m_value(time)
+  {
+  }
+
+  /// Converts to nanoseconds period
+  constexpr operator std::chrono::nanoseconds() const { return m_value; }
+
+  static Time Current();
+
+  /// Create from a nanoseconds Sint64.
+  static constexpr Time FromNS(Sint64 time)
+  {
+    return Time{std::chrono::nanoseconds{time}};
+  }
+
+  /// Converts to nanoseconds Sint64
+  constexpr Sint64 ToNS() const { return m_value.count(); }
+
+  static constexpr Time FromPosix(Sint64 time);
+
+  constexpr Sint64 ToPosix() const;
+
+  static Time FromWindows(Uint32 dwLowDateTime, Uint32 dwHighDateTime);
+
+  void ToWindows(Uint32* dwLowDateTime, Uint32* dwHighDateTime) const;
+
+  /// Increment time
+  constexpr Time& operator+=(std::chrono::nanoseconds interval)
+  {
+    m_value += interval;
+    return *this;
+  }
+
+  /// Decrement
+  constexpr Time& operator-=(std::chrono::nanoseconds interval)
+  {
+    m_value -= interval;
+    return *this;
+  }
+};
 
 /**
  * Allocate uninitialized memory.

@@ -79,9 +79,154 @@
         "Time": {
           "doc": "SDL times are signed, 64-bit integers representing nanoseconds since the\nUnix epoch (Jan 1, 1970).\n\nThey can be converted between POSIX time_t values with SDL_NS_TO_SECONDS()\nand SDL_SECONDS_TO_NS(), and between Windows FILETIME values with\nSDL_TimeToWindows() and SDL_TimeFromWindows().\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_MAX_SINT64\n@sa SDL_MIN_SINT64",
           "name": "Time",
-          "kind": "alias",
-          "type": "SDL_Time",
-          "sourceName": "SDL_Time"
+          "kind": "struct",
+          "type": "",
+          "sourceName": "SDL_Time",
+          "entries": {
+            "m_value": {
+              "kind": "var",
+              "type": "std::chrono::nanoseconds",
+              "name": "m_value",
+              "doc": ""
+            },
+            "Time": {
+              "kind": "function",
+              "type": "explicit",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::chrono::nanoseconds",
+                  "name": "time",
+                  "default": "{}"
+                }
+              ],
+              "name": "Time",
+              "doc": ""
+            },
+            "operator std::chrono::nanoseconds": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "name": "operator std::chrono::nanoseconds",
+              "doc": ""
+            },
+            "Current": {
+              "kind": "function",
+              "type": "Time",
+              "static": true,
+              "parameters": [],
+              "name": "Current",
+              "doc": ""
+            },
+            "FromNS": {
+              "kind": "function",
+              "type": "Time",
+              "constexpr": true,
+              "static": true,
+              "parameters": [
+                {
+                  "type": "Sint64",
+                  "name": "time"
+                }
+              ],
+              "name": "FromNS",
+              "doc": ""
+            },
+            "ToNS": {
+              "kind": "function",
+              "type": "Sint64",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "ToNS",
+              "doc": ""
+            },
+            "FromPosix": {
+              "kind": "function",
+              "type": "Time",
+              "constexpr": true,
+              "static": true,
+              "parameters": [
+                {
+                  "type": "Sint64",
+                  "name": "time"
+                }
+              ],
+              "name": "FromPosix",
+              "doc": ""
+            },
+            "ToPosix": {
+              "kind": "function",
+              "type": "Sint64",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "ToPosix",
+              "doc": ""
+            },
+            "FromWindows": {
+              "kind": "function",
+              "type": "Time",
+              "static": true,
+              "parameters": [
+                {
+                  "type": "Uint32",
+                  "name": "dwLowDateTime"
+                },
+                {
+                  "type": "Uint32",
+                  "name": "dwHighDateTime"
+                }
+              ],
+              "name": "FromWindows",
+              "doc": ""
+            },
+            "ToWindows": {
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Uint32 *",
+                  "name": "dwLowDateTime"
+                },
+                {
+                  "type": "Uint32 *",
+                  "name": "dwHighDateTime"
+                }
+              ],
+              "name": "ToWindows",
+              "doc": ""
+            },
+            "operator+=": {
+              "kind": "function",
+              "type": "Time &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::chrono::nanoseconds",
+                  "name": "interval"
+                }
+              ],
+              "name": "operator+=",
+              "doc": ""
+            },
+            "operator-=": {
+              "kind": "function",
+              "type": "Time &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::chrono::nanoseconds",
+                  "name": "interval"
+                }
+              ],
+              "name": "operator-=",
+              "doc": ""
+            }
+          }
         },
         "malloc": {
           "doc": "Allocate uninitialized memory.\n\nThe allocated memory returned by this function must be freed with\nSDL_free().\n\nIf `size` is 0, it will be set to 1.\n\nIf the allocation is successful, the returned pointer is guaranteed to be\naligned to either the *fundamental alignment* (`alignof(max_align_t)` in\nC11 and later) or `2 * sizeof(void *)`, whichever is smaller. Use\nSDL_aligned_alloc() if you need to allocate memory aligned to an alignment\ngreater than this guarantee.\n\n@param size the size to allocate.\n@returns a pointer to the allocated memory, or NULL if allocation failed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_free\n@sa SDL_calloc\n@sa SDL_realloc\n@sa SDL_aligned_alloc",
@@ -15073,6 +15218,30 @@
       "name": "SDL3pp_timer.h",
       "doc": "@defgroup CategoryTimer Category Timer\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](CategoryTime).\n\nThis category covers measuring time elapsed (SDL_GetTicks(),\nSDL_GetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing\na callback function after a certain amount of time has elasped\n(SDL_AddTimer(), etc).\n\nThere are also useful macros to convert between time units, like\nSDL_SECONDS_TO_NS() and such.",
       "entries": {
+        "Time::FromPosix": {
+          "doc": "Convert seconds to nanoseconds.\n\nThis only converts whole numbers, not fractional seconds.\n\n@param S the number of seconds to convert.\n@returns S, expressed in nanoseconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "Time::FromPosix",
+          "kind": "function",
+          "parameters": [
+            {
+              "type": "Sint64",
+              "name": "time"
+            }
+          ],
+          "sourceName": "SDL_SECONDS_TO_NS",
+          "type": "Time",
+          "constexpr": true
+        },
+        "Time::ToPosix": {
+          "doc": "Convert nanoseconds to seconds.\n\nThis performs a division, so the results can be dramatically different if\n`NS` is an integer or floating point value.\n\n@param NS the number of nanoseconds to convert.\n@returns NS, expressed in seconds.\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "Time::ToPosix",
+          "kind": "function",
+          "parameters": [],
+          "sourceName": "SDL_NS_TO_SECONDS",
+          "type": "Sint64",
+          "constexpr": true,
+          "immutable": true
+        },
         "GetTicks": {
           "doc": "Get the number of nanoseconds since SDL library initialization.\n\n@returns an unsigned 64-bit value representing the number of nanoseconds\n         since the SDL library initialized.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
           "name": "GetTicks",

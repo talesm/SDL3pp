@@ -157,6 +157,132 @@
         }
       },
       "transform": {
+        "SDL_Time": {
+          "kind": "struct",
+          "type": "",
+          "entries": {
+            "m_value": {
+              "kind": "var",
+              "type": "std::chrono::nanoseconds"
+            },
+            "Time": {
+              "kind": "function",
+              "type": "explicit",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::chrono::nanoseconds",
+                  "name": "time",
+                  "default": "{}"
+                }
+              ]
+            },
+            "operator std::chrono::nanoseconds": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": []
+            },
+            "Current": {
+              "kind": "function",
+              "type": "Time",
+              "static": true,
+              "parameters": []
+            },
+            "FromNS": {
+              "kind": "function",
+              "type": "Time",
+              "constexpr": true,
+              "static": true,
+              "parameters": [
+                {
+                  "type": "Sint64",
+                  "name": "time"
+                }
+              ]
+            },
+            "ToNS": {
+              "kind": "function",
+              "type": "Sint64",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "FromPosix": {
+              "kind": "function",
+              "type": "Time",
+              "constexpr": true,
+              "static": true,
+              "parameters": [
+                {
+                  "type": "Sint64",
+                  "name": "time"
+                }
+              ]
+            },
+            "ToPosix": {
+              "kind": "function",
+              "type": "Sint64",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "FromWindows": {
+              "kind": "function",
+              "type": "Time",
+              "static": true,
+              "parameters": [
+                {
+                  "type": "Uint32",
+                  "name": "dwLowDateTime"
+                },
+                {
+                  "type": "Uint32",
+                  "name": "dwHighDateTime"
+                }
+              ]
+            },
+            "ToWindows": {
+              "kind": "function",
+              "type": "void",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Uint32 *",
+                  "name": "dwLowDateTime"
+                },
+                {
+                  "type": "Uint32 *",
+                  "name": "dwHighDateTime"
+                }
+              ]
+            },
+            "operator+=": {
+              "kind": "function",
+              "type": "Time &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::chrono::nanoseconds",
+                  "name": "interval"
+                }
+              ]
+            },
+            "operator-=": {
+              "kind": "function",
+              "type": "Time &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "std::chrono::nanoseconds",
+                  "name": "interval"
+                }
+              ]
+            }
+          }
+        },
+        "": {},
         "SDL_FOURCC": {
           "name": "FourCC",
           "type": "Uint32",
@@ -4599,6 +4725,26 @@
         }
       },
       "transform": {
+        "SDL_SECONDS_TO_NS": {
+          "name": "Time::FromPosix",
+          "kind": "function",
+          "type": "Time",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Sint64",
+              "name": "time"
+            }
+          ]
+        },
+        "SDL_NS_TO_SECONDS": {
+          "name": "Time::ToPosix",
+          "kind": "function",
+          "type": "Sint64",
+          "constexpr": true,
+          "immutable": true,
+          "parameters": []
+        },
         "SDL_GetTicksNS": {
           "name": "GetTicks",
           "type": "std::chrono::nanoseconds"
