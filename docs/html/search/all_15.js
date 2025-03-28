@@ -12,8 +12,9 @@ var searchData=
   ['updatesurface_9',['UpdateSurface',['../structSDL_1_1WindowBase.html#ac7f41ac26be0841520d8cbb42e63ed33',1,'SDL::WindowBase']]],
   ['updatesurfacerects_10',['UpdateSurfaceRects',['../structSDL_1_1WindowBase.html#a439ff2ab8a4ea8b8b4cdf5fd88a4d3b2',1,'SDL::WindowBase']]],
   ['updateyuv_11',['UpdateYUV',['../structSDL_1_1TextureBase.html#a7ddf202449e6271ea46e2e1ccfb62f7f',1,'SDL::TextureBase']]],
-  ['userevent_12',['UserEvent',['../group__CategoryEvents.html#ga9523397a5d659447d2161f638046880a',1,'SDL']]],
-  ['utf8strlcpy_13',['utf8strlcpy',['../group__CategoryStdinc.html#ga8ae726c47fde58d11167345dfda765a4',1,'SDL']]],
-  ['utf8strlen_14',['utf8strlen',['../group__CategoryStdinc.html#ga81767a08005a153d60b63896c58c106f',1,'SDL']]],
-  ['utf8strnlen_15',['utf8strnlen',['../group__CategoryStdinc.html#ga82960b752efedfdd3cbfcf166d06161e',1,'SDL']]]
+  ['use_20c_20strings_20parameters_12',['Helpers to use C++ strings parameters',['../group__CategoryStringParam.html',1,'']]],
+  ['userevent_13',['UserEvent',['../group__CategoryEvents.html#ga9523397a5d659447d2161f638046880a',1,'SDL']]],
+  ['utf8strlcpy_14',['utf8strlcpy',['../group__CategoryStdinc.html#ga8ae726c47fde58d11167345dfda765a4',1,'SDL']]],
+  ['utf8strlen_15',['utf8strlen',['../group__CategoryStdinc.html#ga81767a08005a153d60b63896c58c106f',1,'SDL']]],
+  ['utf8strnlen_16',['utf8strnlen',['../group__CategoryStdinc.html#ga82960b752efedfdd3cbfcf166d06161e',1,'SDL']]]
 ];

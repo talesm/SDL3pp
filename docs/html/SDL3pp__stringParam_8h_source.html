@@ -97,63 +97,89 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define SDL3PP_ENABLE_STRING_PARAM</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_DISABLE_STRING_PARAM</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_ENABLE_STRING_PARAM&#39;&#39;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_ENABLE_STRING_PARAM</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParamImpl.html">   26</a></span><span class="keyword">class </span><a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  std::variant&lt;std::monostate, const char*, std::string&gt; data;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">constexpr</span> <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(std::nullptr_t = <span class="keyword">nullptr</span>) {}</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">constexpr</span> <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str)</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    : data(str)</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  {</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(<span class="keyword">const</span> std::string&amp; str)</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    : <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(str.c_str())</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  {</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  }</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(std::string&amp;&amp; str)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    : data(std::move(str))</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#ifdef SDL3PP_ENABLE_STRING_PARAM</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="};">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html">   36</a></span><span class="keyword">class </span><a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  std::variant&lt;const char*, std::string&gt; data;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#af2d3326cb443eca955c9a480b8b0be6d">   42</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1StringParam.html#af2d3326cb443eca955c9a480b8b0be6d">StringParam</a>(std::nullptr_t = <span class="keyword">nullptr</span>)</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    : data(<span class="stringliteral">&quot;&quot;</span>)</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  {</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(std::string_view str)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    : <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(std::string{str})</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  }</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>&amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>&amp; operator=(<a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">operator</span> <span class="keyword">const</span> <span class="keywordtype">char</span>*() <span class="keyword">const</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">struct </span>Visitor</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* operator()(<span class="keyword">const</span> <span class="keywordtype">char</span>* a)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> a; }</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* operator()(<span class="keyword">const</span> std::string&amp; s)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> s.c_str(); }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* operator()(std::monostate)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;&quot;</span>; }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    };</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> std::visit(Visitor{}, data);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>};</div>
 </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#ifdef SDL3PP_ENABLE_STRING_PARAM</span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keyword">using </span><a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> = <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParamImpl</a>;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="preprocessor">#else  </span><span class="comment">// SDL3PP_ENABLE_STRING_PARAM</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">using </span><a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> = <span class="keyword">const</span> <span class="keywordtype">char</span>*;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_ENABLE_STRING_PARAM</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_STRING_PARAM_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassSDL_1_1StringParamImpl_html"><div class="ttname"><a href="classSDL_1_1StringParamImpl.html">SDL::StringParamImpl</a></div><div class="ttdoc">A safe and mostly efficient wrapper to std::string and std::string_view parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:27</div></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#a68b81e588402893c74f049e2e9152b15">   56</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1StringParam.html#a68b81e588402893c74f049e2e9152b15">StringParam</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str)</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    : data(str ?: <span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  }</div>
+</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#ac4c901047438c0e393b1af2bc47956c5">   71</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1StringParam.html#ac4c901047438c0e393b1af2bc47956c5">StringParam</a>(<span class="keyword">const</span> std::string&amp; str)</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    : <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>(str.c_str())</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  {</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
+</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="foldopen" id="foldopen00084" data-start="{" data-end="}">
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#a9b140f53d5616057441b15ba00d77d26">   84</a></span>  <span class="keyword">constexpr</span> <a class="code hl_function" href="classSDL_1_1StringParam.html#a9b140f53d5616057441b15ba00d77d26">StringParam</a>(std::string&amp;&amp; str)</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    : data(std::move(str))</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  }</div>
+</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#a8c12ce7ed9f2e74dd29ea7b9d84873f1">   98</a></span>  <a class="code hl_function" href="classSDL_1_1StringParam.html#a8c12ce7ed9f2e74dd29ea7b9d84873f1">StringParam</a>(std::string_view str)</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    : <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>(std::string{str})</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>  }</div>
+</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>&amp; operator=(<span class="keyword">const</span> <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#ae9a62febf9a87bc879454053a351d7f9">  107</a></span>  <a class="code hl_function" href="classSDL_1_1StringParam.html#ae9a62febf9a87bc879454053a351d7f9">StringParam</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#a2dd33ca4f17279b9c3e023d5b04ca4e1">  110</a></span>  <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>&amp; <a class="code hl_function" href="classSDL_1_1StringParam.html#a2dd33ca4f17279b9c3e023d5b04ca4e1">operator=</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a>&amp;&amp;) = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classSDL_1_1StringParam.html#abefff7ab6d94176b8c34d2fc7dfb3409">  118</a></span>  <span class="keyword">operator</span> <span class="keyword">const</span> <span class="keywordtype">char</span>*() <span class="keyword">const</span></div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>  {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">struct </span>Visitor</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* operator()(<span class="keyword">const</span> <span class="keywordtype">char</span>* a)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> a; }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keyword">const</span> <span class="keywordtype">char</span>* operator()(<span class="keyword">const</span> std::string&amp; s)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> s.c_str(); }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    };</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keywordflow">return</span> std::visit(Visitor{}, data);</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  }</div>
+</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>};</div>
+</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#else </span><span class="comment">// SDL3PP_ENABLE_STRING_PARAM</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="keyword">using </span>StringParam = <span class="keyword">const</span> <span class="keywordtype">char</span>*;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#endif </span><span class="comment">// SDL3PP_ENABLE_STRING_PARAM</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_STRING_PARAM_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html"><div class="ttname"><a href="classSDL_1_1StringParam.html">SDL::StringParam</a></div><div class="ttdoc">A safe and mostly efficient wrapper to std::string and std::string_view parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:37</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html_a2dd33ca4f17279b9c3e023d5b04ca4e1"><div class="ttname"><a href="classSDL_1_1StringParam.html#a2dd33ca4f17279b9c3e023d5b04ca4e1">SDL::StringParam::operator=</a></div><div class="ttdeci">StringParam &amp; operator=(StringParam &amp;&amp;)=default</div><div class="ttdoc">Move assignment.</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html_a68b81e588402893c74f049e2e9152b15"><div class="ttname"><a href="classSDL_1_1StringParam.html#a68b81e588402893c74f049e2e9152b15">SDL::StringParam::StringParam</a></div><div class="ttdeci">constexpr StringParam(const char *str)</div><div class="ttdoc">Constructs from a C string.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:56</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html_a8c12ce7ed9f2e74dd29ea7b9d84873f1"><div class="ttname"><a href="classSDL_1_1StringParam.html#a8c12ce7ed9f2e74dd29ea7b9d84873f1">SDL::StringParam::StringParam</a></div><div class="ttdeci">StringParam(std::string_view str)</div><div class="ttdoc">Constructs from std::string_view object.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:98</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html_a9b140f53d5616057441b15ba00d77d26"><div class="ttname"><a href="classSDL_1_1StringParam.html#a9b140f53d5616057441b15ba00d77d26">SDL::StringParam::StringParam</a></div><div class="ttdeci">constexpr StringParam(std::string &amp;&amp;str)</div><div class="ttdoc">Constructs from std::string object.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:84</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html_ac4c901047438c0e393b1af2bc47956c5"><div class="ttname"><a href="classSDL_1_1StringParam.html#ac4c901047438c0e393b1af2bc47956c5">SDL::StringParam::StringParam</a></div><div class="ttdeci">constexpr StringParam(const std::string &amp;str)</div><div class="ttdoc">Constructs from std::string reference.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:71</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html_ae9a62febf9a87bc879454053a351d7f9"><div class="ttname"><a href="classSDL_1_1StringParam.html#ae9a62febf9a87bc879454053a351d7f9">SDL::StringParam::StringParam</a></div><div class="ttdeci">StringParam(StringParam &amp;&amp;)=default</div><div class="ttdoc">Move ctor.</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html_af2d3326cb443eca955c9a480b8b0be6d"><div class="ttname"><a href="classSDL_1_1StringParam.html#af2d3326cb443eca955c9a480b8b0be6d">SDL::StringParam::StringParam</a></div><div class="ttdeci">constexpr StringParam(std::nullptr_t=nullptr)</div><div class="ttdoc">Default ctor.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:42</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

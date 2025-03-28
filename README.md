@@ -42,7 +42,8 @@ string and callbacks.
   - See [Design notes](https://talesm.github.io/SDL3pp/group__DesignNotes.html)
     to understand the rationally behind some design patterns and choices we use.
 - See the [examples directory](https://github.com/talesm/SDL3pp/tree/main/examples)
-  for some examples.
+  for some examples;
+- See our roadmap-like [todo](todo.md).
 
 ## Example
 

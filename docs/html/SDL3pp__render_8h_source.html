@@ -154,7 +154,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
 <div class="foldopen" id="foldopen00215" data-start="{" data-end="}">
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413">  215</a></span>  <a class="code hl_function" href="structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413">RendererBase</a>(<a class="code hl_struct" href="structSDL_1_1WindowBase.html">WindowRef</a> window, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> name)</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413">  215</a></span>  <a class="code hl_function" href="structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413">RendererBase</a>(<a class="code hl_struct" href="structSDL_1_1WindowBase.html">WindowRef</a> window, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name)</div>
 <div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>    : T(SDL_CreateRenderer(window.get(), name))</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>  {</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>  }</div>
@@ -560,7 +560,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l01784" name="l01784"></a><span class="lineno"> 1784</span> </div>
 <div class="foldopen" id="foldopen01823" data-start="{" data-end="}">
-<div class="line"><a id="l01823" name="l01823"></a><span class="lineno"><a class="line" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc"> 1823</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc">RenderDebugText</a>(<a class="code hl_struct" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> str)</div>
+<div class="line"><a id="l01823" name="l01823"></a><span class="lineno"><a class="line" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc"> 1823</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc">RenderDebugText</a>(<a class="code hl_struct" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> str)</div>
 <div class="line"><a id="l01824" name="l01824"></a><span class="lineno"> 1824</span>  {</div>
 <div class="line"><a id="l01825" name="l01825"></a><span class="lineno"> 1825</span>    <span class="keywordflow">return</span> SDL_RenderDebugText(T::get(), p.x, p.y, str);</div>
 <div class="line"><a id="l01826" name="l01826"></a><span class="lineno"> 1826</span>  }</div>
@@ -568,7 +568,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l01827" name="l01827"></a><span class="lineno"> 1827</span> </div>
 <div class="line"><a id="l01854" name="l01854"></a><span class="lineno"> 1854</span>  <span class="keyword">template</span>&lt;<span class="keyword">class</span>... ARGS&gt;</div>
 <div class="foldopen" id="foldopen01855" data-start="{" data-end="}">
-<div class="line"><a id="l01855" name="l01855"></a><span class="lineno"><a class="line" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7"> 1855</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7">RenderDebugTextFormat</a>(<a class="code hl_struct" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> fmt, ARGS... args)</div>
+<div class="line"><a id="l01855" name="l01855"></a><span class="lineno"><a class="line" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7"> 1855</a></span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7">RenderDebugTextFormat</a>(<a class="code hl_struct" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> fmt, ARGS... args)</div>
 <div class="line"><a id="l01856" name="l01856"></a><span class="lineno"> 1856</span>  {</div>
 <div class="line"><a id="l01857" name="l01857"></a><span class="lineno"> 1857</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc">RenderDebugText</a>(</div>
 <div class="line"><a id="l01858" name="l01858"></a><span class="lineno"> 1858</span>      p, std::vformat(fmt, std::make_format_args(std::forward&lt;ARGS&gt;(args)...)));</div>
@@ -591,7 +591,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l01911" name="l01911"></a><span class="lineno"> 1911</span>{</div>
 <div class="line"><a id="l01912" name="l01912"></a><span class="lineno"> 1912</span>  <span class="keyword">using </span>T::T;</div>
 <div class="line"><a id="l01913" name="l01913"></a><span class="lineno"> 1913</span> </div>
-<div class="line"><a id="l01928" name="l01928"></a><span class="lineno"> 1928</span>  <a class="code hl_struct" href="structSDL_1_1TextureBase.html">TextureBase</a>(<a class="code hl_struct" href="structSDL_1_1RendererBase.html">RendererRef</a> renderer, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> file);</div>
+<div class="line"><a id="l01928" name="l01928"></a><span class="lineno"> 1928</span>  <a class="code hl_struct" href="structSDL_1_1TextureBase.html">TextureBase</a>(<a class="code hl_struct" href="structSDL_1_1RendererBase.html">RendererRef</a> renderer, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> file);</div>
 <div class="line"><a id="l01929" name="l01929"></a><span class="lineno"> 1929</span> </div>
 <div class="foldopen" id="foldopen01950" data-start="{" data-end="}">
 <div class="line"><a id="l01950" name="l01950"></a><span class="lineno"><a class="line" href="structSDL_1_1TextureBase.html#a26b12859b23ad925ae7bed0c81ab0f46"> 1950</a></span>  <a class="code hl_function" href="structSDL_1_1TextureBase.html#a26b12859b23ad925ae7bed0c81ab0f46">TextureBase</a>(<a class="code hl_struct" href="structSDL_1_1RendererBase.html">RendererRef</a> renderer,</div>
@@ -902,7 +902,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l02943" name="l02943"></a><span class="lineno"> 2943</span> </div>
 <div class="foldopen" id="foldopen02961" data-start="{" data-end="}">
 <div class="line"><a id="l02961" name="l02961"></a><span class="lineno"><a class="line" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d"> 2961</a></span><span class="keyword">inline</span> std::pair&lt;Window, Renderer&gt; <a class="code hl_function" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">CreateWindowAndRenderer</a>(</div>
-<div class="line"><a id="l02962" name="l02962"></a><span class="lineno"> 2962</span>  <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> title,</div>
+<div class="line"><a id="l02962" name="l02962"></a><span class="lineno"> 2962</span>  <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> title,</div>
 <div class="line"><a id="l02963" name="l02963"></a><span class="lineno"> 2963</span>  SDL_Point size,</div>
 <div class="line"><a id="l02964" name="l02964"></a><span class="lineno"> 2964</span>  <a class="code hl_typedef" href="group__CategoryVideo.html#ga0e89cce67b0f90eb3a4b57249f949f67">WindowFlags</a> window_flags = 0)</div>
 <div class="line"><a id="l02965" name="l02965"></a><span class="lineno"> 2965</span>{</div>
@@ -949,7 +949,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="line"><a id="l03074" name="l03074"></a><span class="lineno"> 3074</span> </div>
 <div class="foldopen" id="foldopen03085" data-start="{" data-end="}">
-<div class="line"><a id="l03085" name="l03085"></a><span class="lineno"><a class="line" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a"> 3085</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1TextureBase.html">Texture</a> <a class="code hl_function" href="group__CategoryRender.html#ga55becfff281d094fc47916ab05fc947b">LoadTextureBMP</a>(<a class="code hl_struct" href="structSDL_1_1RendererBase.html">RendererRef</a> renderer, <a class="code hl_class" href="classSDL_1_1StringParamImpl.html">StringParam</a> file)</div>
+<div class="line"><a id="l03085" name="l03085"></a><span class="lineno"><a class="line" href="group__CategoryRender.html#gad2866da5ac1fa8e6fc88967d3d37ab8a"> 3085</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1TextureBase.html">Texture</a> <a class="code hl_function" href="group__CategoryRender.html#ga55becfff281d094fc47916ab05fc947b">LoadTextureBMP</a>(<a class="code hl_struct" href="structSDL_1_1RendererBase.html">RendererRef</a> renderer, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> file)</div>
 <div class="line"><a id="l03086" name="l03086"></a><span class="lineno"> 3086</span>{</div>
 <div class="line"><a id="l03087" name="l03087"></a><span class="lineno"> 3087</span>  <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a> surface{SDL_LoadBMP(file)};</div>
 <div class="line"><a id="l03088" name="l03088"></a><span class="lineno"> 3088</span>  <span class="keywordflow">return</span> <a class="code hl_typedef" href="group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a">Texture</a>(renderer, surface);</div>
@@ -1119,7 +1119,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <div class="ttc" id="aclassSDL_1_1OptionalRef_html"><div class="ttname"><a href="classSDL_1_1OptionalRef.html">SDL::OptionalRef</a></div><div class="ttdoc">Shim to get optional-like interface for references.</div><div class="ttdef"><b>Definition</b> SDL3pp_optionalRef.h:15</div></div>
 <div class="ttc" id="aclassSDL_1_1SpanRef_html"><div class="ttname"><a href="classSDL_1_1SpanRef.html">SDL::SpanRef</a></div><div class="ttdoc">A wrapper around span that works for out derived-wrapper pattern (eg, Rect, Color)</div><div class="ttdef"><b>Definition</b> SDL3pp_spanRef.h:21</div></div>
-<div class="ttc" id="aclassSDL_1_1StringParamImpl_html"><div class="ttname"><a href="classSDL_1_1StringParamImpl.html">SDL::StringParamImpl</a></div><div class="ttdoc">A safe and mostly efficient wrapper to std::string and std::string_view parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:27</div></div>
+<div class="ttc" id="aclassSDL_1_1StringParam_html"><div class="ttname"><a href="classSDL_1_1StringParam.html">SDL::StringParam</a></div><div class="ttdoc">A safe and mostly efficient wrapper to std::string and std::string_view parameters.</div><div class="ttdef"><b>Definition</b> SDL3pp_stringParam.h:37</div></div>
 <div class="ttc" id="aclassSDL_1_1TextureLock_html"><div class="ttname"><a href="classSDL_1_1TextureLock.html">SDL::TextureLock</a></div><div class="ttdoc">Locks a Texture for access to its pixels.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:2800</div></div>
 <div class="ttc" id="aclassSDL_1_1TextureLock_html_a199115c63a66b44c6003a6e0033e65de"><div class="ttname"><a href="classSDL_1_1TextureLock.html#a199115c63a66b44c6003a6e0033e65de">SDL::TextureLock::GetFormat</a></div><div class="ttdeci">PixelFormat GetFormat() const</div><div class="ttdoc">Get the pixel format.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:2892</div></div>
 <div class="ttc" id="aclassSDL_1_1TextureLock_html_a3a52d759047dc1b3e33aca59be646261"><div class="ttname"><a href="classSDL_1_1TextureLock.html#a3a52d759047dc1b3e33aca59be646261">SDL::TextureLock::TextureLock</a></div><div class="ttdeci">TextureLock(TextureLock &amp;&amp;other)</div><div class="ttdoc">Move ctor.</div><div class="ttdef"><b>Definition</b> SDL3pp_render.h:2831</div></div>

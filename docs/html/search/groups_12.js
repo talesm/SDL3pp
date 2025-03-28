@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['variables_0',['Configuration Variables',['../group__CategoryHints.html',1,'']]],
-  ['version_1',['Querying SDL Version',['../group__CategoryVersion.html',1,'']]],
-  ['video_2',['Video',['../group__CategoriesVideo.html',1,'']]]
+  ['use_20c_20strings_20parameters_0',['Helpers to use C++ strings parameters',['../group__CategoryStringParam.html',1,'']]]
 ];
