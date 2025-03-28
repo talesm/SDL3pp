@@ -22,7 +22,7 @@ var searchData=
   ['flipmode_19',['FlipMode',['../group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b',1,'SDL']]],
   ['floor_20',['floor',['../group__CategoryStdinc.html#gaa5d99939c5dffc37035e51300236316a',1,'SDL']]],
   ['floorf_21',['floorf',['../group__CategoryStdinc.html#ga8438f2959083ee7e897f7f3ef03ca3b8',1,'SDL']]],
-  ['flush_22',['flush',['../structSDL_1_1IOStreamBase.html#a41d6dd31abef69751a90690e1e051fbf',1,'SDL::IOStreamBase::Flush()'],['../structSDL_1_1RendererBase.html#abaf3c91b4c53fdd0b9ca34594b0e87f6',1,'SDL::RendererBase::Flush()']]],
+  ['flush_22',['flush',['../structSDL_1_1RendererBase.html#abaf3c91b4c53fdd0b9ca34594b0e87f6',1,'SDL::RendererBase::Flush()'],['../structSDL_1_1IOStreamBase.html#a41d6dd31abef69751a90690e1e051fbf',1,'SDL::IOStreamBase::Flush()']]],
   ['flushevent_23',['FlushEvent',['../group__CategoryEvents.html#ga08a52473aefe0861b7086df44ad5907c',1,'SDL']]],
   ['flushevents_24',['FlushEvents',['../group__CategoryEvents.html#ga53ff6baf78e15cfe2140a599b6f7ee95',1,'SDL']]],
   ['fmod_25',['fmod',['../group__CategoryStdinc.html#gafcd6b0192bc061852ef8ef56272bf98d',1,'SDL']]],
@@ -33,7 +33,7 @@ var searchData=
   ['fontref_30',['FontRef',['../group__CategorySDLTTF.html#ga4b737abba8bfc633457b3ec919a79960',1,'SDL']]],
   ['fontstyleflags_31',['FontStyleFlags',['../group__CategorySDLTTF.html#ga5cd0ae7a98a535d094ec54cefa0076cd',1,'SDL']]],
   ['for_20resource_20type_20wrapping_32',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
-  ['force_20feedback_20haptic_33',['force feedback haptic',['../ApiByCategory.html#force-feedback-haptic',1,'Force Feedback (&quot;Haptic&quot;)'],['../todo.html#_todo000002',1,'Force Feedback (&quot;Haptic&quot;)']]],
+  ['force_20feedback_20haptic_33',['force feedback haptic',['../todo.html#_todo000002',1,'Force Feedback (&quot;Haptic&quot;)'],['../ApiByCategory.html#force-feedback-haptic',1,'Force Feedback (&quot;Haptic&quot;)']]],
   ['formasks_34',['ForMasks',['../structSDL_1_1PixelFormat.html#adf3c56b25390fc768df4519096b5288d',1,'SDL::PixelFormat']]],
   ['formats_35',['formats',['../group__CategorySDLImage.html',1,'Load images from several formats'],['../group__PixelFormats.html',1,'Pixel Formats']]],
   ['formats_20and_20conversion_20routines_36',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
@@ -48,8 +48,9 @@ var searchData=
   ['fromcorners_45',['fromcorners',['../structSDL_1_1FRect.html#ad19f9d9ae3219ab363ad74e9c4bef45c',1,'SDL::FRect::FromCorners(const FPoint &amp;p1, const FPoint &amp;p2)'],['../structSDL_1_1FRect.html#aa9f4be1a92292a4926d1fbd8bc037d4f',1,'SDL::FRect::FromCorners(float x1, float y1, float x2, float y2)'],['../structSDL_1_1Rect.html#ad81cf7a56df2c72ca116bd9b023aa38a',1,'SDL::Rect::FromCorners(const Point &amp;p1, const Point &amp;p2)'],['../structSDL_1_1Rect.html#ab65cfd97c165c41b3600b0656830466c',1,'SDL::Rect::FromCorners(int x1, int y1, int x2, int y2)']]],
   ['fromns_46',['FromNS',['../classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837',1,'SDL::Time']]],
   ['fromposix_47',['FromPosix',['../group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44',1,'SDL::Time']]],
-  ['function_20rules_48',['Function rules',['../transformations.html#function-rules',1,'']]],
-  ['functionality_49',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../ApiByCategory.html#additional-functionality',1,'Additional Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]],
-  ['functionpointer_50',['FunctionPointer',['../group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7',1,'SDL']]],
-  ['functions_51',['Rectangle Functions',['../group__CategoryRect.html',1,'']]]
+  ['fromwindows_48',['FromWindows',['../group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845',1,'SDL::Time']]],
+  ['function_20rules_49',['Function rules',['../transformations.html#function-rules',1,'']]],
+  ['functionality_50',['functionality',['../group__CategoriesAdditionalFunctionality.html',1,'Additional Functionality'],['../ApiByCategory.html#additional-functionality',1,'Additional Functionality'],['../group__CategoryStdinc.html',1,'Standard Library Functionality']]],
+  ['functionpointer_51',['FunctionPointer',['../group__CategoryStdinc.html#ga379a3713730374c4737a2bfb2004fab7',1,'SDL']]],
+  ['functions_52',['Rectangle Functions',['../group__CategoryRect.html',1,'']]]
 ];

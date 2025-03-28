@@ -89,18 +89,36 @@
               "name": "m_value",
               "doc": ""
             },
-            "Time": {
+            "Time": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": [],
+                "name": "Time",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "explicit",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "std::chrono::nanoseconds",
+                    "name": "time"
+                  }
+                ],
+                "name": "Time",
+                "doc": ""
+              }
+            ],
+            "operator bool": {
               "kind": "function",
-              "type": "explicit",
+              "type": "",
+              "immutable": true,
               "constexpr": true,
-              "parameters": [
-                {
-                  "type": "std::chrono::nanoseconds",
-                  "name": "time",
-                  "default": "{}"
-                }
-              ],
-              "name": "Time",
+              "parameters": [],
+              "name": "operator bool",
               "doc": ""
             },
             "operator std::chrono::nanoseconds": {
@@ -15390,6 +15408,290 @@
             }
           ],
           "sourceName": "SDL_RemoveTimer"
+        }
+      }
+    },
+    "SDL3pp_time.h": {
+      "name": "SDL3pp_time.h",
+      "doc": "@defgroup CategoryTime Category Time\n\nSDL realtime clock and date/time routines.\n\nThere are two data types that are used in this category: SDL_Time, which\nrepresents the nanoseconds since a specific moment (an \"epoch\"), and\nSDL_DateTime, which breaks time down into human-understandable components:\nyears, months, days, hours, etc.\n\nMuch of the functionality is involved in converting those two types to\nother useful forms.",
+      "entries": {
+        "DateTime": {
+          "doc": "A structure holding a calendar date and time broken down into its\ncomponents.\n\n@since This struct is available since SDL 3.2.0.",
+          "name": "DateTime",
+          "kind": "struct",
+          "sourceName": "SDL_DateTime",
+          "type": "SDL_DateTime",
+          "entries": {
+            "DateTime": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_DateTime &",
+                    "name": "dt"
+                  }
+                ],
+                "name": "DateTime",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "year"
+                  },
+                  {
+                    "type": "int",
+                    "name": "month"
+                  },
+                  {
+                    "type": "int",
+                    "name": "day"
+                  },
+                  {
+                    "type": "int",
+                    "name": "hour"
+                  },
+                  {
+                    "type": "int",
+                    "name": "minute"
+                  },
+                  {
+                    "type": "int",
+                    "name": "second"
+                  },
+                  {
+                    "type": "int",
+                    "name": "nanosecond"
+                  },
+                  {
+                    "type": "int",
+                    "name": "day_of_week"
+                  },
+                  {
+                    "type": "int",
+                    "name": "utc_offset"
+                  }
+                ],
+                "name": "DateTime",
+                "doc": ""
+              },
+              {
+                "doc": "Converts an SDL_Time in nanoseconds since the epoch to a calendar time in\nthe SDL_DateTime format.\n\n@param ticks the SDL_Time to be converted.\n@param dt the resulting SDL_DateTime.\n@param localTime the resulting SDL_DateTime will be expressed in local time\n                 if true, otherwise it will be in Universal Coordinated\n                 Time (UTC).\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+                "name": "DateTime",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "ticks",
+                    "type": "Time"
+                  },
+                  {
+                    "name": "localTime",
+                    "type": "bool",
+                    "default": "true"
+                  }
+                ],
+                "sourceName": "SDL_TimeToDateTime"
+              }
+            ],
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "name": "operator bool",
+              "doc": ""
+            },
+            "operator Time": {
+              "doc": "Converts a calendar time to an SDL_Time in nanoseconds since the epoch.\n\nThis function ignores the day_of_week member of the SDL_DateTime struct, so\nit may remain unset.\n\n@param dt the source SDL_DateTime.\n@param ticks the resulting SDL_Time.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "operator Time",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "sourceName": "SDL_DateTimeToTime",
+              "immutable": true
+            }
+          }
+        },
+        "DateFormat": {
+          "doc": "The preferred date format of the current system locale.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_GetDateTimeLocalePreferences",
+          "name": "DateFormat",
+          "kind": "alias",
+          "sourceName": "SDL_DateFormat",
+          "type": "SDL_DateFormat"
+        },
+        "DATE_FORMAT_YYYYMMDD": {
+          "doc": "Year/Month/Day.",
+          "name": "DATE_FORMAT_YYYYMMDD",
+          "kind": "var",
+          "type": "DateFormat",
+          "sourceName": "SDL_DATE_FORMAT_YYYYMMDD",
+          "constexpr": true
+        },
+        "DATE_FORMAT_DDMMYYYY": {
+          "doc": "Day/Month/Year.",
+          "name": "DATE_FORMAT_DDMMYYYY",
+          "kind": "var",
+          "type": "DateFormat",
+          "sourceName": "SDL_DATE_FORMAT_DDMMYYYY",
+          "constexpr": true
+        },
+        "DATE_FORMAT_MMDDYYYY": {
+          "doc": "Month/Day/Year.",
+          "name": "DATE_FORMAT_MMDDYYYY",
+          "kind": "var",
+          "type": "DateFormat",
+          "sourceName": "SDL_DATE_FORMAT_MMDDYYYY",
+          "constexpr": true
+        },
+        "TimeFormat": {
+          "doc": "The preferred time format of the current system locale.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa SDL_GetDateTimeLocalePreferences",
+          "name": "TimeFormat",
+          "kind": "alias",
+          "sourceName": "SDL_TimeFormat",
+          "type": "SDL_TimeFormat"
+        },
+        "TIME_FORMAT_24HR": {
+          "doc": "24 hour time",
+          "name": "TIME_FORMAT_24HR",
+          "kind": "var",
+          "type": "TimeFormat",
+          "sourceName": "SDL_TIME_FORMAT_24HR",
+          "constexpr": true
+        },
+        "TIME_FORMAT_12HR": {
+          "doc": "12 hour time",
+          "name": "TIME_FORMAT_12HR",
+          "kind": "var",
+          "type": "TimeFormat",
+          "sourceName": "SDL_TIME_FORMAT_12HR",
+          "constexpr": true
+        },
+        "GetDateTimeLocalePreferences": {
+          "doc": "Gets the current preferred date and time format for the system locale.\n\nThis might be a \"slow\" call that has to query the operating system. It's\nbest to ask for this once and save the results. However, the preferred\nformats can change, usually because the user has changed a system\npreference outside of your program.\n\n@param dateFormat a pointer to the SDL_DateFormat to hold the returned date\n                  format, may be NULL.\n@param timeFormat a pointer to the SDL_TimeFormat to hold the returned time\n                  format, may be NULL.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetDateTimeLocalePreferences",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "dateFormat",
+              "type": "DateFormat *"
+            },
+            {
+              "name": "timeFormat",
+              "type": "TimeFormat *"
+            }
+          ],
+          "sourceName": "SDL_GetDateTimeLocalePreferences"
+        },
+        "Time::Current": {
+          "doc": "Gets the current value of the system realtime clock in nanoseconds since\nJan 1, 1970 in Universal Coordinated Time (UTC).\n\n@param ticks the SDL_Time to hold the returned tick count.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "Time::Current",
+          "kind": "function",
+          "type": "Time",
+          "parameters": [],
+          "sourceName": "SDL_GetCurrentTime"
+        },
+        "Time::ToWindows": {
+          "doc": "Converts an SDL time into a Windows FILETIME (100-nanosecond intervals\nsince January 1, 1601).\n\nThis function fills in the two 32-bit values of the FILETIME structure.\n\n@param ticks the time to convert.\n@param dwLowDateTime a pointer filled in with the low portion of the\n                     Windows FILETIME value.\n@param dwHighDateTime a pointer filled in with the high portion of the\n                      Windows FILETIME value.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "Time::ToWindows",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "dwLowDateTime",
+              "type": "Uint32 *"
+            },
+            {
+              "name": "dwHighDateTime",
+              "type": "Uint32 *"
+            }
+          ],
+          "sourceName": "SDL_TimeToWindows",
+          "immutable": true
+        },
+        "Time::FromWindows": {
+          "doc": "Converts a Windows FILETIME (100-nanosecond intervals since January 1,\n1601) to an SDL time.\n\nThis function takes the two 32-bit values of the FILETIME structure as\nparameters.\n\n@param dwLowDateTime the low portion of the Windows FILETIME value.\n@param dwHighDateTime the high portion of the Windows FILETIME value.\n@returns the converted SDL time.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "Time::FromWindows",
+          "kind": "function",
+          "type": "Time",
+          "parameters": [
+            {
+              "name": "dwLowDateTime",
+              "type": "Uint32"
+            },
+            {
+              "name": "dwHighDateTime",
+              "type": "Uint32"
+            }
+          ],
+          "sourceName": "SDL_TimeFromWindows"
+        },
+        "GetDaysInMonth": {
+          "doc": "Get the number of days in a month for a given year.\n\n@param year the year.\n@param month the month [1-12].\n@returns the number of days in the requested month or -1 on failure; call\n         SDL_GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetDaysInMonth",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "year",
+              "type": "int"
+            },
+            {
+              "name": "month",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_GetDaysInMonth"
+        },
+        "GetDayOfYear": {
+          "doc": "Get the day of year for a calendar date.\n\n@param year the year component of the date.\n@param month the month component of the date.\n@param day the day component of the date.\n@returns the day of year [0-365] if the date is valid or -1 on failure;\n         call SDL_GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetDayOfYear",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "year",
+              "type": "int"
+            },
+            {
+              "name": "month",
+              "type": "int"
+            },
+            {
+              "name": "day",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_GetDayOfYear"
+        },
+        "GetDayOfWeek": {
+          "doc": "Get the day of week for a calendar date.\n\n@param year the year component of the date.\n@param month the month component of the date.\n@param day the day component of the date.\n@returns a value between 0 and 6 (0 being Sunday) if the date is valid or\n         -1 on failure; call SDL_GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetDayOfWeek",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "year",
+              "type": "int"
+            },
+            {
+              "name": "month",
+              "type": "int"
+            },
+            {
+              "name": "day",
+              "type": "int"
+            }
+          ],
+          "sourceName": "SDL_GetDayOfWeek"
         }
       }
     },

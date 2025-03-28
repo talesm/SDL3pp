@@ -68,7 +68,7 @@ HIDAPI                   | SDL3pp_hidapi.h
 Category                 | Header
 ------------------------ | --------------------
 @ref CategoryTimer       | SDL3pp_timer.h
-Date and time            | SDL3pp_time.h
+@ref CategoryTime        | SDL3pp_time.h
 
 ## File and I/O Abstractions
 
@@ -153,6 +153,7 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesTime Time
 @{
 @addtogroup CategoryTimer
+@addtogroup CategoryTime
 @}
 
 @defgroup CategoriesFileIO File and I/O Abstractions

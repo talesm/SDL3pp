@@ -852,9 +852,17 @@ class Time
 
 public:
   /// Constructs from a nanoseconds period.
-  constexpr explicit Time(std::chrono::nanoseconds time = {})
+  constexpr Time() = default;
+
+  constexpr explicit Time(std::chrono::nanoseconds time)
     : m_value(time)
   {
+  }
+
+  /// True if not zero
+  constexpr operator bool() const
+  {
+    return m_value == std::chrono::nanoseconds{};
   }
 
   /// Converts to nanoseconds period

@@ -87,10 +87,17 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa4759b185e30513926685a71d1c0c9a8" id="r_aa4759b185e30513926685a71d1c0c9a8"><td class="memItemLeft" align="right" valign="top"><a id="aa4759b185e30513926685a71d1c0c9a8" name="aa4759b185e30513926685a71d1c0c9a8"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Time</b> (std::chrono::nanoseconds time={})</td></tr>
-<tr class="memdesc:aa4759b185e30513926685a71d1c0c9a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from a nanoseconds period. <br /></td></tr>
-<tr class="separator:aa4759b185e30513926685a71d1c0c9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55ff9cae2f604d88f053d549627f27a4" id="r_a55ff9cae2f604d88f053d549627f27a4"><td class="memItemLeft" align="right" valign="top"><a id="a55ff9cae2f604d88f053d549627f27a4" name="a55ff9cae2f604d88f053d549627f27a4"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Time</b> ()=default</td></tr>
+<tr class="memdesc:a55ff9cae2f604d88f053d549627f27a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from a nanoseconds period. <br /></td></tr>
+<tr class="separator:a55ff9cae2f604d88f053d549627f27a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae70483a8cb6bbaf7b80c992cb4c98f4e" id="r_ae70483a8cb6bbaf7b80c992cb4c98f4e"><td class="memItemLeft" align="right" valign="top"><a id="ae70483a8cb6bbaf7b80c992cb4c98f4e" name="ae70483a8cb6bbaf7b80c992cb4c98f4e"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Time</b> (std::chrono::nanoseconds time)</td></tr>
+<tr class="separator:ae70483a8cb6bbaf7b80c992cb4c98f4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf2eafa8add045ef0f1adc0dd1c262af" id="r_adf2eafa8add045ef0f1adc0dd1c262af"><td class="memItemLeft" align="right" valign="top"><a id="adf2eafa8add045ef0f1adc0dd1c262af" name="adf2eafa8add045ef0f1adc0dd1c262af"></a>
+constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
+<tr class="memdesc:adf2eafa8add045ef0f1adc0dd1c262af"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if not zero. <br /></td></tr>
+<tr class="separator:adf2eafa8add045ef0f1adc0dd1c262af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bb71a030ad3cff3056cc0f051aa098a" id="r_a8bb71a030ad3cff3056cc0f051aa098a"><td class="memItemLeft" align="right" valign="top"><a id="a8bb71a030ad3cff3056cc0f051aa098a" name="a8bb71a030ad3cff3056cc0f051aa098a"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator std::chrono::nanoseconds</b> () const</td></tr>
 <tr class="memdesc:a8bb71a030ad3cff3056cc0f051aa098a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to nanoseconds period. <br /></td></tr>
@@ -102,9 +109,9 @@ constexpr Sint64&#160;</td><td class="memItemRight" valign="bottom"><b>ToNS</b> 
 <tr class="memitem:ga161606d2ba9e8445e9d60e6482925c6d" id="r_ga161606d2ba9e8445e9d60e6482925c6d"><td class="memItemLeft" align="right" valign="top">constexpr Sint64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d">ToPosix</a> () const</td></tr>
 <tr class="memdesc:ga161606d2ba9e8445e9d60e6482925c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert nanoseconds to seconds.  <br /></td></tr>
 <tr class="separator:ga161606d2ba9e8445e9d60e6482925c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1669b0949597d2992112c3aa9732f410" id="r_a1669b0949597d2992112c3aa9732f410"><td class="memItemLeft" align="right" valign="top"><a id="a1669b0949597d2992112c3aa9732f410" name="a1669b0949597d2992112c3aa9732f410"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ToWindows</b> (Uint32 *dwLowDateTime, Uint32 *dwHighDateTime) const</td></tr>
-<tr class="separator:a1669b0949597d2992112c3aa9732f410"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1669b0949597d2992112c3aa9732f410" id="r_ga1669b0949597d2992112c3aa9732f410"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga1669b0949597d2992112c3aa9732f410">ToWindows</a> (Uint32 *dwLowDateTime, Uint32 *dwHighDateTime) const</td></tr>
+<tr class="memdesc:ga1669b0949597d2992112c3aa9732f410"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> time into a Windows FILETIME (100-nanosecond intervals since January 1, 1601).  <br /></td></tr>
+<tr class="separator:ga1669b0949597d2992112c3aa9732f410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17335bea12d0bd343e03f466fa13154e" id="r_a17335bea12d0bd343e03f466fa13154e"><td class="memItemLeft" align="right" valign="top"><a id="a17335bea12d0bd343e03f466fa13154e" name="a17335bea12d0bd343e03f466fa13154e"></a>
 constexpr <a class="el" href="classSDL_1_1Time.html">Time</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (std::chrono::nanoseconds interval)</td></tr>
 <tr class="memdesc:a17335bea12d0bd343e03f466fa13154e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increment time. <br /></td></tr>
@@ -116,9 +123,9 @@ constexpr <a class="el" href="classSDL_1_1Time.html">Time</a> &amp;&#160;</td><t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aec43305f9c24063896d72b0deb207a6e" id="r_aec43305f9c24063896d72b0deb207a6e"><td class="memItemLeft" align="right" valign="top"><a id="aec43305f9c24063896d72b0deb207a6e" name="aec43305f9c24063896d72b0deb207a6e"></a>
-static <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Current</b> ()</td></tr>
-<tr class="separator:aec43305f9c24063896d72b0deb207a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga185f1c1c0b9c344738ba7a3f0ec57f15" id="r_ga185f1c1c0b9c344738ba7a3f0ec57f15"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga185f1c1c0b9c344738ba7a3f0ec57f15">Current</a> ()</td></tr>
+<tr class="memdesc:ga185f1c1c0b9c344738ba7a3f0ec57f15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current value of the system realtime clock in nanoseconds since Jan 1, 1970 in Universal Coordinated <a class="el" href="classSDL_1_1Time.html" title="SDL times are signed, 64-bit integers representing nanoseconds since the Unix epoch (Jan 1,...">Time</a> (UTC).  <br /></td></tr>
+<tr class="separator:ga185f1c1c0b9c344738ba7a3f0ec57f15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef14fc81403f1036d3aac0242d460837" id="r_aef14fc81403f1036d3aac0242d460837"><td class="memItemLeft" align="right" valign="top"><a id="aef14fc81403f1036d3aac0242d460837" name="aef14fc81403f1036d3aac0242d460837"></a>
 static constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FromNS</b> (Sint64 time)</td></tr>
 <tr class="memdesc:aef14fc81403f1036d3aac0242d460837"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create from a nanoseconds Sint64. <br /></td></tr>
@@ -126,18 +133,19 @@ static constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><
 <tr class="memitem:gada9d792477503fe89dade93666a5df44" id="r_gada9d792477503fe89dade93666a5df44"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44">FromPosix</a> (Sint64 time)</td></tr>
 <tr class="memdesc:gada9d792477503fe89dade93666a5df44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert seconds to nanoseconds.  <br /></td></tr>
 <tr class="separator:gada9d792477503fe89dade93666a5df44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7816eced39df5f9f399f2a5853051cd7" id="r_a7816eced39df5f9f399f2a5853051cd7"><td class="memItemLeft" align="right" valign="top"><a id="a7816eced39df5f9f399f2a5853051cd7" name="a7816eced39df5f9f399f2a5853051cd7"></a>
-static <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FromWindows</b> (Uint32 dwLowDateTime, Uint32 dwHighDateTime)</td></tr>
-<tr class="separator:a7816eced39df5f9f399f2a5853051cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga16327dd9d2907e293665760b5a2bf845" id="r_ga16327dd9d2907e293665760b5a2bf845"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845">FromWindows</a> (Uint32 dwLowDateTime, Uint32 dwHighDateTime)</td></tr>
+<tr class="memdesc:ga16327dd9d2907e293665760b5a2bf845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a Windows FILETIME (100-nanosecond intervals since January 1, 1601) to an <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> time.  <br /></td></tr>
+<tr class="separator:ga16327dd9d2907e293665760b5a2bf845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>They can be converted between POSIX time_t values with <a class="el" href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d" title="Convert nanoseconds to seconds.">ToPosix()</a> and <a class="el" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44" title="Convert seconds to nanoseconds.">FromPosix()</a>, and between Windows FILETIME values with ToWindows() and FromWindows().</p>
+<div class="textblock"><p>They can be converted between POSIX time_t values with <a class="el" href="group__CategoryTimer.html#ga161606d2ba9e8445e9d60e6482925c6d" title="Convert nanoseconds to seconds.">ToPosix()</a> and <a class="el" href="group__CategoryTimer.html#gada9d792477503fe89dade93666a5df44" title="Convert seconds to nanoseconds.">FromPosix()</a>, and between Windows FILETIME values with <a class="el" href="group__CategoryTime.html#ga1669b0949597d2992112c3aa9732f410" title="Converts an SDL time into a Windows FILETIME (100-nanosecond intervals since January 1,...">ToWindows()</a> and <a class="el" href="group__CategoryTime.html#ga16327dd9d2907e293665760b5a2bf845" title="Converts a Windows FILETIME (100-nanosecond intervals since January 1, 1601) to an SDL time.">FromWindows()</a>.</p>
 <dl class="section since"><dt>Since</dt><dd>This type is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_MAX_SINT64 </dd>
 <dd>
 SDL_MIN_SINT64 </dd></dl>
 </div><hr/>The documentation for this class was generated from the following files:<ul>
 <li>SDL3pp/<a class="el" href="SDL3pp__stdinc_8h_source.html">SDL3pp_stdinc.h</a></li>
+<li>SDL3pp/<a class="el" href="SDL3pp__time_8h_source.html">SDL3pp_time.h</a></li>
 <li>SDL3pp/<a class="el" href="SDL3pp__timer_8h_source.html">SDL3pp_timer.h</a></li>
 </ul>
 </div><!-- contents -->

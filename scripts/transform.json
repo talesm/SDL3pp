@@ -165,17 +165,31 @@
               "kind": "var",
               "type": "std::chrono::nanoseconds"
             },
-            "Time": {
+            "Time": [
+              {
+                "kind": "function",
+                "constexpr": true,
+                "type": "",
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "explicit",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "std::chrono::nanoseconds",
+                    "name": "time"
+                  }
+                ]
+              }
+            ],
+            "operator bool": {
               "kind": "function",
-              "type": "explicit",
+              "type": "",
+              "immutable": true,
               "constexpr": true,
-              "parameters": [
-                {
-                  "type": "std::chrono::nanoseconds",
-                  "name": "time",
-                  "default": "{}"
-                }
-              ]
+              "parameters": []
             },
             "operator std::chrono::nanoseconds": {
               "kind": "function",
@@ -4795,6 +4809,121 @@
             {
               "type": "void *",
               "name": "userdata"
+            }
+          ]
+        }
+      }
+    },
+    "SDL_time.h": {
+      "transform": {
+        "SDL_DateTime": {
+          "kind": "struct",
+          "entries": {
+            "DateTime": [
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_DateTime &",
+                    "name": "dt"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "year"
+                  },
+                  {
+                    "type": "int",
+                    "name": "month"
+                  },
+                  {
+                    "type": "int",
+                    "name": "day"
+                  },
+                  {
+                    "type": "int",
+                    "name": "hour"
+                  },
+                  {
+                    "type": "int",
+                    "name": "minute"
+                  },
+                  {
+                    "type": "int",
+                    "name": "second"
+                  },
+                  {
+                    "type": "int",
+                    "name": "nanosecond"
+                  },
+                  {
+                    "type": "int",
+                    "name": "day_of_week"
+                  },
+                  {
+                    "type": "int",
+                    "name": "utc_offset"
+                  }
+                ]
+              }
+            ],
+            "SDL_TimeToDateTime": {
+              "name": "DateTime",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "Time",
+                  "name": "ticks"
+                },
+                {
+                  "type": "bool",
+                  "name": "localTime",
+                  "default": "true"
+                }
+              ]
+            },
+            "operator bool": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": []
+            },
+            "SDL_DateTimeToTime": {
+              "name": "operator Time",
+              "type": "",
+              "immutable": true,
+              "parameters": []
+            }
+          }
+        },
+        "SDL_GetCurrentTime": {
+          "name": "Time::Current",
+          "type": "Time",
+          "parameters": []
+        },
+        "SDL_TimeFromWindows": {
+          "name": "Time::FromWindows"
+        },
+        "SDL_TimeToWindows": {
+          "name": "Time::ToWindows",
+          "immutable": true,
+          "parameters": [
+            {
+              "type": "Uint32 *",
+              "name": "dwLowDateTime"
+            },
+            {
+              "type": "Uint32 *",
+              "name": "dwHighDateTime"
             }
           ]
         }

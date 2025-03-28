@@ -11,9 +11,10 @@ var searchData=
   ['texture_8',['Texture',['../group__CategoryRender.html#ga13d0a07c826d3f2531cb140115008f5a',1,'SDL']]],
   ['textureaccess_9',['TextureAccess',['../group__CategoryRender.html#ga736d13caaeee38a712dfb94180a24f56',1,'SDL']]],
   ['textureref_10',['TextureRef',['../group__CategoryRender.html#ga4b68df1674a8dea4fabd4e9ab9e745d7',1,'SDL']]],
-  ['timercallback_11',['TimerCallback',['../group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea',1,'SDL']]],
-  ['timercb_12',['TimerCB',['../group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
-  ['timerid_13',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
-  ['touchfingerevent_14',['TouchFingerEvent',['../group__CategoryEvents.html#ga4e1360399f8cfe47ae4efacbdcf59040',1,'SDL']]],
-  ['transfercharacteristics_15',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]]
+  ['timeformat_11',['TimeFormat',['../group__CategoryTime.html#ga054c5288c34a7c6a75fedada33d3e161',1,'SDL']]],
+  ['timercallback_12',['TimerCallback',['../group__CategoryTimer.html#ga054530d467e48c18551e46f4348353ea',1,'SDL']]],
+  ['timercb_13',['TimerCB',['../group__CategoryTimer.html#ga418a6ee007995b046629a7f12a797c53',1,'SDL']]],
+  ['timerid_14',['TimerID',['../group__CategoryTimer.html#ga598490e641c8e0a73532bd8c866b6146',1,'SDL']]],
+  ['touchfingerevent_15',['TouchFingerEvent',['../group__CategoryEvents.html#ga4e1360399f8cfe47ae4efacbdcf59040',1,'SDL']]],
+  ['transfercharacteristics_16',['TransferCharacteristics',['../group__CategoryPixels.html#ga593e88793075184f8b332a9b893fa6b5',1,'SDL']]]
 ];
