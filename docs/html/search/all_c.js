@@ -3,7 +3,7 @@ var searchData=
   ['libraries_0',['libraries',['../ApiByCategory.html#satellite-libraries',1,'Satellite libraries'],['../group__CategoriesLibs.html',1,'Satellite Libraries']]],
   ['library_20functionality_1',['Standard Library Functionality',['../group__CategoryStdinc.html',1,'']]],
   ['list_2',['Todo List',['../todo.html',1,'']]],
-  ['listener_20callback_3',['listener callback',['../todo.html#_todo000004',1,'Listener callback'],['../callback.html#listener-callback',1,'Listener callback']]],
+  ['listener_20callback_3',['listener callback',['../todo.html#_todo000009',1,'Listener callback'],['../callback.html#listener-callback',1,'Listener callback']]],
   ['load_20images_20from_20several_20formats_4',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
   ['loadavif_5',['LoadAVIF',['../group__CategorySDLImage.html#ga8e2e8b157ac315e5117f36020c14fae4',1,'SDL']]],
   ['loadbmp_6',['loadbmp',['../group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076',1,'SDL::LoadBMP(StringParam file)'],['../group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7',1,'SDL::LoadBMP(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)']]],

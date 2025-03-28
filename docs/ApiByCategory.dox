@@ -26,33 +26,78 @@ Category                 | Header
 @ref CategoryBlendmode   | SDL3pp_blendmode.h
 @ref CategoryRect        | SDL3pp_rect.h
 @ref CategorySurface     | SDL3pp_surface.h
+Clipboard Handling       | SDL3pp_clipboard.h
+Vulkan Support           | SDL3pp_vulkan.h
+Metal Support            | SDL3pp_metal.h
+Camera Support           | SDL3pp_camera.h
+
+## Force Feedback ("Haptic")
+
+@todo Plan and implement.
+
+## Audio
+
+@todo Plan and implement.
 
 ## Input Events
 
 Category                 | Header
 ------------------------ | --------------------
 @ref CategoryEvents      | SDL3pp_events.h
+Keyboard Support         | SDL3pp_keyboard.h
+Keyboard Keycodes        | SDL3pp_keycode.h
+Keyboard Scancodes       | SDL3pp_scancode.h
+Mouse Support            | SDL3pp_mouse.h
+Joystick Support         | SDL3pp_joystick.h
+Gamepad Support          | SDL3pp_gamepad.h
+Touch Support            | SDL3pp_touch.h
+Pen Support              | SDL3pp_pen.h
+Sensors                  | SDL3pp_sensor.h
+HIDAPI                   | SDL3pp_hidapi.h
+
+## GPU
+
+@todo Plan and implement. This is big and need some similarly big time to implement.
+
+## Threads
+
+@todo Plan and implement. Not priority as C++ stdlib already has similar facilities.
 
 ## Time
 
 Category                 | Header
 ------------------------ | --------------------
 @ref CategoryTimer       | SDL3pp_timer.h
+Date and time            | SDL3pp_time.h
 
 ## File and I/O Abstractions
 
 Category                 | Header
 ------------------------ | --------------------
+Filesystem Access        | SDL3pp_filesystem.h
+Storage Abstraction      | SDL3pp_storage.h
 @ref CategoryIOStream    | SDL3pp_iostream.h
+Async I/O                | SDL3pp_asyncio.h
+
+## Platform and CPU Information
+
+@todo Plan and implement
 
 ## Additional Functionality
 
-Category             | Header
--------------------- | --------------------
-@ref CategoryLocale  | SDL3pp_locale.h
-@ref CategoryStdinc  | SDL3pp_stdinc.h
-@ref CategoryGUID    | SDL3pp_guid.h
-@ref CategoryMisc    | SDL3pp_misc.h
+Category                            | Header
+----------------------------------- | --------------------
+Shared Object/DLL Management        | SDL3pp_loadso.h         
+Process Control                     | SDL3pp_process.h       
+Power Management Status             | SDL3pp_power.h           
+Message Boxes                       | SDL3pp_messagebox.h 
+File Dialogs                        | SDL3pp_dialog.h         
+System Tray                         | SDL3pp_tray.h             
+@ref CategoryLocale                 | SDL3pp_locale.h
+~~Platform-specific Functionality~~ | SDL3pp_system.h 
+@ref CategoryStdinc                 | SDL3pp_stdinc.h
+@ref CategoryGUID                   | SDL3pp_guid.h
+@ref CategoryMisc                   | SDL3pp_misc.h
 
 ## Satellite libraries
 
