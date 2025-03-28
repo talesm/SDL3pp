@@ -12,9 +12,9 @@ Things for a version 0.1
     on SDL;
   - [x] Wrap [RAII interface to SDL allocated pointers](https://talesm.github.io/SDL3pp/group__CategoryOwnPtr.html)
     returned by some SDL APIs;
-  - [x] Implement [Optional reference-like shim](https://talesm.github.io/SDL3pp/classSDL_1_1OptionalRef.html)
+  - [x] Implement [Optional reference-like type](https://talesm.github.io/SDL3pp/classSDL_1_1OptionalRef.html)
     for simulating an `std::optional<T&>`;
-  - [x] Implement [span-like interface](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
+  - [x] Implement [span-like type](https://talesm.github.io/SDL3pp/classSDL_1_1SpanRef.html)
     compatible with our empty-derived structs we use to add methods to things
     like SDL_Rect.
 - [ ] Wrap SDL (categories)[https://wiki.libsdl.org/SDL3/APIByCategory]:

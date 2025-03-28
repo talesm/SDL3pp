@@ -12,9 +12,12 @@ concept DerivedWrapper =
   std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
 
 /**
- * A wrapper around span that works for out derived-wrapper pattern
+ * span-like for empty-derived structs
+ *
+ * This wraps around std::span that works for out derived-wrapper pattern
  * (eg, Rect, Color)
  *
+ * @ingroup CategoriesCppSupport
  */
 template<class T>
 class SpanRef

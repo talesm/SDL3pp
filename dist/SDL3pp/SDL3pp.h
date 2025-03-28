@@ -371,9 +371,14 @@ public:
 /// @}
 
 /**
- * @brief Shim to get optional-like interface for references
+ * @brief Optional-like shim for references
  *
- * @tparam T
+ * This allows us explicitly annotate optional parameters that would otherwise
+ * be references.
+ *
+ * @tparam T the underlying type
+ *
+ * @ingroup CategoriesCppSupport
  */
 template<class T>
 class OptionalRef
@@ -420,9 +425,12 @@ concept DerivedWrapper =
   std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
 
 /**
- * A wrapper around span that works for out derived-wrapper pattern
+ * span-like for empty-derived structs
+ *
+ * This wraps around std::span that works for out derived-wrapper pattern
  * (eg, Rect, Color)
  *
+ * @ingroup CategoriesCppSupport
  */
 template<class T>
 class SpanRef
@@ -477,23 +485,18 @@ public:
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
 
-/**
- * @defgroup CategoryStringParam Helpers to use C++ strings parameters
- *
- * We have a single helper for now, StringParam should cover everything.
- *
- * @{
- */
-
 #ifdef SDL3PP_ENABLE_STRING_PARAM
 
 /**
- * @brief A safe and mostly efficient wrapper to std::string and
- * std::string_view parameters
+ * @brief Helpers to use C++ strings parameters
+ *
+ * This wraps std::string and std::string_view to the SDL's C interfaces.
  *
  * This should only be declared in [function
  * parameters](https://en.cppreference.com/w/cpp/language/expressions#Full-expressions),
  * using it otherwise is to ask for undefined behavior
+ *
+ * @ingroup CategoriesCppSupport
  */
 class StringParam
 {
@@ -593,8 +596,6 @@ public:
 using StringParam = const char*;
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
-
-/// @}
 
 /**
  * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()

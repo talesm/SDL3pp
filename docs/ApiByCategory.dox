@@ -108,14 +108,14 @@ Category               | Header
 
 ## C++ Support
 
-Category                     | Header
----------------------------- | ------------------------
-@ref CategoryCallbackWrapper | SDL3pp_callbackWrapper.h
-@ref CategoryObjectWrapper   | SDL3pp_objectWrapper.h
-@ref CategoryOptionalRef     | SDL3pp_optionalRef.h
-@ref CategoryOwnPtr          | SDL3pp_ownPtr.h
-@ref CategorySpanRef         | SDL3pp_spanRef.h
-@ref CategoryStringParam     | SDL3pp_stringParam.h
+Category                                            | Header
+--------------------------------------------------- | ------------------------
+@ref CategoryCallbackWrapper                        | SDL3pp_callbackWrapper.h
+@ref CategoryObjectWrapper                          | SDL3pp_objectWrapper.h
+[Optional references](#SDL::OptionalRef)            | SDL3pp_optionalRef.h
+@ref CategoryOwnPtr                                 | SDL3pp_ownPtr.h
+[Span-like for derived structs](#SDL::SpanRef)      | SDL3pp_spanRef.h
+[Wrapper for string parameters](#SDL::StringParam)  | SDL3pp_stringParam.h
 
 @defgroup Categories Categories
 
@@ -178,10 +178,7 @@ You probably want to see @ref ApiByCategory
 @{
 @addtogroup CategoryCallbackWrapper
 @addtogroup CategoryObjectWrapper
-@addtogroup CategoryOptionalRef
 @addtogroup CategoryOwnPtr
-@addtogroup CategorySpanRef
-@addtogroup CategoryStringParam
 @}
 
 @}

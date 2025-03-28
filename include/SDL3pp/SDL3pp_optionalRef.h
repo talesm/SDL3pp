@@ -6,9 +6,14 @@
 namespace SDL {
 
 /**
- * @brief Shim to get optional-like interface for references
+ * @brief Optional-like shim for references
  *
- * @tparam T
+ * This allows us explicitly annotate optional parameters that would otherwise
+ * be references.
+ *
+ * @tparam T the underlying type
+ *
+ * @ingroup CategoriesCppSupport
  */
 template<class T>
 class OptionalRef
