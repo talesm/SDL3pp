@@ -10,9 +10,17 @@ var searchData=
   ['blendfactor_5fsrc_5falpha_7',['BLENDFACTOR_SRC_ALPHA',['../group__CategoryBlendmode.html#ga76d933845e0aed08c6243630bdcf2286',1,'SDL']]],
   ['blendfactor_5fsrc_5fcolor_8',['BLENDFACTOR_SRC_COLOR',['../group__CategoryBlendmode.html#ga66486fa599a85f258fd93b0f36e379ed',1,'SDL']]],
   ['blendfactor_5fzero_9',['BLENDFACTOR_ZERO',['../group__CategoryBlendmode.html#ga00143e5f9f2940f2550cc752688287b3',1,'SDL']]],
-  ['blendoperation_5fadd_10',['BLENDOPERATION_ADD',['../group__CategoryBlendmode.html#gac62524aab0f74e96701bbaa1d9994841',1,'SDL']]],
-  ['blendoperation_5fmaximum_11',['BLENDOPERATION_MAXIMUM',['../group__CategoryBlendmode.html#gaf51cb748edf63cf4fceb809c35bd7762',1,'SDL']]],
-  ['blendoperation_5fminimum_12',['BLENDOPERATION_MINIMUM',['../group__CategoryBlendmode.html#ga56e6f773c923182ebaabd691ddce79d4',1,'SDL']]],
-  ['blendoperation_5frev_5fsubtract_13',['BLENDOPERATION_REV_SUBTRACT',['../group__CategoryBlendmode.html#gae480c0c4aa3710d058b64a44f22a4cc1',1,'SDL']]],
-  ['blendoperation_5fsubtract_14',['BLENDOPERATION_SUBTRACT',['../group__CategoryBlendmode.html#gad4a3fceb0474aa624e5c274185271868',1,'SDL']]]
+  ['blendmode_5fadd_10',['BLENDMODE_ADD',['../group__CategoryBlendmode.html#ga910cec1f2c4b1df599a7387e130a900a',1,'SDL']]],
+  ['blendmode_5fadd_5fpremultiplied_11',['BLENDMODE_ADD_PREMULTIPLIED',['../group__CategoryBlendmode.html#ga4a45ca8634e736bd50cc072498b1ede9',1,'SDL']]],
+  ['blendmode_5fblend_12',['BLENDMODE_BLEND',['../group__CategoryBlendmode.html#gaa38070d807b6e89f76e8aa8d55f8c5a4',1,'SDL']]],
+  ['blendmode_5fblend_5fpremultiplied_13',['BLENDMODE_BLEND_PREMULTIPLIED',['../group__CategoryBlendmode.html#gae1fedd92825b51d0b8363ac111217d43',1,'SDL']]],
+  ['blendmode_5finvalid_14',['BLENDMODE_INVALID',['../group__CategoryBlendmode.html#gabe2c214e345d6b5ef2ebb8e6816d30c1',1,'SDL']]],
+  ['blendmode_5fmod_15',['BLENDMODE_MOD',['../group__CategoryBlendmode.html#ga1dffcae259615d89e179a9d722665e44',1,'SDL']]],
+  ['blendmode_5fmul_16',['BLENDMODE_MUL',['../group__CategoryBlendmode.html#ga0f0d1eece6bda86f11a97604997ebfd7',1,'SDL']]],
+  ['blendmode_5fnone_17',['BLENDMODE_NONE',['../group__CategoryBlendmode.html#ga5a9cb000dcb8e5ae245dc8d6931c3268',1,'SDL']]],
+  ['blendoperation_5fadd_18',['BLENDOPERATION_ADD',['../group__CategoryBlendmode.html#gac62524aab0f74e96701bbaa1d9994841',1,'SDL']]],
+  ['blendoperation_5fmaximum_19',['BLENDOPERATION_MAXIMUM',['../group__CategoryBlendmode.html#gaf51cb748edf63cf4fceb809c35bd7762',1,'SDL']]],
+  ['blendoperation_5fminimum_20',['BLENDOPERATION_MINIMUM',['../group__CategoryBlendmode.html#ga56e6f773c923182ebaabd691ddce79d4',1,'SDL']]],
+  ['blendoperation_5frev_5fsubtract_21',['BLENDOPERATION_REV_SUBTRACT',['../group__CategoryBlendmode.html#gae480c0c4aa3710d058b64a44f22a4cc1',1,'SDL']]],
+  ['blendoperation_5fsubtract_22',['BLENDOPERATION_SUBTRACT',['../group__CategoryBlendmode.html#gad4a3fceb0474aa624e5c274185271868',1,'SDL']]]
 ];

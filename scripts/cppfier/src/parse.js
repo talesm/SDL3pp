@@ -257,7 +257,7 @@ class ContentParser {
         entry.parameters = parseParams(token.parameters);
         break;
       case "def":
-        if (token.parameters) entry.parameters = parseParams(token.parameters);
+        if (token.parameters != null) entry.parameters = parseParams(token.parameters);
         break;
       case "enum":
         if (!lastDecl) lastDecl = token.begin;
@@ -376,6 +376,7 @@ function parseParams(params) {
       name = name.slice(1);
     }
     type = normalizeType(type);
+    if (name.startsWith('(&')) name += ')[N]';
     if (defaultValue) return { name, type, default: defaultValue };
     return { name, type };
   });

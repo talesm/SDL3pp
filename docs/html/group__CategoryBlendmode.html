@@ -83,9 +83,6 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:gad02afeb206989ff841629dca2c93e694" id="r_gad02afeb206989ff841629dca2c93e694"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">SDL::BlendMode</a> = SDL_BlendMode</td></tr>
-<tr class="memdesc:gad02afeb206989ff841629dca2c93e694"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of blend modes used in drawing operations.  <br /></td></tr>
-<tr class="separator:gad02afeb206989ff841629dca2c93e694"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga21363090449c66df5eb5cc2e455da2b8" id="r_ga21363090449c66df5eb5cc2e455da2b8"><td class="memItemLeft" align="right" valign="top"><a id="ga21363090449c66df5eb5cc2e455da2b8" name="ga21363090449c66df5eb5cc2e455da2b8"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BlendOperation</b> = SDL_BlendOperation</td></tr>
 <tr class="memdesc:ga21363090449c66df5eb5cc2e455da2b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The blend operation used when combining source and destination pixel components. <br /></td></tr>
@@ -157,6 +154,41 @@ constexpr <a class="el" href="group__CategoryBlendmode.html#ga34d032507f571bcbdc
 <tr class="memitem:gae44cd6ea76e4bd6d50710897c2f082a4" id="r_gae44cd6ea76e4bd6d50710897c2f082a4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryBlendmode.html#ga34d032507f571bcbdc683ad23d55176b">BlendFactor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#gae44cd6ea76e4bd6d50710897c2f082a4">SDL::BLENDFACTOR_ONE_MINUS_DST_ALPHA</a></td></tr>
 <tr class="memdesc:gae44cd6ea76e4bd6d50710897c2f082a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">1-dstA, 1-dstA, 1-dstA, 1-dstA  <br /></td></tr>
 <tr class="separator:gae44cd6ea76e4bd6d50710897c2f082a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">BlendModes</h2></td></tr>
+<tr class="memitem:gad02afeb206989ff841629dca2c93e694" id="r_gad02afeb206989ff841629dca2c93e694"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">SDL::BlendMode</a> = SDL_BlendMode</td></tr>
+<tr class="memdesc:gad02afeb206989ff841629dca2c93e694"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of blend modes used in drawing operations.  <br /></td></tr>
+<tr class="separator:gad02afeb206989ff841629dca2c93e694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5a9cb000dcb8e5ae245dc8d6931c3268" id="r_ga5a9cb000dcb8e5ae245dc8d6931c3268"><td class="memItemLeft" align="right" valign="top"><a id="ga5a9cb000dcb8e5ae245dc8d6931c3268" name="ga5a9cb000dcb8e5ae245dc8d6931c3268"></a>
+constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BLENDMODE_NONE</b> = SDL_BLENDMODE_NONE</td></tr>
+<tr class="memdesc:ga5a9cb000dcb8e5ae245dc8d6931c3268"><td class="mdescLeft">&#160;</td><td class="mdescRight">no blending: dstRGBA = srcRGBA <br /></td></tr>
+<tr class="separator:ga5a9cb000dcb8e5ae245dc8d6931c3268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa38070d807b6e89f76e8aa8d55f8c5a4" id="r_gaa38070d807b6e89f76e8aa8d55f8c5a4"><td class="memItemLeft" align="right" valign="top"><a id="gaa38070d807b6e89f76e8aa8d55f8c5a4" name="gaa38070d807b6e89f76e8aa8d55f8c5a4"></a>
+constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BLENDMODE_BLEND</b> = SDL_BLENDMODE_BLEND</td></tr>
+<tr class="memdesc:gaa38070d807b6e89f76e8aa8d55f8c5a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA + (dstA * (1-srcA)) <br /></td></tr>
+<tr class="separator:gaa38070d807b6e89f76e8aa8d55f8c5a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae1fedd92825b51d0b8363ac111217d43" id="r_gae1fedd92825b51d0b8363ac111217d43"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#gae1fedd92825b51d0b8363ac111217d43">SDL::BLENDMODE_BLEND_PREMULTIPLIED</a></td></tr>
+<tr class="memdesc:gae1fedd92825b51d0b8363ac111217d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))  <br /></td></tr>
+<tr class="separator:gae1fedd92825b51d0b8363ac111217d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga910cec1f2c4b1df599a7387e130a900a" id="r_ga910cec1f2c4b1df599a7387e130a900a"><td class="memItemLeft" align="right" valign="top"><a id="ga910cec1f2c4b1df599a7387e130a900a" name="ga910cec1f2c4b1df599a7387e130a900a"></a>
+constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BLENDMODE_ADD</b> = SDL_BLENDMODE_ADD</td></tr>
+<tr class="memdesc:ga910cec1f2c4b1df599a7387e130a900a"><td class="mdescLeft">&#160;</td><td class="mdescRight">additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA <br /></td></tr>
+<tr class="separator:ga910cec1f2c4b1df599a7387e130a900a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a45ca8634e736bd50cc072498b1ede9" id="r_ga4a45ca8634e736bd50cc072498b1ede9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryBlendmode.html#ga4a45ca8634e736bd50cc072498b1ede9">SDL::BLENDMODE_ADD_PREMULTIPLIED</a></td></tr>
+<tr class="memdesc:ga4a45ca8634e736bd50cc072498b1ede9"><td class="mdescLeft">&#160;</td><td class="mdescRight">pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA  <br /></td></tr>
+<tr class="separator:ga4a45ca8634e736bd50cc072498b1ede9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1dffcae259615d89e179a9d722665e44" id="r_ga1dffcae259615d89e179a9d722665e44"><td class="memItemLeft" align="right" valign="top"><a id="ga1dffcae259615d89e179a9d722665e44" name="ga1dffcae259615d89e179a9d722665e44"></a>
+constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BLENDMODE_MOD</b> = SDL_BLENDMODE_MOD</td></tr>
+<tr class="memdesc:ga1dffcae259615d89e179a9d722665e44"><td class="mdescLeft">&#160;</td><td class="mdescRight">color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA <br /></td></tr>
+<tr class="separator:ga1dffcae259615d89e179a9d722665e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f0d1eece6bda86f11a97604997ebfd7" id="r_ga0f0d1eece6bda86f11a97604997ebfd7"><td class="memItemLeft" align="right" valign="top"><a id="ga0f0d1eece6bda86f11a97604997ebfd7" name="ga0f0d1eece6bda86f11a97604997ebfd7"></a>
+constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BLENDMODE_MUL</b> = SDL_BLENDMODE_MUL</td></tr>
+<tr class="memdesc:ga0f0d1eece6bda86f11a97604997ebfd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA <br /></td></tr>
+<tr class="separator:ga0f0d1eece6bda86f11a97604997ebfd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabe2c214e345d6b5ef2ebb8e6816d30c1" id="r_gabe2c214e345d6b5ef2ebb8e6816d30c1"><td class="memItemLeft" align="right" valign="top"><a id="gabe2c214e345d6b5ef2ebb8e6816d30c1" name="gabe2c214e345d6b5ef2ebb8e6816d30c1"></a>
+constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::BLENDMODE_INVALID</b> = SDL_BLENDMODE_INVALID</td></tr>
+<tr class="memdesc:gabe2c214e345d6b5ef2ebb8e6816d30c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid blendmode. <br /></td></tr>
+<tr class="separator:gabe2c214e345d6b5ef2ebb8e6816d30c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>There are both standard modes for basic needs and a means to create custom modes, dictating what sort of math to do on what color components. </p>
@@ -387,6 +419,54 @@ dst)</code> can return one of the following:</p>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=</div>
 <div class="line">  SDL_BLENDFACTOR_ONE_MINUS_SRC_COLOR</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ga4a45ca8634e736bd50cc072498b1ede9" name="ga4a45ca8634e736bd50cc072498b1ede9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a45ca8634e736bd50cc072498b1ede9">&#9670;&#160;</a></span>BLENDMODE_ADD_PREMULTIPLIED</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> SDL::BLENDMODE_ADD_PREMULTIPLIED</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_BLENDMODE_ADD_PREMULTIPLIED</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="gae1fedd92825b51d0b8363ac111217d43" name="gae1fedd92825b51d0b8363ac111217d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae1fedd92825b51d0b8363ac111217d43">&#9670;&#160;</a></span>BLENDMODE_BLEND_PREMULTIPLIED</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">BlendMode</a> SDL::BLENDMODE_BLEND_PREMULTIPLIED</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">  SDL_BLENDMODE_BLEND_PREMULTIPLIED</div>
 </div><!-- fragment -->
 </div>
 </div>

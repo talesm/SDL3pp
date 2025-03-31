@@ -114,7 +114,7 @@ class Tokenizer {
       } else {
         return this.next();
       }
-    } else if (m = /^#define\s+(\w+)(\(([\w\s,]+)\))?/.exec(line)) {
+    } else if (m = /^#define\s+(\w+)(\(([\w\s,]*)\))?/.exec(line)) {
       token.kind = "def";
       token.value = m[1];
       if (m[2]) token.parameters = m[3]?.trim();

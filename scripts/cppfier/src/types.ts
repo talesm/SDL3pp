@@ -54,6 +54,7 @@ export type StringMap = Dict<string>;
 export interface ApiTransform {
   files?: Dict<FileTransform>;
   prefixes?: string | string[];
+  definitionPrefix?: string;
   renameRules?: ReplacementRule[];
   docRules?: ReplacementRule[];
   typeMap?: StringMap;
@@ -64,11 +65,11 @@ export interface ApiTransform {
 export interface FileTransform {
   name?: string;
   doc?: string;
-  includeDefs?: string[];
   ignoreEntries?: string[];
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
+  enumerations?: Dict<ApiEnumeration>
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
@@ -127,6 +128,13 @@ export interface ApiResource extends ApiEntryTransform {
    * 
    */
   returnType?: "ref" | "unique" | "none";
+}
+
+export interface ApiEnumeration extends ApiEntryTransform {
+  kind?: "struct" | "alias" | "enum";
+  prefix?: string;
+  values?: string[];
+  includeAfter?: string;
 }
 
 export type QuickTransform = "placeholder" | "immutable" | "ctor" | ApiEntryKind;

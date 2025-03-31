@@ -40,60 +40,6 @@ constexpr struct TtfInitFlag : InitFlagsExtra
 } INIT_TTF; ///< Flag to init TTF support
 
 /**
- * Font style flags for TTF_Font
- *
- * These are the flags which can be used to set the style of a font in
- * SDL_ttf. A combination of these flags can be used with functions that set
- * or query font style, such as TTF_SetFontStyle or TTF_GetFontStyle.
- *
- * @since This function is available since SDL_ttf 3.0.0.
- *
- * @sa TTF_SetFontStyle
- * @sa TTF_GetFontStyle
- */
-using FontStyleFlags = TTF_FontStyleFlags;
-
-/**
- * Hinting flags for TTF (TrueType Fonts)
- *
- * This enum specifies the level of hinting to be applied to the font
- * rendering. The hinting level determines how much the font's outlines are
- * adjusted for better alignment on the pixel grid.
- *
- * @since This enum is available since SDL_ttf 3.0.0.
- *
- * @sa TTF_SetFontHinting
- * @sa TTF_GetFontHinting
- */
-using HintingFlags = TTF_HintingFlags;
-
-/**
- * The horizontal alignment used when rendering wrapped text.
- *
- * @since This enum is available since SDL_ttf 3.0.0.
- */
-using HorizontalAlignment = TTF_HorizontalAlignment;
-
-/**
- * Direction flags
- *
- * The values here are chosen to match
- * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t).
- *
- * @since This enum is available since SDL_ttf 3.0.0.
- *
- * @sa TTF_SetFontDirection
- */
-using Direction = TTF_Direction;
-
-/**
- * The type of data in a glyph image
- *
- * @since This enum is available since SDL_ttf 3.0.0.
- */
-using ImageType = TTF_ImageType;
-
-/**
  * Wraps the TTF_TextEngine so we can store its
  * Destroy function with it
  *
@@ -215,6 +161,288 @@ using TextRef = TextBase<ObjectRef<TTF_Text>>;
 using Text = TextBase<ObjectUnique<TTF_Text>>;
 
 /**
+ * @name Font Style Flags
+ * @{
+ */
+
+/**
+ * Font style flags for TTF_Font
+ *
+ * These are the flags which can be used to set the style of a font in
+ * SDL_ttf. A combination of these flags can be used with functions that set
+ * or query font style, such as TTF_SetFontStyle or TTF_GetFontStyle.
+ *
+ * @since This function is available since SDL_ttf 3.0.0.
+ *
+ * @sa TTF_SetFontStyle
+ * @sa TTF_GetFontStyle
+ */
+using FontStyleFlags = TTF_FontStyleFlags;
+
+/**
+ * No special style
+ */
+constexpr FontStyleFlags STYLE_NORMAL = TTF_STYLE_NORMAL;
+
+/**
+ * Bold style
+ */
+constexpr FontStyleFlags STYLE_BOLD = TTF_STYLE_BOLD;
+
+/**
+ * Italic style
+ */
+constexpr FontStyleFlags STYLE_ITALIC = TTF_STYLE_ITALIC;
+
+/**
+ * Underlined text
+ */
+constexpr FontStyleFlags STYLE_UNDERLINE = TTF_STYLE_UNDERLINE;
+
+/**
+ * Strikethrough text
+ */
+constexpr FontStyleFlags STYLE_STRIKETHROUGH = TTF_STYLE_STRIKETHROUGH;
+
+/// @}
+
+/**
+ * @name Hinting Flags
+ * @{
+ */
+
+/**
+ * Hinting flags for TTF (TrueType Fonts)
+ *
+ * This enum specifies the level of hinting to be applied to the font
+ * rendering. The hinting level determines how much the font's outlines are
+ * adjusted for better alignment on the pixel grid.
+ *
+ * @since This enum is available since SDL_ttf 3.0.0.
+ *
+ * @sa TTF_SetFontHinting
+ * @sa TTF_GetFontHinting
+ */
+using HintingFlags = TTF_HintingFlags;
+
+/// Invalid grid-fitting
+constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
+
+/**
+ * Normal hinting applies standard grid-fitting.
+ */
+constexpr HintingFlags HINTING_NORMAL = TTF_HINTING_NORMAL;
+
+/**
+ * Light hinting applies subtle adjustments to improve rendering.
+ */
+constexpr HintingFlags HINTING_LIGHT = TTF_HINTING_LIGHT;
+
+/**
+ * Monochrome hinting adjusts the font for better rendering at lower
+ * resolutions.
+ */
+constexpr HintingFlags HINTING_MONO = TTF_HINTING_MONO;
+
+/**
+ * No hinting, the font is rendered without any grid-fitting.
+ */
+constexpr HintingFlags HINTING_NONE = TTF_HINTING_NONE;
+
+/**
+ * Light hinting with subpixel rendering for more precise font edges.
+ */
+constexpr HintingFlags HINTING_LIGHT_SUBPIXEL = TTF_HINTING_LIGHT_SUBPIXEL;
+
+/// @}
+
+/**
+ * @name HorizontalAlignments
+ * @{
+ */
+
+/**
+ * The horizontal alignment used when rendering wrapped text.
+ *
+ * @since This enum is available since SDL_ttf 3.0.0.
+ */
+using HorizontalAlignment = TTF_HorizontalAlignment;
+
+/// Invalid alignment
+constexpr HorizontalAlignment HORIZONTAL_ALIGN_INVALID =
+  TTF_HORIZONTAL_ALIGN_INVALID;
+
+constexpr HorizontalAlignment HORIZONTAL_ALIGN_LEFT = TTF_HORIZONTAL_ALIGN_LEFT;
+
+constexpr HorizontalAlignment HORIZONTAL_ALIGN_CENTER =
+  TTF_HORIZONTAL_ALIGN_CENTER;
+
+constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
+  TTF_HORIZONTAL_ALIGN_RIGHT;
+
+/// @}
+
+/**
+ * @name Direction Flags
+ * @{
+ */
+
+/**
+ * Direction flags
+ *
+ * The values here are chosen to match
+ * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t)
+ * .
+ *
+ * @since This enum is available since SDL_ttf 3.0.0.
+ *
+ * @sa TTF_SetFontDirection
+ */
+using Direction = TTF_Direction;
+
+/// Invalid direction
+constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID;
+
+/**
+ * Left to Right.
+ */
+constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR;
+
+/**
+ * Right to Left.
+ */
+constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL;
+
+/**
+ * Top to Bottom.
+ */
+constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB;
+
+/**
+ * Bottom to Top.
+ */
+constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT;
+
+/// @}
+
+/**
+ * @name Image types
+ * @{
+ */
+
+/**
+ * The type of data in a glyph image
+ *
+ * @since This enum is available since SDL_ttf 3.0.0.
+ */
+using ImageType = TTF_ImageType;
+
+/// Invalid state
+constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID;
+
+/**
+ * The color channels are white.
+ */
+constexpr ImageType IMAGE_ALPHA = TTF_IMAGE_ALPHA;
+
+/**
+ * The color channels have image data.
+ */
+constexpr ImageType IMAGE_COLOR = TTF_IMAGE_COLOR;
+
+/**
+ * The alpha channel has signed distance field information.
+ */
+constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
+
+/// @}
+
+/**
+ * @name Flags for SubString
+ * @{
+ */
+
+/**
+ * Flags for SubString
+ *
+ * @since This datatype is available since SDL_ttf 3.0.0.
+ *
+ * @sa TTF_SubString
+ */
+using SubStringFlags = TTF_SubStringFlags;
+
+/**
+ * The mask for the flow direction for this substring
+ */
+constexpr SubStringFlags SUBSTRING_DIRECTION_MASK =
+  TTF_SUBSTRING_DIRECTION_MASK;
+
+/**
+ * This substring contains the beginning of the text
+ */
+constexpr SubStringFlags SUBSTRING_TEXT_START = TTF_SUBSTRING_TEXT_START;
+
+/**
+ * This substring contains the beginning of line `line_index`
+ */
+constexpr SubStringFlags SUBSTRING_LINE_START = TTF_SUBSTRING_LINE_START;
+
+/**
+ * This substring contains the end of line `line_index`
+ */
+constexpr SubStringFlags SUBSTRING_LINE_END = TTF_SUBSTRING_LINE_END;
+
+/**
+ * This substring contains the end of the text
+ */
+constexpr SubStringFlags SUBSTRING_TEXT_END = TTF_SUBSTRING_TEXT_END;
+
+/// @}
+
+/**
+ * @name GPUTextEngineWindings
+ * @{
+ */
+
+/**
+ * The winding order of the vertices returned by TTF_GetGPUTextDrawData
+ *
+ * @since This enum is available since SDL_ttf 3.0.0.
+ */
+using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
+
+/// Invalid state
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
+  TTF_GPU_TEXTENGINE_WINDING_INVALID;
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
+  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE;
+
+constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
+  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE;
+
+/// @}
+
+/**
+ * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
+ */
+#define SDL3PP_TTF_MAJOR_VERSION SDL_TTF_MAJOR_VERSION
+
+#define SDL3PP_TTF_MINOR_VERSION SDL_TTF_MINOR_VERSION
+
+#define SDL3PP_TTF_MICRO_VERSION SDL_TTF_MICRO_VERSION
+
+/**
+ * This is the version number macro for the current SDL_ttf version.
+ */
+#define SDL3PP_TTF_VERSION SDL_TTF_VERSION
+
+/**
+ * This macro will evaluate to true if compiled with SDL_ttf at least X.Y.Z.
+ */
+#define SDL3PP_TTF_VERSION_ATLEAST(X, Y, Z) SDL_TTF_VERSION_ATLEAST(X, Y, Z)
+
+/**
  * This function gets the version of the dynamically linked SDL_ttf library.
  *
  * @returns SDL_ttf version.
@@ -242,7 +470,7 @@ inline int TTF_Version() { return ::TTF_Version(); }
  */
 inline void GetFreeTypeVersion(int* major, int* minor, int* patch)
 {
-  return TTF_GetFreeTypeVersion(major, minor, patch);
+  TTF_GetFreeTypeVersion(major, minor, patch);
 }
 
 /**
@@ -260,7 +488,7 @@ inline void GetFreeTypeVersion(int* major, int* minor, int* patch)
  */
 inline void GetHarfBuzzVersion(int* major, int* minor, int* patch)
 {
-  return TTF_GetHarfBuzzVersion(major, minor, patch);
+  TTF_GetHarfBuzzVersion(major, minor, patch);
 }
 
 /**
@@ -1928,41 +2156,6 @@ inline void ObjectRef<TTF_TextEngine, TextEngineWrapper>::doFree(
 using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
 
 /**
- * Flags for TTF_SubString
- *
- * @since This datatype is available since SDL_ttf 3.0.0.
- *
- * @sa TTF_SubString
- */
-using SubStringFlags = TTF_SubStringFlags;
-
-/**
- * The mask for the flow direction for this substring
- */
-constexpr SubStringFlags SUBSTRING_DIRECTION_MASK =
-  TTF_SUBSTRING_DIRECTION_MASK;
-
-/**
- * This substring contains the beginning of the text
- */
-constexpr SubStringFlags SUBSTRING_TEXT_START = TTF_SUBSTRING_TEXT_START;
-
-/**
- * This substring contains the beginning of line `line_index`
- */
-constexpr SubStringFlags SUBSTRING_LINE_START = TTF_SUBSTRING_LINE_START;
-
-/**
- * This substring contains the end of line `line_index`
- */
-constexpr SubStringFlags SUBSTRING_LINE_END = TTF_SUBSTRING_LINE_END;
-
-/**
- * This substring contains the end of the text
- */
-constexpr SubStringFlags SUBSTRING_TEXT_END = TTF_SUBSTRING_TEXT_END;
-
-/**
  * The representation of a substring within text.
  *
  * @since This struct is available since SDL_ttf 3.0.0.
@@ -1980,79 +2173,38 @@ using SubString = TTF_SubString;
 // Forward decl
 struct SubStringIterator;
 
-/// Invalid grid-fitting
-constexpr HintingFlags HINTING_INVALID = TTF_HINTING_INVALID;
+#define SDL3PP_PROP_FONT_CREATE_FILENAME_STRING                                \
+  TTF_PROP_FONT_CREATE_FILENAME_STRING
 
-/**
- * Normal hinting applies standard grid-fitting.
- */
-constexpr HintingFlags HINTING_NORMAL = TTF_HINTING_NORMAL;
+#define SDL3PP_PROP_FONT_CREATE_IOSTREAM_POINTER                               \
+  TTF_PROP_FONT_CREATE_IOSTREAM_POINTER
 
-/**
- * Light hinting applies subtle adjustments to improve rendering.
- */
-constexpr HintingFlags HINTING_LIGHT = TTF_HINTING_LIGHT;
+#define SDL3PP_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER                         \
+  TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER
 
-/**
- * Monochrome hinting adjusts the font for better rendering at lower
- * resolutions.
- */
-constexpr HintingFlags HINTING_MONO = TTF_HINTING_MONO;
+#define SDL3PP_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN                     \
+  TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN
 
-/**
- * No hinting, the font is rendered without any grid-fitting.
- */
-constexpr HintingFlags HINTING_NONE = TTF_HINTING_NONE;
+#define SDL3PP_PROP_FONT_CREATE_SIZE_FLOAT TTF_PROP_FONT_CREATE_SIZE_FLOAT
 
-/**
- * Light hinting with subpixel rendering for more precise font edges.
- */
-constexpr HintingFlags HINTING_LIGHT_SUBPIXEL = TTF_HINTING_LIGHT_SUBPIXEL;
+#define SDL3PP_PROP_FONT_CREATE_FACE_NUMBER TTF_PROP_FONT_CREATE_FACE_NUMBER
 
-/**
- * @name HorizontalAlignments
- * @{
- *
- * Possible value for HorizontalAlignment
- *
- */
+#define SDL3PP_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER                          \
+  TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER
 
-/// Invalid alignment
-constexpr HorizontalAlignment HORIZONTAL_ALIGN_INVALID =
-  TTF_HORIZONTAL_ALIGN_INVALID;
+#define SDL3PP_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER                            \
+  TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER
 
-constexpr HorizontalAlignment HORIZONTAL_ALIGN_LEFT = TTF_HORIZONTAL_ALIGN_LEFT;
+#define SDL3PP_PROP_FONT_CREATE_EXISTING_FONT TTF_PROP_FONT_CREATE_EXISTING_FONT
 
-constexpr HorizontalAlignment HORIZONTAL_ALIGN_CENTER =
-  TTF_HORIZONTAL_ALIGN_CENTER;
+#define SDL3PP_PROP_FONT_OUTLINE_LINE_CAP_NUMBER                               \
+  TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER
 
-constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
-  TTF_HORIZONTAL_ALIGN_RIGHT;
+#define SDL3PP_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER                              \
+  TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER
 
-/// @}
-
-/// Invalid direction
-constexpr Direction DIRECTION_INVALID = TTF_DIRECTION_INVALID;
-
-/**
- * Left to Right.
- */
-constexpr Direction DIRECTION_LTR = TTF_DIRECTION_LTR;
-
-/**
- * Right to Left.
- */
-constexpr Direction DIRECTION_RTL = TTF_DIRECTION_RTL;
-
-/**
- * Top to Bottom.
- */
-constexpr Direction DIRECTION_TTB = TTF_DIRECTION_TTB;
-
-/**
- * Bottom to Top.
- */
-constexpr Direction DIRECTION_BTT = TTF_DIRECTION_BTT;
+#define SDL3PP_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER                            \
+  TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER
 
 /**
  * Convert from a 4 character string to a 32-bit tag.
@@ -2090,24 +2242,6 @@ inline void TagToString(Uint32 tag, char* string, size_t size)
 {
   return TTF_TagToString(tag, string, size);
 }
-
-/// Invalid state
-constexpr ImageType IMAGE_INVALID = TTF_IMAGE_INVALID;
-
-/**
- * The color channels are white.
- */
-constexpr ImageType IMAGE_ALPHA = TTF_IMAGE_ALPHA;
-
-/**
- * The color channels have image data.
- */
-constexpr ImageType IMAGE_COLOR = TTF_IMAGE_COLOR;
-
-/**
- * The alpha channel has signed distance field information.
- */
-constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
 
 /**
  * Text
@@ -3219,6 +3353,12 @@ inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
                       TTF_DestroyRendererTextEngine}};
 }
 
+#define SDL3PP_PROP_RENDERER_TEXT_ENGINE_RENDERER                              \
+  TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER
+
+#define SDL3PP_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE                    \
+  TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE
+
 /**
  * Create a text engine for drawing text with the SDL GPU API.
  *
@@ -3275,24 +3415,10 @@ inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
                       TTF_DestroyGPUTextEngine}};
 }
 
-/**
- * @name GPUTextEngineWindings
- *
- * Possible values for GPUTextEngineWinding
- * @{
- */
+#define SDL3PP_PROP_GPU_TEXT_ENGINE_DEVICE TTF_PROP_GPU_TEXT_ENGINE_DEVICE
 
-/// Invalid state
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_INVALID =
-  TTF_GPU_TEXTENGINE_WINDING_INVALID;
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_CLOCKWISE;
-
-constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
-  TTF_GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE;
-
-/// @}
+#define SDL3PP_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE                         \
+  TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE
 
 /**
  * Deinitialize SDL_ttf.

@@ -72,6 +72,26 @@ using Surface = SurfaceBase<ObjectUnique<SDL_Surface>>;
 using SurfaceFlags = SDL_SurfaceFlags;
 
 /**
+ * Surface uses preallocated pixel memory
+ */
+constexpr SurfaceFlags SURFACE_PREALLOCATED = SDL_SURFACE_PREALLOCATED;
+
+/**
+ * Surface needs to be locked to access pixels
+ */
+constexpr SurfaceFlags SURFACE_LOCK_NEEDED = SDL_SURFACE_LOCK_NEEDED;
+
+/**
+ * Surface is currently locked
+ */
+constexpr SurfaceFlags SURFACE_LOCKED = SDL_SURFACE_LOCKED;
+
+/**
+ * Surface uses pixel memory allocated with SDL_aligned_alloc()
+ */
+constexpr SurfaceFlags SURFACE_SIMD_ALIGNED = SDL_SURFACE_SIMD_ALIGNED;
+
+/**
  * The scaling mode.
  *
  */
@@ -1892,6 +1912,19 @@ public:
   template<ObjectBox<SDL_Surface*> T>
   friend class SurfaceBase;
 };
+
+#define SDL3PP_PROP_SURFACE_SDR_WHITE_POINT_FLOAT                              \
+  SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT
+
+#define SDL3PP_PROP_SURFACE_HDR_HEADROOM_FLOAT                                 \
+  SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT
+
+#define SDL3PP_PROP_SURFACE_TONEMAP_OPERATOR_STRING                            \
+  SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING
+
+#define SDL3PP_PROP_SURFACE_HOTSPOT_X_NUMBER SDL_PROP_SURFACE_HOTSPOT_X_NUMBER
+
+#define SDL3PP_PROP_SURFACE_HOTSPOT_Y_NUMBER SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER
 
 /**
  * Load a BMP image from a seekable SDL data stream.

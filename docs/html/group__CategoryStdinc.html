@@ -72,8 +72,10 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">Standard Library Functionality<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesAdditionalFunctionality.html">Additional Functionality</a></div></div></div>
 </div><!--header-->
 <div class="contents">
@@ -95,6 +97,78 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Random.html">SDL::Random</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A independent pseudo random state.  <a href="classSDL_1_1Random.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga03651ba10651704cc6643e5fcc476224" id="r_ga03651ba10651704cc6643e5fcc476224"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga03651ba10651704cc6643e5fcc476224">SDL3PP_NOLONGLONG</a>&#160;&#160;&#160;SDL_NOLONGLONG</td></tr>
+<tr class="memdesc:ga03651ba10651704cc6643e5fcc476224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Don't let <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> use "long long" C types.  <br /></td></tr>
+<tr class="separator:ga03651ba10651704cc6643e5fcc476224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga15bccb51ae51b47f7440316ba1396993" id="r_ga15bccb51ae51b47f7440316ba1396993"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga15bccb51ae51b47f7440316ba1396993">SDL3PP_SIZE_MAX</a>&#160;&#160;&#160;SDL_SIZE_MAX</td></tr>
+<tr class="memdesc:ga15bccb51ae51b47f7440316ba1396993"><td class="mdescLeft">&#160;</td><td class="mdescRight">The largest value that a <code>size_t</code> can hold for the target platform.  <br /></td></tr>
+<tr class="separator:ga15bccb51ae51b47f7440316ba1396993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga31538c873604d24eed5518c38116b0fd" id="r_ga31538c873604d24eed5518c38116b0fd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga31538c873604d24eed5518c38116b0fd">SDL3PP_STRINGIFY_ARG</a>(arg)&#160;&#160;&#160;SDL_STRINGIFY_ARG(arg)</td></tr>
+<tr class="memdesc:ga31538c873604d24eed5518c38116b0fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro useful for building other macros with strings in them.  <br /></td></tr>
+<tr class="separator:ga31538c873604d24eed5518c38116b0fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa152b934a5ba781126379d522827e5d" id="r_gafa152b934a5ba781126379d522827e5d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gafa152b934a5ba781126379d522827e5d">SDL3PP_SINT64_C</a>(c)&#160;&#160;&#160;SDL_SINT64_C(c)</td></tr>
+<tr class="memdesc:gafa152b934a5ba781126379d522827e5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the 64 bit integer suffix to a signed integer literal.  <br /></td></tr>
+<tr class="separator:gafa152b934a5ba781126379d522827e5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b14e039cdbe85ba4f300157dcefdbf1" id="r_ga2b14e039cdbe85ba4f300157dcefdbf1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga2b14e039cdbe85ba4f300157dcefdbf1">SDL3PP_UINT64_C</a>(c)&#160;&#160;&#160;SDL_UINT64_C(c)</td></tr>
+<tr class="memdesc:ga2b14e039cdbe85ba4f300157dcefdbf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the 64 bit integer suffix to an unsigned integer literal.  <br /></td></tr>
+<tr class="separator:ga2b14e039cdbe85ba4f300157dcefdbf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga730930b0f95d7008148efc94974ca245" id="r_ga730930b0f95d7008148efc94974ca245"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga730930b0f95d7008148efc94974ca245">SDL3PP_FLT_EPSILON</a>&#160;&#160;&#160;SDL_FLT_EPSILON</td></tr>
+<tr class="memdesc:ga730930b0f95d7008148efc94974ca245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Epsilon constant, used for comparing floating-point numbers.  <br /></td></tr>
+<tr class="separator:ga730930b0f95d7008148efc94974ca245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga970020b5b4d9a0d9a74192bf25e0bcd4" id="r_ga970020b5b4d9a0d9a74192bf25e0bcd4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga970020b5b4d9a0d9a74192bf25e0bcd4">SDL3PP_INIT_INTERFACE</a>(iface)&#160;&#160;&#160;SDL_INIT_INTERFACE(iface)</td></tr>
+<tr class="memdesc:ga970020b5b4d9a0d9a74192bf25e0bcd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro to initialize an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> interface.  <br /></td></tr>
+<tr class="separator:ga970020b5b4d9a0d9a74192bf25e0bcd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga954ea97df0b345af042358a280f6bec7" id="r_ga954ea97df0b345af042358a280f6bec7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga954ea97df0b345af042358a280f6bec7">SDL3PP_min</a>(x,  y)&#160;&#160;&#160;SDL_min(x, y)</td></tr>
+<tr class="memdesc:ga954ea97df0b345af042358a280f6bec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the lesser of two values.  <br /></td></tr>
+<tr class="separator:ga954ea97df0b345af042358a280f6bec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac6db9f7bcac9aa2d0bf2e4165088663f" id="r_gac6db9f7bcac9aa2d0bf2e4165088663f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gac6db9f7bcac9aa2d0bf2e4165088663f">SDL3PP_max</a>(x,  y)&#160;&#160;&#160;SDL_max(x, y)</td></tr>
+<tr class="memdesc:gac6db9f7bcac9aa2d0bf2e4165088663f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the greater of two values.  <br /></td></tr>
+<tr class="separator:gac6db9f7bcac9aa2d0bf2e4165088663f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5b890da0bcd5030443f227095a4d0aa9" id="r_ga5b890da0bcd5030443f227095a4d0aa9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga5b890da0bcd5030443f227095a4d0aa9">SDL3PP_clamp</a>(x,  a,  b)&#160;&#160;&#160;SDL_clamp(x, a, b)</td></tr>
+<tr class="memdesc:ga5b890da0bcd5030443f227095a4d0aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a value clamped to a range.  <br /></td></tr>
+<tr class="separator:ga5b890da0bcd5030443f227095a4d0aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae1efc38737d0fbab6d9bbe2066b53cbd" id="r_gae1efc38737d0fbab6d9bbe2066b53cbd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gae1efc38737d0fbab6d9bbe2066b53cbd">SDL3PP_copyp</a>(dst,  src)&#160;&#160;&#160;SDL_copyp(dst, src)</td></tr>
+<tr class="memdesc:gae1efc38737d0fbab6d9bbe2066b53cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro to copy memory between objects, with basic type checking.  <br /></td></tr>
+<tr class="separator:gae1efc38737d0fbab6d9bbe2066b53cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1639093838c229a53f531796f71e8c6e" id="r_ga1639093838c229a53f531796f71e8c6e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga1639093838c229a53f531796f71e8c6e">SDL3PP_INVALID_UNICODE_CODEPOINT</a>&#160;&#160;&#160;SDL_INVALID_UNICODE_CODEPOINT</td></tr>
+<tr class="memdesc:ga1639093838c229a53f531796f71e8c6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Unicode REPLACEMENT CHARACTER codepoint.  <br /></td></tr>
+<tr class="separator:ga1639093838c229a53f531796f71e8c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaead2ceb6c64f8a323949373d44949033" id="r_gaead2ceb6c64f8a323949373d44949033"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaead2ceb6c64f8a323949373d44949033">SDL3PP_PI_D</a>&#160;&#160;&#160;SDL_PI_D</td></tr>
+<tr class="memdesc:gaead2ceb6c64f8a323949373d44949033"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value of Pi, as a double-precision floating point literal.  <br /></td></tr>
+<tr class="separator:gaead2ceb6c64f8a323949373d44949033"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf7f2fcea6c3719e2d017d65fd5bf2bea" id="r_gaf7f2fcea6c3719e2d017d65fd5bf2bea"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaf7f2fcea6c3719e2d017d65fd5bf2bea">SDL3PP_PI_F</a>&#160;&#160;&#160;SDL_PI_F</td></tr>
+<tr class="memdesc:gaf7f2fcea6c3719e2d017d65fd5bf2bea"><td class="mdescLeft">&#160;</td><td class="mdescRight">The value of Pi, as a single-precision floating point literal.  <br /></td></tr>
+<tr class="separator:gaf7f2fcea6c3719e2d017d65fd5bf2bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8f4df5e15bd9ff6792dcb4c1cc3f07ac" id="r_ga8f4df5e15bd9ff6792dcb4c1cc3f07ac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga8f4df5e15bd9ff6792dcb4c1cc3f07ac">SDL3PP_ICONV_ERROR</a>&#160;&#160;&#160;SDL_ICONV_ERROR</td></tr>
+<tr class="memdesc:ga8f4df5e15bd9ff6792dcb4c1cc3f07ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic error.  <br /></td></tr>
+<tr class="separator:ga8f4df5e15bd9ff6792dcb4c1cc3f07ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2957ed5dc783a53289cb3e900f393858" id="r_ga2957ed5dc783a53289cb3e900f393858"><td class="memItemLeft" align="right" valign="top"><a id="ga2957ed5dc783a53289cb3e900f393858" name="ga2957ed5dc783a53289cb3e900f393858"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SDL3PP_ICONV_E2BIG</b>&#160;&#160;&#160;SDL_ICONV_E2BIG</td></tr>
+<tr class="memdesc:ga2957ed5dc783a53289cb3e900f393858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output buffer was too small. <br /></td></tr>
+<tr class="separator:ga2957ed5dc783a53289cb3e900f393858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga87947a71d905bed637f497e8a658ec9f" id="r_ga87947a71d905bed637f497e8a658ec9f"><td class="memItemLeft" align="right" valign="top"><a id="ga87947a71d905bed637f497e8a658ec9f" name="ga87947a71d905bed637f497e8a658ec9f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SDL3PP_ICONV_EILSEQ</b>&#160;&#160;&#160;SDL_ICONV_EILSEQ</td></tr>
+<tr class="memdesc:ga87947a71d905bed637f497e8a658ec9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invalid input sequence was encountered. <br /></td></tr>
+<tr class="separator:ga87947a71d905bed637f497e8a658ec9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaacbe03741995cd6d727a8598c01b9557" id="r_gaacbe03741995cd6d727a8598c01b9557"><td class="memItemLeft" align="right" valign="top"><a id="gaacbe03741995cd6d727a8598c01b9557" name="gaacbe03741995cd6d727a8598c01b9557"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SDL3PP_ICONV_EINVAL</b>&#160;&#160;&#160;SDL_ICONV_EINVAL</td></tr>
+<tr class="memdesc:gaacbe03741995cd6d727a8598c01b9557"><td class="mdescLeft">&#160;</td><td class="mdescRight">Incomplete input sequence was encountered. <br /></td></tr>
+<tr class="separator:gaacbe03741995cd6d727a8598c01b9557"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa8a09599f02044afc91f7bc4cffefce3" id="r_gaa8a09599f02044afc91f7bc4cffefce3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaa8a09599f02044afc91f7bc4cffefce3">SDL3PP_iconv_utf8_locale</a>(S)&#160;&#160;&#160;SDL_iconv_utf8_locale(S)</td></tr>
+<tr class="memdesc:gaa8a09599f02044afc91f7bc4cffefce3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a UTF-8 string to the current locale's character encoding.  <br /></td></tr>
+<tr class="separator:gaa8a09599f02044afc91f7bc4cffefce3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga82826185c8054a200ce18fee97d90399" id="r_ga82826185c8054a200ce18fee97d90399"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga82826185c8054a200ce18fee97d90399">SDL3PP_iconv_utf8_ucs2</a>(S)&#160;&#160;&#160;SDL_iconv_utf8_ucs2(S)</td></tr>
+<tr class="memdesc:ga82826185c8054a200ce18fee97d90399"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a UTF-8 string to UCS-2.  <br /></td></tr>
+<tr class="separator:ga82826185c8054a200ce18fee97d90399"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1f458973ee1ef88a524f19ab5a6102d4" id="r_ga1f458973ee1ef88a524f19ab5a6102d4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga1f458973ee1ef88a524f19ab5a6102d4">SDL3PP_iconv_utf8_ucs4</a>(S)&#160;&#160;&#160;SDL_iconv_utf8_ucs4(S)</td></tr>
+<tr class="memdesc:ga1f458973ee1ef88a524f19ab5a6102d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a UTF-8 string to UCS-4.  <br /></td></tr>
+<tr class="separator:ga1f458973ee1ef88a524f19ab5a6102d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a43ac975e6e2556e08e48a322302550" id="r_ga4a43ac975e6e2556e08e48a322302550"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga4a43ac975e6e2556e08e48a322302550">SDL3PP_iconv_wchar_utf8</a>(S)&#160;&#160;&#160;SDL_iconv_wchar_utf8(S)</td></tr>
+<tr class="memdesc:ga4a43ac975e6e2556e08e48a322302550"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a wchar_t string to UTF-8.  <br /></td></tr>
+<tr class="separator:ga4a43ac975e6e2556e08e48a322302550"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -134,6 +208,10 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ga20b4cc6c53a1dbd7789ee90af065b5f9" id="r_ga20b4cc6c53a1dbd7789ee90af065b5f9"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t N&gt; </td></tr>
+<tr class="memitem:ga20b4cc6c53a1dbd7789ee90af065b5f9"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga20b4cc6c53a1dbd7789ee90af065b5f9">SDL::arraysize</a> (const T(&amp;array)[N])</td></tr>
+<tr class="memdesc:ga20b4cc6c53a1dbd7789ee90af065b5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of elements in a static array.  <br /></td></tr>
+<tr class="separator:ga20b4cc6c53a1dbd7789ee90af065b5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa932b3872f6162d7257c924b184e5381" id="r_gaa932b3872f6162d7257c924b184e5381"><td class="memItemLeft" align="right" valign="top">constexpr Uint32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaa932b3872f6162d7257c924b184e5381">SDL::FourCC</a> (Uint8 a, Uint8 b, Uint8 c, Uint8 d)</td></tr>
 <tr class="memdesc:gaa932b3872f6162d7257c924b184e5381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define a four character code as a Uint32.  <br /></td></tr>
 <tr class="separator:gaa932b3872f6162d7257c924b184e5381"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,6 +338,18 @@ Functions</h2></td></tr>
 <tr class="memitem:ga8e06e75cea4ef203bf1f3c967f8bff54" id="r_ga8e06e75cea4ef203bf1f3c967f8bff54"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga8e06e75cea4ef203bf1f3c967f8bff54">SDL::memset4</a> (void *dst, Uint32 val, size_t dwords)</td></tr>
 <tr class="memdesc:ga8e06e75cea4ef203bf1f3c967f8bff54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all 32-bit words of buffer of memory to a specific value.  <br /></td></tr>
 <tr class="separator:ga8e06e75cea4ef203bf1f3c967f8bff54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4d65aa4051722f968f6fde80d47d761f" id="r_ga4d65aa4051722f968f6fde80d47d761f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ga4d65aa4051722f968f6fde80d47d761f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga4d65aa4051722f968f6fde80d47d761f">SDL::zero</a> (T &amp;x)</td></tr>
+<tr class="memdesc:ga4d65aa4051722f968f6fde80d47d761f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear an object's memory to zero.  <br /></td></tr>
+<tr class="separator:ga4d65aa4051722f968f6fde80d47d761f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab0fc530b6aa46072077289b0a200c21c" id="r_gab0fc530b6aa46072077289b0a200c21c"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:gab0fc530b6aa46072077289b0a200c21c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gab0fc530b6aa46072077289b0a200c21c">SDL::zerop</a> (T *x)</td></tr>
+<tr class="memdesc:gab0fc530b6aa46072077289b0a200c21c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear an object's memory to zero, using a pointer.  <br /></td></tr>
+<tr class="separator:gab0fc530b6aa46072077289b0a200c21c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga51ba04c3b473e95c7808a55669162521" id="r_ga51ba04c3b473e95c7808a55669162521"><td class="memTemplParams" colspan="2">template&lt;class T , std::size_t N&gt; </td></tr>
+<tr class="memitem:ga51ba04c3b473e95c7808a55669162521"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga51ba04c3b473e95c7808a55669162521">SDL::zeroa</a> (T(&amp;x)[N])</td></tr>
+<tr class="memdesc:ga51ba04c3b473e95c7808a55669162521"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear an array's memory to zero.  <br /></td></tr>
+<tr class="separator:ga51ba04c3b473e95c7808a55669162521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1713911979192a927ee8202ad4ed478b" id="r_ga1713911979192a927ee8202ad4ed478b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga1713911979192a927ee8202ad4ed478b">SDL::memcmp</a> (const void *s1, const void *s2, size_t len)</td></tr>
 <tr class="memdesc:ga1713911979192a927ee8202ad4ed478b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compare two buffers of memory.  <br /></td></tr>
 <tr class="separator:ga1713911979192a927ee8202ad4ed478b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -584,20 +674,582 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf14c09ac379c8fa038a9fab209b9d4d7" id="r_gaf14c09ac379c8fa038a9fab209b9d4d7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gaf14c09ac379c8fa038a9fab209b9d4d7">SDL::tanf</a> (float x)</td></tr>
 <tr class="memdesc:gaf14c09ac379c8fa038a9fab209b9d4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the tangent of <code>x</code>.  <br /></td></tr>
 <tr class="separator:gaf14c09ac379c8fa038a9fab209b9d4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8101a1c19844c8cb72600a9aa6238327" id="r_ga8101a1c19844c8cb72600a9aa6238327"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga8101a1c19844c8cb72600a9aa6238327">SDL::iconv_string</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> tocode, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> fromcode, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> inbuf, size_t inbytesleft)</td></tr>
-<tr class="memdesc:ga8101a1c19844c8cb72600a9aa6238327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to convert a string's encoding in one call.  <br /></td></tr>
-<tr class="separator:ga8101a1c19844c8cb72600a9aa6238327"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae765b6ec212ab3234f6645eb3c53978a" id="r_gae765b6ec212ab3234f6645eb3c53978a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryOwnPtr.html#ga1b38786e36f2943046731ad164c8a408">OwnPtr</a>&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a">SDL::iconv_string</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> tocode, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> fromcode, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> inbuf, size_t inbytesleft)</td></tr>
+<tr class="memdesc:gae765b6ec212ab3234f6645eb3c53978a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to convert a string's encoding in one call.  <br /></td></tr>
+<tr class="separator:gae765b6ec212ab3234f6645eb3c53978a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5eff841be311c6243e4c36bc358e017f" id="r_ga5eff841be311c6243e4c36bc358e017f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga5eff841be311c6243e4c36bc358e017f">SDL::size_mul_check_overflow</a> (size_t a, size_t b, size_t *ret)</td></tr>
 <tr class="memdesc:ga5eff841be311c6243e4c36bc358e017f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiply two integers, checking for overflow.  <br /></td></tr>
 <tr class="separator:ga5eff841be311c6243e4c36bc358e017f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6a8cffac163d32a70c2a38ed43b8aed6" id="r_ga6a8cffac163d32a70c2a38ed43b8aed6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryStdinc.html#ga6a8cffac163d32a70c2a38ed43b8aed6">SDL::size_add_check_overflow</a> (size_t a, size_t b, size_t *ret)</td></tr>
 <tr class="memdesc:ga6a8cffac163d32a70c2a38ed43b8aed6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add two integers, checking for overflow.  <br /></td></tr>
 <tr class="separator:ga6a8cffac163d32a70c2a38ed43b8aed6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:gae6b74b465947579b91be104605e6fd07" id="r_gae6b74b465947579b91be104605e6fd07"><td class="memItemLeft" align="right" valign="top"><a id="gae6b74b465947579b91be104605e6fd07" name="gae6b74b465947579b91be104605e6fd07"></a>
+constexpr Sint8&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_SINT8</b> = SDL_MAX_SINT8</td></tr>
+<tr class="separator:gae6b74b465947579b91be104605e6fd07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0be570d5911603656223dabf1c5cdb49" id="r_ga0be570d5911603656223dabf1c5cdb49"><td class="memItemLeft" align="right" valign="top"><a id="ga0be570d5911603656223dabf1c5cdb49" name="ga0be570d5911603656223dabf1c5cdb49"></a>
+constexpr Sint8&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_SINT8</b> = SDL_MIN_SINT8</td></tr>
+<tr class="separator:ga0be570d5911603656223dabf1c5cdb49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga87d50024de748e71f14de8af0b8780c9" id="r_ga87d50024de748e71f14de8af0b8780c9"><td class="memItemLeft" align="right" valign="top"><a id="ga87d50024de748e71f14de8af0b8780c9" name="ga87d50024de748e71f14de8af0b8780c9"></a>
+constexpr Uint8&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_UINT8</b> = SDL_MAX_UINT8</td></tr>
+<tr class="separator:ga87d50024de748e71f14de8af0b8780c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac3dcfab370a63411100eacc70a866b2c" id="r_gac3dcfab370a63411100eacc70a866b2c"><td class="memItemLeft" align="right" valign="top"><a id="gac3dcfab370a63411100eacc70a866b2c" name="gac3dcfab370a63411100eacc70a866b2c"></a>
+constexpr Uint8&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_UINT8</b> = SDL_MIN_UINT8</td></tr>
+<tr class="separator:gac3dcfab370a63411100eacc70a866b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga85b1122eb7e054c0bbb0e9730838e375" id="r_ga85b1122eb7e054c0bbb0e9730838e375"><td class="memItemLeft" align="right" valign="top"><a id="ga85b1122eb7e054c0bbb0e9730838e375" name="ga85b1122eb7e054c0bbb0e9730838e375"></a>
+constexpr Sint16&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_SINT16</b> = SDL_MAX_SINT16</td></tr>
+<tr class="separator:ga85b1122eb7e054c0bbb0e9730838e375"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2b469c74f6f1b72ddb47a6761b2776c8" id="r_ga2b469c74f6f1b72ddb47a6761b2776c8"><td class="memItemLeft" align="right" valign="top"><a id="ga2b469c74f6f1b72ddb47a6761b2776c8" name="ga2b469c74f6f1b72ddb47a6761b2776c8"></a>
+constexpr Sint16&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_SINT16</b> = SDL_MIN_SINT16</td></tr>
+<tr class="separator:ga2b469c74f6f1b72ddb47a6761b2776c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95b8d501a05cde82e0c9b3bd5c6f50dc" id="r_ga95b8d501a05cde82e0c9b3bd5c6f50dc"><td class="memItemLeft" align="right" valign="top"><a id="ga95b8d501a05cde82e0c9b3bd5c6f50dc" name="ga95b8d501a05cde82e0c9b3bd5c6f50dc"></a>
+constexpr Uint16&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_UINT16</b> = SDL_MAX_UINT16</td></tr>
+<tr class="separator:ga95b8d501a05cde82e0c9b3bd5c6f50dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga177c634c8f2ae69978474a9c1e8b8a7f" id="r_ga177c634c8f2ae69978474a9c1e8b8a7f"><td class="memItemLeft" align="right" valign="top"><a id="ga177c634c8f2ae69978474a9c1e8b8a7f" name="ga177c634c8f2ae69978474a9c1e8b8a7f"></a>
+constexpr Uint16&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_UINT16</b> = SDL_MIN_UINT16</td></tr>
+<tr class="separator:ga177c634c8f2ae69978474a9c1e8b8a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf027ee3339a63e76791763a7e0db35ac" id="r_gaf027ee3339a63e76791763a7e0db35ac"><td class="memItemLeft" align="right" valign="top"><a id="gaf027ee3339a63e76791763a7e0db35ac" name="gaf027ee3339a63e76791763a7e0db35ac"></a>
+constexpr Sint32&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_SINT32</b> = SDL_MAX_SINT32</td></tr>
+<tr class="separator:gaf027ee3339a63e76791763a7e0db35ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6dbab3c1d458db3c263d27b6e86ac6c6" id="r_ga6dbab3c1d458db3c263d27b6e86ac6c6"><td class="memItemLeft" align="right" valign="top"><a id="ga6dbab3c1d458db3c263d27b6e86ac6c6" name="ga6dbab3c1d458db3c263d27b6e86ac6c6"></a>
+constexpr Sint32&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_SINT32</b> = SDL_MIN_SINT32</td></tr>
+<tr class="separator:ga6dbab3c1d458db3c263d27b6e86ac6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3f391d1719e11e472b770a1511478458" id="r_ga3f391d1719e11e472b770a1511478458"><td class="memItemLeft" align="right" valign="top"><a id="ga3f391d1719e11e472b770a1511478458" name="ga3f391d1719e11e472b770a1511478458"></a>
+constexpr Uint32&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_UINT32</b> = SDL_MAX_UINT32</td></tr>
+<tr class="separator:ga3f391d1719e11e472b770a1511478458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaea113b6d39e254cb015e04423544d8c0" id="r_gaea113b6d39e254cb015e04423544d8c0"><td class="memItemLeft" align="right" valign="top"><a id="gaea113b6d39e254cb015e04423544d8c0" name="gaea113b6d39e254cb015e04423544d8c0"></a>
+constexpr Uint8&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_UINT32</b> = SDL_MIN_UINT32</td></tr>
+<tr class="separator:gaea113b6d39e254cb015e04423544d8c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa1e929f53d64d0fff3907381798eaf9d" id="r_gaa1e929f53d64d0fff3907381798eaf9d"><td class="memItemLeft" align="right" valign="top"><a id="gaa1e929f53d64d0fff3907381798eaf9d" name="gaa1e929f53d64d0fff3907381798eaf9d"></a>
+constexpr Sint64&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_SINT64</b> = SDL_MAX_SINT64</td></tr>
+<tr class="separator:gaa1e929f53d64d0fff3907381798eaf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8c7306beb927b53b650633c3132bd02e" id="r_ga8c7306beb927b53b650633c3132bd02e"><td class="memItemLeft" align="right" valign="top"><a id="ga8c7306beb927b53b650633c3132bd02e" name="ga8c7306beb927b53b650633c3132bd02e"></a>
+constexpr Sint64&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_SINT64</b> = SDL_MIN_SINT64</td></tr>
+<tr class="separator:ga8c7306beb927b53b650633c3132bd02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5e65228f817d9f425d4089bc53233002" id="r_ga5e65228f817d9f425d4089bc53233002"><td class="memItemLeft" align="right" valign="top"><a id="ga5e65228f817d9f425d4089bc53233002" name="ga5e65228f817d9f425d4089bc53233002"></a>
+constexpr Uint64&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_UINT64</b> = SDL_MAX_UINT64</td></tr>
+<tr class="separator:ga5e65228f817d9f425d4089bc53233002"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga566123592c777849589b83a104aab026" id="r_ga566123592c777849589b83a104aab026"><td class="memItemLeft" align="right" valign="top"><a id="ga566123592c777849589b83a104aab026" name="ga566123592c777849589b83a104aab026"></a>
+constexpr Uint8&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_UINT64</b> = SDL_MIN_UINT64</td></tr>
+<tr class="separator:ga566123592c777849589b83a104aab026"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaacdab1f45d681b4d768287d999fbe747" id="r_gaacdab1f45d681b4d768287d999fbe747"><td class="memItemLeft" align="right" valign="top"><a id="gaacdab1f45d681b4d768287d999fbe747" name="gaacdab1f45d681b4d768287d999fbe747"></a>
+constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MAX_TIME</b> = <a class="el" href="classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837">Time::FromNS</a>(SDL_MAX_TIME)</td></tr>
+<tr class="separator:gaacdab1f45d681b4d768287d999fbe747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab53f781fca968ecab9d52f035a77b040" id="r_gab53f781fca968ecab9d52f035a77b040"><td class="memItemLeft" align="right" valign="top"><a id="gab53f781fca968ecab9d52f035a77b040" name="gab53f781fca968ecab9d52f035a77b040"></a>
+constexpr <a class="el" href="classSDL_1_1Time.html">Time</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SDL::MIN_TIME</b> = <a class="el" href="classSDL_1_1Time.html#aef14fc81403f1036d3aac0242d460837">Time::FromNS</a>(SDL_MIN_TIME)</td></tr>
+<tr class="separator:gab53f781fca968ecab9d52f035a77b040"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Using these functions allows an app to have access to common C functionality without depending on a specific C runtime (or a C runtime at all). More importantly, the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> implementations work identically across platforms, so apps can avoid surprises like <a class="el" href="group__CategoryStdinc.html#ga57b48f04ae9e3949774b9f0c9dc0c151" title="This works exactly like snprintf() but doesn&#39;t require access to a C runtime.">snprintf()</a> behaving differently between Windows and Linux builds, or <a class="el" href="group__CategoryStdinc.html#gac0d19dc9f116d9f492fd4d17296f0c4b" title="Convert an integer into a string.">itoa()</a> only existing on some platforms.</p>
 <p>For many of the most common functions, like SDL_memcpy, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> might just call through to the usual C runtime behind the scenes, if it makes sense to do so (if it's faster and always available/reliable on a given platform), reducing library size and offering the most optimized option.</p>
 <p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> also offers other C-runtime-adjacent functionality in this header that either isn't, strictly speaking, part of any C runtime standards, like SDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better options, like SDL_strlcpy(), which functions as a safer form of strcpy(). </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga5b890da0bcd5030443f227095a4d0aa9" name="ga5b890da0bcd5030443f227095a4d0aa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5b890da0bcd5030443f227095a4d0aa9">&#9670;&#160;</a></span>SDL3PP_clamp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_clamp</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;SDL_clamp(x, a, b)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If <code>x</code> is outside the range a values between <code>a</code> and <code>b</code>, the returned value will be <code>a</code> or <code>b</code> as appropriate. Otherwise, <code>x</code> is returned.</p>
+<p>This macro will produce incorrect results if <code>b</code> is less than <code>a</code>.</p>
+<p>This is a helper macro that might be more clear than writing out the comparisons directly, and works with any type that can be compared with the <code>&lt;</code> and <code>&gt;</code> operators. However, it double-evaluates all its parameters, so do not use expressions with side-effects here.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the value to compare. </td></tr>
+    <tr><td class="paramname">a</td><td>the low end value. </td></tr>
+    <tr><td class="paramname">b</td><td>the high end value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>x, clamped between a and b.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gae1efc38737d0fbab6d9bbe2066b53cbd" name="gae1efc38737d0fbab6d9bbe2066b53cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae1efc38737d0fbab6d9bbe2066b53cbd">&#9670;&#160;</a></span>SDL3PP_copyp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_copyp</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">dst, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">src&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;SDL_copyp(dst, src)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>SDL_memcpy and SDL_memmove do not care where you copy memory to and from, which can lead to bugs. This macro aims to avoid most of those bugs by making sure that the source and destination are both pointers to objects that are the same size. It does not check that the objects are the same <em>type</em>, just that the copy will not overflow either object.</p>
+<p>The size check happens at compile time, and the compiler will throw an error if the objects are different sizes.</p>
+<p>Generally this is intended to copy a single object, not an array.</p>
+<p>This macro looks like it double-evaluates its parameters, but the extras them are in <code>sizeof</code> sections, which generate no code nor side-effects.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dst</td><td>a pointer to the destination object. Must not be NULL. </td></tr>
+    <tr><td class="paramname">src</td><td>a pointer to the source object. Must not be NULL.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga730930b0f95d7008148efc94974ca245" name="ga730930b0f95d7008148efc94974ca245"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga730930b0f95d7008148efc94974ca245">&#9670;&#160;</a></span>SDL3PP_FLT_EPSILON</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_FLT_EPSILON&#160;&#160;&#160;SDL_FLT_EPSILON</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Equals by default to platform-defined <code>FLT_EPSILON</code>, or <code>1.1920928955078125e-07F</code> if that's not available.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga8f4df5e15bd9ff6792dcb4c1cc3f07ac" name="ga8f4df5e15bd9ff6792dcb4c1cc3f07ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8f4df5e15bd9ff6792dcb4c1cc3f07ac">&#9670;&#160;</a></span>SDL3PP_ICONV_ERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_ICONV_ERROR&#160;&#160;&#160;SDL_ICONV_ERROR</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Check SDL_GetError()? </p>
+
+</div>
+</div>
+<a id="gaa8a09599f02044afc91f7bc4cffefce3" name="gaa8a09599f02044afc91f7bc4cffefce3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa8a09599f02044afc91f7bc4cffefce3">&#9670;&#160;</a></span>SDL3PP_iconv_utf8_locale</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_iconv_utf8_locale</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">S</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_iconv_utf8_locale(S)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is a helper macro that might be more clear than calling SDL_iconv_string directly. However, it double-evaluates its parameter, so do not use an expression with side-effects here.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">S</td><td>the string to convert. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new string, converted to the new encoding, or NULL on error.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga82826185c8054a200ce18fee97d90399" name="ga82826185c8054a200ce18fee97d90399"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga82826185c8054a200ce18fee97d90399">&#9670;&#160;</a></span>SDL3PP_iconv_utf8_ucs2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_iconv_utf8_ucs2</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">S</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_iconv_utf8_ucs2(S)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is a helper macro that might be more clear than calling SDL_iconv_string directly. However, it double-evaluates its parameter, so do not use an expression with side-effects here.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">S</td><td>the string to convert. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new string, converted to the new encoding, or NULL on error.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga1f458973ee1ef88a524f19ab5a6102d4" name="ga1f458973ee1ef88a524f19ab5a6102d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1f458973ee1ef88a524f19ab5a6102d4">&#9670;&#160;</a></span>SDL3PP_iconv_utf8_ucs4</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_iconv_utf8_ucs4</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">S</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_iconv_utf8_ucs4(S)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is a helper macro that might be more clear than calling SDL_iconv_string directly. However, it double-evaluates its parameter, so do not use an expression with side-effects here.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">S</td><td>the string to convert. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new string, converted to the new encoding, or NULL on error.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga4a43ac975e6e2556e08e48a322302550" name="ga4a43ac975e6e2556e08e48a322302550"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4a43ac975e6e2556e08e48a322302550">&#9670;&#160;</a></span>SDL3PP_iconv_wchar_utf8</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_iconv_wchar_utf8</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">S</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_iconv_wchar_utf8(S)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is a helper macro that might be more clear than calling SDL_iconv_string directly. However, it double-evaluates its parameter, so do not use an expression with side-effects here.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">S</td><td>the string to convert. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a new string, converted to the new encoding, or NULL on error.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga970020b5b4d9a0d9a74192bf25e0bcd4" name="ga970020b5b4d9a0d9a74192bf25e0bcd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga970020b5b4d9a0d9a74192bf25e0bcd4">&#9670;&#160;</a></span>SDL3PP_INIT_INTERFACE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_INIT_INTERFACE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">iface</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_INIT_INTERFACE(iface)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This macro will initialize an <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> interface structure and should be called before you fill out the fields with your implementation.</p>
+<p>You can use it like this:</p>
+<div class="fragment"><div class="line">SDL_IOStreamInterface iface;</div>
+<div class="line"> </div>
+<div class="line">SDL_INIT_INTERFACE(&amp;iface);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Fill in the interface function pointers with your implementation</span></div>
+<div class="line">iface.seek = ...</div>
+<div class="line"> </div>
+<div class="line">stream = SDL_OpenIO(&amp;iface, NULL);</div>
+</div><!-- fragment --><p>If you are using designated initializers, you can use the size of the interface as the version, e.g.</p>
+<div class="fragment"><div class="line">SDL_IOStreamInterface iface = {</div>
+<div class="line">    .version = <span class="keyword">sizeof</span>(iface),</div>
+<div class="line">    .seek = ...</div>
+<div class="line">};</div>
+<div class="line">stream = SDL_OpenIO(&amp;iface, NULL);</div>
+</div><!-- fragment --><dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_IOStreamInterface </dd>
+<dd>
+SDL_StorageInterface </dd>
+<dd>
+SDL_VirtualJoystickDesc </dd></dl>
+
+</div>
+</div>
+<a id="ga1639093838c229a53f531796f71e8c6e" name="ga1639093838c229a53f531796f71e8c6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1639093838c229a53f531796f71e8c6e">&#9670;&#160;</a></span>SDL3PP_INVALID_UNICODE_CODEPOINT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_INVALID_UNICODE_CODEPOINT&#160;&#160;&#160;SDL_INVALID_UNICODE_CODEPOINT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>SDL_StepUTF8() and SDL_StepBackUTF8() report this codepoint when they encounter a UTF-8 string with encoding errors.</p>
+<p>This tends to render as something like a question mark in most places.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_StepBackUTF8 </dd>
+<dd>
+SDL_StepUTF8 </dd></dl>
+
+</div>
+</div>
+<a id="gac6db9f7bcac9aa2d0bf2e4165088663f" name="gac6db9f7bcac9aa2d0bf2e4165088663f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac6db9f7bcac9aa2d0bf2e4165088663f">&#9670;&#160;</a></span>SDL3PP_max</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_max</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">y&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;SDL_max(x, y)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is a helper macro that might be more clear than writing out the comparisons directly, and works with any type that can be compared with the <code>&gt;</code> operator. However, it double-evaluates both its parameters, so do not use expressions with side-effects here.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the first value to compare. </td></tr>
+    <tr><td class="paramname">y</td><td>the second value to compare. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the lesser of <code>x</code> and <code>y</code>.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga954ea97df0b345af042358a280f6bec7" name="ga954ea97df0b345af042358a280f6bec7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga954ea97df0b345af042358a280f6bec7">&#9670;&#160;</a></span>SDL3PP_min</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_min</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">x, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">y&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;SDL_min(x, y)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This is a helper macro that might be more clear than writing out the comparisons directly, and works with any type that can be compared with the <code>&lt;</code> operator. However, it double-evaluates both its parameters, so do not use expressions with side-effects here.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the first value to compare. </td></tr>
+    <tr><td class="paramname">y</td><td>the second value to compare. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the lesser of <code>x</code> and <code>y</code>.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga03651ba10651704cc6643e5fcc476224" name="ga03651ba10651704cc6643e5fcc476224"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga03651ba10651704cc6643e5fcc476224">&#9670;&#160;</a></span>SDL3PP_NOLONGLONG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_NOLONGLONG&#160;&#160;&#160;SDL_NOLONGLONG</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will define this if it believes the compiler doesn't understand the "long long" syntax for C datatypes. This can happen on older compilers.</p>
+<p>If <em>your</em> compiler doesn't support "long long" but <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> doesn't know it, it is safe to define this yourself to build against the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> headers.</p>
+<p>If this is defined, it will remove access to some C runtime support functions, like SDL_ulltoa and SDL_strtoll that refer to this datatype explicitly. The rest of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will still be available.</p>
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>'s own source code cannot be built with a compiler that has this defined, for various technical reasons. </p>
+
+</div>
+</div>
+<a id="gaead2ceb6c64f8a323949373d44949033" name="gaead2ceb6c64f8a323949373d44949033"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaead2ceb6c64f8a323949373d44949033">&#9670;&#160;</a></span>SDL3PP_PI_D</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_PI_D&#160;&#160;&#160;SDL_PI_D</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_PI_F </dd></dl>
+
+</div>
+</div>
+<a id="gaf7f2fcea6c3719e2d017d65fd5bf2bea" name="gaf7f2fcea6c3719e2d017d65fd5bf2bea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf7f2fcea6c3719e2d017d65fd5bf2bea">&#9670;&#160;</a></span>SDL3PP_PI_F</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_PI_F&#160;&#160;&#160;SDL_PI_F</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_PI_D </dd></dl>
+
+</div>
+</div>
+<a id="gafa152b934a5ba781126379d522827e5d" name="gafa152b934a5ba781126379d522827e5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafa152b934a5ba781126379d522827e5d">&#9670;&#160;</a></span>SDL3PP_SINT64_C</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_SINT64_C</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">c</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_SINT64_C(c)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This helps compilers that might believe a integer literal larger than 0xFFFFFFFF is overflowing a 32-bit value. Use <code>SDL_SINT64_C(0xFFFFFFFF1)</code> instead of <code>0xFFFFFFFF1</code> by itself.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_UINT64_C </dd></dl>
+
+</div>
+</div>
+<a id="ga15bccb51ae51b47f7440316ba1396993" name="ga15bccb51ae51b47f7440316ba1396993"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga15bccb51ae51b47f7440316ba1396993">&#9670;&#160;</a></span>SDL3PP_SIZE_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_SIZE_MAX&#160;&#160;&#160;SDL_SIZE_MAX</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><code>size_t</code> is generally the same size as a pointer in modern times, but this can get weird on very old and very esoteric machines. For example, on a 16-bit Intel 286, you might have a 32-bit "far" pointer (16-bit segment plus 16-bit offset), but <code>size_t</code> is 16 bits, because it can only deal with the offset into an individual segment.</p>
+<p>In modern times, it's generally expected to cover an entire linear address space. But be careful!</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga31538c873604d24eed5518c38116b0fd" name="ga31538c873604d24eed5518c38116b0fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga31538c873604d24eed5518c38116b0fd">&#9670;&#160;</a></span>SDL3PP_STRINGIFY_ARG</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_STRINGIFY_ARG</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">arg</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_STRINGIFY_ARG(arg)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>For example:</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#define LOG_ERROR(X) OutputDebugString(SDL_STRINGIFY_ARG(__FUNCTION__) &quot;: &quot; X</span></div>
+<div class="line"><span class="stringliteral">&quot;@n&quot;</span>)`</div>
+</div><!-- fragment --><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td>the text to turn into a string literal.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga2b14e039cdbe85ba4f300157dcefdbf1" name="ga2b14e039cdbe85ba4f300157dcefdbf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2b14e039cdbe85ba4f300157dcefdbf1">&#9670;&#160;</a></span>SDL3PP_UINT64_C</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_UINT64_C</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">c</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_UINT64_C(c)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This helps compilers that might believe a integer literal larger than 0xFFFFFFFF is overflowing a 32-bit value. Use <code>SDL_UINT64_C(0xFFFFFFFF1)</code> instead of <code>0xFFFFFFFF1</code> by itself.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_SINT64_C </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga4f2714c0d9540b5e1e85ed5503c59215" name="ga4f2714c0d9540b5e1e85ed5503c59215"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4f2714c0d9540b5e1e85ed5503c59215">&#9670;&#160;</a></span>calloc_func</h2>
@@ -1084,6 +1736,36 @@ SDL_cosf </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_aligned_alloc </dd></dl>
+
+</div>
+</div>
+<a id="ga20b4cc6c53a1dbd7789ee90af065b5f9" name="ga20b4cc6c53a1dbd7789ee90af065b5f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga20b4cc6c53a1dbd7789ee90af065b5f9">&#9670;&#160;</a></span>arraysize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::size_t SDL::arraysize </td>
+          <td>(</td>
+          <td class="paramtype">const T(&amp;)&#160;</td>
+          <td class="paramname"><em>array</em>[N]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This will compile but return incorrect results for a pointer to an array; it has to be an array the compiler knows the size of.</p>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
 
 </div>
 </div>
@@ -2945,8 +3627,8 @@ SDL_GetOriginalMemoryFunctions </dd></dl>
 
 </div>
 </div>
-<a id="ga8101a1c19844c8cb72600a9aa6238327" name="ga8101a1c19844c8cb72600a9aa6238327"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8101a1c19844c8cb72600a9aa6238327">&#9670;&#160;</a></span>iconv_string()</h2>
+<a id="gae765b6ec212ab3234f6645eb3c53978a" name="gae765b6ec212ab3234f6645eb3c53978a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae765b6ec212ab3234f6645eb3c53978a">&#9670;&#160;</a></span>iconv_string()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2955,7 +3637,7 @@ SDL_GetOriginalMemoryFunctions </dd></dl>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">char * SDL::iconv_string </td>
+          <td class="memname"><a class="el" href="group__CategoryOwnPtr.html#ga1b38786e36f2943046731ad164c8a408">OwnPtr</a>&lt; char &gt; SDL::iconv_string </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
           <td class="paramname"><em>tocode</em>, </td>
@@ -8509,6 +9191,129 @@ SDL_utf8strnlen </dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>SDL_strtol </dd></dl>
+
+</div>
+</div>
+<a id="ga4d65aa4051722f968f6fde80d47d761f" name="ga4d65aa4051722f968f6fde80d47d761f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4d65aa4051722f968f6fde80d47d761f">&#9670;&#160;</a></span>zero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::zero </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is wrapper over SDL_memset that handles calculating the object size, so there's no chance of copy/paste errors, and the code is cleaner.</p>
+<p>This requires an object, not a pointer to an object, nor an array.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the object to clear.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_zerop </dd>
+<dd>
+SDL_zeroa </dd></dl>
+
+</div>
+</div>
+<a id="ga51ba04c3b473e95c7808a55669162521" name="ga51ba04c3b473e95c7808a55669162521"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga51ba04c3b473e95c7808a55669162521">&#9670;&#160;</a></span>zeroa()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , std::size_t N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::zeroa </td>
+          <td>(</td>
+          <td class="paramtype">T(&amp;)&#160;</td>
+          <td class="paramname"><em>x</em>[N]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is wrapper over SDL_memset that handles calculating the array size, so there's no chance of copy/paste errors, and the code is cleaner.</p>
+<p>This requires an array, not an object, nor a pointer to an object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>an array to clear.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_zero </dd>
+<dd>
+SDL_zeroa </dd></dl>
+
+</div>
+</div>
+<a id="gab0fc530b6aa46072077289b0a200c21c" name="gab0fc530b6aa46072077289b0a200c21c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab0fc530b6aa46072077289b0a200c21c">&#9670;&#160;</a></span>zerop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SDL::zerop </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is wrapper over SDL_memset that handles calculating the object size, so there's no chance of copy/paste errors, and the code is cleaner.</p>
+<p>This requires a pointer to an object, not an object itself, nor an array.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>a pointer to the object to clear.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_zero </dd>
+<dd>
+SDL_zeroa </dd></dl>
 
 </div>
 </div>

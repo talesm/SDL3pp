@@ -2,7 +2,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, FileTransform, ReplacementRule, StringMap } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, FileTransform, ReplacementRule, StringMap } from "./types"
  */
 
 /**
@@ -67,6 +67,8 @@ class ApiContext {
 
     this.docRules = transform.docRules ?? [];
     this.docRules.forEach(rule => rule.pattern = RegExp(rule.pattern, 'g'));
+
+    this.definitionPrefix = transform.definitionPrefix;
   }
 }
 
@@ -79,13 +81,14 @@ class ApiContext {
 function transformEntries(sourceEntries, context, transform) {
   /** @type {ApiEntries} */
   const targetEntries = {};
-  const defWhitelist = new Set(transform.includeDefs ?? []);
   const blacklist = new Set(transform.ignoreEntries ?? []);
   const transformMap = transform.transform ?? {};
+  const defPrefix = context.definitionPrefix;
   if (!transform.transform) transform.transform = transformMap;
   if (!transform.includeAfter) transform.includeAfter = {};
 
   if (transform.resources) expandResources(transform.resources, transform, context);
+  if (transform.enumerations) expandEnumerations(sourceEntries, transform, context);
 
   insertEntryAndCheck(targetEntries, transform.includeAfter?.__begin ?? [], context, transform);
 
@@ -123,6 +126,11 @@ function transformEntries(sourceEntries, context, transform) {
           context.typeMap[`const ${sourceType}`] = `const ${targetType}`;
           context.typeMap[`const ${sourceType} *`] = `const ${targetType} *`;
         }
+      } else if (targetEntry.kind === "def") {
+        if (!targetName.startsWith(defPrefix)) {
+          targetName = defPrefix + targetName;
+          targetEntry.name = targetName;
+        }
       }
       insertEntryAndCheck(targetEntries, targetEntry, context, transform, targetName);
       if (sourceEntry.kind === "enum") {
@@ -142,12 +150,6 @@ function transformEntries(sourceEntries, context, transform) {
   }
   insertEntryAndCheck(targetEntries, transform.includeAfter?.__end ?? [], context, transform);
   transformHierarchy(targetEntries);
-  for (const obj of Object.values(targetEntries)) {
-    if (!Array.isArray(obj) && obj.kind == "def" && !!obj.sourceName && !defWhitelist.has(obj.sourceName)) {
-      delete targetEntries[obj.name];
-    }
-  }
-
   validateEntries(targetEntries);
 
   return targetEntries;
@@ -274,6 +276,78 @@ function expandResources(resources, transform, context) {
 
 /**
  * 
+ * @param {ApiEntries}            sourceEntries 
+ * @param {FileTransform}         transform,
+ * @param {ApiContext}            context 
+ */
+function expandEnumerations(sourceEntries, transform, context) {
+  const enumerations = transform.enumerations;
+  for (const [type, enumTransform] of Object.entries(enumerations)) {
+    const includeAfter = enumTransform.includeAfter;
+    const sourceEntry = sourceEntries[type];
+    if (Array.isArray(sourceEntry)) continue;
+    const targetType = addTransform(type, enumTransform, includeAfter);
+    let values = enumTransform.values;
+    if (!values?.length) {
+      if (sourceEntry.kind === "enum") {
+        values = Object.keys(sourceEntry.entries);
+      } else {
+        const prefix = enumTransform.prefix ?? type.toUpperCase();
+        values = Object.values(sourceEntries)
+          .filter(e => !Array.isArray(e)
+            && e.kind === "def"
+            && !e.parameters
+            && e.name.startsWith(prefix))
+          .map(e => /** @type {ApiEntry}*/(e).name);
+      }
+    }
+    for (const value of values) {
+      addTransform(value, {
+        kind: "var",
+        constexpr: true,
+        type: targetType,
+      }, includeAfter);
+    }
+  }
+
+  /** 
+   * @param {string} name 
+   * @param {ApiEntryTransform} entry  
+   * @param {string=} includeAfter 
+   */
+  function addTransform(name, entry, includeAfter) {
+    const currEntry = transform.transform[name] || {};
+    entry = { ...currEntry, ...entry };
+    const targetName = entry.name ?? transformName(name, context);
+
+    // @ts-ignore
+    delete entry.values;
+    // @ts-ignore
+    delete entry.prefix;
+    // @ts-ignore
+    delete entry.includeAfter;
+
+    if (includeAfter) {
+      const placeholder = {
+        name: targetName,
+        type: entry.type,
+      };
+      const includeTarget = transform.includeAfter[includeAfter];
+      if (!includeTarget) {
+        transform.includeAfter[includeAfter] = placeholder;
+      } else if (Array.isArray(includeTarget)) {
+        includeTarget.push(placeholder);
+      } else {
+        transform.includeAfter[includeAfter] = [includeTarget, placeholder];
+      }
+    }
+    transform.transform[name] = entry;
+    return targetName;
+  }
+}
+
+/**
+ * 
  * @param {ApiSubEntryTransformMap} entries 
  */
 function scanFreeFunction(entries) {
@@ -311,6 +385,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
   /** @type {ApiEntries} */
   const entries = {};
   const type = targetEntry.name;
+  const defPrefix = context.definitionPrefix ?? "";
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     const nameCandidate = transformName(key, context);
     if (Array.isArray(entry) || nameCandidate === key) {
@@ -319,7 +394,8 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
     }
     const nameChange = makeRenameEntry(entry, nameCandidate, type);
     const currName = transform.transform[key]?.name ?? nameCandidate;
-    const currEntry = targetEntries[currName];
+    const currDefName = defPrefix + currName;
+    const currEntry = targetEntries[currName] ?? targetEntries[currDefName];
     if (currEntry) {
       if (Array.isArray(currEntry)) {
         currEntry.forEach(e => combineObject(e, nameChange));
@@ -328,6 +404,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
       }
       insertEntry(entries, currEntry);
       delete targetEntries[currName];
+      delete targetEntries[currDefName];
     } else if (!entries[nameChange.name]) {
       insertEntry(entries, { name: nameChange.name, kind: "def" });
     }

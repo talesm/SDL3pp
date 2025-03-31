@@ -1,7 +1,7 @@
 var searchData=
 [
   ['handling_0',['handling',['../group__CategoryError.html',1,'Error Handling'],['../group__CategoryLog.html',1,'Log Handling']]],
-  ['haptic_1',['haptic',['../todo.html#_todo000002',1,'Force Feedback (&quot;Haptic&quot;)'],['../ApiByCategory.html#force-feedback-haptic',1,'Force Feedback (&quot;Haptic&quot;)']]],
+  ['haptic_1',['haptic',['../todo.html#_todo000006',1,'Force Feedback (&quot;Haptic&quot;)'],['../ApiByCategory.html#force-feedback-haptic',1,'Force Feedback (&quot;Haptic&quot;)']]],
   ['has_2',['Has',['../structSDL_1_1PropertiesBase.html#a784f8ab49d1b823c65befcb81ede09e5',1,'SDL::PropertiesBase']]],
   ['hasalternateimages_3',['HasAlternateImages',['../structSDL_1_1SurfaceBase.html#a6102c18105dd1f140f46fb47e4c4db80',1,'SDL::SurfaceBase']]],
   ['hascolorkey_4',['HasColorKey',['../structSDL_1_1SurfaceBase.html#a29d193c9002f1a3098544305bf9b188f',1,'SDL::SurfaceBase']]],

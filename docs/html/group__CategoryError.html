@@ -71,6 +71,7 @@ $(function() {
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Error Handling<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
 </div><!--header-->
@@ -79,6 +80,15 @@ $(function() {
 <p>Simple error message routines for <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gad4d83b5b52ac7d4f565df3ee5549bc23" id="r_gad4d83b5b52ac7d4f565df3ee5549bc23"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#gad4d83b5b52ac7d4f565df3ee5549bc23">SDL3PP_Unsupported</a>()&#160;&#160;&#160;SDL_Unsupported()</td></tr>
+<tr class="memdesc:gad4d83b5b52ac7d4f565df3ee5549bc23"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro to standardize error reporting on unsupported operations.  <br /></td></tr>
+<tr class="separator:gad4d83b5b52ac7d4f565df3ee5549bc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafbd1aef02425a75ecb3209b6a50dda63" id="r_gafbd1aef02425a75ecb3209b6a50dda63"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#gafbd1aef02425a75ecb3209b6a50dda63">SDL3PP_InvalidParamError</a>(param)&#160;&#160;&#160;SDL_InvalidParamError(param)</td></tr>
+<tr class="memdesc:gafbd1aef02425a75ecb3209b6a50dda63"><td class="mdescLeft">&#160;</td><td class="mdescRight">A macro to standardize error reporting on unsupported operations.  <br /></td></tr>
+<tr class="separator:gafbd1aef02425a75ecb3209b6a50dda63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga0dca7fad2f78d8234eb0299845b5ccc5" id="r_ga0dca7fad2f78d8234eb0299845b5ccc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryError.html#ga0dca7fad2f78d8234eb0299845b5ccc5">SDL::SetErrorUnformatted</a> (<a class="el" href="classSDL_1_1StringParam.html">StringParam</a> message)</td></tr>
@@ -107,6 +117,56 @@ Functions</h2></td></tr>
 <div class="line">}</div>
 <div class="ttc" id="agroup__CategoryError_html_gaf25860d775629ffbdc0fa04bf1e4b7ca"><div class="ttname"><a href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca">SDL::SetError</a></div><div class="ttdeci">bool SetError(std::string_view fmt, ARGS... args)</div><div class="ttdoc">Set the SDL error message for the current thread.</div><div class="ttdef"><b>Definition</b> SDL3pp_error.h:105</div></div>
 </div><!-- fragment --><p>It's also common to just return <code>false</code> in this case if the failing thing is known to call <a class="el" href="group__CategoryError.html#gaf25860d775629ffbdc0fa04bf1e4b7ca" title="Set the SDL error message for the current thread.">SetError()</a>, so errors simply propagate through. </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="gafbd1aef02425a75ecb3209b6a50dda63" name="gafbd1aef02425a75ecb3209b6a50dda63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafbd1aef02425a75ecb3209b6a50dda63">&#9670;&#160;</a></span>SDL3PP_InvalidParamError</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_InvalidParamError</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">param</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_InvalidParamError(param)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This simply calls SDL_SetError() with a standardized error string, for convenience, consistency, and clarity.</p>
+<p>A common usage pattern inside <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> is this:</p>
+<div class="fragment"><div class="line"><span class="keywordtype">bool</span> MyFunction(<span class="keyword">const</span> <span class="keywordtype">char</span> *str) {</div>
+<div class="line">    <span class="keywordflow">if</span> (!str) {</div>
+<div class="line">        <span class="keywordflow">return</span> SDL_InvalidParamError(<span class="stringliteral">&quot;str&quot;</span>);  <span class="comment">// returns false.</span></div>
+<div class="line">    }</div>
+<div class="line">    DoSomething(str);</div>
+<div class="line">    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line">}</div>
+</div><!-- fragment --><dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gad4d83b5b52ac7d4f565df3ee5549bc23" name="gad4d83b5b52ac7d4f565df3ee5549bc23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad4d83b5b52ac7d4f565df3ee5549bc23">&#9670;&#160;</a></span>SDL3PP_Unsupported</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_Unsupported</td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_Unsupported()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This simply calls SDL_SetError() with a standardized error string, for convenience, consistency, and clarity.</p>
+<dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this macro from any thread.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga7307f5502856bade5976f55c8adf5326" name="ga7307f5502856bade5976f55c8adf5326"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7307f5502856bade5976f55c8adf5326">&#9670;&#160;</a></span>ClearError()</h2>

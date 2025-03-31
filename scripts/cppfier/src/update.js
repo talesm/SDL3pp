@@ -186,6 +186,9 @@ function checkEntryChanges(name, sourceEntry, targetEntry, begin, end, prefix) {
   const targetEntriesCount = Object.keys(targetEntry.entries ?? {})?.length ?? 0;
   if (change || (sourceEntriesCount == 0 && targetEntriesCount > 0)) {
     system.log(`${name} changed "${change}" from ${begin} to ${end}`);
+    if (change === "parameters") {
+      system.log(`  parameters went from "${JSON.stringify(sourceEntry.parameters)}" to "${JSON.stringify(targetEntry.parameters)}"`);
+    }
     changes.push({ begin, end, replacement: generateEntry(targetEntry, prefix) + "\n" });
   } else {
     if (sourceEntry.begin > begin) {
@@ -323,6 +326,8 @@ function generateEntry(entry, prefix) {
     case "alias":
       if (!entry.type) return `${doc}${prefix}using ${entry.name};`;
       return `${doc}${template}${prefix}using ${entry.name} = ${entry.type};`;
+    case "def":
+      return doc + generateDef(entry);
     case "forward":
       return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
     case "function":
@@ -335,6 +340,18 @@ function generateEntry(entry, prefix) {
       system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
   }
+}
+
+/**
+ * 
+ * @param {ApiEntry}  entry 
+ */
+function generateDef(entry) {
+  if (!entry.parameters) return `#define ${entry.name} ${entry.sourceName ?? ""}`;
+
+  const parameters = `(${entry.parameters.join(", ")})`;
+  const body = entry.sourceName ? `${entry.sourceName}${parameters}` : "";
+  return `#define ${entry.name}${parameters} ${body}`;
 }
 
 /**

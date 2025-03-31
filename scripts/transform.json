@@ -4,6 +4,7 @@
     "IMG_",
     "TTF_"
   ],
+  "definitionPrefix": "SDL3PP_",
   "renameRules": [
     {
       "pattern": "^SDL_(.*)\\.h$",
@@ -25,11 +26,47 @@
   "files": {
     "SDL_stdinc.h": {
       "ignoreEntries": [
+        "alloca",
+        "bool",
+        "__bool_true_false_are_defined",
+        "false",
         "SDL_alignment_test",
+        "SDL_const_cast",
         "SDL_DUMMY_ENUM",
+        "SDL_IN_BYTECAP",
+        "SDL_INOUT_Z_CAP",
+        "SDL_OUT_BYTECAP",
+        "SDL_OUT_CAP",
+        "SDL_OUT_Z_BYTECAP",
+        "SDL_OUT_Z_CAP",
+        "SDL_PRILL_PREFIX",
+        "SDL_PRILLd",
+        "SDL_PRILLu",
+        "SDL_PRILLx",
+        "SDL_PRILLX",
+        "SDL_PRINTF_FORMAT_STRING",
+        "SDL_PRINTF_VARARG_FUNC",
+        "SDL_PRINTF_VARARG_FUNCV",
+        "SDL_PRIs32",
+        "SDL_PRIu32",
+        "SDL_PRIx32",
+        "SDL_PRIX32",
+        "SDL_PRIs64",
+        "SDL_PRIu64",
+        "SDL_PRIx64",
+        "SDL_PRIX64",
+        "SDL_reinterpret_cast",
+        "SDL_SCANF_FORMAT_STRING",
+        "SDL_SCANF_VARARG_FUNC",
+        "SDL_SCANF_VARARG_FUNCV",
         "SDL_size_mul_check_overflow_builtin",
         "SDL_size_add_check_overflow_builtin",
-        "alloca"
+        "SDL_stack_alloc",
+        "SDL_stack_free",
+        "SDL_static_cast",
+        "SDL_WPRINTF_VARARG_FUNC",
+        "SDL_WPRINTF_VARARG_FUNCV",
+        "true"
       ],
       "includeAfter": {
         "__begin": [
@@ -123,9 +160,6 @@
           }
         }
       },
-      "includeDefs": [
-        "SDL_FOURCC"
-      ],
       "resources": {
         "SDL_Environment": {
           "entries": {
@@ -296,7 +330,117 @@
             }
           }
         },
-        "": {},
+        "SDL_MAX_TIME": {
+          "kind": "var",
+          "type": "Time",
+          "constexpr": true
+        },
+        "SDL_MIN_TIME": {
+          "kind": "var",
+          "type": "Time",
+          "constexpr": true
+        },
+        "SDL_MAX_SINT8": {
+          "kind": "var",
+          "type": "Sint8",
+          "constexpr": true
+        },
+        "SDL_MIN_SINT8": {
+          "kind": "var",
+          "type": "Sint8",
+          "constexpr": true
+        },
+        "SDL_MAX_UINT8": {
+          "kind": "var",
+          "type": "Uint8",
+          "constexpr": true
+        },
+        "SDL_MIN_UINT8": {
+          "kind": "var",
+          "type": "Uint8",
+          "constexpr": true
+        },
+        "SDL_MAX_SINT16": {
+          "kind": "var",
+          "type": "Sint16",
+          "constexpr": true
+        },
+        "SDL_MIN_SINT16": {
+          "kind": "var",
+          "type": "Sint16",
+          "constexpr": true
+        },
+        "SDL_MAX_UINT16": {
+          "kind": "var",
+          "type": "Uint16",
+          "constexpr": true
+        },
+        "SDL_MIN_UINT16": {
+          "kind": "var",
+          "type": "Uint16",
+          "constexpr": true
+        },
+        "SDL_MAX_SINT32": {
+          "kind": "var",
+          "type": "Sint32",
+          "constexpr": true
+        },
+        "SDL_MIN_SINT32": {
+          "kind": "var",
+          "type": "Sint32",
+          "constexpr": true
+        },
+        "SDL_MAX_UINT32": {
+          "kind": "var",
+          "type": "Uint32",
+          "constexpr": true
+        },
+        "SDL_MIN_UINT32": {
+          "kind": "var",
+          "type": "Uint8",
+          "constexpr": true
+        },
+        "SDL_MAX_SINT64": {
+          "kind": "var",
+          "type": "Sint64",
+          "constexpr": true
+        },
+        "SDL_MIN_SINT64": {
+          "kind": "var",
+          "type": "Sint64",
+          "constexpr": true
+        },
+        "SDL_MAX_UINT64": {
+          "kind": "var",
+          "type": "Uint64",
+          "constexpr": true
+        },
+        "SDL_MIN_UINT64": {
+          "kind": "var",
+          "type": "Uint8",
+          "constexpr": true
+        },
+        "SDL_arraysize": {
+          "kind": "function",
+          "type": "std::size_t",
+          "constexpr": true,
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "std::size_t",
+              "name": "N"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "const T",
+              "name": "(&array)[N]"
+            }
+          ]
+        },
         "SDL_FOURCC": {
           "name": "FourCC",
           "type": "Uint32",
@@ -323,6 +467,61 @@
         },
         "SDL_GetEnvironment": {
           "type": "EnvironmentRef"
+        },
+        "SDL_iconv_string": {
+          "type": "OwnPtr<char>"
+        },
+        "SDL_zero": {
+          "kind": "function",
+          "type": "void",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T &",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_zerop": {
+          "kind": "function",
+          "type": "void",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T *",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_zeroa": {
+          "kind": "function",
+          "type": "void",
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "std::size_t",
+              "name": "N"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T",
+              "name": "(&x)[N]"
+            }
+          ]
         }
       }
     },
@@ -1308,36 +1507,7 @@
           ]
         }
       },
-      "transform": {
-        "SDL_DEFINE_PIXELFORMAT": {
-          "kind": "function",
-          "name": "PixelFormat.PixelFormat",
-          "type": "",
-          "constexpr": true,
-          "static": false,
-          "parameters": [
-            {
-              "type": "SDL_PixelType",
-              "name": "type"
-            },
-            {
-              "type": "int",
-              "name": "order"
-            },
-            {
-              "type": "SDL_PackedLayout",
-              "name": "layout"
-            },
-            {
-              "type": "int",
-              "name": "bits"
-            },
-            {
-              "type": "int",
-              "name": "bytes"
-            }
-          ]
-        },
+      "enumerations": {
         "SDL_PixelFormat": {
           "kind": "struct",
           "type": "",
@@ -1355,6 +1525,34 @@
                   "type": "SDL_PixelFormat",
                   "name": "format",
                   "default": "SDL_PIXELFORMAT_UNKNOWN"
+                }
+              ]
+            },
+            "SDL_DEFINE_PIXELFORMAT": {
+              "kind": "function",
+              "name": "PixelFormat",
+              "type": "",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "SDL_PixelType",
+                  "name": "type"
+                },
+                {
+                  "type": "int",
+                  "name": "order"
+                },
+                {
+                  "type": "SDL_PackedLayout",
+                  "name": "layout"
+                },
+                {
+                  "type": "int",
+                  "name": "bits"
+                },
+                {
+                  "type": "int",
+                  "name": "bytes"
                 }
               ]
             },
@@ -1511,39 +1709,6 @@
             }
           }
         },
-        "SDL_DEFINE_COLORSPACE": {
-          "kind": "function",
-          "name": "Colorspace.Colorspace",
-          "type": "",
-          "constexpr": true,
-          "static": false,
-          "parameters": [
-            {
-              "type": "ColorType",
-              "name": "type"
-            },
-            {
-              "type": "ColorRange",
-              "name": "range"
-            },
-            {
-              "type": "ColorPrimaries",
-              "name": "primaries"
-            },
-            {
-              "type": "TransferCharacteristics",
-              "name": "transfer"
-            },
-            {
-              "type": "MatrixCoefficients",
-              "name": "matrix"
-            },
-            {
-              "type": "ChromaLocation",
-              "name": "chroma"
-            }
-          ]
-        },
         "SDL_Colorspace": {
           "kind": "struct",
           "type": "",
@@ -1561,6 +1726,38 @@
                   "type": "SDL_Colorspace",
                   "name": "colorspace",
                   "default": "SDL_COLORSPACE_UNKNOWN"
+                }
+              ]
+            },
+            "SDL_DEFINE_COLORSPACE": {
+              "kind": "function",
+              "name": "Colorspace",
+              "type": "",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "ColorType",
+                  "name": "type"
+                },
+                {
+                  "type": "ColorRange",
+                  "name": "range"
+                },
+                {
+                  "type": "ColorPrimaries",
+                  "name": "primaries"
+                },
+                {
+                  "type": "TransferCharacteristics",
+                  "name": "transfer"
+                },
+                {
+                  "type": "MatrixCoefficients",
+                  "name": "matrix"
+                },
+                {
+                  "type": "ChromaLocation",
+                  "name": "chroma"
                 }
               ]
             },
@@ -1667,7 +1864,9 @@
               "constexpr": true
             }
           }
-        },
+        }
+      },
+      "transform": {
         "SDL_Color": {
           "kind": "struct",
           "entries": {
@@ -1804,6 +2003,11 @@
             "SDL_DestroyPalette": "function"
           }
         }
+      }
+    },
+    "SDL_blendmode.h": {
+      "enumerations": {
+        "SDL_BlendMode": {}
       }
     },
     "SDL_rect.h": {
@@ -3038,6 +3242,16 @@
           }
         }
       },
+      "enumerations": {
+        "SDL_SurfaceFlags": {
+          "values": [
+            "SDL_SURFACE_PREALLOCATED",
+            "SDL_SURFACE_LOCK_NEEDED",
+            "SDL_SURFACE_LOCKED",
+            "SDL_SURFACE_SIMD_ALIGNED"
+          ]
+        }
+      },
       "transform": {
         "SDL_LoadBMP_IO": {
           "name": "LoadBMP",
@@ -3569,6 +3783,31 @@
               "name": "Destroy"
             }
           }
+        }
+      },
+      "enumerations": {
+        "SDL_GLProfile": {
+          "prefix": "SDL_GL_CONTEXT_PROFILE"
+        },
+        "SDL_GLContextFlag": {
+          "values": [
+            "SDL_GL_CONTEXT_DEBUG_FLAG",
+            "SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG",
+            "SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG",
+            "SDL_GL_CONTEXT_RESET_ISOLATION_FLAG"
+          ]
+        },
+        "SDL_GLContextReleaseFlag": {
+          "values": [
+            "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE",
+            "SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH"
+          ]
+        },
+        "SDL_GLContextResetNotification": {
+          "values": [
+            "SDL_GL_CONTEXT_RESET_NO_NOTIFICATION",
+            "SDL_GL_CONTEXT_RESET_LOSE_CONTEXT"
+          ]
         }
       },
       "transform": {
@@ -4709,7 +4948,16 @@
     "SDL_timer.h": {
       "ignoreEntries": [
         "SDL_GetTicks",
-        "SDL_DelayNS"
+        "SDL_DelayNS",
+        "SDL_MS_PER_SECOND",
+        "SDL_US_PER_SECOND",
+        "SDL_NS_PER_SECOND",
+        "SDL_NS_PER_MS",
+        "SDL_NS_PER_US",
+        "SDL_MS_TO_NS",
+        "SDL_NS_TO_MS",
+        "SDL_US_TO_NS",
+        "SDL_NS_TO_US"
       ],
       "includeAfter": {
         "SDL_TimerCallback": [
@@ -5444,7 +5692,11 @@
     },
     "SDL_main.h": {
       "ignoreEntries": [
+        "main",
+        "SDLMAIN_DECLSPEC",
         "SDL_main",
+        "SDL_MAIN_AVAILABLE",
+        "SDL_MAIN_NEEDED",
         "SDL_AppInit",
         "SDL_AppIterate",
         "SDL_AppEvent",
@@ -5452,6 +5704,10 @@
       ],
       "includeAfter": {
         "__begin": [
+          {
+            "kind": "def",
+            "name": "SDL_MAIN_HANDLED"
+          },
           {
             "kind": "def",
             "name": "SDL_MAIN_USE_CALLBACKS"
@@ -6345,6 +6601,32 @@
           }
         }
       },
+      "enumerations": {
+        "TTF_FontStyleFlags": {
+          "prefix": "TTF_STYLE_",
+          "includeAfter": "__begin"
+        },
+        "TTF_HintingFlags": {
+          "includeAfter": "__begin"
+        },
+        "TTF_HorizontalAlignment": {
+          "includeAfter": "__begin"
+        },
+        "TTF_Direction": {
+          "includeAfter": "__begin"
+        },
+        "TTF_ImageType": {
+          "includeAfter": "__begin"
+        },
+        "TTF_SubStringFlags": {
+          "prefix": "TTF_SUBSTRING_",
+          "includeAfter": "__begin"
+        },
+        "TTF_GPUTextEngineWinding": {
+          "prefix": "TTF_SUBSTRING_",
+          "includeAfter": "__begin"
+        }
+      },
       "includeAfter": {
         "__begin": [
           {
@@ -6355,26 +6637,6 @@
             "kind": "struct",
             "name": "TtfInitFlag",
             "type": "InitFlagsExtra"
-          },
-          {
-            "name": "FontStyleFlags",
-            "kind": "placeholder"
-          },
-          {
-            "name": "HintingFlags",
-            "kind": "placeholder"
-          },
-          {
-            "name": "HorizontalAlignment",
-            "kind": "placeholder"
-          },
-          {
-            "name": "Direction",
-            "kind": "placeholder"
-          },
-          {
-            "name": "ImageType",
-            "kind": "placeholder"
           },
           {
             "name": "TextEngineWrapper",
@@ -6403,45 +6665,6 @@
           {
             "name": "GPUAtlasDrawSequence",
             "kind": "placeholder"
-          },
-          {
-            "name": "SubStringFlags",
-            "kind": "placeholder"
-          },
-          {
-            "name": "SUBSTRING_DIRECTION_MASK",
-            "kind": "var",
-            "type": "SubStringFlags",
-            "constexpr": true,
-            "sourceName": "TTF_SUBSTRING_DIRECTION_MASK"
-          },
-          {
-            "name": "SUBSTRING_TEXT_START",
-            "kind": "var",
-            "type": "SubStringFlags",
-            "constexpr": true,
-            "sourceName": "TTF_SUBSTRING_TEXT_START"
-          },
-          {
-            "name": "SUBSTRING_LINE_START",
-            "kind": "var",
-            "type": "SubStringFlags",
-            "constexpr": true,
-            "sourceName": "TTF_SUBSTRING_LINE_START"
-          },
-          {
-            "name": "SUBSTRING_LINE_END",
-            "kind": "var",
-            "type": "SubStringFlags",
-            "constexpr": true,
-            "sourceName": "TTF_SUBSTRING_LINE_END"
-          },
-          {
-            "name": "SUBSTRING_TEXT_END",
-            "kind": "var",
-            "type": "SubStringFlags",
-            "constexpr": true,
-            "sourceName": "TTF_SUBSTRING_TEXT_END"
           },
           {
             "name": "SubString",

@@ -295,33 +295,51 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00857" name="l00857"></a><span class="lineno">  857</span>}</div>
 </div>
 <div class="line"><a id="l00858" name="l00858"></a><span class="lineno">  858</span> </div>
-<div class="foldopen" id="foldopen00880" data-start="{" data-end="}">
-<div class="line"><a id="l00880" name="l00880"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">  880</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">GetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name)</div>
-<div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span>{</div>
-<div class="line"><a id="l00882" name="l00882"></a><span class="lineno">  882</span>  <span class="keywordflow">return</span> SDL_GetAppMetadataProperty(name);</div>
-<div class="line"><a id="l00883" name="l00883"></a><span class="lineno">  883</span>}</div>
+<div class="line"><a id="l00859" name="l00859"></a><span class="lineno">  859</span><span class="preprocessor">#define SDL3PP_PROP_APP_METADATA_NAME_STRING SDL_PROP_APP_METADATA_NAME_STRING</span></div>
+<div class="line"><a id="l00860" name="l00860"></a><span class="lineno">  860</span> </div>
+<div class="line"><a id="l00861" name="l00861"></a><span class="lineno">  861</span><span class="preprocessor">#define SDL3PP_PROP_APP_METADATA_VERSION_STRING                                \</span></div>
+<div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span><span class="preprocessor">  SDL_PROP_APP_METADATA_VERSION_STRING</span></div>
+<div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span> </div>
+<div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span><span class="preprocessor">#define SDL3PP_PROP_APP_METADATA_IDENTIFIER_STRING                             \</span></div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span><span class="preprocessor">  SDL_PROP_APP_METADATA_IDENTIFIER_STRING</span></div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span> </div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span><span class="preprocessor">#define SDL3PP_PROP_APP_METADATA_CREATOR_STRING                                \</span></div>
+<div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span><span class="preprocessor">  SDL_PROP_APP_METADATA_CREATOR_STRING</span></div>
+<div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span> </div>
+<div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span><span class="preprocessor">#define SDL3PP_PROP_APP_METADATA_COPYRIGHT_STRING                              \</span></div>
+<div class="line"><a id="l00871" name="l00871"></a><span class="lineno">  871</span><span class="preprocessor">  SDL_PROP_APP_METADATA_COPYRIGHT_STRING</span></div>
+<div class="line"><a id="l00872" name="l00872"></a><span class="lineno">  872</span> </div>
+<div class="line"><a id="l00873" name="l00873"></a><span class="lineno">  873</span><span class="preprocessor">#define SDL3PP_PROP_APP_METADATA_URL_STRING SDL_PROP_APP_METADATA_URL_STRING</span></div>
+<div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span> </div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span><span class="preprocessor">#define SDL3PP_PROP_APP_METADATA_TYPE_STRING SDL_PROP_APP_METADATA_TYPE_STRING</span></div>
+<div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span> </div>
+<div class="foldopen" id="foldopen00898" data-start="{" data-end="}">
+<div class="line"><a id="l00898" name="l00898"></a><span class="lineno"><a class="line" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">  898</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">GetAppMetadataProperty</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> name)</div>
+<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>{</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>  <span class="keywordflow">return</span> SDL_GetAppMetadataProperty(name);</div>
+<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>}</div>
 </div>
-<div class="line"><a id="l00884" name="l00884"></a><span class="lineno">  884</span> </div>
-<div class="line"><a id="l00886" name="l00886"></a><span class="lineno">  886</span> </div>
-<div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span><span class="preprocessor">#pragma region impl</span></div>
-<div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span> </div>
-<div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span><span class="keyword">inline</span> <span class="keywordtype">bool</span> SDL::updateActive(<span class="keywordtype">bool</span> active)</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>{</div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>  <span class="keyword">static</span> std::atomic_bool currentlyInitd{<span class="keyword">false</span>};</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>  <span class="keywordtype">bool</span> result = !currentlyInitd.exchange(active);</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>  <span class="keywordflow">if</span> (active &amp;&amp; !result) {</div>
-<div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    <a class="code hl_function" href="group__CategoryError.html#ga0dca7fad2f78d8234eb0299845b5ccc5">SetErrorUnformatted</a>(</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>      <span class="stringliteral">&quot;Can not initialize, there is already an active instance&quot;</span>);</div>
-<div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>  } <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    m_active = active;</div>
-<div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>  <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>}</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span> </div>
-<div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span><span class="preprocessor">#pragma endregion</span></div>
 <div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span> </div>
-<div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l00904" name="l00904"></a><span class="lineno">  904</span> </div>
-<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_INIT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00905" name="l00905"></a><span class="lineno">  905</span><span class="preprocessor">#pragma region impl</span></div>
+<div class="line"><a id="l00906" name="l00906"></a><span class="lineno">  906</span> </div>
+<div class="line"><a id="l00907" name="l00907"></a><span class="lineno">  907</span><span class="keyword">inline</span> <span class="keywordtype">bool</span> SDL::updateActive(<span class="keywordtype">bool</span> active)</div>
+<div class="line"><a id="l00908" name="l00908"></a><span class="lineno">  908</span>{</div>
+<div class="line"><a id="l00909" name="l00909"></a><span class="lineno">  909</span>  <span class="keyword">static</span> std::atomic_bool currentlyInitd{<span class="keyword">false</span>};</div>
+<div class="line"><a id="l00910" name="l00910"></a><span class="lineno">  910</span>  <span class="keywordtype">bool</span> result = !currentlyInitd.exchange(active);</div>
+<div class="line"><a id="l00911" name="l00911"></a><span class="lineno">  911</span>  <span class="keywordflow">if</span> (active &amp;&amp; !result) {</div>
+<div class="line"><a id="l00912" name="l00912"></a><span class="lineno">  912</span>    <a class="code hl_function" href="group__CategoryError.html#ga0dca7fad2f78d8234eb0299845b5ccc5">SetErrorUnformatted</a>(</div>
+<div class="line"><a id="l00913" name="l00913"></a><span class="lineno">  913</span>      <span class="stringliteral">&quot;Can not initialize, there is already an active instance&quot;</span>);</div>
+<div class="line"><a id="l00914" name="l00914"></a><span class="lineno">  914</span>  } <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00915" name="l00915"></a><span class="lineno">  915</span>    m_active = active;</div>
+<div class="line"><a id="l00916" name="l00916"></a><span class="lineno">  916</span>  <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00917" name="l00917"></a><span class="lineno">  917</span>}</div>
+<div class="line"><a id="l00918" name="l00918"></a><span class="lineno">  918</span> </div>
+<div class="line"><a id="l00919" name="l00919"></a><span class="lineno">  919</span><span class="preprocessor">#pragma endregion</span></div>
+<div class="line"><a id="l00920" name="l00920"></a><span class="lineno">  920</span> </div>
+<div class="line"><a id="l00921" name="l00921"></a><span class="lineno">  921</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00922" name="l00922"></a><span class="lineno">  922</span> </div>
+<div class="line"><a id="l00923" name="l00923"></a><span class="lineno">  923</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_INIT_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassSDL_1_1SDL_html_aa30263ae77d93b161b53e50d16c9a281"><div class="ttname"><a href="classSDL_1_1SDL.html#aa30263ae77d93b161b53e50d16c9a281">SDL::SDL::SDL</a></div><div class="ttdeci">SDL(FLAGS... flags)</div><div class="ttdoc">Init given subsystems.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:577</div></div>
 <div class="ttc" id="aclassSDL_1_1SDL_html_ab76146ffbe19759afca82f55784c7e1e"><div class="ttname"><a href="classSDL_1_1SDL.html#ab76146ffbe19759afca82f55784c7e1e">SDL::SDL::SDL</a></div><div class="ttdeci">constexpr SDL()=default</div><div class="ttdoc">Default ctor.</div></div>
 <div class="ttc" id="aclassSDL_1_1SDL_html_ad5662e67dc408ba8865e66a72b60d0f5"><div class="ttname"><a href="classSDL_1_1SDL.html#ad5662e67dc408ba8865e66a72b60d0f5">SDL::SDL::reset</a></div><div class="ttdeci">bool reset()</div><div class="ttdoc">reset the value of this instance, acts like it was destroyed and then newly instantiated with empty c...</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:629</div></div>
@@ -338,7 +356,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="agroup__CategoryInit_html_ga649ccd445bb0296103ce839b05fb8ddf"><div class="ttname"><a href="group__CategoryInit.html#ga649ccd445bb0296103ce839b05fb8ddf">SDL::AppIterate_func</a></div><div class="ttdeci">SDL_AppIterate_func AppIterate_func</div><div class="ttdoc">Function pointer typedef for SDL_AppIterate.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:199</div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga65bdd3a913bd08eea41fd70fb49e5079"><div class="ttname"><a href="group__CategoryInit.html#ga65bdd3a913bd08eea41fd70fb49e5079">SDL::INIT_AUDIO</a></div><div class="ttdeci">constexpr InitFlags INIT_AUDIO</div><div class="ttdoc">SDL_INIT_AUDIO implies SDL_INIT_EVENTS</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:79</div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga7621ccbf8a8e81e8ff90b14397f87c1e"><div class="ttname"><a href="group__CategoryInit.html#ga7621ccbf8a8e81e8ff90b14397f87c1e">SDL::InitSubSystem</a></div><div class="ttdeci">bool InitSubSystem(InitFlags flags)</div><div class="ttdoc">Initialize the SDL library.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:289</div></div>
-<div class="ttc" id="agroup__CategoryInit_html_ga7ae0a016d954f3a072c0a49d9dd9caf2"><div class="ttname"><a href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a></div><div class="ttdeci">const char * GetAppMetadataProperty(StringParam name)</div><div class="ttdoc">Get metadata about your app.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:880</div></div>
+<div class="ttc" id="agroup__CategoryInit_html_ga7ae0a016d954f3a072c0a49d9dd9caf2"><div class="ttname"><a href="group__CategoryInit.html#ga7ae0a016d954f3a072c0a49d9dd9caf2">SDL::GetAppMetadataProperty</a></div><div class="ttdeci">const char * GetAppMetadataProperty(StringParam name)</div><div class="ttdoc">Get metadata about your app.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:898</div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga85ebd45ffe827a5fe36abd499560314c"><div class="ttname"><a href="group__CategoryInit.html#ga85ebd45ffe827a5fe36abd499560314c">SDL::MainThreadCallback</a></div><div class="ttdeci">SDL_MainThreadCallback MainThreadCallback</div><div class="ttdoc">Callback run on the main thread.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:673</div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga8cfb5253a0e7d61a295144448a8d4273"><div class="ttname"><a href="group__CategoryInit.html#ga8cfb5253a0e7d61a295144448a8d4273">SDL::AppResult</a></div><div class="ttdeci">SDL_AppResult AppResult</div><div class="ttdoc">Return values for optional main callbacks.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:142</div></div>
 <div class="ttc" id="agroup__CategoryInit_html_ga9cb24cc6035ea3ba1c152347e2114e6b"><div class="ttname"><a href="group__CategoryInit.html#ga9cb24cc6035ea3ba1c152347e2114e6b">SDL::SetAppMetadata</a></div><div class="ttdeci">bool SetAppMetadata(StringParam appname, StringParam appversion, StringParam appidentifier)</div><div class="ttdoc">Specify basic metadata about your app.</div><div class="ttdef"><b>Definition</b> SDL3pp_init.h:786</div></div>
