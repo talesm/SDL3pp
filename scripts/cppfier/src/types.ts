@@ -14,7 +14,7 @@ export interface ApiFile {
   entriesEnd?: number;
 }
 
-export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var";
+export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns";
 
 interface ApiEntryBase {
   name?: string;
@@ -54,6 +54,7 @@ export type StringMap = Dict<string>;
 export interface ApiTransform {
   files?: Dict<FileTransform>;
   prefixes?: string | string[];
+  definitionPrefix?: string;
   renameRules?: ReplacementRule[];
   docRules?: ReplacementRule[];
   typeMap?: StringMap;
@@ -64,11 +65,12 @@ export interface ApiTransform {
 export interface FileTransform {
   name?: string;
   doc?: string;
-  includeDefs?: string[];
   ignoreEntries?: string[];
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
+  enumerations?: Dict<ApiEnumeration>
+  namespacesMap?: StringMap;
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
@@ -129,6 +131,13 @@ export interface ApiResource extends ApiEntryTransform {
   returnType?: "ref" | "unique" | "none";
 }
 
+export interface ApiEnumeration extends ApiEntryTransform {
+  kind?: "struct" | "alias" | "enum";
+  prefix?: string;
+  values?: string[];
+  includeAfter?: string;
+}
+
 export type QuickTransform = "placeholder" | "immutable" | "ctor" | ApiEntryKind;
 
 export type ApiSubEntryTransformMap = Dict<ApiEntryTransform | ApiEntry[] | QuickTransform>;
@@ -138,7 +147,7 @@ export interface ReplacementRule {
   replacement: string;
 }
 
-export type FileTokenKind = ApiEntryKind | "doc" | "namespace" | "template" | "endStruct";
+export type FileTokenKind = ApiEntryKind | "doc" | "template" | "endStruct";
 
 export interface FileToken {
   value: string;

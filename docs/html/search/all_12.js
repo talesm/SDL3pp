@@ -89,7 +89,7 @@ var searchData=
   ['resource_86',['Resource',['../resource.html',1,'DesignNotes']]],
   ['resource_20type_20wrapping_87',['Helpers for Resource type wrapping',['../group__CategoryObjectWrapper.html',1,'']]],
   ['restore_88',['Restore',['../structSDL_1_1WindowBase.html#a166a720a6f731c30fa32e25823dd7ef2',1,'SDL::WindowBase']]],
-  ['result_20callback_89',['result callback',['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000008',1,'Result callback']]],
+  ['result_20callback_89',['result callback',['../callback.html#result-callback',1,'Result callback'],['../todo.html#_todo000003',1,'Result callback']]],
   ['round_90',['round',['../group__CategoryStdinc.html#ga58af56b2a9898c045c8ec62ec531c8e5',1,'SDL']]],
   ['roundf_91',['roundf',['../group__CategoryStdinc.html#ga9cb3bb70b04800302620c3ebb81e901f',1,'SDL']]],
   ['routines_92',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],

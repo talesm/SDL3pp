@@ -114,7 +114,7 @@ class Tokenizer {
       } else {
         return this.next();
       }
-    } else if (m = /^#define\s+(\w+)(\(([\w\s,]+)\))?/.exec(line)) {
+    } else if (m = /^#define\s+(\w+)(\(([\w\s,]*)\))?/.exec(line)) {
       token.kind = "def";
       token.value = m[1];
       if (m[2]) token.parameters = m[3]?.trim();
@@ -199,7 +199,7 @@ class Tokenizer {
         token.parameters = parameters;
       }
     } else if (m = /^namespace\s+([^{]*)\{/.exec(line)) {
-      token.kind = "namespace";
+      token.kind = "ns";
       token.value = m[1]?.trim();
     } else if (line.startsWith('#')) {
       let ln = line;

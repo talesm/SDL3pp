@@ -856,6 +856,24 @@ inline bool SetAppMetadataProperty(StringParam name, StringParam value)
   return SDL_SetAppMetadataProperty(name, value);
 }
 
+namespace prop::appMetaData {
+
+constexpr auto NAME_STRING = SDL_PROP_APP_METADATA_NAME_STRING;
+
+constexpr auto VERSION_STRING = SDL_PROP_APP_METADATA_VERSION_STRING;
+
+constexpr auto IDENTIFIER_STRING = SDL_PROP_APP_METADATA_IDENTIFIER_STRING;
+
+constexpr auto CREATOR_STRING = SDL_PROP_APP_METADATA_CREATOR_STRING;
+
+constexpr auto COPYRIGHT_STRING = SDL_PROP_APP_METADATA_COPYRIGHT_STRING;
+
+constexpr auto URL_STRING = SDL_PROP_APP_METADATA_URL_STRING;
+
+constexpr auto TYPE_STRING = SDL_PROP_APP_METADATA_TYPE_STRING;
+
+} // namespace prop::appMetaData
+
 /**
  * Get metadata about your app.
  *
@@ -874,8 +892,8 @@ inline bool SetAppMetadataProperty(StringParam name, StringParam value)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa SetAppMetadata()
- * @sa SetAppMetadataProperty()
+ * @sa SDL_SetAppMetadata
+ * @sa SDL_SetAppMetadataProperty
  */
 inline const char* GetAppMetadataProperty(StringParam name)
 {

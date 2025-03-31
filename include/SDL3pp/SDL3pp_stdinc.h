@@ -90,6 +90,74 @@ using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
  */
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
 
+#if defined(SDL_NOLONGLONG) || defined(SDL3PP_DOC)
+
+/**
+ * Don't let SDL use "long long" C types.
+ *
+ * SDL will define this if it believes the compiler doesn't understand the
+ * "long long" syntax for C datatypes. This can happen on older compilers.
+ *
+ * If _your_ compiler doesn't support "long long" but SDL doesn't know it, it
+ * is safe to define this yourself to build against the SDL headers.
+ *
+ * If this is defined, it will remove access to some C runtime support
+ * functions, like SDL_ulltoa and SDL_strtoll that refer to this datatype
+ * explicitly. The rest of SDL will still be available.
+ *
+ * SDL's own source code cannot be built with a compiler that has this
+ * defined, for various technical reasons.
+ */
+#define SDL3PP_NOLONGLONG SDL_NOLONGLONG
+
+#endif // defined(SDL_NOLONGLONG) || defined(SDL3PP_DOC)
+
+/**
+ * The largest value that a `size_t` can hold for the target platform.
+ *
+ * `size_t` is generally the same size as a pointer in modern times, but this
+ * can get weird on very old and very esoteric machines. For example, on a
+ * 16-bit Intel 286, you might have a 32-bit "far" pointer (16-bit segment
+ * plus 16-bit offset), but `size_t` is 16 bits, because it can only deal with
+ * the offset into an individual segment.
+ *
+ * In modern times, it's generally expected to cover an entire linear address
+ * space. But be careful!
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_SIZE_MAX SDL_SIZE_MAX
+
+/**
+ * The number of elements in a static array.
+ *
+ * This will compile but return incorrect results for a pointer to an array;
+ * it has to be an array the compiler knows the size of.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+template<class T, std::size_t N>
+constexpr std::size_t arraysize(const T (&array)[N])
+{
+  return SDL_arraysize(array);
+}
+
+/**
+ * Macro useful for building other macros with strings in them.
+ *
+ * For example:
+ *
+ * ```c
+ * #define LOG_ERROR(X) OutputDebugString(SDL_STRINGIFY_ARG(__FUNCTION__) ": " X
+ * "@n")`
+ * ```
+ *
+ * @param arg the text to turn into a string literal.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_STRINGIFY_ARG(arg) SDL_STRINGIFY_ARG(arg)
+
 /**
  * Define a four character code as a Uint32.
  *
@@ -108,6 +176,64 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
 {
   return SDL_FOURCC(a, b, c, d);
 }
+
+/**
+ * Append the 64 bit integer suffix to a signed integer literal.
+ *
+ * This helps compilers that might believe a integer literal larger than
+ * 0xFFFFFFFF is overflowing a 32-bit value. Use `SDL_SINT64_C(0xFFFFFFFF1)`
+ * instead of `0xFFFFFFFF1` by itself.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_UINT64_C
+ */
+#define SDL3PP_SINT64_C(c) SDL_SINT64_C(c)
+
+/**
+ * Append the 64 bit integer suffix to an unsigned integer literal.
+ *
+ * This helps compilers that might believe a integer literal larger than
+ * 0xFFFFFFFF is overflowing a 32-bit value. Use `SDL_UINT64_C(0xFFFFFFFF1)`
+ * instead of `0xFFFFFFFF1` by itself.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_SINT64_C
+ */
+#define SDL3PP_UINT64_C(c) SDL_UINT64_C(c)
+
+constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
+
+constexpr Sint8 MIN_SINT8 = SDL_MIN_SINT8;
+
+constexpr Uint8 MAX_UINT8 = SDL_MAX_UINT8;
+
+constexpr Uint8 MIN_UINT8 = SDL_MIN_UINT8;
+
+constexpr Sint16 MAX_SINT16 = SDL_MAX_SINT16;
+
+constexpr Sint16 MIN_SINT16 = SDL_MIN_SINT16;
+
+constexpr Uint16 MAX_UINT16 = SDL_MAX_UINT16;
+
+constexpr Uint16 MIN_UINT16 = SDL_MIN_UINT16;
+
+constexpr Sint32 MAX_SINT32 = SDL_MAX_SINT32;
+
+constexpr Sint32 MIN_SINT32 = SDL_MIN_SINT32;
+
+constexpr Uint32 MAX_UINT32 = SDL_MAX_UINT32;
+
+constexpr Uint8 MIN_UINT32 = SDL_MIN_UINT32;
+
+constexpr Sint64 MAX_SINT64 = SDL_MAX_SINT64;
+
+constexpr Sint64 MIN_SINT64 = SDL_MIN_SINT64;
+
+constexpr Uint64 MAX_UINT64 = SDL_MAX_UINT64;
+
+constexpr Uint8 MIN_UINT64 = SDL_MIN_UINT64;
 
 /**
  * SDL times are signed, 64-bit integers representing nanoseconds since the
@@ -177,6 +303,60 @@ public:
     return *this;
   }
 };
+
+constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
+
+constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
+
+/**
+ * Epsilon constant, used for comparing floating-point numbers.
+ *
+ * Equals by default to platform-defined `FLT_EPSILON`, or
+ * `1.1920928955078125e-07F` if that's not available.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_FLT_EPSILON SDL_FLT_EPSILON
+
+/**
+ * A macro to initialize an SDL interface.
+ *
+ * This macro will initialize an SDL interface structure and should be called
+ * before you fill out the fields with your implementation.
+ *
+ * You can use it like this:
+ *
+ * ```c
+ * SDL_IOStreamInterface iface;
+ *
+ * SDL_INIT_INTERFACE(&iface);
+ *
+ * // Fill in the interface function pointers with your implementation
+ * iface.seek = ...
+ *
+ * stream = SDL_OpenIO(&iface, NULL);
+ * ```
+ *
+ * If you are using designated initializers, you can use the size of the
+ * interface as the version, e.g.
+ *
+ * ```c
+ * SDL_IOStreamInterface iface = {
+ *     .version = sizeof(iface),
+ *     .seek = ...
+ * };
+ * stream = SDL_OpenIO(&iface, NULL);
+ * ```
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_IOStreamInterface
+ * @sa SDL_StorageInterface
+ * @sa SDL_VirtualJoystickDesc
+ */
+#define SDL3PP_INIT_INTERFACE(iface) SDL_INIT_INTERFACE(iface)
 
 /**
  * Allocate uninitialized memory.
@@ -1070,6 +1250,66 @@ inline void* bsearch_r(const void* key,
 inline int abs(int x) { return SDL_abs(x); }
 
 /**
+ * Return the lesser of two values.
+ *
+ * This is a helper macro that might be more clear than writing out the
+ * comparisons directly, and works with any type that can be compared with the
+ * `<` operator. However, it double-evaluates both its parameters, so do not
+ * use expressions with side-effects here.
+ *
+ * @param x the first value to compare.
+ * @param y the second value to compare.
+ * @returns the lesser of `x` and `y`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_min(x, y) SDL_min(x, y)
+
+/**
+ * Return the greater of two values.
+ *
+ * This is a helper macro that might be more clear than writing out the
+ * comparisons directly, and works with any type that can be compared with the
+ * `>` operator. However, it double-evaluates both its parameters, so do not
+ * use expressions with side-effects here.
+ *
+ * @param x the first value to compare.
+ * @param y the second value to compare.
+ * @returns the lesser of `x` and `y`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_max(x, y) SDL_max(x, y)
+
+/**
+ * Return a value clamped to a range.
+ *
+ * If `x` is outside the range a values between `a` and `b`, the returned
+ * value will be `a` or `b` as appropriate. Otherwise, `x` is returned.
+ *
+ * This macro will produce incorrect results if `b` is less than `a`.
+ *
+ * This is a helper macro that might be more clear than writing out the
+ * comparisons directly, and works with any type that can be compared with the
+ * `<` and `>` operators. However, it double-evaluates all its parameters, so
+ * do not use expressions with side-effects here.
+ *
+ * @param x the value to compare.
+ * @param a the low end value.
+ * @param b the high end value.
+ * @returns x, clamped between a and b.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_clamp(x, a, b) SDL_clamp(x, a, b)
+
+/**
  * Query if a character is alphabetic (a letter).
  *
  * **WARNING**: Regardless of system locale, this will only treat ASCII values
@@ -1406,6 +1646,32 @@ inline void* memcpy(void* dst, const void* src, size_t len)
 }
 
 /**
+ * A macro to copy memory between objects, with basic type checking.
+ *
+ * SDL_memcpy and SDL_memmove do not care where you copy memory to and from,
+ * which can lead to bugs. This macro aims to avoid most of those bugs by
+ * making sure that the source and destination are both pointers to objects
+ * that are the same size. It does not check that the objects are the same
+ * _type_, just that the copy will not overflow either object.
+ *
+ * The size check happens at compile time, and the compiler will throw an
+ * error if the objects are different sizes.
+ *
+ * Generally this is intended to copy a single object, not an array.
+ *
+ * This macro looks like it double-evaluates its parameters, but the extras
+ * them are in `sizeof` sections, which generate no code nor side-effects.
+ *
+ * @param dst a pointer to the destination object. Must not be NULL.
+ * @param src a pointer to the source object. Must not be NULL.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+#define SDL3PP_copyp(dst, src) SDL_copyp(dst, src)
+
+/**
  * Copy memory ranges that might overlap.
  *
  * It is okay for the memory regions to overlap. If you are confident that the
@@ -1471,6 +1737,75 @@ inline void* memset(void* dst, int c, size_t len)
 inline void* memset4(void* dst, Uint32 val, size_t dwords)
 {
   return SDL_memset4(dst, val, dwords);
+}
+
+/**
+ * Clear an object's memory to zero.
+ *
+ * This is wrapper over SDL_memset that handles calculating the object size,
+ * so there's no chance of copy/paste errors, and the code is cleaner.
+ *
+ * This requires an object, not a pointer to an object, nor an array.
+ *
+ * @param x the object to clear.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_zerop
+ * @sa SDL_zeroa
+ */
+template<class T>
+inline void zero(T& x)
+{
+  SDL_zero(x);
+}
+
+/**
+ * Clear an object's memory to zero, using a pointer.
+ *
+ * This is wrapper over SDL_memset that handles calculating the object size,
+ * so there's no chance of copy/paste errors, and the code is cleaner.
+ *
+ * This requires a pointer to an object, not an object itself, nor an array.
+ *
+ * @param x a pointer to the object to clear.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_zero
+ * @sa SDL_zeroa
+ */
+template<class T>
+inline void zerop(T* x)
+{
+  SDL_zerop(x);
+}
+
+/**
+ * Clear an array's memory to zero.
+ *
+ * This is wrapper over SDL_memset that handles calculating the array size, so
+ * there's no chance of copy/paste errors, and the code is cleaner.
+ *
+ * This requires an array, not an object, nor a pointer to an object.
+ *
+ * @param x an array to clear.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa SDL_zero
+ * @sa SDL_zeroa
+ */
+template<class T, std::size_t N>
+inline void zeroa(T (&x)[N])
+{
+  SDL_zeroa(x);
 }
 
 /**
@@ -2740,6 +3075,21 @@ inline char* strpbrk(StringParam str, StringParam breakset)
 }
 
 /**
+ * The Unicode REPLACEMENT CHARACTER codepoint.
+ *
+ * SDL_StepUTF8() and SDL_StepBackUTF8() report this codepoint when they
+ * encounter a UTF-8 string with encoding errors.
+ *
+ * This tends to render as something like a question mark in most places.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_StepBackUTF8
+ * @sa SDL_StepUTF8
+ */
+#define SDL3PP_INVALID_UNICODE_CODEPOINT SDL_INVALID_UNICODE_CODEPOINT
+
+/**
  * Decode a UTF-8 string, one Unicode codepoint at a time.
  *
  * This will return the first Unicode codepoint in the UTF-8 encoded string in
@@ -3316,6 +3666,24 @@ public:
    */
   Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
 };
+
+/**
+ * The value of Pi, as a double-precision floating point literal.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PI_F
+ */
+#define SDL3PP_PI_D SDL_PI_D
+
+/**
+ * The value of Pi, as a single-precision floating point literal.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_PI_D
+ */
+#define SDL3PP_PI_F SDL_PI_F
 
 /**
  * Compute the arc cosine of `x`.
@@ -4669,7 +5037,7 @@ struct IConvBase : T
    * This function converts text between encodings, reading from and writing to
    * a buffer.
    *
-   * It returns the number of succesful conversions on success. On error,
+   * It returns the number of successful conversions on success. On error,
    * SDL_ICONV_E2BIG is returned when the output buffer is too small, or
    * SDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,
    * or SDL_ICONV_EINVAL is returned when an incomplete input sequence is
@@ -4732,6 +5100,26 @@ inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_data_t* resource)
 }
 
 /**
+ * Generic error. Check SDL_GetError()?
+ */
+#define SDL3PP_ICONV_ERROR SDL_ICONV_ERROR
+
+/**
+ * Output buffer was too small.
+ */
+#define SDL3PP_ICONV_E2BIG SDL_ICONV_E2BIG
+
+/**
+ * Invalid input sequence was encountered.
+ */
+#define SDL3PP_ICONV_EILSEQ SDL_ICONV_EILSEQ
+
+/**
+ * Incomplete input sequence was encountered.
+ */
+#define SDL3PP_ICONV_EINVAL SDL_ICONV_EINVAL
+
+/**
  * Helper function to convert a string's encoding in one call.
  *
  * This function converts a buffer or string between encodings in one pass.
@@ -4756,13 +5144,69 @@ inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_data_t* resource)
  * @sa SDL_iconv_close
  * @sa SDL_iconv
  **/
-inline char* iconv_string(StringParam tocode,
-                          StringParam fromcode,
-                          StringParam inbuf,
-                          size_t inbytesleft)
+inline OwnPtr<char> iconv_string(StringParam tocode,
+                                 StringParam fromcode,
+                                 StringParam inbuf,
+                                 size_t inbytesleft)
 {
-  return SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft);
+  return OwnPtr<char>{SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft)};
 }
+
+/**
+ * Convert a UTF-8 string to the current locale's character encoding.
+ *
+ * This is a helper macro that might be more clear than calling
+ * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * do not use an expression with side-effects here.
+ *
+ * @param S the string to convert.
+ * @returns a new string, converted to the new encoding, or NULL on error.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_iconv_utf8_locale(S) SDL_iconv_utf8_locale(S)
+
+/**
+ * Convert a UTF-8 string to UCS-2.
+ *
+ * This is a helper macro that might be more clear than calling
+ * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * do not use an expression with side-effects here.
+ *
+ * @param S the string to convert.
+ * @returns a new string, converted to the new encoding, or NULL on error.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_iconv_utf8_ucs2(S) SDL_iconv_utf8_ucs2(S)
+
+/**
+ * Convert a UTF-8 string to UCS-4.
+ *
+ * This is a helper macro that might be more clear than calling
+ * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * do not use an expression with side-effects here.
+ *
+ * @param S the string to convert.
+ * @returns a new string, converted to the new encoding, or NULL on error.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_iconv_utf8_ucs4(S) SDL_iconv_utf8_ucs4(S)
+
+/**
+ * Convert a wchar_t string to UTF-8.
+ *
+ * This is a helper macro that might be more clear than calling
+ * SDL_iconv_string directly. However, it double-evaluates its parameter, so
+ * do not use an expression with side-effects here.
+ *
+ * @param S the string to convert.
+ * @returns a new string, converted to the new encoding, or NULL on error.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_iconv_wchar_utf8(S) SDL_iconv_wchar_utf8(S)
 
 /**
  * Multiply two integers, checking for overflow.

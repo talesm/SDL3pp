@@ -837,6 +837,26 @@ public:
  */
 using WindowID = SDL_WindowID;
 
+namespace prop::Global {
+
+/**
+ * The pointer to the global `wl_display` object used by the Wayland video
+ * backend.
+ *
+ * Can be set before the video subsystem is initialized to import an external
+ * `wl_display` object from an application or toolkit for use in SDL, or read
+ * after initialization to export the `wl_display` used by the Wayland video
+ * backend. Setting this property after the video subsystem has been
+ * initialized has no effect, and reading it when the video subsystem is
+ * uninitialized will either return the user provided value, if one was set
+ * prior to initialization, or NULL. See docs/README-wayland.md for more
+ * information.
+ */
+constexpr auto VIDEO_WAYLAND_WL_DISPLAY_POINTER =
+  SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER;
+
+} // namespace prop::Global
+
 /**
  * @name SystemThemes
  * @{
@@ -2842,6 +2862,86 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
 }
 
 /**
+ * A magic value used with SDL_WINDOWPOS_UNDEFINED.
+ *
+ * Generally this macro isn't used directly, but rather through
+ * SDL_WINDOWPOS_UNDEFINED or SDL_WINDOWPOS_UNDEFINED_DISPLAY.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_UNDEFINED_MASK SDL_WINDOWPOS_UNDEFINED_MASK
+
+/**
+ * Used to indicate that you don't care what the window position is.
+ *
+ * If you _really_ don't care, SDL_WINDOWPOS_UNDEFINED is the same, but always
+ * uses the primary display instead of specifying one.
+ *
+ * @param X the SDL_DisplayID of the display to use.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_UNDEFINED_DISPLAY(X) SDL_WINDOWPOS_UNDEFINED_DISPLAY(X)
+
+/**
+ * Used to indicate that you don't care what the window position/display is.
+ *
+ * This always uses the primary display.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_UNDEFINED SDL_WINDOWPOS_UNDEFINED
+
+/**
+ * A macro to test if the window position is marked as "undefined."
+ *
+ * @param X the window position value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_ISUNDEFINED(X) SDL_WINDOWPOS_ISUNDEFINED(X)
+
+/**
+ * A magic value used with SDL_WINDOWPOS_CENTERED.
+ *
+ * Generally this macro isn't used directly, but rather through
+ * SDL_WINDOWPOS_CENTERED or SDL_WINDOWPOS_CENTERED_DISPLAY.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_CENTERED_MASK SDL_WINDOWPOS_CENTERED_MASK
+
+/**
+ * Used to indicate that the window position should be centered.
+ *
+ * SDL_WINDOWPOS_CENTERED is the same, but always uses the primary display
+ * instead of specifying one.
+ *
+ * @param X the SDL_DisplayID of the display to use.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_CENTERED_DISPLAY(X) SDL_WINDOWPOS_CENTERED_DISPLAY(X)
+
+/**
+ * Used to indicate that the window position should be centered.
+ *
+ * This always uses the primary display.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_CENTERED SDL_WINDOWPOS_CENTERED
+
+/**
+ * A macro to test if the window position is marked as "centered."
+ *
+ * @param X the window position value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_WINDOWPOS_ISCENTERED(X) SDL_WINDOWPOS_ISCENTERED(X)
+
+/**
  * An opaque handle to an OpenGL context.
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -3184,6 +3284,11 @@ constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
 /// @}
 
 /**
+ * @name GLProfiles
+ * @{
+ */
+
+/**
  * Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
@@ -3191,11 +3296,52 @@ constexpr GLAttr GL_EGL_PLATFORM = SDL_GL_EGL_PLATFORM;
 using GLProfile = SDL_GLProfile;
 
 /**
+ * OpenGL Core Profile context
+ */
+constexpr GLProfile GL_CONTEXT_PROFILE_CORE = SDL_GL_CONTEXT_PROFILE_CORE;
+
+/**
+ * OpenGL Compatibility Profile context
+ */
+constexpr GLProfile GL_CONTEXT_PROFILE_COMPATIBILITY =
+  SDL_GL_CONTEXT_PROFILE_COMPATIBILITY;
+
+/**
+ * GLX_CONTEXT_ES2_PROFILE_BIT_EXT
+ */
+constexpr GLProfile GL_CONTEXT_PROFILE_ES = SDL_GL_CONTEXT_PROFILE_ES;
+
+/// @}
+
+/**
+ * @name GLContextFlags
+ * @{
+ */
+
+/**
  * Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
 using GLContextFlag = SDL_GLContextFlag;
+
+constexpr GLContextFlag GL_CONTEXT_DEBUG_FLAG = SDL_GL_CONTEXT_DEBUG_FLAG;
+
+constexpr GLContextFlag GL_CONTEXT_FORWARD_COMPATIBLE_FLAG =
+  SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
+
+constexpr GLContextFlag GL_CONTEXT_ROBUST_ACCESS_FLAG =
+  SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG;
+
+constexpr GLContextFlag GL_CONTEXT_RESET_ISOLATION_FLAG =
+  SDL_GL_CONTEXT_RESET_ISOLATION_FLAG;
+
+/// @}
+
+/**
+ * @name GLContextFlags
+ * @{
+ */
 
 /**
  * Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR
@@ -3205,12 +3351,33 @@ using GLContextFlag = SDL_GLContextFlag;
  */
 using GLContextReleaseFlag = SDL_GLContextReleaseFlag;
 
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_NONE =
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_NONE;
+
+constexpr GLContextReleaseFlag GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH =
+  SDL_GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH;
+
+/// @}
+
+/**
+ * @name GLContextResetNotifications
+ * @{
+ */
+
 /**
  * Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute.
  *
  * @since This datatype is available since SDL 3.2.0.
  */
 using GLContextResetNotification = SDL_GLContextResetNotification;
+
+constexpr GLContextResetNotification GL_CONTEXT_RESET_NO_NOTIFICATION =
+  SDL_GL_CONTEXT_RESET_NO_NOTIFICATION;
+
+constexpr GLContextResetNotification GL_CONTEXT_RESET_LOSE_CONTEXT =
+  SDL_GL_CONTEXT_RESET_LOSE_CONTEXT;
+
+/// @}
 
 /**
  * Get the number of video drivers compiled into SDL.
@@ -3282,6 +3449,15 @@ inline const char* GetCurrentVideoDriver()
  */
 inline SystemTheme GetSystemTheme() { return SDL_GetSystemTheme(); }
 
+namespace prop::Display {
+
+constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN;
+
+constexpr auto KMSDRM_PANEL_ORIENTATION_NUMBER =
+  SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER;
+
+} // namespace prop::Display
+
 /**
  * Get a list of valid windows.
  *
@@ -3300,6 +3476,186 @@ inline OwnArray<WindowRef> GetWindows()
   auto data = reinterpret_cast<WindowRef*>(SDL_GetWindows(&count));
   return OwnArray<WindowRef>{data, size_t(count)};
 }
+
+namespace prop::Window {
+
+constexpr auto CREATE_ALWAYS_ON_TOP_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN;
+
+constexpr auto CREATE_BORDERLESS_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN;
+
+constexpr auto CREATE_FOCUSABLE_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN;
+
+constexpr auto CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN;
+
+constexpr auto CREATE_FLAGS_NUMBER = SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER;
+
+constexpr auto CREATE_FULLSCREEN_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN;
+
+constexpr auto CREATE_HEIGHT_NUMBER = SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER;
+
+constexpr auto CREATE_HIDDEN_BOOLEAN = SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN;
+
+constexpr auto CREATE_HIGH_PIXEL_DENSITY_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN;
+
+constexpr auto CREATE_MAXIMIZED_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN;
+
+constexpr auto CREATE_MENU_BOOLEAN = SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN;
+
+constexpr auto CREATE_METAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN;
+
+constexpr auto CREATE_MINIMIZED_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN;
+
+constexpr auto CREATE_MODAL_BOOLEAN = SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN;
+
+constexpr auto CREATE_MOUSE_GRABBED_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN;
+
+constexpr auto CREATE_OPENGL_BOOLEAN = SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN;
+
+constexpr auto CREATE_PARENT_POINTER = SDL_PROP_WINDOW_CREATE_PARENT_POINTER;
+
+constexpr auto CREATE_RESIZABLE_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN;
+
+constexpr auto CREATE_TITLE_STRING = SDL_PROP_WINDOW_CREATE_TITLE_STRING;
+
+constexpr auto CREATE_TRANSPARENT_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN;
+
+constexpr auto CREATE_TOOLTIP_BOOLEAN = SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN;
+
+constexpr auto CREATE_UTILITY_BOOLEAN = SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN;
+
+constexpr auto CREATE_VULKAN_BOOLEAN = SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN;
+
+constexpr auto CREATE_WIDTH_NUMBER = SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER;
+
+constexpr auto CREATE_X_NUMBER = SDL_PROP_WINDOW_CREATE_X_NUMBER;
+
+constexpr auto CREATE_Y_NUMBER = SDL_PROP_WINDOW_CREATE_Y_NUMBER;
+
+constexpr auto CREATE_COCOA_WINDOW_POINTER =
+  SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER;
+
+constexpr auto CREATE_COCOA_VIEW_POINTER =
+  SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER;
+
+constexpr auto CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN;
+
+constexpr auto CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN =
+  SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN;
+
+constexpr auto CREATE_WAYLAND_WL_SURFACE_POINTER =
+  SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER;
+
+constexpr auto CREATE_WIN32_HWND_POINTER =
+  SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER;
+
+constexpr auto CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER =
+  SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER;
+
+constexpr auto CREATE_X11_WINDOW_NUMBER =
+  SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER;
+
+constexpr auto SHAPE_POINTER = SDL_PROP_WINDOW_SHAPE_POINTER;
+
+constexpr auto HDR_ENABLED_BOOLEAN = SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN;
+
+constexpr auto SDR_WHITE_LEVEL_FLOAT = SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT;
+
+constexpr auto HDR_HEADROOM_FLOAT = SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT;
+
+constexpr auto ANDROID_WINDOW_POINTER = SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER;
+
+constexpr auto ANDROID_SURFACE_POINTER =
+  SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER;
+
+constexpr auto UIKIT_WINDOW_POINTER = SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER;
+
+constexpr auto UIKIT_METAL_VIEW_TAG_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER;
+
+constexpr auto UIKIT_OPENGL_FRAMEBUFFER_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER;
+
+constexpr auto UIKIT_OPENGL_RENDERBUFFER_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER;
+
+constexpr auto UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER =
+  SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER;
+
+constexpr auto KMSDRM_DEVICE_INDEX_NUMBER =
+  SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER;
+
+constexpr auto KMSDRM_DRM_FD_NUMBER = SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER;
+
+constexpr auto KMSDRM_GBM_DEVICE_POINTER =
+  SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER;
+
+constexpr auto COCOA_WINDOW_POINTER = SDL_PROP_WINDOW_COCOA_WINDOW_POINTER;
+
+constexpr auto COCOA_METAL_VIEW_TAG_NUMBER =
+  SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER;
+
+constexpr auto OPENVR_OVERLAY_ID = SDL_PROP_WINDOW_OPENVR_OVERLAY_ID;
+
+constexpr auto VIVANTE_DISPLAY_POINTER =
+  SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER;
+
+constexpr auto VIVANTE_WINDOW_POINTER = SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER;
+
+constexpr auto VIVANTE_SURFACE_POINTER =
+  SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER;
+
+constexpr auto WIN32_HWND_POINTER = SDL_PROP_WINDOW_WIN32_HWND_POINTER;
+
+constexpr auto WIN32_HDC_POINTER = SDL_PROP_WINDOW_WIN32_HDC_POINTER;
+
+constexpr auto WIN32_INSTANCE_POINTER = SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER;
+
+constexpr auto WAYLAND_DISPLAY_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER;
+
+constexpr auto WAYLAND_SURFACE_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER;
+
+constexpr auto WAYLAND_VIEWPORT_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER;
+
+constexpr auto WAYLAND_EGL_WINDOW_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER;
+
+constexpr auto WAYLAND_XDG_SURFACE_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER;
+
+constexpr auto WAYLAND_XDG_TOPLEVEL_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER;
+
+constexpr auto WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING =
+  SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING;
+
+constexpr auto WAYLAND_XDG_POPUP_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER;
+
+constexpr auto WAYLAND_XDG_POSITIONER_POINTER =
+  SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER;
+
+constexpr auto X11_DISPLAY_POINTER = SDL_PROP_WINDOW_X11_DISPLAY_POINTER;
+
+constexpr auto X11_SCREEN_NUMBER = SDL_PROP_WINDOW_X11_SCREEN_NUMBER;
+
+constexpr auto X11_WINDOW_NUMBER = SDL_PROP_WINDOW_X11_WINDOW_NUMBER;
+
+} // namespace prop::Window
 
 /**
  * Get a window from a stored ID.
@@ -3321,6 +3677,10 @@ inline WindowRef GetWindowFromID(WindowID id)
 {
   return SDL_GetWindowFromID(id);
 }
+
+#define SDL3PP_WINDOW_SURFACE_VSYNC_DISABLED SDL_WINDOW_SURFACE_VSYNC_DISABLED
+
+#define SDL3PP_WINDOW_SURFACE_VSYNC_ADAPTIVE SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE
 
 /**
  * Get the window that currently has an input grab enabled.

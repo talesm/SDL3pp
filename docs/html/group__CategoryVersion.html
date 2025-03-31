@@ -71,6 +71,7 @@ $(function() {
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Querying SDL Version<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
 </div><!--header-->
@@ -79,6 +80,36 @@ $(function() {
 <p>Functionality to query the current <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> version, both as headers the app was compiled against, and a library the app is linked to.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga092b4145ff690ea1a67567bb349522e2" id="r_ga092b4145ff690ea1a67567bb349522e2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#ga092b4145ff690ea1a67567bb349522e2">SDL3PP_MAJOR_VERSION</a>&#160;&#160;&#160;SDL_MAJOR_VERSION</td></tr>
+<tr class="memdesc:ga092b4145ff690ea1a67567bb349522e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current major version of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> headers.  <br /></td></tr>
+<tr class="separator:ga092b4145ff690ea1a67567bb349522e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga789e255120fb640c452f40f546bdab32" id="r_ga789e255120fb640c452f40f546bdab32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#ga789e255120fb640c452f40f546bdab32">SDL3PP_MINOR_VERSION</a>&#160;&#160;&#160;SDL_MINOR_VERSION</td></tr>
+<tr class="memdesc:ga789e255120fb640c452f40f546bdab32"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current minor version of the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> headers.  <br /></td></tr>
+<tr class="separator:ga789e255120fb640c452f40f546bdab32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaff9e2d171b4ed0be54350db8c8e4a4d7" id="r_gaff9e2d171b4ed0be54350db8c8e4a4d7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#gaff9e2d171b4ed0be54350db8c8e4a4d7">SDL3PP_MICRO_VERSION</a>&#160;&#160;&#160;SDL_MICRO_VERSION</td></tr>
+<tr class="memdesc:gaff9e2d171b4ed0be54350db8c8e4a4d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current micro (or patchlevel) version of the <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> headers.  <br /></td></tr>
+<tr class="separator:gaff9e2d171b4ed0be54350db8c8e4a4d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8905132d01ee32908c7b39e7d7e4e0a6" id="r_ga8905132d01ee32908c7b39e7d7e4e0a6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#ga8905132d01ee32908c7b39e7d7e4e0a6">SDL3PP_VERSIONNUM</a>(major,  minor,  patch)&#160;&#160;&#160;  SDL_VERSIONNUM(major, minor, patch)</td></tr>
+<tr class="memdesc:ga8905132d01ee32908c7b39e7d7e4e0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro turns the version numbers into a numeric value.  <br /></td></tr>
+<tr class="separator:ga8905132d01ee32908c7b39e7d7e4e0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga57cdbe2b91fae4df64338f78d2da9b39" id="r_ga57cdbe2b91fae4df64338f78d2da9b39"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#ga57cdbe2b91fae4df64338f78d2da9b39">SDL3PP_VERSIONNUM_MAJOR</a>(version)&#160;&#160;&#160;SDL_VERSIONNUM_MAJOR(version)</td></tr>
+<tr class="memdesc:ga57cdbe2b91fae4df64338f78d2da9b39"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro extracts the major version from a version number.  <br /></td></tr>
+<tr class="separator:ga57cdbe2b91fae4df64338f78d2da9b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa46db87299e9b2ecadcb98bfa2dca865" id="r_gaa46db87299e9b2ecadcb98bfa2dca865"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#gaa46db87299e9b2ecadcb98bfa2dca865">SDL3PP_VERSIONNUM_MINOR</a>(version)&#160;&#160;&#160;SDL_VERSIONNUM_MINOR(version)</td></tr>
+<tr class="memdesc:gaa46db87299e9b2ecadcb98bfa2dca865"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro extracts the minor version from a version number.  <br /></td></tr>
+<tr class="separator:gaa46db87299e9b2ecadcb98bfa2dca865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad639440fecfb57efb1fda8b6efdeca89" id="r_gad639440fecfb57efb1fda8b6efdeca89"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#gad639440fecfb57efb1fda8b6efdeca89">SDL3PP_VERSIONNUM_MICRO</a>(version)&#160;&#160;&#160;SDL_VERSIONNUM_MICRO(version)</td></tr>
+<tr class="memdesc:gad639440fecfb57efb1fda8b6efdeca89"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro extracts the micro version from a version number.  <br /></td></tr>
+<tr class="separator:gad639440fecfb57efb1fda8b6efdeca89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a991ada3c9879c419934b378918cdf7" id="r_ga2a991ada3c9879c419934b378918cdf7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#ga2a991ada3c9879c419934b378918cdf7">SDL3PP_VERSION</a>&#160;&#160;&#160;SDL_VERSION</td></tr>
+<tr class="memdesc:ga2a991ada3c9879c419934b378918cdf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the version number macro for the current <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> version.  <br /></td></tr>
+<tr class="separator:ga2a991ada3c9879c419934b378918cdf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2a799fef72b427a6772f4dac93d76e20" id="r_ga2a799fef72b427a6772f4dac93d76e20"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#ga2a799fef72b427a6772f4dac93d76e20">SDL3PP_VERSION_ATLEAST</a>(X,  Y,  Z)&#160;&#160;&#160;SDL_VERSION_ATLEAST(X, Y, Z)</td></tr>
+<tr class="memdesc:ga2a799fef72b427a6772f4dac93d76e20"><td class="mdescLeft">&#160;</td><td class="mdescRight">This macro will evaluate to true if compiled with <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> at least X.Y.Z.  <br /></td></tr>
+<tr class="separator:ga2a799fef72b427a6772f4dac93d76e20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga477962941b910962edf1b91d120511fd" id="r_ga477962941b910962edf1b91d120511fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryVersion.html#ga477962941b910962edf1b91d120511fd">SDL::GetVersion</a> ()</td></tr>
@@ -89,6 +120,228 @@ Functions</h2></td></tr>
 <tr class="separator:ga7b3594d2efbeb69076db59694679a559"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga092b4145ff690ea1a67567bb349522e2" name="ga092b4145ff690ea1a67567bb349522e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga092b4145ff690ea1a67567bb349522e2">&#9670;&#160;</a></span>SDL3PP_MAJOR_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_MAJOR_VERSION&#160;&#160;&#160;SDL_MAJOR_VERSION</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this were <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> version 3.2.1, this value would be 3.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaff9e2d171b4ed0be54350db8c8e4a4d7" name="gaff9e2d171b4ed0be54350db8c8e4a4d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaff9e2d171b4ed0be54350db8c8e4a4d7">&#9670;&#160;</a></span>SDL3PP_MICRO_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_MICRO_VERSION&#160;&#160;&#160;SDL_MICRO_VERSION</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this were <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> version 3.2.1, this value would be 1.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga789e255120fb640c452f40f546bdab32" name="ga789e255120fb640c452f40f546bdab32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga789e255120fb640c452f40f546bdab32">&#9670;&#160;</a></span>SDL3PP_MINOR_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_MINOR_VERSION&#160;&#160;&#160;SDL_MINOR_VERSION</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>If this were <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> version 3.2.1, this value would be 2.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga2a991ada3c9879c419934b378918cdf7" name="ga2a991ada3c9879c419934b378918cdf7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2a991ada3c9879c419934b378918cdf7">&#9670;&#160;</a></span>SDL3PP_VERSION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_VERSION&#160;&#160;&#160;SDL_VERSION</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_GetVersion </dd></dl>
+
+</div>
+</div>
+<a id="ga2a799fef72b427a6772f4dac93d76e20" name="ga2a799fef72b427a6772f4dac93d76e20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2a799fef72b427a6772f4dac93d76e20">&#9670;&#160;</a></span>SDL3PP_VERSION_ATLEAST</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_VERSION_ATLEAST</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">X, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Y, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Z&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;SDL_VERSION_ATLEAST(X, Y, Z)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga8905132d01ee32908c7b39e7d7e4e0a6" name="ga8905132d01ee32908c7b39e7d7e4e0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8905132d01ee32908c7b39e7d7e4e0a6">&#9670;&#160;</a></span>SDL3PP_VERSIONNUM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_VERSIONNUM</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">major, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">minor, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">patch&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;  SDL_VERSIONNUM(major, minor, patch)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>(1,2,3) becomes 1002003.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">major</td><td>the major version number. </td></tr>
+    <tr><td class="paramname">minor</td><td>the minorversion number. </td></tr>
+    <tr><td class="paramname">patch</td><td>the patch version number.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga57cdbe2b91fae4df64338f78d2da9b39" name="ga57cdbe2b91fae4df64338f78d2da9b39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga57cdbe2b91fae4df64338f78d2da9b39">&#9670;&#160;</a></span>SDL3PP_VERSIONNUM_MAJOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_VERSIONNUM_MAJOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">version</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_VERSIONNUM_MAJOR(version)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>1002003 becomes 1.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version</td><td>the version number.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gad639440fecfb57efb1fda8b6efdeca89" name="gad639440fecfb57efb1fda8b6efdeca89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad639440fecfb57efb1fda8b6efdeca89">&#9670;&#160;</a></span>SDL3PP_VERSIONNUM_MICRO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_VERSIONNUM_MICRO</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">version</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_VERSIONNUM_MICRO(version)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>1002003 becomes 3.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version</td><td>the version number.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="gaa46db87299e9b2ecadcb98bfa2dca865" name="gaa46db87299e9b2ecadcb98bfa2dca865"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa46db87299e9b2ecadcb98bfa2dca865">&#9670;&#160;</a></span>SDL3PP_VERSIONNUM_MINOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_VERSIONNUM_MINOR</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">version</td><td>)</td>
+          <td>&#160;&#160;&#160;SDL_VERSIONNUM_MINOR(version)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>1002003 becomes 2.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">version</td><td>the version number.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section since"><dt>Since</dt><dd>This macro is available since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga7b3594d2efbeb69076db59694679a559" name="ga7b3594d2efbeb69076db59694679a559"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7b3594d2efbeb69076db59694679a559">&#9670;&#160;</a></span>GetRevision()</h2>

@@ -166,6 +166,42 @@ inline const char* GetError() { return SDL_GetError(); }
  */
 inline bool ClearError() { return SDL_ClearError(); }
 
+/**
+ * A macro to standardize error reporting on unsupported operations.
+ *
+ * This simply calls SDL_SetError() with a standardized error string, for
+ * convenience, consistency, and clarity.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_Unsupported() SDL_Unsupported()
+
+/**
+ * A macro to standardize error reporting on unsupported operations.
+ *
+ * This simply calls SDL_SetError() with a standardized error string, for
+ * convenience, consistency, and clarity.
+ *
+ * A common usage pattern inside SDL is this:
+ *
+ * ```c
+ * bool MyFunction(const char *str) {
+ *     if (!str) {
+ *         return SDL_InvalidParamError("str");  // returns false.
+ *     }
+ *     DoSomething(str);
+ *     return true;
+ * }
+ * ```
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_InvalidParamError(param) SDL_InvalidParamError(param)
+
 /** @} */
 
 } // namespace SDL

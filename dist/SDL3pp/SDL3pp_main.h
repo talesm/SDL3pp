@@ -2,6 +2,9 @@
 #define SDL3PP_MAIN_H_
 
 #include "SDL3pp.h"
+#ifdef SDL3PP_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif // SDL3PP_MAIN_HANDLED
 
 #if defined(SDL3PP_MAIN_USE_CALLBACKS) || defined(SDL3PP_MAIN_USE_THIS_CLASS)
 #define SDL_MAIN_USE_CALLBACKS
@@ -46,6 +49,48 @@ namespace SDL {
  *
  * @{
  */
+
+#ifdef SDL3PP_DOC
+
+/**
+ * Inform SDL that the app is providing an entry point instead of SDL.
+ *
+ * SDL does not define this macro, but will check if it is defined when
+ * including `SDL_main.h`. If defined, SDL will expect the app to provide the
+ * proper entry point for the platform, and all the other magic details
+ * needed, like manually calling SDL_SetMainReady.
+ *
+ * Please see [README/main-functions](README/main-functions), (or
+ * docs/README-main-functions.md in the source tree) for a more detailed
+ * explanation.
+ *
+ * @since This macro is used by the headers since SDL 3.2.0.
+ */
+#define SDL3PP_MAIN_HANDLED SDL_MAIN_HANDLED
+
+/**
+ * Inform SDL to use the main callbacks instead of main.
+ *
+ * SDL does not define this macro, but will check if it is defined when
+ * including `SDL_main.h`. If defined, SDL will expect the app to provide
+ * several functions: SDL_AppInit, SDL_AppEvent, SDL_AppIterate, and
+ * SDL_AppQuit. The app should not provide a `main` function in this case, and
+ * doing so will likely cause the build to fail.
+ *
+ * Please see [README/main-functions](README/main-functions), (or
+ * docs/README-main-functions.md in the source tree) for a more detailed
+ * explanation.
+ *
+ * @since This macro is used by the headers since SDL 3.2.0.
+ *
+ * @sa SDL_AppInit
+ * @sa SDL_AppEvent
+ * @sa SDL_AppIterate
+ * @sa SDL_AppQuit
+ */
+#define SDL3PP_MAIN_USE_CALLBACKS SDL_MAIN_USE_CALLBACKS
+
+#endif // SDL3PP_DOC
 
 /**
  * The prototype for the application's main() function

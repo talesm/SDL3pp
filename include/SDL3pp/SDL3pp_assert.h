@@ -51,6 +51,104 @@ namespace SDL {
  */
 
 /**
+ * The level of assertion aggressiveness.
+ *
+ * This value changes depending on compiler options and other preprocessor
+ * defines.
+ *
+ * It is currently one of the following values, but future SDL releases might
+ * add more:
+ *
+ * - 0: All SDL assertion macros are disabled.
+ * - 1: Release settings: SDL_assert disabled, SDL_assert_release enabled.
+ * - 2: Debug settings: SDL_assert and SDL_assert_release enabled.
+ * - 3: Paranoid settings: All SDL assertion macros enabled, including
+ *   SDL_assert_paranoid.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_ASSERT_LEVEL SDL_ASSERT_LEVEL
+
+/**
+ * Attempt to tell an attached debugger to pause.
+ *
+ * This allows an app to programmatically halt ("break") the debugger as if it
+ * had hit a breakpoint, allowing the developer to examine program state, etc.
+ *
+ * This is a macro--not a function--so that the debugger breaks on the source
+ * code line that used SDL_TriggerBreakpoint and not in some random guts of
+ * SDL. SDL_assert uses this macro for the same reason.
+ *
+ * If the program is not running under a debugger, SDL_TriggerBreakpoint will
+ * likely terminate the app, possibly without warning. If the current platform
+ * isn't supported, this macro is left undefined.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_TriggerBreakpoint() SDL_TriggerBreakpoint()
+
+/**
+ * A macro that reports the current function being compiled.
+ *
+ * If SDL can't figure how the compiler reports this, it will use "???".
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_FUNCTION SDL_FUNCTION
+
+/**
+ * A macro that reports the current file being compiled.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_FILE SDL_FILE
+
+/**
+ * A macro that reports the current line number of the file being compiled.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_LINE SDL_LINE
+
+/**
+ * A macro for wrapping code in `do {} while (0);` without compiler warnings.
+ *
+ * Visual Studio with really aggressive warnings enabled needs this to avoid
+ * compiler complaints.
+ *
+ * the `do {} while (0);` trick is useful for wrapping code in a macro that
+ * may or may not be a single statement, to avoid various C language
+ * accidents.
+ *
+ * To use:
+ *
+ * ```c
+ * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_NULL_WHILE_LOOP_CONDITION SDL_NULL_WHILE_LOOP_CONDITION
+
+/**
+ * The macro used when an assertion is disabled.
+ *
+ * This isn't for direct use by apps, but this is the code that is inserted
+ * when an SDL_assert is disabled (perhaps in a release build).
+ *
+ * The code does nothing, but wraps `condition` in a sizeof operator, which
+ * generates no code and has no side effects, but avoid compiler warnings
+ * about unused variables.
+ *
+ * @param condition the condition to assert (but not actually run here).
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_disabled_assert(condition) SDL_disabled_assert(condition)
+
+/**
  * Possible outcomes from a triggered assertion.
  *
  * When an enabled assertion triggers, it may call the assertion handler
@@ -123,6 +221,156 @@ inline AssertState ReportAssertion(AssertData* data,
 {
   return SDL_ReportAssertion(data, func, file, line);
 }
+
+/**
+ * The macro used when an assertion triggers a breakpoint.
+ *
+ * This isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint
+ * instead.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_AssertBreakpoint() SDL_AssertBreakpoint()
+
+/**
+ * The macro used when an assertion is enabled.
+ *
+ * This isn't for direct use by apps, but this is the code that is inserted
+ * when an SDL_assert is enabled.
+ *
+ * The `do {} while(0)` avoids dangling else problems:
+ *
+ * ```c
+ * if (x) SDL_assert(y); else blah();
+ * ```
+ *
+ * ... without the do/while, the "else" could attach to this macro's "if". We
+ * try to handle just the minimum we need here in a macro...the loop, the
+ * static vars, and break points. The heavy lifting is handled in
+ * SDL_ReportAssertion().
+ *
+ * @param condition the condition to assert.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_enabled_assert(condition) SDL_enabled_assert(condition)
+
+/**
+ * An assertion test that is normally performed only in debug builds.
+ *
+ * This macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is
+ * disabled. This is meant to only do these tests in debug builds, so they can
+ * tend to be more expensive, and they are meant to bring everything to a halt
+ * when they fail, with the programmer there to assess the problem.
+ *
+ * In short: you can sprinkle these around liberally and assume they will
+ * evaporate out of the build when building for end-users.
+ *
+ * When assertions are disabled, this wraps `condition` in a `sizeof`
+ * operator, which means any function calls and side effects will not run, but
+ * the compiler will not complain about any otherwise-unused variables that
+ * are only referenced in the assertion.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert(condition) SDL_assert(condition)
+
+/**
+ * An assertion test that is performed even in release builds.
+ *
+ * This macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is
+ * disabled. This is meant to be for tests that are cheap to make and
+ * extremely unlikely to fail; generally it is frowned upon to have an
+ * assertion failure in a release build, so these assertions generally need to
+ * be of more than life-and-death importance if there's a chance they might
+ * trigger. You should almost always consider handling these cases more
+ * gracefully than an assert allows.
+ *
+ * When assertions are disabled, this wraps `condition` in a `sizeof`
+ * operator, which means any function calls and side effects will not run, but
+ * the compiler will not complain about any otherwise-unused variables that
+ * are only referenced in the assertion.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ * *
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert_release(condition) SDL_assert_release(condition)
+
+/**
+ * An assertion test that is performed only when built with paranoid settings.
+ *
+ * This macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is
+ * disabled. This is a higher level than both release and debug, so these
+ * tests are meant to be expensive and only run when specifically looking for
+ * extremely unexpected failure cases in a special build.
+ *
+ * When assertions are disabled, this wraps `condition` in a `sizeof`
+ * operator, which means any function calls and side effects will not run, but
+ * the compiler will not complain about any otherwise-unused variables that
+ * are only referenced in the assertion.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert_paranoid(condition) SDL_assert_paranoid(condition)
+
+/**
+ * An assertion test that is always performed.
+ *
+ * This macro is always enabled no matter what SDL_ASSERT_LEVEL is set to. You
+ * almost never want to use this, as it could trigger on an end-user's system,
+ * crashing your program.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert_always(condition) SDL_assert_always(condition)
 
 /**
  * A @ref callback that fires when an SDL assertion fails.
@@ -271,6 +519,254 @@ inline const AssertData* GetAssertionReport()
  * @sa SDL_GetAssertionReport
  */
 inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
+
+/**
+ * The level of assertion aggressiveness.
+ *
+ * This value changes depending on compiler options and other preprocessor
+ * defines.
+ *
+ * It is currently one of the following values, but future SDL releases might
+ * add more:
+ *
+ * - 0: All SDL assertion macros are disabled.
+ * - 1: Release settings: SDL_assert disabled, SDL_assert_release enabled.
+ * - 2: Debug settings: SDL_assert and SDL_assert_release enabled.
+ * - 3: Paranoid settings: All SDL assertion macros enabled, including
+ *   SDL_assert_paranoid.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_ASSERT_LEVEL SDL_ASSERT_LEVEL
+
+/**
+ * Attempt to tell an attached debugger to pause.
+ *
+ * This allows an app to programmatically halt ("break") the debugger as if it
+ * had hit a breakpoint, allowing the developer to examine program state, etc.
+ *
+ * This is a macro--not a function--so that the debugger breaks on the source
+ * code line that used SDL_TriggerBreakpoint and not in some random guts of
+ * SDL. SDL_assert uses this macro for the same reason.
+ *
+ * If the program is not running under a debugger, SDL_TriggerBreakpoint will
+ * likely terminate the app, possibly without warning. If the current platform
+ * isn't supported, this macro is left undefined.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_TriggerBreakpoint() SDL_TriggerBreakpoint()
+
+/**
+ * A macro that reports the current function being compiled.
+ *
+ * If SDL can't figure how the compiler reports this, it will use "???".
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_FUNCTION SDL_FUNCTION
+
+/**
+ * A macro that reports the current file being compiled.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_FILE SDL_FILE
+
+/**
+ * A macro that reports the current line number of the file being compiled.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_LINE SDL_LINE
+
+/**
+ * A macro for wrapping code in `do {} while (0);` without compiler warnings.
+ *
+ * Visual Studio with really aggressive warnings enabled needs this to avoid
+ * compiler complaints.
+ *
+ * the `do {} while (0);` trick is useful for wrapping code in a macro that
+ * may or may not be a single statement, to avoid various C language
+ * accidents.
+ *
+ * To use:
+ *
+ * ```c
+ * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_NULL_WHILE_LOOP_CONDITION SDL_NULL_WHILE_LOOP_CONDITION
+
+/**
+ * The macro used when an assertion is disabled.
+ *
+ * This isn't for direct use by apps, but this is the code that is inserted
+ * when an SDL_assert is disabled (perhaps in a release build).
+ *
+ * The code does nothing, but wraps `condition` in a sizeof operator, which
+ * generates no code and has no side effects, but avoid compiler warnings
+ * about unused variables.
+ *
+ * @param condition the condition to assert (but not actually run here).
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_disabled_assert(condition) SDL_disabled_assert(condition)
+
+/**
+ * The macro used when an assertion triggers a breakpoint.
+ *
+ * This isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint
+ * instead.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_AssertBreakpoint() SDL_AssertBreakpoint()
+
+/**
+ * The macro used when an assertion is enabled.
+ *
+ * This isn't for direct use by apps, but this is the code that is inserted
+ * when an SDL_assert is enabled.
+ *
+ * The `do {} while(0)` avoids dangling else problems:
+ *
+ * ```c
+ * if (x) SDL_assert(y); else blah();
+ * ```
+ *
+ * ... without the do/while, the "else" could attach to this macro's "if". We
+ * try to handle just the minimum we need here in a macro...the loop, the
+ * static vars, and break points. The heavy lifting is handled in
+ * SDL_ReportAssertion().
+ *
+ * @param condition the condition to assert.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_enabled_assert(condition) SDL_enabled_assert(condition)
+
+/**
+ * An assertion test that is normally performed only in debug builds.
+ *
+ * This macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is
+ * disabled. This is meant to only do these tests in debug builds, so they can
+ * tend to be more expensive, and they are meant to bring everything to a halt
+ * when they fail, with the programmer there to assess the problem.
+ *
+ * In short: you can sprinkle these around liberally and assume they will
+ * evaporate out of the build when building for end-users.
+ *
+ * When assertions are disabled, this wraps `condition` in a `sizeof`
+ * operator, which means any function calls and side effects will not run, but
+ * the compiler will not complain about any otherwise-unused variables that
+ * are only referenced in the assertion.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert(condition) SDL_assert(condition)
+
+/**
+ * An assertion test that is performed even in release builds.
+ *
+ * This macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is
+ * disabled. This is meant to be for tests that are cheap to make and
+ * extremely unlikely to fail; generally it is frowned upon to have an
+ * assertion failure in a release build, so these assertions generally need to
+ * be of more than life-and-death importance if there's a chance they might
+ * trigger. You should almost always consider handling these cases more
+ * gracefully than an assert allows.
+ *
+ * When assertions are disabled, this wraps `condition` in a `sizeof`
+ * operator, which means any function calls and side effects will not run, but
+ * the compiler will not complain about any otherwise-unused variables that
+ * are only referenced in the assertion.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ * *
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert_release(condition) SDL_assert_release(condition)
+
+/**
+ * An assertion test that is performed only when built with paranoid settings.
+ *
+ * This macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is
+ * disabled. This is a higher level than both release and debug, so these
+ * tests are meant to be expensive and only run when specifically looking for
+ * extremely unexpected failure cases in a special build.
+ *
+ * When assertions are disabled, this wraps `condition` in a `sizeof`
+ * operator, which means any function calls and side effects will not run, but
+ * the compiler will not complain about any otherwise-unused variables that
+ * are only referenced in the assertion.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert_paranoid(condition) SDL_assert_paranoid(condition)
+
+/**
+ * An assertion test that is always performed.
+ *
+ * This macro is always enabled no matter what SDL_ASSERT_LEVEL is set to. You
+ * almost never want to use this, as it could trigger on an end-user's system,
+ * crashing your program.
+ *
+ * One can set the environment variable "SDL_ASSERT" to one of several strings
+ * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
+ * behavior, which may be desirable for automation purposes. If your platform
+ * requires GUI interfaces to happen on the main thread but you're debugging
+ * an assertion in a background thread, it might be desirable to set this to
+ * "break" so that your debugger takes control as soon as assert is triggered,
+ * instead of risking a bad UI interaction (deadlock, etc) in the application.
+ *
+ * @param condition boolean value to test.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_assert_always(condition) SDL_assert_always(condition)
 
 /// @}
 

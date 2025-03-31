@@ -16,6 +16,12 @@ namespace SDL {
  */
 
 /**
+ * @name BlendModes
+ *
+ * @{
+ */
+
+/**
  * @brief  A set of blend modes used in drawing operations.
  *
  * These predefined blend modes are supported everywhere.
@@ -23,6 +29,49 @@ namespace SDL {
  * Additional values may be obtained from ComposeCustomBlendMode().
  */
 using BlendMode = SDL_BlendMode;
+
+/**
+ * no blending: dstRGBA = srcRGBA
+ */
+constexpr BlendMode BLENDMODE_NONE = SDL_BLENDMODE_NONE;
+
+/**
+ * alpha blending: dstRGB = (srcRGB * srcA) + (dstRGB * (1-srcA)), dstA = srcA +
+ * (dstA * (1-srcA))
+ */
+constexpr BlendMode BLENDMODE_BLEND = SDL_BLENDMODE_BLEND;
+
+/**
+ * pre-multiplied alpha blending: dstRGBA = srcRGBA + (dstRGBA * (1-srcA))
+ */
+constexpr BlendMode BLENDMODE_BLEND_PREMULTIPLIED =
+  SDL_BLENDMODE_BLEND_PREMULTIPLIED;
+
+/**
+ * additive blending: dstRGB = (srcRGB * srcA) + dstRGB, dstA = dstA
+ */
+constexpr BlendMode BLENDMODE_ADD = SDL_BLENDMODE_ADD;
+
+/**
+ * pre-multiplied additive blending: dstRGB = srcRGB + dstRGB, dstA = dstA
+ */
+constexpr BlendMode BLENDMODE_ADD_PREMULTIPLIED =
+  SDL_BLENDMODE_ADD_PREMULTIPLIED;
+
+/**
+ * color modulate: dstRGB = srcRGB * dstRGB, dstA = dstA
+ */
+constexpr BlendMode BLENDMODE_MOD = SDL_BLENDMODE_MOD;
+
+/**
+ * color multiply: dstRGB = (srcRGB * dstRGB) + (dstRGB * (1-srcA)), dstA = dstA
+ */
+constexpr BlendMode BLENDMODE_MUL = SDL_BLENDMODE_MUL;
+
+/// Invalid blendmode
+constexpr BlendMode BLENDMODE_INVALID = SDL_BLENDMODE_INVALID;
+
+///@}
 
 /**
  * @brief The blend operation used when combining source and destination pixel

@@ -3300,7 +3300,8 @@
         "SDL_Unsupported": {
           "doc": "A macro to standardize error reporting on unsupported operations.\n\nThis simply calls SDL_SetError() with a standardized error string, for\nconvenience, consistency, and clarity.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_Unsupported",
-          "kind": "def"
+          "kind": "def",
+          "parameters": []
         },
         "SDL_InvalidParamError": {
           "doc": "A macro to standardize error reporting on unsupported operations.\n\nThis simply calls SDL_SetError() with a standardized error string, for\nconvenience, consistency, and clarity.\n\nA common usage pattern inside SDL is this:\n\n```c\nbool MyFunction(const char *str) {\n    if (!str) {\n        return SDL_InvalidParamError(\"str\");  // returns false.\n    }\n    DoSomething(str);\n    return true;\n}\n```\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
@@ -3324,7 +3325,8 @@
         "SDL_TriggerBreakpoint": {
           "doc": "Attempt to tell an attached debugger to pause.\n\nThis allows an app to programmatically halt (\"break\") the debugger as if it\nhad hit a breakpoint, allowing the developer to examine program state, etc.\n\nThis is a macro--not a function--so that the debugger breaks on the source\ncode line that used SDL_TriggerBreakpoint and not in some random guts of\nSDL. SDL_assert uses this macro for the same reason.\n\nIf the program is not running under a debugger, SDL_TriggerBreakpoint will\nlikely terminate the app, possibly without warning. If the current platform\nisn't supported, this macro is left undefined.\n\n\\threadsafety It is safe to call this macro from any thread.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_TriggerBreakpoint",
-          "kind": "def"
+          "kind": "def",
+          "parameters": []
         },
         "SDL_FUNCTION": {
           "doc": "A macro that reports the current function being compiled.\n\nIf SDL can't figure how the compiler reports this, it will use \"???\".\n\n\\since This macro is available since SDL 3.2.0.",
@@ -3467,7 +3469,8 @@
         "SDL_AssertBreakpoint": {
           "doc": "The macro used when an assertion triggers a breakpoint.\n\nThis isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint\ninstead.\n\n\\since This macro is available since SDL 3.2.0.",
           "name": "SDL_AssertBreakpoint",
-          "kind": "def"
+          "kind": "def",
+          "parameters": []
         },
         "SDL_enabled_assert": {
           "doc": "The macro used when an assertion is enabled.\n\nThis isn't for direct use by apps, but this is the code that is inserted\nwhen an SDL_assert is enabled.\n\nThe `do {} while(0)` avoids dangling else problems:\n\n```c\nif (x) SDL_assert(y); else blah();\n```\n\n... without the do/while, the \"else\" could attach to this macro's \"if\". We\ntry to handle just the minimum we need here in a macro...the loop, the\nstatic vars, and break points. The heavy lifting is handled in\nSDL_ReportAssertion().\n\n\\param condition the condition to assert.\n\n\\since This macro is available since SDL 3.2.0.",

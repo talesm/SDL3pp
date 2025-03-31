@@ -13,5 +13,5 @@ var searchData=
   ['glcontextresetnotification_10',['GLContextResetNotification',['../group__CategoryVideo.html#ga26ce7467913703fa1f7828bec5aa264d',1,'SDL']]],
   ['glprofile_11',['GLProfile',['../group__CategoryVideo.html#gadefdc979b086832fc622f980c11c02c1',1,'SDL']]],
   ['gpuatlasdrawsequence_12',['GPUAtlasDrawSequence',['../group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1',1,'SDL']]],
-  ['gputextenginewinding_13',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a',1,'SDL']]]
+  ['gputextenginewinding_13',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#gad0a4a2ecc2605b00899e6442ff11e410',1,'SDL']]]
 ];

@@ -54,6 +54,25 @@ using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
 using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
 
 /**
+ * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
+ */
+#define SDL3PP_IMAGE_MAJOR_VERSION SDL_IMAGE_MAJOR_VERSION
+
+#define SDL3PP_IMAGE_MINOR_VERSION SDL_IMAGE_MINOR_VERSION
+
+#define SDL3PP_IMAGE_MICRO_VERSION SDL_IMAGE_MICRO_VERSION
+
+/**
+ * This is the version number macro for the current SDL_image version.
+ */
+#define SDL3PP_IMAGE_VERSION SDL_IMAGE_VERSION
+
+/**
+ * This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.
+ */
+#define SDL3PP_IMAGE_VERSION_ATLEAST(X, Y, Z) SDL_IMAGE_VERSION_ATLEAST(X, Y, Z)
+
+/**
  * This function gets the version of the dynamically linked SDL_image library.
  *
  * @returns SDL_image version.

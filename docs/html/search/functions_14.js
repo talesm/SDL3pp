@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['_7epropertieslock_0',['~PropertiesLock',['../classSDL_1_1PropertiesLock.html#a034ade85da668dbc7339460cee886982',1,'SDL::PropertiesLock']]],
-  ['_7esurfacelock_1',['~SurfaceLock',['../classSDL_1_1SurfaceLock.html#a143fd9ac7ed58d25c97ed44d375d8813',1,'SDL::SurfaceLock']]],
-  ['_7etexturelock_2',['~TextureLock',['../classSDL_1_1TextureLock.html#a3dda3bd8f0b45fcf18b3fddf8635c395',1,'SDL::TextureLock']]]
+  ['zero_0',['zero',['../group__CategoryStdinc.html#ga4d65aa4051722f968f6fde80d47d761f',1,'SDL']]],
+  ['zeroa_1',['zeroa',['../group__CategoryStdinc.html#ga51ba04c3b473e95c7808a55669162521',1,'SDL']]],
+  ['zerop_2',['zerop',['../group__CategoryStdinc.html#gab0fc530b6aa46072077289b0a200c21c',1,'SDL']]]
 ];

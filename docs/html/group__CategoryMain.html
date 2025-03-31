@@ -71,6 +71,7 @@ $(function() {
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Application entry points<div class="ingroups"><a class="el" href="group__Categories.html">Categories</a> &raquo; <a class="el" href="group__CategoriesBasics.html">Basics</a></div></div></div>
@@ -80,6 +81,15 @@ $(function() {
 <p>Redefine main() if necessary so that it is called by <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga1d482fdf5ca314a73abef6da87b0d905" id="r_ga1d482fdf5ca314a73abef6da87b0d905"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMain.html#ga1d482fdf5ca314a73abef6da87b0d905">SDL3PP_MAIN_HANDLED</a>&#160;&#160;&#160;SDL_MAIN_HANDLED</td></tr>
+<tr class="memdesc:ga1d482fdf5ca314a73abef6da87b0d905"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inform <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> that the app is providing an entry point instead of <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a>.  <br /></td></tr>
+<tr class="separator:ga1d482fdf5ca314a73abef6da87b0d905"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2f8495f7718fc850f85e22adecbc0b03" id="r_ga2f8495f7718fc850f85e22adecbc0b03"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMain.html#ga2f8495f7718fc850f85e22adecbc0b03">SDL3PP_MAIN_USE_CALLBACKS</a>&#160;&#160;&#160;SDL_MAIN_USE_CALLBACKS</td></tr>
+<tr class="memdesc:ga2f8495f7718fc850f85e22adecbc0b03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inform <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> to use the main callbacks instead of main.  <br /></td></tr>
+<tr class="separator:ga2f8495f7718fc850f85e22adecbc0b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ga739f8556aeb10b977252e566a4ec88ef" id="r_ga739f8556aeb10b977252e566a4ec88ef"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__CategoryMain.html#ga739f8556aeb10b977252e566a4ec88ef">SDL::main_func</a> = SDL_main_func</td></tr>
@@ -114,6 +124,48 @@ Functions</h2></td></tr>
 <p>SDL_main.h is a "single-header library," which is to say that including this header inserts code into your program, and you should only include it once in most cases. SDL.h does not include this header automatically.</p>
 <p>For more information, see:</p>
 <p><a href="https://wiki.libsdl.org/SDL3/README/main-functions">https://wiki.libsdl.org/SDL3/README/main-functions</a> </p>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ga1d482fdf5ca314a73abef6da87b0d905" name="ga1d482fdf5ca314a73abef6da87b0d905"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1d482fdf5ca314a73abef6da87b0d905">&#9670;&#160;</a></span>SDL3PP_MAIN_HANDLED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_MAIN_HANDLED&#160;&#160;&#160;SDL_MAIN_HANDLED</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not define this macro, but will check if it is defined when including <code>SDL_main.h</code>. If defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will expect the app to provide the proper entry point for the platform, and all the other magic details needed, like manually calling SDL_SetMainReady.</p>
+<p>Please see <a href="README/main-functions">README/main-functions</a>, (or docs/README-main-functions.md in the source tree) for a more detailed explanation.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is used by the headers since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0. </dd></dl>
+
+</div>
+</div>
+<a id="ga2f8495f7718fc850f85e22adecbc0b03" name="ga2f8495f7718fc850f85e22adecbc0b03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2f8495f7718fc850f85e22adecbc0b03">&#9670;&#160;</a></span>SDL3PP_MAIN_USE_CALLBACKS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SDL3PP_MAIN_USE_CALLBACKS&#160;&#160;&#160;SDL_MAIN_USE_CALLBACKS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p><a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> does not define this macro, but will check if it is defined when including <code>SDL_main.h</code>. If defined, <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> will expect the app to provide several functions: SDL_AppInit, SDL_AppEvent, SDL_AppIterate, and SDL_AppQuit. The app should not provide a <code>main</code> function in this case, and doing so will likely cause the build to fail.</p>
+<p>Please see <a href="README/main-functions">README/main-functions</a>, (or docs/README-main-functions.md in the source tree) for a more detailed explanation.</p>
+<dl class="section since"><dt>Since</dt><dd>This macro is used by the headers since <a class="el" href="namespaceSDL.html" title="the main namespace where all SDL3pp public functions and types live">SDL</a> 3.2.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>SDL_AppInit </dd>
+<dd>
+SDL_AppEvent </dd>
+<dd>
+SDL_AppIterate </dd>
+<dd>
+SDL_AppQuit </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga739f8556aeb10b977252e566a4ec88ef" name="ga739f8556aeb10b977252e566a4ec88ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga739f8556aeb10b977252e566a4ec88ef">&#9670;&#160;</a></span>main_func</h2>

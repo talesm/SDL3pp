@@ -99,6 +99,42 @@ using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
 
 /**
+ * A fully opaque 8-bit alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL3PP_ALPHA_TRANSPARENT
+ */
+#define SDL3PP_ALPHA_OPAQUE SDL_ALPHA_OPAQUE
+
+/**
+ * A fully opaque floating point alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL3PP_ALPHA_TRANSPARENT_FLOAT
+ */
+#define SDL3PP_ALPHA_OPAQUE_FLOAT SDL_ALPHA_OPAQUE_FLOAT
+
+/**
+ * A fully transparent 8-bit alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL3PP_ALPHA_OPAQUE
+ */
+#define SDL3PP_ALPHA_TRANSPARENT SDL_ALPHA_TRANSPARENT
+
+/**
+ * A fully transparent floating point alpha value.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL3PP_ALPHA_OPAQUE_FLOAT
+ */
+#define SDL3PP_ALPHA_TRANSPARENT_FLOAT SDL_ALPHA_TRANSPARENT_FLOAT
+
+/**
  * @name PixelTypes
  * @{
  */
@@ -254,6 +290,47 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
  * Details about the format of a pixel.
  */
 using PixelFormatDetails = SDL_PixelFormatDetails;
+
+/**
+ * A macro for defining custom FourCC pixel formats.
+ *
+ * For example, defining SDL_PIXELFORMAT_YV12 looks like this:
+ *
+ * ```c
+ * SDL_DEFINE_PIXELFOURCC('Y', 'V', '1', '2')
+ * ```
+ *
+ * @param A the first character of the FourCC code.
+ * @param B the second character of the FourCC code.
+ * @param C the third character of the FourCC code.
+ * @param D the fourth character of the FourCC code.
+ * @returns a format value in the style of SDL_PixelFormat.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_DEFINE_PIXELFOURCC(A, B, C, D) SDL_DEFINE_PIXELFOURCC(A, B, C, D)
+
+/**
+ * A macro to retrieve the flags of an SDL_PixelFormat.
+ *
+ * This macro is generally not needed directly by an app, which should use
+ * specific tests, like SDL_ISPIXELFORMAT_FOURCC, instead.
+ *
+ * @param format an SDL_PixelFormat to check.
+ * @returns the flags of `format`.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_PIXELFLAG(format) SDL_PIXELFLAG(format)
+
+/**
+ * @name PixelFormats
+ * @{
+ */
 
 /**
  * Pixel format.
@@ -624,12 +701,6 @@ struct PixelFormat
   inline Color Get(Uint32 pixel, PaletteRef palette) const;
 };
 
-/**
- * @defgroup PixelFormats Pixel Formats
- *
- * Pixel formats
- * @{
- */
 constexpr PixelFormat PIXELFORMAT_UNKNOWN = SDL_PIXELFORMAT_UNKNOWN;
 
 constexpr PixelFormat PIXELFORMAT_INDEX1LSB = SDL_PIXELFORMAT_INDEX1LSB;
@@ -813,7 +884,7 @@ constexpr PixelFormat PIXELFORMAT_XBGR32 = SDL_PIXELFORMAT_XBGR32;
 /// @}
 
 /**
- * @name Colorspaces
+ * @name ColorTypes
  * @{
  */
 
@@ -1182,6 +1253,11 @@ constexpr ChromaLocation CHROMA_LOCATION_TOPLEFT = SDL_CHROMA_LOCATION_TOPLEFT;
 /// @}
 
 /**
+ * @name Colorspaces
+ * @{
+ */
+
+/**
  * Colorspace definitions.
  *
  * Since similar colorspaces may vary in their details (matrix, transfer
@@ -1421,11 +1497,6 @@ public:
     return SDL_ISCOLORSPACE_FULL_RANGE(colorspace);
   }
 };
-
-/**
- * @defgroup Colorspaces Colorspaces
- * @{
- */
 
 constexpr Colorspace COLORSPACE_UNKNOWN = SDL_COLORSPACE_UNKNOWN;
 
@@ -1790,7 +1861,7 @@ struct FColor : SDL_FColor
  * @sa Palette
  * @sa PaletteRef
  */
-template<ObjectBox<SDL_Palette *> T>
+template<ObjectBox<SDL_Palette*> T>
 struct PaletteBase : T
 {
   // Make default ctors available

@@ -105,7 +105,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
           const params = member.param;
           if (params?.length) {
             entry.parameters = params.map(p => p.defname?.[0]);
-            if (entry.parameters.length === 1 && !entry.parameters[0]) delete entry.parameters;
+            if (entry.parameters.length === 1 && !entry.parameters[0]) entry.parameters.pop();
           }
           break;
         }

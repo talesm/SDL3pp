@@ -17,6 +17,96 @@ namespace SDL {
  */
 
 /**
+ * The current major version of SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 3.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_MAJOR_VERSION SDL_MAJOR_VERSION
+
+/**
+ * The current minor version of the SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 2.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_MINOR_VERSION SDL_MINOR_VERSION
+
+/**
+ * The current micro (or patchlevel) version of the SDL headers.
+ *
+ * If this were SDL version 3.2.1, this value would be 1.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_MICRO_VERSION SDL_MICRO_VERSION
+
+/**
+ * This macro turns the version numbers into a numeric value.
+ *
+ * (1,2,3) becomes 1002003.
+ *
+ * @param major the major version number.
+ * @param minor the minorversion number.
+ * @param patch the patch version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_VERSIONNUM(major, minor, patch)                                 \
+  SDL_VERSIONNUM(major, minor, patch)
+
+/**
+ * This macro extracts the major version from a version number
+ *
+ * 1002003 becomes 1.
+ *
+ * @param version the version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_VERSIONNUM_MAJOR(version) SDL_VERSIONNUM_MAJOR(version)
+
+/**
+ * This macro extracts the minor version from a version number
+ *
+ * 1002003 becomes 2.
+ *
+ * @param version the version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_VERSIONNUM_MINOR(version) SDL_VERSIONNUM_MINOR(version)
+
+/**
+ * This macro extracts the micro version from a version number
+ *
+ * 1002003 becomes 3.
+ *
+ * @param version the version number.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_VERSIONNUM_MICRO(version) SDL_VERSIONNUM_MICRO(version)
+
+/**
+ * This is the version number macro for the current SDL version.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_GetVersion
+ */
+#define SDL3PP_VERSION SDL_VERSION
+
+/**
+ * This macro will evaluate to true if compiled with SDL at least X.Y.Z.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+#define SDL3PP_VERSION_ATLEAST(X, Y, Z) SDL_VERSION_ATLEAST(X, Y, Z)
+
+/**
  * Get the version of SDL that is linked against your program.
  *
  * If you are linking to SDL dynamically, then it is possible that the current
