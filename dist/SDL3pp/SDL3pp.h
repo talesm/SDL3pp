@@ -35483,6 +35483,22 @@ struct FontBase : T
    */
   bool GetSDF() const { return TTF_GetFontSDF(T::get()); }
 
+#if SDL3PP_TTF_VERSION_ATLEAST(3, 4, 0)
+
+  /**
+   * Query a font's weight, in terms of the lightness/heaviness of the strokes.
+   *
+   * @returns the font's current weight.
+   *
+   * @threadsafety This function should be called on the thread that created the
+   *               font.
+   *
+   * @since This function is available since SDL_ttf 3.4.0.
+   */
+  int GetWeight() const { return TTF_GetFontWeight(T::get()); }
+
+#endif SDL3PP_TTF_VERSION_ATLEAST(3, 4, 0)
+
   /**
    * Set a font's current wrap alignment option.
    *
@@ -36693,6 +36709,56 @@ constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
   TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER;
 
 } // namespace prop::Font
+
+/**
+ * Thin (100) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_THIN TTF_FONT_WEIGHT_THIN
+
+/**
+ * ExtraLight (200) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_EXTRA_LIGHT TTF_FONT_WEIGHT_EXTRA_LIGHT
+
+/**
+ * Light (300) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_LIGHT TTF_FONT_WEIGHT_LIGHT
+
+/**
+ * Normal (400) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_NORMAL TTF_FONT_WEIGHT_NORMAL
+
+/**
+ * Medium (500) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_MEDIUM TTF_FONT_WEIGHT_MEDIUM
+
+/**
+ * SemiBold (600) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_SEMI_BOLD TTF_FONT_WEIGHT_SEMI_BOLD
+
+/**
+ * Bold (700) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_BOLD TTF_FONT_WEIGHT_BOLD
+
+/**
+ * ExtraBold (800) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_EXTRA_BOLD TTF_FONT_WEIGHT_EXTRA_BOLD
+
+/**
+ * Black (900) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_BLACK TTF_FONT_WEIGHT_BLACK
+
+/**
+ * ExtraBlack (950) named font weight value
+ */
+#define SDL3PP_FONT_WEIGHT_EXTRA_BLACK TTF_FONT_WEIGHT_EXTRA_BLACK
 
 /**
  * Convert from a 4 character string to a 32-bit tag.

@@ -6063,6 +6063,7 @@
             "TTF_GetFontHinting": "immutable",
             "TTF_SetFontSDF": "function",
             "TTF_GetFontSDF": "immutable",
+            "TTF_GetFontWeight": "immutable",
             "TTF_SetFontWrapAlignment": "function",
             "TTF_GetFontWrapAlignment": "immutable",
             "TTF_GetFontHeight": "immutable",

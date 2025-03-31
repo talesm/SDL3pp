@@ -21325,7 +21325,7 @@
           ]
         },
         "TTF_FontStyleFlags": {
-          "doc": "Font style flags for TTF_Font\n\nThese are the flags which can be used to set the style of a font in\nSDL_ttf. A combination of these flags can be used with functions that set\nor query font style, such as TTF_SetFontStyle or TTF_GetFontStyle.\n\n\\since This function is available since SDL_ttf 3.0.0.\n\n\\sa TTF_SetFontStyle\n\\sa TTF_GetFontStyle",
+          "doc": "Font style flags for TTF_Font\n\nThese are the flags which can be used to set the style of a font in\nSDL_ttf. A combination of these flags can be used with functions that set\nor query font style, such as TTF_SetFontStyle or TTF_GetFontStyle.\n\n\\since This datatype is available since SDL_ttf 3.0.0.\n\n\\sa TTF_SetFontStyle\n\\sa TTF_GetFontStyle",
           "name": "TTF_FontStyleFlags",
           "kind": "alias",
           "type": "Uint32"
@@ -21521,6 +21521,68 @@
               "type": "const TTF_Font *"
             }
           ]
+        },
+        "TTF_GetFontWeight": {
+          "doc": "Query a font's weight, in terms of the lightness/heaviness of the strokes.\n\n\\param font the font to query.\n\\returns the font's current weight.\n\n\\threadsafety This function should be called on the thread that created the\n              font.\n\n\\since This function is available since SDL_ttf 3.4.0.",
+          "name": "TTF_GetFontWeight",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "font",
+              "type": "const TTF_Font *"
+            }
+          ]
+        },
+        "TTF_FONT_WEIGHT_THIN": {
+          "doc": "Thin (100) named font weight value",
+          "name": "TTF_FONT_WEIGHT_THIN",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_EXTRA_LIGHT": {
+          "doc": "ExtraLight (200) named font weight value",
+          "name": "TTF_FONT_WEIGHT_EXTRA_LIGHT",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_LIGHT": {
+          "doc": "Light (300) named font weight value",
+          "name": "TTF_FONT_WEIGHT_LIGHT",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_NORMAL": {
+          "doc": "Normal (400) named font weight value",
+          "name": "TTF_FONT_WEIGHT_NORMAL",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_MEDIUM": {
+          "doc": "Medium (500) named font weight value",
+          "name": "TTF_FONT_WEIGHT_MEDIUM",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_SEMI_BOLD": {
+          "doc": "SemiBold (600) named font weight value",
+          "name": "TTF_FONT_WEIGHT_SEMI_BOLD",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_BOLD": {
+          "doc": "Bold (700) named font weight value",
+          "name": "TTF_FONT_WEIGHT_BOLD",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_EXTRA_BOLD": {
+          "doc": "ExtraBold (800) named font weight value",
+          "name": "TTF_FONT_WEIGHT_EXTRA_BOLD",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_BLACK": {
+          "doc": "Black (900) named font weight value",
+          "name": "TTF_FONT_WEIGHT_BLACK",
+          "kind": "def"
+        },
+        "TTF_FONT_WEIGHT_EXTRA_BLACK": {
+          "doc": "ExtraBlack (950) named font weight value",
+          "name": "TTF_FONT_WEIGHT_EXTRA_BLACK",
+          "kind": "def"
         },
         "TTF_HorizontalAlignment": {
           "doc": "The horizontal alignment used when rendering wrapped text.\n\n\\since This enum is available since SDL_ttf 3.0.0.",
