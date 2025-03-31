@@ -6200,53 +6200,76 @@
           ],
           "sourceName": "SDL_CloseIO"
         },
-        "SDL3PP_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER"
-        },
-        "SDL3PP_PROP_IOSTREAM_STDIO_FILE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_STDIO_FILE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_STDIO_FILE_POINTER"
-        },
-        "SDL3PP_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER"
-        },
-        "SDL3PP_PROP_IOSTREAM_ANDROID_AASSET_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_ANDROID_AASSET_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER"
-        },
-        "SDL3PP_PROP_IOSTREAM_MEMORY_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_MEMORY_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_MEMORY_POINTER"
-        },
-        "SDL3PP_PROP_IOSTREAM_MEMORY_SIZE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_MEMORY_SIZE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER"
-        },
-        "SDL3PP_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER"
-        },
-        "SDL3PP_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER"
+        "prop::IOStream": {
+          "kind": "ns",
+          "name": "prop::IOStream",
+          "entries": {
+            "WINDOWS_HANDLE_POINTER": {
+              "doc": "",
+              "name": "WINDOWS_HANDLE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_WINDOWS_HANDLE_POINTER"
+            },
+            "STDIO_FILE_POINTER": {
+              "doc": "",
+              "name": "STDIO_FILE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_STDIO_FILE_POINTER"
+            },
+            "FILE_DESCRIPTOR_NUMBER": {
+              "doc": "",
+              "name": "FILE_DESCRIPTOR_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_FILE_DESCRIPTOR_NUMBER"
+            },
+            "ANDROID_AASSET_POINTER": {
+              "doc": "",
+              "name": "ANDROID_AASSET_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER"
+            },
+            "MEMORY_POINTER": {
+              "doc": "",
+              "name": "MEMORY_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_MEMORY_POINTER"
+            },
+            "MEMORY_SIZE_NUMBER": {
+              "doc": "",
+              "name": "MEMORY_SIZE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_MEMORY_SIZE_NUMBER"
+            },
+            "DYNAMIC_MEMORY_POINTER": {
+              "doc": "",
+              "name": "DYNAMIC_MEMORY_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_DYNAMIC_MEMORY_POINTER"
+            },
+            "DYNAMIC_CHUNKSIZE_NUMBER": {
+              "doc": "",
+              "name": "DYNAMIC_CHUNKSIZE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_IOSTREAM_DYNAMIC_CHUNKSIZE_NUMBER"
+            }
+          },
+          "doc": ""
         },
         "LoadFile": {
           "doc": "Load all the data from a file path.\n\nThe data is allocated with a zero byte at the end (null terminated) for\nconvenience. This extra byte is not included in the value reported via\n`datasize`.\n\nThe data should be freed with SDL_free().\n\n@param file the path to read all available data from.\n@param datasize if not NULL, will store the number of bytes read.\n@returns the data or NULL on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LoadFile_IO\n@sa SDL_SaveFile",
@@ -12992,35 +13015,52 @@
           },
           "doc": ""
         },
-        "SDL3PP_PROP_SURFACE_SDR_WHITE_POINT_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_SURFACE_SDR_WHITE_POINT_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT"
-        },
-        "SDL3PP_PROP_SURFACE_HDR_HEADROOM_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_SURFACE_HDR_HEADROOM_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT"
-        },
-        "SDL3PP_PROP_SURFACE_TONEMAP_OPERATOR_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_SURFACE_TONEMAP_OPERATOR_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING"
-        },
-        "SDL3PP_PROP_SURFACE_HOTSPOT_X_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_SURFACE_HOTSPOT_X_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER"
-        },
-        "SDL3PP_PROP_SURFACE_HOTSPOT_Y_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_SURFACE_HOTSPOT_Y_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER"
+        "prop::Surface": {
+          "kind": "ns",
+          "name": "prop::Surface",
+          "entries": {
+            "SDR_WHITE_POINT_FLOAT": {
+              "doc": "",
+              "name": "SDR_WHITE_POINT_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT"
+            },
+            "HDR_HEADROOM_FLOAT": {
+              "doc": "",
+              "name": "HDR_HEADROOM_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT"
+            },
+            "TONEMAP_OPERATOR_STRING": {
+              "doc": "",
+              "name": "TONEMAP_OPERATOR_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING"
+            },
+            "HOTSPOT_X_NUMBER": {
+              "doc": "",
+              "name": "HOTSPOT_X_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_SURFACE_HOTSPOT_X_NUMBER"
+            },
+            "HOTSPOT_Y_NUMBER": {
+              "doc": "",
+              "name": "HOTSPOT_Y_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER"
+            }
+          },
+          "doc": ""
         },
         "LoadBMP": [
           {
@@ -13924,11 +13964,20 @@
           "type": "SDL_WindowID",
           "sourceName": "SDL_WindowID"
         },
-        "SDL3PP_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER": {
-          "doc": "The pointer to the global `wl_display` object used by the Wayland video\nbackend.\n\nCan be set before the video subsystem is initialized to import an external\n`wl_display` object from an application or toolkit for use in SDL, or read\nafter initialization to export the `wl_display` used by the Wayland video\nbackend. Setting this property after the video subsystem has been\ninitialized has no effect, and reading it when the video subsystem is\nuninitialized will either return the user provided value, if one was set\nprior to initialization, or NULL. See docs/README-wayland.md for more\ninformation.",
-          "name": "SDL3PP_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER"
+        "prop::Global": {
+          "kind": "ns",
+          "name": "prop::Global",
+          "entries": {
+            "VIDEO_WAYLAND_WL_DISPLAY_POINTER": {
+              "doc": "The pointer to the global `wl_display` object used by the Wayland video\nbackend.\n\nCan be set before the video subsystem is initialized to import an external\n`wl_display` object from an application or toolkit for use in SDL, or read\nafter initialization to export the `wl_display` used by the Wayland video\nbackend. Setting this property after the video subsystem has been\ninitialized has no effect, and reading it when the video subsystem is\nuninitialized will either return the user provided value, if one was set\nprior to initialization, or NULL. See docs/README-wayland.md for more\ninformation.",
+              "name": "VIDEO_WAYLAND_WL_DISPLAY_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_GLOBAL_VIDEO_WAYLAND_WL_DISPLAY_POINTER"
+            }
+          },
+          "doc": ""
         },
         "SystemTheme": {
           "doc": "System theme.\n\n@since This enum is available since SDL 3.2.0.",
@@ -15406,17 +15455,28 @@
           "parameters": [],
           "sourceName": "SDL_GetSystemTheme"
         },
-        "SDL3PP_PROP_DISPLAY_HDR_ENABLED_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_DISPLAY_HDR_ENABLED_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN"
-        },
-        "SDL3PP_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER"
+        "prop::Display": {
+          "kind": "ns",
+          "name": "prop::Display",
+          "entries": {
+            "HDR_ENABLED_BOOLEAN": {
+              "doc": "",
+              "name": "HDR_ENABLED_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_DISPLAY_HDR_ENABLED_BOOLEAN"
+            },
+            "KMSDRM_PANEL_ORIENTATION_NUMBER": {
+              "doc": "",
+              "name": "KMSDRM_PANEL_ORIENTATION_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_DISPLAY_KMSDRM_PANEL_ORIENTATION_NUMBER"
+            }
+          },
+          "doc": ""
         },
         "GetWindows": {
           "doc": "Get a list of valid windows.\n\n@param count a pointer filled in with the number of windows returned, may\n             be NULL.\n@returns a NULL terminated array of SDL_Window pointers or NULL on failure;\n         call SDL_GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -15426,209 +15486,564 @@
           "parameters": [],
           "sourceName": "SDL_GetWindows"
         },
-        "SDL3PP_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_FLAGS_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_FLAGS_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_HEIGHT_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_HEIGHT_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_MENU_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_MENU_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_METAL_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_METAL_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_MODAL_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_MODAL_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_OPENGL_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_OPENGL_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_PARENT_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_PARENT_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_PARENT_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_TITLE_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_TITLE_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_TITLE_STRING"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_UTILITY_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_UTILITY_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_VULKAN_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_VULKAN_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_WIDTH_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_WIDTH_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_X_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_X_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_X_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_Y_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_Y_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_Y_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_WIN32_HWND_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_WIN32_HWND_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER"
+        "prop::Window": {
+          "kind": "ns",
+          "name": "prop::Window",
+          "entries": {
+            "CREATE_ALWAYS_ON_TOP_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_ALWAYS_ON_TOP_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_ALWAYS_ON_TOP_BOOLEAN"
+            },
+            "CREATE_BORDERLESS_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_BORDERLESS_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_BORDERLESS_BOOLEAN"
+            },
+            "CREATE_FOCUSABLE_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_FOCUSABLE_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_FOCUSABLE_BOOLEAN"
+            },
+            "CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN"
+            },
+            "CREATE_FLAGS_NUMBER": {
+              "doc": "",
+              "name": "CREATE_FLAGS_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER"
+            },
+            "CREATE_FULLSCREEN_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_FULLSCREEN_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_FULLSCREEN_BOOLEAN"
+            },
+            "CREATE_HEIGHT_NUMBER": {
+              "doc": "",
+              "name": "CREATE_HEIGHT_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER"
+            },
+            "CREATE_HIDDEN_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_HIDDEN_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN"
+            },
+            "CREATE_HIGH_PIXEL_DENSITY_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_HIGH_PIXEL_DENSITY_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN"
+            },
+            "CREATE_MAXIMIZED_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_MAXIMIZED_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_MAXIMIZED_BOOLEAN"
+            },
+            "CREATE_MENU_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_MENU_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_MENU_BOOLEAN"
+            },
+            "CREATE_METAL_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_METAL_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN"
+            },
+            "CREATE_MINIMIZED_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_MINIMIZED_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_MINIMIZED_BOOLEAN"
+            },
+            "CREATE_MODAL_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_MODAL_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_MODAL_BOOLEAN"
+            },
+            "CREATE_MOUSE_GRABBED_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_MOUSE_GRABBED_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_MOUSE_GRABBED_BOOLEAN"
+            },
+            "CREATE_OPENGL_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_OPENGL_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN"
+            },
+            "CREATE_PARENT_POINTER": {
+              "doc": "",
+              "name": "CREATE_PARENT_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_PARENT_POINTER"
+            },
+            "CREATE_RESIZABLE_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_RESIZABLE_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN"
+            },
+            "CREATE_TITLE_STRING": {
+              "doc": "",
+              "name": "CREATE_TITLE_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_TITLE_STRING"
+            },
+            "CREATE_TRANSPARENT_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_TRANSPARENT_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_TRANSPARENT_BOOLEAN"
+            },
+            "CREATE_TOOLTIP_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_TOOLTIP_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_TOOLTIP_BOOLEAN"
+            },
+            "CREATE_UTILITY_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_UTILITY_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_UTILITY_BOOLEAN"
+            },
+            "CREATE_VULKAN_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_VULKAN_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN"
+            },
+            "CREATE_WIDTH_NUMBER": {
+              "doc": "",
+              "name": "CREATE_WIDTH_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER"
+            },
+            "CREATE_X_NUMBER": {
+              "doc": "",
+              "name": "CREATE_X_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_X_NUMBER"
+            },
+            "CREATE_Y_NUMBER": {
+              "doc": "",
+              "name": "CREATE_Y_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_Y_NUMBER"
+            },
+            "CREATE_COCOA_WINDOW_POINTER": {
+              "doc": "",
+              "name": "CREATE_COCOA_WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_COCOA_WINDOW_POINTER"
+            },
+            "CREATE_COCOA_VIEW_POINTER": {
+              "doc": "",
+              "name": "CREATE_COCOA_VIEW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER"
+            },
+            "CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN"
+            },
+            "CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN"
+            },
+            "CREATE_WAYLAND_WL_SURFACE_POINTER": {
+              "doc": "",
+              "name": "CREATE_WAYLAND_WL_SURFACE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER"
+            },
+            "CREATE_WIN32_HWND_POINTER": {
+              "doc": "",
+              "name": "CREATE_WIN32_HWND_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_WIN32_HWND_POINTER"
+            },
+            "CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER": {
+              "doc": "",
+              "name": "CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER"
+            },
+            "CREATE_X11_WINDOW_NUMBER": {
+              "doc": "",
+              "name": "CREATE_X11_WINDOW_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER"
+            },
+            "SHAPE_POINTER": {
+              "doc": "",
+              "name": "SHAPE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_SHAPE_POINTER"
+            },
+            "HDR_ENABLED_BOOLEAN": {
+              "doc": "",
+              "name": "HDR_ENABLED_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN"
+            },
+            "SDR_WHITE_LEVEL_FLOAT": {
+              "doc": "",
+              "name": "SDR_WHITE_LEVEL_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT"
+            },
+            "HDR_HEADROOM_FLOAT": {
+              "doc": "",
+              "name": "HDR_HEADROOM_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT"
+            },
+            "ANDROID_WINDOW_POINTER": {
+              "doc": "",
+              "name": "ANDROID_WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER"
+            },
+            "ANDROID_SURFACE_POINTER": {
+              "doc": "",
+              "name": "ANDROID_SURFACE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER"
+            },
+            "UIKIT_WINDOW_POINTER": {
+              "doc": "",
+              "name": "UIKIT_WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER"
+            },
+            "UIKIT_METAL_VIEW_TAG_NUMBER": {
+              "doc": "",
+              "name": "UIKIT_METAL_VIEW_TAG_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER"
+            },
+            "UIKIT_OPENGL_FRAMEBUFFER_NUMBER": {
+              "doc": "",
+              "name": "UIKIT_OPENGL_FRAMEBUFFER_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER"
+            },
+            "UIKIT_OPENGL_RENDERBUFFER_NUMBER": {
+              "doc": "",
+              "name": "UIKIT_OPENGL_RENDERBUFFER_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER"
+            },
+            "UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER": {
+              "doc": "",
+              "name": "UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER"
+            },
+            "KMSDRM_DEVICE_INDEX_NUMBER": {
+              "doc": "",
+              "name": "KMSDRM_DEVICE_INDEX_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER"
+            },
+            "KMSDRM_DRM_FD_NUMBER": {
+              "doc": "",
+              "name": "KMSDRM_DRM_FD_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER"
+            },
+            "KMSDRM_GBM_DEVICE_POINTER": {
+              "doc": "",
+              "name": "KMSDRM_GBM_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER"
+            },
+            "COCOA_WINDOW_POINTER": {
+              "doc": "",
+              "name": "COCOA_WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_COCOA_WINDOW_POINTER"
+            },
+            "COCOA_METAL_VIEW_TAG_NUMBER": {
+              "doc": "",
+              "name": "COCOA_METAL_VIEW_TAG_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER"
+            },
+            "OPENVR_OVERLAY_ID": {
+              "doc": "",
+              "name": "OPENVR_OVERLAY_ID",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_OPENVR_OVERLAY_ID"
+            },
+            "VIVANTE_DISPLAY_POINTER": {
+              "doc": "",
+              "name": "VIVANTE_DISPLAY_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER"
+            },
+            "VIVANTE_WINDOW_POINTER": {
+              "doc": "",
+              "name": "VIVANTE_WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER"
+            },
+            "VIVANTE_SURFACE_POINTER": {
+              "doc": "",
+              "name": "VIVANTE_SURFACE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER"
+            },
+            "WIN32_HWND_POINTER": {
+              "doc": "",
+              "name": "WIN32_HWND_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WIN32_HWND_POINTER"
+            },
+            "WIN32_HDC_POINTER": {
+              "doc": "",
+              "name": "WIN32_HDC_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WIN32_HDC_POINTER"
+            },
+            "WIN32_INSTANCE_POINTER": {
+              "doc": "",
+              "name": "WIN32_INSTANCE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER"
+            },
+            "WAYLAND_DISPLAY_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_DISPLAY_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER"
+            },
+            "WAYLAND_SURFACE_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_SURFACE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER"
+            },
+            "WAYLAND_VIEWPORT_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_VIEWPORT_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER"
+            },
+            "WAYLAND_EGL_WINDOW_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_EGL_WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER"
+            },
+            "WAYLAND_XDG_SURFACE_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_XDG_SURFACE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER"
+            },
+            "WAYLAND_XDG_TOPLEVEL_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_XDG_TOPLEVEL_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER"
+            },
+            "WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING": {
+              "doc": "",
+              "name": "WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING"
+            },
+            "WAYLAND_XDG_POPUP_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_XDG_POPUP_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER"
+            },
+            "WAYLAND_XDG_POSITIONER_POINTER": {
+              "doc": "",
+              "name": "WAYLAND_XDG_POSITIONER_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER"
+            },
+            "X11_DISPLAY_POINTER": {
+              "doc": "",
+              "name": "X11_DISPLAY_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_X11_DISPLAY_POINTER"
+            },
+            "X11_SCREEN_NUMBER": {
+              "doc": "",
+              "name": "X11_SCREEN_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_X11_SCREEN_NUMBER"
+            },
+            "X11_WINDOW_NUMBER": {
+              "doc": "",
+              "name": "X11_WINDOW_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_WINDOW_X11_WINDOW_NUMBER"
+            }
+          },
+          "doc": ""
         },
         "GetWindowFromID": {
           "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific SDL_Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or NULL if it doesn't exist; call\n         SDL_GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetWindowID",
@@ -15642,216 +16057,6 @@
             }
           ],
           "sourceName": "SDL_GetWindowFromID"
-        },
-        "SDL3PP_PROP_WINDOW_SHAPE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_SHAPE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_SHAPE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_HDR_ENABLED_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_HDR_ENABLED_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_HDR_ENABLED_BOOLEAN"
-        },
-        "SDL3PP_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_SDR_WHITE_LEVEL_FLOAT"
-        },
-        "SDL3PP_PROP_WINDOW_HDR_HEADROOM_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_HDR_HEADROOM_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_HDR_HEADROOM_FLOAT"
-        },
-        "SDL3PP_PROP_WINDOW_ANDROID_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_ANDROID_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_ANDROID_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_ANDROID_SURFACE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_ANDROID_SURFACE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_ANDROID_SURFACE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_UIKIT_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_UIKIT_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_UIKIT_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_UIKIT_METAL_VIEW_TAG_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_UIKIT_OPENGL_FRAMEBUFFER_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_UIKIT_OPENGL_RENDERBUFFER_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_KMSDRM_DEVICE_INDEX_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_KMSDRM_DRM_FD_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_KMSDRM_GBM_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_COCOA_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_COCOA_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_COCOA_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_COCOA_METAL_VIEW_TAG_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_OPENVR_OVERLAY_ID": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_OPENVR_OVERLAY_ID",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_OPENVR_OVERLAY_ID"
-        },
-        "SDL3PP_PROP_WINDOW_VIVANTE_DISPLAY_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_VIVANTE_DISPLAY_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_VIVANTE_DISPLAY_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_VIVANTE_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_VIVANTE_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_VIVANTE_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_VIVANTE_SURFACE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_VIVANTE_SURFACE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_VIVANTE_SURFACE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WIN32_HWND_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WIN32_HWND_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WIN32_HWND_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WIN32_HDC_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WIN32_HDC_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WIN32_HDC_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WIN32_INSTANCE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WIN32_INSTANCE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WIN32_INSTANCE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_DISPLAY_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_DISPLAY_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_DISPLAY_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_SURFACE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_SURFACE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_SURFACE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_VIEWPORT_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_EGL_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_SURFACE_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_POPUP_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_WAYLAND_XDG_POSITIONER_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_X11_DISPLAY_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_X11_DISPLAY_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_X11_DISPLAY_POINTER"
-        },
-        "SDL3PP_PROP_WINDOW_X11_SCREEN_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_X11_SCREEN_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_X11_SCREEN_NUMBER"
-        },
-        "SDL3PP_PROP_WINDOW_X11_WINDOW_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_WINDOW_X11_WINDOW_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_WINDOW_X11_WINDOW_NUMBER"
         },
         "SDL3PP_WINDOW_SURFACE_VSYNC_DISABLED": {
           "doc": "",
@@ -18011,509 +18216,691 @@
           ],
           "sourceName": "SDL_CreateWindowAndRenderer"
         },
-        "SDL3PP_PROP_RENDERER_CREATE_NAME_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_NAME_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_NAME_STRING"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_SURFACE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_SURFACE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_SURFACE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_NAME_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_NAME_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_NAME_STRING"
-        },
-        "SDL3PP_PROP_RENDERER_WINDOW_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_WINDOW_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_WINDOW_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_SURFACE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_SURFACE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_SURFACE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_VSYNC_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VSYNC_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VSYNC_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_TEXTURE_FORMATS_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_TEXTURE_FORMATS_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_HDR_ENABLED_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_HDR_ENABLED_BOOLEAN",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN"
-        },
-        "SDL3PP_PROP_RENDERER_SDR_WHITE_POINT_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_SDR_WHITE_POINT_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT"
-        },
-        "SDL3PP_PROP_RENDERER_HDR_HEADROOM_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_HDR_HEADROOM_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT"
-        },
-        "SDL3PP_PROP_RENDERER_D3D9_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_D3D9_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_D3D9_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_D3D11_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_D3D11_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_D3D11_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_D3D12_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_D3D12_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_D3D12_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_VULKAN_INSTANCE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VULKAN_INSTANCE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VULKAN_INSTANCE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_VULKAN_SURFACE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VULKAN_SURFACE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VULKAN_SURFACE_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_VULKAN_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VULKAN_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VULKAN_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER"
-        },
-        "SDL3PP_PROP_RENDERER_GPU_DEVICE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_GPU_DEVICE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_RENDERER_GPU_DEVICE_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_FORMAT_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_FORMAT_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_ACCESS_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_ACCESS_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_WIDTH_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_WIDTH_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_HEIGHT_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_HEIGHT_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_COLORSPACE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_COLORSPACE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_COLORSPACE_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_FORMAT_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_FORMAT_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_FORMAT_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_ACCESS_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_ACCESS_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_ACCESS_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_WIDTH_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_WIDTH_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_WIDTH_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_HEIGHT_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_HEIGHT_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_HEIGHT_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT"
-        },
-        "SDL3PP_PROP_TEXTURE_HDR_HEADROOM_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_HDR_HEADROOM_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT"
-        },
-        "SDL3PP_PROP_TEXTURE_D3D11_TEXTURE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_D3D11_TEXTURE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_D3D12_TEXTURE_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_D3D12_TEXTURE_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGL_TEX_W_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGL_TEX_W_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGL_TEX_H_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGL_TEX_H_FLOAT",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER"
-        },
-        "SDL3PP_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER",
-          "kind": "def",
-          "sourceName": "SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER"
+        "prop::Renderer": {
+          "kind": "ns",
+          "name": "prop::Renderer",
+          "entries": {
+            "CREATE_NAME_STRING": {
+              "doc": "",
+              "name": "CREATE_NAME_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_NAME_STRING"
+            },
+            "CREATE_WINDOW_POINTER": {
+              "doc": "",
+              "name": "CREATE_WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_WINDOW_POINTER"
+            },
+            "CREATE_SURFACE_POINTER": {
+              "doc": "",
+              "name": "CREATE_SURFACE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_SURFACE_POINTER"
+            },
+            "CREATE_OUTPUT_COLORSPACE_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OUTPUT_COLORSPACE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER"
+            },
+            "CREATE_PRESENT_VSYNC_NUMBER": {
+              "doc": "",
+              "name": "CREATE_PRESENT_VSYNC_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER"
+            },
+            "CREATE_VULKAN_INSTANCE_POINTER": {
+              "doc": "",
+              "name": "CREATE_VULKAN_INSTANCE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_INSTANCE_POINTER"
+            },
+            "CREATE_VULKAN_SURFACE_NUMBER": {
+              "doc": "",
+              "name": "CREATE_VULKAN_SURFACE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_SURFACE_NUMBER"
+            },
+            "CREATE_VULKAN_PHYSICAL_DEVICE_POINTER": {
+              "doc": "",
+              "name": "CREATE_VULKAN_PHYSICAL_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_PHYSICAL_DEVICE_POINTER"
+            },
+            "CREATE_VULKAN_DEVICE_POINTER": {
+              "doc": "",
+              "name": "CREATE_VULKAN_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_DEVICE_POINTER"
+            },
+            "CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER": {
+              "doc": "",
+              "name": "CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER"
+            },
+            "CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER": {
+              "doc": "",
+              "name": "CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_CREATE_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER"
+            },
+            "NAME_STRING": {
+              "doc": "",
+              "name": "NAME_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_NAME_STRING"
+            },
+            "WINDOW_POINTER": {
+              "doc": "",
+              "name": "WINDOW_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_WINDOW_POINTER"
+            },
+            "SURFACE_POINTER": {
+              "doc": "",
+              "name": "SURFACE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_SURFACE_POINTER"
+            },
+            "VSYNC_NUMBER": {
+              "doc": "",
+              "name": "VSYNC_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VSYNC_NUMBER"
+            },
+            "MAX_TEXTURE_SIZE_NUMBER": {
+              "doc": "",
+              "name": "MAX_TEXTURE_SIZE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_MAX_TEXTURE_SIZE_NUMBER"
+            },
+            "TEXTURE_FORMATS_POINTER": {
+              "doc": "",
+              "name": "TEXTURE_FORMATS_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER"
+            },
+            "OUTPUT_COLORSPACE_NUMBER": {
+              "doc": "",
+              "name": "OUTPUT_COLORSPACE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_OUTPUT_COLORSPACE_NUMBER"
+            },
+            "HDR_ENABLED_BOOLEAN": {
+              "doc": "",
+              "name": "HDR_ENABLED_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_HDR_ENABLED_BOOLEAN"
+            },
+            "SDR_WHITE_POINT_FLOAT": {
+              "doc": "",
+              "name": "SDR_WHITE_POINT_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_SDR_WHITE_POINT_FLOAT"
+            },
+            "HDR_HEADROOM_FLOAT": {
+              "doc": "",
+              "name": "HDR_HEADROOM_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_HDR_HEADROOM_FLOAT"
+            },
+            "D3D9_DEVICE_POINTER": {
+              "doc": "",
+              "name": "D3D9_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_D3D9_DEVICE_POINTER"
+            },
+            "D3D11_DEVICE_POINTER": {
+              "doc": "",
+              "name": "D3D11_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_D3D11_DEVICE_POINTER"
+            },
+            "D3D11_SWAPCHAIN_POINTER": {
+              "doc": "",
+              "name": "D3D11_SWAPCHAIN_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_D3D11_SWAPCHAIN_POINTER"
+            },
+            "D3D12_DEVICE_POINTER": {
+              "doc": "",
+              "name": "D3D12_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_D3D12_DEVICE_POINTER"
+            },
+            "D3D12_SWAPCHAIN_POINTER": {
+              "doc": "",
+              "name": "D3D12_SWAPCHAIN_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_D3D12_SWAPCHAIN_POINTER"
+            },
+            "D3D12_COMMAND_QUEUE_POINTER": {
+              "doc": "",
+              "name": "D3D12_COMMAND_QUEUE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_D3D12_COMMAND_QUEUE_POINTER"
+            },
+            "VULKAN_INSTANCE_POINTER": {
+              "doc": "",
+              "name": "VULKAN_INSTANCE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VULKAN_INSTANCE_POINTER"
+            },
+            "VULKAN_SURFACE_NUMBER": {
+              "doc": "",
+              "name": "VULKAN_SURFACE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VULKAN_SURFACE_NUMBER"
+            },
+            "VULKAN_PHYSICAL_DEVICE_POINTER": {
+              "doc": "",
+              "name": "VULKAN_PHYSICAL_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VULKAN_PHYSICAL_DEVICE_POINTER"
+            },
+            "VULKAN_DEVICE_POINTER": {
+              "doc": "",
+              "name": "VULKAN_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VULKAN_DEVICE_POINTER"
+            },
+            "VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER": {
+              "doc": "",
+              "name": "VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VULKAN_GRAPHICS_QUEUE_FAMILY_INDEX_NUMBER"
+            },
+            "VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER": {
+              "doc": "",
+              "name": "VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VULKAN_PRESENT_QUEUE_FAMILY_INDEX_NUMBER"
+            },
+            "VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER": {
+              "doc": "",
+              "name": "VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_VULKAN_SWAPCHAIN_IMAGE_COUNT_NUMBER"
+            },
+            "GPU_DEVICE_POINTER": {
+              "doc": "",
+              "name": "GPU_DEVICE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_RENDERER_GPU_DEVICE_POINTER"
+            }
+          },
+          "doc": ""
+        },
+        "prop::Texture": {
+          "kind": "ns",
+          "name": "prop::Texture",
+          "entries": {
+            "CREATE_COLORSPACE_NUMBER": {
+              "doc": "",
+              "name": "CREATE_COLORSPACE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_COLORSPACE_NUMBER"
+            },
+            "CREATE_FORMAT_NUMBER": {
+              "doc": "",
+              "name": "CREATE_FORMAT_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_FORMAT_NUMBER"
+            },
+            "CREATE_ACCESS_NUMBER": {
+              "doc": "",
+              "name": "CREATE_ACCESS_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_ACCESS_NUMBER"
+            },
+            "CREATE_WIDTH_NUMBER": {
+              "doc": "",
+              "name": "CREATE_WIDTH_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_WIDTH_NUMBER"
+            },
+            "CREATE_HEIGHT_NUMBER": {
+              "doc": "",
+              "name": "CREATE_HEIGHT_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_HEIGHT_NUMBER"
+            },
+            "CREATE_SDR_WHITE_POINT_FLOAT": {
+              "doc": "",
+              "name": "CREATE_SDR_WHITE_POINT_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_SDR_WHITE_POINT_FLOAT"
+            },
+            "CREATE_HDR_HEADROOM_FLOAT": {
+              "doc": "",
+              "name": "CREATE_HDR_HEADROOM_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_HDR_HEADROOM_FLOAT"
+            },
+            "CREATE_D3D11_TEXTURE_POINTER": {
+              "doc": "",
+              "name": "CREATE_D3D11_TEXTURE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_POINTER"
+            },
+            "CREATE_D3D11_TEXTURE_U_POINTER": {
+              "doc": "",
+              "name": "CREATE_D3D11_TEXTURE_U_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_U_POINTER"
+            },
+            "CREATE_D3D11_TEXTURE_V_POINTER": {
+              "doc": "",
+              "name": "CREATE_D3D11_TEXTURE_V_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D11_TEXTURE_V_POINTER"
+            },
+            "CREATE_D3D12_TEXTURE_POINTER": {
+              "doc": "",
+              "name": "CREATE_D3D12_TEXTURE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_POINTER"
+            },
+            "CREATE_D3D12_TEXTURE_U_POINTER": {
+              "doc": "",
+              "name": "CREATE_D3D12_TEXTURE_U_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_U_POINTER"
+            },
+            "CREATE_D3D12_TEXTURE_V_POINTER": {
+              "doc": "",
+              "name": "CREATE_D3D12_TEXTURE_V_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_D3D12_TEXTURE_V_POINTER"
+            },
+            "CREATE_METAL_PIXELBUFFER_POINTER": {
+              "doc": "",
+              "name": "CREATE_METAL_PIXELBUFFER_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_METAL_PIXELBUFFER_POINTER"
+            },
+            "CREATE_OPENGL_TEXTURE_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGL_TEXTURE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_NUMBER"
+            },
+            "CREATE_OPENGL_TEXTURE_UV_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGL_TEXTURE_UV_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_UV_NUMBER"
+            },
+            "CREATE_OPENGL_TEXTURE_U_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGL_TEXTURE_U_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_U_NUMBER"
+            },
+            "CREATE_OPENGL_TEXTURE_V_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGL_TEXTURE_V_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGL_TEXTURE_V_NUMBER"
+            },
+            "CREATE_OPENGLES2_TEXTURE_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGLES2_TEXTURE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_NUMBER"
+            },
+            "CREATE_OPENGLES2_TEXTURE_UV_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGLES2_TEXTURE_UV_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_UV_NUMBER"
+            },
+            "CREATE_OPENGLES2_TEXTURE_U_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGLES2_TEXTURE_U_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_U_NUMBER"
+            },
+            "CREATE_OPENGLES2_TEXTURE_V_NUMBER": {
+              "doc": "",
+              "name": "CREATE_OPENGLES2_TEXTURE_V_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_OPENGLES2_TEXTURE_V_NUMBER"
+            },
+            "CREATE_VULKAN_TEXTURE_NUMBER": {
+              "doc": "",
+              "name": "CREATE_VULKAN_TEXTURE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_CREATE_VULKAN_TEXTURE_NUMBER"
+            },
+            "COLORSPACE_NUMBER": {
+              "doc": "",
+              "name": "COLORSPACE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_COLORSPACE_NUMBER"
+            },
+            "FORMAT_NUMBER": {
+              "doc": "",
+              "name": "FORMAT_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_FORMAT_NUMBER"
+            },
+            "ACCESS_NUMBER": {
+              "doc": "",
+              "name": "ACCESS_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_ACCESS_NUMBER"
+            },
+            "WIDTH_NUMBER": {
+              "doc": "",
+              "name": "WIDTH_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_WIDTH_NUMBER"
+            },
+            "HEIGHT_NUMBER": {
+              "doc": "",
+              "name": "HEIGHT_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_HEIGHT_NUMBER"
+            },
+            "SDR_WHITE_POINT_FLOAT": {
+              "doc": "",
+              "name": "SDR_WHITE_POINT_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_SDR_WHITE_POINT_FLOAT"
+            },
+            "HDR_HEADROOM_FLOAT": {
+              "doc": "",
+              "name": "HDR_HEADROOM_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_HDR_HEADROOM_FLOAT"
+            },
+            "D3D11_TEXTURE_POINTER": {
+              "doc": "",
+              "name": "D3D11_TEXTURE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_D3D11_TEXTURE_POINTER"
+            },
+            "D3D11_TEXTURE_U_POINTER": {
+              "doc": "",
+              "name": "D3D11_TEXTURE_U_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_D3D11_TEXTURE_U_POINTER"
+            },
+            "D3D11_TEXTURE_V_POINTER": {
+              "doc": "",
+              "name": "D3D11_TEXTURE_V_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_D3D11_TEXTURE_V_POINTER"
+            },
+            "D3D12_TEXTURE_POINTER": {
+              "doc": "",
+              "name": "D3D12_TEXTURE_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_D3D12_TEXTURE_POINTER"
+            },
+            "D3D12_TEXTURE_U_POINTER": {
+              "doc": "",
+              "name": "D3D12_TEXTURE_U_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_D3D12_TEXTURE_U_POINTER"
+            },
+            "D3D12_TEXTURE_V_POINTER": {
+              "doc": "",
+              "name": "D3D12_TEXTURE_V_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_D3D12_TEXTURE_V_POINTER"
+            },
+            "OPENGL_TEXTURE_NUMBER": {
+              "doc": "",
+              "name": "OPENGL_TEXTURE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_NUMBER"
+            },
+            "OPENGL_TEXTURE_UV_NUMBER": {
+              "doc": "",
+              "name": "OPENGL_TEXTURE_UV_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_UV_NUMBER"
+            },
+            "OPENGL_TEXTURE_U_NUMBER": {
+              "doc": "",
+              "name": "OPENGL_TEXTURE_U_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_U_NUMBER"
+            },
+            "OPENGL_TEXTURE_V_NUMBER": {
+              "doc": "",
+              "name": "OPENGL_TEXTURE_V_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_V_NUMBER"
+            },
+            "OPENGL_TEXTURE_TARGET_NUMBER": {
+              "doc": "",
+              "name": "OPENGL_TEXTURE_TARGET_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEXTURE_TARGET_NUMBER"
+            },
+            "OPENGL_TEX_W_FLOAT": {
+              "doc": "",
+              "name": "OPENGL_TEX_W_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEX_W_FLOAT"
+            },
+            "OPENGL_TEX_H_FLOAT": {
+              "doc": "",
+              "name": "OPENGL_TEX_H_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGL_TEX_H_FLOAT"
+            },
+            "OPENGLES2_TEXTURE_NUMBER": {
+              "doc": "",
+              "name": "OPENGLES2_TEXTURE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_NUMBER"
+            },
+            "OPENGLES2_TEXTURE_UV_NUMBER": {
+              "doc": "",
+              "name": "OPENGLES2_TEXTURE_UV_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_UV_NUMBER"
+            },
+            "OPENGLES2_TEXTURE_U_NUMBER": {
+              "doc": "",
+              "name": "OPENGLES2_TEXTURE_U_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_U_NUMBER"
+            },
+            "OPENGLES2_TEXTURE_V_NUMBER": {
+              "doc": "",
+              "name": "OPENGLES2_TEXTURE_V_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_V_NUMBER"
+            },
+            "OPENGLES2_TEXTURE_TARGET_NUMBER": {
+              "doc": "",
+              "name": "OPENGLES2_TEXTURE_TARGET_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_OPENGLES2_TEXTURE_TARGET_NUMBER"
+            },
+            "VULKAN_TEXTURE_NUMBER": {
+              "doc": "",
+              "name": "VULKAN_TEXTURE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTURE_VULKAN_TEXTURE_NUMBER"
+            }
+          },
+          "doc": ""
         },
         "GetRenderMetalLayer": {
           "doc": "Get the CAMetalLayer associated with the given Metal renderer.\n\nThis function returns `void *`, so SDL doesn't have to include Metal's\nheaders, but it can be safely cast to a `CAMetalLayer *`.\n\n@param renderer the renderer to query.\n@returns a `CAMetalLayer *` on success, or NULL if the renderer isn't a\n         Metal renderer.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetRenderMetalCommandEncoder",
@@ -21371,47 +21758,68 @@
           ],
           "sourceName": "SDL_SetAppMetadataProperty"
         },
-        "SDL3PP_PROP_APP_METADATA_NAME_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_APP_METADATA_NAME_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_APP_METADATA_NAME_STRING"
-        },
-        "SDL3PP_PROP_APP_METADATA_VERSION_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_APP_METADATA_VERSION_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_APP_METADATA_VERSION_STRING"
-        },
-        "SDL3PP_PROP_APP_METADATA_IDENTIFIER_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_APP_METADATA_IDENTIFIER_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_APP_METADATA_IDENTIFIER_STRING"
-        },
-        "SDL3PP_PROP_APP_METADATA_CREATOR_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_APP_METADATA_CREATOR_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_APP_METADATA_CREATOR_STRING"
-        },
-        "SDL3PP_PROP_APP_METADATA_COPYRIGHT_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_APP_METADATA_COPYRIGHT_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_APP_METADATA_COPYRIGHT_STRING"
-        },
-        "SDL3PP_PROP_APP_METADATA_URL_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_APP_METADATA_URL_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_APP_METADATA_URL_STRING"
-        },
-        "SDL3PP_PROP_APP_METADATA_TYPE_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_APP_METADATA_TYPE_STRING",
-          "kind": "def",
-          "sourceName": "SDL_PROP_APP_METADATA_TYPE_STRING"
+        "prop::appMetaData": {
+          "kind": "ns",
+          "name": "prop::appMetaData",
+          "entries": {
+            "NAME_STRING": {
+              "doc": "",
+              "name": "NAME_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_APP_METADATA_NAME_STRING"
+            },
+            "VERSION_STRING": {
+              "doc": "",
+              "name": "VERSION_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_APP_METADATA_VERSION_STRING"
+            },
+            "IDENTIFIER_STRING": {
+              "doc": "",
+              "name": "IDENTIFIER_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_APP_METADATA_IDENTIFIER_STRING"
+            },
+            "CREATOR_STRING": {
+              "doc": "",
+              "name": "CREATOR_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_APP_METADATA_CREATOR_STRING"
+            },
+            "COPYRIGHT_STRING": {
+              "doc": "",
+              "name": "COPYRIGHT_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_APP_METADATA_COPYRIGHT_STRING"
+            },
+            "URL_STRING": {
+              "doc": "",
+              "name": "URL_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_APP_METADATA_URL_STRING"
+            },
+            "TYPE_STRING": {
+              "doc": "",
+              "name": "TYPE_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_APP_METADATA_TYPE_STRING"
+            }
+          },
+          "doc": ""
         },
         "GetAppMetadataProperty": {
           "doc": "Get metadata about your app.\n\nThis returns metadata previously set using SDL_SetAppMetadata() or\nSDL_SetAppMetadataProperty(). See SDL_SetAppMetadataProperty() for the list\nof available properties and their meanings.\n\n@param name the name of the metadata property to get.\n@returns the current value of the metadata property, or the default if it\n         is not set, NULL for properties with no default.\n\n@threadsafety It is safe to call this function from any thread, although\n              the string returned is not protected and could potentially be\n              freed if you call SDL_SetAppMetadataProperty() to set that\n              property from another thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetAppMetadata\n@sa SDL_SetAppMetadataProperty",
@@ -24107,77 +24515,108 @@
           "kind": "forward",
           "doc": ""
         },
-        "SDL3PP_PROP_FONT_CREATE_FILENAME_STRING": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_FILENAME_STRING",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_FILENAME_STRING"
-        },
-        "SDL3PP_PROP_FONT_CREATE_IOSTREAM_POINTER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_IOSTREAM_POINTER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_IOSTREAM_POINTER"
-        },
-        "SDL3PP_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER"
-        },
-        "SDL3PP_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN"
-        },
-        "SDL3PP_PROP_FONT_CREATE_SIZE_FLOAT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_SIZE_FLOAT",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_SIZE_FLOAT"
-        },
-        "SDL3PP_PROP_FONT_CREATE_FACE_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_FACE_NUMBER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_FACE_NUMBER"
-        },
-        "SDL3PP_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER"
-        },
-        "SDL3PP_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER"
-        },
-        "SDL3PP_PROP_FONT_CREATE_EXISTING_FONT": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_CREATE_EXISTING_FONT",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_CREATE_EXISTING_FONT"
-        },
-        "SDL3PP_PROP_FONT_OUTLINE_LINE_CAP_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_OUTLINE_LINE_CAP_NUMBER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER"
-        },
-        "SDL3PP_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER"
-        },
-        "SDL3PP_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER"
+        "prop::Font": {
+          "kind": "ns",
+          "name": "prop::Font",
+          "entries": {
+            "CREATE_FILENAME_STRING": {
+              "doc": "",
+              "name": "CREATE_FILENAME_STRING",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_FILENAME_STRING"
+            },
+            "CREATE_IOSTREAM_POINTER": {
+              "doc": "",
+              "name": "CREATE_IOSTREAM_POINTER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_IOSTREAM_POINTER"
+            },
+            "CREATE_IOSTREAM_OFFSET_NUMBER": {
+              "doc": "",
+              "name": "CREATE_IOSTREAM_OFFSET_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER"
+            },
+            "CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN": {
+              "doc": "",
+              "name": "CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN"
+            },
+            "CREATE_SIZE_FLOAT": {
+              "doc": "",
+              "name": "CREATE_SIZE_FLOAT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_SIZE_FLOAT"
+            },
+            "CREATE_FACE_NUMBER": {
+              "doc": "",
+              "name": "CREATE_FACE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_FACE_NUMBER"
+            },
+            "CREATE_HORIZONTAL_DPI_NUMBER": {
+              "doc": "",
+              "name": "CREATE_HORIZONTAL_DPI_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER"
+            },
+            "CREATE_VERTICAL_DPI_NUMBER": {
+              "doc": "",
+              "name": "CREATE_VERTICAL_DPI_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER"
+            },
+            "CREATE_EXISTING_FONT": {
+              "doc": "",
+              "name": "CREATE_EXISTING_FONT",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_CREATE_EXISTING_FONT"
+            },
+            "OUTLINE_LINE_CAP_NUMBER": {
+              "doc": "",
+              "name": "OUTLINE_LINE_CAP_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER"
+            },
+            "OUTLINE_LINE_JOIN_NUMBER": {
+              "doc": "",
+              "name": "OUTLINE_LINE_JOIN_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER"
+            },
+            "OUTLINE_MITER_LIMIT_NUMBER": {
+              "doc": "",
+              "name": "OUTLINE_MITER_LIMIT_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER"
+            }
+          },
+          "doc": ""
         },
         "StringToTag": {
           "doc": "Convert from a 4 character string to a 32-bit tag.\n\n@param string the 4 character string to convert.\n@returns the 32-bit representation of the string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_TagToString",
@@ -25055,17 +25494,28 @@
           ],
           "sourceName": "TTF_CreateRendererTextEngineWithProperties"
         },
-        "SDL3PP_PROP_RENDERER_TEXT_ENGINE_RENDERER": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_TEXT_ENGINE_RENDERER",
-          "kind": "def",
-          "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER"
-        },
-        "SDL3PP_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": {
-          "doc": "",
-          "name": "SDL3PP_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE",
-          "kind": "def",
-          "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE"
+        "prop::RendererTextEngine": {
+          "kind": "ns",
+          "name": "prop::RendererTextEngine",
+          "entries": {
+            "RENDERER": {
+              "doc": "",
+              "name": "RENDERER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER"
+            },
+            "ATLAS_TEXTURE_SIZE": {
+              "doc": "",
+              "name": "ATLAS_TEXTURE_SIZE",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE"
+            }
+          },
+          "doc": ""
         },
         "CreateGPUTextEngine": {
           "doc": "Create a text engine for drawing text with the SDL GPU API.\n\n@param device the SDL_GPUDevice to use for creating textures and drawing\n              text.\n@returns a TTF_TextEngine object or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety This function should be called on the thread that created the\n              device.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_CreateGPUTextEngineWithProperties\n@sa TTF_DestroyGPUTextEngine\n@sa TTF_GetGPUTextDrawData",
@@ -25093,17 +25543,28 @@
           ],
           "sourceName": "TTF_CreateGPUTextEngineWithProperties"
         },
-        "SDL3PP_PROP_GPU_TEXT_ENGINE_DEVICE": {
-          "doc": "",
-          "name": "SDL3PP_PROP_GPU_TEXT_ENGINE_DEVICE",
-          "kind": "def",
-          "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_DEVICE"
-        },
-        "SDL3PP_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE": {
-          "doc": "",
-          "name": "SDL3PP_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE",
-          "kind": "def",
-          "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE"
+        "prop::GpuTextEngine": {
+          "kind": "ns",
+          "name": "prop::GpuTextEngine",
+          "entries": {
+            "DEVICE": {
+              "doc": "",
+              "name": "DEVICE",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_DEVICE"
+            },
+            "ATLAS_TEXTURE_SIZE": {
+              "doc": "",
+              "name": "ATLAS_TEXTURE_SIZE",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE"
+            }
+          },
+          "doc": ""
         },
         "QuitSubSystem": {
           "doc": "Deinitialize SDL_ttf.\n\nYou must call this when done with the library, to free internal resources.\nIt is safe to call this when the library isn't initialized, as it will just\nreturn immediately.\n\nOnce you have as many quit calls as you have had successful calls to\nTTF_Init, the library will actually deinitialize.\n\nPlease note that this does not automatically close any fonts that are still\nopen at the time of deinitialization, and it is possibly not safe to close\nthem afterwards, as parts of the library will no longer be initialized to\ndeal with it. A well-written program should call TTF_CloseFont() on any\nopen fonts before calling this function!\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.",

@@ -26,7 +26,7 @@ var searchData=
   ['pixelformat_5fyvyu_23',['PIXELFORMAT_YVYU',['../group__CategoryPixels.html#ga5ba9d5ffc58056999681d81d3f1e344f',1,'SDL']]],
   ['pixelformatdetails_24',['PixelFormatDetails',['../group__CategoryPixels.html#ga87ff9a33ccc542e0888dd408ba08bfbc',1,'SDL']]],
   ['pixeltype_25',['PixelType',['../group__CategoryPixels.html#gaedfdadf087ddd7d55c732a8f05d2bde2',1,'SDL']]],
-  ['platform_20and_20cpu_20information_26',['platform and cpu information',['../todo.html#_todo000006',1,'Platform and CPU Information'],['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information']]],
+  ['platform_20and_20cpu_20information_26',['platform and cpu information',['../todo.html#_todo000010',1,'Platform and CPU Information'],['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information']]],
   ['point_27',['Point',['../structSDL_1_1Point.html',1,'SDL']]],
   ['pointer_20wrapper_20to_20sdl_3a_3afree_28',['Pointer wrapper to SDL::free()',['../group__CategoryOwnPtr.html',1,'']]],
   ['points_29',['Application entry points',['../group__CategoryMain.html',1,'']]],

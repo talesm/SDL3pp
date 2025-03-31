@@ -1,7 +1,7 @@
 var searchData=
 [
   ['c_20support_0',['c support',['../ApiByCategory.html#c-support',1,'C++ Support'],['../group__CategoriesCppSupport.html',1,'C++ Support']]],
-  ['callback_1',['callback',['../callback.html',1,'Callback'],['../callback.html#delayed-callback',1,'Delayed callback'],['../todo.html#_todo000007',1,'Immediate callback'],['../callback.html#immediate-callback',1,'Immediate callback'],['../todo.html#_todo000009',1,'Listener callback'],['../callback.html#listener-callback',1,'Listener callback'],['../todo.html#_todo000008',1,'Result callback'],['../callback.html#result-callback',1,'Result callback']]],
+  ['callback_1',['callback',['../callback.html',1,'Callback'],['../callback.html#delayed-callback',1,'Delayed callback'],['../todo.html#_todo000002',1,'Immediate callback'],['../callback.html#immediate-callback',1,'Immediate callback'],['../todo.html#_todo000004',1,'Listener callback'],['../callback.html#listener-callback',1,'Listener callback'],['../todo.html#_todo000003',1,'Result callback'],['../callback.html#result-callback',1,'Result callback']]],
   ['callback_20helpers_2',['Async callback helpers',['../group__CategoryCallbackWrapper.html',1,'']]],
   ['callback_20rules_3',['Callback rules',['../transformations.html#callback-rules',1,'']]],
   ['callbackwrapper_4',['CallbackWrapper',['../structSDL_1_1CallbackWrapper.html',1,'SDL']]],
@@ -77,7 +77,7 @@ var searchData=
   ['copysignf_74',['copysignf',['../group__CategoryStdinc.html#ga0b8d2ae3c91e681437f9b8bad0d332dd',1,'SDL']]],
   ['cos_75',['cos',['../group__CategoryStdinc.html#gadf8c80d673a05784387fa5e349a9f6dd',1,'SDL']]],
   ['cosf_76',['cosf',['../group__CategoryStdinc.html#ga343b62c85d5c6bc9627fdad943860921',1,'SDL']]],
-  ['cpu_20information_77',['cpu information',['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information'],['../todo.html#_todo000006',1,'Platform and CPU Information']]],
+  ['cpu_20information_77',['cpu information',['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information'],['../todo.html#_todo000010',1,'Platform and CPU Information']]],
   ['crc16_78',['crc16',['../group__CategoryStdinc.html#ga31ee6fbdefd2ca34bbde4c8652069e66',1,'SDL']]],
   ['crc32_79',['crc32',['../group__CategoryStdinc.html#gacc8b8bc6d26dd888c3fed721ddb1cd2e',1,'SDL']]],
   ['creategputextengine_80',['CreateGPUTextEngine',['../group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47',1,'SDL']]],

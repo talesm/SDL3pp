@@ -1470,6 +1470,9 @@
           }
         }
       },
+      "namespacesMap": {
+        "SDL_PROP_IOSTREAM_": "prop::IOStream"
+      },
       "transform": {
         "SDL_LoadFile": {
           "type": "OwnArray<std::byte>",
@@ -3252,6 +3255,9 @@
           ]
         }
       },
+      "namespacesMap": {
+        "SDL_PROP_SURFACE_": "prop::Surface"
+      },
       "transform": {
         "SDL_LoadBMP_IO": {
           "name": "LoadBMP",
@@ -3809,6 +3815,11 @@
             "SDL_GL_CONTEXT_RESET_LOSE_CONTEXT"
           ]
         }
+      },
+      "namespacesMap": {
+        "SDL_PROP_GLOBAL_": "prop::Global",
+        "SDL_PROP_DISPLAY_": "prop::Display",
+        "SDL_PROP_WINDOW_": "prop::Window"
       },
       "transform": {
         "SDL_DisplayID": {
@@ -4927,6 +4938,10 @@
           }
         }
       },
+      "namespacesMap": {
+        "SDL_PROP_RENDERER_": "prop::Renderer",
+        "SDL_PROP_TEXTURE_": "prop::Texture"
+      },
       "transform": {
         "SDL_CreateWindowAndRenderer": {
           "type": "std::pair<Window, Renderer>",
@@ -5359,6 +5374,9 @@
       "ignoreEntries": [
         "SDL_InitSubSystem"
       ],
+      "namespacesMap": {
+        "SDL_PROP_APP_METADATA_": "prop::appMetaData"
+      },
       "includeAfter": {
         "SDL_InitFlags": {
           "kind": "struct",
@@ -6626,6 +6644,11 @@
           "prefix": "TTF_SUBSTRING_",
           "includeAfter": "__begin"
         }
+      },
+      "namespacesMap": {
+        "TTF_PROP_FONT_": "prop::Font",
+        "TTF_PROP_RENDERER_TEXT_ENGINE_": "prop::RendererTextEngine",
+        "TTF_PROP_GPU_TEXT_ENGINE_": "prop::GpuTextEngine"
       },
       "includeAfter": {
         "__begin": [

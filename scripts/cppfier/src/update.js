@@ -332,6 +332,8 @@ function generateEntry(entry, prefix) {
       return '// Forward decl\n' + template + generateStructSignature(entry, prefix) + ';';
     case "function":
       return doc + template + generateFunction(entry, prefix);
+    case "ns":
+      return doc + generateNS(entry);
     case "struct":
       return doc + template + generateStruct(entry, prefix);
     case "var":
@@ -402,6 +404,16 @@ function generateDeclPrefix(entry, prefix) {
   const staticStr = entry.static ? "static " : "";
   const specifier = entry.constexpr ? "constexpr " : (prefix ? "" : "inline ");
   return `${prefix}${staticStr}${specifier}${entry.type} ${entry.name}`;
+}
+
+/**
+ * 
+ * @param {ApiEntry} entry 
+ */
+function generateNS(entry) {
+  const name = entry.name;
+  const subEntries = generateEntries(entry.entries ?? {}, "");
+  return `namespace ${name} {\n\n${subEntries}\n\n} // namespace ${name}\n`;
 }
 
 /**

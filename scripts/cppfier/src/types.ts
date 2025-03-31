@@ -14,7 +14,7 @@ export interface ApiFile {
   entriesEnd?: number;
 }
 
-export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var";
+export type ApiEntryKind = "alias" | "callback" | "def" | "enum" | "forward" | "function" | "struct" | "union" | "var" | "ns";
 
 interface ApiEntryBase {
   name?: string;
@@ -70,6 +70,7 @@ export interface FileTransform {
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>
+  namespacesMap?: StringMap;
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
@@ -146,7 +147,7 @@ export interface ReplacementRule {
   replacement: string;
 }
 
-export type FileTokenKind = ApiEntryKind | "doc" | "namespace" | "template" | "endStruct";
+export type FileTokenKind = ApiEntryKind | "doc" | "template" | "endStruct";
 
 export interface FileToken {
   value: string;

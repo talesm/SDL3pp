@@ -89,6 +89,7 @@ function transformEntries(sourceEntries, context, transform) {
 
   if (transform.resources) expandResources(transform.resources, transform, context);
   if (transform.enumerations) expandEnumerations(sourceEntries, transform, context);
+  if (transform.namespacesMap) expandNamespaces(sourceEntries, transform, context);
 
   insertEntryAndCheck(targetEntries, transform.includeAfter?.__begin ?? [], context, transform);
 
@@ -153,6 +154,42 @@ function transformEntries(sourceEntries, context, transform) {
   validateEntries(targetEntries);
 
   return targetEntries;
+}
+
+/**
+ * 
+ * @param {ApiEntries}    sourceEntries 
+ * @param {FileTransform} transform,
+ * @param {ApiContext}    context 
+ */
+function expandNamespaces(sourceEntries, transform, context) {
+  const namespacesMap = transform.namespacesMap;
+  for (const [prefix, nsName] of Object.entries(namespacesMap)) {
+    /** @type {ApiEntryTransform} */
+    const ns = {
+      kind: "ns",
+      name: nsName,
+      entries: {}
+    };
+    const sourceEntriesListed = Object.entries(sourceEntries)
+      .filter(([key]) => key.startsWith(prefix));
+    sourceEntriesListed
+      .forEach(([key, entry]) => {
+        ns.entries[key] = entry;
+        if (Array.isArray(entry)) {
+          entry.forEach(e => e.name = e.name.slice(prefix.length));
+        } else {
+          entry.name = entry.name.slice(prefix.length);
+          if (entry.kind === "def") {
+            entry.kind = "var";
+            entry.type = "auto";
+            entry.constexpr = true;
+            entry.sourceName = key;
+          }
+        }
+      });
+    transform.includeAfter[sourceEntriesListed[0][0]] = ns;
+  }
 }
 
 /**

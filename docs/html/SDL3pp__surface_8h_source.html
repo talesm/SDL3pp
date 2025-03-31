@@ -719,125 +719,127 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l01914" name="l01914"></a><span class="lineno"> 1914</span>};</div>
 </div>
 <div class="line"><a id="l01915" name="l01915"></a><span class="lineno"> 1915</span> </div>
-<div class="line"><a id="l01916" name="l01916"></a><span class="lineno"> 1916</span><span class="preprocessor">#define SDL3PP_PROP_SURFACE_SDR_WHITE_POINT_FLOAT                              \</span></div>
-<div class="line"><a id="l01917" name="l01917"></a><span class="lineno"> 1917</span><span class="preprocessor">  SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT</span></div>
-<div class="line"><a id="l01918" name="l01918"></a><span class="lineno"> 1918</span> </div>
-<div class="line"><a id="l01919" name="l01919"></a><span class="lineno"> 1919</span><span class="preprocessor">#define SDL3PP_PROP_SURFACE_HDR_HEADROOM_FLOAT                                 \</span></div>
-<div class="line"><a id="l01920" name="l01920"></a><span class="lineno"> 1920</span><span class="preprocessor">  SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT</span></div>
+<div class="line"><a id="l01916" name="l01916"></a><span class="lineno"> 1916</span><span class="keyword">namespace </span>prop::Surface {</div>
+<div class="line"><a id="l01917" name="l01917"></a><span class="lineno"> 1917</span> </div>
+<div class="line"><a id="l01918" name="l01918"></a><span class="lineno"> 1918</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> SDR_WHITE_POINT_FLOAT = SDL_PROP_SURFACE_SDR_WHITE_POINT_FLOAT;</div>
+<div class="line"><a id="l01919" name="l01919"></a><span class="lineno"> 1919</span> </div>
+<div class="line"><a id="l01920" name="l01920"></a><span class="lineno"> 1920</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> HDR_HEADROOM_FLOAT = SDL_PROP_SURFACE_HDR_HEADROOM_FLOAT;</div>
 <div class="line"><a id="l01921" name="l01921"></a><span class="lineno"> 1921</span> </div>
-<div class="line"><a id="l01922" name="l01922"></a><span class="lineno"> 1922</span><span class="preprocessor">#define SDL3PP_PROP_SURFACE_TONEMAP_OPERATOR_STRING                            \</span></div>
-<div class="line"><a id="l01923" name="l01923"></a><span class="lineno"> 1923</span><span class="preprocessor">  SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING</span></div>
+<div class="line"><a id="l01922" name="l01922"></a><span class="lineno"> 1922</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> TONEMAP_OPERATOR_STRING =</div>
+<div class="line"><a id="l01923" name="l01923"></a><span class="lineno"> 1923</span>  SDL_PROP_SURFACE_TONEMAP_OPERATOR_STRING;</div>
 <div class="line"><a id="l01924" name="l01924"></a><span class="lineno"> 1924</span> </div>
-<div class="line"><a id="l01925" name="l01925"></a><span class="lineno"> 1925</span><span class="preprocessor">#define SDL3PP_PROP_SURFACE_HOTSPOT_X_NUMBER SDL_PROP_SURFACE_HOTSPOT_X_NUMBER</span></div>
+<div class="line"><a id="l01925" name="l01925"></a><span class="lineno"> 1925</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> HOTSPOT_X_NUMBER = SDL_PROP_SURFACE_HOTSPOT_X_NUMBER;</div>
 <div class="line"><a id="l01926" name="l01926"></a><span class="lineno"> 1926</span> </div>
-<div class="line"><a id="l01927" name="l01927"></a><span class="lineno"> 1927</span><span class="preprocessor">#define SDL3PP_PROP_SURFACE_HOTSPOT_Y_NUMBER SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER</span></div>
+<div class="line"><a id="l01927" name="l01927"></a><span class="lineno"> 1927</span><span class="keyword">constexpr</span> <span class="keyword">auto</span> HOTSPOT_Y_NUMBER = SDL_PROP_SURFACE_HOTSPOT_Y_NUMBER;</div>
 <div class="line"><a id="l01928" name="l01928"></a><span class="lineno"> 1928</span> </div>
-<div class="foldopen" id="foldopen01942" data-start="{" data-end="}">
-<div class="line"><a id="l01942" name="l01942"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7"> 1942</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a> <a class="code hl_function" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">LoadBMP</a>(<a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; src)</div>
-<div class="line"><a id="l01943" name="l01943"></a><span class="lineno"> 1943</span>{</div>
-<div class="line"><a id="l01944" name="l01944"></a><span class="lineno"> 1944</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a>{SDL_LoadBMP_IO(src, <span class="keyword">false</span>)};</div>
-<div class="line"><a id="l01945" name="l01945"></a><span class="lineno"> 1945</span>}</div>
+<div class="line"><a id="l01929" name="l01929"></a><span class="lineno"> 1929</span>} <span class="comment">// namespace prop::Surface</span></div>
+<div class="line"><a id="l01930" name="l01930"></a><span class="lineno"> 1930</span> </div>
+<div class="foldopen" id="foldopen01944" data-start="{" data-end="}">
+<div class="line"><a id="l01944" name="l01944"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7"> 1944</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a> <a class="code hl_function" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">LoadBMP</a>(<a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; src)</div>
+<div class="line"><a id="l01945" name="l01945"></a><span class="lineno"> 1945</span>{</div>
+<div class="line"><a id="l01946" name="l01946"></a><span class="lineno"> 1946</span>  <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a>{SDL_LoadBMP_IO(src, <span class="keyword">false</span>)};</div>
+<div class="line"><a id="l01947" name="l01947"></a><span class="lineno"> 1947</span>}</div>
 </div>
-<div class="line"><a id="l01946" name="l01946"></a><span class="lineno"> 1946</span> </div>
-<div class="line"><a id="l01960" name="l01960"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076"> 1960</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a> <a class="code hl_function" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">LoadBMP</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> file) { <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a>{SDL_LoadBMP(file)}; }</div>
-<div class="line"><a id="l01961" name="l01961"></a><span class="lineno"> 1961</span> </div>
-<div class="foldopen" id="foldopen01982" data-start="{" data-end="}">
-<div class="line"><a id="l01982" name="l01982"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6"> 1982</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6">SaveBMP</a>(<a class="code hl_class" href="structSDL_1_1SurfaceBase.html">SurfaceRef</a> surface, <a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; dst)</div>
-<div class="line"><a id="l01983" name="l01983"></a><span class="lineno"> 1983</span>{</div>
-<div class="line"><a id="l01984" name="l01984"></a><span class="lineno"> 1984</span>  <span class="keywordflow">return</span> SDL_SaveBMP_IO(surface.get(), dst, <span class="keyword">false</span>);</div>
-<div class="line"><a id="l01985" name="l01985"></a><span class="lineno"> 1985</span>}</div>
+<div class="line"><a id="l01948" name="l01948"></a><span class="lineno"> 1948</span> </div>
+<div class="line"><a id="l01962" name="l01962"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga6c3dd4f128eb085c7bc9c0c6dd955076"> 1962</a></span><span class="keyword">inline</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a> <a class="code hl_function" href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">LoadBMP</a>(<a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> file) { <span class="keywordflow">return</span> <a class="code hl_struct" href="structSDL_1_1SurfaceBase.html">Surface</a>{SDL_LoadBMP(file)}; }</div>
+<div class="line"><a id="l01963" name="l01963"></a><span class="lineno"> 1963</span> </div>
+<div class="foldopen" id="foldopen01984" data-start="{" data-end="}">
+<div class="line"><a id="l01984" name="l01984"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6"> 1984</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6">SaveBMP</a>(<a class="code hl_class" href="structSDL_1_1SurfaceBase.html">SurfaceRef</a> surface, <a class="code hl_concept" href="conceptSDL_1_1ObjectBox.html">ObjectBox&lt;SDL_IOStream&gt;</a> <span class="keyword">auto</span>&amp;&amp; dst)</div>
+<div class="line"><a id="l01985" name="l01985"></a><span class="lineno"> 1985</span>{</div>
+<div class="line"><a id="l01986" name="l01986"></a><span class="lineno"> 1986</span>  <span class="keywordflow">return</span> SDL_SaveBMP_IO(surface.get(), dst, <span class="keyword">false</span>);</div>
+<div class="line"><a id="l01987" name="l01987"></a><span class="lineno"> 1987</span>}</div>
 </div>
-<div class="line"><a id="l01986" name="l01986"></a><span class="lineno"> 1986</span> </div>
-<div class="foldopen" id="foldopen02005" data-start="{" data-end="}">
-<div class="line"><a id="l02005" name="l02005"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#gafde7120c276cc45bf7cc439889e89967"> 2005</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6">SaveBMP</a>(<a class="code hl_class" href="structSDL_1_1SurfaceBase.html">SurfaceRef</a> surface, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> file)</div>
-<div class="line"><a id="l02006" name="l02006"></a><span class="lineno"> 2006</span>{</div>
-<div class="line"><a id="l02007" name="l02007"></a><span class="lineno"> 2007</span>  <span class="keywordflow">return</span> SDL_SaveBMP(surface.get(), file);</div>
-<div class="line"><a id="l02008" name="l02008"></a><span class="lineno"> 2008</span>}</div>
+<div class="line"><a id="l01988" name="l01988"></a><span class="lineno"> 1988</span> </div>
+<div class="foldopen" id="foldopen02007" data-start="{" data-end="}">
+<div class="line"><a id="l02007" name="l02007"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#gafde7120c276cc45bf7cc439889e89967"> 2007</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6">SaveBMP</a>(<a class="code hl_class" href="structSDL_1_1SurfaceBase.html">SurfaceRef</a> surface, <a class="code hl_class" href="classSDL_1_1StringParam.html">StringParam</a> file)</div>
+<div class="line"><a id="l02008" name="l02008"></a><span class="lineno"> 2008</span>{</div>
+<div class="line"><a id="l02009" name="l02009"></a><span class="lineno"> 2009</span>  <span class="keywordflow">return</span> SDL_SaveBMP(surface.get(), file);</div>
+<div class="line"><a id="l02010" name="l02010"></a><span class="lineno"> 2010</span>}</div>
 </div>
-<div class="line"><a id="l02009" name="l02009"></a><span class="lineno"> 2009</span> </div>
-<div class="foldopen" id="foldopen02028" data-start="{" data-end="}">
-<div class="line"><a id="l02028" name="l02028"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga7da7ef5a1a25db72469c18bd37fbb299"> 2028</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga7da7ef5a1a25db72469c18bd37fbb299">ConvertPixels</a>(<span class="keywordtype">int</span> width,</div>
-<div class="line"><a id="l02029" name="l02029"></a><span class="lineno"> 2029</span>                          <span class="keywordtype">int</span> height,</div>
-<div class="line"><a id="l02030" name="l02030"></a><span class="lineno"> 2030</span>                          <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> src_format,</div>
-<div class="line"><a id="l02031" name="l02031"></a><span class="lineno"> 2031</span>                          <span class="keyword">const</span> <span class="keywordtype">void</span>* src,</div>
-<div class="line"><a id="l02032" name="l02032"></a><span class="lineno"> 2032</span>                          <span class="keywordtype">int</span> src_pitch,</div>
-<div class="line"><a id="l02033" name="l02033"></a><span class="lineno"> 2033</span>                          <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> dst_format,</div>
-<div class="line"><a id="l02034" name="l02034"></a><span class="lineno"> 2034</span>                          <span class="keywordtype">void</span>* dst,</div>
-<div class="line"><a id="l02035" name="l02035"></a><span class="lineno"> 2035</span>                          <span class="keywordtype">int</span> dst_pitch)</div>
-<div class="line"><a id="l02036" name="l02036"></a><span class="lineno"> 2036</span>{</div>
-<div class="line"><a id="l02037" name="l02037"></a><span class="lineno"> 2037</span>  <span class="keywordflow">return</span> SDL_ConvertPixels(</div>
-<div class="line"><a id="l02038" name="l02038"></a><span class="lineno"> 2038</span>    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch);</div>
-<div class="line"><a id="l02039" name="l02039"></a><span class="lineno"> 2039</span>}</div>
+<div class="line"><a id="l02011" name="l02011"></a><span class="lineno"> 2011</span> </div>
+<div class="foldopen" id="foldopen02030" data-start="{" data-end="}">
+<div class="line"><a id="l02030" name="l02030"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga7da7ef5a1a25db72469c18bd37fbb299"> 2030</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga7da7ef5a1a25db72469c18bd37fbb299">ConvertPixels</a>(<span class="keywordtype">int</span> width,</div>
+<div class="line"><a id="l02031" name="l02031"></a><span class="lineno"> 2031</span>                          <span class="keywordtype">int</span> height,</div>
+<div class="line"><a id="l02032" name="l02032"></a><span class="lineno"> 2032</span>                          <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> src_format,</div>
+<div class="line"><a id="l02033" name="l02033"></a><span class="lineno"> 2033</span>                          <span class="keyword">const</span> <span class="keywordtype">void</span>* src,</div>
+<div class="line"><a id="l02034" name="l02034"></a><span class="lineno"> 2034</span>                          <span class="keywordtype">int</span> src_pitch,</div>
+<div class="line"><a id="l02035" name="l02035"></a><span class="lineno"> 2035</span>                          <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> dst_format,</div>
+<div class="line"><a id="l02036" name="l02036"></a><span class="lineno"> 2036</span>                          <span class="keywordtype">void</span>* dst,</div>
+<div class="line"><a id="l02037" name="l02037"></a><span class="lineno"> 2037</span>                          <span class="keywordtype">int</span> dst_pitch)</div>
+<div class="line"><a id="l02038" name="l02038"></a><span class="lineno"> 2038</span>{</div>
+<div class="line"><a id="l02039" name="l02039"></a><span class="lineno"> 2039</span>  <span class="keywordflow">return</span> SDL_ConvertPixels(</div>
+<div class="line"><a id="l02040" name="l02040"></a><span class="lineno"> 2040</span>    width, height, src_format, src, src_pitch, dst_format, dst, dst_pitch);</div>
+<div class="line"><a id="l02041" name="l02041"></a><span class="lineno"> 2041</span>}</div>
 </div>
-<div class="line"><a id="l02040" name="l02040"></a><span class="lineno"> 2040</span> </div>
-<div class="foldopen" id="foldopen02068" data-start="{" data-end="}">
-<div class="line"><a id="l02068" name="l02068"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga9d6ced48f8f7fb71dff04aff0364adcd"> 2068</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga9d6ced48f8f7fb71dff04aff0364adcd">ConvertPixelsAndColorspace</a>(<span class="keywordtype">int</span> width,</div>
-<div class="line"><a id="l02069" name="l02069"></a><span class="lineno"> 2069</span>                                       <span class="keywordtype">int</span> height,</div>
-<div class="line"><a id="l02070" name="l02070"></a><span class="lineno"> 2070</span>                                       <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> src_format,</div>
-<div class="line"><a id="l02071" name="l02071"></a><span class="lineno"> 2071</span>                                       <a class="code hl_class" href="classSDL_1_1Colorspace.html">Colorspace</a> src_colorspace,</div>
-<div class="line"><a id="l02072" name="l02072"></a><span class="lineno"> 2072</span>                                       <a class="code hl_class" href="structSDL_1_1PropertiesBase.html">PropertiesRef</a> src_properties,</div>
-<div class="line"><a id="l02073" name="l02073"></a><span class="lineno"> 2073</span>                                       <span class="keyword">const</span> <span class="keywordtype">void</span>* src,</div>
-<div class="line"><a id="l02074" name="l02074"></a><span class="lineno"> 2074</span>                                       <span class="keywordtype">int</span> src_pitch,</div>
-<div class="line"><a id="l02075" name="l02075"></a><span class="lineno"> 2075</span>                                       <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> dst_format,</div>
-<div class="line"><a id="l02076" name="l02076"></a><span class="lineno"> 2076</span>                                       <a class="code hl_class" href="classSDL_1_1Colorspace.html">Colorspace</a> dst_colorspace,</div>
-<div class="line"><a id="l02077" name="l02077"></a><span class="lineno"> 2077</span>                                       <a class="code hl_class" href="structSDL_1_1PropertiesBase.html">PropertiesRef</a> dst_properties,</div>
-<div class="line"><a id="l02078" name="l02078"></a><span class="lineno"> 2078</span>                                       <span class="keywordtype">void</span>* dst,</div>
-<div class="line"><a id="l02079" name="l02079"></a><span class="lineno"> 2079</span>                                       <span class="keywordtype">int</span> dst_pitch)</div>
-<div class="line"><a id="l02080" name="l02080"></a><span class="lineno"> 2080</span>{</div>
-<div class="line"><a id="l02081" name="l02081"></a><span class="lineno"> 2081</span>  <span class="keywordflow">return</span> SDL_ConvertPixelsAndColorspace(width,</div>
-<div class="line"><a id="l02082" name="l02082"></a><span class="lineno"> 2082</span>                                        height,</div>
-<div class="line"><a id="l02083" name="l02083"></a><span class="lineno"> 2083</span>                                        src_format,</div>
-<div class="line"><a id="l02084" name="l02084"></a><span class="lineno"> 2084</span>                                        src_colorspace,</div>
-<div class="line"><a id="l02085" name="l02085"></a><span class="lineno"> 2085</span>                                        src_properties,</div>
-<div class="line"><a id="l02086" name="l02086"></a><span class="lineno"> 2086</span>                                        src,</div>
-<div class="line"><a id="l02087" name="l02087"></a><span class="lineno"> 2087</span>                                        src_pitch,</div>
-<div class="line"><a id="l02088" name="l02088"></a><span class="lineno"> 2088</span>                                        dst_format,</div>
-<div class="line"><a id="l02089" name="l02089"></a><span class="lineno"> 2089</span>                                        dst_colorspace,</div>
-<div class="line"><a id="l02090" name="l02090"></a><span class="lineno"> 2090</span>                                        dst_properties,</div>
-<div class="line"><a id="l02091" name="l02091"></a><span class="lineno"> 2091</span>                                        dst,</div>
-<div class="line"><a id="l02092" name="l02092"></a><span class="lineno"> 2092</span>                                        dst_pitch);</div>
-<div class="line"><a id="l02093" name="l02093"></a><span class="lineno"> 2093</span>}</div>
+<div class="line"><a id="l02042" name="l02042"></a><span class="lineno"> 2042</span> </div>
+<div class="foldopen" id="foldopen02070" data-start="{" data-end="}">
+<div class="line"><a id="l02070" name="l02070"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga9d6ced48f8f7fb71dff04aff0364adcd"> 2070</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga9d6ced48f8f7fb71dff04aff0364adcd">ConvertPixelsAndColorspace</a>(<span class="keywordtype">int</span> width,</div>
+<div class="line"><a id="l02071" name="l02071"></a><span class="lineno"> 2071</span>                                       <span class="keywordtype">int</span> height,</div>
+<div class="line"><a id="l02072" name="l02072"></a><span class="lineno"> 2072</span>                                       <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> src_format,</div>
+<div class="line"><a id="l02073" name="l02073"></a><span class="lineno"> 2073</span>                                       <a class="code hl_class" href="classSDL_1_1Colorspace.html">Colorspace</a> src_colorspace,</div>
+<div class="line"><a id="l02074" name="l02074"></a><span class="lineno"> 2074</span>                                       <a class="code hl_class" href="structSDL_1_1PropertiesBase.html">PropertiesRef</a> src_properties,</div>
+<div class="line"><a id="l02075" name="l02075"></a><span class="lineno"> 2075</span>                                       <span class="keyword">const</span> <span class="keywordtype">void</span>* src,</div>
+<div class="line"><a id="l02076" name="l02076"></a><span class="lineno"> 2076</span>                                       <span class="keywordtype">int</span> src_pitch,</div>
+<div class="line"><a id="l02077" name="l02077"></a><span class="lineno"> 2077</span>                                       <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> dst_format,</div>
+<div class="line"><a id="l02078" name="l02078"></a><span class="lineno"> 2078</span>                                       <a class="code hl_class" href="classSDL_1_1Colorspace.html">Colorspace</a> dst_colorspace,</div>
+<div class="line"><a id="l02079" name="l02079"></a><span class="lineno"> 2079</span>                                       <a class="code hl_class" href="structSDL_1_1PropertiesBase.html">PropertiesRef</a> dst_properties,</div>
+<div class="line"><a id="l02080" name="l02080"></a><span class="lineno"> 2080</span>                                       <span class="keywordtype">void</span>* dst,</div>
+<div class="line"><a id="l02081" name="l02081"></a><span class="lineno"> 2081</span>                                       <span class="keywordtype">int</span> dst_pitch)</div>
+<div class="line"><a id="l02082" name="l02082"></a><span class="lineno"> 2082</span>{</div>
+<div class="line"><a id="l02083" name="l02083"></a><span class="lineno"> 2083</span>  <span class="keywordflow">return</span> SDL_ConvertPixelsAndColorspace(width,</div>
+<div class="line"><a id="l02084" name="l02084"></a><span class="lineno"> 2084</span>                                        height,</div>
+<div class="line"><a id="l02085" name="l02085"></a><span class="lineno"> 2085</span>                                        src_format,</div>
+<div class="line"><a id="l02086" name="l02086"></a><span class="lineno"> 2086</span>                                        src_colorspace,</div>
+<div class="line"><a id="l02087" name="l02087"></a><span class="lineno"> 2087</span>                                        src_properties,</div>
+<div class="line"><a id="l02088" name="l02088"></a><span class="lineno"> 2088</span>                                        src,</div>
+<div class="line"><a id="l02089" name="l02089"></a><span class="lineno"> 2089</span>                                        src_pitch,</div>
+<div class="line"><a id="l02090" name="l02090"></a><span class="lineno"> 2090</span>                                        dst_format,</div>
+<div class="line"><a id="l02091" name="l02091"></a><span class="lineno"> 2091</span>                                        dst_colorspace,</div>
+<div class="line"><a id="l02092" name="l02092"></a><span class="lineno"> 2092</span>                                        dst_properties,</div>
+<div class="line"><a id="l02093" name="l02093"></a><span class="lineno"> 2093</span>                                        dst,</div>
+<div class="line"><a id="l02094" name="l02094"></a><span class="lineno"> 2094</span>                                        dst_pitch);</div>
+<div class="line"><a id="l02095" name="l02095"></a><span class="lineno"> 2095</span>}</div>
 </div>
-<div class="line"><a id="l02094" name="l02094"></a><span class="lineno"> 2094</span> </div>
-<div class="foldopen" id="foldopen02115" data-start="{" data-end="}">
-<div class="line"><a id="l02115" name="l02115"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5"> 2115</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5">PremultiplyAlpha</a>(<span class="keywordtype">int</span> width,</div>
-<div class="line"><a id="l02116" name="l02116"></a><span class="lineno"> 2116</span>                             <span class="keywordtype">int</span> height,</div>
-<div class="line"><a id="l02117" name="l02117"></a><span class="lineno"> 2117</span>                             <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> src_format,</div>
-<div class="line"><a id="l02118" name="l02118"></a><span class="lineno"> 2118</span>                             <span class="keyword">const</span> <span class="keywordtype">void</span>* src,</div>
-<div class="line"><a id="l02119" name="l02119"></a><span class="lineno"> 2119</span>                             <span class="keywordtype">int</span> src_pitch,</div>
-<div class="line"><a id="l02120" name="l02120"></a><span class="lineno"> 2120</span>                             <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> dst_format,</div>
-<div class="line"><a id="l02121" name="l02121"></a><span class="lineno"> 2121</span>                             <span class="keywordtype">void</span>* dst,</div>
-<div class="line"><a id="l02122" name="l02122"></a><span class="lineno"> 2122</span>                             <span class="keywordtype">int</span> dst_pitch,</div>
-<div class="line"><a id="l02123" name="l02123"></a><span class="lineno"> 2123</span>                             <span class="keywordtype">bool</span> linear)</div>
-<div class="line"><a id="l02124" name="l02124"></a><span class="lineno"> 2124</span>{</div>
-<div class="line"><a id="l02125" name="l02125"></a><span class="lineno"> 2125</span>  <span class="keywordflow">return</span> SDL_PremultiplyAlpha(width,</div>
-<div class="line"><a id="l02126" name="l02126"></a><span class="lineno"> 2126</span>                              height,</div>
-<div class="line"><a id="l02127" name="l02127"></a><span class="lineno"> 2127</span>                              src_format,</div>
-<div class="line"><a id="l02128" name="l02128"></a><span class="lineno"> 2128</span>                              src,</div>
-<div class="line"><a id="l02129" name="l02129"></a><span class="lineno"> 2129</span>                              src_pitch,</div>
-<div class="line"><a id="l02130" name="l02130"></a><span class="lineno"> 2130</span>                              dst_format,</div>
-<div class="line"><a id="l02131" name="l02131"></a><span class="lineno"> 2131</span>                              dst,</div>
-<div class="line"><a id="l02132" name="l02132"></a><span class="lineno"> 2132</span>                              dst_pitch,</div>
-<div class="line"><a id="l02133" name="l02133"></a><span class="lineno"> 2133</span>                              linear);</div>
-<div class="line"><a id="l02134" name="l02134"></a><span class="lineno"> 2134</span>}</div>
+<div class="line"><a id="l02096" name="l02096"></a><span class="lineno"> 2096</span> </div>
+<div class="foldopen" id="foldopen02117" data-start="{" data-end="}">
+<div class="line"><a id="l02117" name="l02117"></a><span class="lineno"><a class="line" href="group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5"> 2117</a></span><span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5">PremultiplyAlpha</a>(<span class="keywordtype">int</span> width,</div>
+<div class="line"><a id="l02118" name="l02118"></a><span class="lineno"> 2118</span>                             <span class="keywordtype">int</span> height,</div>
+<div class="line"><a id="l02119" name="l02119"></a><span class="lineno"> 2119</span>                             <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> src_format,</div>
+<div class="line"><a id="l02120" name="l02120"></a><span class="lineno"> 2120</span>                             <span class="keyword">const</span> <span class="keywordtype">void</span>* src,</div>
+<div class="line"><a id="l02121" name="l02121"></a><span class="lineno"> 2121</span>                             <span class="keywordtype">int</span> src_pitch,</div>
+<div class="line"><a id="l02122" name="l02122"></a><span class="lineno"> 2122</span>                             <a class="code hl_struct" href="structSDL_1_1PixelFormat.html">PixelFormat</a> dst_format,</div>
+<div class="line"><a id="l02123" name="l02123"></a><span class="lineno"> 2123</span>                             <span class="keywordtype">void</span>* dst,</div>
+<div class="line"><a id="l02124" name="l02124"></a><span class="lineno"> 2124</span>                             <span class="keywordtype">int</span> dst_pitch,</div>
+<div class="line"><a id="l02125" name="l02125"></a><span class="lineno"> 2125</span>                             <span class="keywordtype">bool</span> linear)</div>
+<div class="line"><a id="l02126" name="l02126"></a><span class="lineno"> 2126</span>{</div>
+<div class="line"><a id="l02127" name="l02127"></a><span class="lineno"> 2127</span>  <span class="keywordflow">return</span> SDL_PremultiplyAlpha(width,</div>
+<div class="line"><a id="l02128" name="l02128"></a><span class="lineno"> 2128</span>                              height,</div>
+<div class="line"><a id="l02129" name="l02129"></a><span class="lineno"> 2129</span>                              src_format,</div>
+<div class="line"><a id="l02130" name="l02130"></a><span class="lineno"> 2130</span>                              src,</div>
+<div class="line"><a id="l02131" name="l02131"></a><span class="lineno"> 2131</span>                              src_pitch,</div>
+<div class="line"><a id="l02132" name="l02132"></a><span class="lineno"> 2132</span>                              dst_format,</div>
+<div class="line"><a id="l02133" name="l02133"></a><span class="lineno"> 2133</span>                              dst,</div>
+<div class="line"><a id="l02134" name="l02134"></a><span class="lineno"> 2134</span>                              dst_pitch,</div>
+<div class="line"><a id="l02135" name="l02135"></a><span class="lineno"> 2135</span>                              linear);</div>
+<div class="line"><a id="l02136" name="l02136"></a><span class="lineno"> 2136</span>}</div>
 </div>
-<div class="line"><a id="l02135" name="l02135"></a><span class="lineno"> 2135</span> </div>
-<div class="line"><a id="l02136" name="l02136"></a><span class="lineno"> 2136</span><span class="preprocessor">#pragma region impl</span></div>
-<div class="line"><a id="l02138" name="l02138"></a><span class="lineno"> 2138</span> </div>
-<div class="line"><a id="l02139" name="l02139"></a><span class="lineno"> 2139</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Surface*&gt; T&gt;</div>
-<div class="foldopen" id="foldopen02140" data-start="{" data-end="}">
-<div class="line"><a id="l02140" name="l02140"></a><span class="lineno"><a class="line" href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3"> 2140</a></span><a class="code hl_class" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a> <a class="code hl_function" href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3">SurfaceBase&lt;T&gt;::Lock</a>() &amp;</div>
-<div class="line"><a id="l02141" name="l02141"></a><span class="lineno"> 2141</span>{</div>
-<div class="line"><a id="l02142" name="l02142"></a><span class="lineno"> 2142</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a>{*<span class="keyword">this</span>};</div>
-<div class="line"><a id="l02143" name="l02143"></a><span class="lineno"> 2143</span>}</div>
+<div class="line"><a id="l02137" name="l02137"></a><span class="lineno"> 2137</span> </div>
+<div class="line"><a id="l02138" name="l02138"></a><span class="lineno"> 2138</span><span class="preprocessor">#pragma region impl</span></div>
+<div class="line"><a id="l02140" name="l02140"></a><span class="lineno"> 2140</span> </div>
+<div class="line"><a id="l02141" name="l02141"></a><span class="lineno"> 2141</span><span class="keyword">template</span>&lt;ObjectBox&lt;SDL_Surface*&gt; T&gt;</div>
+<div class="foldopen" id="foldopen02142" data-start="{" data-end="}">
+<div class="line"><a id="l02142" name="l02142"></a><span class="lineno"><a class="line" href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3"> 2142</a></span><a class="code hl_class" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a> <a class="code hl_function" href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3">SurfaceBase&lt;T&gt;::Lock</a>() &amp;</div>
+<div class="line"><a id="l02143" name="l02143"></a><span class="lineno"> 2143</span>{</div>
+<div class="line"><a id="l02144" name="l02144"></a><span class="lineno"> 2144</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classSDL_1_1SurfaceLock.html">SurfaceLock</a>{*<span class="keyword">this</span>};</div>
+<div class="line"><a id="l02145" name="l02145"></a><span class="lineno"> 2145</span>}</div>
 </div>
 </div>
-<div class="line"><a id="l02144" name="l02144"></a><span class="lineno"> 2144</span> </div>
-<div class="line"><a id="l02145" name="l02145"></a><span class="lineno"> 2145</span><span class="preprocessor">#pragma endregion impl</span></div>
 <div class="line"><a id="l02146" name="l02146"></a><span class="lineno"> 2146</span> </div>
-<div class="line"><a id="l02147" name="l02147"></a><span class="lineno"> 2147</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l02147" name="l02147"></a><span class="lineno"> 2147</span><span class="preprocessor">#pragma endregion impl</span></div>
 <div class="line"><a id="l02148" name="l02148"></a><span class="lineno"> 2148</span> </div>
-<div class="line"><a id="l02149" name="l02149"></a><span class="lineno"> 2149</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_SURFACE_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l02149" name="l02149"></a><span class="lineno"> 2149</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l02150" name="l02150"></a><span class="lineno"> 2150</span> </div>
+<div class="line"><a id="l02151" name="l02151"></a><span class="lineno"> 2151</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_SURFACE_H_ */</span><span class="preprocessor"></span></div>
 </div>
 <div class="ttc" id="aclassSDL_1_1ArrayBase_html"><div class="ttname"><a href="classSDL_1_1ArrayBase.html">SDL::ArrayBase</a></div><div class="ttdoc">Base class for SDL memory allocated array wrap.</div><div class="ttdef"><b>Definition</b> SDL3pp_ownPtr.h:69</div></div>
 <div class="ttc" id="aclassSDL_1_1Colorspace_html"><div class="ttname"><a href="classSDL_1_1Colorspace.html">SDL::Colorspace</a></div><div class="ttdoc">Colorspace definitions.</div><div class="ttdef"><b>Definition</b> SDL3pp_pixels.h:1281</div></div>
@@ -856,19 +858,19 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="aconceptSDL_1_1ObjectBox_html"><div class="ttname"><a href="conceptSDL_1_1ObjectBox.html">SDL::ObjectBox</a></div><div class="ttdef"><b>Definition</b> SDL3pp_objectWrapper.h:18</div></div>
 <div class="ttc" id="agroup__CategoryBlendmode_html_gad02afeb206989ff841629dca2c93e694"><div class="ttname"><a href="group__CategoryBlendmode.html#gad02afeb206989ff841629dca2c93e694">SDL::BlendMode</a></div><div class="ttdeci">SDL_BlendMode BlendMode</div><div class="ttdoc">A set of blend modes used in drawing operations.</div><div class="ttdef"><b>Definition</b> SDL3pp_blendmode.h:31</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga12eade56d263c052589ed58c274021f2"><div class="ttname"><a href="group__CategorySurface.html#ga12eade56d263c052589ed58c274021f2">SDL::FLIP_VERTICAL</a></div><div class="ttdeci">constexpr FlipMode FLIP_VERTICAL</div><div class="ttdoc">flip vertically</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:137</div></div>
-<div class="ttc" id="agroup__CategorySurface_html_ga167ee35d4370ada89dfe40d6d8501be7"><div class="ttname"><a href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">SDL::LoadBMP</a></div><div class="ttdeci">Surface LoadBMP(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a BMP image from a seekable SDL data stream.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1942</div></div>
+<div class="ttc" id="agroup__CategorySurface_html_ga167ee35d4370ada89dfe40d6d8501be7"><div class="ttname"><a href="group__CategorySurface.html#ga167ee35d4370ada89dfe40d6d8501be7">SDL::LoadBMP</a></div><div class="ttdeci">Surface LoadBMP(ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;src)</div><div class="ttdoc">Load a BMP image from a seekable SDL data stream.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1944</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga2682a866aa8d36120c50a632caed6dec"><div class="ttname"><a href="group__CategorySurface.html#ga2682a866aa8d36120c50a632caed6dec">SDL::SURFACE_SIMD_ALIGNED</a></div><div class="ttdeci">constexpr SurfaceFlags SURFACE_SIMD_ALIGNED</div><div class="ttdoc">Surface uses pixel memory allocated with SDL_aligned_alloc()</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:92</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga2b9e21a38124e71717957952d9587408"><div class="ttname"><a href="group__CategorySurface.html#ga2b9e21a38124e71717957952d9587408">SDL::SURFACE_LOCK_NEEDED</a></div><div class="ttdeci">constexpr SurfaceFlags SURFACE_LOCK_NEEDED</div><div class="ttdoc">Surface needs to be locked to access pixels.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:82</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga2d815ea45ea1a0a4336a1c9952ff2264"><div class="ttname"><a href="group__CategorySurface.html#ga2d815ea45ea1a0a4336a1c9952ff2264">SDL::SurfaceFlags</a></div><div class="ttdeci">SDL_SurfaceFlags SurfaceFlags</div><div class="ttdoc">The flags on an SDL_Surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:72</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga3e81f3df151b51bf38d6b348491b8b76"><div class="ttname"><a href="group__CategorySurface.html#ga3e81f3df151b51bf38d6b348491b8b76">SDL::FLIP_NONE</a></div><div class="ttdeci">constexpr FlipMode FLIP_NONE</div><div class="ttdoc">Do not flip.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:127</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga4c7addc5c7d5c64ac7565a7c22a0ed6f"><div class="ttname"><a href="group__CategorySurface.html#ga4c7addc5c7d5c64ac7565a7c22a0ed6f">SDL::SURFACE_PREALLOCATED</a></div><div class="ttdeci">constexpr SurfaceFlags SURFACE_PREALLOCATED</div><div class="ttdoc">Surface uses preallocated pixel memory.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:77</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga54bde4af0a6606edd0ef6356592d122e"><div class="ttname"><a href="group__CategorySurface.html#ga54bde4af0a6606edd0ef6356592d122e">SDL::SCALEMODE_LINEAR</a></div><div class="ttdeci">constexpr ScaleMode SCALEMODE_LINEAR</div><div class="ttdoc">linear filtering</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:116</div></div>
-<div class="ttc" id="agroup__CategorySurface_html_ga56edb7604e381a26b78828c8d06076e6"><div class="ttname"><a href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6">SDL::SaveBMP</a></div><div class="ttdeci">bool SaveBMP(SurfaceRef surface, ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;dst)</div><div class="ttdoc">Save a surface to a seekable SDL data stream in BMP format.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1982</div></div>
-<div class="ttc" id="agroup__CategorySurface_html_ga57055f9765ed7d38d27856c7b29cffd5"><div class="ttname"><a href="group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5">SDL::PremultiplyAlpha</a></div><div class="ttdeci">bool PremultiplyAlpha(int width, int height, PixelFormat src_format, const void *src, int src_pitch, PixelFormat dst_format, void *dst, int dst_pitch, bool linear)</div><div class="ttdoc">Premultiply the alpha on a block of pixels.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2115</div></div>
+<div class="ttc" id="agroup__CategorySurface_html_ga56edb7604e381a26b78828c8d06076e6"><div class="ttname"><a href="group__CategorySurface.html#ga56edb7604e381a26b78828c8d06076e6">SDL::SaveBMP</a></div><div class="ttdeci">bool SaveBMP(SurfaceRef surface, ObjectBox&lt; SDL_IOStream &gt; auto &amp;&amp;dst)</div><div class="ttdoc">Save a surface to a seekable SDL data stream in BMP format.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1984</div></div>
+<div class="ttc" id="agroup__CategorySurface_html_ga57055f9765ed7d38d27856c7b29cffd5"><div class="ttname"><a href="group__CategorySurface.html#ga57055f9765ed7d38d27856c7b29cffd5">SDL::PremultiplyAlpha</a></div><div class="ttdeci">bool PremultiplyAlpha(int width, int height, PixelFormat src_format, const void *src, int src_pitch, PixelFormat dst_format, void *dst, int dst_pitch, bool linear)</div><div class="ttdoc">Premultiply the alpha on a block of pixels.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2117</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga66f4bba63ed46834695fa4bc8c915bf3"><div class="ttname"><a href="group__CategorySurface.html#ga66f4bba63ed46834695fa4bc8c915bf3">SDL::SCALEMODE_NEAREST</a></div><div class="ttdeci">constexpr ScaleMode SCALEMODE_NEAREST</div><div class="ttdoc">nearest pixel sampling</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:111</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_ga7782e745990be469916fc9b314311480"><div class="ttname"><a href="group__CategorySurface.html#ga7782e745990be469916fc9b314311480">SDL::SURFACE_LOCKED</a></div><div class="ttdeci">constexpr SurfaceFlags SURFACE_LOCKED</div><div class="ttdoc">Surface is currently locked.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:87</div></div>
-<div class="ttc" id="agroup__CategorySurface_html_ga7da7ef5a1a25db72469c18bd37fbb299"><div class="ttname"><a href="group__CategorySurface.html#ga7da7ef5a1a25db72469c18bd37fbb299">SDL::ConvertPixels</a></div><div class="ttdeci">bool ConvertPixels(int width, int height, PixelFormat src_format, const void *src, int src_pitch, PixelFormat dst_format, void *dst, int dst_pitch)</div><div class="ttdoc">Copy a block of pixels of one format to another format.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2028</div></div>
-<div class="ttc" id="agroup__CategorySurface_html_ga9d6ced48f8f7fb71dff04aff0364adcd"><div class="ttname"><a href="group__CategorySurface.html#ga9d6ced48f8f7fb71dff04aff0364adcd">SDL::ConvertPixelsAndColorspace</a></div><div class="ttdeci">bool ConvertPixelsAndColorspace(int width, int height, PixelFormat src_format, Colorspace src_colorspace, PropertiesRef src_properties, const void *src, int src_pitch, PixelFormat dst_format, Colorspace dst_colorspace, PropertiesRef dst_properties, void *dst, int dst_pitch)</div><div class="ttdoc">Copy a block of pixels of one format and colorspace to another format and colorspace.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2068</div></div>
+<div class="ttc" id="agroup__CategorySurface_html_ga7da7ef5a1a25db72469c18bd37fbb299"><div class="ttname"><a href="group__CategorySurface.html#ga7da7ef5a1a25db72469c18bd37fbb299">SDL::ConvertPixels</a></div><div class="ttdeci">bool ConvertPixels(int width, int height, PixelFormat src_format, const void *src, int src_pitch, PixelFormat dst_format, void *dst, int dst_pitch)</div><div class="ttdoc">Copy a block of pixels of one format to another format.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2030</div></div>
+<div class="ttc" id="agroup__CategorySurface_html_ga9d6ced48f8f7fb71dff04aff0364adcd"><div class="ttname"><a href="group__CategorySurface.html#ga9d6ced48f8f7fb71dff04aff0364adcd">SDL::ConvertPixelsAndColorspace</a></div><div class="ttdeci">bool ConvertPixelsAndColorspace(int width, int height, PixelFormat src_format, Colorspace src_colorspace, PropertiesRef src_properties, const void *src, int src_pitch, PixelFormat dst_format, Colorspace dst_colorspace, PropertiesRef dst_properties, void *dst, int dst_pitch)</div><div class="ttdoc">Copy a block of pixels of one format and colorspace to another format and colorspace.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2070</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_gaa139652f1cfad9672e6e9898f965812b"><div class="ttname"><a href="group__CategorySurface.html#gaa139652f1cfad9672e6e9898f965812b">SDL::FlipMode</a></div><div class="ttdeci">SDL_FlipMode FlipMode</div><div class="ttdoc">The flip mode.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:122</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_gaa6cc4b06d3842efd9aa23a4fbb61f148"><div class="ttname"><a href="group__CategorySurface.html#gaa6cc4b06d3842efd9aa23a4fbb61f148">SDL::SCALEMODE_INVALID</a></div><div class="ttdeci">constexpr ScaleMode SCALEMODE_INVALID</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:105</div></div>
 <div class="ttc" id="agroup__CategorySurface_html_gac0771f3c7f68c513c444fa255fbc7d44"><div class="ttname"><a href="group__CategorySurface.html#gac0771f3c7f68c513c444fa255fbc7d44">SDL::FLIP_HORIZONTAL</a></div><div class="ttdeci">constexpr FlipMode FLIP_HORIZONTAL</div><div class="ttdoc">flip horizontally</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:132</div></div>
@@ -929,7 +931,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="ttc" id="astructSDL_1_1SurfaceBase_html_a84cabcdc2db67e9d8ff3b109be39b272"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a84cabcdc2db67e9d8ff3b109be39b272">SDL::SurfaceBase::GetColorKey</a></div><div class="ttdeci">std::optional&lt; Color &gt; GetColorKey() const</div><div class="ttdoc">Get the color key (transparent pixel) for a surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:575</div></div>
 <div class="ttc" id="astructSDL_1_1SurfaceBase_html_a85a345dbd8a5f4ae3936cf4c2b53fdd6"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a85a345dbd8a5f4ae3936cf4c2b53fdd6">SDL::SurfaceBase::ClearColorKey</a></div><div class="ttdeci">bool ClearColorKey()</div><div class="ttdoc">Unset the color key (transparent pixel) in a surface.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:550</div></div>
 <div class="ttc" id="astructSDL_1_1SurfaceBase_html_a8c8673b15f18d70806226154812c1eb5"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a8c8673b15f18d70806226154812c1eb5">SDL::SurfaceBase::GetHeight</a></div><div class="ttdeci">int GetHeight() const</div><div class="ttdoc">Get the height in pixels.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1803</div></div>
-<div class="ttc" id="astructSDL_1_1SurfaceBase_html_a8cd4fcc69b16d43b54c4abedc5d4e7d3"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3">SDL::SurfaceBase::Lock</a></div><div class="ttdeci">SurfaceLock Lock() &amp;</div><div class="ttdoc">Set up a surface for directly accessing the pixels.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2140</div></div>
+<div class="ttc" id="astructSDL_1_1SurfaceBase_html_a8cd4fcc69b16d43b54c4abedc5d4e7d3"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3">SDL::SurfaceBase::Lock</a></div><div class="ttdeci">SurfaceLock Lock() &amp;</div><div class="ttdoc">Set up a surface for directly accessing the pixels.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:2142</div></div>
 <div class="ttc" id="astructSDL_1_1SurfaceBase_html_a901b8312b075f6a21c5fdf88c3cc6cf1"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a901b8312b075f6a21c5fdf88c3cc6cf1">SDL::SurfaceBase::FillRect</a></div><div class="ttdeci">bool FillRect(const SDL_Rect &amp;rect, SDL_Color color)</div><div class="ttdoc">Perform a fast fill of a rectangle with a specific color.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:996</div></div>
 <div class="ttc" id="astructSDL_1_1SurfaceBase_html_a9175d7e19c831c65e125ce07498ba15c"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a9175d7e19c831c65e125ce07498ba15c">SDL::SurfaceBase::WritePixel</a></div><div class="ttdeci">bool WritePixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a)</div><div class="ttdoc">This function prioritizes correctness over speed: it is suitable for unit tests, but is not intended ...</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1770</div></div>
 <div class="ttc" id="astructSDL_1_1SurfaceBase_html_a963071b654e4c1cc5c2099740c8ad244"><div class="ttname"><a href="structSDL_1_1SurfaceBase.html#a963071b654e4c1cc5c2099740c8ad244">SDL::SurfaceBase::Stretch</a></div><div class="ttdeci">bool Stretch(SurfaceRef src, const SDL_Rect &amp;srcrect, const SDL_Rect &amp;dstrect, ScaleMode scaleMode)</div><div class="ttdoc">Perform a stretched pixel copy from one surface to another.</div><div class="ttdef"><b>Definition</b> SDL3pp_surface.h:1345</div></div>

@@ -199,7 +199,7 @@ class Tokenizer {
         token.parameters = parameters;
       }
     } else if (m = /^namespace\s+([^{]*)\{/.exec(line)) {
-      token.kind = "namespace";
+      token.kind = "ns";
       token.value = m[1]?.trim();
     } else if (line.startsWith('#')) {
       let ln = line;

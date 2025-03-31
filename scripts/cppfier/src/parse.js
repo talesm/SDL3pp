@@ -206,6 +206,7 @@ class ContentParser {
     let lastTemplate = null;
 
     if ((this.lookup()?.spaces ?? -1) < identLevel) return undefined;
+    if (this.lookup()?.kind === "endStruct") return undefined;
 
     while (this.lookup()?.kind === "doc") {
       const token = this.expect("doc");
@@ -214,16 +215,6 @@ class ContentParser {
       lastEnd = token.end;
       lastBegin = token.begin;
     }
-
-    if (this.lookup()?.kind === "namespace") {
-      const token = this.expect("namespace");
-      this.checkFileDoc(lastBegin, lastEnd, lastDoc);
-      if (!this.entriesBegin) {
-        this.entriesBegin = token.end;
-      }
-      return this.parseEntry();
-    }
-
     if (this.lookup()?.kind === "template") {
       const token = this.expect("template");
       if (lastEnd != token.begin || lastTemplate) {
@@ -276,6 +267,18 @@ class ContentParser {
         if (token.type) entry.type = normalizeType(token.type);
         if (!lastDecl) lastDecl = token.begin;
         entry.entries = insertEntry({}, this.parseEntries(token.spaces + 1));
+        entryEnd = this.expect("endStruct").end;
+        break;
+      case "ns":
+        if (!lastDecl) lastDecl = token.begin;
+        if (entry.name === "SDL") {
+          this.checkFileDoc(lastBegin, lastEnd, lastDoc);
+          if (!this.entriesBegin) {
+            this.entriesBegin = token.end;
+          }
+          return this.parseEntry();
+        }
+        entry.entries = insertEntry({}, this.parseEntries(token.spaces));
         entryEnd = this.expect("endStruct").end;
         break;
       case "union": break;
