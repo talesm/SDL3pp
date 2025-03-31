@@ -2,12 +2,12 @@
 #define SDL3PP_TIME_H_
 
 #include <SDL3/SDL_time.h>
-#include "SDL3pp/SDL3pp_stdinc.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
 /**
- * @defgroup CategoryTime Category Time
+ * @defgroup CategoryTime Date and Time
  *
  * SDL realtime clock and date/time routines.
  *

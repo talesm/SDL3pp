@@ -172,9 +172,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8a0ec19df003e99bd8e1a506fef298a1" id="r_a8a0ec19df003e99bd8e1a506fef298a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a8a0ec19df003e99bd8e1a506fef298a1">GetSDF</a> () const</td></tr>
 <tr class="memdesc:a8a0ec19df003e99bd8e1a506fef298a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether Signed Distance Field rendering is enabled for a font.  <br /></td></tr>
 <tr class="separator:a8a0ec19df003e99bd8e1a506fef298a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd90eb2f7b38fdda4811bbf8dc4636fa" id="r_abd90eb2f7b38fdda4811bbf8dc4636fa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#abd90eb2f7b38fdda4811bbf8dc4636fa">SDL3PP_TTF_VERSION_ATLEAST</a> (3, 4, 0) void SetWrapAlignment(<a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a> align)</td></tr>
-<tr class="memdesc:abd90eb2f7b38fdda4811bbf8dc4636fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's current wrap alignment option.  <br /></td></tr>
-<tr class="separator:abd90eb2f7b38fdda4811bbf8dc4636fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a104e432e4861f271c0499487cbaddeaf" id="r_a104e432e4861f271c0499487cbaddeaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a104e432e4861f271c0499487cbaddeaf">SetWrapAlignment</a> (<a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a> align)</td></tr>
+<tr class="memdesc:a104e432e4861f271c0499487cbaddeaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's current wrap alignment option.  <br /></td></tr>
+<tr class="separator:a104e432e4861f271c0499487cbaddeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a426d7bd38474a70fd58aeee33cf2ea71" id="r_a426d7bd38474a70fd58aeee33cf2ea71"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a426d7bd38474a70fd58aeee33cf2ea71">GetWrapAlignment</a> () const</td></tr>
 <tr class="memdesc:a426d7bd38474a70fd58aeee33cf2ea71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's current wrap alignment option.  <br /></td></tr>
 <tr class="separator:a426d7bd38474a70fd58aeee33cf2ea71"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2681,60 +2681,6 @@ TTF_RenderText_Solid </dd></dl>
 
 </div>
 </div>
-<a id="abd90eb2f7b38fdda4811bbf8dc4636fa" name="abd90eb2f7b38fdda4811bbf8dc4636fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd90eb2f7b38fdda4811bbf8dc4636fa">&#9670;&#160;</a></span>SDL3PP_TTF_VERSION_ATLEAST()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase</a>&lt; T &gt;::SDL3PP_TTF_VERSION_ATLEAST </td>
-          <td>(</td>
-          <td class="paramtype">3&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">4&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">0&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>This updates any TTF_Text objects using this font.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">align</td><td>the new wrap alignment option.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
-<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetFontWrapAlignment </dd></dl>
-
-</div>
-</div>
 <a id="a13aa678e51df5ae076d0734227b6b778" name="a13aa678e51df5ae076d0734227b6b778"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a13aa678e51df5ae076d0734227b6b778">&#9670;&#160;</a></span>SetDirection()</h2>
 
@@ -3198,6 +3144,44 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd>TTF_GetFontStyle </dd></dl>
+
+</div>
+</div>
+<a id="a104e432e4861f271c0499487cbaddeaf" name="a104e432e4861f271c0499487cbaddeaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a104e432e4861f271c0499487cbaddeaf">&#9670;&#160;</a></span>SetWrapAlignment()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase</a>&lt; T &gt;::SetWrapAlignment </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a>&#160;</td>
+          <td class="paramname"><em>align</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This updates any TTF_Text objects using this font.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">align</td><td>the new wrap alignment option.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd>TTF_GetFontWrapAlignment </dd></dl>
 
 </div>
 </div>

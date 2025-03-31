@@ -1010,7 +1010,7 @@ struct FontBase : T
    */
   int GetWeight() const { return TTF_GetFontWeight(T::get()); }
 
-#endif SDL3PP_TTF_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL3PP_TTF_VERSION_ATLEAST(3, 4, 0)
 
   /**
    * Set a font's current wrap alignment option.
