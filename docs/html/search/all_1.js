@@ -16,7 +16,7 @@ var searchData=
   ['aligned_5falloc_13',['aligned_alloc',['../group__CategoryStdinc.html#gae3c9f70ddeadaecb2afeee2b3be34733',1,'SDL']]],
   ['aligned_5ffree_14',['aligned_free',['../group__CategoryStdinc.html#gaaf1efed697d82742be084a1871c95aa2',1,'SDL']]],
   ['and_20conversion_20routines_15',['Pixel Formats and Conversion Routines',['../group__CategoryPixels.html',1,'']]],
-  ['and_20cpu_20information_16',['and cpu information',['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information'],['../todo.html#_todo000010',1,'Platform and CPU Information']]],
+  ['and_20cpu_20information_16',['and cpu information',['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information'],['../todo.html#_todo000006',1,'Platform and CPU Information']]],
   ['and_20i_20o_20abstractions_17',['and i o abstractions',['../group__CategoriesFileIO.html',1,'File and I/O Abstractions'],['../ApiByCategory.html#file-and-io-abstractions',1,'File and I/O Abstractions']]],
   ['and_20shutdown_18',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]],
   ['and_20simple_20drawing_19',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
@@ -57,6 +57,6 @@ var searchData=
   ['atanf_54',['atanf',['../group__CategoryStdinc.html#ga19e239deb9997e2ff33bbfdbaec436b2',1,'SDL']]],
   ['atof_55',['atof',['../group__CategoryStdinc.html#gaeecdd7ec80c303a7474d59b641a892f7',1,'SDL']]],
   ['atoi_56',['atoi',['../group__CategoryStdinc.html#ga756fd0202aa809d537fc01e28b0c7564',1,'SDL']]],
-  ['audio_57',['audio',['../ApiByCategory.html#audio',1,'Audio'],['../todo.html#_todo000007',1,'Audio']]],
+  ['audio_57',['audio',['../ApiByCategory.html#audio',1,'Audio'],['../todo.html#_todo000003',1,'Audio']]],
   ['audiodeviceevent_58',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
 ];
