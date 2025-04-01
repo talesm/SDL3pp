@@ -27500,6 +27500,51 @@
       "entriesBegin": 15,
       "entriesEnd": 1984
     },
+    "SDL3pp_platform.h": {
+      "name": "SDL3pp_platform.h",
+      "doc": "",
+      "entries": {},
+      "docBegin": 1,
+      "docEnd": 1,
+      "entriesBegin": 9,
+      "entriesEnd": 9
+    },
+    "SDL3pp_cpuinfo.h": {
+      "name": "SDL3pp_cpuinfo.h",
+      "doc": "",
+      "entries": {},
+      "docBegin": 1,
+      "docEnd": 1,
+      "entriesBegin": 9,
+      "entriesEnd": 9
+    },
+    "SDL3pp_intrin.h": {
+      "name": "SDL3pp_intrin.h",
+      "doc": "",
+      "entries": {},
+      "docBegin": 1,
+      "docEnd": 1,
+      "entriesBegin": 9,
+      "entriesEnd": 9
+    },
+    "SDL3pp_endian.h": {
+      "name": "SDL3pp_endian.h",
+      "doc": "",
+      "entries": {},
+      "docBegin": 1,
+      "docEnd": 1,
+      "entriesBegin": 9,
+      "entriesEnd": 9
+    },
+    "SDL3pp_bits.h": {
+      "name": "SDL3pp_bits.h",
+      "doc": "",
+      "entries": {},
+      "docBegin": 1,
+      "docEnd": 1,
+      "entriesBegin": 9,
+      "entriesEnd": 9
+    },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
       "doc": "@namespace SDL\n@brief the main namespace where all SDL3pp public functions and types live",

@@ -6768,6 +6768,8 @@ inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
 
 /// @}
 
+
+
 /**
  * @defgroup CategoryBlendmode Blend modes
  *
@@ -7030,6 +7032,10 @@ inline BlendMode ComposeCustomBlendMode(BlendFactor srcColorFactor,
                                     alphaOperation);
 }
 /** @} */
+
+
+
+
 
 /**
  * @defgroup CategoryError Error Handling
@@ -11900,6 +11906,8 @@ inline void RemoveHintCallback(StringParam name,
 
 /// @}
 
+
+
 /**
  * @defgroup CategoryLocale Locale Info
  *
@@ -14899,6 +14907,8 @@ inline Color PixelFormat::Get(Uint32 pixel, PaletteRef palette = nullptr) const
 }
 
 #pragma endregion impl
+
+
 
 /**
  * @defgroup CategoryTime Date and Time
