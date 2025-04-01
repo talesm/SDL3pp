@@ -245,6 +245,7 @@ function update(args) {
     /** @type {Api} */
     api: null,
     baseDir: "",
+    currentApi: null,
   };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -263,6 +264,7 @@ function update(args) {
       case '-a': config.api = readJSONSync(args[++i].replaceAll("\\", '/')); break;
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
       case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
+      case '-s': config.currentApi = readJSONSync(args[++i].replaceAll("\\", '/')); break;
       default:
         throw new Error(`Invalid option ${arg}`);
     }
@@ -411,7 +413,7 @@ function help(args = []) {
         "",
         wrapUsageText(
           `usage: node ${process.argv[1]} `,
-          "update [ [-c] <config-file>] [-a <api-file>] [-d <base-dir>] [--] [target-file]..."
+          "update [ [-c] <config-file>] [-a <api-file>] [-d <base-dir>] [-s <source-api>] [--] [target-file]..."
         ),
         "",
         wrapText(`If no base-dir is defined, we try to deduce the closest \

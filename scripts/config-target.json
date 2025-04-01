@@ -25,8 +25,10 @@
     "SDL3pp_image.h",
     "SDL3pp_ttf.h"
   ],
+  "storeLineNumbers": true,
   "api": "scripts/target.json",
   "baseDir": "include/SDL3pp/",
+  "currentApi": "scripts/current.json",
   "outputFile": "scripts/current.json",
   "sourceApi": "scripts/source.json",
   "transform": "scripts/transform.json"

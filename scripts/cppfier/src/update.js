@@ -7,8 +7,9 @@ const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require
 
 /**
  * @typedef {object} UpdateApiConfig
- * @prop {Api}       api
- * @prop {string}    baseDir
+ * @prop {Api}    api
+ * @prop {string} baseDir
+ * @prop {Api=}   currentApi
  */
 
 /**
@@ -16,7 +17,7 @@ const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require
  * @param {UpdateApiConfig} config
  */
 function updateApi(config) {
-  const { api, baseDir } = config;
+  const { api, baseDir, currentApi } = config;
   const files = Object.keys(api.files);
   let totalChanges = 0;
   for (const name of files) {
@@ -25,7 +26,7 @@ function updateApi(config) {
     const content = readLinesSync(filename);
     const targetFile = api.files[name];
 
-    const fileChanges = updateContent(content, targetFile);
+    const fileChanges = updateContent(content, targetFile, currentApi?.files?.[name]);
     if (fileChanges == 0) continue;
     totalChanges += 1;
     writeLinesSync(filename, content);
@@ -39,13 +40,14 @@ function updateApi(config) {
 
 /**
  * Check and applies changes.
- * @param {string[]} content 
- * @param {ApiFile} targetFile 
+ * @param {string[]}  content 
+ * @param {ApiFile}   targetFile 
+ * @param {ApiFile=}  sourceFile
  * @returns 0 if no changes happened, n > 0 if there are changes
  */
-function updateContent(content, targetFile) {
+function updateContent(content, targetFile, sourceFile) {
   const name = targetFile.name;
-  const sourceFile = parseContent(name, content, { storeLineNumbers: true });
+  sourceFile = sourceFile ?? parseContent(name, content, { storeLineNumbers: true });
   const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
   const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd, "").reverse();
   if (!changes.length) {
