@@ -146,28 +146,6 @@ class Tokenizer {
     } else if (m = /^using\s+([\w:]+)\s*;/.exec(line)) {
       token.kind = "alias";
       token.value = m[1];
-    } else if (m = /^typedef\s+((?:\w+\s*)+\*?)\((?:SDLCALL )?\*(\w+)\)\(([^)]*)(\);)?/.exec(line)) {
-      token.value = m[2];
-      token.kind = "callback";
-      token.type = m[1].trimEnd();
-      token.parameters = m[3]?.trim();
-      if (!m[4]) {
-        let line;
-        while ((line = this.nextLine()) !== null) {
-          if (line.endsWith(");")) {
-            token.parameters += " " + line.slice(line.length - 2);
-            break;
-          }
-          token.parameters += " " + line;
-        }
-      }
-    } else if (m = /^typedef\s+(struct|enum|union)\s+(\w+)?$/.exec(line)) {
-      // @ts-ignore
-      token.kind = m[1];
-      token.value = m[2];
-      if (token.kind == "union") {
-        this.ignoreBody(token.spaces);
-      } else if (!line.endsWith("{")) this.nextLine();
     } else if (m = /^(?:struct|class)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.value = m[1];
