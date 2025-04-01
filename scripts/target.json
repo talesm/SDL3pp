@@ -328,7 +328,7 @@
             ],
             "operator bool": {
               "kind": "function",
-              "type": "",
+              "type": "explicit",
               "immutable": true,
               "constexpr": true,
               "parameters": [],
@@ -18019,7 +18019,7 @@
                   "name": "p"
                 },
                 {
-                  "type": "StringParam",
+                  "type": "std::string_view",
                   "name": "fmt"
                 },
                 {

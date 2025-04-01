@@ -270,9 +270,9 @@ public:
   }
 
   /// True if not zero
-  constexpr operator bool() const
+  constexpr explicit operator bool() const
   {
-    return m_value == std::chrono::nanoseconds{};
+    return m_value != std::chrono::nanoseconds{};
   }
 
   /// Converts to nanoseconds period

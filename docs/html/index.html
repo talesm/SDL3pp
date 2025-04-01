@@ -128,7 +128,7 @@ Example</h1>
 <div class="line">    <span class="keywordflow">return</span> 1;</div>
 <div class="line">  }</div>
 <div class="line">  <span class="keyword">constexpr</span> <a class="code hl_struct" href="structSDL_1_1Point.html">SDL::Point</a> WINDOW_SZ = {400, 400};</div>
-<div class="line">  <span class="keyword">auto</span> [window, renderer] = <a class="code hl_function" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a>(<span class="stringliteral">&quot;Test&quot;</span>, {400, 400});</div>
+<div class="line">  <span class="keyword">auto</span> [window, renderer] = <a class="code hl_function" href="group__CategoryRender.html#ga46a4e94c9436427b1e58a045f9ac177d">SDL::CreateWindowAndRenderer</a>(<span class="stringliteral">&quot;Test&quot;</span>, WINDOW_SZ);</div>
 <div class="line">  <span class="keywordflow">if</span> (!window) {</div>
 <div class="line">    <a class="code hl_function" href="group__CategoryLog.html#ga525492ed0880eb1b6675e101a265623e">SDL::LogUnformatted</a>(<a class="code hl_function" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04">SDL::GetError</a>());</div>
 <div class="line">    <span class="keywordflow">return</span> 1;</div>

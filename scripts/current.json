@@ -383,7 +383,7 @@
               "doc": "",
               "name": "operator bool",
               "kind": "function",
-              "type": "",
+              "type": "explicit",
               "parameters": [],
               "constexpr": true,
               "immutable": true,
@@ -23246,7 +23246,7 @@
                 },
                 {
                   "name": "fmt",
-                  "type": "StringParam"
+                  "type": "std::string_view"
                 },
                 {
                   "name": "args",

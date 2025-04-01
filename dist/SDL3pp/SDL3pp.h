@@ -994,9 +994,9 @@ public:
   }
 
   /// True if not zero
-  constexpr operator bool() const
+  constexpr explicit operator bool() const
   {
-    return m_value == std::chrono::nanoseconds{};
+    return m_value != std::chrono::nanoseconds{};
   }
 
   /// Converts to nanoseconds period
@@ -16131,7 +16131,7 @@ struct DateTime : SDL_DateTime
   DateTime(Time ticks, bool localTime = true)
     : SDL_DateTime(0)
   {
-    SDL_TimeToDateTime(ticks, this, localTime);
+    SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
   }
 
   /// Returns If valid
@@ -31287,7 +31287,7 @@ struct RendererBase : T
    */
   bool SetScale(SDL_FPoint scale)
   {
-    return SDL_SetRenderScale(T::get(), scale);
+    return SDL_SetRenderScale(T::get(), scale.x, scale.y);
   }
 
   /**
@@ -32175,10 +32175,10 @@ struct RendererBase : T
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
-  bool RenderDebugTextFormat(FPoint p, StringParam fmt, ARGS... args)
+  bool RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
   {
-    return RenderDebugText(
-      p, std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+    return RenderDebugText(p,
+                           std::vformat(fmt, std::make_format_args(args...)));
   }
 
   /**

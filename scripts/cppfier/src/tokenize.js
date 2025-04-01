@@ -211,6 +211,10 @@ class Tokenizer {
           case "static": token.static = true; break;
         }
       }
+      if (type === "explicit operator") {
+        type = "explicit";
+        name = "operator " + name;
+      }
       while (type.endsWith(',')) {
         const ind = type.lastIndexOf(' ');
         if (ind === -1) {

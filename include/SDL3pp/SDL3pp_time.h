@@ -73,7 +73,7 @@ struct DateTime : SDL_DateTime
   DateTime(Time ticks, bool localTime = true)
     : SDL_DateTime(0)
   {
-    SDL_TimeToDateTime(ticks, this, localTime);
+    SDL_TimeToDateTime(ticks.ToNS(), this, localTime);
   }
 
   /// Returns If valid

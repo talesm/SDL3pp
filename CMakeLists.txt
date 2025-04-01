@@ -81,19 +81,18 @@ add_custom_command(OUTPUT ${SDL3PP_AMALGAMATION_MAIN}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# Manual tests
-add_executable(example_environment_list WIN32 examples/environment_list.cpp)
-target_link_libraries(example_environment_list PRIVATE SDL3pp)
-add_executable(example_locale_list WIN32 examples/locale_list.cpp)
-target_link_libraries(example_locale_list PRIVATE SDL3pp)
-add_executable(example_main_class WIN32 examples/main_class.cpp)
-target_link_libraries(example_main_class PRIVATE SDL3pp)
-add_executable(example_open_url WIN32 examples/open_url.cpp)
-target_link_libraries(example_open_url PRIVATE SDL3pp)
-add_executable(example_window_with_renderer WIN32 examples/window_with_renderer.cpp)
-target_link_libraries(example_window_with_renderer PRIVATE SDL3pp)
-add_executable(example_window_with_surface WIN32 examples/window_with_surface.cpp)
-target_link_libraries(example_window_with_surface PRIVATE SDL3pp)
+# Examples
+
+file(GLOB exampleSources CONFIGURE_DEPENDS examples/*.cpp)
+foreach(exampleSrc ${exampleSources})
+    string(REGEX MATCH "/([A-Za-z0-9_-]+)\.cpp$" exampleNameMatch ${exampleSrc})
+    string(LENGTH ${exampleNameMatch} exampleNameLength)
+    math(EXPR exampleNameLength "${exampleNameLength} - 5")
+    string(SUBSTRING ${exampleNameMatch} 1 ${exampleNameLength} exampleName)
+
+    add_executable(example_${exampleName} WIN32 ${exampleSrc})
+    target_link_libraries(example_${exampleName} PRIVATE SDL3pp)
+endforeach(exampleSrc ${exampleSources})
 
 # Unit tests
 add_library(test_main OBJECT test/doctest.cpp)

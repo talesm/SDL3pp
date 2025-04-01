@@ -304,10 +304,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf5f20990f4aa8ab99b8bd7639b665dc" id="r_abf5f20990f4aa8ab99b8bd7639b665dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc">RenderDebugText</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> str)</td></tr>
 <tr class="memdesc:abf5f20990f4aa8ab99b8bd7639b665dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw debug text to an SDL_Renderer.  <br /></td></tr>
 <tr class="separator:abf5f20990f4aa8ab99b8bd7639b665dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a561ff5daacc18b6a372bcc62324d33e7" id="r_a561ff5daacc18b6a372bcc62324d33e7"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
-<tr class="memitem:a561ff5daacc18b6a372bcc62324d33e7"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7">RenderDebugTextFormat</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, <a class="el" href="classSDL_1_1StringParam.html">StringParam</a> fmt, ARGS... args)</td></tr>
-<tr class="memdesc:a561ff5daacc18b6a372bcc62324d33e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw debug text to an SDL_Renderer.  <br /></td></tr>
-<tr class="separator:a561ff5daacc18b6a372bcc62324d33e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3916be4001768a8726bb892f771f4ae" id="r_af3916be4001768a8726bb892f771f4ae"><td class="memTemplParams" colspan="2">template&lt;class... ARGS&gt; </td></tr>
+<tr class="memitem:af3916be4001768a8726bb892f771f4ae"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#af3916be4001768a8726bb892f771f4ae">RenderDebugTextFormat</a> (<a class="el" href="structSDL_1_1FPoint.html">FPoint</a> p, std::string_view fmt, ARGS... args)</td></tr>
+<tr class="memdesc:af3916be4001768a8726bb892f771f4ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draw debug text to an SDL_Renderer.  <br /></td></tr>
+<tr class="separator:af3916be4001768a8726bb892f771f4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e5798bee1abea5a16b88b6ab0667c76" id="r_a8e5798bee1abea5a16b88b6ab0667c76"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1RendererBase.html#a8e5798bee1abea5a16b88b6ab0667c76">Destroy</a> ()</td></tr>
 <tr class="memdesc:a8e5798bee1abea5a16b88b6ab0667c76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the rendering context for a window and free all associated textures.  <br /></td></tr>
 <tr class="separator:a8e5798bee1abea5a16b88b6ab0667c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1909,8 +1909,8 @@ template&lt;ObjectBox&lt; SDL_Renderer * &gt; T&gt; </div>
 
 </div>
 </div>
-<a id="a561ff5daacc18b6a372bcc62324d33e7" name="a561ff5daacc18b6a372bcc62324d33e7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a561ff5daacc18b6a372bcc62324d33e7">&#9670;&#160;</a></span>RenderDebugTextFormat()</h2>
+<a id="af3916be4001768a8726bb892f771f4ae" name="af3916be4001768a8726bb892f771f4ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3916be4001768a8726bb892f771f4ae">&#9670;&#160;</a></span>RenderDebugTextFormat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1931,7 +1931,7 @@ template&lt;class... ARGS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classSDL_1_1StringParam.html">StringParam</a>&#160;</td>
+          <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>fmt</em>, </td>
         </tr>
         <tr>

@@ -975,7 +975,7 @@ struct RendererBase : T
    */
   bool SetScale(SDL_FPoint scale)
   {
-    return SDL_SetRenderScale(T::get(), scale);
+    return SDL_SetRenderScale(T::get(), scale.x, scale.y);
   }
 
   /**
@@ -1863,10 +1863,10 @@ struct RendererBase : T
    * @sa SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
    */
   template<class... ARGS>
-  bool RenderDebugTextFormat(FPoint p, StringParam fmt, ARGS... args)
+  bool RenderDebugTextFormat(FPoint p, std::string_view fmt, ARGS... args)
   {
-    return RenderDebugText(
-      p, std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...)));
+    return RenderDebugText(p,
+                           std::vformat(fmt, std::make_format_args(args...)));
   }
 
   /**

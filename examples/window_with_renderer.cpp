@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     return 1;
   }
   constexpr SDL::Point WINDOW_SZ = {400, 400};
-  auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", {400, 400});
+  auto [window, renderer] = SDL::CreateWindowAndRenderer("Test", WINDOW_SZ);
   if (!window) {
     SDL::LogUnformatted(SDL::GetError());
     return 1;

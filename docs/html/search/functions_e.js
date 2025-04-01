@@ -35,7 +35,7 @@ var searchData=
   ['rendercoordinatesfromwindow_32',['RenderCoordinatesFromWindow',['../structSDL_1_1RendererBase.html#a59c7fdbb523366fa5691fa2cd18bf7f3',1,'SDL::RendererBase']]],
   ['rendercoordinatestowindow_33',['RenderCoordinatesToWindow',['../structSDL_1_1RendererBase.html#a4ee953b66b42c5d7672db78aa5a7e735',1,'SDL::RendererBase']]],
   ['renderdebugtext_34',['RenderDebugText',['../structSDL_1_1RendererBase.html#abf5f20990f4aa8ab99b8bd7639b665dc',1,'SDL::RendererBase']]],
-  ['renderdebugtextformat_35',['RenderDebugTextFormat',['../structSDL_1_1RendererBase.html#a561ff5daacc18b6a372bcc62324d33e7',1,'SDL::RendererBase']]],
+  ['renderdebugtextformat_35',['RenderDebugTextFormat',['../structSDL_1_1RendererBase.html#af3916be4001768a8726bb892f771f4ae',1,'SDL::RendererBase']]],
   ['rendererbase_36',['rendererbase',['../structSDL_1_1RendererBase.html#ab46ac713dd82379701bb276f3d081d92',1,'SDL::RendererBase::RendererBase(SurfaceRef surface)'],['../structSDL_1_1RendererBase.html#ac2e35780944151019d207ce15e91e6bc',1,'SDL::RendererBase::RendererBase(PropertiesRef props)'],['../structSDL_1_1RendererBase.html#a40139cb8ccb05de0bfa1de252a16a413',1,'SDL::RendererBase::RendererBase(WindowRef window, StringParam name)'],['../structSDL_1_1RendererBase.html#a6cd596ee84afc3ead3c26a6c429a797c',1,'SDL::RendererBase::RendererBase(WindowRef window)']]],
   ['renderfillrect_37',['RenderFillRect',['../structSDL_1_1RendererBase.html#a18cf4e2266ac4aebb2cbe9578f019aa8',1,'SDL::RendererBase']]],
   ['renderfillrects_38',['RenderFillRects',['../structSDL_1_1RendererBase.html#aa112dbeabca41279666106c3a3c4adc5',1,'SDL::RendererBase']]],
