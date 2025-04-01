@@ -192,21 +192,35 @@ if (DOXYGEN_FOUND)
     )
 endif (DOXYGEN_FOUND)
 
-# Refresh the headers
+#########################
+## Refresh the headers ##
+#########################
+
+# Source SDL and libs state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/source.json
     COMMAND node scripts/cppfier xml scripts/config-source.json ${SDL3PP_PARSE_DIR_PARAMS}
     DEPENDS ${SDL3PP_ORIGINAL_HEADERS} scripts/config-source.json SDL3pp_SdlXml SDL3pp_SdlImageXml SDL3pp_SdlTtfXml
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
+
+# Current SDL3pp state
+add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/current.json
+    COMMAND node scripts/cppfier parse scripts/config-target.json
+    DEPENDS ${SDL3PP_WRAPPED_HEADERS} scripts/config-target.json
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+)
+
+# Target SDL3pp state
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/scripts/target.json
     COMMAND node scripts/cppfier transform scripts/config-target.json
     DEPENDS ${PROJECT_SOURCE_DIR}/scripts/source.json scripts/config-target.json ${PROJECT_SOURCE_DIR}/scripts/transform.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
+# Merge source and current towards target
 add_custom_target(SDL3pp_refresh
     COMMAND node scripts/cppfier update scripts/config-target.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json
+    DEPENDS ${PROJECT_SOURCE_DIR}/scripts/target.json ${PROJECT_SOURCE_DIR}/scripts/current.json
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
