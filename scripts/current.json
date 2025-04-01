@@ -27978,12 +27978,136 @@
     },
     "SDL3pp_intrin.h": {
       "name": "SDL3pp_intrin.h",
-      "doc": "",
-      "entries": {},
-      "docBegin": 1,
-      "docEnd": 1,
-      "entriesBegin": 9,
-      "entriesEnd": 9
+      "doc": "@defgroup CategoryIntrinsics Category Intrinsics\n\nSDL does some preprocessor gymnastics to determine if any CPU-specific\ncompiler intrinsics are available, as this is not necessarily an easy thing\nto calculate, and sometimes depends on quirks of a system, versions of\nbuild tools, and other external forces.\n\nApps including SDL's headers will be able to check consistent preprocessor\ndefinitions to decide if it's safe to use compiler intrinsics for a\nspecific CPU architecture. This check only tells you that the compiler is\ncapable of using those intrinsics; at runtime, you should still check if\nthey are available on the current system with the\n[CPU info functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo), such as\nHasSSE() or HasNEON(). Otherwise, the process might crash for using an\nunsupported CPU instruction.\n\nSDL only sets preprocessor defines for CPU intrinsics if they are\nsupported, so apps should check with `#ifdef` and not `#if`.\n\nSDL will also include the appropriate instruction-set-specific support\nheaders, so if SDL decides to define SDL_SSE2_INTRINSICS, it will also\n`#include <emmintrin.h>` as well.\n\n@{",
+      "entries": {
+        "SDL3PP_LSX_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Loongarch LSX intrinsics.\n\nIf this macro is defined, SDL will have already included `<lsxintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_LASX_INTRINSICS",
+          "name": "SDL3PP_LSX_INTRINSICS",
+          "kind": "def",
+          "begin": 39,
+          "decl": 48,
+          "end": 50
+        },
+        "SDL3PP_LASX_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Loongarch LSX intrinsics.\n\nIf this macro is defined, SDL will have already included `<lasxintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_LASX_INTRINSICS",
+          "name": "SDL3PP_LASX_INTRINSICS",
+          "kind": "def",
+          "begin": 50,
+          "decl": 59,
+          "end": 61
+        },
+        "SDL3PP_NEON_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports ARM NEON intrinsics.\n\nIf this macro is defined, SDL will have already included `<armintr.h>`\n`<arm_neon.h>`, `<arm64intr.h>`, and `<arm64_neon.h>`, as appropriate.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL3PP_NEON_INTRINSICS",
+          "kind": "def",
+          "begin": 61,
+          "decl": 69,
+          "end": 71
+        },
+        "SDL3PP_ALTIVEC_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports PowerPC Altivec intrinsics.\n\nIf this macro is defined, SDL will have already included `<altivec.h>`\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL3PP_ALTIVEC_INTRINSICS",
+          "kind": "def",
+          "begin": 71,
+          "decl": 78,
+          "end": 80
+        },
+        "SDL3PP_MMX_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel MMX intrinsics.\n\nIf this macro is defined, SDL will have already included `<mmintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_SSE_INTRINSICS",
+          "name": "SDL3PP_MMX_INTRINSICS",
+          "kind": "def",
+          "begin": 80,
+          "decl": 89,
+          "end": 91
+        },
+        "SDL3PP_SSE_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel SSE intrinsics.\n\nIf this macro is defined, SDL will have already included `<xmmintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_SSE2_INTRINSICS\n@sa SDL_SSE3_INTRINSICS\n@sa SDL_SSE4_1_INTRINSICS\n@sa SDL_SSE4_2_INTRINSICS",
+          "name": "SDL3PP_SSE_INTRINSICS",
+          "kind": "def",
+          "begin": 91,
+          "decl": 103,
+          "end": 105
+        },
+        "SDL3PP_SSE2_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel SSE2 intrinsics.\n\nIf this macro is defined, SDL will have already included `<emmintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_SSE_INTRINSICS\n@sa SDL_SSE3_INTRINSICS\n@sa SDL_SSE4_1_INTRINSICS\n@sa SDL_SSE4_2_INTRINSICS",
+          "name": "SDL3PP_SSE2_INTRINSICS",
+          "kind": "def",
+          "begin": 105,
+          "decl": 117,
+          "end": 119
+        },
+        "SDL3PP_SSE3_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel SSE3 intrinsics.\n\nIf this macro is defined, SDL will have already included `<pmmintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_SSE_INTRINSICS\n@sa SDL_SSE2_INTRINSICS\n@sa SDL_SSE4_1_INTRINSICS\n@sa SDL_SSE4_2_INTRINSICS",
+          "name": "SDL3PP_SSE3_INTRINSICS",
+          "kind": "def",
+          "begin": 119,
+          "decl": 131,
+          "end": 133
+        },
+        "SDL3PP_SSE4_1_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel SSE4.1 intrinsics.\n\nIf this macro is defined, SDL will have already included `<smmintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_SSE_INTRINSICS\n@sa SDL_SSE2_INTRINSICS\n@sa SDL_SSE3_INTRINSICS\n@sa SDL_SSE4_2_INTRINSICS",
+          "name": "SDL3PP_SSE4_1_INTRINSICS",
+          "kind": "def",
+          "begin": 133,
+          "decl": 145,
+          "end": 147
+        },
+        "SDL3PP_SSE4_2_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel SSE4.2 intrinsics.\n\nIf this macro is defined, SDL will have already included `<nmmintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_SSE_INTRINSICS\n@sa SDL_SSE2_INTRINSICS\n@sa SDL_SSE3_INTRINSICS\n@sa SDL_SSE4_1_INTRINSICS",
+          "name": "SDL3PP_SSE4_2_INTRINSICS",
+          "kind": "def",
+          "begin": 147,
+          "decl": 159,
+          "end": 161
+        },
+        "SDL3PP_AVX_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel AVX intrinsics.\n\nIf this macro is defined, SDL will have already included `<immintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_AVX2_INTRINSICS\n@sa SDL_AVX512F_INTRINSICS",
+          "name": "SDL3PP_AVX_INTRINSICS",
+          "kind": "def",
+          "begin": 161,
+          "decl": 171,
+          "end": 173
+        },
+        "SDL3PP_AVX2_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel AVX2 intrinsics.\n\nIf this macro is defined, SDL will have already included `<immintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_AVX_INTRINSICS\n@sa SDL_AVX512F_INTRINSICS",
+          "name": "SDL3PP_AVX2_INTRINSICS",
+          "kind": "def",
+          "begin": 173,
+          "decl": 183,
+          "end": 185
+        },
+        "SDL3PP_AVX512F_INTRINSICS": {
+          "doc": "Defined if (and only if) the compiler supports Intel AVX-512F intrinsics.\n\nAVX-512F is also sometimes referred to as \"AVX-512 Foundation.\"\n\nIf this macro is defined, SDL will have already included `<immintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_AVX_INTRINSICS\n@sa SDL_AVX2_INTRINSICS",
+          "name": "SDL3PP_AVX512F_INTRINSICS",
+          "kind": "def",
+          "begin": 185,
+          "decl": 197,
+          "end": 199
+        },
+        "SDL3PP_HAS_TARGET_ATTRIBS": {
+          "doc": "A macro to decide if the compiler supports `__attribute__((target))`.\n\nEven though this is defined in SDL's public headers, it is generally not\nused directly by apps. Apps should probably just use SDL_TARGETING\ndirectly, instead.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_TARGETING",
+          "name": "SDL3PP_HAS_TARGET_ATTRIBS",
+          "kind": "def",
+          "begin": 199,
+          "decl": 210,
+          "end": 212
+        },
+        "SDL3PP_TARGETING": {
+          "doc": "A macro to tag a function as targeting a specific CPU architecture.\n\nThis is a hint to the compiler that a function should be built with support\nfor a CPU instruction set that might be different than the rest of the\nprogram.\n\nThe particulars of this are explained in the GCC documentation:\n\nhttps://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-target-function-attribute\n\nAn example of using this feature is to turn on SSE2 support for a specific\nfunction, even if the rest of the source code is not compiled to use SSE2\ncode:\n\n```c\n#ifdef SDL_SSE2_INTRINSICS\nstatic void SDL_TARGETING(\"sse2\") DoSomethingWithSSE2(char *x) {\n   ...use SSE2 intrinsic functions, etc...\n}\n#endif\n\n// later...\n#ifdef SDL_SSE2_INTRINSICS\nif (SDL_HasSSE2()) {\n    DoSomethingWithSSE2(str);\n}\n#endif\n```\n\nThe application is, on a whole, built without SSE2 instructions, so it will\nrun on Intel machines that don't support SSE2. But then at runtime, it\nchecks if the system supports the instructions, and then calls into a\nfunction that uses SSE2 opcodes. The ifdefs make sure that this code isn't\nused on platforms that don't have SSE2 at all.\n\nOn compilers without target support, this is defined to nothing.\n\nThis symbol is used by SDL internally, but apps and other libraries are\nwelcome to use it for their own interfaces as well.\n\n@since This macro is available since SDL 3.2.0.",
+          "name": "SDL3PP_TARGETING",
+          "kind": "def",
+          "parameters": [
+            "x"
+          ],
+          "begin": 214,
+          "decl": 257,
+          "end": 259
+        }
+      },
+      "docBegin": 10,
+      "docEnd": 37,
+      "entriesBegin": 10,
+      "entriesEnd": 259
     },
     "SDL3pp_endian.h": {
       "name": "SDL3pp_endian.h",
