@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['i_20o_20abstractions_0',['i o abstractions',['../ApiByCategory.html#file-and-io-abstractions',1,'File and I/O Abstractions'],['../group__CategoriesFileIO.html',1,'File and I/O Abstractions']]],
+  ['i_20o_20abstractions_0',['i o abstractions',['../group__CategoriesFileIO.html',1,'File and I/O Abstractions'],['../ApiByCategory.html#file-and-io-abstractions',1,'File and I/O Abstractions']]],
   ['i_20o_20streams_1',['I/O Streams',['../group__CategoryIOStream.html',1,'']]],
   ['iconv_2',['iconv',['../group__CategoryStdinc.html#ga95fcbc65252fd494d78ce162e1340bea',1,'SDL::IConv'],['../structSDL_1_1IConvBase.html#aaf6d92aadf3ee0b63e487d5ee2bce12e',1,'SDL::IConvBase::iconv()']]],
   ['iconv_5fstring_3',['iconv_string',['../group__CategoryStdinc.html#gae765b6ec212ab3234f6645eb3c53978a',1,'SDL']]],
@@ -13,9 +13,9 @@ var searchData=
   ['images_20from_20several_20formats_10',['Load images from several formats',['../group__CategorySDLImage.html',1,'']]],
   ['imagetype_11',['ImageType',['../group__CategorySDLTTF.html#ga98bfeba14cf51c2601ce84f001e074b8',1,'SDL']]],
   ['img_5fversion_12',['IMG_Version',['../group__CategorySDLImage.html#ga1e0107db9eb6bcb7870bb7863a82c89b',1,'SDL']]],
-  ['immediate_20callback_13',['immediate callback',['../todo.html#_todo000002',1,'Immediate callback'],['../callback.html#immediate-callback',1,'Immediate callback']]],
+  ['immediate_20callback_13',['immediate callback',['../todo.html#_todo000007',1,'Immediate callback'],['../callback.html#immediate-callback',1,'Immediate callback']]],
   ['info_14',['Locale Info',['../group__CategoryLocale.html',1,'']]],
-  ['information_15',['information',['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information'],['../group__CategoriesPlatformAndCpuInformation.html',1,'Platform and CPU Information']]],
+  ['information_15',['information',['../group__CategoriesPlatformAndCpuInformation.html',1,'Platform and CPU Information'],['../ApiByCategory.html#platform-and-cpu-information',1,'Platform and CPU Information']]],
   ['init_5faudio_16',['INIT_AUDIO',['../group__CategoryInit.html#ga65bdd3a913bd08eea41fd70fb49e5079',1,'SDL']]],
   ['init_5fcamera_17',['INIT_CAMERA',['../group__CategoryInit.html#gaecde345a1ce196a269e1f25c70b9878a',1,'SDL']]],
   ['init_5fgamepad_18',['INIT_GAMEPAD',['../group__CategoryInit.html#gad27cfffc691d96fe45bcca2daf80a83b',1,'SDL']]],

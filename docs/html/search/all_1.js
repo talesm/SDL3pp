@@ -59,6 +59,6 @@ var searchData=
   ['atanf_56',['atanf',['../group__CategoryStdinc.html#ga19e239deb9997e2ff33bbfdbaec436b2',1,'SDL']]],
   ['atof_57',['atof',['../group__CategoryStdinc.html#gaeecdd7ec80c303a7474d59b641a892f7',1,'SDL']]],
   ['atoi_58',['atoi',['../group__CategoryStdinc.html#ga756fd0202aa809d537fc01e28b0c7564',1,'SDL']]],
-  ['audio_59',['audio',['../ApiByCategory.html#audio',1,'Audio'],['../todo.html#_todo000006',1,'Audio']]],
+  ['audio_59',['audio',['../ApiByCategory.html#audio',1,'Audio'],['../todo.html#_todo000004',1,'Audio']]],
   ['audiodeviceevent_60',['AudioDeviceEvent',['../group__CategoryEvents.html#ga6e2962a3fb4651fd34bdef5d11d22ed4',1,'SDL']]]
 ];

@@ -263,7 +263,7 @@ var searchData=
   ['glcontextresetnotification_260',['GLContextResetNotification',['../group__CategoryVideo.html#ga26ce7467913703fa1f7828bec5aa264d',1,'SDL']]],
   ['glprofile_261',['GLProfile',['../group__CategoryVideo.html#gadefdc979b086832fc622f980c11c02c1',1,'SDL']]],
   ['goals_262',['Goals',['../index.html#goals',1,'']]],
-  ['gpu_263',['gpu',['../todo.html#_todo000007',1,'GPU'],['../ApiByCategory.html#gpu',1,'GPU']]],
+  ['gpu_263',['gpu',['../todo.html#_todo000005',1,'GPU'],['../ApiByCategory.html#gpu',1,'GPU']]],
   ['gpu_5ftextengine_5fwinding_5finvalid_264',['GPU_TEXTENGINE_WINDING_INVALID',['../group__CategorySDLTTF.html#gabdc8227b3b317ba7f71aabee6444c935',1,'SDL']]],
   ['gpuatlasdrawsequence_265',['GPUAtlasDrawSequence',['../group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1',1,'SDL']]],
   ['gputextenginewinding_266',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#gad0a4a2ecc2605b00899e6442ff11e410',1,'SDL']]],
