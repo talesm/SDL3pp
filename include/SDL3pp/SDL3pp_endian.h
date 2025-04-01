@@ -6,6 +6,319 @@
 
 namespace SDL {
 
+/**
+ * @defgroup CategoryEndian Byte Order and Byte Swapping
+ *
+ * Functions converting endian-specific values to different byte orders.
+ *
+ * These functions either unconditionally swap byte order (SDL_Swap16,
+ * SDL_Swap32, SDL_Swap64, SDL_SwapFloat), or they swap to/from the system's
+ * native byte order (SDL_Swap16LE, SDL_Swap16BE, SDL_Swap32LE, SDL_Swap32BE,
+ * SDL_Swap32LE, SDL_Swap32BE, SDL_SwapFloatLE, SDL_SwapFloatBE). In the
+ * latter case, the functionality is provided by macros that become no-ops if
+ * a swap isn't necessary: on an x86 (littleendian) processor, SDL_Swap32LE
+ * does nothing, but SDL_Swap32BE reverses the bytes of the data. On a PowerPC
+ * processor (bigendian), the macros behavior is reversed.
+ *
+ * The swap routines are inline functions, and attempt to use compiler
+ * intrinsics, inline assembly, and other magic to make byteswapping
+ * efficient.
+ *
+ * @{
+ */
+
+/**
+ * A value to represent littleendian byteorder.
+ *
+ * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+ * platform's byte ordering:
+ *
+ * ```c
+ * #if SDL_BYTEORDER == SDL_LIL_ENDIAN
+ * SDL_Log("This system is littleendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_BYTEORDER
+ * @sa SDL_BIG_ENDIAN
+ */
+#define SDL3PP_LIL_ENDIAN SDL_LIL_ENDIAN
+
+/**
+ * A value to represent bigendian byteorder.
+ *
+ * This is used with the preprocessor macro SDL_BYTEORDER, to determine a
+ * platform's byte ordering:
+ *
+ * ```c
+ * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+ * SDL_Log("This system is bigendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_BYTEORDER
+ * @sa SDL_LIL_ENDIAN
+ */
+#define SDL3PP_BIG_ENDIAN SDL_BIG_ENDIAN
+
+/**
+ * A macro that reports the target system's byte order.
+ *
+ * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
+ * values in the future, if something else becomes popular). This can be
+ * tested with the preprocessor, so decisions can be made at compile time.
+ *
+ * ```c
+ * #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+ * SDL_Log("This system is bigendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LIL_ENDIAN
+ * @sa SDL_BIG_ENDIAN
+ */
+#define SDL3PP_BYTEORDER SDL_BYTEORDER
+
+/**
+ * A macro that reports the target system's floating point word order.
+ *
+ * This is set to either SDL_LIL_ENDIAN or SDL_BIG_ENDIAN (and maybe other
+ * values in the future, if something else becomes popular). This can be
+ * tested with the preprocessor, so decisions can be made at compile time.
+ *
+ * ```c
+ * #if SDL_FLOATWORDORDER == SDL_BIG_ENDIAN
+ * SDL_Log("This system's floats are bigendian.");
+ * #endif
+ * ```
+ *
+ * @since This macro is available since SDL 3.2.0.
+ *
+ * @sa SDL_LIL_ENDIAN
+ * @sa SDL_BIG_ENDIAN
+ */
+#define SDL3PP_FLOATWORDORDER SDL_FLOATWORDORDER
+
+/**
+ * Byte-swap a floating point number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use SDL_SwapFloatLE or
+ * SDL_SwapFloatBE instead, in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns x, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr float SwapFloat(float x) { return SDL_SwapFloat(x); }
+
+/**
+ * Byte-swap an unsigned 16-bit number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use SDL_Swap16LE or SDL_Swap16BE
+ * instead, in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns `x`, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint16 Swap16(Uint16 x) { return SDL_Swap16(x); }
+
+/**
+ * Byte-swap an unsigned 32-bit number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use SDL_Swap32LE or SDL_Swap32BE
+ * instead, in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns `x`, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint32 Swap32(Uint32 x) { return SDL_Swap32(x); }
+
+/**
+ * Byte-swap an unsigned 64-bit number.
+ *
+ * This will always byte-swap the value, whether it's currently in the native
+ * byteorder of the system or not. You should use SDL_Swap64LE or SDL_Swap64BE
+ * instead, in most cases.
+ *
+ * Note that this is a forced-inline function in a header, and not a public
+ * API function available in the SDL library (which is to say, the code is
+ * embedded in the calling program and the linker and dynamic loader will not
+ * be able to find this function inside SDL itself).
+ *
+ * @param x the value to byte-swap.
+ * @returns `x`, with its bytes in the opposite endian order.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+constexpr Uint32 Swap64(Uint64 x) { return SDL_Swap64(x); }
+
+/**
+ * Swap a 16-bit value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint16 Swap16LE(Uint16 x) { return SDL_Swap16LE(x); }
+
+/**
+ * Swap a 32-bit value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint32 Swap32LE(Uint32 x) { return SDL_Swap32LE(x); }
+
+/**
+ * Swap a 64-bit value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint64 Swap64LE(Uint64 x) { return SDL_Swap64LE(x); }
+
+/**
+ * Swap a floating point value from littleendian to native byte order.
+ *
+ * If this is running on a littleendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in littleendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr float SwapFloatLE(float x) { return SDL_SwapFloatLE(x); }
+
+/**
+ * Swap a 16-bit value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint16 Swap16BE(Uint16 x) { return SDL_Swap16BE(x); }
+
+/**
+ * Swap a 32-bit value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint32 Swap32BE(Uint32 x) { return SDL_Swap32BE(x); }
+
+/**
+ * Swap a 64-bit value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr Uint64 Swap64BE(Uint64 x) { return SDL_Swap64BE(x); }
+
+/**
+ * Swap a floating point value from bigendian to native byte order.
+ *
+ * If this is running on a bigendian system, `x` is returned unchanged.
+ *
+ * This macro never references `x` more than once, avoiding side effects.
+ *
+ * @param x the value to swap, in bigendian byte order.
+ * @returns `x` in native byte order.
+ *
+ * @threadsafety It is safe to call this macro from any thread.
+ *
+ * @since This macro is available since SDL 3.2.0.
+ */
+constexpr float SwapFloatBE(float x) { return SDL_SwapFloatBE(x); }
+
+/// @}
+
 } // namespace SDL
 
 #endif /* SDL3PP_ENDIAN_H_ */

@@ -5379,6 +5379,104 @@
         }
       }
     },
+    "SDL_endian.h": {
+      "ignoreEntries": [
+        "HAS_BUILTIN_BSWAP16",
+        "HAS_BUILTIN_BSWAP32",
+        "HAS_BUILTIN_BSWAP64",
+        "HAS_BROKEN_BSWAP"
+      ],
+      "transform": {
+        "SDL_Swap16LE": {
+          "kind": "function",
+          "type": "Uint16",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint16",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap16BE": {
+          "kind": "function",
+          "type": "Uint16",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint16",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap32LE": {
+          "kind": "function",
+          "type": "Uint32",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint32",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap32BE": {
+          "kind": "function",
+          "type": "Uint32",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint32",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap64LE": {
+          "kind": "function",
+          "type": "Uint64",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint64",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap64BE": {
+          "kind": "function",
+          "type": "Uint64",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint64",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_SwapFloatLE": {
+          "kind": "function",
+          "type": "float",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "float",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_SwapFloatBE": {
+          "kind": "function",
+          "type": "float",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "float",
+              "name": "x"
+            }
+          ]
+        }
+      }
+    },
     "SDL_init.h": {
       "ignoreEntries": [
         "SDL_InitSubSystem"

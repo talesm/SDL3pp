@@ -2,8 +2,8 @@ var searchData=
 [
   ['basics_0',['basics',['../ApiByCategory.html#basics',1,'Basics'],['../group__CategoriesBasics.html',1,'Basics']]],
   ['begin_1',['begin',['../structSDL_1_1TextBase.html#a6f722fb0a4228daeb072d0963d9dbb3a',1,'SDL::TextBase::begin()'],['../classSDL_1_1ArrayBase.html#a738c40207f2ce6edab17ac09cb723bb4',1,'SDL::ArrayBase::begin()']]],
-  ['bitmaporder_2',['BitmapOrder',['../group__CategoryPixels.html#gae9b29b1df0025781f2edb0ff695f8586',1,'SDL']]],
-  ['bits_3',['Category Bits',['../group__CategoryBits.html',1,'']]],
+  ['bit_20manipulation_2',['Bit Manipulation',['../group__CategoryBits.html',1,'']]],
+  ['bitmaporder_3',['BitmapOrder',['../group__CategoryPixels.html#gae9b29b1df0025781f2edb0ff695f8586',1,'SDL']]],
   ['blend_20modes_4',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
   ['blendfactor_5',['BlendFactor',['../group__CategoryBlendmode.html#ga34d032507f571bcbdc683ad23d55176b',1,'SDL']]],
   ['blendfactor_5fdst_5falpha_6',['BLENDFACTOR_DST_ALPHA',['../group__CategoryBlendmode.html#gad72530d010285655ce8ee3861400cea7',1,'SDL']]],
@@ -42,5 +42,6 @@ var searchData=
   ['bsearch_39',['bsearch',['../group__CategoryStdinc.html#gada62aea13b8eceffa3e57359e124e541',1,'SDL']]],
   ['bsearch_5fr_40',['bsearch_r',['../group__CategoryStdinc.html#gaf22f982867b4598c8caa2de8f5a9e0e4',1,'SDL']]],
   ['building_41',['Building',['../index.html#building',1,'']]],
-  ['by_20category_42',['API by Category',['../ApiByCategory.html',1,'']]]
+  ['by_20category_42',['API by Category',['../ApiByCategory.html',1,'']]],
+  ['byte_20order_20and_20byte_20swapping_43',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
 ];

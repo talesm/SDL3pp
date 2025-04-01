@@ -8,7 +8,7 @@
 namespace SDL {
 
 /**
- * @defgroup CategoryBits Category Bits
+ * @defgroup CategoryBits Bit Manipulation
  *
  * Functions for fiddling with bits and bitmasks.
  *
