@@ -33,10 +33,11 @@ var searchData=
   ['modes_30',['Blend modes',['../group__CategoryBlendmode.html',1,'']]],
   ['modf_31',['modf',['../group__CategoryStdinc.html#ga4c97858f63954904f2037d7bc81b2681',1,'SDL']]],
   ['modff_32',['modff',['../group__CategoryStdinc.html#ga0108470ee7d88fa093ddf12185060c10',1,'SDL']]],
-  ['mousebuttonevent_33',['MouseButtonEvent',['../group__CategoryEvents.html#ga74309768261a3e9b6ea0f512fa5acacc',1,'SDL']]],
-  ['mousedeviceevent_34',['MouseDeviceEvent',['../group__CategoryEvents.html#ga45f1c9410b70b9d5e5531a1acefa2055',1,'SDL']]],
-  ['mousemotionevent_35',['MouseMotionEvent',['../group__CategoryEvents.html#gab544bd86a6b21b3ebef030f92d1c8c28',1,'SDL']]],
-  ['mousewheelevent_36',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]],
-  ['murmur3_5f32_37',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
-  ['mustlock_38',['MustLock',['../structSDL_1_1SurfaceBase.html#a6b0bf68e5aa38621f0a9777cca093d9e',1,'SDL::SurfaceBase']]]
+  ['mostsignificantbitindex32_33',['MostSignificantBitIndex32',['../group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee',1,'SDL']]],
+  ['mousebuttonevent_34',['MouseButtonEvent',['../group__CategoryEvents.html#ga74309768261a3e9b6ea0f512fa5acacc',1,'SDL']]],
+  ['mousedeviceevent_35',['MouseDeviceEvent',['../group__CategoryEvents.html#ga45f1c9410b70b9d5e5531a1acefa2055',1,'SDL']]],
+  ['mousemotionevent_36',['MouseMotionEvent',['../group__CategoryEvents.html#gab544bd86a6b21b3ebef030f92d1c8c28',1,'SDL']]],
+  ['mousewheelevent_37',['MouseWheelEvent',['../group__CategoryEvents.html#gac44f32e104cbfb90d50082136405d4ba',1,'SDL']]],
+  ['murmur3_5f32_38',['murmur3_32',['../group__CategoryStdinc.html#gaa75ce9d0d0b590cd55fce1604bb40824',1,'SDL']]],
+  ['mustlock_39',['MustLock',['../structSDL_1_1SurfaceBase.html#a6b0bf68e5aa38621f0a9777cca093d9e',1,'SDL::SurfaceBase']]]
 ];

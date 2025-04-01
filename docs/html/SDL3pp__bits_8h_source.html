@@ -82,17 +82,35 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">SDL3pp_bits.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef SDL3PP_BITS_H_</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define SDL3PP_BITS_H_</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;SDL3/SDL_bits.h&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;SDL3pp_stdinc.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>} <span class="comment">// namespace SDL</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_BITS_H_ */</span><span class="preprocessor"></span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#ifndef SDL3PP_BITS_H_</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#define SDL3PP_BITS_H_</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;SDL3/SDL_bits.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;SDL3pp_stdinc.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceSDL.html">SDL</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee">   36</a></span><span class="keyword">constexpr</span> <span class="keywordtype">int</span> <a class="code hl_function" href="group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee">MostSignificantBitIndex32</a>(Uint32 x)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordflow">return</span> SDL_MostSignificantBitIndex32(x);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="group__CategoryBits.html#gade1c444118b2c8286b34617fac25ec5d">   59</a></span><span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group__CategoryBits.html#gade1c444118b2c8286b34617fac25ec5d">HasExactlyOneBitSet32</a>(Uint32 x)</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">return</span> SDL_HasExactlyOneBitSet32(x);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>} <span class="comment">// namespace SDL</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_BITS_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__CategoryBits_html_gaa2f08a2af2962e1673e65eeeb4b24bee"><div class="ttname"><a href="group__CategoryBits.html#gaa2f08a2af2962e1673e65eeeb4b24bee">SDL::MostSignificantBitIndex32</a></div><div class="ttdeci">constexpr int MostSignificantBitIndex32(Uint32 x)</div><div class="ttdoc">Get the index of the most significant (set) bit in a 32-bit number.</div><div class="ttdef"><b>Definition</b> SDL3pp_bits.h:36</div></div>
+<div class="ttc" id="agroup__CategoryBits_html_gade1c444118b2c8286b34617fac25ec5d"><div class="ttname"><a href="group__CategoryBits.html#gade1c444118b2c8286b34617fac25ec5d">SDL::HasExactlyOneBitSet32</a></div><div class="ttdeci">constexpr bool HasExactlyOneBitSet32(Uint32 x)</div><div class="ttdoc">Determine if a unsigned 32-bit value has exactly one bit set.</div><div class="ttdef"><b>Definition</b> SDL3pp_bits.h:59</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

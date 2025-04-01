@@ -19575,6 +19575,36 @@
         }
       }
     },
+    "SDL_bits.h": {
+      "name": "SDL_bits.h",
+      "doc": "# CategoryBits\n\nFunctions for fiddling with bits and bitmasks.",
+      "entries": {
+        "SDL_MostSignificantBitIndex32": {
+          "doc": "Get the index of the most significant (set) bit in a 32-bit number.\n\nResult is undefined when called with 0. This operation can also be stated\nas \"count leading zeroes\" and \"log base 2\".\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the 32-bit value to examine.\n\\returns the index of the most significant bit, or -1 if the value is 0.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_MostSignificantBitIndex32",
+          "kind": "function",
+          "type": "int",
+          "parameters": [
+            {
+              "name": "x",
+              "type": "Uint32"
+            }
+          ]
+        },
+        "SDL_HasExactlyOneBitSet32": {
+          "doc": "Determine if a unsigned 32-bit value has exactly one bit set.\n\nIf there are no bits set (`x` is zero), or more than one bit set, this\nreturns false. If any one bit is exclusively set, this returns true.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n\\param x the 32-bit value to examine.\n\\returns true if exactly one bit is set in `x`, false otherwise.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.",
+          "name": "SDL_HasExactlyOneBitSet32",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "x",
+              "type": "Uint32"
+            }
+          ]
+        }
+      }
+    },
     "SDL_init.h": {
       "name": "SDL_init.h",
       "doc": "# CategoryInit\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call SDL_Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `SDL_INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call SDL_Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSDL_SetAppMetadataProperty().",

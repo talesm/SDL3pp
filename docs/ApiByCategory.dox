@@ -87,7 +87,7 @@ Platform Detection 	                | SDL3pp_platform.h
 @ref CategoryCPUInfo  	            | SDL3pp_cpuinfo.h
 Compiler Intrinsics Detection 	    | SDL3pp_intrin.h
 Byte Order and Byte Swapping 	      | SDL3pp_endian.h
-Bit Manipulation 	                  | SDL3pp_bits.h 
+@ref CategoryBits	                  | SDL3pp_bits.h 
 
 ## Additional Functionality
 
@@ -170,6 +170,7 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesPlatformAndCpuInformation Platform and CPU Information
 @{
 @addtogroup CategoryCPUInfo
+@addtogroup CategoryBits
 @}
 
 @defgroup CategoriesAdditionalFunctionality Additional Functionality
