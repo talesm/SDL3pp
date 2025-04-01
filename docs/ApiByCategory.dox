@@ -33,11 +33,11 @@ Camera Support           | SDL3pp_camera.h
 
 ## Force Feedback ("Haptic")
 
-@todo Plan and implement.
+@todo Plan and implement Force Feedback.
 
 ## Audio
 
-@todo Plan and implement.
+@todo Plan and implement Audio.
 
 ## Input Events
 
@@ -57,11 +57,11 @@ HIDAPI                   | SDL3pp_hidapi.h
 
 ## GPU
 
-@todo Plan and implement. This is big and need some similarly big time to implement.
+@todo Plan and implement GPU. This is big and need some similarly big time to implement.
 
 ## Threads
 
-@todo Plan and implement. Not priority as C++ stdlib already has similar facilities.
+@todo Plan and implement Threads. Not priority as C++ stdlib already has similar facilities.
 
 ## Time
 
