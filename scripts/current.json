@@ -28823,6 +28823,105 @@
       "entriesEnd": 64,
       "namespace": "SDL"
     },
+    "SDL3pp_power.h": {
+      "name": "SDL3pp_power.h",
+      "doc": "@defgroup CategoryPower Power Management Status\n\nSDL power management routines.\n\nThere is a single function in this category: GetPowerInfo().\n\nThis function is useful for games on the go. This allows an app to know if\nit's running on a draining battery, which can be useful if the app wants to\nreduce processing, or perhaps framerate, to extend the duration of the\nbattery's charge. Perhaps the app just wants to show a battery meter when\nfullscreen, or alert the user when the power is getting extremely low, so\nthey can save their game.\n\n@{",
+      "entries": {
+        "PowerState": {
+          "doc": "The basic state for the system's power supply.\n\nThese are results returned by GetPowerInfo().\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PowerState",
+          "kind": "alias",
+          "type": "SDL_PowerState",
+          "begin": 32,
+          "decl": 39,
+          "end": 41
+        },
+        "POWERSTATE_ERROR": {
+          "doc": "error determining power status",
+          "name": "POWERSTATE_ERROR",
+          "kind": "var",
+          "type": "PowerState",
+          "constexpr": true,
+          "begin": 41,
+          "decl": 44,
+          "end": 46
+        },
+        "POWERSTATE_UNKNOWN": {
+          "doc": "cannot determine power status",
+          "name": "POWERSTATE_UNKNOWN",
+          "kind": "var",
+          "type": "PowerState",
+          "constexpr": true,
+          "begin": 46,
+          "decl": 49,
+          "end": 51
+        },
+        "POWERSTATE_ON_BATTERY": {
+          "doc": "Not plugged in, running on the battery.",
+          "name": "POWERSTATE_ON_BATTERY",
+          "kind": "var",
+          "type": "PowerState",
+          "constexpr": true,
+          "begin": 51,
+          "decl": 54,
+          "end": 56
+        },
+        "POWERSTATE_NO_BATTERY": {
+          "doc": "Plugged in, no battery available.",
+          "name": "POWERSTATE_NO_BATTERY",
+          "kind": "var",
+          "type": "PowerState",
+          "constexpr": true,
+          "begin": 56,
+          "decl": 59,
+          "end": 61
+        },
+        "POWERSTATE_CHARGING": {
+          "doc": "Plugged in, charging battery.",
+          "name": "POWERSTATE_CHARGING",
+          "kind": "var",
+          "type": "PowerState",
+          "constexpr": true,
+          "begin": 61,
+          "decl": 64,
+          "end": 66
+        },
+        "POWERSTATE_CHARGED": {
+          "doc": "Plugged in, battery charged.",
+          "name": "POWERSTATE_CHARGED",
+          "kind": "var",
+          "type": "PowerState",
+          "constexpr": true,
+          "begin": 66,
+          "decl": 69,
+          "end": 71
+        },
+        "GetPowerInfo": {
+          "doc": "Get the current power supply details.\n\nYou should never take a battery status as absolute truth. Batteries\n(especially failing batteries) are delicate hardware, and the values\nreported here are best estimates based on what that hardware reports. It's\nnot uncommon for older batteries to lose stored power much faster than it\nreports, or completely drain when reporting it has 20 percent left, etc.\n\nBattery status can change at any time; if you are concerned with power\nstate, you should call this function frequently, and perhaps ignore changes\nuntil they seem to be stable for a few seconds.\n\nIt's possible a platform can only report battery percentage or time left\nbut not both.\n\nOn some platforms, retrieving power supply details might be expensive. If\nyou want to display continuous status you could call this function every\nminute or so.\n\n@param seconds a pointer filled in with the seconds of battery life left,\n               or NULL to ignore. This will be filled in with -1 if we\n               can't determine a value or there is no battery.\n@param percent a pointer filled in with the percentage of battery life\n               left, between 0 and 100, or NULL to ignore. This will be\n               filled in with -1 we can't determine a value or there is no\n               battery.\n@returns the current battery state or `POWERSTATE_ERROR` on failure; call\n         GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetPowerInfo",
+          "kind": "function",
+          "type": "PowerState",
+          "parameters": [
+            {
+              "name": "seconds",
+              "type": "int *"
+            },
+            {
+              "name": "percent",
+              "type": "int *"
+            }
+          ],
+          "begin": 73,
+          "decl": 105,
+          "end": 110
+        }
+      },
+      "docBegin": 10,
+      "docEnd": 27,
+      "entriesBegin": 10,
+      "entriesEnd": 110,
+      "namespace": "SDL"
+    },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
       "doc": "@namespace SDL\n@brief the main namespace where all SDL3pp public functions and types live",

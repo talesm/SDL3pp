@@ -22357,6 +22357,84 @@
         }
       }
     },
+    "SDL3pp_power.h": {
+      "name": "SDL3pp_power.h",
+      "doc": "@defgroup CategoryPower Category Power\n\nSDL power management routines.\n\nThere is a single function in this category: SDL_GetPowerInfo().\n\nThis function is useful for games on the go. This allows an app to know if\nit's running on a draining battery, which can be useful if the app wants to\nreduce processing, or perhaps framerate, to extend the duration of the\nbattery's charge. Perhaps the app just wants to show a battery meter when\nfullscreen, or alert the user when the power is getting extremely low, so\nthey can save their game.",
+      "entries": {
+        "PowerState": {
+          "doc": "The basic state for the system's power supply.\n\nThese are results returned by SDL_GetPowerInfo().\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PowerState",
+          "kind": "alias",
+          "sourceName": "SDL_PowerState",
+          "type": "SDL_PowerState"
+        },
+        "POWERSTATE_ERROR": {
+          "doc": "error determining power status",
+          "name": "POWERSTATE_ERROR",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_ERROR",
+          "constexpr": true
+        },
+        "POWERSTATE_UNKNOWN": {
+          "doc": "cannot determine power status",
+          "name": "POWERSTATE_UNKNOWN",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_UNKNOWN",
+          "constexpr": true
+        },
+        "POWERSTATE_ON_BATTERY": {
+          "doc": "Not plugged in, running on the battery.",
+          "name": "POWERSTATE_ON_BATTERY",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_ON_BATTERY",
+          "constexpr": true
+        },
+        "POWERSTATE_NO_BATTERY": {
+          "doc": "Plugged in, no battery available.",
+          "name": "POWERSTATE_NO_BATTERY",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_NO_BATTERY",
+          "constexpr": true
+        },
+        "POWERSTATE_CHARGING": {
+          "doc": "Plugged in, charging battery.",
+          "name": "POWERSTATE_CHARGING",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_CHARGING",
+          "constexpr": true
+        },
+        "POWERSTATE_CHARGED": {
+          "doc": "Plugged in, battery charged.",
+          "name": "POWERSTATE_CHARGED",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_CHARGED",
+          "constexpr": true
+        },
+        "GetPowerInfo": {
+          "doc": "Get the current power supply details.\n\nYou should never take a battery status as absolute truth. Batteries\n(especially failing batteries) are delicate hardware, and the values\nreported here are best estimates based on what that hardware reports. It's\nnot uncommon for older batteries to lose stored power much faster than it\nreports, or completely drain when reporting it has 20 percent left, etc.\n\nBattery status can change at any time; if you are concerned with power\nstate, you should call this function frequently, and perhaps ignore changes\nuntil they seem to be stable for a few seconds.\n\nIt's possible a platform can only report battery percentage or time left\nbut not both.\n\nOn some platforms, retrieving power supply details might be expensive. If\nyou want to display continuous status you could call this function every\nminute or so.\n\n@param seconds a pointer filled in with the seconds of battery life left,\n               or NULL to ignore. This will be filled in with -1 if we\n               can't determine a value or there is no battery.\n@param percent a pointer filled in with the percentage of battery life\n               left, between 0 and 100, or NULL to ignore. This will be\n               filled in with -1 we can't determine a value or there is no\n               battery.\n@returns the current battery state or `SDL_POWERSTATE_ERROR` on failure;\n         call SDL_GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetPowerInfo",
+          "kind": "function",
+          "type": "PowerState",
+          "parameters": [
+            {
+              "name": "seconds",
+              "type": "int *"
+            },
+            {
+              "name": "percent",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "SDL_GetPowerInfo"
+        }
+      }
+    },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
       "doc": "@defgroup CategoryInit Category Init\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call SDL_Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `SDL_INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call SDL_Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSDL_SetAppMetadataProperty().",

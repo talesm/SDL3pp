@@ -7,8 +7,9 @@ var searchData=
   ['shutdown_4',['Initialization and Shutdown',['../group__CategoryInit.html',1,'']]],
   ['simple_20drawing_5',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
   ['standard_20library_20functionality_6',['Standard Library Functionality',['../group__CategoryStdinc.html',1,'']]],
-  ['streams_7',['I/O Streams',['../group__CategoryIOStream.html',1,'']]],
-  ['support_8',['support',['../group__CategoriesCppSupport.html',1,'C++ Support'],['../group__CategoryTimer.html',1,'Timer Support'],['../group__CategorySDLTTF.html',1,'True type font support']]],
-  ['surface_20creation_20and_20simple_20drawing_9',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
-  ['swapping_10',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
+  ['status_7',['Power Management Status',['../group__CategoryPower.html',1,'']]],
+  ['streams_8',['I/O Streams',['../group__CategoryIOStream.html',1,'']]],
+  ['support_9',['support',['../group__CategoriesCppSupport.html',1,'C++ Support'],['../group__CategoryTimer.html',1,'Timer Support'],['../group__CategorySDLTTF.html',1,'True type font support']]],
+  ['surface_20creation_20and_20simple_20drawing_10',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
+  ['swapping_11',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
 ];

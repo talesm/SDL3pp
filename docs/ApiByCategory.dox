@@ -95,7 +95,7 @@ Category                            | Header
 ----------------------------------- | --------------------
 Shared Object/DLL Management        | SDL3pp_loadso.h         
 Process Control                     | SDL3pp_process.h       
-Power Management Status             | SDL3pp_power.h           
+@ref CategoryPower                  | SDL3pp_power.h           
 Message Boxes                       | SDL3pp_messagebox.h 
 File Dialogs                        | SDL3pp_dialog.h         
 System Tray                         | SDL3pp_tray.h             
@@ -178,6 +178,7 @@ You probably want to see @ref ApiByCategory
 
 @defgroup CategoriesAdditionalFunctionality Additional Functionality
 @{
+@addtogroup CategoryPower
 @addtogroup CategoryLocale
 @addtogroup CategoryStdinc
 @addtogroup CategoryGUID

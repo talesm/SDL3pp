@@ -25,6 +25,7 @@
     "SDL_intrin.h",
     "SDL_endian.h",
     "SDL_bits.h",
+    "SDL_power.h",
     "SDL_init.h",
     "SDL_main.h",
     "SDL_image.h",
