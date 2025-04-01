@@ -236,7 +236,7 @@ class ContentParser {
     /** @type {ApiEntry} */
     const entry = {
       doc: token.doc ?? '',
-      name: token.value,
+      name: token.name,
       kind: /** @type {ApiEntryKind}*/(token.kind),
     };
     switch (token.kind) {
