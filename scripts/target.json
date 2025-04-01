@@ -21198,6 +21198,20 @@
         }
       }
     },
+    "SDL3pp_platform.h": {
+      "name": "SDL3pp_platform.h",
+      "doc": "@defgroup CategoryPlatform Category Platform\n\nSDL provides a means to identify the app's platform, both at compile time\nand runtime.",
+      "entries": {
+        "GetPlatform": {
+          "doc": "Get the name of the platform.\n\nHere are the names returned for some (but not all) supported platforms:\n\n- \"Windows\"\n- \"macOS\"\n- \"Linux\"\n- \"iOS\"\n- \"Android\"\n\n@returns the name of the platform. If the correct platform name is not\n         available, returns a string beginning with the text \"Unknown\".\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetPlatform",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "sourceName": "SDL_GetPlatform"
+        }
+      }
+    },
     "SDL3pp_cpuinfo.h": {
       "name": "SDL3pp_cpuinfo.h",
       "doc": "@defgroup CategoryCPUInfo Category CPUInfo\n\nCPU feature detection for SDL.\n\nThese functions are largely concerned with reporting if the system has\naccess to various SIMD instruction sets, but also has other important info\nto share, such as system RAM size and number of logical CPU cores.\n\nCPU instruction set checks, like SDL_HasSSE() and SDL_HasNEON(), are\navailable on all platforms, even if they don't make sense (an ARM processor\nwill never have SSE and an x86 processor will never have NEON, for example,\nbut these functions still exist and will simply return false in these\ncases).",

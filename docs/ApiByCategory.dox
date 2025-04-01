@@ -83,7 +83,7 @@ Async I/O                | SDL3pp_asyncio.h
 
 Category                            | Header
 ----------------------------------- | --------------------
-Platform Detection 	                | SDL3pp_platform.h
+@ref CategoryPlatform               | SDL3pp_platform.h
 @ref CategoryCPUInfo  	            | SDL3pp_cpuinfo.h
 Compiler Intrinsics Detection 	    | SDL3pp_intrin.h
 Byte Order and Byte Swapping 	      | SDL3pp_endian.h
@@ -169,6 +169,7 @@ You probably want to see @ref ApiByCategory
 
 @defgroup CategoriesPlatformAndCpuInformation Platform and CPU Information
 @{
+@addtogroup CategoryPlatform
 @addtogroup CategoryCPUInfo
 @addtogroup CategoryBits
 @}

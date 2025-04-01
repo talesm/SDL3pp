@@ -27502,12 +27502,279 @@
     },
     "SDL3pp_platform.h": {
       "name": "SDL3pp_platform.h",
-      "doc": "",
-      "entries": {},
-      "docBegin": 1,
-      "docEnd": 1,
+      "doc": "@defgroup CategoryPlatform Platform Detection\n\nSDL provides a means to identify the app's platform, both at compile time\nand runtime.\n\nFor sanity, we don't wrap the macros, so use the regular SDL_* macros as\ndocumented.\n\n@{",
+      "entries": {
+        "GetPlatform": {
+          "doc": "Get the name of the platform.\n\nHere are the names returned for some (but not all) supported platforms:\n\n- \"Windows\"\n- \"macOS\"\n- \"Linux\"\n- \"iOS\"\n- \"Android\"\n\n@returns the name of the platform. If the correct platform name is not\n         available, returns a string beginning with the text \"Unknown\".\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetPlatform",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "begin": 21,
+          "decl": 37,
+          "end": 39
+        },
+        "SDL_PLATFORM_AIX": {
+          "doc": "A preprocessor macro that is only defined if compiling for AIX.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_AIX",
+          "kind": "def",
+          "begin": 41,
+          "decl": 46,
+          "end": 48
+        },
+        "SDL_PLATFORM_BSDI": {
+          "doc": "A preprocessor macro that is only defined if compiling for BSDi\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_BSDI",
+          "kind": "def",
+          "begin": 55,
+          "decl": 60,
+          "end": 62
+        },
+        "SDL_PLATFORM_FREEBSD": {
+          "doc": "A preprocessor macro that is only defined if compiling for FreeBSD.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_FREEBSD",
+          "kind": "def",
+          "begin": 62,
+          "decl": 67,
+          "end": 69
+        },
+        "SDL_PLATFORM_HPUX": {
+          "doc": "A preprocessor macro that is only defined if compiling for HP-UX.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_HPUX",
+          "kind": "def",
+          "begin": 69,
+          "decl": 74,
+          "end": 76
+        },
+        "SDL_PLATFORM_IRIX": {
+          "doc": "A preprocessor macro that is only defined if compiling for IRIX.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_IRIX",
+          "kind": "def",
+          "begin": 76,
+          "decl": 81,
+          "end": 83
+        },
+        "SDL_PLATFORM_LINUX": {
+          "doc": "A preprocessor macro that is only defined if compiling for Linux.\n\nNote that Android, although ostensibly a Linux-based system, will not\ndefine this. It defines SDL_PLATFORM_ANDROID instead.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_LINUX",
+          "kind": "def",
+          "begin": 83,
+          "decl": 91,
+          "end": 93
+        },
+        "SDL_PLATFORM_ANDROID": {
+          "doc": "A preprocessor macro that is only defined if compiling for Android.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_ANDROID",
+          "kind": "def",
+          "begin": 93,
+          "decl": 98,
+          "end": 100
+        },
+        "SDL_PLATFORM_UNIX": {
+          "doc": "A preprocessor macro that is only defined if compiling for a Unix-like\nsystem.\n\nOther platforms, like Linux, might define this in addition to their primary\ndefine.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_UNIX",
+          "kind": "def",
+          "begin": 100,
+          "decl": 109,
+          "end": 111
+        },
+        "SDL_PLATFORM_APPLE": {
+          "doc": "A preprocessor macro that is only defined if compiling for Apple platforms.\n\niOS, macOS, etc will additionally define a more specific platform macro.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_PLATFORM_MACOS\n\\sa SDL_PLATFORM_IOS\n\\sa SDL_PLATFORM_TVOS\n\\sa SDL_PLATFORM_VISIONOS",
+          "name": "SDL_PLATFORM_APPLE",
+          "kind": "def",
+          "begin": 111,
+          "decl": 123,
+          "end": 125
+        },
+        "SDL_PLATFORM_TVOS": {
+          "doc": "A preprocessor macro that is only defined if compiling for tvOS.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_PLATFORM_APPLE",
+          "name": "SDL_PLATFORM_TVOS",
+          "kind": "def",
+          "begin": 125,
+          "decl": 132,
+          "end": 134
+        },
+        "SDL_PLATFORM_VISIONOS": {
+          "doc": "A preprocessor macro that is only defined if compiling for VisionOS.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_PLATFORM_APPLE",
+          "name": "SDL_PLATFORM_VISIONOS",
+          "kind": "def",
+          "begin": 134,
+          "decl": 141,
+          "end": 143
+        },
+        "SDL_PLATFORM_IOS": {
+          "doc": "A preprocessor macro that is only defined if compiling for iOS.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_PLATFORM_APPLE",
+          "name": "SDL_PLATFORM_IOS",
+          "kind": "def",
+          "begin": 143,
+          "decl": 150,
+          "end": 151
+        },
+        "SDL_PLATFORM_MACOS": {
+          "doc": "A preprocessor macro that is only defined if compiling for macOS.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_PLATFORM_APPLE",
+          "name": "SDL_PLATFORM_MACOS",
+          "kind": "def",
+          "begin": 151,
+          "decl": 158,
+          "end": 160
+        },
+        "SDL_PLATFORM_EMSCRIPTEN": {
+          "doc": "A preprocessor macro that is only defined if compiling for Emscripten.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_EMSCRIPTEN",
+          "kind": "def",
+          "begin": 160,
+          "decl": 165,
+          "end": 167
+        },
+        "SDL_PLATFORM_NETBSD": {
+          "doc": "A preprocessor macro that is only defined if compiling for NetBSD.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_NETBSD",
+          "kind": "def",
+          "begin": 167,
+          "decl": 172,
+          "end": 174
+        },
+        "SDL_PLATFORM_OPENBSD": {
+          "doc": "A preprocessor macro that is only defined if compiling for OpenBSD.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_OPENBSD",
+          "kind": "def",
+          "begin": 174,
+          "decl": 179,
+          "end": 181
+        },
+        "SDL_PLATFORM_OS2": {
+          "doc": "A preprocessor macro that is only defined if compiling for OS/2.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_OS2",
+          "kind": "def",
+          "begin": 181,
+          "decl": 186,
+          "end": 188
+        },
+        "SDL_PLATFORM_OSF": {
+          "doc": "A preprocessor macro that is only defined if compiling for Tru64 (OSF/1).\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_OSF",
+          "kind": "def",
+          "begin": 188,
+          "decl": 193,
+          "end": 195
+        },
+        "SDL_PLATFORM_QNXNTO": {
+          "doc": "A preprocessor macro that is only defined if compiling for QNX Neutrino.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_QNXNTO",
+          "kind": "def",
+          "begin": 195,
+          "decl": 200,
+          "end": 202
+        },
+        "SDL_PLATFORM_RISCOS": {
+          "doc": "A preprocessor macro that is only defined if compiling for RISC OS.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_RISCOS",
+          "kind": "def",
+          "begin": 202,
+          "decl": 207,
+          "end": 209
+        },
+        "SDL_PLATFORM_SOLARIS": {
+          "doc": "A preprocessor macro that is only defined if compiling for SunOS/Solaris.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_SOLARIS",
+          "kind": "def",
+          "begin": 209,
+          "decl": 214,
+          "end": 216
+        },
+        "SDL_PLATFORM_CYGWIN": {
+          "doc": "A preprocessor macro that is only defined if compiling for Cygwin.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_CYGWIN",
+          "kind": "def",
+          "begin": 216,
+          "decl": 221,
+          "end": 223
+        },
+        "SDL_PLATFORM_WINDOWS": {
+          "doc": "A preprocessor macro that is only defined if compiling for Windows.\n\nThis also covers several other platforms, like Microsoft GDK, Xbox, WinRT,\netc. Each will have their own more-specific platform macros, too.\n\n\\since This macro is available since SDL 3.2.0.\n\n\\sa SDL_PLATFORM_WIN32\n\\sa SDL_PLATFORM_XBOXONE\n\\sa SDL_PLATFORM_XBOXSERIES\n\\sa SDL_PLATFORM_WINGDK\n\\sa SDL_PLATFORM_GDK",
+          "name": "SDL_PLATFORM_WINDOWS",
+          "kind": "def",
+          "begin": 223,
+          "decl": 237,
+          "end": 239
+        },
+        "SDL_WINAPI_FAMILY_PHONE": {
+          "doc": "A preprocessor macro that defined to 1 if compiling for Windows Phone.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_WINAPI_FAMILY_PHONE",
+          "kind": "def",
+          "begin": 239,
+          "decl": 244,
+          "end": 246
+        },
+        "SDL_PLATFORM_WINGDK": {
+          "doc": "A preprocessor macro that is only defined if compiling for Microsoft GDK\nfor Windows.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_WINGDK",
+          "kind": "def",
+          "begin": 246,
+          "decl": 252,
+          "end": 254
+        },
+        "SDL_PLATFORM_XBOXSERIES": {
+          "doc": "A preprocessor macro that is only defined if compiling for Xbox Series.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_XBOXSERIES",
+          "kind": "def",
+          "begin": 254,
+          "decl": 259,
+          "end": 261
+        },
+        "SDL_PLATFORM_WIN32": {
+          "doc": "A preprocessor macro that is only defined if compiling for desktop Windows.\n\nDespite the \"32\", this also covers 64-bit Windows; as an informal\nconvention, its system layer tends to still be referred to as \"the Win32\nAPI.\"\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_WIN32",
+          "kind": "def",
+          "begin": 261,
+          "decl": 270,
+          "end": 272
+        },
+        "SDL_PLATFORM_GDK": {
+          "doc": "A preprocessor macro that is only defined if compiling for Microsoft GDK on\nany platform.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_GDK",
+          "kind": "def",
+          "begin": 272,
+          "decl": 278,
+          "end": 280
+        },
+        "SDL_PLATFORM_PSP": {
+          "doc": "A preprocessor macro that is only defined if compiling for Sony PSP.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_PSP",
+          "kind": "def",
+          "begin": 280,
+          "decl": 285,
+          "end": 287
+        },
+        "SDL_PLATFORM_PS2": {
+          "doc": "A preprocessor macro that is only defined if compiling for Sony PlayStation\n2.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_PS2",
+          "kind": "def",
+          "begin": 287,
+          "decl": 293,
+          "end": 295
+        },
+        "SDL_PLATFORM_VITA": {
+          "doc": "A preprocessor macro that is only defined if compiling for Sony Vita.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_VITA",
+          "kind": "def",
+          "begin": 295,
+          "decl": 300,
+          "end": 302
+        },
+        "SDL_PLATFORM_3DS": {
+          "doc": "A preprocessor macro that is only defined if compiling for Nintendo 3DS.\n\n\\since This macro is available since SDL 3.2.0.",
+          "name": "SDL_PLATFORM_3DS",
+          "kind": "def",
+          "begin": 302,
+          "decl": 307,
+          "end": 309
+        }
+      },
+      "docBegin": 9,
+      "docEnd": 21,
       "entriesBegin": 9,
-      "entriesEnd": 9
+      "entriesEnd": 309
     },
     "SDL3pp_cpuinfo.h": {
       "name": "SDL3pp_cpuinfo.h",
