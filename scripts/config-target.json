@@ -18,8 +18,10 @@
     "SDL3pp_video.h",
     "SDL3pp_render.h",
     "SDL3pp_timer.h",
+    "SDL3pp_time.h",
     "SDL3pp_events.h",
     "SDL3pp_init.h",
+    "SDL3pp_main.h",
     "SDL3pp_image.h",
     "SDL3pp_ttf.h"
   ],
