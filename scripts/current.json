@@ -27511,12 +27511,203 @@
     },
     "SDL3pp_cpuinfo.h": {
       "name": "SDL3pp_cpuinfo.h",
-      "doc": "",
-      "entries": {},
-      "docBegin": 1,
-      "docEnd": 1,
+      "doc": "@defgroup CategoryCPUInfo CPU Feature Detection\n\nCPU feature detection for SDL.\n\nThese functions are largely concerned with reporting if the system has\naccess to various SIMD instruction sets, but also has other important info\nto share, such as system RAM size and number of logical CPU cores.\n\nCPU instruction set checks, like HasSSE() and HasNEON(), are\navailable on all platforms, even if they don't make sense (an ARM processor\nwill never have SSE and an x86 processor will never have NEON, for example,\nbut these functions still exist and will simply return false in these\ncases).\n\n@{",
+      "entries": {
+        "CACHELINE_SIZE": {
+          "doc": "A guess for the cacheline size used for padding.\n\nMost x86 processors have a 64 byte cache line. The 64-bit PowerPC\nprocessors have a 128 byte cache line. We use the larger value to be\ngenerally safe.\n\n@since This constant is available since SDL 3.2.0.",
+          "name": "CACHELINE_SIZE",
+          "kind": "var",
+          "type": "int",
+          "constexpr": true,
+          "begin": 27,
+          "decl": 36,
+          "end": 38
+        },
+        "GetNumLogicalCPUCores": {
+          "doc": "Get the number of logical CPU cores available.\n\n@returns the total number of logical CPU cores. On CPUs that include\n         technologies such as hyperthreading, the number of logical cores\n         may be more than the number of physical cores.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetNumLogicalCPUCores",
+          "kind": "function",
+          "type": "int",
+          "parameters": [],
+          "begin": 38,
+          "decl": 49,
+          "end": 51
+        },
+        "GetCPUCacheLineSize": {
+          "doc": "Determine the L1 cache line size of the CPU.\n\nThis is useful for determining multi-threaded structure padding or SIMD\nprefetch sizes.\n\n@returns the L1 cache line size of the CPU, in bytes.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetCPUCacheLineSize",
+          "kind": "function",
+          "type": "int",
+          "parameters": [],
+          "begin": 51,
+          "decl": 63,
+          "end": 65
+        },
+        "HasAltiVec": {
+          "doc": "Determine whether the CPU has AltiVec features.\n\nThis always returns false on CPUs that aren't using PowerPC instruction\nsets.\n\n@returns true if the CPU has AltiVec features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "HasAltiVec",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 65,
+          "decl": 77,
+          "end": 79
+        },
+        "HasMMX": {
+          "doc": "Determine whether the CPU has MMX features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has MMX features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "HasMMX",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 79,
+          "decl": 90,
+          "end": 92
+        },
+        "HasSSE": {
+          "doc": "Determine whether the CPU has SSE features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has SSE features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasSSE2()\n@sa HasSSE3()\n@sa HasSSE41()\n@sa HasSSE42()",
+          "name": "HasSSE",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 92,
+          "decl": 108,
+          "end": 110
+        },
+        "HasSSE2": {
+          "doc": "Determine whether the CPU has SSE2 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has SSE2 features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasSSE()\n@sa HasSSE3()\n@sa HasSSE41()\n@sa HasSSE42()",
+          "name": "HasSSE2",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 110,
+          "decl": 126,
+          "end": 128
+        },
+        "HasSSE3": {
+          "doc": "Determine whether the CPU has SSE3 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has SSE3 features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasSSE()\n@sa HasSSE2()\n@sa HasSSE41()\n@sa HasSSE42()",
+          "name": "HasSSE3",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 128,
+          "decl": 144,
+          "end": 146
+        },
+        "HasSSE41": {
+          "doc": "Determine whether the CPU has SSE4.1 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has SSE4.1 features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasSSE()\n@sa HasSSE2()\n@sa HasSSE3()\n@sa HasSSE42()",
+          "name": "HasSSE41",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 146,
+          "decl": 162,
+          "end": 164
+        },
+        "HasSSE42": {
+          "doc": "Determine whether the CPU has SSE4.2 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has SSE4.2 features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasSSE()\n@sa HasSSE2()\n@sa HasSSE3()\n@sa HasSSE41()",
+          "name": "HasSSE42",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 164,
+          "decl": 180,
+          "end": 182
+        },
+        "HasAVX": {
+          "doc": "Determine whether the CPU has AVX features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has AVX features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasAVX2()\n@sa HasAVX512F()",
+          "name": "HasAVX",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 182,
+          "decl": 196,
+          "end": 198
+        },
+        "HasAVX2": {
+          "doc": "Determine whether the CPU has AVX2 features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has AVX2 features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasAVX()\n@sa HasAVX512F()",
+          "name": "HasAVX2",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 198,
+          "decl": 212,
+          "end": 214
+        },
+        "HasAVX512F": {
+          "doc": "Determine whether the CPU has AVX-512F (foundation) features.\n\nThis always returns false on CPUs that aren't using Intel instruction sets.\n\n@returns true if the CPU has AVX-512F features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasAVX()\n@sa HasAVX2()",
+          "name": "HasAVX512F",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 214,
+          "decl": 228,
+          "end": 230
+        },
+        "HasARMSIMD": {
+          "doc": "Determine whether the CPU has ARM SIMD (ARMv6) features.\n\nThis is different from ARM NEON, which is a different instruction set.\n\nThis always returns false on CPUs that aren't using ARM instruction sets.\n\n@returns true if the CPU has ARM SIMD features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasNEON()",
+          "name": "HasARMSIMD",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 230,
+          "decl": 245,
+          "end": 247
+        },
+        "HasNEON": {
+          "doc": "Determine whether the CPU has NEON (ARM SIMD) features.\n\nThis always returns false on CPUs that aren't using ARM instruction sets.\n\n@returns true if the CPU has ARM NEON features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "HasNEON",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 247,
+          "decl": 258,
+          "end": 260
+        },
+        "HasLSX": {
+          "doc": "Determine whether the CPU has LSX (LOONGARCH SIMD) features.\n\nThis always returns false on CPUs that aren't using LOONGARCH instruction\nsets.\n\n@returns true if the CPU has LOONGARCH LSX features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "HasLSX",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 260,
+          "decl": 272,
+          "end": 274
+        },
+        "HasLASX": {
+          "doc": "Determine whether the CPU has LASX (LOONGARCH SIMD) features.\n\nThis always returns false on CPUs that aren't using LOONGARCH instruction\nsets.\n\n@returns true if the CPU has LOONGARCH LASX features or false if not.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "HasLASX",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 274,
+          "decl": 286,
+          "end": 288
+        },
+        "GetSystemRAM": {
+          "doc": "Get the amount of RAM configured in the system.\n\n@returns the amount of RAM configured in the system in MiB.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetSystemRAM",
+          "kind": "function",
+          "type": "int",
+          "parameters": [],
+          "begin": 288,
+          "decl": 297,
+          "end": 299
+        },
+        "GetSIMDAlignment": {
+          "doc": "Report the alignment this system needs for SIMD allocations.\n\nThis will return the minimum number of bytes to which a pointer must be\naligned to be compatible with SIMD instructions on the current machine. For\nexample, if the machine supports SSE only, it will return 16, but if it\nsupports AVX-512F, it'll return 64 (etc). This only reports values for\ninstruction sets SDL knows about, so if your SDL build doesn't have\nHasAVX512F(), then it might return 16 for the SSE support it sees and\nnot 64 for the AVX-512 instructions that exist but SDL doesn't know about.\nPlan accordingly.\n\n@returns the alignment in bytes needed for available, known SIMD\n         instructions.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa aligned_alloc()\n@sa aligned_free()",
+          "name": "GetSIMDAlignment",
+          "kind": "function",
+          "type": "size_t",
+          "parameters": [],
+          "begin": 299,
+          "decl": 321,
+          "end": 323
+        }
+      },
+      "docBegin": 9,
+      "docEnd": 27,
       "entriesBegin": 9,
-      "entriesEnd": 9
+      "entriesEnd": 323
     },
     "SDL3pp_intrin.h": {
       "name": "SDL3pp_intrin.h",

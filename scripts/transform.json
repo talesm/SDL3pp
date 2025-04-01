@@ -5370,6 +5370,15 @@
         }
       }
     },
+    "SDL_cpuinfo.h": {
+      "transform": {
+        "SDL_CACHELINE_SIZE": {
+          "kind": "var",
+          "type": "int",
+          "constexpr": true
+        }
+      }
+    },
     "SDL_init.h": {
       "ignoreEntries": [
         "SDL_InitSubSystem"
