@@ -80,16 +80,15 @@ class Tokenizer {
     let m = spaceRegex.exec(this.lastLine);
     /** @type {FileToken} */
     const token = {
-      name: undefined,
       begin: this.lineCount,
       end: null,
       spaces: m?.[0]?.length ?? 0,
       kind: null,
-      value: undefined,
     };
 
     if (/^\/\/\s*Forward decl/.test(line)) {
       token.kind = "doc";
+      token.value = "";
     } else if (/^#pragma\s+region\s+impl/.test(line)) {
       return this.finish();
     } else if (line.startsWith("}") || line.startsWith("{}")) {
@@ -150,9 +149,13 @@ class Tokenizer {
     } else if (m = /^using\s+([\w:]+)\s*;/.exec(line)) {
       token.kind = "alias";
       token.name = m[1];
-    } else if (m = /^(?:struct|class)\s+([\w<>]+);/.exec(line)) {
+    } else if (m = /^(?:struct|class|enum|union)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
       token.name = m[1];
+    } else if (m = /^enum\s+(\w+)/.exec(line)) {
+      token.kind = "enum";
+      token.name = m[1];
+      if (!line.endsWith("{")) this.nextLine();
     } else if ((m = /^(?:constexpr )?(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) && !line.includes(";")) {
       token.kind = "struct";
       token.name = m[1];
@@ -285,7 +288,6 @@ class Tokenizer {
     if (!this.lastLine.endsWith("{")) {
       const line = this.peekLine().trim();
       if (line.startsWith("{")) {
-        if (line.endsWith("}")) return;
         this.nextLine();
         if (line.endsWith("}")) return;
         opened = true;

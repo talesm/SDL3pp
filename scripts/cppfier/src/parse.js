@@ -74,6 +74,7 @@ function parseContent(name, content, config) {
     apiFile.docEnd = parser.docEnd || apiFile.docBegin;
     apiFile.entriesBegin = parser.entriesBegin || entryArray[0]?.begin || apiFile.docEnd;
     apiFile.entriesEnd = parser.entriesEnd || entryArray[entryArray.length - 1]?.end || apiFile.entriesBegin;
+    apiFile.namespace = parser.namespace || undefined;
   }
   apiFile.doc = parser.doc;
   return apiFile;
@@ -159,6 +160,7 @@ class ContentParser {
     this.docEnd = 0;
     this.entriesBegin = 0;
     this.entriesEnd = 0;
+    this.namespace = "";
   }
 
   /**
@@ -272,7 +274,8 @@ class ContentParser {
         break;
       case "ns":
         if (!lastDecl) lastDecl = token.begin;
-        if (entry.name === "SDL") {
+        if (!this.namespace) {
+          this.namespace = entry.name;
           this.checkFileDoc(lastBegin, lastEnd, lastDoc);
           if (!this.entriesBegin) {
             this.entriesBegin = token.end;

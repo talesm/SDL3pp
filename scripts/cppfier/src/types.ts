@@ -10,6 +10,7 @@ export interface ApiFile {
   entries?: ApiEntries;
   docBegin?: number;
   docEnd?: number;
+  namespace?: string;
   entriesBegin?: number;
   entriesEnd?: number;
 }

@@ -7,7 +7,7 @@ namespace name {
  * @brief My enum one
  *
  */
-typedef enum MyEnum
+enum MyEnum
 {
   MyENUM_VALUE0,
   MyENUM_VALUE1 = 123,
@@ -18,7 +18,7 @@ typedef enum MyEnum
  * @brief My enum 2
  *
  */
-typedef enum MyEnumBit
+enum MyEnumBit
 {
   MyBIT_VALUE0,
   MyBIT_VALUE1 = 1,

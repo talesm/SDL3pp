@@ -4076,7 +4076,8 @@
       "docBegin": 15,
       "docEnd": 41,
       "entriesBegin": 15,
-      "entriesEnd": 5325
+      "entriesEnd": 5325,
+      "namespace": "SDL"
     },
     "SDL3pp_error.h": {
       "name": "SDL3pp_error.h",
@@ -4178,7 +4179,8 @@
       "docBegin": 12,
       "docEnd": 40,
       "entriesBegin": 12,
-      "entriesEnd": 212
+      "entriesEnd": 212,
+      "namespace": "SDL"
     },
     "SDL3pp_assert.h": {
       "name": "SDL3pp_assert.h",
@@ -4493,7 +4495,8 @@
       "docBegin": 9,
       "docEnd": 53,
       "entriesBegin": 9,
-      "entriesEnd": 547
+      "entriesEnd": 547,
+      "namespace": "SDL"
     },
     "SDL3pp_log.h": {
       "name": "SDL3pp_log.h",
@@ -5344,7 +5347,8 @@
       "docBegin": 9,
       "docEnd": 59,
       "entriesBegin": 9,
-      "entriesEnd": 785
+      "entriesEnd": 785,
+      "namespace": "SDL"
     },
     "SDL3pp_misc.h": {
       "name": "SDL3pp_misc.h",
@@ -5369,7 +5373,8 @@
       "docBegin": 11,
       "docEnd": 19,
       "entriesBegin": 11,
-      "entriesEnd": 50
+      "entriesEnd": 50,
+      "namespace": "SDL"
     },
     "SDL3pp_guid.h": {
       "name": "SDL3pp_guid.h",
@@ -5483,7 +5488,8 @@
       "docBegin": 9,
       "docEnd": 19,
       "entriesBegin": 9,
-      "entriesEnd": 131
+      "entriesEnd": 131,
+      "namespace": "SDL"
     },
     "SDL3pp_version.h": {
       "name": "SDL3pp_version.h",
@@ -5613,7 +5619,8 @@
       "docBegin": 10,
       "docEnd": 19,
       "entriesBegin": 10,
-      "entriesEnd": 158
+      "entriesEnd": 158,
+      "namespace": "SDL"
     },
     "SDL3pp_locale.h": {
       "name": "SDL3pp_locale.h",
@@ -5642,7 +5649,8 @@
       "docBegin": 8,
       "docEnd": 22,
       "entriesBegin": 8,
-      "entriesEnd": 81
+      "entriesEnd": 81,
+      "namespace": "SDL"
     },
     "SDL3pp_iostream.h": {
       "name": "SDL3pp_iostream.h",
@@ -6855,7 +6863,8 @@
       "docBegin": 10,
       "docEnd": 23,
       "entriesBegin": 10,
-      "entriesEnd": 1398
+      "entriesEnd": 1398,
+      "namespace": "SDL"
     },
     "SDL3pp_pixels.h": {
       "name": "SDL3pp_pixels.h",
@@ -10218,7 +10227,8 @@
       "docBegin": 14,
       "docEnd": 74,
       "entriesBegin": 14,
-      "entriesEnd": 2140
+      "entriesEnd": 2140,
+      "namespace": "SDL"
     },
     "SDL3pp_blendmode.h": {
       "name": "SDL3pp_blendmode.h",
@@ -10520,7 +10530,8 @@
       "docBegin": 8,
       "docEnd": 18,
       "entriesBegin": 8,
-      "entriesEnd": 271
+      "entriesEnd": 271,
+      "namespace": "SDL"
     },
     "SDL3pp_hints.h": {
       "name": "SDL3pp_hints.h",
@@ -12867,7 +12878,8 @@
       "docBegin": 9,
       "docEnd": 26,
       "entriesBegin": 9,
-      "entriesEnd": 4531
+      "entriesEnd": 4531,
+      "namespace": "SDL"
     },
     "SDL3pp_properties.h": {
       "name": "SDL3pp_properties.h",
@@ -13623,7 +13635,8 @@
       "docBegin": 10,
       "docEnd": 38,
       "entriesBegin": 10,
-      "entriesEnd": 837
+      "entriesEnd": 837,
+      "namespace": "SDL"
     },
     "SDL3pp_rect.h": {
       "name": "SDL3pp_rect.h",
@@ -16069,7 +16082,8 @@
       "docBegin": 14,
       "docEnd": 22,
       "entriesBegin": 14,
-      "entriesEnd": 1951
+      "entriesEnd": 1951,
+      "namespace": "SDL"
     },
     "SDL3pp_surface.h": {
       "name": "SDL3pp_surface.h",
@@ -18152,7 +18166,8 @@
       "docBegin": 20,
       "docEnd": 39,
       "entriesBegin": 20,
-      "entriesEnd": 2138
+      "entriesEnd": 2138,
+      "namespace": "SDL"
     },
     "SDL3pp_video.h": {
       "name": "SDL3pp_video.h",
@@ -21917,7 +21932,8 @@
       "docBegin": 18,
       "docEnd": 46,
       "entriesBegin": 18,
-      "entriesEnd": 4165
+      "entriesEnd": 4165,
+      "namespace": "SDL"
     },
     "SDL3pp_render.h": {
       "name": "SDL3pp_render.h",
@@ -25125,7 +25141,8 @@
       "docBegin": 19,
       "docEnd": 49,
       "entriesBegin": 19,
-      "entriesEnd": 3351
+      "entriesEnd": 3351,
+      "namespace": "SDL"
     },
     "SDL3pp_timer.h": {
       "name": "SDL3pp_timer.h",
@@ -25341,7 +25358,8 @@
       "docBegin": 13,
       "docEnd": 31,
       "entriesBegin": 13,
-      "entriesEnd": 398
+      "entriesEnd": 398,
+      "namespace": "SDL"
     },
     "SDL3pp_time.h": {
       "name": "SDL3pp_time.h",
@@ -25673,7 +25691,8 @@
       "docBegin": 9,
       "docEnd": 24,
       "entriesBegin": 9,
-      "entriesEnd": 268
+      "entriesEnd": 268,
+      "namespace": "SDL"
     },
     "SDL3pp_events.h": {
       "name": "SDL3pp_events.h",
@@ -27861,7 +27880,8 @@
       "docBegin": 15,
       "docEnd": 47,
       "entriesBegin": 15,
-      "entriesEnd": 1984
+      "entriesEnd": 1984,
+      "namespace": "SDL"
     },
     "SDL3pp_platform.h": {
       "name": "SDL3pp_platform.h",
@@ -28169,7 +28189,8 @@
       "docBegin": 9,
       "docEnd": 21,
       "entriesBegin": 9,
-      "entriesEnd": 309
+      "entriesEnd": 309,
+      "namespace": "SDL"
     },
     "SDL3pp_cpuinfo.h": {
       "name": "SDL3pp_cpuinfo.h",
@@ -28369,7 +28390,8 @@
       "docBegin": 9,
       "docEnd": 27,
       "entriesBegin": 9,
-      "entriesEnd": 323
+      "entriesEnd": 323,
+      "namespace": "SDL"
     },
     "SDL3pp_intrin.h": {
       "name": "SDL3pp_intrin.h",
@@ -28516,7 +28538,8 @@
       "docBegin": 9,
       "docEnd": 36,
       "entriesBegin": 9,
-      "entriesEnd": 256
+      "entriesEnd": 256,
+      "namespace": "SDL"
     },
     "SDL3pp_endian.h": {
       "name": "SDL3pp_endian.h",
@@ -28754,7 +28777,8 @@
       "docBegin": 9,
       "docEnd": 30,
       "entriesBegin": 9,
-      "entriesEnd": 324
+      "entriesEnd": 324,
+      "namespace": "SDL"
     },
     "SDL3pp_bits.h": {
       "name": "SDL3pp_bits.h",
@@ -28796,7 +28820,8 @@
       "docBegin": 10,
       "docEnd": 18,
       "entriesBegin": 10,
-      "entriesEnd": 64
+      "entriesEnd": 64,
+      "namespace": "SDL"
     },
     "SDL3pp_init.h": {
       "name": "SDL3pp_init.h",
@@ -29614,7 +29639,8 @@
       "docBegin": 10,
       "docEnd": 14,
       "entriesBegin": 16,
-      "entriesEnd": 903
+      "entriesEnd": 903,
+      "namespace": "SDL"
     },
     "SDL3pp_main.h": {
       "name": "SDL3pp_main.h",
@@ -29927,7 +29953,8 @@
       "docBegin": 20,
       "docEnd": 53,
       "entriesBegin": 20,
-      "entriesEnd": 253
+      "entriesEnd": 253,
+      "namespace": "SDL"
     },
     "SDL3pp_image.h": {
       "name": "SDL3pp_image.h",
@@ -31085,7 +31112,8 @@
       "docBegin": 21,
       "docEnd": 30,
       "entriesBegin": 21,
-      "entriesEnd": 2132
+      "entriesEnd": 2132,
+      "namespace": "SDL"
     },
     "SDL3pp_ttf.h": {
       "name": "SDL3pp_ttf.h",
@@ -34468,7 +34496,8 @@
       "docBegin": 23,
       "docEnd": 34,
       "entriesBegin": 23,
-      "entriesEnd": 3556
+      "entriesEnd": 3556,
+      "namespace": "SDL"
     }
   }
 }

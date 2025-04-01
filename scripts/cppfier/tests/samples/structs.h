@@ -26,7 +26,7 @@ MyType1* MyCreateType1(int var1, const char* var2);
 
 using MyByte = unsigned char;
 
-typedef struct MyType2
+struct MyType2
 {
   MyType1 var1;
   int* var2;

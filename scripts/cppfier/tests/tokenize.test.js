@@ -28,7 +28,7 @@ test("tokenize alias", () => {
     end: 2,
     spaces: 0,
     kind: "alias",
-    value: "a",
+    name: "a",
     type: "Templated<Ref<Value, OtherValue>>",
   }]);
 });
@@ -39,7 +39,7 @@ test("tokenize alias defined next line", () => {
     end: 3,
     spaces: 0,
     kind: "alias",
-    value: "a",
+    name: "a",
     type: "Templated<Ref<Value, OtherValue>>",
   }]);
 });
@@ -49,7 +49,7 @@ test("tokenize function", () => {
     end: 2,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "int",
     parameters: "int a, int b",
   }]);
@@ -61,7 +61,7 @@ test("tokenize function with reference specifier", () => {
     end: 2,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "int",
     parameters: "int a, int b",
     reference: 1
@@ -73,7 +73,7 @@ test("tokenize function with reference specifier", () => {
     end: 2,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "int",
     parameters: "int a, int b",
     reference: 2
@@ -86,7 +86,7 @@ test("tokenize function with default parameter", () => {
     end: 2,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "int",
     parameters: "int a, int b = 12",
   }]);
@@ -98,7 +98,7 @@ test("tokenize function returning a pointer", () => {
     end: 2,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "const char *",
     parameters: "int a, int b",
   }]);
@@ -110,7 +110,7 @@ test("tokenize function with body", () => {
     end: 6,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "int",
     parameters: "int a, int b",
   }]);
@@ -122,7 +122,7 @@ test("tokenize function with empty body", () => {
     end: 3,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "int",
     parameters: "int a, int b",
   }]);
@@ -134,7 +134,7 @@ test("tokenize function with body", () => {
     end: 6,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "int",
     parameters: "int a, int b",
   }]);
@@ -146,7 +146,7 @@ test("tokenize function with templated return type", () => {
     end: 6,
     spaces: 0,
     kind: "function",
-    value: "func",
+    name: "func",
     type: "std::optional<int>",
     immutable: true,
     parameters: "int a, int b",
@@ -159,7 +159,7 @@ test("tokenize function ctor with body", () => {
     end: 6,
     spaces: 0,
     kind: "function",
-    value: "Func",
+    name: "Func",
     type: "",
     parameters: "int a, int b",
   }]);
@@ -171,7 +171,7 @@ test("tokenize function operator() immutable with body", () => {
     end: 6,
     spaces: 0,
     kind: "function",
-    value: "operator()",
+    name: "operator()",
     type: "void",
     immutable: true,
     parameters: "int a, int b",
@@ -184,7 +184,7 @@ test("tokenize function conversion operator with body", () => {
     end: 6,
     spaces: 0,
     kind: "function",
-    value: "operator Type",
+    name: "operator Type",
     type: "",
     immutable: true,
     parameters: "",
@@ -197,7 +197,7 @@ test("tokenize function conversion operator to const pointer with body", () => {
     end: 2,
     spaces: 0,
     kind: "function",
-    value: "operator const Type *",
+    name: "operator const Type *",
     type: "",
     immutable: true,
     parameters: "",
@@ -210,7 +210,7 @@ test("tokenize function operator<=> immutable with body", () => {
     end: 6,
     spaces: 0,
     kind: "function",
-    value: "operator<=>",
+    name: "operator<=>",
     type: "auto",
     immutable: true,
     parameters: "const Type &other",
@@ -223,7 +223,7 @@ test("tokenize function ctor with initialization and body", () => {
     end: 8,
     spaces: 0,
     kind: "function",
-    value: "Func",
+    name: "Func",
     type: "",
     parameters: "int a, int b",
   }]);
@@ -235,7 +235,7 @@ test("tokenize var", () => {
     end: 2,
     spaces: 0,
     kind: "var",
-    value: "aVar",
+    name: "aVar",
     type: "int",
   }]);
 });
@@ -245,7 +245,7 @@ test("tokenize var with assignment", () => {
     end: 2,
     spaces: 0,
     kind: "var",
-    value: "aVar",
+    name: "aVar",
     type: "int",
   }]);
 });
@@ -255,7 +255,7 @@ test("tokenize var with assignment in next line", () => {
     end: 3,
     spaces: 0,
     kind: "var",
-    value: "aVar",
+    name: "aVar",
     type: "int",
   }]);
 });
@@ -266,7 +266,7 @@ test("tokenize variables", () => {
     end: 2,
     spaces: 0,
     kind: "var",
-    value: "a",
+    name: "a",
     type: "int",
   }]);
   expect(tokenizeText("int *a;")).toEqual([{
@@ -274,7 +274,7 @@ test("tokenize variables", () => {
     end: 2,
     spaces: 0,
     kind: "var",
-    value: "a",
+    name: "a",
     type: "int *",
   }]);
   expect(tokenizeText("const int **a;")).toEqual([{
@@ -282,7 +282,7 @@ test("tokenize variables", () => {
     end: 2,
     spaces: 0,
     kind: "var",
-    value: "a",
+    name: "a",
     type: "const int **",
   }]);
 });
@@ -293,25 +293,24 @@ test("tokenize struct", () => {
     end: 2,
     spaces: 0,
     kind: "struct",
-    value: "Test",
+    name: "Test",
   }, {
     begin: 2,
     end: 3,
     spaces: 0,
     kind: "endStruct",
-    value: "",
-  },]); expect(tokenizeText("struct Test\n{\n};")).toEqual([{
+  },]);
+  expect(tokenizeText("struct Test\n{\n};")).toEqual([{
     begin: 1,
     end: 3,
     spaces: 0,
     kind: "struct",
-    value: "Test",
+    name: "Test",
   }, {
     begin: 3,
     end: 4,
     spaces: 0,
     kind: "endStruct",
-    value: "",
   },]);
 });
 
@@ -321,28 +320,26 @@ test("tokenize struct with base type", () => {
     end: 2,
     spaces: 0,
     kind: "struct",
-    value: "Test",
+    name: "Test",
     type: "TestBase",
   }, {
     begin: 2,
     end: 3,
     spaces: 0,
     kind: "endStruct",
-    value: "",
   },]);
   expect(tokenizeText("struct Test\n  : TestBase \n{\n};")).toEqual([{
     begin: 1,
     end: 4,
     spaces: 0,
     kind: "struct",
-    value: "Test",
+    name: "Test",
     type: "TestBase",
   }, {
     begin: 4,
     end: 5,
     spaces: 0,
     kind: "endStruct",
-    value: "",
   },]);
 });
 
@@ -352,14 +349,14 @@ test("grab spaces between tokens", () => {
     end: 2,
     spaces: 0,
     kind: "var",
-    value: "a",
+    name: "a",
     type: "int",
   }, {
     begin: 2,
     end: 3,
     spaces: 0,
     kind: "var",
-    value: "b",
+    name: "b",
     type: "int",
   }]);
   expect(tokenizeText("int a;\n\n\nint b;")).toEqual([{
@@ -367,14 +364,14 @@ test("grab spaces between tokens", () => {
     end: 4,
     spaces: 0,
     kind: "var",
-    value: "a",
+    name: "a",
     type: "int",
   }, {
     begin: 4,
     end: 5,
     spaces: 0,
     kind: "var",
-    value: "b",
+    name: "b",
     type: "int",
   }]);
   expect(tokenizeText("int a;\n\n\n#include <blah>\n\nint b;")).toEqual([{
@@ -382,14 +379,14 @@ test("grab spaces between tokens", () => {
     end: 4,
     spaces: 0,
     kind: "var",
-    value: "a",
+    name: "a",
     type: "int",
   }, {
     begin: 6,
     end: 7,
     spaces: 0,
     kind: "var",
-    value: "b",
+    name: "b",
     type: "int",
   }]);
 });
