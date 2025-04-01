@@ -22514,7 +22514,7 @@
           "kind": "function",
           "type": "int",
           "parameters": [],
-          "sourceName": "::IMG_Version"
+          "sourceName": "IMG_Version"
         },
         "LoadSurface": [
           {
@@ -23876,7 +23876,7 @@
           "kind": "function",
           "type": "int",
           "parameters": [],
-          "sourceName": "::TTF_Version"
+          "sourceName": "TTF_Version"
         },
         "GetFreeTypeVersion": {
           "doc": "Query the version of the FreeType library in use.\n\nTTF_Init() should be called before calling this function.\n\n@param major to be filled in with the major version number. Can be NULL.\n@param minor to be filled in with the minor version number. Can be NULL.\n@param patch to be filled in with the param version number. Can be NULL.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa TTF_Init",

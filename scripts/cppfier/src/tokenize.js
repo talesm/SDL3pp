@@ -80,11 +80,12 @@ class Tokenizer {
     let m = spaceRegex.exec(this.lastLine);
     /** @type {FileToken} */
     const token = {
+      name: undefined,
       begin: this.lineCount,
       end: null,
       spaces: m?.[0]?.length ?? 0,
       kind: null,
-      value: ""
+      value: "",
     };
 
     if (/^\/\/\s*Forward decl/.test(line)) {
@@ -125,10 +126,6 @@ class Tokenizer {
       }
       if (token.value.endsWith('_')) return this.next();
       token.doc = checkInlineDoc(line);
-    } else if (m = /^typedef\s+(([\w*]+\s+)+\**)(\w+);/.exec(line)) {
-      token.kind = "alias";
-      token.value = m[3];
-      token.type = m[1].trimEnd();
     } else if (m = /^using\s+(\w+)\s*=\s*([^;]*)(;?)/.exec(line)) {
       token.kind = "alias";
       token.value = m[1];

@@ -363,27 +363,28 @@ function generateDef(entry) {
  * @param {string}   prefix
  */
 function generateBody(entry, prefix) {
-  if (!entry.sourceName) return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
+  const sourceName = entry.sourceName === entry.name ? ("::" + entry.sourceName) : entry.sourceName;
+  if (!sourceName) return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
   const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
   const return_ = entry.type === "void" ? "" : "return ";
   if (!entry.type) {
-    return `  : T(${entry.sourceName}(${paramStr}))\n${prefix}{}`;
+    return `  : T(${sourceName}(${paramStr}))\n${prefix}{}`;
   }
   if (!prefix || entry.static) {
-    return `{\n${prefix}  ${return_}${entry.sourceName}(${paramStr});\n${prefix}}`;
+    return `{\n${prefix}  ${return_}${sourceName}(${paramStr});\n${prefix}}`;
   }
   if (paramStr) {
-    return `{\n${prefix}  ${return_}${entry.sourceName}(T::get(), ${paramStr});\n${prefix}}`;
+    return `{\n${prefix}  ${return_}${sourceName}(T::get(), ${paramStr});\n${prefix}}`;
   }
-  if (looksLikeFreeFunction(entry.sourceName)) {
+  if (looksLikeFreeFunction(sourceName)) {
     if (!return_) {
       return `{\n${prefix}  T::free();\n${prefix}}`;
     }
-    return `{\n${prefix}  ${return_}${entry.sourceName}(T::release());\n${prefix}}`;
+    return `{\n${prefix}  ${return_}${sourceName}(T::release());\n${prefix}}`;
   }
-  return `{\n${prefix}  ${return_}${entry.sourceName}(T::get());\n${prefix}}`;
+  return `{\n${prefix}  ${return_}${sourceName}(T::get());\n${prefix}}`;
 }
 
 /**

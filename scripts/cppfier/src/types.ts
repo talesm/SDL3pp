@@ -150,6 +150,7 @@ export interface ReplacementRule {
 export type FileTokenKind = ApiEntryKind | "doc" | "template" | "endStruct";
 
 export interface FileToken {
+  name?: string;
   value: string;
   kind: FileTokenKind;
   parameters?: string;

@@ -114,7 +114,6 @@ function transformEntries(sourceEntries, context, transform) {
         else targetDelta.name = targetName;
         combineObject(targetEntry, targetDelta);
       } else targetEntry.name = targetName;
-      if (targetName === targetEntry.sourceName) targetEntry.sourceName = "::" + targetEntry.sourceName;
       if (targetEntry.kind == 'alias' || targetEntry.kind == 'struct') {
         if (targetName == targetEntry.type) {
           continue;
