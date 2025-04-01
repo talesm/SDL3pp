@@ -53,24 +53,34 @@ using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
  */
 using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
 
+#ifdef SDL3PP_DOC
+
 /**
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
-#define SDL3PP_IMAGE_MAJOR_VERSION SDL_IMAGE_MAJOR_VERSION
+#define SDL_IMAGE_MAJOR_VERSION
 
-#define SDL3PP_IMAGE_MINOR_VERSION SDL_IMAGE_MINOR_VERSION
+#define SDL_IMAGE_MINOR_VERSION
 
-#define SDL3PP_IMAGE_MICRO_VERSION SDL_IMAGE_MICRO_VERSION
+#define SDL_IMAGE_MICRO_VERSION
 
 /**
  * This is the version number macro for the current SDL_image version.
  */
-#define SDL3PP_IMAGE_VERSION SDL_IMAGE_VERSION
+#define SDL_IMAGE_VERSION                                                      \
+  SDL_VERSIONNUM(                                                              \
+    SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_MICRO_VERSION)
 
 /**
  * This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.
  */
-#define SDL3PP_IMAGE_VERSION_ATLEAST(X, Y, Z) SDL_IMAGE_VERSION_ATLEAST(X, Y, Z)
+#define SDL_IMAGE_VERSION_ATLEAST(X, Y, Z)                                     \
+  ((SDL_IMAGE_MAJOR_VERSION >= X) &&                                           \
+   (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION >= Y) &&            \
+   (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION > Y ||              \
+    SDL_IMAGE_MICRO_VERSION >= Z))
+
+#endif // SDL3PP_DOC
 
 /**
  * This function gets the version of the dynamically linked SDL_image library.

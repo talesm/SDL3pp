@@ -2861,6 +2861,8 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
   SDL_DestroyWindow(resource);
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * A magic value used with SDL_WINDOWPOS_UNDEFINED.
  *
@@ -2869,7 +2871,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_UNDEFINED_MASK SDL_WINDOWPOS_UNDEFINED_MASK
+#define SDL_WINDOWPOS_UNDEFINED_MASK 0x1FFF0000u
 
 /**
  * Used to indicate that you don't care what the window position is.
@@ -2881,7 +2883,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_UNDEFINED_DISPLAY(X) SDL_WINDOWPOS_UNDEFINED_DISPLAY(X)
+#define SDL_WINDOWPOS_UNDEFINED_DISPLAY(X) (SDL_WINDOWPOS_UNDEFINED_MASK | (X))
 
 /**
  * Used to indicate that you don't care what the window position/display is.
@@ -2890,7 +2892,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_UNDEFINED SDL_WINDOWPOS_UNDEFINED
+#define SDL_WINDOWPOS_UNDEFINED SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)
 
 /**
  * A macro to test if the window position is marked as "undefined."
@@ -2899,7 +2901,8 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_ISUNDEFINED(X) SDL_WINDOWPOS_ISUNDEFINED(X)
+#define SDL_WINDOWPOS_ISUNDEFINED(X)                                           \
+  (((X) & 0xFFFF0000) == SDL_WINDOWPOS_UNDEFINED_MASK)
 
 /**
  * A magic value used with SDL_WINDOWPOS_CENTERED.
@@ -2909,7 +2912,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_CENTERED_MASK SDL_WINDOWPOS_CENTERED_MASK
+#define SDL_WINDOWPOS_CENTERED_MASK 0x2FFF0000u
 
 /**
  * Used to indicate that the window position should be centered.
@@ -2921,7 +2924,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_CENTERED_DISPLAY(X) SDL_WINDOWPOS_CENTERED_DISPLAY(X)
+#define SDL_WINDOWPOS_CENTERED_DISPLAY(X) (SDL_WINDOWPOS_CENTERED_MASK | (X))
 
 /**
  * Used to indicate that the window position should be centered.
@@ -2930,7 +2933,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_CENTERED SDL_WINDOWPOS_CENTERED
+#define SDL_WINDOWPOS_CENTERED SDL_WINDOWPOS_CENTERED_DISPLAY(0)
 
 /**
  * A macro to test if the window position is marked as "centered."
@@ -2939,7 +2942,10 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_ISCENTERED(X) SDL_WINDOWPOS_ISCENTERED(X)
+#define SDL_WINDOWPOS_ISCENTERED(X)                                            \
+  (((X) & 0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)
+
+#endif // SDL3PP_DOC
 
 /**
  * An opaque handle to an OpenGL context.
@@ -3678,9 +3684,15 @@ inline WindowRef GetWindowFromID(WindowID id)
   return SDL_GetWindowFromID(id);
 }
 
-#define SDL3PP_WINDOW_SURFACE_VSYNC_DISABLED SDL_WINDOW_SURFACE_VSYNC_DISABLED
+#ifdef SDL3PP_DOC
 
-#define SDL3PP_WINDOW_SURFACE_VSYNC_ADAPTIVE SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE
+/// Disable vsync
+#define SDL_WINDOW_SURFACE_VSYNC_DISABLED 0
+
+/// Adaptative vsync
+#define SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE (-1)
+
+#endif // SDL3PP_DOC
 
 /**
  * Get the window that currently has an input grab enabled.

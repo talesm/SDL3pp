@@ -72,6 +72,7 @@ export interface FileTransform {
   resources?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>
   namespacesMap?: StringMap;
+  definitionPrefix?: string;
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;

@@ -172,6 +172,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8a0ec19df003e99bd8e1a506fef298a1" id="r_a8a0ec19df003e99bd8e1a506fef298a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a8a0ec19df003e99bd8e1a506fef298a1">GetSDF</a> () const</td></tr>
 <tr class="memdesc:a8a0ec19df003e99bd8e1a506fef298a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query whether Signed Distance Field rendering is enabled for a font.  <br /></td></tr>
 <tr class="separator:a8a0ec19df003e99bd8e1a506fef298a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c90cb01602668c0fcae327251bba44b" id="r_a0c90cb01602668c0fcae327251bba44b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a0c90cb01602668c0fcae327251bba44b">GetWeight</a> () const</td></tr>
+<tr class="memdesc:a0c90cb01602668c0fcae327251bba44b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query a font's weight, in terms of the lightness/heaviness of the strokes.  <br /></td></tr>
+<tr class="separator:a0c90cb01602668c0fcae327251bba44b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a104e432e4861f271c0499487cbaddeaf" id="r_a104e432e4861f271c0499487cbaddeaf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FontBase.html#a104e432e4861f271c0499487cbaddeaf">SetWrapAlignment</a> (<a class="el" href="group__CategorySDLTTF.html#gad84ec37f41813cbbd941700f70207d1d">HorizontalAlignment</a> align)</td></tr>
 <tr class="memdesc:a104e432e4861f271c0499487cbaddeaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set a font's current wrap alignment option.  <br /></td></tr>
 <tr class="separator:a104e432e4861f271c0499487cbaddeaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1675,6 +1678,36 @@ template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the font's style name.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>It is safe to call this function from any thread.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
+
+</div>
+</div>
+<a id="a0c90cb01602668c0fcae327251bba44b" name="a0c90cb01602668c0fcae327251bba44b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c90cb01602668c0fcae327251bba44b">&#9670;&#160;</a></span>GetWeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;ObjectBox&lt; TTF_Font * &gt; T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="structSDL_1_1FontBase.html">SDL::FontBase</a>&lt; T &gt;::GetWeight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the font's current weight.</dd></dl>
+<dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font.</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.4.0. </dd></dl>
 
 </div>
 </div>

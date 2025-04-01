@@ -1,4 +1,3 @@
-
 #ifndef SDL3PP_INTRIN_H_
 #define SDL3PP_INTRIN_H_
 
@@ -45,7 +44,7 @@ namespace SDL {
  *
  * @sa SDL_LASX_INTRINSICS
  */
-#define SDL3PP_LSX_INTRINSICS SDL_LSX_INTRINSICS
+#define SDL_LSX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Loongarch LSX intrinsics.
@@ -56,7 +55,7 @@ namespace SDL {
  *
  * @sa SDL_LASX_INTRINSICS
  */
-#define SDL3PP_LASX_INTRINSICS SDL_LASX_INTRINSICS
+#define SDL_LASX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports ARM NEON intrinsics.
@@ -66,7 +65,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_NEON_INTRINSICS SDL_NEON_INTRINSICS
+#define SDL_NEON_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports PowerPC Altivec intrinsics.
@@ -75,7 +74,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_ALTIVEC_INTRINSICS SDL_ALTIVEC_INTRINSICS
+#define SDL_ALTIVEC_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel MMX intrinsics.
@@ -86,7 +85,7 @@ namespace SDL {
  *
  * @sa SDL_SSE_INTRINSICS
  */
-#define SDL3PP_MMX_INTRINSICS SDL_MMX_INTRINSICS
+#define SDL_MMX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE intrinsics.
@@ -100,7 +99,7 @@ namespace SDL {
  * @sa SDL_SSE4_1_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE_INTRINSICS SDL_SSE_INTRINSICS
+#define SDL_SSE_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE2 intrinsics.
@@ -114,7 +113,7 @@ namespace SDL {
  * @sa SDL_SSE4_1_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE2_INTRINSICS SDL_SSE2_INTRINSICS
+#define SDL_SSE2_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE3 intrinsics.
@@ -128,7 +127,7 @@ namespace SDL {
  * @sa SDL_SSE4_1_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE3_INTRINSICS SDL_SSE3_INTRINSICS
+#define SDL_SSE3_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE4.1 intrinsics.
@@ -142,7 +141,7 @@ namespace SDL {
  * @sa SDL_SSE3_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE4_1_INTRINSICS SDL_SSE4_1_INTRINSICS
+#define SDL_SSE4_1_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE4.2 intrinsics.
@@ -156,7 +155,7 @@ namespace SDL {
  * @sa SDL_SSE3_INTRINSICS
  * @sa SDL_SSE4_1_INTRINSICS
  */
-#define SDL3PP_SSE4_2_INTRINSICS SDL_SSE4_2_INTRINSICS
+#define SDL_SSE4_2_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel AVX intrinsics.
@@ -168,7 +167,7 @@ namespace SDL {
  * @sa SDL_AVX2_INTRINSICS
  * @sa SDL_AVX512F_INTRINSICS
  */
-#define SDL3PP_AVX_INTRINSICS SDL_AVX_INTRINSICS
+#define SDL_AVX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel AVX2 intrinsics.
@@ -180,7 +179,7 @@ namespace SDL {
  * @sa SDL_AVX_INTRINSICS
  * @sa SDL_AVX512F_INTRINSICS
  */
-#define SDL3PP_AVX2_INTRINSICS SDL_AVX2_INTRINSICS
+#define SDL_AVX2_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel AVX-512F intrinsics.
@@ -194,7 +193,7 @@ namespace SDL {
  * @sa SDL_AVX_INTRINSICS
  * @sa SDL_AVX2_INTRINSICS
  */
-#define SDL3PP_AVX512F_INTRINSICS SDL_AVX512F_INTRINSICS
+#define SDL_AVX512F_INTRINSICS 1
 
 /**
  * A macro to decide if the compiler supports `__attribute__((target))`.
@@ -207,9 +206,7 @@ namespace SDL {
  *
  * @sa SDL_TARGETING
  */
-#define SDL3PP_HAS_TARGET_ATTRIBS SDL_HAS_TARGET_ATTRIBS
-
-#endif // SDL3PP_DOC
+#define SDL_HAS_TARGET_ATTRIBS
 
 /**
  * A macro to tag a function as targeting a specific CPU architecture.
@@ -254,7 +251,9 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_TARGETING(x) SDL_TARGETING(x)
+#define SDL_TARGETING(x) __attribute__((target(x)))
+
+#endif // SDL3PP_DOC
 
 /// @}
 

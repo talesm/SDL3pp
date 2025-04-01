@@ -4,7 +4,7 @@
     "IMG_",
     "TTF_"
   ],
-  "definitionPrefix": "SDL3PP_",
+  "definitionPrefix": "SDL_",
   "renameRules": [
     {
       "pattern": "^SDL_(.*)\\.h$",
@@ -522,6 +522,94 @@
               "name": "(&x)[N]"
             }
           ]
+        },
+        "SDL_min": {
+          "kind": "function",
+          "type": "T",
+          "constexpr": true,
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "class",
+              "name": "U"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T",
+              "name": "x"
+            },
+            {
+              "type": "U",
+              "name": "y"
+            }
+          ]
+        },
+        "SDL_max": {
+          "kind": "function",
+          "type": "T",
+          "constexpr": true,
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "class",
+              "name": "U"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T",
+              "name": "x"
+            },
+            {
+              "type": "U",
+              "name": "y"
+            }
+          ]
+        },
+        "SDL_clamp": {
+          "kind": "function",
+          "type": "T",
+          "constexpr": true,
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "class",
+              "name": "U"
+            },
+            {
+              "type": "class",
+              "name": "V"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T",
+              "name": "x"
+            },
+            {
+              "type": "U",
+              "name": "a"
+            },
+            {
+              "type": "V",
+              "name": "b"
+            }
+          ]
+        },
+        "SDL_INVALID_UNICODE_CODEPOINT": {
+          "kind": "var",
+          "type": "Uint32",
+          "constexpr": true
         }
       }
     },
@@ -5380,6 +5468,7 @@
       }
     },
     "SDL_endian.h": {
+      "definitionPrefix": "SDL_",
       "ignoreEntries": [
         "HAS_BUILTIN_BSWAP16",
         "HAS_BUILTIN_BSWAP32",
@@ -5816,6 +5905,7 @@
       }
     },
     "SDL_main.h": {
+      "definitionPrefix": "SDL3PP_",
       "ignoreEntries": [
         "main",
         "SDLMAIN_DECLSPEC",

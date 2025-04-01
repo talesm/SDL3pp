@@ -11,13 +11,13 @@ namespace SDL {
  *
  * Functions converting endian-specific values to different byte orders.
  *
- * These functions either unconditionally swap byte order (SDL_Swap16,
- * SDL_Swap32, SDL_Swap64, SDL_SwapFloat), or they swap to/from the system's
- * native byte order (SDL_Swap16LE, SDL_Swap16BE, SDL_Swap32LE, SDL_Swap32BE,
- * SDL_Swap32LE, SDL_Swap32BE, SDL_SwapFloatLE, SDL_SwapFloatBE). In the
+ * These functions either unconditionally swap byte order (Swap16,
+ * Swap32, Swap64, SwapFloat), or they swap to/from the system's
+ * native byte order (Swap16LE, Swap16BE, Swap32LE, Swap32BE,
+ * Swap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the
  * latter case, the functionality is provided by macros that become no-ops if
- * a swap isn't necessary: on an x86 (littleendian) processor, SDL_Swap32LE
- * does nothing, but SDL_Swap32BE reverses the bytes of the data. On a PowerPC
+ * a swap isn't necessary: on an x86 (littleendian) processor, Swap32LE
+ * does nothing, but Swap32BE() reverses the bytes of the data. On a PowerPC
  * processor (bigendian), the macros behavior is reversed.
  *
  * The swap routines are inline functions, and attempt to use compiler
@@ -26,6 +26,8 @@ namespace SDL {
  *
  * @{
  */
+
+#ifdef SDL3PP_DOC
 
 /**
  * A value to represent littleendian byteorder.
@@ -44,7 +46,7 @@ namespace SDL {
  * @sa SDL_BYTEORDER
  * @sa SDL_BIG_ENDIAN
  */
-#define SDL3PP_LIL_ENDIAN SDL_LIL_ENDIAN
+#define SDL_LIL_ENDIAN 1234
 
 /**
  * A value to represent bigendian byteorder.
@@ -63,7 +65,7 @@ namespace SDL {
  * @sa SDL_BYTEORDER
  * @sa SDL_LIL_ENDIAN
  */
-#define SDL3PP_BIG_ENDIAN SDL_BIG_ENDIAN
+#define SDL_BIG_ENDIAN 4321
 
 /**
  * A macro that reports the target system's byte order.
@@ -83,7 +85,7 @@ namespace SDL {
  * @sa SDL_LIL_ENDIAN
  * @sa SDL_BIG_ENDIAN
  */
-#define SDL3PP_BYTEORDER SDL_BYTEORDER
+#define SDL_BYTEORDER SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN
 
 /**
  * A macro that reports the target system's floating point word order.
@@ -103,7 +105,9 @@ namespace SDL {
  * @sa SDL_LIL_ENDIAN
  * @sa SDL_BIG_ENDIAN
  */
-#define SDL3PP_FLOATWORDORDER SDL_FLOATWORDORDER
+#define SDL_FLOATWORDORDER SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN
+
+#endif // SDL3PP_DOC
 
 /**
  * Byte-swap a floating point number.

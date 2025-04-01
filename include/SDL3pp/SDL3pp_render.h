@@ -83,12 +83,16 @@ using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
  */
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
 
+#ifdef SDL3PP_DOC
+
 /**
  * The name of the software renderer.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_SOFTWARE_RENDERER SDL_SOFTWARE_RENDERER
+#define SDL_SOFTWARE_RENDERER "software"
+
+#endif // SDL3PP_DOC
 
 /**
  * Vertex structure.
@@ -3289,9 +3293,13 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
     renderer.get(), wait_stage_mask, wait_semaphore, signal_semaphore);
 }
 
-#define SDL3PP_RENDERER_VSYNC_DISABLED SDL_RENDERER_VSYNC_DISABLED
+#ifdef SDL3PP_DOC
 
-#define SDL3PP_RENDERER_VSYNC_ADAPTIVE SDL_RENDERER_VSYNC_ADAPTIVE
+/// Disable vsync
+#define SDL_RENDERER_VSYNC_DISABLED 0
+
+/// Adaptative vsync
+#define SDL_RENDERER_VSYNC_ADAPTIVE (-1)
 
 /**
  * The size, in pixels, of a single SDL_RenderDebugText() character.
@@ -3302,7 +3310,9 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
  *
  * @sa SDL_RenderDebugText
  */
-#define SDL3PP_DEBUG_TEXT_FONT_CHARACTER_SIZE SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+#define SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE 8
+
+#endif // SDL3PP_DOC
 
 /**
  * Load a BMP texture from a seekable SDL data stream.

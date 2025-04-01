@@ -11,13 +11,14 @@ var searchData=
   ['init_5fsensor_8',['INIT_SENSOR',['../group__CategoryInit.html#ga075264ef70aa0e1e7832a07477f1246c',1,'SDL']]],
   ['init_5fttf_9',['INIT_TTF',['../group__CategorySDLTTF.html#gaa30f945c03b7abc08b5436d6369d1486',1,'SDL']]],
   ['init_5fvideo_10',['INIT_VIDEO',['../group__CategoryInit.html#ga63ca590321877744a1050ab71ff4e3c5',1,'SDL']]],
-  ['io_5fseek_5fcur_11',['IO_SEEK_CUR',['../group__CategoryIOStream.html#gabab8b78d2e651e38ccc19b1c62f56b66',1,'SDL']]],
-  ['io_5fseek_5fend_12',['IO_SEEK_END',['../group__CategoryIOStream.html#gaf7177fead5d617167aa73bafec86ffe1',1,'SDL']]],
-  ['io_5fseek_5fset_13',['IO_SEEK_SET',['../group__CategoryIOStream.html#gaf4eccd7acaff5d2af103c49e26a0100f',1,'SDL']]],
-  ['io_5fstatus_5feof_14',['IO_STATUS_EOF',['../group__CategoryIOStream.html#ga770e7700b3051e06307b0a4694535c16',1,'SDL']]],
-  ['io_5fstatus_5ferror_15',['IO_STATUS_ERROR',['../group__CategoryIOStream.html#ga659db4a110cd5d4c9c55c82fe6cca22d',1,'SDL']]],
-  ['io_5fstatus_5fnot_5fready_16',['IO_STATUS_NOT_READY',['../group__CategoryIOStream.html#gadd19fed8fd3d810f9b58376b753e9d24',1,'SDL']]],
-  ['io_5fstatus_5freadonly_17',['IO_STATUS_READONLY',['../group__CategoryIOStream.html#gad49f75db9e5b37ab6e670a792754617d',1,'SDL']]],
-  ['io_5fstatus_5fready_18',['IO_STATUS_READY',['../group__CategoryIOStream.html#gadca1e808b43d37fa4bcfedac6abdd125',1,'SDL']]],
-  ['io_5fstatus_5fwriteonly_19',['IO_STATUS_WRITEONLY',['../group__CategoryIOStream.html#ga9af9c81fff2c2d7fbd1fc431be4cb92f',1,'SDL']]]
+  ['invalid_5funicode_5fcodepoint_11',['INVALID_UNICODE_CODEPOINT',['../group__CategoryStdinc.html#ga225b1359489202f60aa60f936b02887b',1,'SDL']]],
+  ['io_5fseek_5fcur_12',['IO_SEEK_CUR',['../group__CategoryIOStream.html#gabab8b78d2e651e38ccc19b1c62f56b66',1,'SDL']]],
+  ['io_5fseek_5fend_13',['IO_SEEK_END',['../group__CategoryIOStream.html#gaf7177fead5d617167aa73bafec86ffe1',1,'SDL']]],
+  ['io_5fseek_5fset_14',['IO_SEEK_SET',['../group__CategoryIOStream.html#gaf4eccd7acaff5d2af103c49e26a0100f',1,'SDL']]],
+  ['io_5fstatus_5feof_15',['IO_STATUS_EOF',['../group__CategoryIOStream.html#ga770e7700b3051e06307b0a4694535c16',1,'SDL']]],
+  ['io_5fstatus_5ferror_16',['IO_STATUS_ERROR',['../group__CategoryIOStream.html#ga659db4a110cd5d4c9c55c82fe6cca22d',1,'SDL']]],
+  ['io_5fstatus_5fnot_5fready_17',['IO_STATUS_NOT_READY',['../group__CategoryIOStream.html#gadd19fed8fd3d810f9b58376b753e9d24',1,'SDL']]],
+  ['io_5fstatus_5freadonly_18',['IO_STATUS_READONLY',['../group__CategoryIOStream.html#gad49f75db9e5b37ab6e670a792754617d',1,'SDL']]],
+  ['io_5fstatus_5fready_19',['IO_STATUS_READY',['../group__CategoryIOStream.html#gadca1e808b43d37fa4bcfedac6abdd125',1,'SDL']]],
+  ['io_5fstatus_5fwriteonly_20',['IO_STATUS_WRITEONLY',['../group__CategoryIOStream.html#ga9af9c81fff2c2d7fbd1fc431be4cb92f',1,'SDL']]]
 ];

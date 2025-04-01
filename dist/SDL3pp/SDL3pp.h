@@ -814,7 +814,7 @@ using IConvRef = IConvBase<ObjectRef<SDL_iconv_data_t>>;
  */
 using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
 
-#if defined(SDL_NOLONGLONG) || defined(SDL3PP_DOC)
+#ifdef SDL3PP_DOC
 
 /**
  * Don't let SDL use "long long" C types.
@@ -832,9 +832,7 @@ using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
  * SDL's own source code cannot be built with a compiler that has this
  * defined, for various technical reasons.
  */
-#define SDL3PP_NOLONGLONG SDL_NOLONGLONG
-
-#endif // defined(SDL_NOLONGLONG) || defined(SDL3PP_DOC)
+#define SDL_NOLONGLONG 1
 
 /**
  * The largest value that a `size_t` can hold for the target platform.
@@ -850,7 +848,9 @@ using IConv = IConvBase<ObjectUnique<SDL_iconv_data_t>>;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_SIZE_MAX SDL_SIZE_MAX
+#define SDL_SIZE_MAX SIZE_MAX
+
+#endif // SDL3PP_DOC
 
 /**
  * The number of elements in a static array.
@@ -866,6 +866,8 @@ constexpr std::size_t arraysize(const T (&array)[N])
   return SDL_arraysize(array);
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * Macro useful for building other macros with strings in them.
  *
@@ -880,7 +882,9 @@ constexpr std::size_t arraysize(const T (&array)[N])
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_STRINGIFY_ARG(arg) SDL_STRINGIFY_ARG(arg)
+#define SDL_STRINGIFY_ARG(arg) #arg
+
+#endif // SDL3PP_DOC
 
 /**
  * Define a four character code as a Uint32.
@@ -901,6 +905,8 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
   return SDL_FOURCC(a, b, c, d);
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * Append the 64 bit integer suffix to a signed integer literal.
  *
@@ -912,7 +918,7 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
  *
  * @sa SDL_UINT64_C
  */
-#define SDL3PP_SINT64_C(c) SDL_SINT64_C(c)
+#define SDL_SINT64_C(c) c##LL /* or whatever the current compiler uses. */
 
 /**
  * Append the 64 bit integer suffix to an unsigned integer literal.
@@ -925,7 +931,9 @@ constexpr Uint32 FourCC(Uint8 a, Uint8 b, Uint8 c, Uint8 d)
  *
  * @sa SDL_SINT64_C
  */
-#define SDL3PP_UINT64_C(c) SDL_UINT64_C(c)
+#define SDL_UINT64_C(c) c##ULL /* or whatever the current compiler uses. */
+
+#endif // SDL3PP_DOC
 
 constexpr Sint8 MAX_SINT8 = SDL_MAX_SINT8;
 
@@ -1032,6 +1040,8 @@ constexpr Time MAX_TIME = Time::FromNS(SDL_MAX_TIME);
 
 constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
 
+#ifdef SDL3PP_DOC
+
 /**
  * Epsilon constant, used for comparing floating-point numbers.
  *
@@ -1040,7 +1050,7 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_FLT_EPSILON SDL_FLT_EPSILON
+#define SDL_FLT_EPSILON 1.1920928955078125e-07F /* 0x0.000002p0 */
 
 /**
  * A macro to initialize an SDL interface.
@@ -1080,7 +1090,13 @@ constexpr Time MIN_TIME = Time::FromNS(SDL_MIN_TIME);
  * @sa SDL_StorageInterface
  * @sa SDL_VirtualJoystickDesc
  */
-#define SDL3PP_INIT_INTERFACE(iface) SDL_INIT_INTERFACE(iface)
+#define SDL_INIT_INTERFACE(iface)                                              \
+  do {                                                                         \
+    SDL_zerop(iface);                                                          \
+    (iface)->version = sizeof(*(iface));                                       \
+  } while (0)
+
+#endif // SDL3PP_DOC
 
 /**
  * Allocate uninitialized memory.
@@ -1985,16 +2001,20 @@ inline int abs(int x) { return SDL_abs(x); }
  * @param y the second value to compare.
  * @returns the lesser of `x` and `y`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL3PP_min(x, y) SDL_min(x, y)
+template<class T, class U>
+constexpr T min(T x, U y)
+{
+  return SDL_min(x, y);
+}
 
 /**
  * Return the greater of two values.
  *
- * This is a helper macro that might be more clear than writing out the
+ * This is a helper function that might be more clear than writing out the
  * comparisons directly, and works with any type that can be compared with the
  * `>` operator. However, it double-evaluates both its parameters, so do not
  * use expressions with side-effects here.
@@ -2003,11 +2023,15 @@ inline int abs(int x) { return SDL_abs(x); }
  * @param y the second value to compare.
  * @returns the lesser of `x` and `y`.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL3PP_max(x, y) SDL_max(x, y)
+template<class T, class U>
+constexpr T max(T x, U y)
+{
+  return SDL_max(x, y);
+}
 
 /**
  * Return a value clamped to a range.
@@ -2015,9 +2039,9 @@ inline int abs(int x) { return SDL_abs(x); }
  * If `x` is outside the range a values between `a` and `b`, the returned
  * value will be `a` or `b` as appropriate. Otherwise, `x` is returned.
  *
- * This macro will produce incorrect results if `b` is less than `a`.
+ * This function will produce incorrect results if `b` is less than `a`.
  *
- * This is a helper macro that might be more clear than writing out the
+ * This is a helper function that might be more clear than writing out the
  * comparisons directly, and works with any type that can be compared with the
  * `<` and `>` operators. However, it double-evaluates all its parameters, so
  * do not use expressions with side-effects here.
@@ -2027,11 +2051,15 @@ inline int abs(int x) { return SDL_abs(x); }
  * @param b the high end value.
  * @returns x, clamped between a and b.
  *
- * @threadsafety It is safe to call this macro from any thread.
+ * @threadsafety It is safe to call this function from any thread.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This function is available since SDL 3.2.0.
  */
-#define SDL3PP_clamp(x, a, b) SDL_clamp(x, a, b)
+template<class T, class U, class V>
+constexpr T clamp(T x, U a, V b)
+{
+  return SDL_clamp(x, a, b);
+}
 
 /**
  * Query if a character is alphabetic (a letter).
@@ -2369,6 +2397,8 @@ inline void* memcpy(void* dst, const void* src, size_t len)
   return SDL_memcpy(dst, src, len);
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * A macro to copy memory between objects, with basic type checking.
  *
@@ -2393,7 +2423,13 @@ inline void* memcpy(void* dst, const void* src, size_t len)
  *
  * @since This function is available since SDL 3.2.0.
  */
-#define SDL3PP_copyp(dst, src) SDL_copyp(dst, src)
+#define SDL_copyp(dst, src)                                                    \
+  {                                                                            \
+    SDL_COMPILE_TIME_ASSERT(SDL_copyp, sizeof(*(dst)) == sizeof(*(src)));      \
+  }                                                                            \
+  SDL_memcpy((dst), (src), sizeof(*(src)))
+
+#endif // SDL3PP_DOC
 
 /**
  * Copy memory ranges that might overlap.
@@ -3806,12 +3842,12 @@ inline char* strpbrk(StringParam str, StringParam breakset)
  *
  * This tends to render as something like a question mark in most places.
  *
- * @since This macro is available since SDL 3.2.0.
+ * @since This constant is available since SDL 3.2.0.
  *
  * @sa SDL_StepBackUTF8
  * @sa SDL_StepUTF8
  */
-#define SDL3PP_INVALID_UNICODE_CODEPOINT SDL_INVALID_UNICODE_CODEPOINT
+constexpr Uint32 INVALID_UNICODE_CODEPOINT = SDL_INVALID_UNICODE_CODEPOINT;
 
 /**
  * Decode a UTF-8 string, one Unicode codepoint at a time.
@@ -4391,6 +4427,8 @@ public:
   Uint32 rand_bits() { return SDL_rand_bits_r(&m_state); }
 };
 
+#ifdef SDL3PP_DOC
+
 /**
  * The value of Pi, as a double-precision floating point literal.
  *
@@ -4398,7 +4436,7 @@ public:
  *
  * @sa SDL_PI_F
  */
-#define SDL3PP_PI_D SDL_PI_D
+#define SDL_PI_D 3.141592653589793238462643383279502884
 
 /**
  * The value of Pi, as a single-precision floating point literal.
@@ -4407,7 +4445,9 @@ public:
  *
  * @sa SDL_PI_D
  */
-#define SDL3PP_PI_F SDL_PI_F
+#define SDL_PI_F 3.141592653589793238462643383279502884F
+
+#endif // SDL3PP_DOC
 
 /**
  * Compute the arc cosine of `x`.
@@ -5823,25 +5863,29 @@ inline void ObjectRef<SDL_iconv_data_t>::doFree(SDL_iconv_data_t* resource)
   SDL_iconv_close(resource);
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * Generic error. Check SDL_GetError()?
  */
-#define SDL3PP_ICONV_ERROR SDL_ICONV_ERROR
+#define SDL_ICONV_ERROR (size_t)-1
 
 /**
  * Output buffer was too small.
  */
-#define SDL3PP_ICONV_E2BIG SDL_ICONV_E2BIG
+#define SDL_ICONV_E2BIG (size_t)-2
 
 /**
  * Invalid input sequence was encountered.
  */
-#define SDL3PP_ICONV_EILSEQ SDL_ICONV_EILSEQ
+#define SDL_ICONV_EILSEQ (size_t)-3
 
 /**
  * Incomplete input sequence was encountered.
  */
-#define SDL3PP_ICONV_EINVAL SDL_ICONV_EINVAL
+#define SDL_ICONV_EINVAL (size_t)-4
+
+#endif // SDL3PP_DOC
 
 /**
  * Helper function to convert a string's encoding in one call.
@@ -5876,6 +5920,8 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
   return OwnPtr<char>{SDL_iconv_string(tocode, fromcode, inbuf, inbytesleft)};
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * Convert a UTF-8 string to the current locale's character encoding.
  *
@@ -5888,7 +5934,8 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_iconv_utf8_locale(S) SDL_iconv_utf8_locale(S)
+#define SDL_iconv_utf8_locale(S)                                               \
+  SDL_iconv_string("", "UTF-8", S, SDL_strlen(S) + 1)
 
 /**
  * Convert a UTF-8 string to UCS-2.
@@ -5902,7 +5949,8 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_iconv_utf8_ucs2(S) SDL_iconv_utf8_ucs2(S)
+#define SDL_iconv_utf8_ucs2(S)                                                 \
+  (Uint16*)SDL_iconv_string("UCS-2", "UTF-8", S, SDL_strlen(S) + 1)
 
 /**
  * Convert a UTF-8 string to UCS-4.
@@ -5916,7 +5964,8 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_iconv_utf8_ucs4(S) SDL_iconv_utf8_ucs4(S)
+#define SDL_iconv_utf8_ucs4(S)                                                 \
+  (Uint32*)SDL_iconv_string("UCS-4", "UTF-8", S, SDL_strlen(S) + 1)
 
 /**
  * Convert a wchar_t string to UTF-8.
@@ -5930,7 +5979,11 @@ inline OwnPtr<char> iconv_string(StringParam tocode,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_iconv_wchar_utf8(S) SDL_iconv_wchar_utf8(S)
+#define SDL_iconv_wchar_utf8(S)                                                \
+  SDL_iconv_string(                                                            \
+    "UTF-8", "WCHAR_T", (char*)S, (SDL_wcslen(S) + 1) * sizeof(wchar_t))
+
+#endif // SDL3PP_DOC
 
 /**
  * Multiply two integers, checking for overflow.
@@ -6048,6 +6101,8 @@ void PtrBase<T>::free()
  * @{
  */
 
+#ifdef SDL3PP_DOC
+
 /**
  * The level of assertion aggressiveness.
  *
@@ -6065,7 +6120,7 @@ void PtrBase<T>::free()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_ASSERT_LEVEL SDL_ASSERT_LEVEL
+#define SDL_ASSERT_LEVEL SomeNumberBasedOnVariousFactors
 
 /**
  * Attempt to tell an attached debugger to pause.
@@ -6085,7 +6140,7 @@ void PtrBase<T>::free()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_TriggerBreakpoint() SDL_TriggerBreakpoint()
+#define SDL_TriggerBreakpoint() TriggerABreakpointInAPlatformSpecificManner
 
 /**
  * A macro that reports the current function being compiled.
@@ -6094,21 +6149,21 @@ void PtrBase<T>::free()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_FUNCTION SDL_FUNCTION
+#define SDL_FUNCTION __FUNCTION__
 
 /**
  * A macro that reports the current file being compiled.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_FILE SDL_FILE
+#define SDL_FILE __FILE__
 
 /**
  * A macro that reports the current line number of the file being compiled.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_LINE SDL_LINE
+#define SDL_LINE __LINE__
 
 /**
  * A macro for wrapping code in `do {} while (0);` without compiler warnings.
@@ -6128,7 +6183,7 @@ void PtrBase<T>::free()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_NULL_WHILE_LOOP_CONDITION SDL_NULL_WHILE_LOOP_CONDITION
+#define SDL_NULL_WHILE_LOOP_CONDITION (0)
 
 /**
  * The macro used when an assertion is disabled.
@@ -6144,7 +6199,12 @@ void PtrBase<T>::free()
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_disabled_assert(condition) SDL_disabled_assert(condition)
+#define SDL_disabled_assert(condition)                                         \
+  do {                                                                         \
+    (void)sizeof((condition));                                                 \
+  } while (SDL_NULL_WHILE_LOOP_CONDITION)
+
+#endif // SDL3PP_DOC
 
 /**
  * Possible outcomes from a triggered assertion.
@@ -6220,6 +6280,8 @@ inline AssertState ReportAssertion(AssertData* data,
   return SDL_ReportAssertion(data, func, file, line);
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * The macro used when an assertion triggers a breakpoint.
  *
@@ -6228,7 +6290,7 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_AssertBreakpoint() SDL_AssertBreakpoint()
+#define SDL_AssertBreakpoint() SDL_TriggerBreakpoint()
 
 /**
  * The macro used when an assertion is enabled.
@@ -6251,7 +6313,21 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_enabled_assert(condition) SDL_enabled_assert(condition)
+#define SDL_enabled_assert(condition)                                          \
+  do {                                                                         \
+    while (!(condition)) {                                                     \
+      static struct SDL_AssertData sdl_assert_data = {                         \
+        0, 0, #condition, 0, 0, 0, 0};                                         \
+      const SDL_AssertState sdl_assert_state = SDL_ReportAssertion(            \
+        &sdl_assert_data, SDL_FUNCTION, SDL_FILE, SDL_LINE);                   \
+      if (sdl_assert_state == SDL_ASSERTION_RETRY) {                           \
+        continue; /* go again. */                                              \
+      } else if (sdl_assert_state == SDL_ASSERTION_BREAK) {                    \
+        SDL_AssertBreakpoint();                                                \
+      }                                                                        \
+      break; /* not retrying. */                                               \
+    }                                                                          \
+  } while (SDL_NULL_WHILE_LOOP_CONDITION)
 
 /**
  * An assertion test that is normally performed only in debug builds.
@@ -6283,7 +6359,8 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_assert(condition) SDL_assert(condition)
+#define SDL_assert(condition)                                                  \
+  if (assertion_enabled && (condition)) { trigger_assertion; }
 
 /**
  * An assertion test that is performed even in release builds.
@@ -6316,7 +6393,7 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_assert_release(condition) SDL_assert_release(condition)
+#define SDL_assert_release(condition) SDL_disabled_assert(condition)
 
 /**
  * An assertion test that is performed only when built with paranoid settings.
@@ -6345,7 +6422,7 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_assert_paranoid(condition) SDL_assert_paranoid(condition)
+#define SDL_assert_paranoid(condition) SDL_disabled_assert(condition)
 
 /**
  * An assertion test that is always performed.
@@ -6368,7 +6445,7 @@ inline AssertState ReportAssertion(AssertData* data,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_assert_always(condition) SDL_assert_always(condition)
+#define SDL_assert_always(condition) SDL_enabled_assert(condition)
 
 /**
  * A @ref callback that fires when an SDL assertion fails.
@@ -6518,253 +6595,7 @@ inline const AssertData* GetAssertionReport()
  */
 inline void ResetAssertionReport() { return SDL_ResetAssertionReport(); }
 
-/**
- * The level of assertion aggressiveness.
- *
- * This value changes depending on compiler options and other preprocessor
- * defines.
- *
- * It is currently one of the following values, but future SDL releases might
- * add more:
- *
- * - 0: All SDL assertion macros are disabled.
- * - 1: Release settings: SDL_assert disabled, SDL_assert_release enabled.
- * - 2: Debug settings: SDL_assert and SDL_assert_release enabled.
- * - 3: Paranoid settings: All SDL assertion macros enabled, including
- *   SDL_assert_paranoid.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_ASSERT_LEVEL SDL_ASSERT_LEVEL
-
-/**
- * Attempt to tell an attached debugger to pause.
- *
- * This allows an app to programmatically halt ("break") the debugger as if it
- * had hit a breakpoint, allowing the developer to examine program state, etc.
- *
- * This is a macro--not a function--so that the debugger breaks on the source
- * code line that used SDL_TriggerBreakpoint and not in some random guts of
- * SDL. SDL_assert uses this macro for the same reason.
- *
- * If the program is not running under a debugger, SDL_TriggerBreakpoint will
- * likely terminate the app, possibly without warning. If the current platform
- * isn't supported, this macro is left undefined.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_TriggerBreakpoint() SDL_TriggerBreakpoint()
-
-/**
- * A macro that reports the current function being compiled.
- *
- * If SDL can't figure how the compiler reports this, it will use "???".
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_FUNCTION SDL_FUNCTION
-
-/**
- * A macro that reports the current file being compiled.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_FILE SDL_FILE
-
-/**
- * A macro that reports the current line number of the file being compiled.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_LINE SDL_LINE
-
-/**
- * A macro for wrapping code in `do {} while (0);` without compiler warnings.
- *
- * Visual Studio with really aggressive warnings enabled needs this to avoid
- * compiler complaints.
- *
- * the `do {} while (0);` trick is useful for wrapping code in a macro that
- * may or may not be a single statement, to avoid various C language
- * accidents.
- *
- * To use:
- *
- * ```c
- * do { SomethingOnce(); } while (SDL_NULL_WHILE_LOOP_CONDITION (0));
- * ```
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_NULL_WHILE_LOOP_CONDITION SDL_NULL_WHILE_LOOP_CONDITION
-
-/**
- * The macro used when an assertion is disabled.
- *
- * This isn't for direct use by apps, but this is the code that is inserted
- * when an SDL_assert is disabled (perhaps in a release build).
- *
- * The code does nothing, but wraps `condition` in a sizeof operator, which
- * generates no code and has no side effects, but avoid compiler warnings
- * about unused variables.
- *
- * @param condition the condition to assert (but not actually run here).
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_disabled_assert(condition) SDL_disabled_assert(condition)
-
-/**
- * The macro used when an assertion triggers a breakpoint.
- *
- * This isn't for direct use by apps; use SDL_assert or SDL_TriggerBreakpoint
- * instead.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_AssertBreakpoint() SDL_AssertBreakpoint()
-
-/**
- * The macro used when an assertion is enabled.
- *
- * This isn't for direct use by apps, but this is the code that is inserted
- * when an SDL_assert is enabled.
- *
- * The `do {} while(0)` avoids dangling else problems:
- *
- * ```c
- * if (x) SDL_assert(y); else blah();
- * ```
- *
- * ... without the do/while, the "else" could attach to this macro's "if". We
- * try to handle just the minimum we need here in a macro...the loop, the
- * static vars, and break points. The heavy lifting is handled in
- * SDL_ReportAssertion().
- *
- * @param condition the condition to assert.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_enabled_assert(condition) SDL_enabled_assert(condition)
-
-/**
- * An assertion test that is normally performed only in debug builds.
- *
- * This macro is enabled when the SDL_ASSERT_LEVEL is >= 2, otherwise it is
- * disabled. This is meant to only do these tests in debug builds, so they can
- * tend to be more expensive, and they are meant to bring everything to a halt
- * when they fail, with the programmer there to assess the problem.
- *
- * In short: you can sprinkle these around liberally and assume they will
- * evaporate out of the build when building for end-users.
- *
- * When assertions are disabled, this wraps `condition` in a `sizeof`
- * operator, which means any function calls and side effects will not run, but
- * the compiler will not complain about any otherwise-unused variables that
- * are only referenced in the assertion.
- *
- * One can set the environment variable "SDL_ASSERT" to one of several strings
- * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
- * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
- * "break" so that your debugger takes control as soon as assert is triggered,
- * instead of risking a bad UI interaction (deadlock, etc) in the application.
- *
- * @param condition boolean value to test.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_assert(condition) SDL_assert(condition)
-
-/**
- * An assertion test that is performed even in release builds.
- *
- * This macro is enabled when the SDL_ASSERT_LEVEL is >= 1, otherwise it is
- * disabled. This is meant to be for tests that are cheap to make and
- * extremely unlikely to fail; generally it is frowned upon to have an
- * assertion failure in a release build, so these assertions generally need to
- * be of more than life-and-death importance if there's a chance they might
- * trigger. You should almost always consider handling these cases more
- * gracefully than an assert allows.
- *
- * When assertions are disabled, this wraps `condition` in a `sizeof`
- * operator, which means any function calls and side effects will not run, but
- * the compiler will not complain about any otherwise-unused variables that
- * are only referenced in the assertion.
- *
- * One can set the environment variable "SDL_ASSERT" to one of several strings
- * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
- * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
- * "break" so that your debugger takes control as soon as assert is triggered,
- * instead of risking a bad UI interaction (deadlock, etc) in the application.
- * *
- *
- * @param condition boolean value to test.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_assert_release(condition) SDL_assert_release(condition)
-
-/**
- * An assertion test that is performed only when built with paranoid settings.
- *
- * This macro is enabled when the SDL_ASSERT_LEVEL is >= 3, otherwise it is
- * disabled. This is a higher level than both release and debug, so these
- * tests are meant to be expensive and only run when specifically looking for
- * extremely unexpected failure cases in a special build.
- *
- * When assertions are disabled, this wraps `condition` in a `sizeof`
- * operator, which means any function calls and side effects will not run, but
- * the compiler will not complain about any otherwise-unused variables that
- * are only referenced in the assertion.
- *
- * One can set the environment variable "SDL_ASSERT" to one of several strings
- * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
- * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
- * "break" so that your debugger takes control as soon as assert is triggered,
- * instead of risking a bad UI interaction (deadlock, etc) in the application.
- *
- * @param condition boolean value to test.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_assert_paranoid(condition) SDL_assert_paranoid(condition)
-
-/**
- * An assertion test that is always performed.
- *
- * This macro is always enabled no matter what SDL_ASSERT_LEVEL is set to. You
- * almost never want to use this, as it could trigger on an end-user's system,
- * crashing your program.
- *
- * One can set the environment variable "SDL_ASSERT" to one of several strings
- * ("abort", "break", "retry", "ignore", "always_ignore") to force a default
- * behavior, which may be desirable for automation purposes. If your platform
- * requires GUI interfaces to happen on the main thread but you're debugging
- * an assertion in a background thread, it might be desirable to set this to
- * "break" so that your debugger takes control as soon as assert is triggered,
- * instead of risking a bad UI interaction (deadlock, etc) in the application.
- *
- * @param condition boolean value to test.
- *
- * @threadsafety It is safe to call this macro from any thread.
- *
- * @since This macro is available since SDL 3.2.0.
- */
-#define SDL3PP_assert_always(condition) SDL_assert_always(condition)
+#endif // SDL3PP_DOC
 
 /// @}
 
@@ -7408,13 +7239,13 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  *
  * Functions converting endian-specific values to different byte orders.
  *
- * These functions either unconditionally swap byte order (SDL_Swap16,
- * SDL_Swap32, SDL_Swap64, SDL_SwapFloat), or they swap to/from the system's
- * native byte order (SDL_Swap16LE, SDL_Swap16BE, SDL_Swap32LE, SDL_Swap32BE,
- * SDL_Swap32LE, SDL_Swap32BE, SDL_SwapFloatLE, SDL_SwapFloatBE). In the
+ * These functions either unconditionally swap byte order (Swap16,
+ * Swap32, Swap64, SwapFloat), or they swap to/from the system's
+ * native byte order (Swap16LE, Swap16BE, Swap32LE, Swap32BE,
+ * Swap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the
  * latter case, the functionality is provided by macros that become no-ops if
- * a swap isn't necessary: on an x86 (littleendian) processor, SDL_Swap32LE
- * does nothing, but SDL_Swap32BE reverses the bytes of the data. On a PowerPC
+ * a swap isn't necessary: on an x86 (littleendian) processor, Swap32LE
+ * does nothing, but Swap32BE() reverses the bytes of the data. On a PowerPC
  * processor (bigendian), the macros behavior is reversed.
  *
  * The swap routines are inline functions, and attempt to use compiler
@@ -7423,6 +7254,8 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  *
  * @{
  */
+
+#ifdef SDL3PP_DOC
 
 /**
  * A value to represent littleendian byteorder.
@@ -7441,7 +7274,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * @sa SDL_BYTEORDER
  * @sa SDL_BIG_ENDIAN
  */
-#define SDL3PP_LIL_ENDIAN SDL_LIL_ENDIAN
+#define SDL_LIL_ENDIAN 1234
 
 /**
  * A value to represent bigendian byteorder.
@@ -7460,7 +7293,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * @sa SDL_BYTEORDER
  * @sa SDL_LIL_ENDIAN
  */
-#define SDL3PP_BIG_ENDIAN SDL_BIG_ENDIAN
+#define SDL_BIG_ENDIAN 4321
 
 /**
  * A macro that reports the target system's byte order.
@@ -7480,7 +7313,7 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * @sa SDL_LIL_ENDIAN
  * @sa SDL_BIG_ENDIAN
  */
-#define SDL3PP_BYTEORDER SDL_BYTEORDER
+#define SDL_BYTEORDER SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN
 
 /**
  * A macro that reports the target system's floating point word order.
@@ -7500,7 +7333,9 @@ inline size_t GetSIMDAlignment() { return SDL_GetSIMDAlignment(); }
  * @sa SDL_LIL_ENDIAN
  * @sa SDL_BIG_ENDIAN
  */
-#define SDL3PP_FLOATWORDORDER SDL_FLOATWORDORDER
+#define SDL_FLOATWORDORDER SDL_LIL_ENDIAN___or_maybe___SDL_BIG_ENDIAN
+
+#endif // SDL3PP_DOC
 
 /**
  * Byte-swap a floating point number.
@@ -7873,6 +7708,8 @@ inline const char* GetError() { return SDL_GetError(); }
  */
 inline bool ClearError() { return SDL_ClearError(); }
 
+#ifdef SDL3PP_DOC
+
 /**
  * A macro to standardize error reporting on unsupported operations.
  *
@@ -7883,7 +7720,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_Unsupported() SDL_Unsupported()
+#define SDL_Unsupported() SDL_SetError("That operation is not supported")
 
 /**
  * A macro to standardize error reporting on unsupported operations.
@@ -7907,7 +7744,10 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_InvalidParamError(param) SDL_InvalidParamError(param)
+#define SDL_InvalidParamError(param)                                           \
+  SDL_SetError("Parameter '%s' is invalid", (param))
+
+#endif // SDL3PP_DOC
 
 /** @} */
 
@@ -8052,6 +7892,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * @{
  */
 
+#ifdef SDL3PP_DOC
+
 /**
  * Specify the behavior of Alt+Tab while the keyboard is grabbed.
  *
@@ -8069,8 +7911,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ALLOW_ALT_TAB_WHILE_GRABBED                                \
-  SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED
+#define SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED "SDL_ALLOW_ALT_TAB_WHILE_GRABBED"
 
 /**
  * A variable to control whether the SDL activity is allowed to be re-created.
@@ -8090,8 +7931,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ANDROID_ALLOW_RECREATE_ACTIVITY                            \
-  SDL_HINT_ANDROID_ALLOW_RECREATE_ACTIVITY
+#define SDL_HINT_ANDROID_ALLOW_RECREATE_ACTIVITY                               \
+  "SDL_ANDROID_ALLOW_RECREATE_ACTIVITY"
 
 /**
  * A variable to control whether the event loop will block itself when the app
@@ -8106,7 +7947,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ANDROID_BLOCK_ON_PAUSE SDL_HINT_ANDROID_BLOCK_ON_PAUSE
+#define SDL_HINT_ANDROID_BLOCK_ON_PAUSE "SDL_ANDROID_BLOCK_ON_PAUSE"
 
 /**
  * A variable to control whether low latency audio should be enabled.
@@ -8123,7 +7964,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ANDROID_LOW_LATENCY_AUDIO SDL_HINT_ANDROID_LOW_LATENCY_AUDIO
+#define SDL_HINT_ANDROID_LOW_LATENCY_AUDIO "SDL_ANDROID_LOW_LATENCY_AUDIO"
 
 /**
  * A variable to control whether we trap the Android back button to handle it
@@ -8146,7 +7987,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ANDROID_TRAP_BACK_BUTTON SDL_HINT_ANDROID_TRAP_BACK_BUTTON
+#define SDL_HINT_ANDROID_TRAP_BACK_BUTTON "SDL_ANDROID_TRAP_BACK_BUTTON"
 
 /**
  * A variable setting the app ID string.
@@ -8162,7 +8003,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_APP_ID SDL_HINT_APP_ID
+#define SDL_HINT_APP_ID "SDL_APP_ID"
 
 /**
  * A variable setting the application name.
@@ -8180,7 +8021,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_APP_NAME SDL_HINT_APP_NAME
+#define SDL_HINT_APP_NAME "SDL_APP_NAME"
 
 /**
  * A variable controlling whether controllers used with the Apple TV generate
@@ -8203,8 +8044,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_APPLE_TV_CONTROLLER_UI_EVENTS                              \
-  SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS
+#define SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS                                 \
+  "SDL_APPLE_TV_CONTROLLER_UI_EVENTS"
 
 /**
  * A variable controlling whether the Apple TV remote's joystick axes will
@@ -8219,8 +8060,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION                             \
-  SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION
+#define SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION                                \
+  "SDL_APPLE_TV_REMOTE_ALLOW_ROTATION"
 
 /**
  * Specify the default ALSA audio device name.
@@ -8240,7 +8081,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * @sa SDL_HINT_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE
  * @sa SDL_HINT_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE
  */
-#define SDL3PP_HINT_AUDIO_ALSA_DEFAULT_DEVICE SDL_HINT_AUDIO_ALSA_DEFAULT_DEVICE
+#define SDL_HINT_AUDIO_ALSA_DEFAULT_DEVICE "SDL_AUDIO_ALSA_DEFAULT_DEVICE"
 
 /**
  * Specify the default ALSA audio playback device name.
@@ -8258,8 +8099,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * @sa SDL_HINT_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE
  * @sa SDL_HINT_AUDIO_ALSA_DEFAULT_DEVICE
  */
-#define SDL3PP_HINT_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE                         \
-  SDL_HINT_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE
+#define SDL_HINT_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE                            \
+  "SDL_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE"
 
 /**
  * Specify the default ALSA audio recording device name.
@@ -8277,8 +8118,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  * @sa SDL_HINT_AUDIO_ALSA_DEFAULT_PLAYBACK_DEVICE
  * @sa SDL_HINT_AUDIO_ALSA_DEFAULT_DEVICE
  */
-#define SDL3PP_HINT_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE                        \
-  SDL_HINT_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE
+#define SDL_HINT_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE                           \
+  "SDL_AUDIO_ALSA_DEFAULT_RECORDING_DEVICE"
 
 /**
  * A variable controlling the audio category on iOS and macOS.
@@ -8296,7 +8137,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_CATEGORY SDL_HINT_AUDIO_CATEGORY
+#define SDL_HINT_AUDIO_CATEGORY "SDL_AUDIO_CATEGORY"
 
 /**
  * A variable controlling the default audio channel count.
@@ -8309,7 +8150,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_CHANNELS SDL_HINT_AUDIO_CHANNELS
+#define SDL_HINT_AUDIO_CHANNELS "SDL_AUDIO_CHANNELS"
 
 /**
  * Specify an application icon name for an audio device.
@@ -8332,8 +8173,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DEVICE_APP_ICON_NAME                                 \
-  SDL_HINT_AUDIO_DEVICE_APP_ICON_NAME
+#define SDL_HINT_AUDIO_DEVICE_APP_ICON_NAME "SDL_AUDIO_DEVICE_APP_ICON_NAME"
 
 /**
  * A variable controlling device buffer size.
@@ -8355,8 +8195,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DEVICE_SAMPLE_FRAMES                                 \
-  SDL_HINT_AUDIO_DEVICE_SAMPLE_FRAMES
+#define SDL_HINT_AUDIO_DEVICE_SAMPLE_FRAMES "SDL_AUDIO_DEVICE_SAMPLE_FRAMES"
 
 /**
  * Specify an audio stream name for an audio device.
@@ -8383,7 +8222,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DEVICE_STREAM_NAME SDL_HINT_AUDIO_DEVICE_STREAM_NAME
+#define SDL_HINT_AUDIO_DEVICE_STREAM_NAME "SDL_AUDIO_DEVICE_STREAM_NAME"
 
 /**
  * Specify an application role for an audio device.
@@ -8409,7 +8248,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DEVICE_STREAM_ROLE SDL_HINT_AUDIO_DEVICE_STREAM_ROLE
+#define SDL_HINT_AUDIO_DEVICE_STREAM_ROLE "SDL_AUDIO_DEVICE_STREAM_ROLE"
 
 /**
  * Specify the input file when recording audio using the disk audio driver.
@@ -8420,7 +8259,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DISK_INPUT_FILE SDL_HINT_AUDIO_DISK_INPUT_FILE
+#define SDL_HINT_AUDIO_DISK_INPUT_FILE "SDL_AUDIO_DISK_INPUT_FILE"
 
 /**
  * Specify the output file when playing audio using the disk audio driver.
@@ -8431,7 +8270,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DISK_OUTPUT_FILE SDL_HINT_AUDIO_DISK_OUTPUT_FILE
+#define SDL_HINT_AUDIO_DISK_OUTPUT_FILE "SDL_AUDIO_DISK_OUTPUT_FILE"
 
 /**
  * A variable controlling the audio rate when using the disk audio driver.
@@ -8444,7 +8283,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DISK_TIMESCALE SDL_HINT_AUDIO_DISK_TIMESCALE
+#define SDL_HINT_AUDIO_DISK_TIMESCALE "SDL_AUDIO_DISK_TIMESCALE"
 
 /**
  * A variable that specifies an audio backend to use.
@@ -8458,7 +8297,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DRIVER SDL_HINT_AUDIO_DRIVER
+#define SDL_HINT_AUDIO_DRIVER "SDL_AUDIO_DRIVER"
 
 /**
  * A variable controlling the audio rate when using the dummy audio driver.
@@ -8471,7 +8310,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_DUMMY_TIMESCALE SDL_HINT_AUDIO_DUMMY_TIMESCALE
+#define SDL_HINT_AUDIO_DUMMY_TIMESCALE "SDL_AUDIO_DUMMY_TIMESCALE"
 
 /**
  * A variable controlling the default audio format.
@@ -8498,7 +8337,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_FORMAT SDL_HINT_AUDIO_FORMAT
+#define SDL_HINT_AUDIO_FORMAT "SDL_AUDIO_FORMAT"
 
 /**
  * A variable controlling the default audio frequency.
@@ -8511,7 +8350,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_FREQUENCY SDL_HINT_AUDIO_FREQUENCY
+#define SDL_HINT_AUDIO_FREQUENCY "SDL_AUDIO_FREQUENCY"
 
 /**
  * A variable that causes SDL to not ignore audio "monitors".
@@ -8534,7 +8373,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUDIO_INCLUDE_MONITORS SDL_HINT_AUDIO_INCLUDE_MONITORS
+#define SDL_HINT_AUDIO_INCLUDE_MONITORS "SDL_AUDIO_INCLUDE_MONITORS"
 
 /**
  * A variable controlling whether SDL updates joystick state when getting
@@ -8549,7 +8388,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUTO_UPDATE_JOYSTICKS SDL_HINT_AUTO_UPDATE_JOYSTICKS
+#define SDL_HINT_AUTO_UPDATE_JOYSTICKS "SDL_AUTO_UPDATE_JOYSTICKS"
 
 /**
  * A variable controlling whether SDL updates sensor state when getting input
@@ -8564,7 +8403,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_AUTO_UPDATE_SENSORS SDL_HINT_AUTO_UPDATE_SENSORS
+#define SDL_HINT_AUTO_UPDATE_SENSORS "SDL_AUTO_UPDATE_SENSORS"
 
 /**
  * Prevent SDL from using version 4 of the bitmap header when saving BMPs.
@@ -8587,7 +8426,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_BMP_SAVE_LEGACY_FORMAT SDL_HINT_BMP_SAVE_LEGACY_FORMAT
+#define SDL_HINT_BMP_SAVE_LEGACY_FORMAT "SDL_BMP_SAVE_LEGACY_FORMAT"
 
 /**
  * A variable that decides what camera backend to use.
@@ -8603,7 +8442,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_CAMERA_DRIVER SDL_HINT_CAMERA_DRIVER
+#define SDL_HINT_CAMERA_DRIVER "SDL_CAMERA_DRIVER"
 
 /**
  * A variable that limits what CPU features are available.
@@ -8636,7 +8475,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_CPU_FEATURE_MASK SDL_HINT_CPU_FEATURE_MASK
+#define SDL_HINT_CPU_FEATURE_MASK "SDL_CPU_FEATURE_MASK"
 
 /**
  * A variable controlling whether DirectInput should be used for controllers.
@@ -8650,7 +8489,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_DIRECTINPUT SDL_HINT_JOYSTICK_DIRECTINPUT
+#define SDL_HINT_JOYSTICK_DIRECTINPUT "SDL_JOYSTICK_DIRECTINPUT"
 
 /**
  * A variable that specifies a dialog backend to use.
@@ -8679,7 +8518,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_FILE_DIALOG_DRIVER SDL_HINT_FILE_DIALOG_DRIVER
+#define SDL_HINT_FILE_DIALOG_DRIVER "SDL_FILE_DIALOG_DRIVER"
 
 /**
  * Override for SDL_GetDisplayUsableBounds().
@@ -8697,7 +8536,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_DISPLAY_USABLE_BOUNDS SDL_HINT_DISPLAY_USABLE_BOUNDS
+#define SDL_HINT_DISPLAY_USABLE_BOUNDS "SDL_DISPLAY_USABLE_BOUNDS"
 
 /**
  * Disable giving back control to the browser automatically when running with
@@ -8718,7 +8557,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_EMSCRIPTEN_ASYNCIFY SDL_HINT_EMSCRIPTEN_ASYNCIFY
+#define SDL_HINT_EMSCRIPTEN_ASYNCIFY "SDL_EMSCRIPTEN_ASYNCIFY"
 
 /**
  * Specify the CSS selector used for the "default" window/canvas.
@@ -8731,8 +8570,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_EMSCRIPTEN_CANVAS_SELECTOR                                 \
-  SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR
+#define SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR "SDL_EMSCRIPTEN_CANVAS_SELECTOR"
 
 /**
  * Override the binding element for keyboard inputs for Emscripten builds.
@@ -8753,8 +8591,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT                                \
-  SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT
+#define SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
 
 /**
  * A variable that controls whether the on-screen keyboard should be shown
@@ -8771,7 +8608,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ENABLE_SCREEN_KEYBOARD SDL_HINT_ENABLE_SCREEN_KEYBOARD
+#define SDL_HINT_ENABLE_SCREEN_KEYBOARD "SDL_ENABLE_SCREEN_KEYBOARD"
 
 /**
  * A variable containing a list of evdev devices to use if udev is not
@@ -8788,7 +8625,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_EVDEV_DEVICES SDL_HINT_EVDEV_DEVICES
+#define SDL_HINT_EVDEV_DEVICES "SDL_EVDEV_DEVICES"
 
 /**
  * A variable controlling verbosity of the logging of SDL events pushed onto
@@ -8812,7 +8649,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_EVENT_LOGGING SDL_HINT_EVENT_LOGGING
+#define SDL_HINT_EVENT_LOGGING "SDL_EVENT_LOGGING"
 
 /**
  * A variable controlling whether raising the window should be done more
@@ -8832,7 +8669,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_FORCE_RAISEWINDOW SDL_HINT_FORCE_RAISEWINDOW
+#define SDL_HINT_FORCE_RAISEWINDOW "SDL_FORCE_RAISEWINDOW"
 
 /**
  * A variable controlling how 3D acceleration is used to accelerate the SDL
@@ -8853,7 +8690,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_FRAMEBUFFER_ACCELERATION SDL_HINT_FRAMEBUFFER_ACCELERATION
+#define SDL_HINT_FRAMEBUFFER_ACCELERATION "SDL_FRAMEBUFFER_ACCELERATION"
 
 /**
  * A variable that lets you manually hint extra gamecontroller db entries.
@@ -8868,7 +8705,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GAMECONTROLLERCONFIG SDL_HINT_GAMECONTROLLERCONFIG
+#define SDL_HINT_GAMECONTROLLERCONFIG "SDL_GAMECONTROLLERCONFIG"
 
 /**
  * A variable that lets you provide a file with extra gamecontroller db
@@ -8884,7 +8721,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GAMECONTROLLERCONFIG_FILE SDL_HINT_GAMECONTROLLERCONFIG_FILE
+#define SDL_HINT_GAMECONTROLLERCONFIG_FILE "SDL_GAMECONTROLLERCONFIG_FILE"
 
 /**
  * A variable that overrides the automatic controller type detection.
@@ -8908,7 +8745,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GAMECONTROLLERTYPE SDL_HINT_GAMECONTROLLERTYPE
+#define SDL_HINT_GAMECONTROLLERTYPE "SDL_GAMECONTROLLERTYPE"
 
 /**
  * A variable containing a list of devices to skip when scanning for game
@@ -8926,8 +8763,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GAMECONTROLLER_IGNORE_DEVICES                              \
-  SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES
+#define SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES                                 \
+  "SDL_GAMECONTROLLER_IGNORE_DEVICES"
 
 /**
  * If set, all devices will be skipped when scanning for game controllers
@@ -8945,8 +8782,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT                       \
-  SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT
+#define SDL_HINT_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT                          \
+  "SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT"
 
 /**
  * A variable that controls whether the device's built-in accelerometer and
@@ -8969,8 +8806,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GAMECONTROLLER_SENSOR_FUSION                               \
-  SDL_HINT_GAMECONTROLLER_SENSOR_FUSION
+#define SDL_HINT_GAMECONTROLLER_SENSOR_FUSION "SDL_GAMECONTROLLER_SENSOR_FUSION"
 
 /**
  * This variable sets the default text of the TextInput window on GDK
@@ -8982,8 +8818,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GDK_TEXTINPUT_DEFAULT_TEXT                                 \
-  SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT
+#define SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT "SDL_GDK_TEXTINPUT_DEFAULT_TEXT"
 
 /**
  * This variable sets the description of the TextInput window on GDK
@@ -8995,7 +8830,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GDK_TEXTINPUT_DESCRIPTION SDL_HINT_GDK_TEXTINPUT_DESCRIPTION
+#define SDL_HINT_GDK_TEXTINPUT_DESCRIPTION "SDL_GDK_TEXTINPUT_DESCRIPTION"
 
 /**
  * This variable sets the maximum input length of the TextInput window on GDK
@@ -9010,7 +8845,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GDK_TEXTINPUT_MAX_LENGTH SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH
+#define SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH "SDL_GDK_TEXTINPUT_MAX_LENGTH"
 
 /**
  * This variable sets the input scope of the TextInput window on GDK
@@ -9026,7 +8861,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GDK_TEXTINPUT_SCOPE SDL_HINT_GDK_TEXTINPUT_SCOPE
+#define SDL_HINT_GDK_TEXTINPUT_SCOPE "SDL_GDK_TEXTINPUT_SCOPE"
 
 /**
  * This variable sets the title of the TextInput window on GDK platforms.
@@ -9037,7 +8872,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GDK_TEXTINPUT_TITLE SDL_HINT_GDK_TEXTINPUT_TITLE
+#define SDL_HINT_GDK_TEXTINPUT_TITLE "SDL_GDK_TEXTINPUT_TITLE"
 
 /**
  * A variable to control whether HIDAPI uses libusb for device access.
@@ -9055,7 +8890,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_HIDAPI_LIBUSB SDL_HINT_HIDAPI_LIBUSB
+#define SDL_HINT_HIDAPI_LIBUSB "SDL_HIDAPI_LIBUSB"
 
 /**
  * A variable to control whether HIDAPI uses libusb only for whitelisted
@@ -9073,7 +8908,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_HIDAPI_LIBUSB_WHITELIST SDL_HINT_HIDAPI_LIBUSB_WHITELIST
+#define SDL_HINT_HIDAPI_LIBUSB_WHITELIST "SDL_HIDAPI_LIBUSB_WHITELIST"
 
 /**
  * A variable to control whether HIDAPI uses udev for device detection.
@@ -9087,7 +8922,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_HIDAPI_UDEV SDL_HINT_HIDAPI_UDEV
+#define SDL_HINT_HIDAPI_UDEV "SDL_HIDAPI_UDEV"
 
 /**
  * A variable that specifies a GPU backend to use.
@@ -9101,7 +8936,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_GPU_DRIVER SDL_HINT_GPU_DRIVER
+#define SDL_HINT_GPU_DRIVER "SDL_GPU_DRIVER"
 
 /**
  * A variable to control whether SDL_hid_enumerate() enumerates all HID
@@ -9120,8 +8955,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS                          \
-  SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS
+#define SDL_HINT_HIDAPI_ENUMERATE_ONLY_CONTROLLERS                             \
+  "SDL_HIDAPI_ENUMERATE_ONLY_CONTROLLERS"
 
 /**
  * A variable containing a list of devices to ignore in SDL_hid_enumerate().
@@ -9138,7 +8973,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_HIDAPI_IGNORE_DEVICES SDL_HINT_HIDAPI_IGNORE_DEVICES
+#define SDL_HINT_HIDAPI_IGNORE_DEVICES "SDL_HIDAPI_IGNORE_DEVICES"
 
 /**
  * A variable describing what IME UI elements the application can display.
@@ -9161,7 +8996,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_IME_IMPLEMENTED_UI SDL_HINT_IME_IMPLEMENTED_UI
+#define SDL_HINT_IME_IMPLEMENTED_UI "SDL_IME_IMPLEMENTED_UI"
 
 /**
  * A variable controlling whether the home indicator bar on iPhone X should be
@@ -9180,7 +9015,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_IOS_HIDE_HOME_INDICATOR SDL_HINT_IOS_HIDE_HOME_INDICATOR
+#define SDL_HINT_IOS_HIDE_HOME_INDICATOR "SDL_IOS_HIDE_HOME_INDICATOR"
 
 /**
  * A variable that lets you enable joystick (and gamecontroller) events even
@@ -9197,8 +9032,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS                           \
-  SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
+#define SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS                              \
+  "SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS"
 
 /**
  * A variable containing a list of arcade stick style controllers.
@@ -9215,8 +9050,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_ARCADESTICK_DEVICES                               \
-  SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES
+#define SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES "SDL_JOYSTICK_ARCADESTICK_DEVICES"
 
 /**
  * A variable containing a list of devices that are not arcade stick style
@@ -9237,8 +9071,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED                      \
-  SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED
+#define SDL_HINT_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED                         \
+  "SDL_JOYSTICK_ARCADESTICK_DEVICES_EXCLUDED"
 
 /**
  * A variable containing a list of devices that should not be considered
@@ -9256,8 +9090,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_BLACKLIST_DEVICES                                 \
-  SDL_HINT_JOYSTICK_BLACKLIST_DEVICES
+#define SDL_HINT_JOYSTICK_BLACKLIST_DEVICES "SDL_JOYSTICK_BLACKLIST_DEVICES"
 
 /**
  * A variable containing a list of devices that should be considered
@@ -9278,8 +9111,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED                        \
-  SDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED
+#define SDL_HINT_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED                           \
+  "SDL_JOYSTICK_BLACKLIST_DEVICES_EXCLUDED"
 
 /**
  * A variable containing a comma separated list of devices to open as
@@ -9289,7 +9122,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_DEVICE SDL_HINT_JOYSTICK_DEVICE
+#define SDL_HINT_JOYSTICK_DEVICE "SDL_JOYSTICK_DEVICE"
 
 /**
  * A variable controlling whether enhanced reports should be used for
@@ -9314,7 +9147,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_ENHANCED_REPORTS SDL_HINT_JOYSTICK_ENHANCED_REPORTS
+#define SDL_HINT_JOYSTICK_ENHANCED_REPORTS "SDL_JOYSTICK_ENHANCED_REPORTS"
 
 /**
  * A variable containing a list of flightstick style controllers.
@@ -9331,8 +9164,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_FLIGHTSTICK_DEVICES                               \
-  SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES
+#define SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES "SDL_JOYSTICK_FLIGHTSTICK_DEVICES"
 
 /**
  * A variable containing a list of devices that are not flightstick style
@@ -9353,8 +9185,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED                      \
-  SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED
+#define SDL_HINT_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED                         \
+  "SDL_JOYSTICK_FLIGHTSTICK_DEVICES_EXCLUDED"
 
 /**
  * A variable controlling whether GameInput should be used for controller
@@ -9371,7 +9203,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_GAMEINPUT SDL_HINT_JOYSTICK_GAMEINPUT
+#define SDL_HINT_JOYSTICK_GAMEINPUT "SDL_JOYSTICK_GAMEINPUT"
 
 /**
  * A variable containing a list of devices known to have a GameCube form
@@ -9389,7 +9221,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_GAMECUBE_DEVICES SDL_HINT_JOYSTICK_GAMECUBE_DEVICES
+#define SDL_HINT_JOYSTICK_GAMECUBE_DEVICES "SDL_JOYSTICK_GAMECUBE_DEVICES"
 
 /**
  * A variable containing a list of devices known not to have a GameCube form
@@ -9410,8 +9242,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED                         \
-  SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED
+#define SDL_HINT_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED                            \
+  "SDL_JOYSTICK_GAMECUBE_DEVICES_EXCLUDED"
 
 /**
  * A variable controlling whether the HIDAPI joystick drivers should be used.
@@ -9428,7 +9260,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI SDL_HINT_JOYSTICK_HIDAPI
+#define SDL_HINT_JOYSTICK_HIDAPI "SDL_JOYSTICK_HIDAPI"
 
 /**
  * A variable controlling whether Nintendo Switch Joy-Con controllers will be
@@ -9445,8 +9277,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS                           \
-  SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS
+#define SDL_HINT_JOYSTICK_HIDAPI_COMBINE_JOY_CONS                              \
+  "SDL_JOYSTICK_HIDAPI_COMBINE_JOY_CONS"
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo GameCube
@@ -9463,7 +9295,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_GAMECUBE SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE
+#define SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE "SDL_JOYSTICK_HIDAPI_GAMECUBE"
 
 /**
  * A variable controlling whether rumble is used to implement the GameCube
@@ -9484,8 +9316,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE                      \
-  SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE
+#define SDL_HINT_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE                         \
+  "SDL_JOYSTICK_HIDAPI_GAMECUBE_RUMBLE_BRAKE"
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch
@@ -9502,7 +9334,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_JOY_CONS SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS
+#define SDL_HINT_JOYSTICK_HIDAPI_JOY_CONS "SDL_JOYSTICK_HIDAPI_JOY_CONS"
 
 /**
  * A variable controlling whether the Home button LED should be turned on when
@@ -9521,8 +9353,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED                            \
-  SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_JOYCON_HOME_LED                               \
+  "SDL_JOYSTICK_HIDAPI_JOYCON_HOME_LED"
 
 /**
  * A variable controlling whether the HIDAPI driver for Amazon Luna
@@ -9539,7 +9371,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_LUNA SDL_HINT_JOYSTICK_HIDAPI_LUNA
+#define SDL_HINT_JOYSTICK_HIDAPI_LUNA "SDL_JOYSTICK_HIDAPI_LUNA"
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Online
@@ -9556,8 +9388,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC                           \
-  SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC
+#define SDL_HINT_JOYSTICK_HIDAPI_NINTENDO_CLASSIC                              \
+  "SDL_JOYSTICK_HIDAPI_NINTENDO_CLASSIC"
 
 /**
  * A variable controlling whether the HIDAPI driver for PS3 controllers should
@@ -9579,7 +9411,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_PS3 SDL_HINT_JOYSTICK_HIDAPI_PS3
+#define SDL_HINT_JOYSTICK_HIDAPI_PS3 "SDL_JOYSTICK_HIDAPI_PS3"
 
 /**
  * A variable controlling whether the Sony driver (sixaxis.sys) for PS3
@@ -9596,8 +9428,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER                         \
-  SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER
+#define SDL_HINT_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER                            \
+  "SDL_JOYSTICK_HIDAPI_PS3_SIXAXIS_DRIVER"
 
 /**
  * A variable controlling whether the HIDAPI driver for PS4 controllers should
@@ -9614,7 +9446,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_PS4 SDL_HINT_JOYSTICK_HIDAPI_PS4
+#define SDL_HINT_JOYSTICK_HIDAPI_PS4 "SDL_JOYSTICK_HIDAPI_PS4"
 
 /**
  * A variable controlling the update rate of the PS4 controller over Bluetooth
@@ -9629,8 +9461,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL                        \
-  SDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL
+#define SDL_HINT_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL                           \
+  "SDL_JOYSTICK_HIDAPI_PS4_REPORT_INTERVAL"
 
 /**
  * A variable controlling whether the HIDAPI driver for PS5 controllers should
@@ -9647,7 +9479,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_PS5 SDL_HINT_JOYSTICK_HIDAPI_PS5
+#define SDL_HINT_JOYSTICK_HIDAPI_PS5 "SDL_JOYSTICK_HIDAPI_PS5"
 
 /**
  * A variable controlling whether the player LEDs should be lit to indicate
@@ -9660,8 +9492,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED                             \
-  SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_PS5_PLAYER_LED                                \
+  "SDL_JOYSTICK_HIDAPI_PS5_PLAYER_LED"
 
 /**
  * A variable controlling whether the HIDAPI driver for NVIDIA SHIELD
@@ -9678,7 +9510,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_SHIELD SDL_HINT_JOYSTICK_HIDAPI_SHIELD
+#define SDL_HINT_JOYSTICK_HIDAPI_SHIELD "SDL_JOYSTICK_HIDAPI_SHIELD"
 
 /**
  * A variable controlling whether the HIDAPI driver for Google Stadia
@@ -9693,7 +9525,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_STADIA SDL_HINT_JOYSTICK_HIDAPI_STADIA
+#define SDL_HINT_JOYSTICK_HIDAPI_STADIA "SDL_JOYSTICK_HIDAPI_STADIA"
 
 /**
  * A variable controlling whether the HIDAPI driver for Bluetooth Steam
@@ -9710,7 +9542,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_STEAM SDL_HINT_JOYSTICK_HIDAPI_STEAM
+#define SDL_HINT_JOYSTICK_HIDAPI_STEAM "SDL_JOYSTICK_HIDAPI_STEAM"
 
 /**
  * A variable controlling whether the Steam button LED should be turned on
@@ -9729,8 +9561,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED                             \
-  SDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_STEAM_HOME_LED                                \
+  "SDL_JOYSTICK_HIDAPI_STEAM_HOME_LED"
 
 /**
  * A variable controlling whether the HIDAPI driver for the Steam Deck builtin
@@ -9747,7 +9579,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_STEAMDECK SDL_HINT_JOYSTICK_HIDAPI_STEAMDECK
+#define SDL_HINT_JOYSTICK_HIDAPI_STEAMDECK "SDL_JOYSTICK_HIDAPI_STEAMDECK"
 
 /**
  * A variable controlling whether the HIDAPI driver for HORI licensed Steam
@@ -9758,8 +9590,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * The default is the value of SDL_HINT_JOYSTICK_HIDAPI
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_STEAM_HORI                                 \
-  SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI
+#define SDL_HINT_JOYSTICK_HIDAPI_STEAM_HORI "SDL_JOYSTICK_HIDAPI_STEAM_HORI"
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Switch
@@ -9776,7 +9607,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_SWITCH SDL_HINT_JOYSTICK_HIDAPI_SWITCH
+#define SDL_HINT_JOYSTICK_HIDAPI_SWITCH "SDL_JOYSTICK_HIDAPI_SWITCH"
 
 /**
  * A variable controlling whether the Home button LED should be turned on when
@@ -9795,8 +9626,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED                            \
-  SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_HOME_LED                               \
+  "SDL_JOYSTICK_HIDAPI_SWITCH_HOME_LED"
 
 /**
  * A variable controlling whether the player LEDs should be lit to indicate
@@ -9811,8 +9642,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED                          \
-  SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED                             \
+  "SDL_JOYSTICK_HIDAPI_SWITCH_PLAYER_LED"
 
 /**
  * A variable controlling whether Nintendo Switch Joy-Con controllers will be
@@ -9828,8 +9659,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS                          \
-  SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS
+#define SDL_HINT_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS                             \
+  "SDL_JOYSTICK_HIDAPI_VERTICAL_JOY_CONS"
 
 /**
  * A variable controlling whether the HIDAPI driver for Nintendo Wii and Wii U
@@ -9847,7 +9678,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_WII SDL_HINT_JOYSTICK_HIDAPI_WII
+#define SDL_HINT_JOYSTICK_HIDAPI_WII "SDL_JOYSTICK_HIDAPI_WII"
 
 /**
  * A variable controlling whether the player LEDs should be lit to indicate
@@ -9862,8 +9693,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED                             \
-  SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_WII_PLAYER_LED                                \
+  "SDL_JOYSTICK_HIDAPI_WII_PLAYER_LED"
 
 /**
  * A variable controlling whether the HIDAPI driver for XBox controllers
@@ -9881,7 +9712,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_XBOX SDL_HINT_JOYSTICK_HIDAPI_XBOX
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX "SDL_JOYSTICK_HIDAPI_XBOX"
 
 /**
  * A variable controlling whether the HIDAPI driver for XBox 360 controllers
@@ -9898,7 +9729,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_XBOX_360 SDL_HINT_JOYSTICK_HIDAPI_XBOX_360
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_360 "SDL_JOYSTICK_HIDAPI_XBOX_360"
 
 /**
  * A variable controlling whether the player LEDs should be lit to indicate
@@ -9913,8 +9744,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED                        \
-  SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED                           \
+  "SDL_JOYSTICK_HIDAPI_XBOX_360_PLAYER_LED"
 
 /**
  * A variable controlling whether the HIDAPI driver for XBox 360 wireless
@@ -9931,8 +9762,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS                          \
-  SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_360_WIRELESS                             \
+  "SDL_JOYSTICK_HIDAPI_XBOX_360_WIRELESS"
 
 /**
  * A variable controlling whether the HIDAPI driver for XBox One controllers
@@ -9949,7 +9780,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_XBOX_ONE SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE "SDL_JOYSTICK_HIDAPI_XBOX_ONE"
 
 /**
  * A variable controlling whether the Home button LED should be turned on when
@@ -9968,8 +9799,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED                          \
-  SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED
+#define SDL_HINT_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED                             \
+  "SDL_JOYSTICK_HIDAPI_XBOX_ONE_HOME_LED"
 
 /**
  * A variable controlling whether IOKit should be used for controller
@@ -9984,7 +9815,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_IOKIT SDL_HINT_JOYSTICK_IOKIT
+#define SDL_HINT_JOYSTICK_IOKIT "SDL_JOYSTICK_IOKIT"
 
 /**
  * A variable controlling whether to use the classic /dev/input/js* joystick
@@ -9999,7 +9830,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_LINUX_CLASSIC SDL_HINT_JOYSTICK_LINUX_CLASSIC
+#define SDL_HINT_JOYSTICK_LINUX_CLASSIC "SDL_JOYSTICK_LINUX_CLASSIC"
 
 /**
  * A variable controlling whether joysticks on Linux adhere to their
@@ -10014,7 +9845,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_LINUX_DEADZONES SDL_HINT_JOYSTICK_LINUX_DEADZONES
+#define SDL_HINT_JOYSTICK_LINUX_DEADZONES "SDL_JOYSTICK_LINUX_DEADZONES"
 
 /**
  * A variable controlling whether joysticks on Linux will always treat 'hat'
@@ -10032,8 +9863,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_LINUX_DIGITAL_HATS                                \
-  SDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS
+#define SDL_HINT_JOYSTICK_LINUX_DIGITAL_HATS "SDL_JOYSTICK_LINUX_DIGITAL_HATS"
 
 /**
  * A variable controlling whether digital hats on Linux will apply deadzones
@@ -10049,8 +9879,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_LINUX_HAT_DEADZONES                               \
-  SDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES
+#define SDL_HINT_JOYSTICK_LINUX_HAT_DEADZONES "SDL_JOYSTICK_LINUX_HAT_DEADZONES"
 
 /**
  * A variable controlling whether GCController should be used for controller
@@ -10065,7 +9894,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_MFI SDL_HINT_JOYSTICK_MFI
+#define SDL_HINT_JOYSTICK_MFI "SDL_JOYSTICK_MFI"
 
 /**
  * A variable controlling whether the RAWINPUT joystick drivers should be used
@@ -10080,7 +9909,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_RAWINPUT SDL_HINT_JOYSTICK_RAWINPUT
+#define SDL_HINT_JOYSTICK_RAWINPUT "SDL_JOYSTICK_RAWINPUT"
 
 /**
  * A variable controlling whether the RAWINPUT driver should pull correlated
@@ -10097,8 +9926,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT                         \
-  SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT
+#define SDL_HINT_JOYSTICK_RAWINPUT_CORRELATE_XINPUT                            \
+  "SDL_JOYSTICK_RAWINPUT_CORRELATE_XINPUT"
 
 /**
  * A variable controlling whether the ROG Chakram mice should show up as
@@ -10113,7 +9942,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_ROG_CHAKRAM SDL_HINT_JOYSTICK_ROG_CHAKRAM
+#define SDL_HINT_JOYSTICK_ROG_CHAKRAM "SDL_JOYSTICK_ROG_CHAKRAM"
 
 /**
  * A variable controlling whether a separate thread should be used for
@@ -10128,7 +9957,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_THREAD SDL_HINT_JOYSTICK_THREAD
+#define SDL_HINT_JOYSTICK_THREAD "SDL_JOYSTICK_THREAD"
 
 /**
  * A variable containing a list of throttle style controllers.
@@ -10145,7 +9974,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_THROTTLE_DEVICES SDL_HINT_JOYSTICK_THROTTLE_DEVICES
+#define SDL_HINT_JOYSTICK_THROTTLE_DEVICES "SDL_JOYSTICK_THROTTLE_DEVICES"
 
 /**
  * A variable containing a list of devices that are not throttle style
@@ -10166,8 +9995,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED                         \
-  SDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED
+#define SDL_HINT_JOYSTICK_THROTTLE_DEVICES_EXCLUDED                            \
+  "SDL_JOYSTICK_THROTTLE_DEVICES_EXCLUDED"
 
 /**
  * A variable controlling whether Windows.Gaming.Input should be used for
@@ -10182,7 +10011,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_WGI SDL_HINT_JOYSTICK_WGI
+#define SDL_HINT_JOYSTICK_WGI "SDL_JOYSTICK_WGI"
 
 /**
  * A variable containing a list of wheel style controllers.
@@ -10199,7 +10028,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_WHEEL_DEVICES SDL_HINT_JOYSTICK_WHEEL_DEVICES
+#define SDL_HINT_JOYSTICK_WHEEL_DEVICES "SDL_JOYSTICK_WHEEL_DEVICES"
 
 /**
  * A variable containing a list of devices that are not wheel style
@@ -10220,8 +10049,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED                            \
-  SDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED
+#define SDL_HINT_JOYSTICK_WHEEL_DEVICES_EXCLUDED                               \
+  "SDL_JOYSTICK_WHEEL_DEVICES_EXCLUDED"
 
 /**
  * A variable containing a list of devices known to have all axes centered at
@@ -10239,8 +10068,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_JOYSTICK_ZERO_CENTERED_DEVICES                             \
-  SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES
+#define SDL_HINT_JOYSTICK_ZERO_CENTERED_DEVICES                                \
+  "SDL_JOYSTICK_ZERO_CENTERED_DEVICES"
 
 /**
  * A variable containing a list of devices and their desired number of haptic
@@ -10262,7 +10091,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.5.
  */
-#define SDL3PP_HINT_JOYSTICK_HAPTIC_AXES SDL_HINT_JOYSTICK_HAPTIC_AXES
+#define SDL_HINT_JOYSTICK_HAPTIC_AXES "SDL_JOYSTICK_HAPTIC_AXES"
 
 /**
  * A variable that controls keycode representation in keyboard events.
@@ -10296,7 +10125,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_KEYCODE_OPTIONS SDL_HINT_KEYCODE_OPTIONS
+#define SDL_HINT_KEYCODE_OPTIONS "SDL_KEYCODE_OPTIONS"
 
 /**
  * A variable that controls what KMSDRM device to use.
@@ -10310,7 +10139,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_KMSDRM_DEVICE_INDEX SDL_HINT_KMSDRM_DEVICE_INDEX
+#define SDL_HINT_KMSDRM_DEVICE_INDEX "SDL_KMSDRM_DEVICE_INDEX"
 
 /**
  * A variable that controls whether SDL requires DRM master access in order to
@@ -10338,7 +10167,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_KMSDRM_REQUIRE_DRM_MASTER SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER
+#define SDL_HINT_KMSDRM_REQUIRE_DRM_MASTER "SDL_KMSDRM_REQUIRE_DRM_MASTER"
 
 /**
  * A variable controlling the default SDL log levels.
@@ -10364,7 +10193,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_LOGGING SDL_HINT_LOGGING
+#define SDL_HINT_LOGGING "SDL_LOGGING"
 
 /**
  * A variable controlling whether to force the application to become the
@@ -10380,7 +10209,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MAC_BACKGROUND_APP SDL_HINT_MAC_BACKGROUND_APP
+#define SDL_HINT_MAC_BACKGROUND_APP "SDL_MAC_BACKGROUND_APP"
 
 /**
  * A variable that determines whether Ctrl+Click should generate a right-click
@@ -10396,8 +10225,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK                         \
-  SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK
+#define SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK                            \
+  "SDL_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK"
 
 /**
  * A variable controlling whether dispatching OpenGL context updates should
@@ -10420,7 +10249,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MAC_OPENGL_ASYNC_DISPATCH SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH
+#define SDL_HINT_MAC_OPENGL_ASYNC_DISPATCH "SDL_MAC_OPENGL_ASYNC_DISPATCH"
 
 /**
  * A variable controlling whether the Option key on macOS should be remapped
@@ -10445,7 +10274,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MAC_OPTION_AS_ALT SDL_HINT_MAC_OPTION_AS_ALT
+#define SDL_HINT_MAC_OPTION_AS_ALT "SDL_MAC_OPTION_AS_ALT"
 
 /**
  * A variable controlling whether SDL_EVENT_MOUSE_WHEEL event values will have
@@ -10460,7 +10289,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MAC_SCROLL_MOMENTUM SDL_HINT_MAC_SCROLL_MOMENTUM
+#define SDL_HINT_MAC_SCROLL_MOMENTUM "SDL_MAC_SCROLL_MOMENTUM"
 
 /**
  * Request SDL_AppIterate() be called at a specific rate.
@@ -10486,7 +10315,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MAIN_CALLBACK_RATE SDL_HINT_MAIN_CALLBACK_RATE
+#define SDL_HINT_MAIN_CALLBACK_RATE "SDL_MAIN_CALLBACK_RATE"
 
 /**
  * A variable controlling whether the mouse is captured while mouse buttons
@@ -10505,7 +10334,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_AUTO_CAPTURE SDL_HINT_MOUSE_AUTO_CAPTURE
+#define SDL_HINT_MOUSE_AUTO_CAPTURE "SDL_MOUSE_AUTO_CAPTURE"
 
 /**
  * A variable setting the double click radius, in pixels.
@@ -10514,7 +10343,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_DOUBLE_CLICK_RADIUS SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS
+#define SDL_HINT_MOUSE_DOUBLE_CLICK_RADIUS "SDL_MOUSE_DOUBLE_CLICK_RADIUS"
 
 /**
  * A variable setting the double click time, in milliseconds.
@@ -10523,7 +10352,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_DOUBLE_CLICK_TIME SDL_HINT_MOUSE_DOUBLE_CLICK_TIME
+#define SDL_HINT_MOUSE_DOUBLE_CLICK_TIME "SDL_MOUSE_DOUBLE_CLICK_TIME"
 
 /**
  * A variable setting which system cursor to use as the default cursor.
@@ -10535,8 +10364,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR                                \
-  SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR
+#define SDL_HINT_MOUSE_DEFAULT_SYSTEM_CURSOR "SDL_MOUSE_DEFAULT_SYSTEM_CURSOR"
 
 /**
  * A variable controlling whether warping a hidden mouse cursor will activate
@@ -10568,8 +10396,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE                           \
-  SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE
+#define SDL_HINT_MOUSE_EMULATE_WARP_WITH_RELATIVE                              \
+  "SDL_MOUSE_EMULATE_WARP_WITH_RELATIVE"
 
 /**
  * Allow mouse click events when clicking to focus an SDL window.
@@ -10583,7 +10411,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_FOCUS_CLICKTHROUGH SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH
+#define SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH "SDL_MOUSE_FOCUS_CLICKTHROUGH"
 
 /**
  * A variable setting the speed scale for mouse motion, in floating point,
@@ -10593,7 +10421,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_NORMAL_SPEED_SCALE SDL_HINT_MOUSE_NORMAL_SPEED_SCALE
+#define SDL_HINT_MOUSE_NORMAL_SPEED_SCALE "SDL_MOUSE_NORMAL_SPEED_SCALE"
 
 /**
  * A variable controlling whether relative mouse mode constrains the mouse to
@@ -10614,8 +10442,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_RELATIVE_MODE_CENTER                                 \
-  SDL_HINT_MOUSE_RELATIVE_MODE_CENTER
+#define SDL_HINT_MOUSE_RELATIVE_MODE_CENTER "SDL_MOUSE_RELATIVE_MODE_CENTER"
 
 /**
  * A variable setting the scale for mouse motion, in floating point, when the
@@ -10625,8 +10452,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_RELATIVE_SPEED_SCALE                                 \
-  SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE
+#define SDL_HINT_MOUSE_RELATIVE_SPEED_SCALE "SDL_MOUSE_RELATIVE_SPEED_SCALE"
 
 /**
  * A variable controlling whether the system mouse acceleration curve is used
@@ -10645,8 +10471,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_RELATIVE_SYSTEM_SCALE                                \
-  SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE
+#define SDL_HINT_MOUSE_RELATIVE_SYSTEM_SCALE "SDL_MOUSE_RELATIVE_SYSTEM_SCALE"
 
 /**
  * A variable controlling whether a motion event should be generated for mouse
@@ -10665,8 +10490,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_RELATIVE_WARP_MOTION                                 \
-  SDL_HINT_MOUSE_RELATIVE_WARP_MOTION
+#define SDL_HINT_MOUSE_RELATIVE_WARP_MOTION "SDL_MOUSE_RELATIVE_WARP_MOTION"
 
 /**
  * A variable controlling whether the hardware cursor stays visible when
@@ -10685,8 +10509,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE                              \
-  SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE
+#define SDL_HINT_MOUSE_RELATIVE_CURSOR_VISIBLE                                 \
+  "SDL_MOUSE_RELATIVE_CURSOR_VISIBLE"
 
 /**
  * A variable controlling whether mouse events should generate synthetic touch
@@ -10703,7 +10527,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MOUSE_TOUCH_EVENTS SDL_HINT_MOUSE_TOUCH_EVENTS
+#define SDL_HINT_MOUSE_TOUCH_EVENTS "SDL_MOUSE_TOUCH_EVENTS"
 
 /**
  * A variable controlling whether the keyboard should be muted on the console.
@@ -10721,7 +10545,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_MUTE_CONSOLE_KEYBOARD SDL_HINT_MUTE_CONSOLE_KEYBOARD
+#define SDL_HINT_MUTE_CONSOLE_KEYBOARD "SDL_MUTE_CONSOLE_KEYBOARD"
 
 /**
  * Tell SDL not to catch the SIGINT or SIGTERM signals on POSIX platforms.
@@ -10736,7 +10560,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_NO_SIGNAL_HANDLERS SDL_HINT_NO_SIGNAL_HANDLERS
+#define SDL_HINT_NO_SIGNAL_HANDLERS "SDL_NO_SIGNAL_HANDLERS"
 
 /**
  * Specify the OpenGL library to load.
@@ -10747,7 +10571,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_OPENGL_LIBRARY SDL_HINT_OPENGL_LIBRARY
+#define SDL_HINT_OPENGL_LIBRARY "SDL_OPENGL_LIBRARY"
 
 /**
  * Specify the EGL library to load.
@@ -10759,7 +10583,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_EGL_LIBRARY SDL_HINT_EGL_LIBRARY
+#define SDL_HINT_EGL_LIBRARY "SDL_EGL_LIBRARY"
 
 /**
  * A variable controlling what driver to use for OpenGL ES contexts.
@@ -10793,7 +10617,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_OPENGL_ES_DRIVER SDL_HINT_OPENGL_ES_DRIVER
+#define SDL_HINT_OPENGL_ES_DRIVER "SDL_OPENGL_ES_DRIVER"
 
 /**
  * Mechanism to specify openvr_api library location
@@ -10805,7 +10629,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_OPENVR_LIBRARY SDL_HINT_OPENVR_LIBRARY
+#define SDL_HINT_OPENVR_LIBRARY "SDL_OPENVR_LIBRARY"
 
 /**
  * A variable controlling which orientations are allowed on iOS/Android.
@@ -10824,7 +10648,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ORIENTATIONS SDL_HINT_ORIENTATIONS
+#define SDL_HINT_ORIENTATIONS "SDL_ORIENTATIONS"
 
 /**
  * A variable controlling the use of a sentinel event when polling the event
@@ -10844,7 +10668,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_POLL_SENTINEL SDL_HINT_POLL_SENTINEL
+#define SDL_HINT_POLL_SENTINEL "SDL_POLL_SENTINEL"
 
 /**
  * Override for SDL_GetPreferredLocales().
@@ -10862,7 +10686,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_PREFERRED_LOCALES SDL_HINT_PREFERRED_LOCALES
+#define SDL_HINT_PREFERRED_LOCALES "SDL_PREFERRED_LOCALES"
 
 /**
  * A variable that decides whether to send SDL_EVENT_QUIT when closing the
@@ -10885,7 +10709,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_QUIT_ON_LAST_WINDOW_CLOSE SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE
+#define SDL_HINT_QUIT_ON_LAST_WINDOW_CLOSE "SDL_QUIT_ON_LAST_WINDOW_CLOSE"
 
 /**
  * A variable controlling whether the Direct3D device is initialized for
@@ -10900,8 +10724,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_DIRECT3D_THREADSAFE                                 \
-  SDL_HINT_RENDER_DIRECT3D_THREADSAFE
+#define SDL_HINT_RENDER_DIRECT3D_THREADSAFE "SDL_RENDER_DIRECT3D_THREADSAFE"
 
 /**
  * A variable controlling whether to enable Direct3D 11+'s Debug Layer.
@@ -10917,7 +10740,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_DIRECT3D11_DEBUG SDL_HINT_RENDER_DIRECT3D11_DEBUG
+#define SDL_HINT_RENDER_DIRECT3D11_DEBUG "SDL_RENDER_DIRECT3D11_DEBUG"
 
 /**
  * A variable controlling whether to enable Vulkan Validation Layers.
@@ -10931,7 +10754,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_VULKAN_DEBUG SDL_HINT_RENDER_VULKAN_DEBUG
+#define SDL_HINT_RENDER_VULKAN_DEBUG "SDL_RENDER_VULKAN_DEBUG"
 
 /**
  * A variable controlling whether to create the GPU device in debug mode.
@@ -10945,7 +10768,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_GPU_DEBUG SDL_HINT_RENDER_GPU_DEBUG
+#define SDL_HINT_RENDER_GPU_DEBUG "SDL_RENDER_GPU_DEBUG"
 
 /**
  * A variable controlling whether to prefer a low-power GPU on multi-GPU
@@ -10960,7 +10783,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_GPU_LOW_POWER SDL_HINT_RENDER_GPU_LOW_POWER
+#define SDL_HINT_RENDER_GPU_LOW_POWER "SDL_RENDER_GPU_LOW_POWER"
 
 /**
  * A variable specifying which render driver to use.
@@ -10993,7 +10816,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_DRIVER SDL_HINT_RENDER_DRIVER
+#define SDL_HINT_RENDER_DRIVER "SDL_RENDER_DRIVER"
 
 /**
  * A variable controlling how the 2D render API renders lines.
@@ -11011,7 +10834,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_LINE_METHOD SDL_HINT_RENDER_LINE_METHOD
+#define SDL_HINT_RENDER_LINE_METHOD "SDL_RENDER_LINE_METHOD"
 
 /**
  * A variable controlling whether the Metal render driver select low power
@@ -11026,8 +10849,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE                       \
-  SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE
+#define SDL_HINT_RENDER_METAL_PREFER_LOW_POWER_DEVICE                          \
+  "SDL_RENDER_METAL_PREFER_LOW_POWER_DEVICE"
 
 /**
  * A variable controlling whether updates to the SDL screen surface should be
@@ -11044,7 +10867,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RENDER_VSYNC SDL_HINT_RENDER_VSYNC
+#define SDL_HINT_RENDER_VSYNC "SDL_RENDER_VSYNC"
 
 /**
  * A variable to control whether the return key on the soft keyboard should
@@ -11061,7 +10884,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RETURN_KEY_HIDES_IME SDL_HINT_RETURN_KEY_HIDES_IME
+#define SDL_HINT_RETURN_KEY_HIDES_IME "SDL_RETURN_KEY_HIDES_IME"
 
 /**
  * A variable containing a list of ROG gamepad capable mice.
@@ -11080,7 +10903,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @sa SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED
  */
-#define SDL3PP_HINT_ROG_GAMEPAD_MICE SDL_HINT_ROG_GAMEPAD_MICE
+#define SDL_HINT_ROG_GAMEPAD_MICE "SDL_ROG_GAMEPAD_MICE"
 
 /**
  * A variable containing a list of devices that are not ROG gamepad capable
@@ -11100,7 +10923,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ROG_GAMEPAD_MICE_EXCLUDED SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED
+#define SDL_HINT_ROG_GAMEPAD_MICE_EXCLUDED "SDL_ROG_GAMEPAD_MICE_EXCLUDED"
 
 /**
  * A variable controlling which Dispmanx layer to use on a Raspberry PI.
@@ -11112,7 +10935,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_RPI_VIDEO_LAYER SDL_HINT_RPI_VIDEO_LAYER
+#define SDL_HINT_RPI_VIDEO_LAYER "SDL_RPI_VIDEO_LAYER"
 
 /**
  * Specify an "activity name" for screensaver inhibition.
@@ -11134,8 +10957,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME                          \
-  SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME
+#define SDL_HINT_SCREENSAVER_INHIBIT_ACTIVITY_NAME                             \
+  "SDL_SCREENSAVER_INHIBIT_ACTIVITY_NAME"
 
 /**
  * A variable controlling whether SDL calls dbus_shutdown() on quit.
@@ -11154,7 +10977,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_SHUTDOWN_DBUS_ON_QUIT SDL_HINT_SHUTDOWN_DBUS_ON_QUIT
+#define SDL_HINT_SHUTDOWN_DBUS_ON_QUIT "SDL_SHUTDOWN_DBUS_ON_QUIT"
 
 /**
  * A variable that specifies a backend to use for title storage.
@@ -11168,7 +10991,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_STORAGE_TITLE_DRIVER SDL_HINT_STORAGE_TITLE_DRIVER
+#define SDL_HINT_STORAGE_TITLE_DRIVER "SDL_STORAGE_TITLE_DRIVER"
 
 /**
  * A variable that specifies a backend to use for user storage.
@@ -11182,7 +11005,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_STORAGE_USER_DRIVER SDL_HINT_STORAGE_USER_DRIVER
+#define SDL_HINT_STORAGE_USER_DRIVER "SDL_STORAGE_USER_DRIVER"
 
 /**
  * Specifies whether SDL_THREAD_PRIORITY_TIME_CRITICAL should be treated as
@@ -11211,8 +11034,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL                        \
-  SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL
+#define SDL_HINT_THREAD_FORCE_REALTIME_TIME_CRITICAL                           \
+  "SDL_THREAD_FORCE_REALTIME_TIME_CRITICAL"
 
 /**
  * A string specifying additional information to use with
@@ -11235,7 +11058,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_THREAD_PRIORITY_POLICY SDL_HINT_THREAD_PRIORITY_POLICY
+#define SDL_HINT_THREAD_PRIORITY_POLICY "SDL_THREAD_PRIORITY_POLICY"
 
 /**
  * A variable that controls the timer resolution, in milliseconds.
@@ -11255,7 +11078,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_TIMER_RESOLUTION SDL_HINT_TIMER_RESOLUTION
+#define SDL_HINT_TIMER_RESOLUTION "SDL_TIMER_RESOLUTION"
 
 /**
  * A variable controlling whether touch events should generate synthetic mouse
@@ -11270,7 +11093,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_TOUCH_MOUSE_EVENTS SDL_HINT_TOUCH_MOUSE_EVENTS
+#define SDL_HINT_TOUCH_MOUSE_EVENTS "SDL_TOUCH_MOUSE_EVENTS"
 
 /**
  * A variable controlling whether trackpads should be treated as touch
@@ -11291,7 +11114,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_TRACKPAD_IS_TOUCH_ONLY SDL_HINT_TRACKPAD_IS_TOUCH_ONLY
+#define SDL_HINT_TRACKPAD_IS_TOUCH_ONLY "SDL_TRACKPAD_IS_TOUCH_ONLY"
 
 /**
  * A variable controlling whether the Android / tvOS remotes should be listed
@@ -11306,7 +11129,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_TV_REMOTE_AS_JOYSTICK SDL_HINT_TV_REMOTE_AS_JOYSTICK
+#define SDL_HINT_TV_REMOTE_AS_JOYSTICK "SDL_TV_REMOTE_AS_JOYSTICK"
 
 /**
  * A variable controlling whether the screensaver is enabled.
@@ -11320,7 +11143,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_ALLOW_SCREENSAVER SDL_HINT_VIDEO_ALLOW_SCREENSAVER
+#define SDL_HINT_VIDEO_ALLOW_SCREENSAVER "SDL_VIDEO_ALLOW_SCREENSAVER"
 
 /**
  * A comma separated list containing the names of the displays that SDL should
@@ -11345,7 +11168,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_DISPLAY_PRIORITY SDL_HINT_VIDEO_DISPLAY_PRIORITY
+#define SDL_HINT_VIDEO_DISPLAY_PRIORITY "SDL_VIDEO_DISPLAY_PRIORITY"
 
 /**
  * Tell the video driver that we only want a double buffer.
@@ -11368,7 +11191,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_DOUBLE_BUFFER SDL_HINT_VIDEO_DOUBLE_BUFFER
+#define SDL_HINT_VIDEO_DOUBLE_BUFFER "SDL_VIDEO_DOUBLE_BUFFER"
 
 /**
  * A variable that specifies a video backend to use.
@@ -11386,7 +11209,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_DRIVER SDL_HINT_VIDEO_DRIVER
+#define SDL_HINT_VIDEO_DRIVER "SDL_VIDEO_DRIVER"
 
 /**
  * A variable controlling whether the dummy video driver saves output frames.
@@ -11399,7 +11222,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_DUMMY_SAVE_FRAMES SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES
+#define SDL_HINT_VIDEO_DUMMY_SAVE_FRAMES "SDL_VIDEO_DUMMY_SAVE_FRAMES"
 
 /**
  * If eglGetPlatformDisplay fails, fall back to calling eglGetDisplay.
@@ -11413,8 +11236,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK                        \
-  SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK
+#define SDL_HINT_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK                           \
+  "SDL_VIDEO_EGL_ALLOW_GETDISPLAY_FALLBACK"
 
 /**
  * A variable controlling whether the OpenGL context should be created with
@@ -11430,7 +11253,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_FORCE_EGL SDL_HINT_VIDEO_FORCE_EGL
+#define SDL_HINT_VIDEO_FORCE_EGL "SDL_VIDEO_FORCE_EGL"
 
 /**
  * A variable that specifies the policy for fullscreen Spaces on macOS.
@@ -11448,8 +11271,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_MAC_FULLSCREEN_SPACES                                \
-  SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES
+#define SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
 
 /**
  * A variable that specifies the menu visibility when a window is fullscreen
@@ -11470,8 +11292,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                       \
-  SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY
+#define SDL_HINT_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY                          \
+  "SDL_VIDEO_MAC_FULLSCREEN_MENU_VISIBILITY"
 
 /**
  * A variable controlling whether fullscreen windows are minimized when they
@@ -11487,8 +11309,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS                               \
-  SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS
+#define SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS"
 
 /**
  * A variable controlling whether the offscreen video driver saves output
@@ -11505,8 +11326,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES                                \
-  SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES
+#define SDL_HINT_VIDEO_OFFSCREEN_SAVE_FRAMES "SDL_VIDEO_OFFSCREEN_SAVE_FRAMES"
 
 /**
  * A variable controlling whether all window operations will block until
@@ -11532,8 +11352,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_SYNC_WINDOW_OPERATIONS                               \
-  SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS
+#define SDL_HINT_VIDEO_SYNC_WINDOW_OPERATIONS "SDL_VIDEO_SYNC_WINDOW_OPERATIONS"
 
 /**
  * A variable controlling whether the libdecor Wayland backend is allowed to
@@ -11551,8 +11370,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR                               \
-  SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR
+#define SDL_HINT_VIDEO_WAYLAND_ALLOW_LIBDECOR "SDL_VIDEO_WAYLAND_ALLOW_LIBDECOR"
 
 /**
  * A variable controlling whether video mode emulation is enabled under
@@ -11572,8 +11390,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_WAYLAND_MODE_EMULATION                               \
-  SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION
+#define SDL_HINT_VIDEO_WAYLAND_MODE_EMULATION "SDL_VIDEO_WAYLAND_MODE_EMULATION"
 
 /**
  * A variable controlling how modes with a non-native aspect ratio are
@@ -11595,8 +11412,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_WAYLAND_MODE_SCALING                                 \
-  SDL_HINT_VIDEO_WAYLAND_MODE_SCALING
+#define SDL_HINT_VIDEO_WAYLAND_MODE_SCALING "SDL_VIDEO_WAYLAND_MODE_SCALING"
 
 /**
  * A variable controlling whether the libdecor Wayland backend is preferred
@@ -11616,8 +11432,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR                              \
-  SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR
+#define SDL_HINT_VIDEO_WAYLAND_PREFER_LIBDECOR                                 \
+  "SDL_VIDEO_WAYLAND_PREFER_LIBDECOR"
 
 /**
  * A variable forcing non-DPI-aware Wayland windows to output at 1:1 scaling.
@@ -11656,8 +11472,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY                             \
-  SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY
+#define SDL_HINT_VIDEO_WAYLAND_SCALE_TO_DISPLAY                                \
+  "SDL_VIDEO_WAYLAND_SCALE_TO_DISPLAY"
 
 /**
  * A variable specifying which shader compiler to preload when using the
@@ -11679,7 +11495,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_WIN_D3DCOMPILER SDL_HINT_VIDEO_WIN_D3DCOMPILER
+#define SDL_HINT_VIDEO_WIN_D3DCOMPILER "SDL_VIDEO_WIN_D3DCOMPILER"
 
 /**
  * A variable controlling whether SDL should call XSelectInput() to enable
@@ -11695,8 +11511,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.10.
  */
-#define SDL3PP_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                            \
-  SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT
+#define SDL_HINT_VIDEO_X11_EXTERNAL_WINDOW_INPUT                               \
+  "SDL_VIDEO_X11_EXTERNAL_WINDOW_INPUT"
 
 /**
  * A variable controlling whether the X11 _NET_WM_BYPASS_COMPOSITOR hint
@@ -11711,8 +11527,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR                         \
-  SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR
+#define SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR                            \
+  "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR"
 
 /**
  * A variable controlling whether the X11 _NET_WM_PING protocol should be
@@ -11731,7 +11547,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_X11_NET_WM_PING SDL_HINT_VIDEO_X11_NET_WM_PING
+#define SDL_HINT_VIDEO_X11_NET_WM_PING "SDL_VIDEO_X11_NET_WM_PING"
 
 /**
  * A variable controlling whether SDL uses DirectColor visuals.
@@ -11745,7 +11561,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_X11_NODIRECTCOLOR SDL_HINT_VIDEO_X11_NODIRECTCOLOR
+#define SDL_HINT_VIDEO_X11_NODIRECTCOLOR "SDL_VIDEO_X11_NODIRECTCOLOR"
 
 /**
  * A variable forcing the content scaling factor for X11 displays.
@@ -11756,7 +11572,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_X11_SCALING_FACTOR SDL_HINT_VIDEO_X11_SCALING_FACTOR
+#define SDL_HINT_VIDEO_X11_SCALING_FACTOR "SDL_VIDEO_X11_SCALING_FACTOR"
 
 /**
  * A variable forcing the visual ID used for X11 display modes.
@@ -11765,7 +11581,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_X11_VISUALID SDL_HINT_VIDEO_X11_VISUALID
+#define SDL_HINT_VIDEO_X11_VISUALID "SDL_VIDEO_X11_VISUALID"
 
 /**
  * A variable forcing the visual ID chosen for new X11 windows.
@@ -11774,7 +11590,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_X11_WINDOW_VISUALID SDL_HINT_VIDEO_X11_WINDOW_VISUALID
+#define SDL_HINT_VIDEO_X11_WINDOW_VISUALID "SDL_VIDEO_X11_WINDOW_VISUALID"
 
 /**
  * A variable controlling whether the X11 XRandR extension should be used.
@@ -11788,7 +11604,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VIDEO_X11_XRANDR SDL_HINT_VIDEO_X11_XRANDR
+#define SDL_HINT_VIDEO_X11_XRANDR "SDL_VIDEO_X11_XRANDR"
 
 /**
  * A variable controlling whether touch should be enabled on the back panel of
@@ -11803,7 +11619,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VITA_ENABLE_BACK_TOUCH SDL_HINT_VITA_ENABLE_BACK_TOUCH
+#define SDL_HINT_VITA_ENABLE_BACK_TOUCH "SDL_VITA_ENABLE_BACK_TOUCH"
 
 /**
  * A variable controlling whether touch should be enabled on the front panel
@@ -11818,7 +11634,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VITA_ENABLE_FRONT_TOUCH SDL_HINT_VITA_ENABLE_FRONT_TOUCH
+#define SDL_HINT_VITA_ENABLE_FRONT_TOUCH "SDL_VITA_ENABLE_FRONT_TOUCH"
 
 /**
  * A variable controlling the module path on the PlayStation Vita.
@@ -11829,7 +11645,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VITA_MODULE_PATH SDL_HINT_VITA_MODULE_PATH
+#define SDL_HINT_VITA_MODULE_PATH "SDL_VITA_MODULE_PATH"
 
 /**
  * A variable controlling whether to perform PVR initialization on the
@@ -11842,7 +11658,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VITA_PVR_INIT SDL_HINT_VITA_PVR_INIT
+#define SDL_HINT_VITA_PVR_INIT "SDL_VITA_PVR_INIT"
 
 /**
  * A variable overriding the resolution reported on the PlayStation Vita.
@@ -11857,7 +11673,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VITA_RESOLUTION SDL_HINT_VITA_RESOLUTION
+#define SDL_HINT_VITA_RESOLUTION "SDL_VITA_RESOLUTION"
 
 /**
  * A variable controlling whether OpenGL should be used instead of OpenGL ES
@@ -11872,7 +11688,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VITA_PVR_OPENGL SDL_HINT_VITA_PVR_OPENGL
+#define SDL_HINT_VITA_PVR_OPENGL "SDL_VITA_PVR_OPENGL"
 
 /**
  * A variable controlling which touchpad should generate synthetic mouse
@@ -11888,7 +11704,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VITA_TOUCH_MOUSE_DEVICE SDL_HINT_VITA_TOUCH_MOUSE_DEVICE
+#define SDL_HINT_VITA_TOUCH_MOUSE_DEVICE "SDL_VITA_TOUCH_MOUSE_DEVICE"
 
 /**
  * A variable overriding the display index used in SDL_Vulkan_CreateSurface()
@@ -11899,7 +11715,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VULKAN_DISPLAY SDL_HINT_VULKAN_DISPLAY
+#define SDL_HINT_VULKAN_DISPLAY "SDL_VULKAN_DISPLAY"
 
 /**
  * Specify the Vulkan library to load.
@@ -11909,7 +11725,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_VULKAN_LIBRARY SDL_HINT_VULKAN_LIBRARY
+#define SDL_HINT_VULKAN_LIBRARY "SDL_VULKAN_LIBRARY"
 
 /**
  * A variable controlling how the fact chunk affects the loading of a WAVE
@@ -11941,7 +11757,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WAVE_FACT_CHUNK SDL_HINT_WAVE_FACT_CHUNK
+#define SDL_HINT_WAVE_FACT_CHUNK "SDL_WAVE_FACT_CHUNK"
 
 /**
  * A variable controlling the maximum number of chunks in a WAVE file.
@@ -11953,7 +11769,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WAVE_CHUNK_LIMIT SDL_HINT_WAVE_CHUNK_LIMIT
+#define SDL_HINT_WAVE_CHUNK_LIMIT "SDL_WAVE_CHUNK_LIMIT"
 
 /**
  * A variable controlling how the size of the RIFF chunk affects the loading
@@ -11981,7 +11797,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WAVE_RIFF_CHUNK_SIZE SDL_HINT_WAVE_RIFF_CHUNK_SIZE
+#define SDL_HINT_WAVE_RIFF_CHUNK_SIZE "SDL_WAVE_RIFF_CHUNK_SIZE"
 
 /**
  * A variable controlling how a truncated WAVE file is handled.
@@ -12001,7 +11817,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WAVE_TRUNCATION SDL_HINT_WAVE_TRUNCATION
+#define SDL_HINT_WAVE_TRUNCATION "SDL_WAVE_TRUNCATION"
 
 /**
  * A variable controlling whether the window is activated when the
@@ -12018,8 +11834,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOW_ACTIVATE_WHEN_RAISED                                \
-  SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED
+#define SDL_HINT_WINDOW_ACTIVATE_WHEN_RAISED "SDL_WINDOW_ACTIVATE_WHEN_RAISED"
 
 /**
  * A variable controlling whether the window is activated when the
@@ -12036,8 +11851,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOW_ACTIVATE_WHEN_SHOWN                                 \
-  SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN
+#define SDL_HINT_WINDOW_ACTIVATE_WHEN_SHOWN "SDL_WINDOW_ACTIVATE_WHEN_SHOWN"
 
 /**
  * If set to "0" then never set the top-most flag on an SDL Window even if the
@@ -12055,7 +11869,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOW_ALLOW_TOPMOST SDL_HINT_WINDOW_ALLOW_TOPMOST
+#define SDL_HINT_WINDOW_ALLOW_TOPMOST "SDL_WINDOW_ALLOW_TOPMOST"
 
 /**
  * A variable controlling whether the window frame and title bar are
@@ -12071,8 +11885,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN                    \
-  SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN
+#define SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN                       \
+  "SDL_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN"
 
 /**
  * A variable controlling whether SDL generates window-close events for Alt+F4
@@ -12088,7 +11902,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_CLOSE_ON_ALT_F4 SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4
+#define SDL_HINT_WINDOWS_CLOSE_ON_ALT_F4 "SDL_WINDOWS_CLOSE_ON_ALT_F4"
 
 /**
  * A variable controlling whether menus can be opened with their keyboard
@@ -12117,8 +11931,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_ENABLE_MENU_MNEMONICS                              \
-  SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS
+#define SDL_HINT_WINDOWS_ENABLE_MENU_MNEMONICS                                 \
+  "SDL_WINDOWS_ENABLE_MENU_MNEMONICS"
 
 /**
  * A variable controlling whether the windows message loop is processed by
@@ -12133,8 +11947,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_ENABLE_MESSAGELOOP                                 \
-  SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP
+#define SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP "SDL_WINDOWS_ENABLE_MESSAGELOOP"
 
 /**
  * A variable controlling whether GameInput is used for raw keyboard and mouse
@@ -12150,7 +11963,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_GAMEINPUT SDL_HINT_WINDOWS_GAMEINPUT
+#define SDL_HINT_WINDOWS_GAMEINPUT "SDL_WINDOWS_GAMEINPUT"
 
 /**
  * A variable controlling whether raw keyboard events are used on Windows.
@@ -12164,7 +11977,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_RAW_KEYBOARD SDL_HINT_WINDOWS_RAW_KEYBOARD
+#define SDL_HINT_WINDOWS_RAW_KEYBOARD "SDL_WINDOWS_RAW_KEYBOARD"
 
 /**
  * A variable controlling whether SDL uses Kernel Semaphores on Windows.
@@ -12185,8 +11998,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL                             \
-  SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL
+#define SDL_HINT_WINDOWS_FORCE_SEMAPHORE_KERNEL                                \
+  "SDL_WINDOWS_FORCE_SEMAPHORE_KERNEL"
 
 /**
  * A variable to specify custom icon resource id from RC file on Windows
@@ -12196,7 +12009,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_INTRESOURCE_ICON SDL_HINT_WINDOWS_INTRESOURCE_ICON
+#define SDL_HINT_WINDOWS_INTRESOURCE_ICON "SDL_WINDOWS_INTRESOURCE_ICON"
 
 /**
  * A variable to specify custom icon resource id from RC file on Windows
@@ -12206,8 +12019,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_INTRESOURCE_ICON_SMALL                             \
-  SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL
+#define SDL_HINT_WINDOWS_INTRESOURCE_ICON_SMALL                                \
+  "SDL_WINDOWS_INTRESOURCE_ICON_SMALL"
 
 /**
  * A variable controlling whether SDL uses the D3D9Ex API introduced in
@@ -12235,7 +12048,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_USE_D3D9EX SDL_HINT_WINDOWS_USE_D3D9EX
+#define SDL_HINT_WINDOWS_USE_D3D9EX "SDL_WINDOWS_USE_D3D9EX"
 
 /**
  * A variable controlling whether SDL will clear the window contents when the
@@ -12252,8 +12065,8 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_WINDOWS_ERASE_BACKGROUND_MODE                              \
-  SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE
+#define SDL_HINT_WINDOWS_ERASE_BACKGROUND_MODE                                 \
+  "SDL_WINDOWS_ERASE_BACKGROUND_MODE"
 
 /**
  * A variable controlling whether X11 windows are marked as override-redirect.
@@ -12274,8 +12087,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_X11_FORCE_OVERRIDE_REDIRECT                                \
-  SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT
+#define SDL_HINT_X11_FORCE_OVERRIDE_REDIRECT "SDL_X11_FORCE_OVERRIDE_REDIRECT"
 
 /**
  * A variable specifying the type of an X11 window.
@@ -12292,7 +12104,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_X11_WINDOW_TYPE SDL_HINT_X11_WINDOW_TYPE
+#define SDL_HINT_X11_WINDOW_TYPE "SDL_X11_WINDOW_TYPE"
 
 /**
  * Specify the XCB library to load for the X11 driver.
@@ -12303,7 +12115,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_X11_XCB_LIBRARY SDL_HINT_X11_XCB_LIBRARY
+#define SDL_HINT_X11_XCB_LIBRARY "SDL_X11_XCB_LIBRARY"
 
 /**
  * A variable controlling whether XInput should be used for controller
@@ -12318,7 +12130,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_XINPUT_ENABLED SDL_HINT_XINPUT_ENABLED
+#define SDL_HINT_XINPUT_ENABLED "SDL_XINPUT_ENABLED"
 
 /**
  * A variable controlling response to SDL_assert failures.
@@ -12342,7 +12154,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_ASSERT SDL_HINT_ASSERT
+#define SDL_HINT_ASSERT "SDL_ASSERT"
 
 /**
  * A variable controlling whether pen events should generate synthetic mouse
@@ -12357,7 +12169,7 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_PEN_MOUSE_EVENTS SDL_HINT_PEN_MOUSE_EVENTS
+#define SDL_HINT_PEN_MOUSE_EVENTS "SDL_PEN_MOUSE_EVENTS"
 
 /**
  * A variable controlling whether pen events should generate synthetic touch
@@ -12372,7 +12184,9 @@ inline SDL_GUID StringToGUID(StringParam pchGUID)
  *
  * @since This hint is available since SDL 3.2.0.
  */
-#define SDL3PP_HINT_PEN_TOUCH_EVENTS SDL_HINT_PEN_TOUCH_EVENTS
+#define SDL_HINT_PEN_TOUCH_EVENTS "SDL_PEN_TOUCH_EVENTS"
+
+#endif // SDL3PP_DOC
 
 /**
  * An enumeration of hint priorities.
@@ -12623,7 +12437,7 @@ inline void RemoveHintCallback(StringParam name,
  *
  * @sa SDL_LASX_INTRINSICS
  */
-#define SDL3PP_LSX_INTRINSICS SDL_LSX_INTRINSICS
+#define SDL_LSX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Loongarch LSX intrinsics.
@@ -12634,7 +12448,7 @@ inline void RemoveHintCallback(StringParam name,
  *
  * @sa SDL_LASX_INTRINSICS
  */
-#define SDL3PP_LASX_INTRINSICS SDL_LASX_INTRINSICS
+#define SDL_LASX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports ARM NEON intrinsics.
@@ -12644,7 +12458,7 @@ inline void RemoveHintCallback(StringParam name,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_NEON_INTRINSICS SDL_NEON_INTRINSICS
+#define SDL_NEON_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports PowerPC Altivec intrinsics.
@@ -12653,7 +12467,7 @@ inline void RemoveHintCallback(StringParam name,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_ALTIVEC_INTRINSICS SDL_ALTIVEC_INTRINSICS
+#define SDL_ALTIVEC_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel MMX intrinsics.
@@ -12664,7 +12478,7 @@ inline void RemoveHintCallback(StringParam name,
  *
  * @sa SDL_SSE_INTRINSICS
  */
-#define SDL3PP_MMX_INTRINSICS SDL_MMX_INTRINSICS
+#define SDL_MMX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE intrinsics.
@@ -12678,7 +12492,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_SSE4_1_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE_INTRINSICS SDL_SSE_INTRINSICS
+#define SDL_SSE_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE2 intrinsics.
@@ -12692,7 +12506,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_SSE4_1_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE2_INTRINSICS SDL_SSE2_INTRINSICS
+#define SDL_SSE2_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE3 intrinsics.
@@ -12706,7 +12520,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_SSE4_1_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE3_INTRINSICS SDL_SSE3_INTRINSICS
+#define SDL_SSE3_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE4.1 intrinsics.
@@ -12720,7 +12534,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_SSE3_INTRINSICS
  * @sa SDL_SSE4_2_INTRINSICS
  */
-#define SDL3PP_SSE4_1_INTRINSICS SDL_SSE4_1_INTRINSICS
+#define SDL_SSE4_1_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel SSE4.2 intrinsics.
@@ -12734,7 +12548,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_SSE3_INTRINSICS
  * @sa SDL_SSE4_1_INTRINSICS
  */
-#define SDL3PP_SSE4_2_INTRINSICS SDL_SSE4_2_INTRINSICS
+#define SDL_SSE4_2_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel AVX intrinsics.
@@ -12746,7 +12560,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_AVX2_INTRINSICS
  * @sa SDL_AVX512F_INTRINSICS
  */
-#define SDL3PP_AVX_INTRINSICS SDL_AVX_INTRINSICS
+#define SDL_AVX_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel AVX2 intrinsics.
@@ -12758,7 +12572,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_AVX_INTRINSICS
  * @sa SDL_AVX512F_INTRINSICS
  */
-#define SDL3PP_AVX2_INTRINSICS SDL_AVX2_INTRINSICS
+#define SDL_AVX2_INTRINSICS 1
 
 /**
  * Defined if (and only if) the compiler supports Intel AVX-512F intrinsics.
@@ -12772,7 +12586,7 @@ inline void RemoveHintCallback(StringParam name,
  * @sa SDL_AVX_INTRINSICS
  * @sa SDL_AVX2_INTRINSICS
  */
-#define SDL3PP_AVX512F_INTRINSICS SDL_AVX512F_INTRINSICS
+#define SDL_AVX512F_INTRINSICS 1
 
 /**
  * A macro to decide if the compiler supports `__attribute__((target))`.
@@ -12785,9 +12599,7 @@ inline void RemoveHintCallback(StringParam name,
  *
  * @sa SDL_TARGETING
  */
-#define SDL3PP_HAS_TARGET_ATTRIBS SDL_HAS_TARGET_ATTRIBS
-
-#endif // SDL3PP_DOC
+#define SDL_HAS_TARGET_ATTRIBS
 
 /**
  * A macro to tag a function as targeting a specific CPU architecture.
@@ -12832,7 +12644,9 @@ inline void RemoveHintCallback(StringParam name,
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_TARGETING(x) SDL_TARGETING(x)
+#define SDL_TARGETING(x) __attribute__((target(x)))
+
+#endif // SDL3PP_DOC
 
 /// @}
 
@@ -13776,41 +13590,45 @@ using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
  */
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
 
+#ifdef SDL3PP_DOC
+
 /**
  * A fully opaque 8-bit alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_TRANSPARENT
+ * @sa SDL_ALPHA_TRANSPARENT
  */
-#define SDL3PP_ALPHA_OPAQUE SDL_ALPHA_OPAQUE
+#define SDL_ALPHA_OPAQUE 255
 
 /**
  * A fully opaque floating point alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_TRANSPARENT_FLOAT
+ * @sa SDL_ALPHA_TRANSPARENT_FLOAT
  */
-#define SDL3PP_ALPHA_OPAQUE_FLOAT SDL_ALPHA_OPAQUE_FLOAT
+#define SDL_ALPHA_OPAQUE_FLOAT 1.0f
 
 /**
  * A fully transparent 8-bit alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_OPAQUE
+ * @sa SDL_ALPHA_OPAQUE
  */
-#define SDL3PP_ALPHA_TRANSPARENT SDL_ALPHA_TRANSPARENT
+#define SDL_ALPHA_TRANSPARENT 0
 
 /**
  * A fully transparent floating point alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_OPAQUE_FLOAT
+ * @sa SDL_ALPHA_OPAQUE_FLOAT
  */
-#define SDL3PP_ALPHA_TRANSPARENT_FLOAT SDL_ALPHA_TRANSPARENT_FLOAT
+#define SDL_ALPHA_TRANSPARENT_FLOAT 0.0f
+
+#endif // SDL3PP_DOC
 
 /**
  * @name PixelTypes
@@ -13969,6 +13787,8 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
  */
 using PixelFormatDetails = SDL_PixelFormatDetails;
 
+#ifdef SDL3PP_DOC
+
 /**
  * A macro for defining custom FourCC pixel formats.
  *
@@ -13988,7 +13808,7 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_DEFINE_PIXELFOURCC(A, B, C, D) SDL_DEFINE_PIXELFOURCC(A, B, C, D)
+#define SDL_DEFINE_PIXELFOURCC(A, B, C, D) SDL_FOURCC(A, B, C, D)
 
 /**
  * A macro to retrieve the flags of an SDL_PixelFormat.
@@ -14003,7 +13823,9 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_PIXELFLAG(format) SDL_PIXELFLAG(format)
+#define SDL_PIXELFLAG(format) (((format) >> 28) & 0x0F)
+
+#endif // SDL3PP_DOC
 
 /**
  * @name PixelFormats
@@ -20617,6 +20439,8 @@ inline bool RemoveTimer(TimerID id)
  * @{
  */
 
+#ifdef SDL3PP_DOC
+
 /**
  * The current major version of SDL headers.
  *
@@ -20624,7 +20448,7 @@ inline bool RemoveTimer(TimerID id)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_MAJOR_VERSION SDL_MAJOR_VERSION
+#define SDL_MAJOR_VERSION 3
 
 /**
  * The current minor version of the SDL headers.
@@ -20633,7 +20457,7 @@ inline bool RemoveTimer(TimerID id)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_MINOR_VERSION SDL_MINOR_VERSION
+#define SDL_MINOR_VERSION 2
 
 /**
  * The current micro (or patchlevel) version of the SDL headers.
@@ -20642,7 +20466,7 @@ inline bool RemoveTimer(TimerID id)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_MICRO_VERSION SDL_MICRO_VERSION
+#define SDL_MICRO_VERSION 11
 
 /**
  * This macro turns the version numbers into a numeric value.
@@ -20655,8 +20479,8 @@ inline bool RemoveTimer(TimerID id)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM(major, minor, patch)                                 \
-  SDL_VERSIONNUM(major, minor, patch)
+#define SDL_VERSIONNUM(major, minor, patch)                                    \
+  ((major) * 1000000 + (minor) * 1000 + (patch))
 
 /**
  * This macro extracts the major version from a version number
@@ -20667,7 +20491,7 @@ inline bool RemoveTimer(TimerID id)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM_MAJOR(version) SDL_VERSIONNUM_MAJOR(version)
+#define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)
 
 /**
  * This macro extracts the minor version from a version number
@@ -20678,7 +20502,7 @@ inline bool RemoveTimer(TimerID id)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM_MINOR(version) SDL_VERSIONNUM_MINOR(version)
+#define SDL_VERSIONNUM_MINOR(version) (((version) / 1000) % 1000)
 
 /**
  * This macro extracts the micro version from a version number
@@ -20689,7 +20513,7 @@ inline bool RemoveTimer(TimerID id)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM_MICRO(version) SDL_VERSIONNUM_MICRO(version)
+#define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)
 
 /**
  * This is the version number macro for the current SDL version.
@@ -20698,14 +20522,17 @@ inline bool RemoveTimer(TimerID id)
  *
  * @sa SDL_GetVersion
  */
-#define SDL3PP_VERSION SDL_VERSION
+#define SDL_VERSION                                                            \
+  SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
 
 /**
  * This macro will evaluate to true if compiled with SDL at least X.Y.Z.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSION_ATLEAST(X, Y, Z) SDL_VERSION_ATLEAST(X, Y, Z)
+#define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))
+
+#endif // SDL3PP_DOC
 
 /**
  * Get the version of SDL that is linked against your program.
@@ -27121,6 +26948,8 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
   SDL_DestroyWindow(resource);
 }
 
+#ifdef SDL3PP_DOC
+
 /**
  * A magic value used with SDL_WINDOWPOS_UNDEFINED.
  *
@@ -27129,7 +26958,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_UNDEFINED_MASK SDL_WINDOWPOS_UNDEFINED_MASK
+#define SDL_WINDOWPOS_UNDEFINED_MASK 0x1FFF0000u
 
 /**
  * Used to indicate that you don't care what the window position is.
@@ -27141,7 +26970,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_UNDEFINED_DISPLAY(X) SDL_WINDOWPOS_UNDEFINED_DISPLAY(X)
+#define SDL_WINDOWPOS_UNDEFINED_DISPLAY(X) (SDL_WINDOWPOS_UNDEFINED_MASK | (X))
 
 /**
  * Used to indicate that you don't care what the window position/display is.
@@ -27150,7 +26979,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_UNDEFINED SDL_WINDOWPOS_UNDEFINED
+#define SDL_WINDOWPOS_UNDEFINED SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)
 
 /**
  * A macro to test if the window position is marked as "undefined."
@@ -27159,7 +26988,8 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_ISUNDEFINED(X) SDL_WINDOWPOS_ISUNDEFINED(X)
+#define SDL_WINDOWPOS_ISUNDEFINED(X)                                           \
+  (((X) & 0xFFFF0000) == SDL_WINDOWPOS_UNDEFINED_MASK)
 
 /**
  * A magic value used with SDL_WINDOWPOS_CENTERED.
@@ -27169,7 +26999,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_CENTERED_MASK SDL_WINDOWPOS_CENTERED_MASK
+#define SDL_WINDOWPOS_CENTERED_MASK 0x2FFF0000u
 
 /**
  * Used to indicate that the window position should be centered.
@@ -27181,7 +27011,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_CENTERED_DISPLAY(X) SDL_WINDOWPOS_CENTERED_DISPLAY(X)
+#define SDL_WINDOWPOS_CENTERED_DISPLAY(X) (SDL_WINDOWPOS_CENTERED_MASK | (X))
 
 /**
  * Used to indicate that the window position should be centered.
@@ -27190,7 +27020,7 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_CENTERED SDL_WINDOWPOS_CENTERED
+#define SDL_WINDOWPOS_CENTERED SDL_WINDOWPOS_CENTERED_DISPLAY(0)
 
 /**
  * A macro to test if the window position is marked as "centered."
@@ -27199,7 +27029,10 @@ inline void ObjectRef<SDL_Window>::doFree(SDL_Window* resource)
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_WINDOWPOS_ISCENTERED(X) SDL_WINDOWPOS_ISCENTERED(X)
+#define SDL_WINDOWPOS_ISCENTERED(X)                                            \
+  (((X) & 0xFFFF0000) == SDL_WINDOWPOS_CENTERED_MASK)
+
+#endif // SDL3PP_DOC
 
 /**
  * An opaque handle to an OpenGL context.
@@ -27938,9 +27771,15 @@ inline WindowRef GetWindowFromID(WindowID id)
   return SDL_GetWindowFromID(id);
 }
 
-#define SDL3PP_WINDOW_SURFACE_VSYNC_DISABLED SDL_WINDOW_SURFACE_VSYNC_DISABLED
+#ifdef SDL3PP_DOC
 
-#define SDL3PP_WINDOW_SURFACE_VSYNC_ADAPTIVE SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE
+/// Disable vsync
+#define SDL_WINDOW_SURFACE_VSYNC_DISABLED 0
+
+/// Adaptative vsync
+#define SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE (-1)
+
+#endif // SDL3PP_DOC
 
 /**
  * Get the window that currently has an input grab enabled.
@@ -30454,12 +30293,16 @@ using TextureRef = TextureBase<ObjectRef<SDL_Texture>>;
  */
 using Texture = TextureBase<ObjectUnique<SDL_Texture>>;
 
+#ifdef SDL3PP_DOC
+
 /**
  * The name of the software renderer.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_SOFTWARE_RENDERER SDL_SOFTWARE_RENDERER
+#define SDL_SOFTWARE_RENDERER "software"
+
+#endif // SDL3PP_DOC
 
 /**
  * Vertex structure.
@@ -33660,9 +33503,13 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
     renderer.get(), wait_stage_mask, wait_semaphore, signal_semaphore);
 }
 
-#define SDL3PP_RENDERER_VSYNC_DISABLED SDL_RENDERER_VSYNC_DISABLED
+#ifdef SDL3PP_DOC
 
-#define SDL3PP_RENDERER_VSYNC_ADAPTIVE SDL_RENDERER_VSYNC_ADAPTIVE
+/// Disable vsync
+#define SDL_RENDERER_VSYNC_DISABLED 0
+
+/// Adaptative vsync
+#define SDL_RENDERER_VSYNC_ADAPTIVE (-1)
 
 /**
  * The size, in pixels, of a single SDL_RenderDebugText() character.
@@ -33673,7 +33520,9 @@ inline bool AddVulkanRenderSemaphores(RendererRef renderer,
  *
  * @sa SDL_RenderDebugText
  */
-#define SDL3PP_DEBUG_TEXT_FONT_CHARACTER_SIZE SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE
+#define SDL_DEBUG_TEXT_FONT_CHARACTER_SIZE 8
+
+#endif // SDL3PP_DOC
 
 /**
  * Load a BMP texture from a seekable SDL data stream.
@@ -33891,24 +33740,34 @@ using AnimationRef = AnimationBase<ObjectRef<IMG_Animation>>;
  */
 using Animation = AnimationBase<ObjectUnique<IMG_Animation>>;
 
+#ifdef SDL3PP_DOC
+
 /**
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
-#define SDL3PP_IMAGE_MAJOR_VERSION SDL_IMAGE_MAJOR_VERSION
+#define SDL_IMAGE_MAJOR_VERSION
 
-#define SDL3PP_IMAGE_MINOR_VERSION SDL_IMAGE_MINOR_VERSION
+#define SDL_IMAGE_MINOR_VERSION
 
-#define SDL3PP_IMAGE_MICRO_VERSION SDL_IMAGE_MICRO_VERSION
+#define SDL_IMAGE_MICRO_VERSION
 
 /**
  * This is the version number macro for the current SDL_image version.
  */
-#define SDL3PP_IMAGE_VERSION SDL_IMAGE_VERSION
+#define SDL_IMAGE_VERSION                                                      \
+  SDL_VERSIONNUM(                                                              \
+    SDL_IMAGE_MAJOR_VERSION, SDL_IMAGE_MINOR_VERSION, SDL_IMAGE_MICRO_VERSION)
 
 /**
  * This macro will evaluate to true if compiled with SDL_image at least X.Y.Z.
  */
-#define SDL3PP_IMAGE_VERSION_ATLEAST(X, Y, Z) SDL_IMAGE_VERSION_ATLEAST(X, Y, Z)
+#define SDL_IMAGE_VERSION_ATLEAST(X, Y, Z)                                     \
+  ((SDL_IMAGE_MAJOR_VERSION >= X) &&                                           \
+   (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION >= Y) &&            \
+   (SDL_IMAGE_MAJOR_VERSION > X || SDL_IMAGE_MINOR_VERSION > Y ||              \
+    SDL_IMAGE_MICRO_VERSION >= Z))
+
+#endif // SDL3PP_DOC
 
 /**
  * This function gets the version of the dynamically linked SDL_image library.
@@ -36411,24 +36270,34 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 
 /// @}
 
+#ifdef SDL3PP_DOC
+
 /**
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
-#define SDL3PP_TTF_MAJOR_VERSION SDL_TTF_MAJOR_VERSION
+#define SDL_TTF_MAJOR_VERSION
 
-#define SDL3PP_TTF_MINOR_VERSION SDL_TTF_MINOR_VERSION
+#define SDL_TTF_MINOR_VERSION
 
-#define SDL3PP_TTF_MICRO_VERSION SDL_TTF_MICRO_VERSION
+#define SDL_TTF_MICRO_VERSION
 
 /**
  * This is the version number macro for the current SDL_ttf version.
  */
-#define SDL3PP_TTF_VERSION SDL_TTF_VERSION
+#define SDL_TTF_VERSION                                                        \
+  SDL_VERSIONNUM(                                                              \
+    SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_MICRO_VERSION)
 
 /**
  * This macro will evaluate to true if compiled with SDL_ttf at least X.Y.Z.
  */
-#define SDL3PP_TTF_VERSION_ATLEAST(X, Y, Z) SDL_TTF_VERSION_ATLEAST(X, Y, Z)
+#define SDL_TTF_VERSION_ATLEAST(X, Y, Z)                                       \
+  ((SDL_TTF_MAJOR_VERSION >= X) &&                                             \
+   (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION >= Y) &&                \
+   (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION > Y ||                  \
+    SDL_TTF_MICRO_VERSION >= Z))
+
+#endif // SDL3PP_DOC
 
 /**
  * This function gets the version of the dynamically linked SDL_ttf library.
@@ -36984,7 +36853,7 @@ struct FontBase : T
    */
   bool GetSDF() const { return TTF_GetFontSDF(T::get()); }
 
-#if SDL3PP_TTF_VERSION_ATLEAST(3, 4, 0)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
   /**
    * Query a font's weight, in terms of the lightness/heaviness of the strokes.
@@ -38211,55 +38080,59 @@ constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
 
 } // namespace prop::Font
 
+#ifdef SDL3PP_DOC
+
 /**
  * Thin (100) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_THIN TTF_FONT_WEIGHT_THIN
+#define SDL_FONT_WEIGHT_THIN TTF_FONT_WEIGHT_THIN
 
 /**
  * ExtraLight (200) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_EXTRA_LIGHT TTF_FONT_WEIGHT_EXTRA_LIGHT
+#define SDL_FONT_WEIGHT_EXTRA_LIGHT TTF_FONT_WEIGHT_EXTRA_LIGHT
 
 /**
  * Light (300) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_LIGHT TTF_FONT_WEIGHT_LIGHT
+#define SDL_FONT_WEIGHT_LIGHT TTF_FONT_WEIGHT_LIGHT
 
 /**
  * Normal (400) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_NORMAL TTF_FONT_WEIGHT_NORMAL
+#define SDL_FONT_WEIGHT_NORMAL TTF_FONT_WEIGHT_NORMAL
 
 /**
  * Medium (500) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_MEDIUM TTF_FONT_WEIGHT_MEDIUM
+#define SDL_FONT_WEIGHT_MEDIUM TTF_FONT_WEIGHT_MEDIUM
 
 /**
  * SemiBold (600) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_SEMI_BOLD TTF_FONT_WEIGHT_SEMI_BOLD
+#define SDL_FONT_WEIGHT_SEMI_BOLD TTF_FONT_WEIGHT_SEMI_BOLD
 
 /**
  * Bold (700) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_BOLD TTF_FONT_WEIGHT_BOLD
+#define SDL_FONT_WEIGHT_BOLD TTF_FONT_WEIGHT_BOLD
 
 /**
  * ExtraBold (800) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_EXTRA_BOLD TTF_FONT_WEIGHT_EXTRA_BOLD
+#define SDL_FONT_WEIGHT_EXTRA_BOLD TTF_FONT_WEIGHT_EXTRA_BOLD
 
 /**
  * Black (900) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_BLACK TTF_FONT_WEIGHT_BLACK
+#define SDL_FONT_WEIGHT_BLACK TTF_FONT_WEIGHT_BLACK
 
 /**
  * ExtraBlack (950) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_EXTRA_BLACK TTF_FONT_WEIGHT_EXTRA_BLACK
+#define SDL_FONT_WEIGHT_EXTRA_BLACK TTF_FONT_WEIGHT_EXTRA_BLACK
+
+#endif // SDL3PP_DOC
 
 /**
  * Convert from a 4 character string to a 32-bit tag.

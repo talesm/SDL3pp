@@ -423,24 +423,34 @@ constexpr GPUTextEngineWinding GPU_TEXTENGINE_WINDING_COUNTER_CLOCKWISE =
 
 /// @}
 
+#ifdef SDL3PP_DOC
+
 /**
  * Printable format: "%d.%d.%d", MAJOR, MINOR, MICRO
  */
-#define SDL3PP_TTF_MAJOR_VERSION SDL_TTF_MAJOR_VERSION
+#define SDL_TTF_MAJOR_VERSION
 
-#define SDL3PP_TTF_MINOR_VERSION SDL_TTF_MINOR_VERSION
+#define SDL_TTF_MINOR_VERSION
 
-#define SDL3PP_TTF_MICRO_VERSION SDL_TTF_MICRO_VERSION
+#define SDL_TTF_MICRO_VERSION
 
 /**
  * This is the version number macro for the current SDL_ttf version.
  */
-#define SDL3PP_TTF_VERSION SDL_TTF_VERSION
+#define SDL_TTF_VERSION                                                        \
+  SDL_VERSIONNUM(                                                              \
+    SDL_TTF_MAJOR_VERSION, SDL_TTF_MINOR_VERSION, SDL_TTF_MICRO_VERSION)
 
 /**
  * This macro will evaluate to true if compiled with SDL_ttf at least X.Y.Z.
  */
-#define SDL3PP_TTF_VERSION_ATLEAST(X, Y, Z) SDL_TTF_VERSION_ATLEAST(X, Y, Z)
+#define SDL_TTF_VERSION_ATLEAST(X, Y, Z)                                       \
+  ((SDL_TTF_MAJOR_VERSION >= X) &&                                             \
+   (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION >= Y) &&                \
+   (SDL_TTF_MAJOR_VERSION > X || SDL_TTF_MINOR_VERSION > Y ||                  \
+    SDL_TTF_MICRO_VERSION >= Z))
+
+#endif // SDL3PP_DOC
 
 /**
  * This function gets the version of the dynamically linked SDL_ttf library.
@@ -996,7 +1006,7 @@ struct FontBase : T
    */
   bool GetSDF() const { return TTF_GetFontSDF(T::get()); }
 
-#if SDL3PP_TTF_VERSION_ATLEAST(3, 4, 0)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
   /**
    * Query a font's weight, in terms of the lightness/heaviness of the strokes.
@@ -2223,55 +2233,59 @@ constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
 
 } // namespace prop::Font
 
+#ifdef SDL3PP_DOC
+
 /**
  * Thin (100) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_THIN TTF_FONT_WEIGHT_THIN
+#define SDL_FONT_WEIGHT_THIN TTF_FONT_WEIGHT_THIN
 
 /**
  * ExtraLight (200) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_EXTRA_LIGHT TTF_FONT_WEIGHT_EXTRA_LIGHT
+#define SDL_FONT_WEIGHT_EXTRA_LIGHT TTF_FONT_WEIGHT_EXTRA_LIGHT
 
 /**
  * Light (300) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_LIGHT TTF_FONT_WEIGHT_LIGHT
+#define SDL_FONT_WEIGHT_LIGHT TTF_FONT_WEIGHT_LIGHT
 
 /**
  * Normal (400) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_NORMAL TTF_FONT_WEIGHT_NORMAL
+#define SDL_FONT_WEIGHT_NORMAL TTF_FONT_WEIGHT_NORMAL
 
 /**
  * Medium (500) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_MEDIUM TTF_FONT_WEIGHT_MEDIUM
+#define SDL_FONT_WEIGHT_MEDIUM TTF_FONT_WEIGHT_MEDIUM
 
 /**
  * SemiBold (600) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_SEMI_BOLD TTF_FONT_WEIGHT_SEMI_BOLD
+#define SDL_FONT_WEIGHT_SEMI_BOLD TTF_FONT_WEIGHT_SEMI_BOLD
 
 /**
  * Bold (700) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_BOLD TTF_FONT_WEIGHT_BOLD
+#define SDL_FONT_WEIGHT_BOLD TTF_FONT_WEIGHT_BOLD
 
 /**
  * ExtraBold (800) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_EXTRA_BOLD TTF_FONT_WEIGHT_EXTRA_BOLD
+#define SDL_FONT_WEIGHT_EXTRA_BOLD TTF_FONT_WEIGHT_EXTRA_BOLD
 
 /**
  * Black (900) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_BLACK TTF_FONT_WEIGHT_BLACK
+#define SDL_FONT_WEIGHT_BLACK TTF_FONT_WEIGHT_BLACK
 
 /**
  * ExtraBlack (950) named font weight value
  */
-#define SDL3PP_FONT_WEIGHT_EXTRA_BLACK TTF_FONT_WEIGHT_EXTRA_BLACK
+#define SDL_FONT_WEIGHT_EXTRA_BLACK TTF_FONT_WEIGHT_EXTRA_BLACK
+
+#endif // SDL3PP_DOC
 
 /**
  * Convert from a 4 character string to a 32-bit tag.
