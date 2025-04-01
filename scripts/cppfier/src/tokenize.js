@@ -85,7 +85,7 @@ class Tokenizer {
       end: null,
       spaces: m?.[0]?.length ?? 0,
       kind: null,
-      value: "",
+      value: undefined,
     };
 
     if (/^\/\/\s*Forward decl/.test(line)) {
@@ -119,13 +119,17 @@ class Tokenizer {
       token.kind = "def";
       token.name = m[1];
       if (m[2]) token.parameters = m[3]?.trim();
-      let ln = line;
+      const value = [];
+      let ln = line.slice(m[0].length).trim();
       while (ln.endsWith('\\')) {
+        value.push(ln);
         ln = this.nextLine();
         if (ln === null) break;
       }
+      if (ln) value.push(ln);
       if (token.name.endsWith('_')) return this.next();
       token.doc = checkInlineDoc(line);
+      token.value = value.join('\n').trim() || undefined;
     } else if (m = /^using\s+(\w+)\s*=\s*([^;]*)(;?)/.exec(line)) {
       token.kind = "alias";
       token.name = m[1];
@@ -281,6 +285,7 @@ class Tokenizer {
     if (!this.lastLine.endsWith("{")) {
       const line = this.peekLine().trim();
       if (line.startsWith("{")) {
+        if (line.endsWith("}")) return;
         this.nextLine();
         if (line.endsWith("}")) return;
         opened = true;

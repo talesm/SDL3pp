@@ -238,6 +238,7 @@ class ContentParser {
       doc: token.doc ?? '',
       name: token.name,
       kind: /** @type {ApiEntryKind}*/(token.kind),
+      value: token.value,
     };
     switch (token.kind) {
       case "alias":

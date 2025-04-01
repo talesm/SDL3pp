@@ -252,7 +252,7 @@ function getEnd(entry) {
  * @param {ApiEntry} targetEntry 
  */
 function checkEntryChanged(sourceEntry, targetEntry) {
-  const keys = Object.keys(targetEntry).filter(k => k !== "doc" && k !== "entries" && k !== "sourceName");
+  const keys = Object.keys(targetEntry).filter(k => k !== "doc" && k !== "entries" && k !== "sourceName" && k !== "value");
   for (const key of keys) {
     if (checkValueChanged(sourceEntry[key], targetEntry[key])) return key;
   }
@@ -351,11 +351,12 @@ function generateEntry(entry, prefix) {
  * @param {ApiEntry}  entry 
  */
 function generateDef(entry) {
-  if (!entry.parameters) return `#define ${entry.name} ${entry.sourceName ?? ""}`;
+  const sourceName = entry.sourceName != entry.name ? entry.sourceName : undefined;
+  if (!entry.parameters) return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
 
   const parameters = `(${entry.parameters.join(", ")})`;
-  const body = entry.sourceName ? `${entry.sourceName}${parameters}` : "";
-  return `#define ${entry.name}${parameters} ${body}`;
+  const body = sourceName ? `${entry.sourceName}${parameters}` : entry.value;
+  return `#define ${entry.name}${parameters} ${body ?? ""}`;
 }
 
 /**

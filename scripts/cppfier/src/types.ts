@@ -33,6 +33,7 @@ interface ApiEntryBase {
 export interface ApiEntry extends ApiEntryBase {
   name: string;
   kind: ApiEntryKind;
+  value?: string;
   begin?: number;
   decl?: number;
   end?: number;
@@ -151,7 +152,7 @@ export type FileTokenKind = ApiEntryKind | "doc" | "template" | "endStruct";
 
 export interface FileToken {
   name?: string;
-  value: string;
+  value?: string;
   kind: FileTokenKind;
   parameters?: string;
   type?: string;
