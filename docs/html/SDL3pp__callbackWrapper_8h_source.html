@@ -230,7 +230,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>  {</div>
 <div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
 <div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    SDL_assert_paranoid(&amp;v == handle);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    <a class="code hl_define" href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a>(&amp;v == handle);</div>
 <div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keywordflow">return</span> v;</div>
 <div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>  }</div>
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
@@ -238,7 +238,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>  {</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    <span class="keyword">auto</span> lockGuard = lock();</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keyword">auto</span>&amp; v = Value();</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    SDL_assert_paranoid(&amp;v == handle);</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <a class="code hl_define" href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a>(&amp;v == handle);</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    ValueType value{std::move(v)};</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    <span class="keywordflow">return</span> value;</div>
@@ -269,6 +269,7 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>} <span class="comment">// namespace SDL</span></div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#endif </span><span class="comment">/* SDL3PP_CALLBACK_WRAPPER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agroup__CategoryAssert_html_ga4cc20db7eed29c5cd0e83f4f3d10860a"><div class="ttname"><a href="group__CategoryAssert.html#ga4cc20db7eed29c5cd0e83f4f3d10860a">SDL_assert_paranoid</a></div><div class="ttdeci">#define SDL_assert_paranoid(condition)</div><div class="ttdoc">An assertion test that is performed only when built with paranoid settings.</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:374</div></div>
 <div class="ttc" id="anamespaceSDL_html"><div class="ttname"><a href="namespaceSDL.html">SDL</a></div><div class="ttdoc">the main namespace where all SDL3pp public functions and types live</div><div class="ttdef"><b>Definition</b> SDL3pp_assert.h:7</div></div>
 <div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a2aa8ec0153862902dfe98f0ec6b9c47c"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a2aa8ec0153862902dfe98f0ec6b9c47c">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::release</a></div><div class="ttdeci">static ValueType release(void *handle)</div><div class="ttdoc">Transfer ownership from the function and delete handle.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:68</div></div>
 <div class="ttc" id="astructSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4_html_a7eb5d8619da99489183c9ae4fb2ffdff"><div class="ttname"><a href="structSDL_1_1CallbackWrapper_3_01std_1_1function_3_01Result_07Args_8_8_8_08_4_01_4.html#a7eb5d8619da99489183c9ae4fb2ffdff">SDL::CallbackWrapper&lt; std::function&lt; Result(Args...)&gt; &gt;::Wrap</a></div><div class="ttdeci">static ValueType * Wrap(ValueType &amp;&amp;cb)</div><div class="ttdoc">Change the callback into a void* pointer.</div><div class="ttdef"><b>Definition</b> SDL3pp_callbackWrapper.h:45</div></div>

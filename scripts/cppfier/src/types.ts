@@ -33,6 +33,7 @@ interface ApiEntryBase {
 export interface ApiEntry extends ApiEntryBase {
   name: string;
   kind: ApiEntryKind;
+  value?: string;
   begin?: number;
   decl?: number;
   end?: number;
@@ -71,6 +72,7 @@ export interface FileTransform {
   resources?: Dict<ApiResource>;
   enumerations?: Dict<ApiEnumeration>
   namespacesMap?: StringMap;
+  definitionPrefix?: string;
 }
 
 export type ApiEntryTransformMap = Dict<ApiEntryTransform | ApiEntryTransform[]>;
@@ -150,7 +152,8 @@ export interface ReplacementRule {
 export type FileTokenKind = ApiEntryKind | "doc" | "template" | "endStruct";
 
 export interface FileToken {
-  value: string;
+  name?: string;
+  value?: string;
   kind: FileTokenKind;
   parameters?: string;
   type?: string;

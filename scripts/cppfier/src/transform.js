@@ -82,16 +82,21 @@ function transformEntries(sourceEntries, context, transform) {
   /** @type {ApiEntries} */
   const targetEntries = {};
   const blacklist = new Set(transform.ignoreEntries ?? []);
+
   const transformMap = transform.transform ?? {};
-  const defPrefix = context.definitionPrefix;
   if (!transform.transform) transform.transform = transformMap;
-  if (!transform.includeAfter) transform.includeAfter = {};
+
+  const defPrefix = transform.definitionPrefix ?? context.definitionPrefix ?? "";
+  if (!transform.definitionPrefix) transform.definitionPrefix = defPrefix;
+
+  const includeAfter = transform.includeAfter ?? {};
+  if (!transform.includeAfter) transform.includeAfter = includeAfter;
 
   if (transform.resources) expandResources(transform.resources, transform, context);
   if (transform.enumerations) expandEnumerations(sourceEntries, transform, context);
   if (transform.namespacesMap) expandNamespaces(sourceEntries, transform, context);
 
-  insertEntryAndCheck(targetEntries, transform.includeAfter?.__begin ?? [], context, transform);
+  insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, transform);
 
   for (const [sourceName, sourceEntry] of Object.entries(sourceEntries)) {
     if (blacklist.has(sourceName)) continue;
@@ -114,7 +119,6 @@ function transformEntries(sourceEntries, context, transform) {
         else targetDelta.name = targetName;
         combineObject(targetEntry, targetDelta);
       } else targetEntry.name = targetName;
-      if (targetName === targetEntry.sourceName) targetEntry.sourceName = "::" + targetEntry.sourceName;
       if (targetEntry.kind == 'alias' || targetEntry.kind == 'struct') {
         if (targetName == targetEntry.type) {
           continue;
@@ -147,9 +151,9 @@ function transformEntries(sourceEntries, context, transform) {
         }));
       }
     }
-    insertEntryAndCheck(targetEntries, transform.includeAfter?.[sourceName] ?? [], context, transform);
+    insertEntryAndCheck(targetEntries, includeAfter[sourceName] ?? [], context, transform);
   }
-  insertEntryAndCheck(targetEntries, transform.includeAfter?.__end ?? [], context, transform);
+  insertEntryAndCheck(targetEntries, includeAfter.__end ?? [], context, transform);
   transformHierarchy(targetEntries);
   validateEntries(targetEntries);
 
@@ -422,7 +426,7 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
   /** @type {ApiEntries} */
   const entries = {};
   const type = targetEntry.name;
-  const defPrefix = context.definitionPrefix ?? "";
+  const defPrefix = transform.definitionPrefix;
   for (const [key, entry] of Object.entries(targetEntry.entries)) {
     const nameCandidate = transformName(key, context);
     if (Array.isArray(entry) || nameCandidate === key) {

@@ -80,11 +80,12 @@ class Tokenizer {
     let m = spaceRegex.exec(this.lastLine);
     /** @type {FileToken} */
     const token = {
+      name: undefined,
       begin: this.lineCount,
       end: null,
       spaces: m?.[0]?.length ?? 0,
       kind: null,
-      value: ""
+      value: undefined,
     };
 
     if (/^\/\/\s*Forward decl/.test(line)) {
@@ -116,22 +117,22 @@ class Tokenizer {
       }
     } else if (m = /^#define\s+(\w+)(\(([\w\s,]*)\))?/.exec(line)) {
       token.kind = "def";
-      token.value = m[1];
+      token.name = m[1];
       if (m[2]) token.parameters = m[3]?.trim();
-      let ln = line;
+      const value = [];
+      let ln = line.slice(m[0].length).trim();
       while (ln.endsWith('\\')) {
+        value.push(ln);
         ln = this.nextLine();
         if (ln === null) break;
       }
-      if (token.value.endsWith('_')) return this.next();
+      if (ln) value.push(ln);
+      if (token.name.endsWith('_')) return this.next();
       token.doc = checkInlineDoc(line);
-    } else if (m = /^typedef\s+(([\w*]+\s+)+\**)(\w+);/.exec(line)) {
-      token.kind = "alias";
-      token.value = m[3];
-      token.type = m[1].trimEnd();
+      token.value = value.join('\n').trim() || undefined;
     } else if (m = /^using\s+(\w+)\s*=\s*([^;]*)(;?)/.exec(line)) {
       token.kind = "alias";
-      token.value = m[1];
+      token.name = m[1];
       if (m[3]) {
         token.type = m[2].trimEnd();
       } else {
@@ -148,35 +149,13 @@ class Tokenizer {
       }
     } else if (m = /^using\s+([\w:]+)\s*;/.exec(line)) {
       token.kind = "alias";
-      token.value = m[1];
-    } else if (m = /^typedef\s+((?:\w+\s*)+\*?)\((?:SDLCALL )?\*(\w+)\)\(([^)]*)(\);)?/.exec(line)) {
-      token.value = m[2];
-      token.kind = "callback";
-      token.type = m[1].trimEnd();
-      token.parameters = m[3]?.trim();
-      if (!m[4]) {
-        let line;
-        while ((line = this.nextLine()) !== null) {
-          if (line.endsWith(");")) {
-            token.parameters += " " + line.slice(line.length - 2);
-            break;
-          }
-          token.parameters += " " + line;
-        }
-      }
-    } else if (m = /^typedef\s+(struct|enum|union)\s+(\w+)?$/.exec(line)) {
-      // @ts-ignore
-      token.kind = m[1];
-      token.value = m[2];
-      if (token.kind == "union") {
-        this.ignoreBody(token.spaces);
-      } else if (!line.endsWith("{")) this.nextLine();
+      token.name = m[1];
     } else if (m = /^(?:struct|class)\s+([\w<>]+);/.exec(line)) {
       token.kind = "forward";
-      token.value = m[1];
+      token.name = m[1];
     } else if ((m = /^(?:constexpr )?(?:struct|class)\s+([\w<>]+)\s*(:\s*([\w<>,\s]+))?/.exec(line)) && !line.includes(";")) {
       token.kind = "struct";
-      token.value = m[1];
+      token.name = m[1];
       if (m[3]) {
         token.type = m[3].trim();
       } else if (this.peekLine()?.trimStart().startsWith(":")) {
@@ -200,7 +179,7 @@ class Tokenizer {
       }
     } else if (m = /^namespace\s+([^{]*)\{/.exec(line)) {
       token.kind = "ns";
-      token.value = m[1]?.trim();
+      token.name = m[1]?.trim();
     } else if (line.startsWith('#')) {
       let ln = line;
       while (ln.endsWith('\\')) {
@@ -239,7 +218,7 @@ class Tokenizer {
         name = type.slice(ind + 1) + " " + name;
         type = type.slice(0, ind);
       }
-      token.value = name;
+      token.name = name;
       token.type = type;
 
       if (m[4]) {
@@ -268,22 +247,22 @@ class Tokenizer {
         token.parameters = parameters;
         if (type.startsWith("operator")) {
           token.type = "";
-          token.value = type + " " + (token.value.replace(/(\w+)([*&])/g, "$1 $2"));
+          token.name = type + " " + (token.name.replace(/(\w+)([*&])/g, "$1 $2"));
         }
       } else {
         token.kind = "var";
         token.doc = checkInlineDoc(member);
       }
-      if (m = /^((?:[*&]\s*)+)(\w+)\s*$/.exec(token.value)) {
+      if (m = /^((?:[*&]\s*)+)(\w+)\s*$/.exec(token.name)) {
         token.type += " " + m[1];
-        token.value = m[2];
+        token.name = m[2];
       }
       this.ignoreBody(token.spaces);
     }
     this.extendToNextStart();
     token.end = this.lineCount + 1;
     if (checkTokenTooLarge(token)) {
-      system.warn(`Warning: Token at ${token.begin} seems very large ${token.value} (${token.end - token.begin} lines)`);
+      system.warn(`Warning: Token at ${token.begin} seems very large ${token.name ?? token.value} (${token.end - token.begin} lines)`);
     }
     return token;
   }
@@ -306,6 +285,7 @@ class Tokenizer {
     if (!this.lastLine.endsWith("{")) {
       const line = this.peekLine().trim();
       if (line.startsWith("{")) {
+        if (line.endsWith("}")) return;
         this.nextLine();
         if (line.endsWith("}")) return;
         opened = true;

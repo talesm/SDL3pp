@@ -107,6 +107,7 @@ async function parseXmlContent(name, xmlContent, xmlDir, config) {
             entry.parameters = params.map(p => p.defname?.[0]);
             if (entry.parameters.length === 1 && !entry.parameters[0]) entry.parameters.pop();
           }
+          entry.value = member.initializer?.join("\n");
           break;
         }
         case "enum": {

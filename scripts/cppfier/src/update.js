@@ -252,7 +252,7 @@ function getEnd(entry) {
  * @param {ApiEntry} targetEntry 
  */
 function checkEntryChanged(sourceEntry, targetEntry) {
-  const keys = Object.keys(targetEntry).filter(k => k !== "doc" && k !== "entries" && k !== "sourceName");
+  const keys = Object.keys(targetEntry).filter(k => k !== "doc" && k !== "entries" && k !== "sourceName" && k !== "value");
   for (const key of keys) {
     if (checkValueChanged(sourceEntry[key], targetEntry[key])) return key;
   }
@@ -351,11 +351,12 @@ function generateEntry(entry, prefix) {
  * @param {ApiEntry}  entry 
  */
 function generateDef(entry) {
-  if (!entry.parameters) return `#define ${entry.name} ${entry.sourceName ?? ""}`;
+  const sourceName = entry.sourceName != entry.name ? entry.sourceName : undefined;
+  if (!entry.parameters) return `#define ${entry.name} ${sourceName ?? entry.value ?? ""}`;
 
   const parameters = `(${entry.parameters.join(", ")})`;
-  const body = entry.sourceName ? `${entry.sourceName}${parameters}` : "";
-  return `#define ${entry.name}${parameters} ${body}`;
+  const body = sourceName ? `${entry.sourceName}${parameters}` : entry.value;
+  return `#define ${entry.name}${parameters} ${body ?? ""}`;
 }
 
 /**
@@ -363,27 +364,28 @@ function generateDef(entry) {
  * @param {string}   prefix
  */
 function generateBody(entry, prefix) {
-  if (!entry.sourceName) return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
+  const sourceName = entry.sourceName === entry.name ? ("::" + entry.sourceName) : entry.sourceName;
+  if (!sourceName) return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
   const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
   const return_ = entry.type === "void" ? "" : "return ";
   if (!entry.type) {
-    return `  : T(${entry.sourceName}(${paramStr}))\n${prefix}{}`;
+    return `  : T(${sourceName}(${paramStr}))\n${prefix}{}`;
   }
   if (!prefix || entry.static) {
-    return `{\n${prefix}  ${return_}${entry.sourceName}(${paramStr});\n${prefix}}`;
+    return `{\n${prefix}  ${return_}${sourceName}(${paramStr});\n${prefix}}`;
   }
   if (paramStr) {
-    return `{\n${prefix}  ${return_}${entry.sourceName}(T::get(), ${paramStr});\n${prefix}}`;
+    return `{\n${prefix}  ${return_}${sourceName}(T::get(), ${paramStr});\n${prefix}}`;
   }
-  if (looksLikeFreeFunction(entry.sourceName)) {
+  if (looksLikeFreeFunction(sourceName)) {
     if (!return_) {
       return `{\n${prefix}  T::free();\n${prefix}}`;
     }
-    return `{\n${prefix}  ${return_}${entry.sourceName}(T::release());\n${prefix}}`;
+    return `{\n${prefix}  ${return_}${sourceName}(T::release());\n${prefix}}`;
   }
-  return `{\n${prefix}  ${return_}${entry.sourceName}(T::get());\n${prefix}}`;
+  return `{\n${prefix}  ${return_}${sourceName}(T::get());\n${prefix}}`;
 }
 
 /**

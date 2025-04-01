@@ -9,5 +9,6 @@ var searchData=
   ['standard_20library_20functionality_6',['Standard Library Functionality',['../group__CategoryStdinc.html',1,'']]],
   ['streams_7',['I/O Streams',['../group__CategoryIOStream.html',1,'']]],
   ['support_8',['support',['../group__CategoriesCppSupport.html',1,'C++ Support'],['../group__CategoryTimer.html',1,'Timer Support'],['../group__CategorySDLTTF.html',1,'True type font support']]],
-  ['surface_20creation_20and_20simple_20drawing_9',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]]
+  ['surface_20creation_20and_20simple_20drawing_9',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
+  ['swapping_10',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
 ];

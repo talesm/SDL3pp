@@ -98,41 +98,45 @@ using PaletteRef = PaletteBase<ObjectRef<SDL_Palette>>;
  */
 using Palette = PaletteBase<ObjectUnique<SDL_Palette>>;
 
+#ifdef SDL3PP_DOC
+
 /**
  * A fully opaque 8-bit alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_TRANSPARENT
+ * @sa SDL_ALPHA_TRANSPARENT
  */
-#define SDL3PP_ALPHA_OPAQUE SDL_ALPHA_OPAQUE
+#define SDL_ALPHA_OPAQUE 255
 
 /**
  * A fully opaque floating point alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_TRANSPARENT_FLOAT
+ * @sa SDL_ALPHA_TRANSPARENT_FLOAT
  */
-#define SDL3PP_ALPHA_OPAQUE_FLOAT SDL_ALPHA_OPAQUE_FLOAT
+#define SDL_ALPHA_OPAQUE_FLOAT 1.0f
 
 /**
  * A fully transparent 8-bit alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_OPAQUE
+ * @sa SDL_ALPHA_OPAQUE
  */
-#define SDL3PP_ALPHA_TRANSPARENT SDL_ALPHA_TRANSPARENT
+#define SDL_ALPHA_TRANSPARENT 0
 
 /**
  * A fully transparent floating point alpha value.
  *
  * @since This macro is available since SDL 3.2.0.
  *
- * @sa SDL3PP_ALPHA_OPAQUE_FLOAT
+ * @sa SDL_ALPHA_OPAQUE_FLOAT
  */
-#define SDL3PP_ALPHA_TRANSPARENT_FLOAT SDL_ALPHA_TRANSPARENT_FLOAT
+#define SDL_ALPHA_TRANSPARENT_FLOAT 0.0f
+
+#endif // SDL3PP_DOC
 
 /**
  * @name PixelTypes
@@ -291,6 +295,8 @@ constexpr PackedLayout PACKEDLAYOUT_1010102 = SDL_PACKEDLAYOUT_1010102;
  */
 using PixelFormatDetails = SDL_PixelFormatDetails;
 
+#ifdef SDL3PP_DOC
+
 /**
  * A macro for defining custom FourCC pixel formats.
  *
@@ -310,7 +316,7 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_DEFINE_PIXELFOURCC(A, B, C, D) SDL_DEFINE_PIXELFOURCC(A, B, C, D)
+#define SDL_DEFINE_PIXELFOURCC(A, B, C, D) SDL_FOURCC(A, B, C, D)
 
 /**
  * A macro to retrieve the flags of an SDL_PixelFormat.
@@ -325,7 +331,9 @@ using PixelFormatDetails = SDL_PixelFormatDetails;
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_PIXELFLAG(format) SDL_PIXELFLAG(format)
+#define SDL_PIXELFLAG(format) (((format) >> 28) & 0x0F)
+
+#endif // SDL3PP_DOC
 
 /**
  * @name PixelFormats

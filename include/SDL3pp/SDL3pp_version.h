@@ -16,6 +16,8 @@ namespace SDL {
  * @{
  */
 
+#ifdef SDL3PP_DOC
+
 /**
  * The current major version of SDL headers.
  *
@@ -23,7 +25,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_MAJOR_VERSION SDL_MAJOR_VERSION
+#define SDL_MAJOR_VERSION 3
 
 /**
  * The current minor version of the SDL headers.
@@ -32,7 +34,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_MINOR_VERSION SDL_MINOR_VERSION
+#define SDL_MINOR_VERSION 2
 
 /**
  * The current micro (or patchlevel) version of the SDL headers.
@@ -41,7 +43,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_MICRO_VERSION SDL_MICRO_VERSION
+#define SDL_MICRO_VERSION 11
 
 /**
  * This macro turns the version numbers into a numeric value.
@@ -54,8 +56,8 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM(major, minor, patch)                                 \
-  SDL_VERSIONNUM(major, minor, patch)
+#define SDL_VERSIONNUM(major, minor, patch)                                    \
+  ((major) * 1000000 + (minor) * 1000 + (patch))
 
 /**
  * This macro extracts the major version from a version number
@@ -66,7 +68,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM_MAJOR(version) SDL_VERSIONNUM_MAJOR(version)
+#define SDL_VERSIONNUM_MAJOR(version) ((version) / 1000000)
 
 /**
  * This macro extracts the minor version from a version number
@@ -77,7 +79,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM_MINOR(version) SDL_VERSIONNUM_MINOR(version)
+#define SDL_VERSIONNUM_MINOR(version) (((version) / 1000) % 1000)
 
 /**
  * This macro extracts the micro version from a version number
@@ -88,7 +90,7 @@ namespace SDL {
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSIONNUM_MICRO(version) SDL_VERSIONNUM_MICRO(version)
+#define SDL_VERSIONNUM_MICRO(version) ((version) % 1000)
 
 /**
  * This is the version number macro for the current SDL version.
@@ -97,14 +99,17 @@ namespace SDL {
  *
  * @sa SDL_GetVersion
  */
-#define SDL3PP_VERSION SDL_VERSION
+#define SDL_VERSION                                                            \
+  SDL_VERSIONNUM(SDL_MAJOR_VERSION, SDL_MINOR_VERSION, SDL_MICRO_VERSION)
 
 /**
  * This macro will evaluate to true if compiled with SDL at least X.Y.Z.
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_VERSION_ATLEAST(X, Y, Z) SDL_VERSION_ATLEAST(X, Y, Z)
+#define SDL_VERSION_ATLEAST(X, Y, Z) (SDL_VERSION >= SDL_VERSIONNUM(X, Y, Z))
+
+#endif // SDL3PP_DOC
 
 /**
  * Get the version of SDL that is linked against your program.

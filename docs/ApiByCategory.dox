@@ -81,7 +81,13 @@ Async I/O                | SDL3pp_asyncio.h
 
 ## Platform and CPU Information
 
-@todo Plan and implement
+Category                            | Header
+----------------------------------- | --------------------
+@ref CategoryPlatform               | SDL3pp_platform.h
+@ref CategoryCPUInfo  	            | SDL3pp_cpuinfo.h
+@ref CategoryIntrinsics       	    | SDL3pp_intrin.h
+@ref CategoryEndian 	              | SDL3pp_endian.h
+@ref CategoryBits	                  | SDL3pp_bits.h 
 
 ## Additional Functionality
 
@@ -159,6 +165,15 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesFileIO File and I/O Abstractions
 @{
 @addtogroup CategoryIOStream
+@}
+
+@defgroup CategoriesPlatformAndCpuInformation Platform and CPU Information
+@{
+@addtogroup CategoryPlatform
+@addtogroup CategoryCPUInfo
+@addtogroup CategoryIntrinsics
+@addtogroup CategoryEndian
+@addtogroup CategoryBits
 @}
 
 @defgroup CategoriesAdditionalFunctionality Additional Functionality

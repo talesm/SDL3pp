@@ -4,7 +4,7 @@
     "IMG_",
     "TTF_"
   ],
-  "definitionPrefix": "SDL3PP_",
+  "definitionPrefix": "SDL_",
   "renameRules": [
     {
       "pattern": "^SDL_(.*)\\.h$",
@@ -522,6 +522,94 @@
               "name": "(&x)[N]"
             }
           ]
+        },
+        "SDL_min": {
+          "kind": "function",
+          "type": "T",
+          "constexpr": true,
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "class",
+              "name": "U"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T",
+              "name": "x"
+            },
+            {
+              "type": "U",
+              "name": "y"
+            }
+          ]
+        },
+        "SDL_max": {
+          "kind": "function",
+          "type": "T",
+          "constexpr": true,
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "class",
+              "name": "U"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T",
+              "name": "x"
+            },
+            {
+              "type": "U",
+              "name": "y"
+            }
+          ]
+        },
+        "SDL_clamp": {
+          "kind": "function",
+          "type": "T",
+          "constexpr": true,
+          "template": [
+            {
+              "type": "class",
+              "name": "T"
+            },
+            {
+              "type": "class",
+              "name": "U"
+            },
+            {
+              "type": "class",
+              "name": "V"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "T",
+              "name": "x"
+            },
+            {
+              "type": "U",
+              "name": "a"
+            },
+            {
+              "type": "V",
+              "name": "b"
+            }
+          ]
+        },
+        "SDL_INVALID_UNICODE_CODEPOINT": {
+          "kind": "var",
+          "type": "Uint32",
+          "constexpr": true
         }
       }
     },
@@ -5370,6 +5458,114 @@
         }
       }
     },
+    "SDL_cpuinfo.h": {
+      "transform": {
+        "SDL_CACHELINE_SIZE": {
+          "kind": "var",
+          "type": "int",
+          "constexpr": true
+        }
+      }
+    },
+    "SDL_endian.h": {
+      "definitionPrefix": "SDL_",
+      "ignoreEntries": [
+        "HAS_BUILTIN_BSWAP16",
+        "HAS_BUILTIN_BSWAP32",
+        "HAS_BUILTIN_BSWAP64",
+        "HAS_BROKEN_BSWAP"
+      ],
+      "transform": {
+        "SDL_Swap16LE": {
+          "kind": "function",
+          "type": "Uint16",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint16",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap16BE": {
+          "kind": "function",
+          "type": "Uint16",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint16",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap32LE": {
+          "kind": "function",
+          "type": "Uint32",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint32",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap32BE": {
+          "kind": "function",
+          "type": "Uint32",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint32",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap64LE": {
+          "kind": "function",
+          "type": "Uint64",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint64",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_Swap64BE": {
+          "kind": "function",
+          "type": "Uint64",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Uint64",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_SwapFloatLE": {
+          "kind": "function",
+          "type": "float",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "float",
+              "name": "x"
+            }
+          ]
+        },
+        "SDL_SwapFloatBE": {
+          "kind": "function",
+          "type": "float",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "float",
+              "name": "x"
+            }
+          ]
+        }
+      }
+    },
     "SDL_init.h": {
       "ignoreEntries": [
         "SDL_InitSubSystem"
@@ -5709,6 +5905,7 @@
       }
     },
     "SDL_main.h": {
+      "definitionPrefix": "SDL3PP_",
       "ignoreEntries": [
         "main",
         "SDLMAIN_DECLSPEC",

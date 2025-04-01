@@ -166,6 +166,8 @@ inline const char* GetError() { return SDL_GetError(); }
  */
 inline bool ClearError() { return SDL_ClearError(); }
 
+#ifdef SDL3PP_DOC
+
 /**
  * A macro to standardize error reporting on unsupported operations.
  *
@@ -176,7 +178,7 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_Unsupported() SDL_Unsupported()
+#define SDL_Unsupported() SDL_SetError("That operation is not supported")
 
 /**
  * A macro to standardize error reporting on unsupported operations.
@@ -200,7 +202,10 @@ inline bool ClearError() { return SDL_ClearError(); }
  *
  * @since This macro is available since SDL 3.2.0.
  */
-#define SDL3PP_InvalidParamError(param) SDL_InvalidParamError(param)
+#define SDL_InvalidParamError(param)                                           \
+  SDL_SetError("Parameter '%s' is invalid", (param))
+
+#endif // SDL3PP_DOC
 
 /** @} */
 
