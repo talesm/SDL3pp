@@ -22357,84 +22357,6 @@
         }
       }
     },
-    "SDL3pp_power.h": {
-      "name": "SDL3pp_power.h",
-      "doc": "@defgroup CategoryPower Category Power\n\nSDL power management routines.\n\nThere is a single function in this category: GetPowerInfo().\n\nThis function is useful for games on the go. This allows an app to know if\nit's running on a draining battery, which can be useful if the app wants to\nreduce processing, or perhaps framerate, to extend the duration of the\nbattery's charge. Perhaps the app just wants to show a battery meter when\nfullscreen, or alert the user when the power is getting extremely low, so\nthey can save their game.",
-      "entries": {
-        "PowerState": {
-          "doc": "The basic state for the system's power supply.\n\nThese are results returned by GetPowerInfo().\n\n@since This enum is available since SDL 3.2.0.",
-          "name": "PowerState",
-          "kind": "alias",
-          "sourceName": "SDL_PowerState",
-          "type": "SDL_PowerState"
-        },
-        "POWERSTATE_ERROR": {
-          "doc": "error determining power status",
-          "name": "POWERSTATE_ERROR",
-          "kind": "var",
-          "type": "PowerState",
-          "sourceName": "SDL_POWERSTATE_ERROR",
-          "constexpr": true
-        },
-        "POWERSTATE_UNKNOWN": {
-          "doc": "cannot determine power status",
-          "name": "POWERSTATE_UNKNOWN",
-          "kind": "var",
-          "type": "PowerState",
-          "sourceName": "SDL_POWERSTATE_UNKNOWN",
-          "constexpr": true
-        },
-        "POWERSTATE_ON_BATTERY": {
-          "doc": "Not plugged in, running on the battery.",
-          "name": "POWERSTATE_ON_BATTERY",
-          "kind": "var",
-          "type": "PowerState",
-          "sourceName": "SDL_POWERSTATE_ON_BATTERY",
-          "constexpr": true
-        },
-        "POWERSTATE_NO_BATTERY": {
-          "doc": "Plugged in, no battery available.",
-          "name": "POWERSTATE_NO_BATTERY",
-          "kind": "var",
-          "type": "PowerState",
-          "sourceName": "SDL_POWERSTATE_NO_BATTERY",
-          "constexpr": true
-        },
-        "POWERSTATE_CHARGING": {
-          "doc": "Plugged in, charging battery.",
-          "name": "POWERSTATE_CHARGING",
-          "kind": "var",
-          "type": "PowerState",
-          "sourceName": "SDL_POWERSTATE_CHARGING",
-          "constexpr": true
-        },
-        "POWERSTATE_CHARGED": {
-          "doc": "Plugged in, battery charged.",
-          "name": "POWERSTATE_CHARGED",
-          "kind": "var",
-          "type": "PowerState",
-          "sourceName": "SDL_POWERSTATE_CHARGED",
-          "constexpr": true
-        },
-        "GetPowerInfo": {
-          "doc": "Get the current power supply details.\n\nYou should never take a battery status as absolute truth. Batteries\n(especially failing batteries) are delicate hardware, and the values\nreported here are best estimates based on what that hardware reports. It's\nnot uncommon for older batteries to lose stored power much faster than it\nreports, or completely drain when reporting it has 20 percent left, etc.\n\nBattery status can change at any time; if you are concerned with power\nstate, you should call this function frequently, and perhaps ignore changes\nuntil they seem to be stable for a few seconds.\n\nIt's possible a platform can only report battery percentage or time left\nbut not both.\n\nOn some platforms, retrieving power supply details might be expensive. If\nyou want to display continuous status you could call this function every\nminute or so.\n\n@param seconds a pointer filled in with the seconds of battery life left,\n               or nullptr to ignore. This will be filled in with -1 if we\n               can't determine a value or there is no battery.\n@param percent a pointer filled in with the percentage of battery life\n               left, between 0 and 100, or nullptr to ignore. This will be\n               filled in with -1 we can't determine a value or there is no\n               battery.\n@returns the current battery state or `POWERSTATE_ERROR` on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
-          "name": "GetPowerInfo",
-          "kind": "function",
-          "type": "PowerState",
-          "parameters": [
-            {
-              "name": "seconds",
-              "type": "int *"
-            },
-            {
-              "name": "percent",
-              "type": "int *"
-            }
-          ],
-          "sourceName": "SDL_GetPowerInfo"
-        }
-      }
-    },
     "SDL3pp_loadso.h": {
       "name": "SDL3pp_loadso.h",
       "doc": "@defgroup CategorySharedObject Category SharedObject\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SharedObjectBase.SharedObjectBase() on it. Once\nloaded, you can use SharedObjectBase.LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SharedObjectBase.Unload()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SharedObjectBase.LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
@@ -22529,6 +22451,448 @@
             }
           ],
           "sourceName": "SDL_UnloadObject"
+        }
+      }
+    },
+    "SDL3pp_dialog.h": {
+      "name": "SDL3pp_dialog.h",
+      "doc": "@defgroup CategoryDialog Category Dialog\n\nFile dialog support.\n\nSDL offers file dialogs, to let users select files with native GUI\ninterfaces. There are \"open\" dialogs, \"save\" dialogs, and folder selection\ndialogs. The app can control some details, such as filtering to specific\nfiles, or whether multiple files can be selected by the user.\n\nNote that launching a file dialog is a non-blocking operation; control\nreturns to the app immediately, and a callback is called later (possibly in\nanother thread) when the user makes a choice.",
+      "entries": {
+        "DialogFileFilter": {
+          "doc": "An entry for filters for file dialogs.\n\n`name` is a user-readable label for the filter (for example, \"Office\ndocument\").\n\n`pattern` is a semicolon-separated list of file extensions (for example,\n\"doc;docx\"). File extensions may only contain alphanumeric characters,\nhyphens, underscores and periods. Alternatively, the whole string can be a\nsingle asterisk (\"*\"), which serves as an \"All files\" filter.\n\n@since This struct is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
+          "name": "DialogFileFilter",
+          "kind": "alias",
+          "sourceName": "SDL_DialogFileFilter",
+          "type": "SDL_DialogFileFilter"
+        },
+        "DialogFileCallback": {
+          "doc": "Callback used by file dialog functions.\n\nThe specific usage is described in each function.\n\nIf `filelist` is:\n\n- nullptr, an error occurred. Details can be obtained with GetError().\n- A pointer to nullptr, the user either didn't choose any file or canceled the\n  dialog.\n- A pointer to non-`nullptr`, the user chose one or more files. The argument\n  is a null-terminated array of pointers to UTF-8 encoded strings, each\n  containing a path.\n\nThe filelist argument should not be freed; it will automatically be freed\nwhen the callback returns.\n\nThe filter argument is the index of the filter that was selected, or -1 if\nno filter was selected or if the platform or method doesn't support\nfetching the selected filter.\n\nIn Android, the `filelist` are `content://` URIs. They should be opened\nusing IOStreamBase.IOStreamBase() with appropriate modes. This applies both to open\nand save file dialog.\n\n@param userdata an app-provided pointer, for the callback's use.\n@param filelist the file(s) chosen by the user.\n@param filter index of the selected filter.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
+          "name": "DialogFileCallback",
+          "kind": "alias",
+          "type": "SDL_DialogFileCallback",
+          "sourceName": "SDL_DialogFileCallback"
+        },
+        "DialogFileCB": {
+          "name": "DialogFileCB",
+          "kind": "alias",
+          "type": "std::function<void(const char *const *, int)>",
+          "doc": ""
+        },
+        "ShowOpenFileDialog": [
+          {
+            "doc": "Displays a dialog that lets the user select a file on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be nullptr. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param nfilters the number of filters. Ignored if filters is nullptr.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this option.\n@param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
+            "name": "ShowOpenFileDialog",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "DialogFileCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              },
+              {
+                "name": "window",
+                "type": "WindowRef"
+              },
+              {
+                "name": "filters",
+                "type": "const DialogFileFilter *"
+              },
+              {
+                "name": "nfilters",
+                "type": "int"
+              },
+              {
+                "name": "default_location",
+                "type": "StringParam"
+              },
+              {
+                "name": "allow_many",
+                "type": "bool"
+              }
+            ],
+            "sourceName": "SDL_ShowOpenFileDialog"
+          },
+          {
+            "name": "ShowOpenFileDialog",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "type": "DialogFileCB",
+                "name": "callback"
+              },
+              {
+                "name": "window",
+                "type": "WindowRef"
+              },
+              {
+                "name": "filters",
+                "type": "std::span<const DialogFileFilter>"
+              },
+              {
+                "name": "default_location",
+                "type": "StringParam"
+              },
+              {
+                "name": "allow_many",
+                "type": "bool"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "ShowSaveFileDialog": [
+          {
+            "doc": "Displays a dialog that lets the user choose a new or existing file on their\nfilesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nThe chosen file may or may not already exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param filters a list of filters, may be nullptr. Not all platforms support\n               this option, and platforms that do support it may allow the\n               user to ignore the filters. If non-nullptr, it must remain\n               valid at least until the callback is invoked.\n@param nfilters the number of filters. Ignored if filters is nullptr.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowOpenFolderDialog\n@sa ShowFileDialogWithProperties",
+            "name": "ShowSaveFileDialog",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "DialogFileCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              },
+              {
+                "name": "window",
+                "type": "WindowRef"
+              },
+              {
+                "name": "filters",
+                "type": "const DialogFileFilter *"
+              },
+              {
+                "name": "nfilters",
+                "type": "int"
+              },
+              {
+                "name": "default_location",
+                "type": "StringParam"
+              }
+            ],
+            "sourceName": "SDL_ShowSaveFileDialog"
+          },
+          {
+            "name": "ShowSaveFileDialog",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "DialogFileCB"
+              },
+              {
+                "name": "window",
+                "type": "WindowRef"
+              },
+              {
+                "name": "filters",
+                "type": "std::span<const DialogFileFilter>"
+              },
+              {
+                "name": "default_location",
+                "type": "StringParam"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "ShowOpenFolderDialog": [
+          {
+            "doc": "Displays a dialog that lets the user select a folder on their filesystem.\n\nThis is an asynchronous function; it will return immediately, and the\nresult will be passed to the callback.\n\nThe callback will be invoked with a null-terminated list of files the user\nchose. The list will be empty if the user canceled the dialog, and it will\nbe nullptr if an error occurred.\n\nNote that the callback may be called from a different thread than the one\nthe function was invoked on.\n\nDepending on the platform, the user may be allowed to input paths that\ndon't yet exist.\n\nOn Linux, dialogs may require XDG Portals, which requires DBus, which\nrequires an event-handling loop. Apps that do not use SDL to handle events\nshould add a call to PumpEvents in their main loop.\n\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param window the window that the dialog should be modal for, may be nullptr.\n              Not all platforms support this option.\n@param default_location the default folder or file to start the dialog at,\n                        may be nullptr. Not all platforms support this option.\n@param allow_many if non-zero, the user will be allowed to select multiple\n                  entries. Not all platforms support this option.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa DialogFileCallback\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowFileDialogWithProperties",
+            "name": "ShowOpenFolderDialog",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "DialogFileCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              },
+              {
+                "name": "window",
+                "type": "WindowRef"
+              },
+              {
+                "name": "default_location",
+                "type": "StringParam"
+              },
+              {
+                "name": "allow_many",
+                "type": "bool"
+              }
+            ],
+            "sourceName": "SDL_ShowOpenFolderDialog"
+          },
+          {
+            "name": "ShowOpenFolderDialog",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "callback",
+                "type": "DialogFileCB"
+              },
+              {
+                "name": "window",
+                "type": "WindowRef"
+              },
+              {
+                "name": "default_location",
+                "type": "StringParam"
+              },
+              {
+                "name": "allow_many",
+                "type": "bool"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "FileDialogType": {
+          "doc": "Various types of file dialogs.\n\nThis is used by ShowFileDialogWithProperties() to decide what kind of\ndialog to present to the user.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa ShowFileDialogWithProperties",
+          "name": "FileDialogType",
+          "kind": "alias",
+          "sourceName": "SDL_FileDialogType",
+          "type": "SDL_FileDialogType"
+        },
+        "FILEDIALOG_OPENFILE": {
+          "doc": "",
+          "name": "FILEDIALOG_OPENFILE",
+          "kind": "var",
+          "type": "FileDialogType",
+          "sourceName": "SDL_FILEDIALOG_OPENFILE",
+          "constexpr": true
+        },
+        "FILEDIALOG_SAVEFILE": {
+          "doc": "",
+          "name": "FILEDIALOG_SAVEFILE",
+          "kind": "var",
+          "type": "FileDialogType",
+          "sourceName": "SDL_FILEDIALOG_SAVEFILE",
+          "constexpr": true
+        },
+        "FILEDIALOG_OPENFOLDER": {
+          "doc": "",
+          "name": "FILEDIALOG_OPENFOLDER",
+          "kind": "var",
+          "type": "FileDialogType",
+          "sourceName": "SDL_FILEDIALOG_OPENFOLDER",
+          "constexpr": true
+        },
+        "ShowFileDialogWithProperties": [
+          {
+            "doc": "Create and launch a file dialog with the specified properties.\n\nThese are the supported properties:\n\n- `SDL_PROP_FILE_DIALOG_FILTERS_POINTER`: a pointer to a list of\n  DialogFileFilter structs, which will be used as filters for\n  file-based selections. Ignored if the dialog is an \"Open Folder\" dialog.\n  If non-nullptr, the array of filters must remain valid at least until the\n  callback is invoked.\n- `prop::FileDialog.NFILTERS_NUMBER`: the number of filters in the\n  array of filters, if it exists.\n- `prop::FileDialog.WINDOW_POINTER`: the window that the dialog should\n  be modal for.\n- `prop::FileDialog.LOCATION_STRING`: the default folder or file to\n  start the dialog at.\n- `prop::FileDialog.MANY_BOOLEAN`: true to allow the user to select\n  more than one entry.\n- `prop::FileDialog.TITLE_STRING`: the title for the dialog.\n- `prop::FileDialog.ACCEPT_STRING`: the label that the accept button\n  should have.\n- `prop::FileDialog.CANCEL_STRING`: the label that the cancel button\n  should have.\n\nNote that each platform may or may not support any of the properties.\n\n@param type the type of file dialog.\n@param callback a function pointer to be invoked when the user selects a\n                file and accepts, or cancels the dialog, or an error\n                occurs.\n@param userdata an optional pointer to pass extra data to the callback when\n                it will be invoked.\n@param props the properties to use.\n\n@threadsafety This function should be called only from the main thread. The\n              callback may be invoked from the same thread or from a\n              different one, depending on the OS's constraints.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FileDialogType\n@sa DialogFileCallback\n@sa DialogFileFilter\n@sa ShowOpenFileDialog\n@sa ShowSaveFileDialog\n@sa ShowOpenFolderDialog",
+            "name": "ShowFileDialogWithProperties",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "FileDialogType"
+              },
+              {
+                "name": "callback",
+                "type": "DialogFileCallback"
+              },
+              {
+                "name": "userdata",
+                "type": "void *"
+              },
+              {
+                "name": "props",
+                "type": "PropertiesRef"
+              }
+            ],
+            "sourceName": "SDL_ShowFileDialogWithProperties"
+          },
+          {
+            "name": "ShowFileDialogWithProperties",
+            "kind": "function",
+            "type": "void",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "FileDialogType"
+              },
+              {
+                "name": "callback",
+                "type": "DialogFileCB"
+              },
+              {
+                "name": "props",
+                "type": "PropertiesRef"
+              }
+            ],
+            "doc": ""
+          }
+        ],
+        "prop::FileDialog": {
+          "kind": "ns",
+          "name": "prop::FileDialog",
+          "entries": {
+            "FILTERS_POINTER": {
+              "doc": "",
+              "name": "FILTERS_POINTER",
+              "kind": "var",
+              "value": "\"SDL.filedialog.filters\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_FILTERS_POINTER"
+            },
+            "NFILTERS_NUMBER": {
+              "doc": "",
+              "name": "NFILTERS_NUMBER",
+              "kind": "var",
+              "value": "\"SDL.filedialog.nfilters\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER"
+            },
+            "WINDOW_POINTER": {
+              "doc": "",
+              "name": "WINDOW_POINTER",
+              "kind": "var",
+              "value": "\"SDL.filedialog.window\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_WINDOW_POINTER"
+            },
+            "LOCATION_STRING": {
+              "doc": "",
+              "name": "LOCATION_STRING",
+              "kind": "var",
+              "value": "\"SDL.filedialog.location\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_LOCATION_STRING"
+            },
+            "MANY_BOOLEAN": {
+              "doc": "",
+              "name": "MANY_BOOLEAN",
+              "kind": "var",
+              "value": "\"SDL.filedialog.many\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_MANY_BOOLEAN"
+            },
+            "TITLE_STRING": {
+              "doc": "",
+              "name": "TITLE_STRING",
+              "kind": "var",
+              "value": "\"SDL.filedialog.title\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_TITLE_STRING"
+            },
+            "ACCEPT_STRING": {
+              "doc": "",
+              "name": "ACCEPT_STRING",
+              "kind": "var",
+              "value": "\"SDL.filedialog.accept\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_ACCEPT_STRING"
+            },
+            "CANCEL_STRING": {
+              "doc": "",
+              "name": "CANCEL_STRING",
+              "kind": "var",
+              "value": "\"SDL.filedialog.cancel\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_FILE_DIALOG_CANCEL_STRING"
+            }
+          },
+          "doc": ""
+        }
+      }
+    },
+    "SDL3pp_power.h": {
+      "name": "SDL3pp_power.h",
+      "doc": "@defgroup CategoryPower Category Power\n\nSDL power management routines.\n\nThere is a single function in this category: GetPowerInfo().\n\nThis function is useful for games on the go. This allows an app to know if\nit's running on a draining battery, which can be useful if the app wants to\nreduce processing, or perhaps framerate, to extend the duration of the\nbattery's charge. Perhaps the app just wants to show a battery meter when\nfullscreen, or alert the user when the power is getting extremely low, so\nthey can save their game.",
+      "entries": {
+        "PowerState": {
+          "doc": "The basic state for the system's power supply.\n\nThese are results returned by GetPowerInfo().\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "PowerState",
+          "kind": "alias",
+          "sourceName": "SDL_PowerState",
+          "type": "SDL_PowerState"
+        },
+        "POWERSTATE_ERROR": {
+          "doc": "error determining power status",
+          "name": "POWERSTATE_ERROR",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_ERROR",
+          "constexpr": true
+        },
+        "POWERSTATE_UNKNOWN": {
+          "doc": "cannot determine power status",
+          "name": "POWERSTATE_UNKNOWN",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_UNKNOWN",
+          "constexpr": true
+        },
+        "POWERSTATE_ON_BATTERY": {
+          "doc": "Not plugged in, running on the battery.",
+          "name": "POWERSTATE_ON_BATTERY",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_ON_BATTERY",
+          "constexpr": true
+        },
+        "POWERSTATE_NO_BATTERY": {
+          "doc": "Plugged in, no battery available.",
+          "name": "POWERSTATE_NO_BATTERY",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_NO_BATTERY",
+          "constexpr": true
+        },
+        "POWERSTATE_CHARGING": {
+          "doc": "Plugged in, charging battery.",
+          "name": "POWERSTATE_CHARGING",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_CHARGING",
+          "constexpr": true
+        },
+        "POWERSTATE_CHARGED": {
+          "doc": "Plugged in, battery charged.",
+          "name": "POWERSTATE_CHARGED",
+          "kind": "var",
+          "type": "PowerState",
+          "sourceName": "SDL_POWERSTATE_CHARGED",
+          "constexpr": true
+        },
+        "GetPowerInfo": {
+          "doc": "Get the current power supply details.\n\nYou should never take a battery status as absolute truth. Batteries\n(especially failing batteries) are delicate hardware, and the values\nreported here are best estimates based on what that hardware reports. It's\nnot uncommon for older batteries to lose stored power much faster than it\nreports, or completely drain when reporting it has 20 percent left, etc.\n\nBattery status can change at any time; if you are concerned with power\nstate, you should call this function frequently, and perhaps ignore changes\nuntil they seem to be stable for a few seconds.\n\nIt's possible a platform can only report battery percentage or time left\nbut not both.\n\nOn some platforms, retrieving power supply details might be expensive. If\nyou want to display continuous status you could call this function every\nminute or so.\n\n@param seconds a pointer filled in with the seconds of battery life left,\n               or nullptr to ignore. This will be filled in with -1 if we\n               can't determine a value or there is no battery.\n@param percent a pointer filled in with the percentage of battery life\n               left, between 0 and 100, or nullptr to ignore. This will be\n               filled in with -1 we can't determine a value or there is no\n               battery.\n@returns the current battery state or `POWERSTATE_ERROR` on failure;\n         call GetError() for more information.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetPowerInfo",
+          "kind": "function",
+          "type": "PowerState",
+          "parameters": [
+            {
+              "name": "seconds",
+              "type": "int *"
+            },
+            {
+              "name": "percent",
+              "type": "int *"
+            }
+          ],
+          "sourceName": "SDL_GetPowerInfo"
         }
       }
     },

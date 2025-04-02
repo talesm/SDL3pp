@@ -19,7 +19,7 @@
 // #include "SDL3pp_camera.h"
 // #include "SDL3pp_clipboard.h"
 #include "SDL3pp_cpuinfo.h"
-// #include "SDL3pp_dialog.h"
+#include "SDL3pp_dialog.h"
 #include "SDL3pp_endian.h"
 #include "SDL3pp_error.h"
 #include "SDL3pp_events.h"

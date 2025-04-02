@@ -5580,6 +5580,110 @@
         }
       }
     },
+    "SDL_dialog.h": {
+      "namespacesMap": {
+        "SDL_PROP_FILE_DIALOG_": "prop::FileDialog"
+      },
+      "includeAfter": {
+        "SDL_DialogFileCallback": {
+          "name": "DialogFileCB",
+          "kind": "alias",
+          "type": "std::function<void(const char *const *, int)>"
+        },
+        "SDL_ShowOpenFileDialog": {
+          "name": "ShowOpenFileDialog",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "type": "DialogFileCB",
+              "name": "callback"
+            },
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "filters",
+              "type": "std::span<const DialogFileFilter>"
+            },
+            {
+              "name": "default_location",
+              "type": "StringParam"
+            },
+            {
+              "name": "allow_many",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_ShowSaveFileDialog": {
+          "name": "ShowSaveFileDialog",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "DialogFileCB"
+            },
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "filters",
+              "type": "std::span<const DialogFileFilter>"
+            },
+            {
+              "name": "default_location",
+              "type": "StringParam"
+            }
+          ]
+        },
+        "SDL_ShowOpenFolderDialog": {
+          "name": "ShowOpenFolderDialog",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "callback",
+              "type": "DialogFileCB"
+            },
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "default_location",
+              "type": "StringParam"
+            },
+            {
+              "name": "allow_many",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_ShowFileDialogWithProperties": {
+          "name": "ShowFileDialogWithProperties",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "FileDialogType"
+            },
+            {
+              "name": "callback",
+              "type": "DialogFileCB"
+            },
+            {
+              "name": "props",
+              "type": "PropertiesRef"
+            }
+          ]
+        }
+      }
+    },
     "SDL_init.h": {
       "ignoreEntries": [
         "SDL_InitSubSystem"
