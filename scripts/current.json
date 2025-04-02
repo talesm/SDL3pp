@@ -2,7 +2,7 @@
   "files": {
     "SDL3pp_stdinc.h": {
       "name": "SDL3pp_stdinc.h",
-      "doc": "@defgroup CategoryStdinc Standard Library Functionality\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like SDL_memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\nSDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like SDL_strlcpy(), which functions as a safer form of strcpy().\n\n@{",
+      "doc": "@defgroup CategoryStdinc Standard Library Functionality\n\nSDL provides its own implementation of some of the most important C runtime\nfunctions.\n\nUsing these functions allows an app to have access to common C\nfunctionality without depending on a specific C runtime (or a C runtime at\nall). More importantly, the SDL implementations work identically across\nplatforms, so apps can avoid surprises like snprintf() behaving differently\nbetween Windows and Linux builds, or itoa() only existing on some\nplatforms.\n\nFor many of the most common functions, like SDL_memcpy, SDL might just call\nthrough to the usual C runtime behind the scenes, if it makes sense to do\nso (if it's faster and always available/reliable on a given platform),\nreducing library size and offering the most optimized option.\n\nSDL also offers other C-runtime-adjacent functionality in this header that\neither isn't, strictly speaking, part of any C runtime standards, like\nSDL_crc32() and SDL_reinterpret_cast, etc. It also offers a few better\noptions, like SDL_strlcpy(), which functions as a safer form of strcpy().",
       "entries": {
         "EnvironmentBase-forward": {
           "doc": "",
@@ -4081,7 +4081,7 @@
     },
     "SDL3pp_error.h": {
       "name": "SDL3pp_error.h",
-      "doc": "@defgroup CategoryError Error Handling\n\nSimple error message routines for SDL.\n\nMost apps will interface with these APIs in exactly one function: when\nalmost any SDL function call reports failure, you can get a human-readable\nstring of the problem from GetError().\n\nThese strings are maintained per-thread, and apps are welcome to set their\nown errors, which is popular when building libraries on top of SDL for\nother apps to consume. These strings are set by calling SDL_SetError().\n\nA common usage pattern is to have a function that returns true for success\nand false for failure, and do this when something fails:\n\n```c\nif (something_went_wrong) {\n   return SetError(\"The thing broke in this specific way: %d\", errcode);\n}\n```\n\nIt's also common to just return `false` in this case if the failing thing\nis known to call SetError(), so errors simply propagate through.\n\n@{",
+      "doc": "@defgroup CategoryError Error Handling\n\nSimple error message routines for SDL.\n\nMost apps will interface with these APIs in exactly one function: when\nalmost any SDL function call reports failure, you can get a human-readable\nstring of the problem from GetError().\n\nThese strings are maintained per-thread, and apps are welcome to set their\nown errors, which is popular when building libraries on top of SDL for\nother apps to consume. These strings are set by calling SDL_SetError().\n\nA common usage pattern is to have a function that returns true for success\nand false for failure, and do this when something fails:\n\n```c\nif (something_went_wrong) {\n   return SetError(\"The thing broke in this specific way: %d\", errcode);\n}\n```\n\nIt's also common to just return `false` in this case if the failing thing\nis known to call SetError(), so errors simply propagate through.",
       "entries": {
         "SetErrorUnformatted": {
           "doc": "Set the SDL error message for the current thread.\n\nCalling this function will replace any previous error message that was set.\n\nThis function always returns false, since SDL frequently uses false to\nsignify a failing result, leading to this idiom:\n\n```c\nif (error_code) {\n    return SetError(\"This operation has failed: {}\", error_code);\n}\n```\n\n@param message the error message\n@returns false.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa ClearError\n@sa GetError\n@sa SetError",
@@ -4184,7 +4184,7 @@
     },
     "SDL3pp_assert.h": {
       "name": "SDL3pp_assert.h",
-      "doc": "@defgroup CategoryAssert Assertions\n\nA helpful assertion macro!\n\nSDL assertions operate like your usual `assert` macro, but with some added\nfeatures:\n\n- It uses a trick with the `sizeof` operator, so disabled assertions\n  vaporize out of the compiled code, but variables only referenced in the\n  assertion won't trigger compiler warnings about being unused.\n- It is safe to use with a dangling-else: `if (x) SDL_assert(y); else\n  do_something();`\n- It works the same everywhere, instead of counting on various platforms'\n  compiler and C runtime to behave.\n- It provides multiple levels of assertion (SDL_assert, SDL_assert_release,\n  SDL_assert_paranoid) instead of a single all-or-nothing option.\n- It offers a variety of responses when an assertion fails (retry, trigger\n  the debugger, abort the program, ignore the failure once, ignore it for\n  the rest of the program's run).\n- It tries to show the user a dialog by default, if possible, but the app\n  can provide a callback to handle assertion failures however they like.\n- It lets failed assertions be retried. Perhaps you had a network failure\n  and just want to retry the test after plugging your network cable back\n  in? You can.\n- It lets the user ignore an assertion failure, if there's a harmless\n  problem that one can continue past.\n- It lets the user mark an assertion as ignored for the rest of the\n  program's run; if there's a harmless problem that keeps popping up.\n- It provides statistics and data on all failed assertions to the app.\n- It allows the default assertion handler to be controlled with environment\n  variables, in case an automated script needs to control it.\n- It can be used as an aid to Clang's static analysis; it will treat SDL\n  assertions as universally true (under the assumption that you are serious\n  about the asserted claims and that your debug builds will detect when\n  these claims were wrong). This can help the analyzer avoid false\n  positives.\n\nTo use it: compile a debug build and just sprinkle around tests to check\nyour code!\n\n@{",
+      "doc": "@defgroup CategoryAssert Assertions\n\nA helpful assertion macro!\n\nSDL assertions operate like your usual `assert` macro, but with some added\nfeatures:\n\n- It uses a trick with the `sizeof` operator, so disabled assertions\n  vaporize out of the compiled code, but variables only referenced in the\n  assertion won't trigger compiler warnings about being unused.\n- It is safe to use with a dangling-else: `if (x) SDL_assert(y); else\n  do_something();`\n- It works the same everywhere, instead of counting on various platforms'\n  compiler and C runtime to behave.\n- It provides multiple levels of assertion (SDL_assert, SDL_assert_release,\n  SDL_assert_paranoid) instead of a single all-or-nothing option.\n- It offers a variety of responses when an assertion fails (retry, trigger\n  the debugger, abort the program, ignore the failure once, ignore it for\n  the rest of the program's run).\n- It tries to show the user a dialog by default, if possible, but the app\n  can provide a callback to handle assertion failures however they like.\n- It lets failed assertions be retried. Perhaps you had a network failure\n  and just want to retry the test after plugging your network cable back\n  in? You can.\n- It lets the user ignore an assertion failure, if there's a harmless\n  problem that one can continue past.\n- It lets the user mark an assertion as ignored for the rest of the\n  program's run; if there's a harmless problem that keeps popping up.\n- It provides statistics and data on all failed assertions to the app.\n- It allows the default assertion handler to be controlled with environment\n  variables, in case an automated script needs to control it.\n- It can be used as an aid to Clang's static analysis; it will treat SDL\n  assertions as universally true (under the assumption that you are serious\n  about the asserted claims and that your debug builds will detect when\n  these claims were wrong). This can help the analyzer avoid false\n  positives.\n\nTo use it: compile a debug build and just sprinkle around tests to check\nyour code!",
       "entries": {
         "SDL_ASSERT_LEVEL": {
           "doc": "The level of assertion aggressiveness.\n\nThis value changes depending on compiler options and other preprocessor\ndefines.\n\nIt is currently one of the following values, but future SDL releases might\nadd more:\n\n- 0: All SDL assertion macros are disabled.\n- 1: Release settings: SDL_assert disabled, SDL_assert_release enabled.\n- 2: Debug settings: SDL_assert and SDL_assert_release enabled.\n- 3: Paranoid settings: All SDL assertion macros enabled, including\n  SDL_assert_paranoid.\n\n@since This macro is available since SDL 3.2.0.",
@@ -4500,7 +4500,7 @@
     },
     "SDL3pp_log.h": {
       "name": "SDL3pp_log.h",
-      "doc": "@defgroup CategoryLog Log Handling\n\nSimple log messages with priorities and categories. A message's\nLogPriority signifies how important the message is. A message's\nLogCategory signifies from what domain it belongs to. Every category\nhas a minimum priority specified: when a message belongs to that category,\nit will only be sent out if it has that minimum priority or higher.\n\nSDL's own logs are sent below the default priority threshold, so they are\nquiet by default.\n\nYou can change the log verbosity programmatically using\nLogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or\nwith the \"SDL_LOGGING\" environment variable. This variable is a comma\nseparated set of category=level tokens that define the default logging levels\nfor SDL applications.\n\nThe category can be a numeric category, one of \"app\", \"error\", \"assert\",\n\"system\", \"audio\", \"video\", \"render\", \"input\", \"test\", or `*` for any\nunspecified category.\n\nThe level can be a numeric level, one of \"trace\", \"verbose\", \"debug\",\n\"info\", \"warn\", \"error\", \"critical\", or \"quiet\" to disable that category.\n\nYou can omit the category if you want to set the logging level for all\ncategories.\n\nIf this hint isn't set, the default log levels are equivalent to:\n\n`app=info,assert=warn,test=verbose,*=error`\n\nHere's where the messages go on different platforms:\n\n- Windows: debug output stream\n- Android: log output\n- Others: standard error output (stderr)\n\nYou don't need to have a newline (`@n`) on the end of messages, the\nfunctions will do that for you. For consistent behavior cross-platform, you\nshouldn't have any newlines in messages, such as to log multiple lines in\none call; unusual platform-specific behavior can be observed in such usage.\nDo one log call per line instead, with no newlines in messages.\n\nEach log call is atomic, so you won't see log messages cut off one another\nwhen logging from multiple threads.\n\n@{",
+      "doc": "@defgroup CategoryLog Log Handling\n\nSimple log messages with priorities and categories. A message's\nLogPriority signifies how important the message is. A message's\nLogCategory signifies from what domain it belongs to. Every category\nhas a minimum priority specified: when a message belongs to that category,\nit will only be sent out if it has that minimum priority or higher.\n\nSDL's own logs are sent below the default priority threshold, so they are\nquiet by default.\n\nYou can change the log verbosity programmatically using\nLogCategory.SetLogPriority() or with SDL_SetHint(SDL_HINT_LOGGING, ...), or\nwith the \"SDL_LOGGING\" environment variable. This variable is a comma\nseparated set of category=level tokens that define the default logging levels\nfor SDL applications.\n\nThe category can be a numeric category, one of \"app\", \"error\", \"assert\",\n\"system\", \"audio\", \"video\", \"render\", \"input\", \"test\", or `*` for any\nunspecified category.\n\nThe level can be a numeric level, one of \"trace\", \"verbose\", \"debug\",\n\"info\", \"warn\", \"error\", \"critical\", or \"quiet\" to disable that category.\n\nYou can omit the category if you want to set the logging level for all\ncategories.\n\nIf this hint isn't set, the default log levels are equivalent to:\n\n`app=info,assert=warn,test=verbose,*=error`\n\nHere's where the messages go on different platforms:\n\n- Windows: debug output stream\n- Android: log output\n- Others: standard error output (stderr)\n\nYou don't need to have a newline (`@n`) on the end of messages, the\nfunctions will do that for you. For consistent behavior cross-platform, you\nshouldn't have any newlines in messages, such as to log multiple lines in\none call; unusual platform-specific behavior can be observed in such usage.\nDo one log call per line instead, with no newlines in messages.\n\nEach log call is atomic, so you won't see log messages cut off one another\nwhen logging from multiple threads.",
       "entries": {
         "LogPriority": {
           "doc": "The predefined log priorities\n\n@since This enum is available since SDL 3.2.0.",
@@ -5352,7 +5352,7 @@
     },
     "SDL3pp_misc.h": {
       "name": "SDL3pp_misc.h",
-      "doc": "@defgroup CategoryMisc Miscellaneous\n\nSDL API functions that don't fit elsewhere.\n\n@{",
+      "doc": "@defgroup CategoryMisc Miscellaneous\n\nSDL API functions that don't fit elsewhere.",
       "entries": {
         "OpenURL": {
           "doc": "Open a URL/URI in the browser or other appropriate external application.\n\nOpen a URL in a separate, system-provided application. How this works will\nvary wildly depending on the platform. This will likely launch what makes\nsense to handle a specific URL's protocol (a web browser for `http://`,\netc), but it might also be able to launch file managers for directories and\nother things.\n\nWhat happens when you open a URL varies wildly as well: your game window\nmay lose focus (and may or may not lose focus if your game was fullscreen\nor grabbing input at the time). On mobile devices, your app will likely\nmove to the background or your process might be paused. Any given platform\nmay or may not handle a given URL.\n\nIf this is unimplemented (or simply unavailable) for a platform, this will\nfail with an error. A successful result does not mean the URL loaded, just\nthat we launched _something_ to handle it (or at least believe we did).\n\nAll this to say: this function can be useful, but you should definitely\ntest it on every platform you target.\n\n@param url a valid URL/URI to open. Use `file:///full/path/to/file` for\n           local files, if supported.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
@@ -5378,7 +5378,7 @@
     },
     "SDL3pp_guid.h": {
       "name": "SDL3pp_guid.h",
-      "doc": "@defgroup CategoryGUID GUIDs\n\nA GUID is a 128-bit value that represents something that is uniquely\nidentifiable by this value: \"globally unique.\"\n\nSDL provides functions to convert a GUID to/from a string.\n@{",
+      "doc": "@defgroup CategoryGUID GUIDs\n\nA GUID is a 128-bit value that represents something that is uniquely\nidentifiable by this value: \"globally unique.\"\n\nSDL provides functions to convert a GUID to/from a string.",
       "entries": {
         "GUID": {
           "doc": "An SDL_GUID is a 128-bit identifier for an input device that identifies\nthat device across runs of SDL programs on the same platform.\n\nIf the device is detached and then re-attached to a different port, or if\nthe base system is rebooted, the device should still report the same GUID.\n\nGUIDs are as precise as possible but are not guaranteed to distinguish\nphysically distinct but equivalent devices. For example, two game\ncontrollers from the same vendor with the same product ID and revision may\nhave the same GUID.\n\nGUIDs may be platform-dependent (i.e., the same device may report different\nGUIDs on different operating systems).\n\n@since This struct is available since SDL 3.2.0.\n\n@cat wrap-extending-struct\n\n@sa wrap-extending-struct",
@@ -5493,7 +5493,7 @@
     },
     "SDL3pp_version.h": {
       "name": "SDL3pp_version.h",
-      "doc": "@defgroup CategoryVersion Querying SDL Version\n\nFunctionality to query the current SDL version, both as headers the app was\ncompiled against, and a library the app is linked to.\n\n@{",
+      "doc": "@defgroup CategoryVersion Querying SDL Version\n\nFunctionality to query the current SDL version, both as headers the app was\ncompiled against, and a library the app is linked to.",
       "entries": {
         "SDL_MAJOR_VERSION": {
           "doc": "The current major version of SDL headers.\n\nIf this were SDL version 3.2.1, this value would be 3.\n\n@since This macro is available since SDL 3.2.0.",
@@ -5624,7 +5624,7 @@
     },
     "SDL3pp_locale.h": {
       "name": "SDL3pp_locale.h",
-      "doc": "@defgroup CategoryLocale Locale Info\n\nSDL locale services.\n\nThis provides a way to get a list of preferred locales (language plus\ncountry) for the user. There is exactly one function:\nGetPreferredLocales(), which handles all the heavy lifting, and offers\ndocumentation on all the strange ways humans might have configured their\nlanguage settings.\n\n@{",
+      "doc": "@defgroup CategoryLocale Locale Info\n\nSDL locale services.\n\nThis provides a way to get a list of preferred locales (language plus\ncountry) for the user. There is exactly one function:\nGetPreferredLocales(), which handles all the heavy lifting, and offers\ndocumentation on all the strange ways humans might have configured their\nlanguage settings.",
       "entries": {
         "Locale": {
           "doc": "A struct to provide locale data.\n\nLocale data is split into a spoken language, like English, and an optional\ncountry, like Canada. The language will be in ISO-639 format (so English\nwould be \"en\"), and the country, if not NULL, will be an ISO-3166 country\ncode (so Canada would be \"CA\").\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetPreferredLocales()",
@@ -5654,7 +5654,7 @@
     },
     "SDL3pp_iostream.h": {
       "name": "SDL3pp_iostream.h",
-      "doc": "@defgroup CategoryIOStream I/O Streams\n\nSDL provides an abstract interface for reading and writing data streams. It\noffers implementations for files, memory, etc, and the app can provide\ntheir own implementations, too.\n\nSDL_IOStream is not related to the standard C++ iostream class, other than\nboth are abstract interfaces to read/write data.\n\n@{",
+      "doc": "@defgroup CategoryIOStream I/O Streams\n\nSDL provides an abstract interface for reading and writing data streams. It\noffers implementations for files, memory, etc, and the app can provide\ntheir own implementations, too.\n\nSDL_IOStream is not related to the standard C++ iostream class, other than\nboth are abstract interfaces to read/write data.",
       "entries": {
         "IOStreamBase-forward": {
           "doc": "",
@@ -6868,7 +6868,7 @@
     },
     "SDL3pp_pixels.h": {
       "name": "SDL3pp_pixels.h",
-      "doc": "@defgroup CategoryPixels Pixel Formats and Conversion Routines\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.\n\n@{",
+      "doc": "@defgroup CategoryPixels Pixel Formats and Conversion Routines\n\nSDL offers facilities for pixel management.\n\nLargely these facilities deal with pixel _format_: what does this set of\nbits represent?\n\nIf you mostly want to think of a pixel as some combination of red, green,\nblue, and maybe alpha intensities, this is all pretty straightforward, and\nin many cases, is enough information to build a perfectly fine game.\n\nHowever, the actual definition of a pixel is more complex than that:\n\nPixels are a representation of a color in a particular color space.\n\nThe first characteristic of a color space is the color type. SDL\nunderstands two different color types, RGB and YCbCr, or in SDL also\nreferred to as YUV.\n\nRGB colors consist of red, green, and blue channels of color that are added\ntogether to represent the colors we see on the screen.\n\nhttps://en.wikipedia.org/wiki/RGB_color_model\n\nYCbCr colors represent colors as a Y luma brightness component and red and\nblue chroma color offsets. This color representation takes advantage of the\nfact that the human eye is more sensitive to brightness than the color in\nan image. The Cb and Cr components are often compressed and have lower\nresolution than the luma component.\n\nhttps://en.wikipedia.org/wiki/YCbCr\n\nWhen the color information in YCbCr is compressed, the Y pixels are left at\nfull resolution and each Cr and Cb pixel represents an average of the color\ninformation in a block of Y pixels. The chroma location determines where in\nthat block of pixels the color information is coming from.\n\nThe color range defines how much of the pixel to use when converting a\npixel into a color on the display. When the full color range is used, the\nentire numeric range of the pixel bits is significant. When narrow color\nrange is used, for historical reasons, the pixel uses only a portion of the\nnumeric range to represent colors.\n\nThe color primaries and white point are a definition of the colors in the\ncolor space relative to the standard XYZ color space.\n\nhttps://en.wikipedia.org/wiki/CIE_1931_color_space\n\nThe transfer characteristic, or opto-electrical transfer function (OETF),\nis the way a color is converted from mathematically linear space into a\nnon-linear output signals.\n\nhttps://en.wikipedia.org/wiki/Rec._709#Transfer_characteristics\n\nThe matrix coefficients are used to convert between YCbCr and RGB colors.",
       "entries": {
         "Color-forward": {
           "doc": "",
@@ -10232,7 +10232,7 @@
     },
     "SDL3pp_blendmode.h": {
       "name": "SDL3pp_blendmode.h",
-      "doc": "@defgroup CategoryBlendmode Blend modes\n\nBlend modes decide how two colors will mix together. There are both\nstandard modes for basic needs and a means to create custom modes,\ndictating what sort of math to do on what color components.\n\n@{",
+      "doc": "@defgroup CategoryBlendmode Blend modes\n\nBlend modes decide how two colors will mix together. There are both\nstandard modes for basic needs and a means to create custom modes,\ndictating what sort of math to do on what color components.",
       "entries": {
         "BlendMode": {
           "doc": "@brief  A set of blend modes used in drawing operations.\n\nThese predefined blend modes are supported everywhere.\n\nAdditional values may be obtained from ComposeCustomBlendMode().",
@@ -10535,7 +10535,7 @@
     },
     "SDL3pp_hints.h": {
       "name": "SDL3pp_hints.h",
-      "doc": "@defgroup CategoryHints Configuration Variables\n\nThis file contains functions to set and get configuration hints, as well as\nlisting each of them alphabetically.\n\nThe convention for naming hints is SDL_HINT_X, where \"SDL_X\" is the\nenvironment variable that can be used to override the default.\n\nIn general these hints are just that - they may or may not be supported or\napplicable on any given platform, but they provide a way for an application\nor user to give the library a hint as to how they would like the library to\nwork.\n\n@{",
+      "doc": "@defgroup CategoryHints Configuration Variables\n\nThis file contains functions to set and get configuration hints, as well as\nlisting each of them alphabetically.\n\nThe convention for naming hints is SDL_HINT_X, where \"SDL_X\" is the\nenvironment variable that can be used to override the default.\n\nIn general these hints are just that - they may or may not be supported or\napplicable on any given platform, but they provide a way for an application\nor user to give the library a hint as to how they would like the library to\nwork.",
       "entries": {
         "SDL_HINT_ALLOW_ALT_TAB_WHILE_GRABBED": {
           "doc": "Specify the behavior of Alt+Tab while the keyboard is grabbed.\n\nBy default, SDL emulates Alt+Tab functionality while the keyboard is\ngrabbed and your window is full-screen. This prevents the user from getting\nstuck in your application if you've enabled keyboard grab.\n\nThe variable can be set to the following values:\n\n- \"0\": SDL will not handle Alt+Tab. Your application is responsible for\n  handling Alt+Tab while the keyboard is grabbed.\n- \"1\": SDL will minimize your window when Alt+Tab is pressed (default)\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
@@ -12883,7 +12883,7 @@
     },
     "SDL3pp_properties.h": {
       "name": "SDL3pp_properties.h",
-      "doc": "@defgroup CategoryProperties Object Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (SDL_PropertiesID). A property\ngroup can be created with the SDL_CreateProperties function and destroyed\nwith the SDL_DestroyProperties function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on\n`void*` pointer types.\n- PropertiesBase.SetString() and PropertiesBase.GetString() operate on string\ntypes.\n- PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed\n64-bit integer types.\n- PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating\npoint types.\n- PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on\nboolean types.\n\nProperties can be removed from a group by using PropertiesBase.Clear().\n@{",
+      "doc": "@defgroup CategoryProperties Object Properties\n\nA property is a variable that can be created and retrieved by name at\nruntime.\n\nAll properties are part of a property group (SDL_PropertiesID). A property\ngroup can be created with the SDL_CreateProperties function and destroyed\nwith the SDL_DestroyProperties function.\n\nProperties can be added to and retrieved from a property group through the\nfollowing functions:\n\n- PropertiesBase.SetPointer() and PropertiesBase.GetPointer() operate on\n`void*` pointer types.\n- PropertiesBase.SetString() and PropertiesBase.GetString() operate on string\ntypes.\n- PropertiesBase.SetNumber() and PropertiesBase.GetNumber() operate on signed\n64-bit integer types.\n- PropertiesBase.SetFloat() and PropertiesBase.GetFloat() operate on floating\npoint types.\n- PropertiesBase.SetBoolean() and PropertiesBase.GetBoolean() operate on\nboolean types.\n\nProperties can be removed from a group by using PropertiesBase.Clear().",
       "entries": {
         "PropertiesBase-forward": {
           "doc": "",
@@ -13640,7 +13640,7 @@
     },
     "SDL3pp_rect.h": {
       "name": "SDL3pp_rect.h",
-      "doc": "@defgroup CategoryRect Rectangle Functions\n\nSome helper functions for managing rectangles and 2D points, in both\ninteger and floating point versions.\n@{",
+      "doc": "@defgroup CategoryRect Rectangle Functions\n\nSome helper functions for managing rectangles and 2D points, in both\ninteger and floating point versions.",
       "entries": {
         "FPoint-forward": {
           "doc": "",
@@ -16087,7 +16087,7 @@
     },
     "SDL3pp_surface.h": {
       "name": "SDL3pp_surface.h",
-      "doc": "@defgroup CategorySurface Surface Creation and Simple Drawing\n\nSDL surfaces are buffers of pixels in system RAM. These are useful for\npassing around and manipulating images that are not stored in GPU memory.\n\nSDL_Surface makes serious efforts to manage images in various formats, and\nprovides a reasonable toolbox for transforming the data, including copying\nbetween surfaces, filling rectangles in the image data, etc.\n\nThere is also a simple .bmp loader, SDL::LoadBMP(). SDL itself does not\nprovide loaders for various other file formats, but there are several\nexcellent external libraries that do, including its own satellite library,\nSDL_image:\n\nhttps://github.com/libsdl-org/SDL_image\n@{",
+      "doc": "@defgroup CategorySurface Surface Creation and Simple Drawing\n\nSDL surfaces are buffers of pixels in system RAM. These are useful for\npassing around and manipulating images that are not stored in GPU memory.\n\nSDL_Surface makes serious efforts to manage images in various formats, and\nprovides a reasonable toolbox for transforming the data, including copying\nbetween surfaces, filling rectangles in the image data, etc.\n\nThere is also a simple .bmp loader, SDL::LoadBMP(). SDL itself does not\nprovide loaders for various other file formats, but there are several\nexcellent external libraries that do, including its own satellite library,\nSDL_image:\n\nhttps://github.com/libsdl-org/SDL_image",
       "entries": {
         "SurfaceLock-forward": {
           "doc": "",
@@ -18171,7 +18171,7 @@
     },
     "SDL3pp_video.h": {
       "name": "SDL3pp_video.h",
-      "doc": "@defgroup CategoryVideo Display and Window Management\n\nSDL's video subsystem is largely interested in abstracting window\nmanagement from the underlying operating system. You can create windows,\nmanage them in various ways, set them fullscreen, and get events when\ninteresting things happen with them, such as the mouse or keyboard\ninteracting with a window.\n\nThe video subsystem is also interested in abstracting away some\nplatform-specific differences in OpenGL: context creation, swapping\nbuffers, etc. This may be crucial to your app, but also you are not\nrequired to use OpenGL at all. In fact, SDL can provide rendering to those\nwindows as well, either with an easy-to-use\n[2D API](https://wiki.libsdl.org/SDL3/CategoryRender)\nor with a more-powerful\n[GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU)\n. Of course, it can simply get out of your way and give you the window\nhandles you need to use Vulkan, Direct3D, Metal, or whatever else you like\ndirectly, too.\n\nThe video subsystem covers a lot of functionality, out of necessity, so it\nis worth perusing the list of functions just to see what's available, but\nmost apps can get by with simply creating a window and listening for\nevents, so start with SDL_CreateWindow() and SDL_PollEvent().\n@{",
+      "doc": "@defgroup CategoryVideo Display and Window Management\n\nSDL's video subsystem is largely interested in abstracting window\nmanagement from the underlying operating system. You can create windows,\nmanage them in various ways, set them fullscreen, and get events when\ninteresting things happen with them, such as the mouse or keyboard\ninteracting with a window.\n\nThe video subsystem is also interested in abstracting away some\nplatform-specific differences in OpenGL: context creation, swapping\nbuffers, etc. This may be crucial to your app, but also you are not\nrequired to use OpenGL at all. In fact, SDL can provide rendering to those\nwindows as well, either with an easy-to-use\n[2D API](https://wiki.libsdl.org/SDL3/CategoryRender)\nor with a more-powerful\n[GPU API](https://wiki.libsdl.org/SDL3/CategoryGPU)\n. Of course, it can simply get out of your way and give you the window\nhandles you need to use Vulkan, Direct3D, Metal, or whatever else you like\ndirectly, too.\n\nThe video subsystem covers a lot of functionality, out of necessity, so it\nis worth perusing the list of functions just to see what's available, but\nmost apps can get by with simply creating a window and listening for\nevents, so start with SDL_CreateWindow() and SDL_PollEvent().",
       "entries": {
         "WindowBase-forward": {
           "doc": "",
@@ -21937,7 +21937,7 @@
     },
     "SDL3pp_render.h": {
       "name": "SDL3pp_render.h",
-      "doc": "@defgroup CategoryRender 2D Accelerated Rendering\n\nHeader file for SDL 2D rendering functions.\n\nThis API supports the following features:\n\n- single pixel points\n- single pixel lines\n- filled rectangles\n- texture images\n- 2D polygons\n\nThe primitives may be drawn in opaque, blended, or additive modes.\n\nThe texture images may be drawn in opaque, blended, or additive modes. They\ncan have an additional color tint or alpha modulation applied to them, and\nmay also be stretched with linear interpolation.\n\nThis API is designed to accelerate simple 2D operations. You may want more\nfunctionality such as polygons and particle effects and in that case you\nshould use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the\nmany good 3D engines.\n\nThese functions must be called from the main thread. See this bug for\ndetails: https://github.com/libsdl-org/SDL/issues/986\n\n@{",
+      "doc": "@defgroup CategoryRender 2D Accelerated Rendering\n\nHeader file for SDL 2D rendering functions.\n\nThis API supports the following features:\n\n- single pixel points\n- single pixel lines\n- filled rectangles\n- texture images\n- 2D polygons\n\nThe primitives may be drawn in opaque, blended, or additive modes.\n\nThe texture images may be drawn in opaque, blended, or additive modes. They\ncan have an additional color tint or alpha modulation applied to them, and\nmay also be stretched with linear interpolation.\n\nThis API is designed to accelerate simple 2D operations. You may want more\nfunctionality such as polygons and particle effects and in that case you\nshould use SDL's OpenGL/Direct3D support, the SDL3 GPU API, or one of the\nmany good 3D engines.\n\nThese functions must be called from the main thread. See this bug for\ndetails: https://github.com/libsdl-org/SDL/issues/986",
       "entries": {
         "TextureLock-forward": {
           "doc": "",
@@ -25146,7 +25146,7 @@
     },
     "SDL3pp_timer.h": {
       "name": "SDL3pp_timer.h",
-      "doc": "@defgroup CategoryTimer Timer Support\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](#CategoryTime).\n\nThis category covers measuring time elapsed (GetTicks(),\nGetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing\na callback function after a certain amount of time has elapsed\n(AddTimer(), etc).\n\n@{",
+      "doc": "@defgroup CategoryTimer Timer Support\n\nSDL provides time management functionality. It is useful for dealing with\n(usually) small durations of time.\n\nThis is not to be confused with _calendar time_ management, which is\nprovided by [CategoryTime](#CategoryTime).\n\nThis category covers measuring time elapsed (GetTicks(),\nGetPerformanceCounter()), putting a thread to sleep for a certain\namount of time (SDL_Delay(), SDL_DelayNS(), SDL_DelayPrecise()), and firing\na callback function after a certain amount of time has elapsed\n(AddTimer(), etc).",
       "entries": {
         "Time::FromPosix": {
           "doc": "Convert seconds to nanoseconds.\n\nThis only converts whole numbers, not fractional seconds.\n\n@param time the number of seconds to convert.\n@returns the converted Time.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -25363,7 +25363,7 @@
     },
     "SDL3pp_time.h": {
       "name": "SDL3pp_time.h",
-      "doc": "@defgroup CategoryTime Date and Time\n\nSDL realtime clock and date/time routines.\n\nThere are two data types that are used in this category: SDL_Time, which\nrepresents the nanoseconds since a specific moment (an \"epoch\"), and\nSDL_DateTime, which breaks time down into human-understandable components:\nyears, months, days, hours, etc.\n\nMuch of the functionality is involved in converting those two types to\nother useful forms.\n@{",
+      "doc": "@defgroup CategoryTime Date and Time\n\nSDL realtime clock and date/time routines.\n\nThere are two data types that are used in this category: SDL_Time, which\nrepresents the nanoseconds since a specific moment (an \"epoch\"), and\nSDL_DateTime, which breaks time down into human-understandable components:\nyears, months, days, hours, etc.\n\nMuch of the functionality is involved in converting those two types to\nother useful forms.",
       "entries": {
         "DateTime": {
           "doc": "A structure holding a calendar date and time broken down into its\ncomponents.\n\n@since This struct is available since SDL 3.2.0.",
@@ -25696,7 +25696,7 @@
     },
     "SDL3pp_events.h": {
       "name": "SDL3pp_events.h",
-      "doc": "@defgroup CategoryEvents Category Events\n\nEvent queue management.\n\nIt's extremely common--often required--that an app deal with SDL's event\nqueue. Almost all useful information about interactions with the real world\nflow through here: the user interacting with the computer and app, hardware\ncoming and going, the system changing in some way, etc.\n\nAn app generally takes a moment, perhaps at the start of a new frame, to\nexamine any events that have occurred since the last time and process or\nignore them. This is generally done by calling SDL_PollEvent() in a loop\nuntil it returns false (or, if using the main callbacks, events are\nprovided one at a time in calls to SDL_AppEvent() before the next call to\nSDL_AppIterate(); in this scenario, the app does not call PollEvent()\nat all).\n\nThere is other forms of control, too: PeepEvents() has more\nfunctionality at the cost of more complexity, and WaitEvent() can block\nthe process until something interesting happens, which might be beneficial\nfor certain types of programs on low-power hardware. One may also call\nAddEventWatch() to set a callback when new events arrive.\n\nThe app is free to generate their own events, too: PushEvent() allows the\napp to put events onto the queue for later retrieval; RegisterEvents()\ncan guarantee that these events have a type that isn't in use by other\nparts of the system.\n\n@{",
+      "doc": "@defgroup CategoryEvents Category Events\n\nEvent queue management.\n\nIt's extremely common--often required--that an app deal with SDL's event\nqueue. Almost all useful information about interactions with the real world\nflow through here: the user interacting with the computer and app, hardware\ncoming and going, the system changing in some way, etc.\n\nAn app generally takes a moment, perhaps at the start of a new frame, to\nexamine any events that have occurred since the last time and process or\nignore them. This is generally done by calling SDL_PollEvent() in a loop\nuntil it returns false (or, if using the main callbacks, events are\nprovided one at a time in calls to SDL_AppEvent() before the next call to\nSDL_AppIterate(); in this scenario, the app does not call PollEvent()\nat all).\n\nThere is other forms of control, too: PeepEvents() has more\nfunctionality at the cost of more complexity, and WaitEvent() can block\nthe process until something interesting happens, which might be beneficial\nfor certain types of programs on low-power hardware. One may also call\nAddEventWatch() to set a callback when new events arrive.\n\nThe app is free to generate their own events, too: PushEvent() allows the\napp to put events onto the queue for later retrieval; RegisterEvents()\ncan guarantee that these events have a type that isn't in use by other\nparts of the system.",
       "entries": {
         "EventType": {
           "doc": "The types of events that can be delivered.\n\n@since This enum is available since SDL 3.2.0.\n@sa EventTypes",
@@ -27885,7 +27885,7 @@
     },
     "SDL3pp_platform.h": {
       "name": "SDL3pp_platform.h",
-      "doc": "@defgroup CategoryPlatform Platform Detection\n\nSDL provides a means to identify the app's platform, both at compile time\nand runtime.\n\nFor sanity, we don't wrap the macros, so use the regular SDL_* macros as\ndocumented.\n\n@{",
+      "doc": "@defgroup CategoryPlatform Platform Detection\n\nSDL provides a means to identify the app's platform, both at compile time\nand runtime.\n\nFor sanity, we don't wrap the macros, so use the regular SDL_* macros as\ndocumented.",
       "entries": {
         "GetPlatform": {
           "doc": "Get the name of the platform.\n\nHere are the names returned for some (but not all) supported platforms:\n\n- \"Windows\"\n- \"macOS\"\n- \"Linux\"\n- \"iOS\"\n- \"Android\"\n\n@returns the name of the platform. If the correct platform name is not\n         available, returns a string beginning with the text \"Unknown\".\n\n@since This function is available since SDL 3.2.0.",
@@ -28194,7 +28194,7 @@
     },
     "SDL3pp_cpuinfo.h": {
       "name": "SDL3pp_cpuinfo.h",
-      "doc": "@defgroup CategoryCPUInfo CPU Feature Detection\n\nCPU feature detection for SDL.\n\nThese functions are largely concerned with reporting if the system has\naccess to various SIMD instruction sets, but also has other important info\nto share, such as system RAM size and number of logical CPU cores.\n\nCPU instruction set checks, like HasSSE() and HasNEON(), are\navailable on all platforms, even if they don't make sense (an ARM processor\nwill never have SSE and an x86 processor will never have NEON, for example,\nbut these functions still exist and will simply return false in these\ncases).\n\n@{",
+      "doc": "@defgroup CategoryCPUInfo CPU Feature Detection\n\nCPU feature detection for SDL.\n\nThese functions are largely concerned with reporting if the system has\naccess to various SIMD instruction sets, but also has other important info\nto share, such as system RAM size and number of logical CPU cores.\n\nCPU instruction set checks, like HasSSE() and HasNEON(), are\navailable on all platforms, even if they don't make sense (an ARM processor\nwill never have SSE and an x86 processor will never have NEON, for example,\nbut these functions still exist and will simply return false in these\ncases).",
       "entries": {
         "CACHELINE_SIZE": {
           "doc": "A guess for the cacheline size used for padding.\n\nMost x86 processors have a 64 byte cache line. The 64-bit PowerPC\nprocessors have a 128 byte cache line. We use the larger value to be\ngenerally safe.\n\n@since This constant is available since SDL 3.2.0.",
@@ -28395,7 +28395,7 @@
     },
     "SDL3pp_intrin.h": {
       "name": "SDL3pp_intrin.h",
-      "doc": "@defgroup CategoryIntrinsics Compiler Intrinsics Detection\n\nSDL does some preprocessor gymnastics to determine if any CPU-specific\ncompiler intrinsics are available, as this is not necessarily an easy thing\nto calculate, and sometimes depends on quirks of a system, versions of\nbuild tools, and other external forces.\n\nApps including SDL's headers will be able to check consistent preprocessor\ndefinitions to decide if it's safe to use compiler intrinsics for a\nspecific CPU architecture. This check only tells you that the compiler is\ncapable of using those intrinsics; at runtime, you should still check if\nthey are available on the current system with the\n[CPU info functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo), such as\nHasSSE() or HasNEON(). Otherwise, the process might crash for using an\nunsupported CPU instruction.\n\nSDL only sets preprocessor defines for CPU intrinsics if they are\nsupported, so apps should check with `#ifdef` and not `#if`.\n\nSDL will also include the appropriate instruction-set-specific support\nheaders, so if SDL decides to define SDL_SSE2_INTRINSICS, it will also\n`#include <emmintrin.h>` as well.\n\n@{",
+      "doc": "@defgroup CategoryIntrinsics Compiler Intrinsics Detection\n\nSDL does some preprocessor gymnastics to determine if any CPU-specific\ncompiler intrinsics are available, as this is not necessarily an easy thing\nto calculate, and sometimes depends on quirks of a system, versions of\nbuild tools, and other external forces.\n\nApps including SDL's headers will be able to check consistent preprocessor\ndefinitions to decide if it's safe to use compiler intrinsics for a\nspecific CPU architecture. This check only tells you that the compiler is\ncapable of using those intrinsics; at runtime, you should still check if\nthey are available on the current system with the\n[CPU info functions](https://wiki.libsdl.org/SDL3/CategoryCPUInfo), such as\nHasSSE() or HasNEON(). Otherwise, the process might crash for using an\nunsupported CPU instruction.\n\nSDL only sets preprocessor defines for CPU intrinsics if they are\nsupported, so apps should check with `#ifdef` and not `#if`.\n\nSDL will also include the appropriate instruction-set-specific support\nheaders, so if SDL decides to define SDL_SSE2_INTRINSICS, it will also\n`#include <emmintrin.h>` as well.",
       "entries": {
         "SDL_LSX_INTRINSICS": {
           "doc": "Defined if (and only if) the compiler supports Loongarch LSX intrinsics.\n\nIf this macro is defined, SDL will have already included `<lsxintrin.h>`\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_LASX_INTRINSICS",
@@ -28543,7 +28543,7 @@
     },
     "SDL3pp_endian.h": {
       "name": "SDL3pp_endian.h",
-      "doc": "@defgroup CategoryEndian Byte Order and Byte Swapping\n\nFunctions converting endian-specific values to different byte orders.\n\nThese functions either unconditionally swap byte order (Swap16,\nSwap32, Swap64, SwapFloat), or they swap to/from the system's\nnative byte order (Swap16LE, Swap16BE, Swap32LE, Swap32BE,\nSwap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the\nlatter case, the functionality is provided by macros that become no-ops if\na swap isn't necessary: on an x86 (littleendian) processor, Swap32LE\ndoes nothing, but Swap32BE() reverses the bytes of the data. On a PowerPC\nprocessor (bigendian), the macros behavior is reversed.\n\nThe swap routines are inline functions, and attempt to use compiler\nintrinsics, inline assembly, and other magic to make byteswapping\nefficient.\n\n@{",
+      "doc": "@defgroup CategoryEndian Byte Order and Byte Swapping\n\nFunctions converting endian-specific values to different byte orders.\n\nThese functions either unconditionally swap byte order (Swap16,\nSwap32, Swap64, SwapFloat), or they swap to/from the system's\nnative byte order (Swap16LE, Swap16BE, Swap32LE, Swap32BE,\nSwap32LE, Swap32BE, SwapFloatLE, SwapFloatBE). In the\nlatter case, the functionality is provided by macros that become no-ops if\na swap isn't necessary: on an x86 (littleendian) processor, Swap32LE\ndoes nothing, but Swap32BE() reverses the bytes of the data. On a PowerPC\nprocessor (bigendian), the macros behavior is reversed.\n\nThe swap routines are inline functions, and attempt to use compiler\nintrinsics, inline assembly, and other magic to make byteswapping\nefficient.",
       "entries": {
         "SDL_LIL_ENDIAN": {
           "doc": "A value to represent littleendian byteorder.\n\nThis is used with the preprocessor macro SDL_BYTEORDER, to determine a\nplatform's byte ordering:\n\n```c\n#if SDL_BYTEORDER == SDL_LIL_ENDIAN\nSDL_Log(\"This system is littleendian.\");\n#endif\n```\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_BYTEORDER\n@sa SDL_BIG_ENDIAN",
@@ -28782,7 +28782,7 @@
     },
     "SDL3pp_bits.h": {
       "name": "SDL3pp_bits.h",
-      "doc": "@defgroup CategoryBits Bit Manipulation\n\nFunctions for fiddling with bits and bitmasks.\n\n@{",
+      "doc": "@defgroup CategoryBits Bit Manipulation\n\nFunctions for fiddling with bits and bitmasks.",
       "entries": {
         "MostSignificantBitIndex32": {
           "doc": "Get the index of the most significant (set) bit in a 32-bit number.\n\nResult is undefined when called with 0. This operation can also be stated\nas \"count leading zeroes\" and \"log base 2\".\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param x the 32-bit value to examine.\n@returns the index of the most significant bit, or -1 if the value is 0.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -28825,7 +28825,7 @@
     },
     "SDL3pp_power.h": {
       "name": "SDL3pp_power.h",
-      "doc": "@defgroup CategoryPower Power Management Status\n\nSDL power management routines.\n\nThere is a single function in this category: GetPowerInfo().\n\nThis function is useful for games on the go. This allows an app to know if\nit's running on a draining battery, which can be useful if the app wants to\nreduce processing, or perhaps framerate, to extend the duration of the\nbattery's charge. Perhaps the app just wants to show a battery meter when\nfullscreen, or alert the user when the power is getting extremely low, so\nthey can save their game.\n\n@{",
+      "doc": "@defgroup CategoryPower Power Management Status\n\nSDL power management routines.\n\nThere is a single function in this category: GetPowerInfo().\n\nThis function is useful for games on the go. This allows an app to know if\nit's running on a draining battery, which can be useful if the app wants to\nreduce processing, or perhaps framerate, to extend the duration of the\nbattery's charge. Perhaps the app just wants to show a battery meter when\nfullscreen, or alert the user when the power is getting extremely low, so\nthey can save their game.",
       "entries": {
         "PowerState": {
           "doc": "The basic state for the system's power supply.\n\nThese are results returned by GetPowerInfo().\n\n@since This enum is available since SDL 3.2.0.",
@@ -28920,6 +28920,130 @@
       "docEnd": 27,
       "entriesBegin": 27,
       "entriesEnd": 110,
+      "namespace": "SDL"
+    },
+    "SDL3pp_loadso.h": {
+      "name": "SDL3pp_loadso.h",
+      "doc": "@defgroup CategorySharedObject Shared Object/DLL Management\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SDL_LoadObject() on it. Once\nloaded, you can use SDL_LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SDL_UnloadObject()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SDL_LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
+      "entries": {
+        "SharedObjectBase-forward": {
+          "doc": "",
+          "name": "SharedObjectBase",
+          "kind": "forward",
+          "template": [
+            {
+              "name": "T",
+              "type": "ObjectBox<SDL_SharedObject *>"
+            }
+          ],
+          "begin": 44,
+          "decl": 45,
+          "end": 48
+        },
+        "SharedObjectRef": {
+          "doc": "Handle to a non owned sharedObject\n\n@cat resource\n\n@sa SharedObjectBase\n@sa SharedObject",
+          "name": "SharedObjectRef",
+          "kind": "alias",
+          "type": "SharedObjectBase<ObjectRef<SDL_SharedObject>>",
+          "begin": 48,
+          "decl": 56,
+          "end": 58
+        },
+        "SharedObject": {
+          "doc": "Handle to an owned sharedObject\n\n@cat resource\n\n@sa SharedObjectBase\n@sa SharedObjectRef",
+          "name": "SharedObject",
+          "kind": "alias",
+          "type": "SharedObjectBase<ObjectUnique<SDL_SharedObject>>",
+          "begin": 58,
+          "decl": 66,
+          "end": 68
+        },
+        "SharedObjectBase": {
+          "doc": "An opaque datatype that represents a loaded shared object.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SharedObjectBase()\n@sa LoadFunction()",
+          "name": "SharedObjectBase",
+          "kind": "struct",
+          "type": "T",
+          "entries": {
+            "T::T": {
+              "doc": "",
+              "name": "T::T",
+              "kind": "alias",
+              "begin": 79,
+              "decl": 79,
+              "end": 81
+            },
+            "SharedObjectBase": {
+              "doc": "Dynamically load a shared object.\n\n@param sofile a system-dependent name of the object file.\n@post an opaque pointer to the object handle or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa LoadFunction()\n@sa Unload()",
+              "name": "SharedObjectBase",
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "sofile",
+                  "type": "StringParam"
+                }
+              ],
+              "begin": 81,
+              "decl": 95,
+              "end": 100
+            },
+            "LoadFunction": {
+              "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SDL_UnloadObject().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, NULL is returned.\n\n@param name the name of the function to look up.\n@returns a pointer to the function or NULL on failure; call SDL_GetError()\n         for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "LoadFunction",
+              "kind": "function",
+              "type": "FunctionPointer",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                }
+              ],
+              "begin": 100,
+              "decl": 123,
+              "end": 128
+            },
+            "Unload": {
+              "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSDL_LoadFunction() will no longer be valid.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_LoadObject",
+              "name": "Unload",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "begin": 128,
+              "decl": 140,
+              "end": 141
+            }
+          },
+          "template": [
+            {
+              "name": "T",
+              "type": "ObjectBox<SDL_SharedObject *>"
+            }
+          ],
+          "begin": 68,
+          "decl": 76,
+          "end": 143
+        },
+        "ObjectRef<SDL_SharedObject>::doFree": {
+          "doc": "Callback for sharedObject resource cleanup\n\n@private",
+          "name": "ObjectRef<SDL_SharedObject>::doFree",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "resource",
+              "type": "SDL_SharedObject *"
+            }
+          ],
+          "template": [],
+          "begin": 143,
+          "decl": 148,
+          "end": 154
+        }
+      },
+      "docBegin": 9,
+      "docEnd": 44,
+      "entriesBegin": 44,
+      "entriesEnd": 154,
       "namespace": "SDL"
     },
     "SDL3pp_init.h": {
@@ -29743,7 +29867,7 @@
     },
     "SDL3pp_main.h": {
       "name": "SDL3pp_main.h",
-      "doc": "@defgroup CategoryMain Application entry points\n\nRedefine main() if necessary so that it is called by SDL.\n\nIn order to make this consistent on all platforms, the application's main()\nshould look like this:\n\n```c\n#include <SDL3pp/SDL3pp.h>\n#include <SDL3pp/SDL3pp_main.h>\n\nint main(int argc, char *argv[])\n{\n}\n```\n\nSDL will take care of platform specific details on how it gets called.\n\nThis is also where an app can be configured to use the main callbacks, via\nthe SDL_MAIN_USE_CALLBACKS macro.\n\nSDL_main.h is a \"single-header library,\" which is to say that including\nthis header inserts code into your program, and you should only include it\nonce in most cases. SDL.h does not include this header automatically.\n\nFor more information, see:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions\n\n@{",
+      "doc": "@defgroup CategoryMain Application entry points\n\nRedefine main() if necessary so that it is called by SDL.\n\nIn order to make this consistent on all platforms, the application's main()\nshould look like this:\n\n```c\n#include <SDL3pp/SDL3pp.h>\n#include <SDL3pp/SDL3pp_main.h>\n\nint main(int argc, char *argv[])\n{\n}\n```\n\nSDL will take care of platform specific details on how it gets called.\n\nThis is also where an app can be configured to use the main callbacks, via\nthe SDL_MAIN_USE_CALLBACKS macro.\n\nSDL_main.h is a \"single-header library,\" which is to say that including\nthis header inserts code into your program, and you should only include it\nonce in most cases. SDL.h does not include this header automatically.\n\nFor more information, see:\n\nhttps://wiki.libsdl.org/SDL3/README/main-functions",
       "entries": {
         "SDL_MAIN_HANDLED": {
           "doc": "",
@@ -30057,7 +30181,7 @@
     },
     "SDL3pp_image.h": {
       "name": "SDL3pp_image.h",
-      "doc": "@defgroup CategorySDLImage Load images from several formats\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces\n@{",
+      "doc": "@defgroup CategorySDLImage Load images from several formats\n\nHeader file for SDL_image library\n\nA simple library to load images of various formats as SDL surfaces",
       "entries": {
         "SDL3PP_ENABLE_IMAGE": {
           "doc": "",
@@ -31216,7 +31340,7 @@
     },
     "SDL3pp_ttf.h": {
       "name": "SDL3pp_ttf.h",
-      "doc": "@defgroup CategorySDLTTF True type font support\n\nHeader file for SDL_ttf library\n\nThis library is a wrapper around the excellent FreeType 2.0 library,\navailable at: https://www.freetype.org/\n\n@{",
+      "doc": "@defgroup CategorySDLTTF True type font support\n\nHeader file for SDL_ttf library\n\nThis library is a wrapper around the excellent FreeType 2.0 library,\navailable at: https://www.freetype.org/",
       "entries": {
         "SDL3PP_ENABLE_TTF": {
           "doc": "",

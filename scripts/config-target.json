@@ -26,6 +26,7 @@
     "SDL3pp_endian.h",
     "SDL3pp_bits.h",
     "SDL3pp_power.h",
+    "SDL3pp_loadso.h",
     "SDL3pp_init.h",
     "SDL3pp_main.h",
     "SDL3pp_image.h",

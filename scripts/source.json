@@ -20572,6 +20572,58 @@
         }
       }
     },
+    "SDL_loadso.h": {
+      "name": "SDL_loadso.h",
+      "doc": "# CategorySharedObject\n\nSystem-dependent library loading routines.\n\nShared objects are code that is programmatically loadable at runtime.\nWindows calls these \"DLLs\", Linux calls them \"shared libraries\", etc.\n\nTo use them, build such a library, then call SDL_LoadObject() on it. Once\nloaded, you can use SDL_LoadFunction() on that object to find the address\nof its exported symbols. When done with the object, call SDL_UnloadObject()\nto dispose of it.\n\nSome things to keep in mind:\n\n- These functions only work on C function names. Other languages may have\n  name mangling and intrinsic language support that varies from compiler to\n  compiler.\n- Make sure you declare your function pointers with the same calling\n  convention as the actual library function. Your code will crash\n  mysteriously if you do not do this.\n- Avoid namespace collisions. If you load a symbol from the library, it is\n  not defined whether or not it goes into the global symbol namespace for\n  the application. If it does and it conflicts with symbols in your code or\n  other shared libraries, you will not get the results you expect. :)\n- Once a library is unloaded, all pointers into it obtained through\n  SDL_LoadFunction() become invalid, even if the library is later reloaded.\n  Don't unload a library if you plan to use these pointers in the future.\n  Notably: beware of giving one of these pointers to atexit(), since it may\n  call that pointer after the library unloads.",
+      "entries": {
+        "SDL_SharedObject": {
+          "doc": "An opaque datatype that represents a loaded shared object.\n\n\\since This datatype is available since SDL 3.2.0.\n\n\\sa SDL_LoadObject\n\\sa SDL_LoadFunction\n\\sa SDL_UnloadObject",
+          "name": "SDL_SharedObject",
+          "kind": "alias",
+          "type": "struct SDL_SharedObject"
+        },
+        "SDL_LoadObject": {
+          "doc": "Dynamically load a shared object.\n\n\\param sofile a system-dependent name of the object file.\n\\returns an opaque pointer to the object handle or NULL on failure; call\n         SDL_GetError() for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LoadFunction\n\\sa SDL_UnloadObject",
+          "name": "SDL_LoadObject",
+          "kind": "function",
+          "type": "SDL_SharedObject *",
+          "parameters": [
+            {
+              "name": "sofile",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_LoadFunction": {
+          "doc": "Look up the address of the named function in a shared object.\n\nThis function pointer is no longer valid after calling SDL_UnloadObject().\n\nThis function can only look up C function names. Other languages may have\nname mangling and intrinsic language support that varies from compiler to\ncompiler.\n\nMake sure you declare your function pointers with the same calling\nconvention as the actual library function. Your code will crash\nmysteriously if you do not do this.\n\nIf the requested function doesn't exist, NULL is returned.\n\n\\param handle a valid shared object handle returned by SDL_LoadObject().\n\\param name the name of the function to look up.\n\\returns a pointer to the function or NULL on failure; call SDL_GetError()\n         for more information.\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LoadObject",
+          "name": "SDL_LoadFunction",
+          "kind": "function",
+          "type": "SDL_FunctionPointer",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "SDL_SharedObject *"
+            },
+            {
+              "name": "name",
+              "type": "const char *"
+            }
+          ]
+        },
+        "SDL_UnloadObject": {
+          "doc": "Unload a shared object from memory.\n\nNote that any pointers from this object looked up through\nSDL_LoadFunction() will no longer be valid.\n\n\\param handle a valid shared object handle returned by SDL_LoadObject().\n\n\\threadsafety It is safe to call this function from any thread.\n\n\\since This function is available since SDL 3.2.0.\n\n\\sa SDL_LoadObject",
+          "name": "SDL_UnloadObject",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "handle",
+              "type": "SDL_SharedObject *"
+            }
+          ]
+        }
+      }
+    },
     "SDL_init.h": {
       "name": "SDL_init.h",
       "doc": "# CategoryInit\n\nAll SDL programs need to initialize the library before starting to work\nwith it.\n\nAlmost everything can simply call SDL_Init() near startup, with a handful\nof flags to specify subsystems to touch. These are here to make sure SDL\ndoes not even attempt to touch low-level pieces of the operating system\nthat you don't intend to use. For example, you might be using SDL for video\nand input but chose an external library for audio, and in this case you\nwould just need to leave off the `SDL_INIT_AUDIO` flag to make sure that\nexternal library has complete control.\n\nMost apps, when terminating, should call SDL_Quit(). This will clean up\n(nearly) everything that SDL might have allocated, and crucially, it'll\nmake sure that the display's resolution is back to what the user expects if\nyou had previously changed it for your game.\n\nSDL3 apps are strongly encouraged to call SDL_SetAppMetadata() at startup\nto fill in details about the program. This is completely optional, but it\nhelps in small ways (we can provide an About dialog box for the macOS menu,\nwe can name the app in the system's audio mixer, etc). Those that want to\nprovide a _lot_ of information should look at the more-detailed\nSDL_SetAppMetadataProperty().",

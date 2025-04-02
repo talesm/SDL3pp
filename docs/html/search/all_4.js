@@ -27,10 +27,11 @@ var searchData=
   ['displaymode_24',['DisplayMode',['../group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a',1,'SDL']]],
   ['displaymodedata_25',['DisplayModeData',['../group__CategoryVideo.html#ga767d0eff87f8af9d61ac0624d582c78c',1,'SDL']]],
   ['displayorientation_26',['DisplayOrientation',['../group__CategoryVideo.html#ga0576b193a1d4adcb648fc1242fbc5cb8',1,'SDL']]],
-  ['documentation_27',['Documentation',['../index.html#documentation',1,'']]],
-  ['drawing_28',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
-  ['drawrenderer_29',['DrawRenderer',['../structSDL_1_1TextBase.html#ad9a3c5a14cb2c54e55ac923a41c58837',1,'SDL::TextBase']]],
-  ['drawsurface_30',['DrawSurface',['../structSDL_1_1TextBase.html#a0dd2b594c714d397f7255e74919acbdb',1,'SDL::TextBase']]],
-  ['dropevent_31',['DropEvent',['../group__CategoryEvents.html#ga7307351e327d3797db8f1950f6dcc334',1,'SDL']]],
-  ['duplicate_32',['Duplicate',['../structSDL_1_1SurfaceBase.html#a2b8d60357059a34ea1724fcacdc23c42',1,'SDL::SurfaceBase']]]
+  ['dll_20management_27',['Shared Object/DLL Management',['../group__CategorySharedObject.html',1,'']]],
+  ['documentation_28',['Documentation',['../index.html#documentation',1,'']]],
+  ['drawing_29',['Surface Creation and Simple Drawing',['../group__CategorySurface.html',1,'']]],
+  ['drawrenderer_30',['DrawRenderer',['../structSDL_1_1TextBase.html#ad9a3c5a14cb2c54e55ac923a41c58837',1,'SDL::TextBase']]],
+  ['drawsurface_31',['DrawSurface',['../structSDL_1_1TextBase.html#a0dd2b594c714d397f7255e74919acbdb',1,'SDL::TextBase']]],
+  ['dropevent_32',['DropEvent',['../group__CategoryEvents.html#ga7307351e327d3797db8f1950f6dcc334',1,'SDL']]],
+  ['duplicate_33',['Duplicate',['../structSDL_1_1SurfaceBase.html#a2b8d60357059a34ea1724fcacdc23c42',1,'SDL::SurfaceBase']]]
 ];

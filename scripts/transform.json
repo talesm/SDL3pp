@@ -5566,6 +5566,20 @@
         }
       }
     },
+    "SDL_loadso.h": {
+      "resources": {
+        "SDL_SharedObject": {
+          "free": "SDL_UnloadObject",
+          "entries": {
+            "SDL_LoadObject": "ctor",
+            "SDL_LoadFunction": "function",
+            "SDL_UnloadObject": {
+              "name": "Unload"
+            }
+          }
+        }
+      }
+    },
     "SDL_init.h": {
       "ignoreEntries": [
         "SDL_InitSubSystem"

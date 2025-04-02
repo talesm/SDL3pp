@@ -72,7 +72,7 @@ function parseContent(name, content, config) {
   if (config.storeLineNumbers) {
     apiFile.docBegin = parser.docBegin || 1;
     apiFile.docEnd = parser.docEnd || apiFile.docBegin;
-    apiFile.entriesBegin = apiFile.docEnd || parser.entriesBegin || entryArray[0]?.begin;
+    apiFile.entriesBegin = parser.entriesBegin || entryArray[0]?.begin;
     apiFile.entriesEnd = parser.entriesEnd || entryArray[entryArray.length - 1]?.end || apiFile.entriesBegin;
     apiFile.namespace = parser.namespace || undefined;
   }
@@ -331,7 +331,10 @@ class ContentParser {
     if (!this.docBegin && begin) {
       this.docBegin = begin;
       this.docEnd = end;
+      if (doc.endsWith("@{")) doc = doc.slice(0, doc.length - 2).trimEnd();
       this.doc = doc;
+
+      if (this.docEnd > this.entriesBegin) this.entriesBegin = this.docEnd;
     }
   }
 
