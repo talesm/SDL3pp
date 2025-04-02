@@ -106,11 +106,11 @@ Collaboration diagram for SDL::TextEngineBase&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aba99d3d081d3b16aac0d6d101782c9aa" id="r_aba99d3d081d3b16aac0d6d101782c9aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineBase.html#aba99d3d081d3b16aac0d6d101782c9aa">SetGPUWinding</a> (<a class="el" href="group__CategorySDLTTF.html#gad0a4a2ecc2605b00899e6442ff11e410">GPUTextEngineWinding</a> winding)</td></tr>
-<tr class="memdesc:aba99d3d081d3b16aac0d6d101782c9aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextBase.html#add6e82874d307b670b766858f935a37d" title="Get the geometry data needed for drawing the text.">TextBase::GetGPUDrawData()</a> for a particular GPU text engine.  <br /></td></tr>
+<tr class="memitem:aba99d3d081d3b16aac0d6d101782c9aa" id="r_aba99d3d081d3b16aac0d6d101782c9aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineBase.html#aba99d3d081d3b16aac0d6d101782c9aa">SetGPUWinding</a> (<a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> winding)</td></tr>
+<tr class="memdesc:aba99d3d081d3b16aac0d6d101782c9aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextBase.html#add6e82874d307b670b766858f935a37d" title="Get the geometry data needed for drawing the text.">TextBase.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
 <tr class="separator:aba99d3d081d3b16aac0d6d101782c9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af63c9936d848588fc49df03de0b78da3" id="r_af63c9936d848588fc49df03de0b78da3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#gad0a4a2ecc2605b00899e6442ff11e410">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineBase.html#af63c9936d848588fc49df03de0b78da3">GetGPUWinding</a> () const</td></tr>
-<tr class="memdesc:af63c9936d848588fc49df03de0b78da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the winding order of the vertices returned by GetGPUDrawData for a particular GPU text engine.  <br /></td></tr>
+<tr class="memitem:af63c9936d848588fc49df03de0b78da3" id="r_af63c9936d848588fc49df03de0b78da3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextEngineBase.html#af63c9936d848588fc49df03de0b78da3">GetGPUWinding</a> () const</td></tr>
+<tr class="memdesc:af63c9936d848588fc49df03de0b78da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the winding order of the vertices returned by <a class="el" href="structSDL_1_1TextBase.html#add6e82874d307b670b766858f935a37d" title="Get the geometry data needed for drawing the text.">TextBase.GetGPUDrawData</a> for a particular GPU text engine.  <br /></td></tr>
 <tr class="separator:af63c9936d848588fc49df03de0b78da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0de227d66f78600d9ff1940272e585b0" id="r_a0de227d66f78600d9ff1940272e585b0"><td class="memItemLeft" align="right" valign="top"><a id="a0de227d66f78600d9ff1940272e585b0" name="a0de227d66f78600d9ff1940272e585b0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Destroy</b> ()</td></tr>
@@ -140,7 +140,7 @@ template&lt;ObjectBox&lt; TextEngineWrapper &gt; T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#gad0a4a2ecc2605b00899e6442ff11e410">GPUTextEngineWinding</a> <a class="el" href="structSDL_1_1TextEngineBase.html">SDL::TextEngineBase</a>&lt; T &gt;::GetGPUWinding </td>
+          <td class="memname"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a> <a class="el" href="structSDL_1_1TextEngineBase.html">SDL::TextEngineBase</a>&lt; T &gt;::GetGPUWinding </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -155,7 +155,7 @@ template&lt;ObjectBox&lt; TextEngineWrapper &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>the winding order used by the GPU text engine or GPU_TEXTENGINE_WINDING_INVALID in case of error.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineBase.html#aba99d3d081d3b16aac0d6d101782c9aa" title="Sets the winding order of the vertices returned by TextBase::GetGPUDrawData() for a particular GPU te...">SetGPUWinding()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineBase.html#aba99d3d081d3b16aac0d6d101782c9aa" title="Sets the winding order of the vertices returned by TextBase.GetGPUDrawData for a particular GPU text ...">TextEngineBase.SetGPUWinding</a> </dd></dl>
 
 </div>
 </div>
@@ -173,7 +173,7 @@ template&lt;ObjectBox&lt; TextEngineWrapper &gt; T&gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="structSDL_1_1TextEngineBase.html">SDL::TextEngineBase</a>&lt; T &gt;::SetGPUWinding </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#gad0a4a2ecc2605b00899e6442ff11e410">GPUTextEngineWinding</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a">GPUTextEngineWinding</a>&#160;</td>
           <td class="paramname"><em>winding</em></td><td>)</td>
           <td></td>
         </tr>
@@ -192,7 +192,7 @@ template&lt;ObjectBox&lt; TextEngineWrapper &gt; T&gt; </div>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the engine.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineBase.html#af63c9936d848588fc49df03de0b78da3" title="Get the winding order of the vertices returned by GetGPUDrawData for a particular GPU text engine.">GetGPUWinding()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextEngineBase.html#af63c9936d848588fc49df03de0b78da3" title="Get the winding order of the vertices returned by TextBase.GetGPUDrawData for a particular GPU text e...">TextEngineBase.GetGPUWinding</a> </dd></dl>
 
 </div>
 </div>

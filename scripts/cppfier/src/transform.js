@@ -33,9 +33,13 @@ function transformApi(config) {
 
     files[targetName] = {
       name: targetName,
-      doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context, targetName) || "",
+      doc: fileConfig.doc || transformFileDoc(sourceFile.doc, context) || "",
       entries: transformEntries(sourceFile.entries, context, fileConfig)
     };
+  }
+  for (const file of Object.values(files)) {
+    if (file.doc) file.doc = resolveDocRefs(file.doc, context);
+    if (file.entries) transformEntriesDocRefs(file.entries, context);
   }
   return { files };
 }
@@ -50,16 +54,21 @@ class ApiContext {
     /** @type {StringMap} */
     this.paramTypeMap = Object.create(this.typeMap);
     Object.assign(this.paramTypeMap, transform.paramTypeMap ?? {});
-    // this.paramTypeMap["const char *"] = "StringParam";
 
     /** @type {StringMap} */
     this.returnTypeMap = Object.create(this.typeMap);
     Object.assign(this.returnTypeMap, transform.returnTypeMap ?? {});
 
+    /** @type {StringMap} */
+    this.nameMap = {};
+
     if (transform.prefixes?.length) {
       this.prefixToRemove = Array.isArray(transform.prefixes)
         ? RegExp(`^(${transform.prefixes.join("|")})`)
         : RegExp("^" + transform.prefixes);
+      this.referenceCandidate = Array.isArray(transform.prefixes)
+        ? RegExp(`\\b(?:${transform.prefixes.join("|")})\\w+`, "g")
+        : RegExp(`\\b${transform.prefixes}\\w+`, "g");
     }
 
     this.renameRules = transform.renameRules ?? [];
@@ -154,6 +163,15 @@ function transformEntries(sourceEntries, context, transform) {
     insertEntryAndCheck(targetEntries, includeAfter[sourceName] ?? [], context, transform);
   }
   insertEntryAndCheck(targetEntries, includeAfter.__end ?? [], context, transform);
+  for (const [key, entry] of Object.entries(targetEntries)) {
+    if (Array.isArray(entry)) {
+      entry.forEach(e => {
+        if (e.sourceName) context.nameMap[e.sourceName] = key;
+      });
+    } else if (entry.sourceName) {
+      context.nameMap[entry.sourceName] = key;
+    }
+  }
   transformHierarchy(targetEntries);
   validateEntries(targetEntries);
 
@@ -536,7 +554,10 @@ function makeNaturalName(name, typeName) {
  */
 function prepareForTypeInsert(entry, name, typeName) {
   entry.name = name;
-  if (name === typeName) return;
+  if (name === typeName) {
+    if (entry.doc) entry.doc = entry.doc.replace(/@returns?/, "@post");
+    return;
+  }
   typeName = normalizeTypeName(typeName);
   const parameters = entry.parameters;
   if (!parameters?.length) return;
@@ -544,6 +565,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   const type = typeof parameter !== "string" ? parameter.type : "";
   if (type.includes(typeName)) {
     parameters.shift();
+    if (entry.doc) entry.doc = entry.doc.replace(/@param \w+.*\n/, "");
     if (type.startsWith("const ")) entry.immutable = true;
   } else if (entry.static !== false) {
     entry.static = !entry.immutable;
@@ -619,9 +641,8 @@ function transformType(type, typeMap) {
  * 
  * @param {string}      docStr 
  * @param {ApiContext}  context 
- * @param {string}      filename 
  */
-function transformFileDoc(docStr, context, filename) {
+function transformFileDoc(docStr, context) {
   if (!docStr) return "";
   docStr = docStr.replace(/^# Category(\w+)/, `@defgroup Category$1 Category $1`);
   return transformDoc(docStr, context);
@@ -632,7 +653,9 @@ function transformFileDoc(docStr, context, filename) {
  * @param {ApiContext}  context   
  **/
 function transformDoc(docStr, context) {
-  return transformString(docStr.replace(/\\(\w+)/g, '@$1'), context.docRules);
+  return transformString(docStr, context.docRules)
+    .replace(/\\(\w+)/g, '@$1')
+    .replaceAll("NULL", "nullptr");
 }
 
 /**
@@ -662,6 +685,34 @@ function transformString(str, rules) {
 function transformName(name, context) {
   return context?.prefixToRemove ? name.replace(context.prefixToRemove, '') : name;
 }
+
+/**
+ * @param {ApiEntries} entries 
+ * @param {ApiContext} context 
+ */
+function transformEntriesDocRefs(entries, context) {
+  for (const entry of Object.values(entries)) {
+    if (Array.isArray(entry)) {
+      entry.forEach(e => {
+        if (e.doc) e.doc = resolveDocRefs(e.doc, context);
+      });
+    } else {
+      if (entry.doc) entry.doc = resolveDocRefs(entry.doc, context);
+      if (entry.entries) transformEntriesDocRefs(entry.entries, context);
+    }
+  }
+}
+
+/**
+ * 
+ * @param {string}     doc 
+ * @param {ApiContext} context 
+ */
+function resolveDocRefs(doc, context) {
+  if (!doc) return "";
+  return doc.replaceAll(context.referenceCandidate, ref => context.nameMap[ref] || ref);
+}
+
 
 exports.transformApi = transformApi;
 exports.transformEntries = transformEntries;

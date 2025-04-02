@@ -166,16 +166,16 @@ using Text = TextBase<ObjectUnique<TTF_Text>>;
  */
 
 /**
- * Font style flags for TTF_Font
+ * Font style flags for FontBase
  *
  * These are the flags which can be used to set the style of a font in
  * SDL_ttf. A combination of these flags can be used with functions that set
- * or query font style, such as TTF_SetFontStyle or TTF_GetFontStyle.
+ * or query font style, such as FontBase.SetStyle or FontBase.GetStyle.
  *
- * @since This function is available since SDL_ttf 3.0.0.
+ * @since This datatype is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_SetFontStyle
- * @sa TTF_GetFontStyle
+ * @sa FontBase.SetStyle
+ * @sa FontBase.GetStyle
  */
 using FontStyleFlags = TTF_FontStyleFlags;
 
@@ -220,8 +220,8 @@ constexpr FontStyleFlags STYLE_STRIKETHROUGH = TTF_STYLE_STRIKETHROUGH;
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_SetFontHinting
- * @sa TTF_GetFontHinting
+ * @sa FontBase.SetHinting
+ * @sa FontBase.GetHinting
  */
 using HintingFlags = TTF_HintingFlags;
 
@@ -296,7 +296,7 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_SetFontDirection
+ * @sa FontBase.SetDirection
  */
 using Direction = TTF_Direction;
 
@@ -367,7 +367,7 @@ constexpr ImageType IMAGE_SDF = TTF_IMAGE_SDF;
  *
  * @since This datatype is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_SubString
+ * @sa SubString
  */
 using SubStringFlags = TTF_SubStringFlags;
 
@@ -466,17 +466,19 @@ inline int TTF_Version() { return ::TTF_Version(); }
 /**
  * Query the version of the FreeType library in use.
  *
- * TTF_Init() should be called before calling this function.
+ * Either Init() or InitSubSystem() should with with INIT_TTF be called before
+ * calling this function.
  *
- * @param major to be filled in with the major version number. Can be NULL.
- * @param minor to be filled in with the minor version number. Can be NULL.
- * @param patch to be filled in with the param version number. Can be NULL.
+ * @param major to be filled in with the major version number. Can be nullptr.
+ * @param minor to be filled in with the minor version number. Can be nullptr.
+ * @param patch to be filled in with the param version number. Can be nullptr.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_Init
+ * @sa Init()
+ * @sa InitSubSystem()
  */
 inline void GetFreeTypeVersion(int* major, int* minor, int* patch)
 {
@@ -488,9 +490,9 @@ inline void GetFreeTypeVersion(int* major, int* minor, int* patch)
  *
  * If HarfBuzz is not available, the version reported is 0.0.0.
  *
- * @param major to be filled in with the major version number. Can be NULL.
- * @param minor to be filled in with the minor version number. Can be NULL.
- * @param patch to be filled in with the param version number. Can be NULL.
+ * @param major to be filled in with the major version number. Can be nullptr.
+ * @param minor to be filled in with the minor version number. Can be nullptr.
+ * @param patch to be filled in with the param version number. Can be nullptr.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
@@ -526,18 +528,16 @@ struct FontBase : T
    * size becomes the index of choosing which size. If the value is too high,
    * the last indexed size will be the default.
    *
-   * When done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.
-   *
    * @param file path to font file.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
-   *          information.
+   * @post a valid FontBase, or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_CloseFont
+   * @sa FontBase.Close
    */
   FontBase(StringParam file, float ptsize)
     : T(TTF_OpenFont(file, ptsize))
@@ -545,7 +545,7 @@ struct FontBase : T
   }
 
   /**
-   * Create a font from an SDL_IOStream, using a specified point size.
+   * Create a font from an IOStreamBase, using a specified point size.
    *
    * Some .fon fonts will have several sizes embedded in the file, so the point
    * size becomes the index of choosing which size. If the value is too high,
@@ -554,20 +554,18 @@ struct FontBase : T
    * If `closeio` is true, `src` will be automatically closed once the font is
    * closed. Otherwise you should close `src` yourself after closing the font.
    *
-   * When done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.
-   *
-   * @param src an SDL_IOStream to provide a font file's data.
+   * @param src an IOStreamBase to provide a font file's data.
    * @param closeio true to close `src` when the font is closed, false to leave
    *                it open.
    * @param ptsize point size to use for the newly-opened font.
-   * @post a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
-   *          information.
+   * @post a valid FontBase, or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_CloseFont
+   * @sa FontBase.Close
    */
   FontBase(ObjectBox<SDL_IOStream> auto&& src, bool closeio, float ptsize)
     : T(TTF_OpenFontIO(src, closeio, ptsize))
@@ -580,42 +578,42 @@ struct FontBase : T
    * These are the supported properties:
    *
    * - `TTF_PROP_FONT_CREATE_FILENAME_STRING`: the font file to open, if an
-   *   SDL_IOStream isn't being used. This is required if
-   *   `TTF_PROP_FONT_CREATE_IOSTREAM_POINTER` and
-   *   `TTF_PROP_FONT_CREATE_EXISTING_FONT` aren't set.
-   * - `TTF_PROP_FONT_CREATE_IOSTREAM_POINTER`: an SDL_IOStream containing the
+   *   IOStreamBase isn't being used. This is required if
+   *   `prop::Font.CREATE_IOSTREAM_POINTER` and
+   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
+   * - `prop::Font.CREATE_IOSTREAM_POINTER`: an IOStreamBase containing the
    *   font to be opened. This should not be closed until the font is closed.
    *   This is required if `TTF_PROP_FONT_CREATE_FILENAME_STRING` and
-   *   `TTF_PROP_FONT_CREATE_EXISTING_FONT` aren't set.
-   * - `TTF_PROP_FONT_CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
+   *   `prop::Font.CREATE_EXISTING_FONT` aren't set.
+   * - `prop::Font.CREATE_IOSTREAM_OFFSET_NUMBER`: the offset in the iostream
    *   for the beginning of the font, defaults to 0.
-   * - `TTF_PROP_FONT_CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
-   *   font should also close the associated SDL_IOStream.
-   * - `TTF_PROP_FONT_CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
+   * - `prop::Font.CREATE_IOSTREAM_AUTOCLOSE_BOOLEAN`: true if closing the
+   *   font should also close the associated IOStreamBase.
+   * - `prop::Font.CREATE_SIZE_FLOAT`: the point size of the font. Some .fon
    *   fonts will have several sizes embedded in the file, so the point size
    *   becomes the index of choosing which size. If the value is too high, the
    *   last indexed size will be the default.
-   * - `TTF_PROP_FONT_CREATE_FACE_NUMBER`: the face index of the font, if the
+   * - `prop::Font.CREATE_FACE_NUMBER`: the face index of the font, if the
    *   font contains multiple font faces.
-   * - `TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use
+   * - `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`: the horizontal DPI to use
    *   for font rendering, defaults to
-   *   `TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.
-   * - `TTF_PROP_FONT_CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
-   *   font rendering, defaults to `TTF_PROP_FONT_CREATE_HORIZONTAL_DPI_NUMBER`
+   *   `prop::Font.CREATE_VERTICAL_DPI_NUMBER` if set, or 72 otherwise.
+   * - `prop::Font.CREATE_VERTICAL_DPI_NUMBER`: the vertical DPI to use for
+   *   font rendering, defaults to `prop::Font.CREATE_HORIZONTAL_DPI_NUMBER`
    *   if set, or 72 otherwise.
-   * - `TTF_PROP_FONT_CREATE_EXISTING_FONT`: an optional TTF_Font that, if set,
+   * - `prop::Font.CREATE_EXISTING_FONT`: an optional FontBase that, if set,
    *   will be used as the font data source and the initial size and style of
    *   the new font.
    *
    * @param props the properties to use.
-   * @post a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
-   *          information.
+   * @post a valid FontBase, or nullptr on failure; call GetError() for more
+   *       information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_CloseFont
+   * @sa FontBase.Close
    */
   FontBase(PropertiesRef props)
     : T(TTF_OpenFontWithProperties(props))
@@ -628,17 +626,13 @@ struct FontBase : T
    * The copy will be distinct from the original, but will share the font file
    * and have the same size and style as the original.
    *
-   * When done with the returned TTF_Font, use TTF_CloseFont() to dispose of it.
-   *
-   * @returns a valid TTF_Font, or NULL on failure; call SDL_GetError() for more
+   * @returns a valid Font, or nullptr on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               original font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
-   *
-   * @sa TTF_CloseFont
    */
   Font Copy() const { return TTF_CopyFont(T::get()); }
 
@@ -647,17 +641,17 @@ struct FontBase : T
    *
    * The following read-write properties are provided by SDL:
    *
-   * - `TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value
+   * - `prop::Font.OUTLINE_LINE_CAP_NUMBER`: The FT_Stroker_LineCap value
    *   used when setting the font outline, defaults to
    *   `FT_STROKER_LINECAP_ROUND`.
-   * - `TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value
+   * - `prop::Font.OUTLINE_LINE_JOIN_NUMBER`: The FT_Stroker_LineJoin value
    *   used when setting the font outline, defaults to
    *   `FT_STROKER_LINEJOIN_ROUND`.
-   * - `TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
+   * - `prop::Font.OUTLINE_MITER_LIMIT_NUMBER`: The FT_Fixed miter limit used
    *   when setting the font outline, defaults to 0.
    *
    * @returns a valid property ID on success or 0 on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
@@ -671,7 +665,7 @@ struct FontBase : T
    * The generation is incremented each time font properties change that require
    * rebuilding glyphs, such as style, size, etc.
    *
-   * @returns the font generation or 0 on failure; call SDL_GetError() for more
+   * @returns the font generation or 0 on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -689,10 +683,10 @@ struct FontBase : T
    *
    * If there are multiple fallback fonts, they are used in the order added.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param fallback the font to add as a fallback.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created
@@ -700,8 +694,8 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_ClearFallbackFonts
-   * @sa TTF_RemoveFallbackFont
+   * @sa FontBase.ClearFallbacks
+   * @sa FontBase.RemoveFallback
    */
   bool AddFallback(FontRef fallback)
   {
@@ -711,7 +705,7 @@ struct FontBase : T
   /**
    * Remove a fallback font.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param fallback the font to remove as a fallback.
    *
@@ -720,37 +714,38 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_AddFallbackFont
-   * @sa TTF_ClearFallbackFonts
+   * @sa FontBase.AddFallback
+   * @sa FontBase.ClearFallbacks
    */
   void RemoveFallback(FontRef fallback)
   {
-    return TTF_RemoveFallbackFont(T::get(), fallback);
+    TTF_RemoveFallbackFont(T::get(), fallback);
   }
 
   /**
    * Remove all fallback fonts.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
+   *
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_AddFallbackFont
-   * @sa TTF_RemoveFallbackFont
+   * @sa FontBase.AddFallback
+   * @sa FontBase.RemoveFallback
    */
-  void ClearFallbacks() { return TTF_ClearFallbackFonts(T::get()); }
+  void ClearFallbacks() { TTF_ClearFallbackFonts(T::get()); }
 
   /**
    * Set a font's size dynamically.
    *
-   * This updates any TTF_Text objects using this font, and clears
+   * This updates any TextBase objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
    * @param ptsize the new point size.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -758,20 +753,20 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontSize
+   * @sa FontBase.GetSize
    */
   bool SetSize(float ptsize) { return TTF_SetFontSize(T::get(), ptsize); }
 
   /**
    * Set font size dynamically with target resolutions, in dots per inch.
    *
-   * This updates any TTF_Text objects using this font, and clears
+   * This updates any TextBase objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
    * @param ptsize the new point size.
    * @param hdpi the target horizontal DPI.
    * @param vdpi the target vertical DPI.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -779,8 +774,8 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontSize
-   * @sa TTF_GetFontSizeDPI
+   * @sa FontBase.GetSize
+   * @sa FontBase.GetSizeDPI
    */
   bool SetSizeDPI(float ptsize, int hdpi, int vdpi)
   {
@@ -790,7 +785,7 @@ struct FontBase : T
   /**
    * Get the size of a font.
    *
-   * @returns the size of the font, or 0.0f on failure; call SDL_GetError() for
+   * @returns the size of the font, or 0.0f on failure; call GetError() for
    *          more information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -798,8 +793,8 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontSize
-   * @sa TTF_SetFontSizeDPI
+   * @sa FontBase.SetSize
+   * @sa FontBase.SetSizeDPI
    */
   float GetSize() const { return TTF_GetFontSize(T::get()); }
 
@@ -808,7 +803,7 @@ struct FontBase : T
    *
    * @param hdpi a pointer filled in with the target horizontal DPI.
    * @param vdpi a pointer filled in with the target vertical DPI.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -816,7 +811,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontSizeDPI
+   * @sa FontBase.SetSizeDPI
    */
   bool GetDPI(int* hdpi, int* vdpi) const
   {
@@ -826,16 +821,16 @@ struct FontBase : T
   /**
    * Set a font's current style.
    *
-   * This updates any TTF_Text objects using this font, and clears
+   * This updates any TextBase objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
    * The font styles are a set of bit flags, OR'd together:
    *
-   * - `TTF_STYLE_NORMAL` (is zero)
-   * - `TTF_STYLE_BOLD`
-   * - `TTF_STYLE_ITALIC`
-   * - `TTF_STYLE_UNDERLINE`
-   * - `TTF_STYLE_STRIKETHROUGH`
+   * - `STYLE_NORMAL` (is zero)
+   * - `STYLE_BOLD`
+   * - `STYLE_ITALIC`
+   * - `STYLE_UNDERLINE`
+   * - `STYLE_STRIKETHROUGH`
    *
    * @param style the new style values to set, OR'd together.
    *
@@ -844,23 +839,20 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontStyle
+   * @sa FontBase.GetStyle
    */
-  void SetStyle(FontStyleFlags style)
-  {
-    return TTF_SetFontStyle(T::get(), style);
-  }
+  void SetStyle(FontStyleFlags style) { TTF_SetFontStyle(T::get(), style); }
 
   /**
    * Query a font's current style.
    *
    * The font styles are a set of bit flags, OR'd together:
    *
-   * - `TTF_STYLE_NORMAL` (is zero)
-   * - `TTF_STYLE_BOLD`
-   * - `TTF_STYLE_ITALIC`
-   * - `TTF_STYLE_UNDERLINE`
-   * - `TTF_STYLE_STRIKETHROUGH`
+   * - `STYLE_NORMAL` (is zero)
+   * - `STYLE_BOLD`
+   * - `STYLE_ITALIC`
+   * - `STYLE_UNDERLINE`
+   * - `STYLE_STRIKETHROUGH`
    *
    * @returns the current font style, as a set of bit flags.
    *
@@ -868,22 +860,22 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontStyle
+   * @sa FontBase.SetStyle
    */
   FontStyleFlags GetStyle() const { return TTF_GetFontStyle(T::get()); }
 
   /**
    * Set a font's current outline.
    *
-   * This uses the font properties `TTF_PROP_FONT_OUTLINE_LINE_CAP_NUMBER`,
-   * `TTF_PROP_FONT_OUTLINE_LINE_JOIN_NUMBER`, and
-   * `TTF_PROP_FONT_OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
+   * This uses the font properties `prop::Font.OUTLINE_LINE_CAP_NUMBER`,
+   * `prop::Font.OUTLINE_LINE_JOIN_NUMBER`, and
+   * `prop::Font.OUTLINE_MITER_LIMIT_NUMBER` when setting the font outline.
    *
-   * This updates any TTF_Text objects using this font, and clears
+   * This updates any TextBase objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
    * @param outline positive outline value, 0 to default.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -891,7 +883,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontOutline
+   * @sa FontBase.GetOutline
    */
   bool SetOutline(int outline) { return TTF_SetFontOutline(T::get(), outline); }
 
@@ -904,23 +896,23 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontOutline
+   * @sa FontBase.SetOutline
    */
   int GetOutline() const { return TTF_GetFontOutline(T::get()); }
 
   /**
    * Set a font's current hinter setting.
    *
-   * This updates any TTF_Text objects using this font, and clears
+   * This updates any TextBase objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
    * The hinter setting is a single value:
    *
-   * - `TTF_HINTING_NORMAL`
-   * - `TTF_HINTING_LIGHT`
-   * - `TTF_HINTING_MONO`
-   * - `TTF_HINTING_NONE`
-   * - `TTF_HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)
+   * - `HINTING_NORMAL`
+   * - `HINTING_LIGHT`
+   * - `HINTING_MONO`
+   * - `HINTING_NONE`
+   * - `HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)
    *
    * @param hinting the new hinter setting.
    *
@@ -929,11 +921,11 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontHinting
+   * @sa FontBase.GetHinting
    */
   void SetHinting(HintingFlags hinting)
   {
-    return TTF_SetFontHinting(T::get(), hinting);
+    TTF_SetFontHinting(T::get(), hinting);
   }
 
   /**
@@ -952,19 +944,20 @@ struct FontBase : T
    *
    * The hinter setting is a single value:
    *
-   * - `TTF_HINTING_NORMAL`
-   * - `TTF_HINTING_LIGHT`
-   * - `TTF_HINTING_MONO`
-   * - `TTF_HINTING_NONE`
-   * - `TTF_HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)
+   * - `HINTING_NORMAL`
+   * - `HINTING_LIGHT`
+   * - `HINTING_MONO`
+   * - `HINTING_NONE`
+   * - `HINTING_LIGHT_SUBPIXEL` (available in SDL_ttf 3.0.0 and later)
    *
-   * @returns the font's current hinter value.
+   * @returns the font's current hinter value, or HINTING_INVALID if the
+   *          font is invalid.
    *
    * @threadsafety It is safe to call this function from any thread.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontHinting
+   * @sa FontBase.SetHinting
    */
   HintingFlags GetHinting() const { return TTF_GetFontHinting(T::get()); }
 
@@ -977,11 +970,11 @@ struct FontBase : T
    * This works with Blended APIs, and generates the raw signed distance values
    * in the alpha channel of the resulting texture.
    *
-   * This updates any TTF_Text objects using this font, and clears
+   * This updates any TextBase objects using this font, and clears
    * already-generated glyphs, if any, from the cache.
    *
    * @param enabled true to enable SDF, false to disable.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -989,7 +982,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontSDF
+   * @sa FontBase.GetSDF
    */
   bool SetSDF(bool enabled) { return TTF_SetFontSDF(T::get(), enabled); }
 
@@ -1002,7 +995,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontSDF
+   * @sa FontBase.SetSDF
    */
   bool GetSDF() const { return TTF_GetFontSDF(T::get()); }
 
@@ -1016,16 +1009,16 @@ struct FontBase : T
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
-   * @since This function is available since SDL_ttf 3.4.0.
+   * @since This function is available since SDL_ttf 3.2.3.
    */
   int GetWeight() const { return TTF_GetFontWeight(T::get()); }
 
-#endif // SDL3PP_TTF_VERSION_ATLEAST(3, 4, 0)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
 
   /**
    * Set a font's current wrap alignment option.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param align the new wrap alignment option.
    *
@@ -1034,11 +1027,11 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontWrapAlignment
+   * @sa FontBase.GetWrapAlignment
    */
   void SetWrapAlignment(HorizontalAlignment align)
   {
-    return TTF_SetFontWrapAlignment(T::get(), align);
+    TTF_SetFontWrapAlignment(T::get(), align);
   }
 
   /**
@@ -1050,7 +1043,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontWrapAlignment
+   * @sa FontBase.SetWrapAlignment
    */
   HorizontalAlignment GetWrapAlignment() const
   {
@@ -1099,7 +1092,7 @@ struct FontBase : T
   /**
    * Set the spacing between lines of text for a font.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param lineskip the new line spacing for the font.
    *
@@ -1108,12 +1101,9 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontLineSkip
+   * @sa FontBase.GetLineSkip
    */
-  void SetLineSkip(int lineskip)
-  {
-    return TTF_SetFontLineSkip(T::get(), lineskip);
-  }
+  void SetLineSkip(int lineskip) { TTF_SetFontLineSkip(T::get(), lineskip); }
 
   /**
    * Query the spacing between lines of text for a font.
@@ -1124,7 +1114,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontLineSkip
+   * @sa FontBase.SetLineSkip
    */
   int GetLineSkip() const { return TTF_GetFontLineSkip(T::get()); }
 
@@ -1136,7 +1126,7 @@ struct FontBase : T
    * produce better rendering (with kerning disabled, some fonts might render
    * the word `kerning` as something that looks like `keming` for example).
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param enabled true to enable kerning, false to disable.
    *
@@ -1145,12 +1135,9 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetFontKerning
+   * @sa FontBase.GetKerning
    */
-  void SetKerning(bool enabled)
-  {
-    return TTF_SetFontKerning(T::get(), enabled);
-  }
+  void SetKerning(bool enabled) { TTF_SetFontKerning(T::get(), enabled); }
 
   /**
    * Query whether or not kerning is enabled for a font.
@@ -1161,7 +1148,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontKerning
+   * @sa FontBase.SetKerning
    */
   bool GetKerning() const { return TTF_GetFontKerning(T::get()); }
 
@@ -1193,7 +1180,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetFontSDF
+   * @sa FontBase.SetSDF
    */
   bool IsScalable() const { return TTF_FontIsScalable(T::get()); }
 
@@ -1204,7 +1191,7 @@ struct FontBase : T
    *
    * Note that the returned string is to internal storage, and should not be
    * modified or free'd by the caller. The string becomes invalid, with the rest
-   * of the font, when `font` is handed to TTF_CloseFont().
+   * of the font, when `font` is destroyed.
    *
    * @returns the font's family name.
    *
@@ -1221,7 +1208,7 @@ struct FontBase : T
    *
    * Note that the returned string is to internal storage, and should not be
    * modified or free'd by the caller. The string becomes invalid, with the rest
-   * of the font, when `font` is handed to TTF_CloseFont().
+   * of the font, when `font` is destroyed.
    *
    * @returns the font's style name.
    *
@@ -1237,10 +1224,10 @@ struct FontBase : T
    * This function only supports left-to-right text shaping if SDL_ttf was not
    * built with HarfBuzz support.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param direction the new direction for text to flow.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -1256,7 +1243,7 @@ struct FontBase : T
   /**
    * Get the direction to be used for text shaping by a font.
    *
-   * This defaults to TTF_DIRECTION_INVALID if it hasn't been set.
+   * This defaults to DIRECTION_INVALID if it hasn't been set.
    *
    * @returns the direction to be used for text shaping.
    *
@@ -1272,11 +1259,11 @@ struct FontBase : T
    *
    * This returns false if SDL_ttf isn't built with HarfBuzz support.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param script an
    * [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html).
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -1284,7 +1271,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_StringToTag
+   * @sa StringToTag
    */
   bool SetScript(Uint32 script) { return TTF_SetFontScript(T::get(), script); }
 
@@ -1300,7 +1287,7 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_TagToString
+   * @sa TagToString
    */
   Uint32 GetScript() const { return TTF_GetFontScript(T::get()); }
 
@@ -1310,14 +1297,14 @@ struct FontBase : T
    * @param ch the character code to check.
    * @returns an
    *          [ISO 15924 code](https://unicode.org/iso15924/iso15924-codes.html)
-   *          on success, or 0 on failure; call SDL_GetError() for more
+   *          on success, or 0 on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function is thread-safe.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_TagToString
+   * @sa TagToString
    */
   Uint32 GetGlyphScript(Uint32 ch) const
   {
@@ -1330,11 +1317,11 @@ struct FontBase : T
    * If SDL_ttf was not built with HarfBuzz support, this function returns
    * false.
    *
-   * This updates any TTF_Text objects using this font.
+   * This updates any TextBase objects using this font.
    *
    * @param language_bcp47 a null-terminated string containing the desired
    *                       language's BCP47 code. Or null to reset the value.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -1365,9 +1352,9 @@ struct FontBase : T
    *
    * @param ch the codepoint to check.
    * @param image_type a pointer filled in with the glyph image type, may be
-   *                   NULL.
-   * @returns an SDL_Surface containing the glyph, or NULL on failure; call
-   *          SDL_GetError() for more information.
+   *                   nullptr.
+   * @returns an SurfaceBase containing the glyph, or nullptr on failure; call
+   *          GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -1387,9 +1374,9 @@ struct FontBase : T
    *
    * @param glyph_index the index of the glyph to return.
    * @param image_type a pointer filled in with the glyph image type, may be
-   *                   NULL.
-   * @returns an SDL_Surface containing the glyph, or NULL on failure; call
-   *          SDL_GetError() for more information.
+   *                   nullptr.
+   * @returns an SurfaceRef containing the glyph, or nullptr on failure; call
+   *          GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
@@ -1422,7 +1409,7 @@ struct FontBase : T
    *             from the bottom edge of its bounding box.
    * @param advance a pointer filled in with the distance to the next glyph from
    *                the left edge of this glyph's bounding box.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -1545,7 +1532,7 @@ struct FontBase : T
    * @param wrap_width the maximum width or 0 to wrap on newline characters.
    * @param w will be filled with width, in pixels, on return.
    * @param h will be filled with height, in pixels, on return.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -1561,6 +1548,7 @@ struct FontBase : T
     return TTF_GetStringSizeWrapped(
       T::get(), text.data(), text.size(), wrap_width, w, h);
   }
+
   /**
    * Calculate how much of a UTF-8 string will fit in a given width.
    *
@@ -1573,10 +1561,10 @@ struct FontBase : T
    * @param max_width maximum width, in pixels, available for the string, or 0
    *                  for unbounded width.
    * @param measured_width a pointer filled in with the width, in pixels, of the
-   *                       string that will fit, may be NULL.
+   *                       string that will fit, may be nullptr.
    * @param measured_length a pointer filled in with the length, in bytes, of
-   *                        the string that will fit, may be NULL.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   *                        the string that will fit, may be nullptr.
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -1606,28 +1594,28 @@ struct FontBase : T
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * TTF_RenderText_Solid_Wrapped() instead if you need to wrap the output to
-   * multiple lines.
+   * FontBase.RenderText_Solid_Wrapped() instead if you need to wrap the output
+   * to multiple lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Shaded,
-   * TTF_RenderText_Blended, and TTF_RenderText_LCD.
+   * You can render at other quality levels with FontBase.RenderText_Shaded,
+   * FontBase.RenderText_Blended, and FontBase.RenderText_LCD.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
-   * @returns a new 8-bit, palettized surface, or NULL if there was an error.
+   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended
-   * @sa TTF_RenderText_LCD
-   * @sa TTF_RenderText_Shaded
-   * @sa TTF_RenderText_Solid
-   * @sa TTF_RenderText_Solid_Wrapped
+   * @sa FontBase.RenderText_Blended
+   * @sa FontBase.RenderText_LCD
+   * @sa FontBase.RenderText_Shaded
+   * @sa FontBase.RenderText_Solid
+   * @sa FontBase.RenderText_Solid_Wrapped
    */
   Surface RenderText_Solid(std::string_view text, Color fg) const
   {
@@ -1646,24 +1634,25 @@ struct FontBase : T
    *
    * If wrapLength is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Shaded_Wrapped,
-   * TTF_RenderText_Blended_Wrapped, and TTF_RenderText_LCD_Wrapped.
+   * You can render at other quality levels with
+   * FontBase.RenderText_Shaded_Wrapped, FontBase.RenderText_Blended_Wrapped,
+   * and FontBase.RenderText_LCD_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param wrapLength the maximum width of the text surface or 0 to wrap on
    *                   newline characters.
-   * @returns a new 8-bit, palettized surface, or NULL if there was an error.
+   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended_Wrapped
-   * @sa TTF_RenderText_LCD_Wrapped
-   * @sa TTF_RenderText_Shaded_Wrapped
-   * @sa TTF_RenderText_Solid
+   * @sa FontBase.RenderText_Blended_Wrapped
+   * @sa FontBase.RenderText_LCD_Wrapped
+   * @sa FontBase.RenderText_Shaded_Wrapped
+   * @sa FontBase.RenderText_Solid
    */
   Surface RenderText_Solid_Wrapped(std::string_view text,
                                    Color fg,
@@ -1683,21 +1672,21 @@ struct FontBase : T
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with TTF_RenderGlyph_Shaded,
-   * TTF_RenderGlyph_Blended, and TTF_RenderGlyph_LCD.
+   * You can render at other quality levels with FontBase.RenderGlyph_Shaded,
+   * FontBase.RenderGlyph_Blended, and FontBase.RenderGlyph_LCD.
    *
    * @param ch the character to render.
    * @param fg the foreground color for the text.
-   * @returns a new 8-bit, palettized surface, or NULL if there was an error.
+   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderGlyph_Blended
-   * @sa TTF_RenderGlyph_LCD
-   * @sa TTF_RenderGlyph_Shaded
+   * @sa FontBase.RenderGlyph_Blended
+   * @sa FontBase.RenderGlyph_LCD
+   * @sa FontBase.RenderGlyph_Shaded
    */
   Surface RenderGlyph_Solid(Uint32 ch, Color fg) const
   {
@@ -1710,32 +1699,32 @@ struct FontBase : T
    * This function will allocate a new 8-bit, palettized surface. The surface's
    * 0 pixel will be the specified background color, while other pixels have
    * varying degrees of the foreground color. This function returns the new
-   * surface, or NULL if there was an error.
+   * surface, or nullptr if there was an error.
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * TTF_RenderText_Shaded_Wrapped() instead if you need to wrap the output to
-   * multiple lines.
+   * FontBase.RenderText_Shaded_Wrapped() instead if you need to wrap the output
+   * to multiple lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Solid,
-   * TTF_RenderText_Blended, and TTF_RenderText_LCD.
+   * You can render at other quality levels with FontBase.RenderText_Solid,
+   * FontBase.RenderText_Blended, and FontBase.RenderText_LCD.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
-   * @returns a new 8-bit, palettized surface, or NULL if there was an error.
+   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended
-   * @sa TTF_RenderText_LCD
-   * @sa TTF_RenderText_Shaded_Wrapped
-   * @sa TTF_RenderText_Solid
+   * @sa FontBase.RenderText_Blended
+   * @sa FontBase.RenderText_LCD
+   * @sa FontBase.RenderText_Shaded_Wrapped
+   * @sa FontBase.RenderText_Solid
    */
   Surface RenderText_Shaded(std::string_view text, Color fg, Color bg) const
   {
@@ -1748,32 +1737,33 @@ struct FontBase : T
    * This function will allocate a new 8-bit, palettized surface. The surface's
    * 0 pixel will be the specified background color, while other pixels have
    * varying degrees of the foreground color. This function returns the new
-   * surface, or NULL if there was an error.
+   * surface, or nullptr if there was an error.
    *
    * Text is wrapped to multiple lines on line endings and on word boundaries if
    * it extends beyond `wrap_width` in pixels.
    *
    * If wrap_width is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Solid_Wrapped,
-   * TTF_RenderText_Blended_Wrapped, and TTF_RenderText_LCD_Wrapped.
+   * You can render at other quality levels with
+   * FontBase.RenderText_Solid_Wrapped, FontBase.RenderText_Blended_Wrapped, and
+   * FontBase.RenderText_LCD_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
    *                   newline characters.
-   * @returns a new 8-bit, palettized surface, or NULL if there was an error.
+   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended_Wrapped
-   * @sa TTF_RenderText_LCD_Wrapped
-   * @sa TTF_RenderText_Shaded
-   * @sa TTF_RenderText_Solid_Wrapped
+   * @sa FontBase.RenderText_Blended_Wrapped
+   * @sa FontBase.RenderText_LCD_Wrapped
+   * @sa FontBase.RenderText_Shaded
+   * @sa FontBase.RenderText_Solid_Wrapped
    */
   Surface RenderText_Shaded_Wrapped(std::string_view text,
                                     Color fg,
@@ -1790,27 +1780,27 @@ struct FontBase : T
    * This function will allocate a new 8-bit, palettized surface. The surface's
    * 0 pixel will be the specified background color, while other pixels have
    * varying degrees of the foreground color. This function returns the new
-   * surface, or NULL if there was an error.
+   * surface, or nullptr if there was an error.
    *
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with TTF_RenderGlyph_Solid,
-   * TTF_RenderGlyph_Blended, and TTF_RenderGlyph_LCD.
+   * You can render at other quality levels with FontBase.RenderGlyph_Solid,
+   * FontBase.RenderGlyph_Blended, and FontBase.RenderGlyph_LCD.
    *
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
-   * @returns a new 8-bit, palettized surface, or NULL if there was an error.
+   * @returns a new 8-bit, palettized surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderGlyph_Blended
-   * @sa TTF_RenderGlyph_LCD
-   * @sa TTF_RenderGlyph_Solid
+   * @sa FontBase.RenderGlyph_Blended
+   * @sa FontBase.RenderGlyph_LCD
+   * @sa FontBase.RenderGlyph_Solid
    */
   Surface RenderGlyph_Shaded(Uint32 ch, Color fg, Color bg) const
   {
@@ -1822,31 +1812,31 @@ struct FontBase : T
    *
    * This function will allocate a new 32-bit, ARGB surface, using alpha
    * blending to dither the font with the given color. This function returns the
-   * new surface, or NULL if there was an error.
+   * new surface, or nullptr if there was an error.
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * TTF_RenderText_Blended_Wrapped() instead if you need to wrap the output to
-   * multiple lines.
+   * FontBase.RenderText_Blended_Wrapped() instead if you need to wrap the
+   * output to multiple lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Solid,
-   * TTF_RenderText_Shaded, and TTF_RenderText_LCD.
+   * You can render at other quality levels with FontBase.RenderText_Solid,
+   * FontBase.RenderText_Shaded, and FontBase.RenderText_LCD.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
-   * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
+   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended_Wrapped
-   * @sa TTF_RenderText_LCD
-   * @sa TTF_RenderText_Shaded
-   * @sa TTF_RenderText_Solid
+   * @sa FontBase.RenderText_Blended_Wrapped
+   * @sa FontBase.RenderText_LCD
+   * @sa FontBase.RenderText_Shaded
+   * @sa FontBase.RenderText_Solid
    */
   Surface RenderText_Blended(std::string_view text, Color fg) const
   {
@@ -1858,31 +1848,32 @@ struct FontBase : T
    *
    * This function will allocate a new 32-bit, ARGB surface, using alpha
    * blending to dither the font with the given color. This function returns the
-   * new surface, or NULL if there was an error.
+   * new surface, or nullptr if there was an error.
    *
    * Text is wrapped to multiple lines on line endings and on word boundaries if
    * it extends beyond `wrap_width` in pixels.
    *
    * If wrap_width is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Solid_Wrapped,
-   * TTF_RenderText_Shaded_Wrapped, and TTF_RenderText_LCD_Wrapped.
+   * You can render at other quality levels with
+   * FontBase.RenderText_Solid_Wrapped, FontBase.RenderText_Shaded_Wrapped, and
+   * FontBase.RenderText_LCD_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
    *                   newline characters.
-   * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
+   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended
-   * @sa TTF_RenderText_LCD_Wrapped
-   * @sa TTF_RenderText_Shaded_Wrapped
-   * @sa TTF_RenderText_Solid_Wrapped
+   * @sa FontBase.RenderText_Blended
+   * @sa FontBase.RenderText_LCD_Wrapped
+   * @sa FontBase.RenderText_Shaded_Wrapped
+   * @sa FontBase.RenderText_Solid_Wrapped
    */
   Surface RenderText_Blended_Wrapped(std::string_view text,
                                      Color fg,
@@ -1897,26 +1888,26 @@ struct FontBase : T
    *
    * This function will allocate a new 32-bit, ARGB surface, using alpha
    * blending to dither the font with the given color. This function returns the
-   * new surface, or NULL if there was an error.
+   * new surface, or nullptr if there was an error.
    *
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with TTF_RenderGlyph_Solid,
-   * TTF_RenderGlyph_Shaded, and TTF_RenderGlyph_LCD.
+   * You can render at other quality levels with FontBase.RenderGlyph_Solid,
+   * FontBase.RenderGlyph_Shaded, and FontBase.RenderGlyph_LCD.
    *
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
-   * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
+   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderGlyph_LCD
-   * @sa TTF_RenderGlyph_Shaded
-   * @sa TTF_RenderGlyph_Solid
+   * @sa FontBase.RenderGlyph_LCD
+   * @sa FontBase.RenderGlyph_Shaded
+   * @sa FontBase.RenderGlyph_Solid
    */
   Surface RenderGlyph_Blended(Uint32 ch, Color fg) const
   {
@@ -1928,32 +1919,32 @@ struct FontBase : T
    *
    * This function will allocate a new 32-bit, ARGB surface, and render
    * alpha-blended text using FreeType's LCD subpixel rendering. This function
-   * returns the new surface, or NULL if there was an error.
+   * returns the new surface, or nullptr if there was an error.
    *
    * This will not word-wrap the string; you'll get a surface with a single line
    * of text, as long as the string requires. You can use
-   * TTF_RenderText_LCD_Wrapped() instead if you need to wrap the output to
+   * FontBase.RenderText_LCD_Wrapped() instead if you need to wrap the output to
    * multiple lines.
    *
    * This will not wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Solid,
-   * TTF_RenderText_Shaded, and TTF_RenderText_Blended.
+   * You can render at other quality levels with FontBase.RenderText_Solid,
+   * FontBase.RenderText_Shaded, and FontBase.RenderText_Blended.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
-   * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
+   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended
-   * @sa TTF_RenderText_LCD_Wrapped
-   * @sa TTF_RenderText_Shaded
-   * @sa TTF_RenderText_Solid
+   * @sa FontBase.RenderText_Blended
+   * @sa FontBase.RenderText_LCD_Wrapped
+   * @sa FontBase.RenderText_Shaded
+   * @sa FontBase.RenderText_Solid
    */
   Surface RenderText_LCD(std::string_view text, Color fg, Color bg) const
   {
@@ -1966,32 +1957,33 @@ struct FontBase : T
    *
    * This function will allocate a new 32-bit, ARGB surface, and render
    * alpha-blended text using FreeType's LCD subpixel rendering. This function
-   * returns the new surface, or NULL if there was an error.
+   * returns the new surface, or nullptr if there was an error.
    *
    * Text is wrapped to multiple lines on line endings and on word boundaries if
    * it extends beyond `wrap_width` in pixels.
    *
    * If wrap_width is 0, this function will only wrap on newline characters.
    *
-   * You can render at other quality levels with TTF_RenderText_Solid_Wrapped,
-   * TTF_RenderText_Shaded_Wrapped, and TTF_RenderText_Blended_Wrapped.
+   * You can render at other quality levels with
+   * FontBase.RenderText_Solid_Wrapped, FontBase.RenderText_Shaded_Wrapped, and
+   * FontBase.RenderText_Blended_Wrapped.
    *
    * @param text text to render, in UTF-8 encoding.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
    * @param wrap_width the maximum width of the text surface or 0 to wrap on
    *                   newline characters.
-   * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
+   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderText_Blended_Wrapped
-   * @sa TTF_RenderText_LCD
-   * @sa TTF_RenderText_Shaded_Wrapped
-   * @sa TTF_RenderText_Solid_Wrapped
+   * @sa FontBase.RenderText_Blended_Wrapped
+   * @sa FontBase.RenderText_LCD
+   * @sa FontBase.RenderText_Shaded_Wrapped
+   * @sa FontBase.RenderText_Solid_Wrapped
    */
   Surface RenderText_LCD_Wrapped(std::string_view text,
                                  Color fg,
@@ -2008,27 +2000,27 @@ struct FontBase : T
    *
    * This function will allocate a new 32-bit, ARGB surface, and render
    * alpha-blended text using FreeType's LCD subpixel rendering. This function
-   * returns the new surface, or NULL if there was an error.
+   * returns the new surface, or nullptr if there was an error.
    *
    * The glyph is rendered without any padding or centering in the X direction,
    * and aligned normally in the Y direction.
    *
-   * You can render at other quality levels with TTF_RenderGlyph_Solid,
-   * TTF_RenderGlyph_Shaded, and TTF_RenderGlyph_Blended.
+   * You can render at other quality levels with FontBase.RenderGlyph_Solid,
+   * FontBase.RenderGlyph_Shaded, and FontBase.RenderGlyph_Blended.
    *
    * @param ch the codepoint to render.
    * @param fg the foreground color for the text.
    * @param bg the background color for the text.
-   * @returns a new 32-bit, ARGB surface, or NULL if there was an error.
+   * @returns a new 32-bit, ARGB surface, or nullptr if there was an error.
    *
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_RenderGlyph_Blended
-   * @sa TTF_RenderGlyph_Shaded
-   * @sa TTF_RenderGlyph_Solid
+   * @sa FontBase.RenderGlyph_Blended
+   * @sa FontBase.RenderGlyph_Shaded
+   * @sa FontBase.RenderGlyph_Solid
    */
   Surface RenderGlyph_LCD(Uint32 ch, Color fg, Color bg) const
   {
@@ -2039,12 +2031,12 @@ struct FontBase : T
    * Dispose of a previously-created font.
    *
    * Call this when done with a font. This function will free any resources
-   * associated with it. It is safe to call this function on NULL, for example
-   * on the result of a failed call to TTF_OpenFont().
+   * associated with it. It is safe to call this function on nullptr, for
+   * example on the result of a failed call to FontBase.FontBase().
    *
    * The font is not valid after being passed to this function. String pointers
    * from functions that return information on this font, such as
-   * TTF_GetFontFamilyName() and TTF_GetFontStyleName(), are no longer valid
+   * FontBase.GetFamilyName() and FontBase.GetStyleName(), are no longer valid
    * after this call, as well.
    *
    * @threadsafety This function should not be called while any other thread is
@@ -2052,8 +2044,8 @@ struct FontBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_OpenFont
-   * @sa TTF_OpenFontIO
+   * @sa FontBase.FontBase
+   * @sa FontBase.FontBase
    */
   void Close() { T::free(); }
 };
@@ -2066,7 +2058,7 @@ struct FontBase : T
 template<>
 inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
 {
-  return TTF_CloseFont(resource);
+  TTF_CloseFont(resource);
 }
 
 /**
@@ -2075,12 +2067,11 @@ inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
  * You must successfully call this function before it is safe to call any
  * other function in this library.
  *
- * It is safe to call this more than once, and each successful TTF_Init() call
- * should be paired with a matching TTF_Quit() call.
+ * It is safe to call this more than once, and each successful InitSubSystem()
+ * call should be paired with a matching QuitSubSystem(TtfInitFlag) call.
  *
  * @param _ An INIT_TTF value;
- *
- * @returns true on success or false on failure; call SDL_GetError() for more
+ * @returns true on success or false on failure; call GetError() for more
  *          information.
  *
  * @since This function is available since SDL_ttf 3.0.0.
@@ -2088,13 +2079,6 @@ inline void ObjectRef<TTF_Font>::doFree(TTF_Font* resource)
  * @sa QuitSubSystem(TtfInitFlag)
  */
 inline bool InitSubSystem(TtfInitFlag _) { return TTF_Init(); }
-
-/**
- * The winding order of the vertices returned by TextBase::GetGPUDrawData
- *
- * @since This enum is available since SDL_ttf 3.0.0.
- */
-using GPUTextEngineWinding = TTF_GPUTextEngineWinding;
 
 /**
  * A text engine used to create text objects.
@@ -2117,8 +2101,8 @@ struct TextEngineBase : T
   using T::T;
 
   /**
-   * Sets the winding order of the vertices returned by
-   * TextBase::GetGPUDrawData() for a particular GPU text engine.
+   * Sets the winding order of the vertices returned by TextBase.GetGPUDrawData
+   * for a particular GPU text engine.
    *
    * @param winding the new winding order option.
    *
@@ -2127,16 +2111,16 @@ struct TextEngineBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GetGPUWinding()
+   * @sa TextEngineBase.GetGPUWinding
    */
   void SetGPUWinding(GPUTextEngineWinding winding)
   {
-    return TTF_SetGPUTextEngineWinding(T::get(), winding);
+    TTF_SetGPUTextEngineWinding(T::get(), winding);
   }
 
   /**
-   * Get the winding order of the vertices returned by GetGPUDrawData for a
-   * particular GPU text engine
+   * Get the winding order of the vertices returned by TextBase.GetGPUDrawData
+   * for a particular GPU text engine
    *
    * @returns the winding order used by the GPU text engine or
    *          GPU_TEXTENGINE_WINDING_INVALID in case of error.
@@ -2146,7 +2130,7 @@ struct TextEngineBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SetGPUWinding()
+   * @sa TextEngineBase.SetGPUWinding
    */
   GPUTextEngineWinding GetGPUWinding() const
   {
@@ -2173,11 +2157,11 @@ inline void ObjectRef<TTF_TextEngine, TextEngineWrapper>::doFree(
 }
 
 /**
- * Draw sequence returned by GetGPUDrawData
+ * Draw sequence returned by TextBase.GetGPUDrawData
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
- * @sa TextBase::GetGPUDrawData()
+ * @sa TextBase.GetGPUDrawData
  */
 using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
 
@@ -2186,13 +2170,13 @@ using GPUAtlasDrawSequence = TTF_GPUAtlasDrawSequence;
  *
  * @since This struct is available since SDL_ttf 3.0.0.
  *
- * @sa GetNextSubString()
- * @sa GetPreviousSubString()
- * @sa GetSubString()
- * @sa GetSubStrings()
- * @sa GetSubStringForLine()
- * @sa GetSubStringForPoint()
- * @sa GetSubStringsForRange()
+ * @sa TextBase.GetNextSubString
+ * @sa TextBase.GetPreviousSubString
+ * @sa TextBase.GetSubString
+ * @sa TextBase.GetSubStrings
+ * @sa TextBase.GetSubStringForLine
+ * @sa TextBase.GetSubStringForPoint
+ * @sa TextBase.GetSubStringsForRange
  */
 using SubString = TTF_SubString;
 
@@ -2297,7 +2281,7 @@ constexpr auto OUTLINE_MITER_LIMIT_NUMBER =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_TagToString
+ * @sa TagToString
  */
 inline Uint32 StringToTag(StringParam string)
 {
@@ -2317,17 +2301,21 @@ inline Uint32 StringToTag(StringParam string)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_TagToString
+ * @sa TagToString
  */
 inline void TagToString(Uint32 tag, char* string, size_t size)
 {
-  return TTF_TagToString(tag, string, size);
+  TTF_TagToString(tag, string, size);
 }
 
 /**
  * Text
  *
  * @since This struct is available since SDL_ttf 3.0.0.
+ *
+ * @sa TextBase.TextBase
+ * @sa TextBase.GetProperties
+ * @sa TextBase.Destroy
  */
 template<ObjectBox<TTF_Text*> T>
 struct TextBase : T
@@ -2337,8 +2325,8 @@ struct TextBase : T
   /**
    * Draw text to an SDL surface.
    *
-   * `text` must have been created using a TTF_TextEngine from
-   * TTF_CreateSurfaceTextEngine().
+   * `text` must have been created using a TextEngineBase from
+   * CreateSurfaceTextEngine().
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
@@ -2351,8 +2339,8 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateSurfaceTextEngine()
-   * @sa TextBase::TextBase()
+   * @sa CreateSurfaceTextEngine
+   * @sa TextBase.TextBase
    */
   bool DrawSurface(Point p, SurfaceRef surface) const
   {
@@ -2362,13 +2350,13 @@ struct TextBase : T
   /**
    * Draw text to an SDL renderer.
    *
-   * `text` must have been created using a TTF_TextEngine from
-   * TTF_CreateRendererTextEngine(), and will draw using the renderer passed to
+   * `text` must have been created using a TextEngineBase from
+   * CreateRendererTextEngine(), and will draw using the renderer passed to
    * that function.
    *
    * @param p the (x, y) coordinate in pixels, positive from the left edge
    *          towards the right and from the top edge towards the bottom.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -2376,8 +2364,8 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa CreateRendererTextEngine()
-   * @sa TextBase::TextBase()
+   * @sa CreateRendererTextEngine
+   * @sa TextBase.TextBase
    */
   bool DrawRenderer(FPoint p) const
   {
@@ -2387,8 +2375,8 @@ struct TextBase : T
   /**
    * Get the geometry data needed for drawing the text.
    *
-   * `text` must have been created using a TTF_TextEngine from
-   * TTF_CreateGPUTextEngine().
+   * `text` must have been created using a TextEngineBase from
+   * CreateGPUTextEngine().
    *
    * The positive X-axis is taken towards the right and the positive Y-axis is
    * taken upwards for both the vertex and the texture coordinates, i.e, it
@@ -2398,17 +2386,17 @@ struct TextBase : T
    *
    * If the text looks blocky use linear filtering.
    *
-   * @returns a NULL terminated linked list of TTF_GPUAtlasDrawSequence objects
-   *          or NULL if the passed text is empty or in case of failure; call
-   *          SDL_GetError() for more information.
+   * @returns a nullptr terminated linked list of GPUAtlasDrawSequence objects
+   *          or nullptr if the passed text is empty or in case of failure; call
+   *          GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_CreateGPUTextEngine
-   * @sa TTF_CreateText
+   * @sa CreateGPUTextEngine
+   * @sa TextBase.TextBase
    */
   GPUAtlasDrawSequence* GetGPUDrawData() const
   {
@@ -2419,10 +2407,10 @@ struct TextBase : T
    * Create a text object from UTF-8 text and a text engine.
    *
    * @param engine the text engine to use when creating the text object, may be
-   *               NULL.
+   *               nullptr.
    * @param font the font to render with.
    * @param text the text to use, in UTF-8 encoding.
-   * @post a TTF_Text object or NULL on failure; call SDL_GetError() for more
+   * @post a TextBase object or nullptr on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -2430,7 +2418,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_DestroyText
+   * @sa TextBase.Destroy
    */
   TextBase(TextEngineRef engine, FontRef font, std::string_view text)
     : T(TTF_CreateText(engine.get(), font.get(), text.data(), text.size()))
@@ -2441,7 +2429,7 @@ struct TextBase : T
    * Get the properties associated with a text object.
    *
    * @returns a valid property ID on success or 0 on failure; call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
@@ -2459,7 +2447,7 @@ struct TextBase : T
    * This function may cause the internal text representation to be rebuilt.
    *
    * @param engine the text engine to use for drawing.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -2467,7 +2455,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetTextEngine
+   * @sa TextBase.GetEngine
    */
   bool SetEngine(TextEngineRef engine)
   {
@@ -2477,15 +2465,15 @@ struct TextBase : T
   /**
    * Get the text engine used by a text object.
    *
-   * @returns the TTF_TextEngine used by the text on success or NULL on failure;
-   *          call SDL_GetError() for more information.
+   * @returns the TextEngineBase used by the text on success or nullptr on
+   * failure; call GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetTextEngine
+   * @sa TextBase.SetEngine
    */
   TextEngineRef GetEngine() const
   {
@@ -2496,36 +2484,36 @@ struct TextBase : T
    * Set the font used by a text object.
    *
    * When a text object has a font, any changes to the font will automatically
-   * regenerate the text. If you set the font to NULL, the text will continue to
-   * render but changes to the font will no longer affect the text.
+   * regenerate the text. If you set the font to nullptr, the text will continue
+   * to render but changes to the font will no longer affect the text.
    *
    * This function may cause the internal text representation to be rebuilt.
    *
-   * @param font the font to use, may be NULL.
+   * @param font the font to use, may be nullptr.
    * @returns false if the text pointer is null; otherwise, true. call
-   *          SDL_GetError() for more information.
+   *          GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_GetTextFont
+   * @sa TextBase.GetFont
    */
   bool SetFont(FontRef font) { return TTF_SetTextFont(T::get(), font.get()); }
 
   /**
    * Get the font used by a text object.
    *
-   * @returns the TTF_Font used by the text on success or NULL on failure; call
-   *          SDL_GetError() for more information.
+   * @returns the FontBase used by the text on success or nullptr on failure;
+   * call GetError() for more information.
    *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_SetTextFont
+   * @sa TextBase.SetFont
    */
   FontRef GetFont() const { return TTF_GetTextFont(T::get()); }
 
@@ -2555,6 +2543,7 @@ struct TextBase : T
    * This defaults to the direction of the font used by the text object.
    *
    * @returns the direction to be used for text shaping.
+   *
    * @threadsafety This function should be called on the thread that created the
    *               text.
    *
@@ -2577,7 +2566,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TTF_StringToTag
+   * @sa StringToTag
    */
   bool SetScript(Uint32 script) { return TTF_SetTextScript(T::get(), script); }
 
@@ -2596,7 +2585,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TagToString()
+   * @sa TagToString
    */
   Uint32 GetScript() const { return TTF_GetTextScript(T::get()); }
 
@@ -2614,8 +2603,8 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GetColor(Color*)
-   * @sa SetColor(FColor)
+   * @sa TextBase.GetColor(Color*)
+   * @sa TextBase.SetColor(FColor)
    */
   bool SetColor(Color c)
   {
@@ -2636,8 +2625,8 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GetColor(FColor*)
-   * @sa SetColor(Color)
+   * @sa TextBase.GetColor(FColor*)
+   * @sa TextBase.SetColor(Color)
    */
   bool SetColor(FColor c)
   {
@@ -2740,7 +2729,7 @@ struct TextBase : T
    *          range of 0-1, may be nullptr.
    * @param a a pointer filled in with the alpha value in the range of 0-1, may
    *          be nullptr.
-   * @returns true on success or false on failure; call SDL_GetError() for more
+   * @returns true on success or false on failure; call GetError() for more
    *          information.
    *
    * @threadsafety This function should be called on the thread that created the
@@ -2770,7 +2759,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GetPosition()
+   * @sa TextBase.GetPosition
    */
   bool SetPosition(Point p) { return TTF_SetTextPosition(T::get(), p.x, p.y); }
 
@@ -2809,12 +2798,13 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SetPosition()
+   * @sa TextBase.SetPosition
    */
   bool GetPosition(int* x, int* y) const
   {
     return TTF_GetTextPosition(T::get(), x, y);
   }
+
   /**
    * Set whether wrapping is enabled on a text object.
    *
@@ -2830,7 +2820,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa GetWrapWidth()
+   * @sa TextBase.GetWrapWidth
    */
   bool SetWrapWidth(int wrap_width)
   {
@@ -2849,7 +2839,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SetWrapWidth()
+   * @sa TextBase.SetWrapWidth
    */
   std::optional<int> GetWrapWidth() const
   {
@@ -2877,7 +2867,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa IsWrapWhitespaceVisible()
+   * @sa TextBase.IsWrapWhitespaceVisible
    */
   bool SetWrapWhitespaceVisible(bool visible)
   {
@@ -2895,7 +2885,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa SetTextWrapWhitespaceVisible()
+   * @sa TextBase.SetWrapWhitespaceVisible
    */
   bool IsWrapWhitespaceVisible() const
   {
@@ -2916,9 +2906,9 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa AppendString()
-   * @sa DeleteString()
-   * @sa InsertString()
+   * @sa TextBase.AppendString
+   * @sa TextBase.DeleteString
+   * @sa TextBase.InsertString
    */
   bool SetString(std::string_view string)
   {
@@ -2943,9 +2933,9 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa AppendString()
-   * @sa DeleteString()
-   * @sa SetString()
+   * @sa TextBase.AppendString
+   * @sa TextBase.DeleteString
+   * @sa TextBase.SetString
    */
   bool InsertString(int offset, std::string_view string)
   {
@@ -2966,9 +2956,9 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa DeleteString()
-   * @sa InsertString()
-   * @sa SetString()
+   * @sa TextBase.DeleteString
+   * @sa TextBase.InsertString
+   * @sa TextBase.SetString
    */
   bool AppendString(std::string_view string)
   {
@@ -2994,11 +2984,11 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa AppendString()
-   * @sa InsertString()
-   * @sa SetString()
+   * @sa TextBase.AppendString
+   * @sa TextBase.InsertString
+   * @sa TextBase.SetString
    */
-  bool DeleteString(int offset, int length = 1)
+  bool DeleteString(int offset, int length = -1)
   {
     return TTF_DeleteTextString(T::get(), offset, length);
   }
@@ -3278,7 +3268,7 @@ struct TextBase : T
    *
    * @since This function is available since SDL_ttf 3.0.0.
    *
-   * @sa TextBase()
+   * @sa TextBase.TextBase
    */
   void Destroy() { T::free(); }
 };
@@ -3361,16 +3351,15 @@ public:
 /**
  * Create a text engine for drawing text on SDL surfaces.
  *
- * @returns a TTF_TextEngine object or nullptr on failure; call SDL_GetError()
+ * @returns a TextEngine object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TextBase::DrawSurface()
  * @sa Text
- * @sa TextBase
+ * @sa TextBase.DrawSurface
  */
 inline TextEngine CreateSurfaceTextEngine()
 {
@@ -3382,7 +3371,7 @@ inline TextEngine CreateSurfaceTextEngine()
  * Create a text engine for drawing text on an SDL renderer.
  *
  * @param renderer the renderer to use for creating textures and drawing text.
- * @returns a TTF_TextEngine object or nullptr on failure; call SDL_GetError()
+ * @returns a TextEngine object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -3390,10 +3379,9 @@ inline TextEngine CreateSurfaceTextEngine()
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa CreateRendererTextEngineWithProperties()
- * @sa TextBase::DrawRenderer()
+ * @sa TextBase.DrawRenderer
  * @sa Text
- * @sa TextBase
+ * @sa CreateRendererTextEngineWithProperties
  */
 inline TextEngine CreateRendererTextEngine(RendererRef renderer)
 {
@@ -3410,7 +3398,7 @@ inline TextEngine CreateRendererTextEngine(RendererRef renderer)
  *
  * - `TTF_PROP_RENDERER_TEXT_ENGINE_RENDERER`: the renderer to use for
  *   creating textures and drawing text
- * - `TTF_PROP_RENDERER_TEXT_ENGINE_ATLAS_TEXTURE_SIZE`: the size of the
+ * - `prop::RendererTextEngine.ATLAS_TEXTURE_SIZE`: the size of the
  *   texture atlas
  *
  * @param props the properties to use.
@@ -3422,10 +3410,9 @@ inline TextEngine CreateRendererTextEngine(RendererRef renderer)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa CreateRendererTextEngine()
- * @sa TextBase::DrawRenderer()
+ * @sa CreateRendererTextEngine
  * @sa Text
- * @sa TextBase
+ * @sa TextBase.DrawRenderer
  */
 inline TextEngine CreateRendererTextEngineWithProperties(PropertiesRef props)
 {
@@ -3448,7 +3435,7 @@ constexpr auto ATLAS_TEXTURE_SIZE =
  *
  * @param device the SDL_GPUDevice to use for creating textures and drawing
  *               text.
- * @returns a TTF_TextEngine object or nullptr on failure; call SDL_GetError()
+ * @returns a TextEngine object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -3456,10 +3443,9 @@ constexpr auto ATLAS_TEXTURE_SIZE =
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa CreateGPUTextEngineWithProperties()
- * @sa TextBase::GetGPUDrawData()
+ * @sa CreateGPUTextEngineWithProperties
  * @sa Text
- * @sa TextBase
+ * @sa TextBase.GetGPUDrawData
  */
 inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
 {
@@ -3475,11 +3461,11 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  *
  * - `TTF_PROP_GPU_TEXT_ENGINE_DEVICE`: the SDL_GPUDevice to use for creating
  *   textures and drawing text.
- * - `TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE`: the size of the texture
+ * - `prop::GpuTextEngine.ATLAS_TEXTURE_SIZE`: the size of the texture
  *   atlas
  *
  * @param props the properties to use.
- * @returns a TTF_TextEngine object or nullptr on failure; call SDL_GetError()
+ * @returns a TextEngine object or nullptr on failure; call GetError()
  *          for more information.
  *
  * @threadsafety This function should be called on the thread that created the
@@ -3487,10 +3473,9 @@ inline TextEngine CreateGPUTextEngine(SDL_GPUDevice* device)
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa CreateGPUTextEngine()
- * @sa TextBase::GetGPUDrawData()
+ * @sa CreateGPUTextEngine
  * @sa Text
- * @sa TextBase
+ * @sa TextBase.GetGPUDrawData
  */
 inline TextEngine CreateGPUTextEngineWithProperties(PropertiesRef props)
 {
@@ -3515,12 +3500,12 @@ constexpr auto ATLAS_TEXTURE_SIZE = TTF_PROP_GPU_TEXT_ENGINE_ATLAS_TEXTURE_SIZE;
  * return immediately.
  *
  * Once you have as many quit calls as you have had successful calls to
- * TTF_Init, the library will actually deinitialize.
+ * InitSubSystem(TtfInitFlag), the library will actually deinitialize.
  *
  * Please note that this does not automatically close any fonts that are still
  * open at the time of deinitialization, and it is possibly not safe to close
  * them afterwards, as parts of the library will no longer be initialized to
- * deal with it. A well-written program should call TTF_CloseFont() on any
+ * deal with it. A well-written program should call FontBase.Close() on any
  * open fonts before calling this function!
  *
  * @threadsafety It is safe to call this function from any thread.
@@ -3533,7 +3518,8 @@ inline void QuitSubSystem(TtfInitFlag _) { TTF_Quit(); }
  * Check if SDL_ttf is initialized.
  *
  * This reports the number of times the library has been initialized by a call
- * to TTF_Init(), without a paired deinitialization request from TTF_Quit().
+ * to InitSubSystem(TtfInitFlag), without a paired deinitialization request from
+ * QuitSubSystem(TtfInitFlag).
  *
  * In short: if it's greater than zero, the library is currently initialized
  * and ready to work. If zero, it is not initialized.
@@ -3542,14 +3528,15 @@ inline void QuitSubSystem(TtfInitFlag _) { TTF_Quit(); }
  * return a negative number.
  *
  * @returns the current number of initialization calls, that need to
- *          eventually be paired with this many calls to TTF_Quit().
+ *          eventually be paired with this many calls to
+ * QuitSubSystem(TtfInitFlag).
  *
  * @threadsafety It is safe to call this function from any thread.
  *
  * @since This function is available since SDL_ttf 3.0.0.
  *
- * @sa TTF_Init
- * @sa TTF_Quit
+ * @sa InitSubSystem(TtfInitFlag)
+ * @sa QuitSubSystem(TtfInitFlag)
  */
 inline int WasInit(TtfInitFlag _) { return TTF_WasInit(); }
 

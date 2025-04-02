@@ -196,9 +196,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aea8bcd10bed39a622d5e4fcf961caa8b" id="r_aea8bcd10bed39a622d5e4fcf961caa8b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextBase.html#aea8bcd10bed39a622d5e4fcf961caa8b">AppendString</a> (std::string_view string)</td></tr>
 <tr class="memdesc:aea8bcd10bed39a622d5e4fcf961caa8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append UTF-8 text to a text object.  <br /></td></tr>
 <tr class="separator:aea8bcd10bed39a622d5e4fcf961caa8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cf8f0818016fd194243ae381a53ccce" id="r_a1cf8f0818016fd194243ae381a53ccce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextBase.html#a1cf8f0818016fd194243ae381a53ccce">DeleteString</a> (int offset, int length=1)</td></tr>
-<tr class="memdesc:a1cf8f0818016fd194243ae381a53ccce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete UTF-8 text from a text object.  <br /></td></tr>
-<tr class="separator:a1cf8f0818016fd194243ae381a53ccce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaab7b22abe189d052ca505a58dea389" id="r_abaab7b22abe189d052ca505a58dea389"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextBase.html#abaab7b22abe189d052ca505a58dea389">DeleteString</a> (int offset, int length=-1)</td></tr>
+<tr class="memdesc:abaab7b22abe189d052ca505a58dea389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete UTF-8 text from a text object.  <br /></td></tr>
+<tr class="separator:abaab7b22abe189d052ca505a58dea389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a962fd1727d225f96b1bc5d71aee176df" id="r_a962fd1727d225f96b1bc5d71aee176df"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structSDL_1_1Point.html">Point</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1TextBase.html#a962fd1727d225f96b1bc5d71aee176df">GetSize</a> () const</td></tr>
 <tr class="memdesc:a962fd1727d225f96b1bc5d71aee176df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a text object.  <br /></td></tr>
 <tr class="separator:a962fd1727d225f96b1bc5d71aee176df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,7 +257,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumLines</b> () con
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt;<br />
-struct SDL::TextBase&lt; T &gt;</div><dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0. </dd></dl>
+struct SDL::TextBase&lt; T &gt;</div><dl class="section since"><dt>Since</dt><dd>This struct is available since SDL_ttf 3.0.0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a820d9edda63fc1a1067a71ec7e76912e" title="Create a text object from UTF-8 text and a text engine.">TextBase.TextBase</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextBase.html#a6402dfcd6dacde98e558cfa8338dd395" title="Get the properties associated with a text object.">TextBase.GetProperties</a> </dd>
+<dd>
+<a class="el" href="structSDL_1_1TextBase.html#ad7ab7b872bb17495f84d7e3be9a79764" title="Destroy a text object created by a text engine.">TextBase.Destroy</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a820d9edda63fc1a1067a71ec7e76912e" name="a820d9edda63fc1a1067a71ec7e76912e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a820d9edda63fc1a1067a71ec7e76912e">&#9670;&#160;</a></span>TextBase()</h2>
@@ -302,16 +307,16 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">engine</td><td>the text engine to use when creating the text object, may be NULL. </td></tr>
+    <tr><td class="paramname">engine</td><td>the text engine to use when creating the text object, may be nullptr. </td></tr>
     <tr><td class="paramname">font</td><td>the font to render with. </td></tr>
     <tr><td class="paramname">text</td><td>the text to use, in UTF-8 encoding. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section post"><dt>Postcondition</dt><dd>a TTF_Text object or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>a <a class="el" href="structSDL_1_1TextBase.html" title="Text.">TextBase</a> object or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the font and text engine.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_DestroyText </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#ad7ab7b872bb17495f84d7e3be9a79764" title="Destroy a text object created by a text engine.">TextBase.Destroy</a> </dd></dl>
 
 </div>
 </div>
@@ -351,16 +356,16 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a1cf8f0818016fd194243ae381a53ccce" title="Delete UTF-8 text from a text object.">DeleteString()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#abaab7b22abe189d052ca505a58dea389" title="Delete UTF-8 text from a text object.">TextBase.DeleteString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a57b692bd6d9d2619cbc025cf3218d578" title="Insert UTF-8 text into a text object.">InsertString()</a> </dd>
+<a class="el" href="structSDL_1_1TextBase.html#a57b692bd6d9d2619cbc025cf3218d578" title="Insert UTF-8 text into a text object.">TextBase.InsertString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a9653201db529d9f63b5e8c6406fbf8b1" title="Set the UTF-8 text used by a text object.">SetString()</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a9653201db529d9f63b5e8c6406fbf8b1" title="Set the UTF-8 text used by a text object.">TextBase.SetString</a> </dd></dl>
 
 </div>
 </div>
-<a id="a1cf8f0818016fd194243ae381a53ccce" name="a1cf8f0818016fd194243ae381a53ccce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cf8f0818016fd194243ae381a53ccce">&#9670;&#160;</a></span>DeleteString()</h2>
+<a id="abaab7b22abe189d052ca505a58dea389" name="abaab7b22abe189d052ca505a58dea389"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abaab7b22abe189d052ca505a58dea389">&#9670;&#160;</a></span>DeleteString()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,7 +385,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>length</em> = <code>1</code>&#160;</td>
+          <td class="paramname"><em>length</em> = <code>-1</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -405,11 +410,11 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aea8bcd10bed39a622d5e4fcf961caa8b" title="Append UTF-8 text to a text object.">AppendString()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aea8bcd10bed39a622d5e4fcf961caa8b" title="Append UTF-8 text to a text object.">TextBase.AppendString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a57b692bd6d9d2619cbc025cf3218d578" title="Insert UTF-8 text into a text object.">InsertString()</a> </dd>
+<a class="el" href="structSDL_1_1TextBase.html#a57b692bd6d9d2619cbc025cf3218d578" title="Insert UTF-8 text into a text object.">TextBase.InsertString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a9653201db529d9f63b5e8c6406fbf8b1" title="Set the UTF-8 text used by a text object.">SetString()</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a9653201db529d9f63b5e8c6406fbf8b1" title="Set the UTF-8 text used by a text object.">TextBase.SetString</a> </dd></dl>
 
 </div>
 </div>
@@ -439,7 +444,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 </div><div class="memdoc">
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TextBase() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a820d9edda63fc1a1067a71ec7e76912e" title="Create a text object from UTF-8 text and a text engine.">TextBase.TextBase</a> </dd></dl>
 
 </div>
 </div>
@@ -468,19 +473,19 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a TTF_TextEngine from TTF_CreateRendererTextEngine(), and will draw using the renderer passed to that function.</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a> from <a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine()</a>, and will draw using the renderer passed to that function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the (x, y) coordinate in pixels, positive from the left edge towards the right and from the top edge towards the bottom. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#gaa8cc41ddfc03bdd1fcd884cf2e6c3384" title="Create a text engine for drawing text on an SDL renderer.">CreateRendererTextEngine</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a820d9edda63fc1a1067a71ec7e76912e" title="Create a text object from UTF-8 text and a text engine.">TextBase::TextBase()</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a820d9edda63fc1a1067a71ec7e76912e" title="Create a text object from UTF-8 text and a text engine.">TextBase.TextBase</a> </dd></dl>
 
 </div>
 </div>
@@ -519,7 +524,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a TTF_TextEngine from TTF_CreateSurfaceTextEngine().</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a> from <a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">p</td><td>the (x, y) coordinate in pixels, positive from the left edge towards the right and from the top edge towards the bottom. </td></tr>
@@ -530,9 +535,9 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga0f2b7b5ad87122d3a58e1172395e4896" title="Create a text engine for drawing text on SDL surfaces.">CreateSurfaceTextEngine</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a820d9edda63fc1a1067a71ec7e76912e" title="Create a text object from UTF-8 text and a text engine.">TextBase::TextBase()</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a820d9edda63fc1a1067a71ec7e76912e" title="Create a text object from UTF-8 text and a text engine.">TextBase.TextBase</a> </dd></dl>
 
 </div>
 </div>
@@ -698,7 +703,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#af29a0e56b97253e92d55e84ad7c53d3f" title="Set the color of a text object.">SetColor(FColor)</a> </dd></dl>
@@ -793,7 +798,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 </table>
 </div><div class="memdoc">
 <p>This defaults to the direction of the font used by the text object.</p>
-<dl class="section return"><dt>Returns</dt><dd>the direction to be used for text shaping. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the direction to be used for text shaping.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
@@ -823,10 +828,10 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the TTF_TextEngine used by the text on success or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a> used by the text on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetTextEngine </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aeedc56d3f07e734ada821530daf8253f" title="Set the text engine used by a text object.">TextBase.SetEngine</a> </dd></dl>
 
 </div>
 </div>
@@ -854,10 +859,10 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the TTF_Font used by the text on success or NULL on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="structSDL_1_1FontBase.html" title="The internal structure containing font information.">FontBase</a> used by the text on success or nullptr on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_SetTextFont </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a33a85fe4aaff355dd8bf9049c80dbab6" title="Set the font used by a text object.">TextBase.SetFont</a> </dd></dl>
 
 </div>
 </div>
@@ -885,15 +890,15 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p><code>text</code> must have been created using a TTF_TextEngine from TTF_CreateGPUTextEngine().</p>
+<p><code>text</code> must have been created using a <a class="el" href="structSDL_1_1TextEngineBase.html" title="A text engine used to create text objects.">TextEngineBase</a> from <a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine()</a>.</p>
 <p>The positive X-axis is taken towards the right and the positive Y-axis is taken upwards for both the vertex and the texture coordinates, i.e, it follows the same convention used by the SDL_GPU API. If you want to use a different coordinate system you will need to transform the vertices yourself.</p>
 <p>If the text looks blocky use linear filtering.</p>
-<dl class="section return"><dt>Returns</dt><dd>a NULL terminated linked list of TTF_GPUAtlasDrawSequence objects or NULL if the passed text is empty or in case of failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a nullptr terminated linked list of GPUAtlasDrawSequence objects or nullptr if the passed text is empty or in case of failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_CreateGPUTextEngine </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga33a84b9756cccdd0a25118e113e1da47" title="Create a text engine for drawing text with the SDL GPU API.">CreateGPUTextEngine</a> </dd>
 <dd>
-TTF_CreateText </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a820d9edda63fc1a1067a71ec7e76912e" title="Create a text object from UTF-8 text and a text engine.">TextBase.TextBase</a> </dd></dl>
 
 </div>
 </div>
@@ -1022,7 +1027,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aeab1bae916aec88355f0bcfab26e8f89" title="Set the position of a text object.">SetPosition()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aeab1bae916aec88355f0bcfab26e8f89" title="Set the position of a text object.">TextBase.SetPosition</a> </dd></dl>
 
 </div>
 </div>
@@ -1099,7 +1104,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a valid property ID on success or 0 on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0. </dd></dl>
 
@@ -1133,7 +1138,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>an <a href="https://unicode.org/iso15924/iso15924-codes.html">ISO 15924 code</a> or 0 if a script hasn't been set on either the text object or the font.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga8e4ae0c77a2f622f7eb2942733e03221" title="Convert from a 32-bit tag to a 4 character string.">TagToString()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga8e4ae0c77a2f622f7eb2942733e03221" title="Convert from a 32-bit tag to a 4 character string.">TagToString</a> </dd></dl>
 
 </div>
 </div>
@@ -1531,7 +1536,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>an int with the maximum width in pixels or 0 if the text is being wrapped on newline characters on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#ac5c67fefc656e881ed8d6f01b2998d0c" title="Set whether wrapping is enabled on a text object.">SetWrapWidth()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#ac5c67fefc656e881ed8d6f01b2998d0c" title="Set whether wrapping is enabled on a text object.">TextBase.SetWrapWidth</a> </dd></dl>
 
 </div>
 </div>
@@ -1581,11 +1586,11 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aea8bcd10bed39a622d5e4fcf961caa8b" title="Append UTF-8 text to a text object.">AppendString()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aea8bcd10bed39a622d5e4fcf961caa8b" title="Append UTF-8 text to a text object.">TextBase.AppendString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a1cf8f0818016fd194243ae381a53ccce" title="Delete UTF-8 text from a text object.">DeleteString()</a> </dd>
+<a class="el" href="structSDL_1_1TextBase.html#abaab7b22abe189d052ca505a58dea389" title="Delete UTF-8 text from a text object.">TextBase.DeleteString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a9653201db529d9f63b5e8c6406fbf8b1" title="Set the UTF-8 text used by a text object.">SetString()</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a9653201db529d9f63b5e8c6406fbf8b1" title="Set the UTF-8 text used by a text object.">TextBase.SetString</a> </dd></dl>
 
 </div>
 </div>
@@ -1616,7 +1621,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true if whitespace is shown when wrapping text, or false otherwise.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>SetTextWrapWhitespaceVisible() </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a9ea20a41afbfbfb9b19d49074054eec8" title="Set whether whitespace should be visible when wrapping a text object.">TextBase.SetWrapWhitespaceVisible</a> </dd></dl>
 
 </div>
 </div>
@@ -1655,9 +1660,9 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>GetColor(Color*) </dd>
+<dl class="section see"><dt>See also</dt><dd>TextBase.GetColor(Color*) </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#af29a0e56b97253e92d55e84ad7c53d3f" title="Set the color of a text object.">SetColor(FColor)</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#af29a0e56b97253e92d55e84ad7c53d3f" title="Set the color of a text object.">TextBase.SetColor(FColor)</a> </dd></dl>
 
 </div>
 </div>
@@ -1696,9 +1701,9 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>GetColor(FColor*) </dd>
+<dl class="section see"><dt>See also</dt><dd>TextBase.GetColor(FColor*) </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a1b0e6b3fdeb564e1addba50316281b70" title="Set the color of a text object.">SetColor(Color)</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a1b0e6b3fdeb564e1addba50316281b70" title="Set the color of a text object.">TextBase.SetColor(Color)</a> </dd></dl>
 
 </div>
 </div>
@@ -1772,10 +1777,10 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextEngine </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aef7135cbc58dcf368f321306398e2aae" title="Get the text engine used by a text object.">TextBase.GetEngine</a> </dd></dl>
 
 </div>
 </div>
@@ -1804,18 +1809,18 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>When a text object has a font, any changes to the font will automatically regenerate the text. If you set the font to NULL, the text will continue to render but changes to the font will no longer affect the text.</p>
+<p>When a text object has a font, any changes to the font will automatically regenerate the text. If you set the font to nullptr, the text will continue to render but changes to the font will no longer affect the text.</p>
 <p>This function may cause the internal text representation to be rebuilt.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">font</td><td>the font to use, may be NULL. </td></tr>
+    <tr><td class="paramname">font</td><td>the font to use, may be nullptr. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>false if the text pointer is null; otherwise, true. call SDL_GetError() for more information.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>false if the text pointer is null; otherwise, true. call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_GetTextFont </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#abb5b7bbb8f0053ae41da8b92fcc83d94" title="Get the font used by a text object.">TextBase.GetFont</a> </dd></dl>
 
 </div>
 </div>
@@ -1854,7 +1859,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 </dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aeecd3be3aeee53398ca4db9c0743f316" title="Get the position of a text object.">GetPosition()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aeecd3be3aeee53398ca4db9c0743f316" title="Get the position of a text object.">TextBase.GetPosition</a> </dd></dl>
 
 </div>
 </div>
@@ -1893,7 +1898,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd>TTF_StringToTag </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__CategorySDLTTF.html#ga3d037554b35e623b087cc4b24d247e18" title="Convert from a 4 character string to a 32-bit tag.">StringToTag</a> </dd></dl>
 
 </div>
 </div>
@@ -1932,11 +1937,11 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aea8bcd10bed39a622d5e4fcf961caa8b" title="Append UTF-8 text to a text object.">AppendString()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#aea8bcd10bed39a622d5e4fcf961caa8b" title="Append UTF-8 text to a text object.">TextBase.AppendString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a1cf8f0818016fd194243ae381a53ccce" title="Delete UTF-8 text from a text object.">DeleteString()</a> </dd>
+<a class="el" href="structSDL_1_1TextBase.html#abaab7b22abe189d052ca505a58dea389" title="Delete UTF-8 text from a text object.">TextBase.DeleteString</a> </dd>
 <dd>
-<a class="el" href="structSDL_1_1TextBase.html#a57b692bd6d9d2619cbc025cf3218d578" title="Insert UTF-8 text into a text object.">InsertString()</a> </dd></dl>
+<a class="el" href="structSDL_1_1TextBase.html#a57b692bd6d9d2619cbc025cf3218d578" title="Insert UTF-8 text into a text object.">TextBase.InsertString</a> </dd></dl>
 
 </div>
 </div>
@@ -1976,7 +1981,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a373a3d292431da4623e39d1a9820574f" title="Return whether whitespace is shown when wrapping a text object.">IsWrapWhitespaceVisible()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a373a3d292431da4623e39d1a9820574f" title="Return whether whitespace is shown when wrapping a text object.">TextBase.IsWrapWhitespaceVisible</a> </dd></dl>
 
 </div>
 </div>
@@ -2015,7 +2020,7 @@ template&lt;ObjectBox&lt; TTF_Text * &gt; T&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>true on success or false on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should be called on the thread that created the text.</dd></dl>
 <dl class="section since"><dt>Since</dt><dd>This function is available since SDL_ttf 3.0.0.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a8075b58fa5efc68a825f3fc463c3f61f" title="Get whether wrapping is enabled on a text object.">GetWrapWidth()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structSDL_1_1TextBase.html#a8075b58fa5efc68a825f3fc463c3f61f" title="Get whether wrapping is enabled on a text object.">TextBase.GetWrapWidth</a> </dd></dl>
 
 </div>
 </div>

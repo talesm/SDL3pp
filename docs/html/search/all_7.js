@@ -267,7 +267,7 @@ var searchData=
   ['gpu_264',['gpu',['../todo.html#_todo000005',1,'GPU'],['../ApiByCategory.html#gpu',1,'GPU']]],
   ['gpu_5ftextengine_5fwinding_5finvalid_265',['GPU_TEXTENGINE_WINDING_INVALID',['../group__CategorySDLTTF.html#gabdc8227b3b317ba7f71aabee6444c935',1,'SDL']]],
   ['gpuatlasdrawsequence_266',['GPUAtlasDrawSequence',['../group__CategorySDLTTF.html#ga17c2da9e5590f3d41f47b36b90bd6dc1',1,'SDL']]],
-  ['gputextenginewinding_267',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#gad0a4a2ecc2605b00899e6442ff11e410',1,'SDL']]],
+  ['gputextenginewinding_267',['GPUTextEngineWinding',['../group__CategorySDLTTF.html#ga9014aa44268f39e3094f96194d4efd5a',1,'SDL']]],
   ['guid_268',['guid',['../structSDL_1_1GUID.html#a710dfc7223127501691d780119376263',1,'SDL::GUID::GUID()'],['../structSDL_1_1GUID.html',1,'SDL::GUID'],['../structSDL_1_1GUID.html#a1387a19bbbebeeb7e23802019861ecbf',1,'SDL::GUID::GUID()']]],
   ['guids_269',['GUIDs',['../group__CategoryGUID.html',1,'']]],
   ['guidtostring_270',['GUIDToString',['../group__CategoryGUID.html#ga4efae6ae549cdb0f0d92ab4011e7d7e7',1,'SDL']]]
