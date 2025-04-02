@@ -348,7 +348,7 @@ function checkTokenTooLarge(token) {
 
 /** @param {string} str  */
 function checkInlineDoc(str) {
-  const m = str.match(/\/\*\*<(.*)\*\//);
+  const m = str.match(/\/\*\*<(.*)\*\//) || str.match(/\/\/\/<(.*)/);
   if (m) return m[1].trim();
 }
 

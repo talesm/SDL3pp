@@ -5458,6 +5458,31 @@
         }
       }
     },
+    "SDL_keycode.h": {
+      "enumerations": {
+        "SDL_Keycode": {
+          "prefix": "SDLK_",
+          "newPrefix": "KEYCODE_"
+        },
+        "SDL_Keymod": {
+          "prefix": "SDL_KMOD_"
+        }
+      },
+      "transform": {
+        "SDL_SCANCODE_TO_KEYCODE": {
+          "name": "ScancodeToKeycode",
+          "kind": "function",
+          "type": "Keycode",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Scancode",
+              "name": "x"
+            }
+          ]
+        }
+      }
+    },
     "SDL_cpuinfo.h": {
       "transform": {
         "SDL_CACHELINE_SIZE": {

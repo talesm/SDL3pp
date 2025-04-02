@@ -347,6 +347,8 @@ function expandEnumerations(sourceEntries, transform, context) {
     if (Array.isArray(sourceEntry)) continue;
     const targetType = addTransform(type, enumTransform, includeAfter);
     let values = enumTransform.values;
+    /** @type {StringMap} */
+    const newNames = {};
     if (!values?.length) {
       if (sourceEntry.kind === "enum") {
         values = Object.keys(sourceEntry.entries);
@@ -358,6 +360,11 @@ function expandEnumerations(sourceEntries, transform, context) {
             && !e.parameters
             && e.name.startsWith(prefix))
           .map(e => /** @type {ApiEntry}*/(e).name);
+        const newPrefix = enumTransform.newPrefix;
+        if (newPrefix) {
+          const oldPrefixLen = prefix.length;
+          values.forEach(n => newNames[n] = newPrefix + n.slice(oldPrefixLen));
+        }
       }
     }
     for (const value of values) {
@@ -365,18 +372,20 @@ function expandEnumerations(sourceEntries, transform, context) {
         kind: "var",
         constexpr: true,
         type: targetType,
-      }, includeAfter);
+      }, includeAfter, newNames[value]);
     }
   }
 
   /** 
-   * @param {string} name 
+   * @param {string}            name 
    * @param {ApiEntryTransform} entry  
-   * @param {string=} includeAfter 
+   * @param {string=}           includeAfter 
+   * @param {string=}           newName
    */
-  function addTransform(name, entry, includeAfter) {
+  function addTransform(name, entry, includeAfter, newName) {
     const currEntry = transform.transform[name] || {};
     entry = { ...currEntry, ...entry };
+    if (newName) entry.name = newName;
     const targetName = entry.name ?? transformName(name, context);
 
     // @ts-ignore
@@ -385,6 +394,8 @@ function expandEnumerations(sourceEntries, transform, context) {
     delete entry.prefix;
     // @ts-ignore
     delete entry.includeAfter;
+    // @ts-ignore
+    delete entry.newPrefix;
 
     if (includeAfter) {
       const placeholder = {

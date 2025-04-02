@@ -353,11 +353,23 @@ function generateEntry(entry, prefix) {
     case "struct":
       return doc + template + generateStruct(entry, prefix);
     case "var":
-      return doc + template + generateDeclPrefix(entry, prefix) + (entry.sourceName ? ` = ${entry.sourceName}` : "") + ';';
+      const varStr = generateVar(entry, prefix);
+      if (entry.doc && !entry.doc.includes("\n") && (entry.doc.length + varStr.length + prefix.length) < 80) {
+        return template + varStr + " ///< " + entry.doc;
+      }
+      return doc + template + varStr;
     default:
       system.warn(`Unknown kind: ${entry.kind} for ${entry.name}`);
       return `${doc}#${prefix}error "${entry.name} (${entry.kind})"`;
   }
+}
+
+/**
+ * @param {ApiEntry} entry 
+ * @param {string}   prefix
+ */
+function generateVar(entry, prefix) {
+  return generateDeclPrefix(entry, prefix) + (entry.sourceName ? ` = ${entry.sourceName}` : "") + ';';
 }
 
 /**

@@ -137,6 +137,7 @@ export interface ApiResource extends ApiEntryTransform {
 export interface ApiEnumeration extends ApiEntryTransform {
   kind?: "struct" | "alias" | "enum";
   prefix?: string;
+  newPrefix?: string;
   values?: string[];
   includeAfter?: string;
 }

@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['o_20abstractions_0',['File and I/O Abstractions',['../group__CategoriesFileIO.html',1,'']]],
-  ['o_20streams_1',['I/O Streams',['../group__CategoryIOStream.html',1,'']]],
-  ['object_20dll_20management_2',['Shared Object/DLL Management',['../group__CategorySharedObject.html',1,'']]],
-  ['object_20properties_3',['Object Properties',['../group__CategoryProperties.html',1,'']]],
-  ['order_20and_20byte_20swapping_4',['Byte Order and Byte Swapping',['../group__CategoryEndian.html',1,'']]]
+  ['management_0',['management',['../group__CategoryVideo.html',1,'Display and Window Management'],['../group__CategorySharedObject.html',1,'Shared Object/DLL Management']]],
+  ['management_20status_1',['Power Management Status',['../group__CategoryPower.html',1,'']]],
+  ['manipulation_2',['Bit Manipulation',['../group__CategoryBits.html',1,'']]],
+  ['miscellaneous_3',['Miscellaneous',['../group__CategoryMisc.html',1,'']]],
+  ['modes_4',['Blend modes',['../group__CategoryBlendmode.html',1,'']]]
 ];

@@ -45,8 +45,8 @@ Category                 | Header
 ------------------------ | --------------------
 @ref CategoryEvents      | SDL3pp_events.h
 Keyboard Support         | SDL3pp_keyboard.h
-Keyboard Keycodes        | SDL3pp_keycode.h
-Keyboard Scancodes       | SDL3pp_scancode.h
+@ref CategoryKeycode     | SDL3pp_keycode.h
+@ref CategoryScancode    | SDL3pp_scancode.h
 Mouse Support            | SDL3pp_mouse.h
 Joystick Support         | SDL3pp_joystick.h
 Gamepad Support          | SDL3pp_gamepad.h
@@ -154,6 +154,8 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesEvents Input Events
 @{
 @addtogroup CategoryEvents
+@addtogroup CategoryKeycode
+@addtogroup CategoryScancode
 @}
 
 @defgroup CategoriesTime Time
