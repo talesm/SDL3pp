@@ -7,9 +7,10 @@ const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require
 
 /**
  * @typedef {object} UpdateApiConfig
- * @prop {Api}    api
- * @prop {string} baseDir
- * @prop {Api=}   currentApi
+ * @prop {Api}      api
+ * @prop {string}   baseDir
+ * @prop {Api=}     currentApi
+ * @prop {boolean=} resetDoc
  */
 
 /**
@@ -17,7 +18,7 @@ const { readLinesSync, system, writeLinesSync, looksLikeFreeFunction } = require
  * @param {UpdateApiConfig} config
  */
 function updateApi(config) {
-  const { api, baseDir, currentApi } = config;
+  const { api, baseDir } = config;
   const files = Object.keys(api.files);
   let totalChanges = 0;
   for (const name of files) {
@@ -26,7 +27,7 @@ function updateApi(config) {
     const content = readLinesSync(filename);
     const targetFile = api.files[name];
 
-    const fileChanges = updateContent(content, targetFile, currentApi?.files?.[name]);
+    const fileChanges = updateContent(content, targetFile, config);
     if (fileChanges == 0) continue;
     totalChanges += 1;
     writeLinesSync(filename, content);
@@ -39,24 +40,32 @@ function updateApi(config) {
 }
 
 /**
+ * @typedef {object} UpdateContentConfig
+ * @prop {Api=}     currentApi
+ * @prop {boolean=} resetDoc
+ */
+
+/**
  * Check and applies changes.
- * @param {string[]}  content 
- * @param {ApiFile}   targetFile 
- * @param {ApiFile=}  sourceFile
+ * @param {string[]}            content 
+ * @param {ApiFile}             targetFile 
+ * @param {UpdateContentConfig} config
  * @returns 0 if no changes happened, n > 0 if there are changes
  */
-function updateContent(content, targetFile, sourceFile) {
+function updateContent(content, targetFile, config = {}) {
   const name = targetFile.name;
-  sourceFile = sourceFile ?? parseContent(name, content, { storeLineNumbers: true });
-  const { docBegin, docEnd, entriesBegin, entriesEnd } = sourceFile;
-  const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, entriesBegin, entriesEnd, "").reverse();
+  const sourceFile = config?.currentApi?.files?.[name] ?? parseContent(name, content, { storeLineNumbers: true });
+  if (config.resetDoc && sourceFile.entries) resetEntriesDoc(sourceFile.entries);
+
+  const changes = checkChanges(sourceFile?.entries ?? {}, targetFile?.entries ?? {}, sourceFile.entriesBegin, sourceFile.entriesEnd)
+    .reverse();
   if (!changes.length) {
     return 0;
   }
   if (targetFile.doc && !sourceFile.doc) {
     changes.push({
-      begin: docBegin,
-      end: docEnd,
+      begin: sourceFile.docBegin,
+      end: sourceFile.docEnd,
       replacement: generateDocString(targetFile.doc),
     });
   }
@@ -84,13 +93,13 @@ function updateChanges(content, changes) {
 
 /**
  * 
- * @param {ApiEntries} sourceEntries 
- * @param {ApiEntries} targetEntries 
- * @param {number} begin 
- * @param {number} end 
- * @param {string=} prefix 
+ * @param {ApiEntries}  sourceEntries 
+ * @param {ApiEntries}  targetEntries 
+ * @param {number}      begin 
+ * @param {number}      end 
+ * @param {string}      prefix 
  */
-function checkChanges(sourceEntries, targetEntries, begin, end, prefix) {
+function checkChanges(sourceEntries, targetEntries, begin, end, prefix = "") {
   const targetNames = Object.keys(targetEntries);
   const sourceNames = Object.keys(sourceEntries);
   if (!targetNames.length) {
@@ -478,6 +487,27 @@ function generateDocString(docStr, prefix) {
   prefix = prefix ?? '';
   docStr = docStr.split('\n').map(l => l ? `${prefix} * ${l}` : `${prefix} *`).join('\n');
   return `${prefix}/**\n${docStr}\n${prefix} */\n`;
+}
+
+/**
+ * 
+ * @param {ApiEntries} entries 
+ */
+function resetEntriesDoc(entries) {
+  Object.values(entries).forEach(resetEntryDoc);
+}
+
+/**
+ * Remove docs
+ * @param {ApiEntry|ApiEntry[]} entry entry
+ */
+function resetEntryDoc(entry) {
+  if (Array.isArray(entry)) {
+    entry.forEach(e => delete e.doc);
+    return;
+  }
+  delete entry.doc;
+  if (entry.entries) resetEntriesDoc(entry.entries);
 }
 
 exports.updateApi = updateApi;

@@ -246,6 +246,7 @@ function update(args) {
     api: null,
     baseDir: "",
     currentApi: null,
+    resetDoc: false,
   };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -265,6 +266,10 @@ function update(args) {
       case '-d': config.baseDir = args[++i].replaceAll("\\", '/'); break;
       case '-c': mergeInto(config, readJSONSync(args[++i].replaceAll("\\", '/'))); break;
       case '-s': config.currentApi = readJSONSync(args[++i].replaceAll("\\", '/')); break;
+      case '--reset-docs':
+      case '--reset-doc': config.resetDoc = true; break;
+      case '--no-reset-docs':
+      case '--no-reset-doc': config.resetDoc = false; break;
       default:
         throw new Error(`Invalid option ${arg}`);
     }
