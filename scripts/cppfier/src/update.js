@@ -64,9 +64,14 @@ function updateContent(content, targetFile, config = {}) {
   }
   if (targetFile.doc && !sourceFile.doc) {
     changes.push({
-      begin: sourceFile.docBegin,
-      end: sourceFile.docEnd,
-      replacement: generateDocString(targetFile.doc),
+      begin: sourceFile.entriesBegin,
+      end: sourceFile.entriesBegin,
+      replacement: generateDocString("\n" + targetFile.doc + "\n\n@{"),
+    });
+    changes.unshift({
+      begin: sourceFile.entriesEnd,
+      end: sourceFile.entriesEnd,
+      replacement: "/// @}"
     });
   }
   updateChanges(content, changes);

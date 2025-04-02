@@ -72,7 +72,7 @@ function parseContent(name, content, config) {
   if (config.storeLineNumbers) {
     apiFile.docBegin = parser.docBegin || 1;
     apiFile.docEnd = parser.docEnd || apiFile.docBegin;
-    apiFile.entriesBegin = parser.entriesBegin || entryArray[0]?.begin || apiFile.docEnd;
+    apiFile.entriesBegin = apiFile.docEnd || parser.entriesBegin || entryArray[0]?.begin;
     apiFile.entriesEnd = parser.entriesEnd || entryArray[entryArray.length - 1]?.end || apiFile.entriesBegin;
     apiFile.namespace = parser.namespace || undefined;
   }

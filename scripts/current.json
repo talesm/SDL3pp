@@ -4075,7 +4075,7 @@
       },
       "docBegin": 15,
       "docEnd": 41,
-      "entriesBegin": 15,
+      "entriesBegin": 41,
       "entriesEnd": 5325,
       "namespace": "SDL"
     },
@@ -4178,7 +4178,7 @@
       },
       "docBegin": 12,
       "docEnd": 40,
-      "entriesBegin": 12,
+      "entriesBegin": 40,
       "entriesEnd": 212,
       "namespace": "SDL"
     },
@@ -4494,7 +4494,7 @@
       },
       "docBegin": 9,
       "docEnd": 53,
-      "entriesBegin": 9,
+      "entriesBegin": 53,
       "entriesEnd": 547,
       "namespace": "SDL"
     },
@@ -5346,7 +5346,7 @@
       },
       "docBegin": 9,
       "docEnd": 59,
-      "entriesBegin": 9,
+      "entriesBegin": 59,
       "entriesEnd": 785,
       "namespace": "SDL"
     },
@@ -5372,7 +5372,7 @@
       },
       "docBegin": 11,
       "docEnd": 19,
-      "entriesBegin": 11,
+      "entriesBegin": 19,
       "entriesEnd": 50,
       "namespace": "SDL"
     },
@@ -5487,7 +5487,7 @@
       },
       "docBegin": 9,
       "docEnd": 19,
-      "entriesBegin": 9,
+      "entriesBegin": 19,
       "entriesEnd": 131,
       "namespace": "SDL"
     },
@@ -5618,7 +5618,7 @@
       },
       "docBegin": 10,
       "docEnd": 19,
-      "entriesBegin": 10,
+      "entriesBegin": 19,
       "entriesEnd": 158,
       "namespace": "SDL"
     },
@@ -5648,7 +5648,7 @@
       },
       "docBegin": 8,
       "docEnd": 22,
-      "entriesBegin": 8,
+      "entriesBegin": 22,
       "entriesEnd": 81,
       "namespace": "SDL"
     },
@@ -6862,7 +6862,7 @@
       },
       "docBegin": 10,
       "docEnd": 23,
-      "entriesBegin": 10,
+      "entriesBegin": 23,
       "entriesEnd": 1398,
       "namespace": "SDL"
     },
@@ -10226,7 +10226,7 @@
       },
       "docBegin": 14,
       "docEnd": 74,
-      "entriesBegin": 14,
+      "entriesBegin": 74,
       "entriesEnd": 2140,
       "namespace": "SDL"
     },
@@ -10529,7 +10529,7 @@
       },
       "docBegin": 8,
       "docEnd": 18,
-      "entriesBegin": 8,
+      "entriesBegin": 18,
       "entriesEnd": 271,
       "namespace": "SDL"
     },
@@ -12877,7 +12877,7 @@
       },
       "docBegin": 9,
       "docEnd": 26,
-      "entriesBegin": 9,
+      "entriesBegin": 26,
       "entriesEnd": 4531,
       "namespace": "SDL"
     },
@@ -13634,7 +13634,7 @@
       },
       "docBegin": 10,
       "docEnd": 38,
-      "entriesBegin": 10,
+      "entriesBegin": 38,
       "entriesEnd": 837,
       "namespace": "SDL"
     },
@@ -16081,7 +16081,7 @@
       },
       "docBegin": 14,
       "docEnd": 22,
-      "entriesBegin": 14,
+      "entriesBegin": 22,
       "entriesEnd": 1951,
       "namespace": "SDL"
     },
@@ -18165,7 +18165,7 @@
       },
       "docBegin": 20,
       "docEnd": 39,
-      "entriesBegin": 20,
+      "entriesBegin": 39,
       "entriesEnd": 2138,
       "namespace": "SDL"
     },
@@ -21931,7 +21931,7 @@
       },
       "docBegin": 18,
       "docEnd": 46,
-      "entriesBegin": 18,
+      "entriesBegin": 46,
       "entriesEnd": 4165,
       "namespace": "SDL"
     },
@@ -25140,7 +25140,7 @@
       },
       "docBegin": 19,
       "docEnd": 49,
-      "entriesBegin": 19,
+      "entriesBegin": 49,
       "entriesEnd": 3351,
       "namespace": "SDL"
     },
@@ -25357,7 +25357,7 @@
       },
       "docBegin": 13,
       "docEnd": 31,
-      "entriesBegin": 13,
+      "entriesBegin": 31,
       "entriesEnd": 398,
       "namespace": "SDL"
     },
@@ -25690,7 +25690,7 @@
       },
       "docBegin": 9,
       "docEnd": 24,
-      "entriesBegin": 9,
+      "entriesBegin": 24,
       "entriesEnd": 268,
       "namespace": "SDL"
     },
@@ -27879,7 +27879,7 @@
       },
       "docBegin": 15,
       "docEnd": 47,
-      "entriesBegin": 15,
+      "entriesBegin": 47,
       "entriesEnd": 1984,
       "namespace": "SDL"
     },
@@ -28188,7 +28188,7 @@
       },
       "docBegin": 9,
       "docEnd": 21,
-      "entriesBegin": 9,
+      "entriesBegin": 21,
       "entriesEnd": 309,
       "namespace": "SDL"
     },
@@ -28389,7 +28389,7 @@
       },
       "docBegin": 9,
       "docEnd": 27,
-      "entriesBegin": 9,
+      "entriesBegin": 27,
       "entriesEnd": 323,
       "namespace": "SDL"
     },
@@ -28537,7 +28537,7 @@
       },
       "docBegin": 9,
       "docEnd": 36,
-      "entriesBegin": 9,
+      "entriesBegin": 36,
       "entriesEnd": 256,
       "namespace": "SDL"
     },
@@ -28776,7 +28776,7 @@
       },
       "docBegin": 9,
       "docEnd": 30,
-      "entriesBegin": 9,
+      "entriesBegin": 30,
       "entriesEnd": 324,
       "namespace": "SDL"
     },
@@ -28819,7 +28819,7 @@
       },
       "docBegin": 10,
       "docEnd": 18,
-      "entriesBegin": 10,
+      "entriesBegin": 18,
       "entriesEnd": 64,
       "namespace": "SDL"
     },
@@ -28918,7 +28918,7 @@
       },
       "docBegin": 10,
       "docEnd": 27,
-      "entriesBegin": 10,
+      "entriesBegin": 27,
       "entriesEnd": 110,
       "namespace": "SDL"
     },
@@ -29737,7 +29737,7 @@
       },
       "docBegin": 10,
       "docEnd": 14,
-      "entriesBegin": 16,
+      "entriesBegin": 14,
       "entriesEnd": 903,
       "namespace": "SDL"
     },
@@ -30051,7 +30051,7 @@
       },
       "docBegin": 20,
       "docEnd": 53,
-      "entriesBegin": 20,
+      "entriesBegin": 53,
       "entriesEnd": 253,
       "namespace": "SDL"
     },
@@ -31210,7 +31210,7 @@
       },
       "docBegin": 21,
       "docEnd": 30,
-      "entriesBegin": 21,
+      "entriesBegin": 30,
       "entriesEnd": 2132,
       "namespace": "SDL"
     },
@@ -34594,7 +34594,7 @@
       },
       "docBegin": 23,
       "docEnd": 34,
-      "entriesBegin": 23,
+      "entriesBegin": 34,
       "entriesEnd": 3556,
       "namespace": "SDL"
     }
