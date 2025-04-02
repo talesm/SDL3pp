@@ -291,8 +291,7 @@ constexpr HorizontalAlignment HORIZONTAL_ALIGN_RIGHT =
  * Direction flags
  *
  * The values here are chosen to match
- * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t)
- * .
+ * [hb_direction_t](https://harfbuzz.github.io/harfbuzz-hb-common.html#hb-direction-t).
  *
  * @since This enum is available since SDL_ttf 3.0.0.
  *
@@ -999,7 +998,7 @@ struct FontBase : T
    */
   bool GetSDF() const { return TTF_GetFontSDF(T::get()); }
 
-#if SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#if SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
   /**
    * Query a font's weight, in terms of the lightness/heaviness of the strokes.
@@ -1009,11 +1008,11 @@ struct FontBase : T
    * @threadsafety This function should be called on the thread that created the
    *               font.
    *
-   * @since This function is available since SDL_ttf 3.2.3.
+   * @since This function is available since SDL_ttf 3.2.2.
    */
   int GetWeight() const { return TTF_GetFontWeight(T::get()); }
 
-#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 3)
+#endif // SDL_TTF_VERSION_ATLEAST(3, 2, 2)
 
   /**
    * Set a font's current wrap alignment option.

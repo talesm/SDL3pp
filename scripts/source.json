@@ -22754,7 +22754,7 @@
           ]
         },
         "TTF_GetFontWeight": {
-          "doc": "Query a font's weight, in terms of the lightness/heaviness of the strokes.\n\n\\param font the font to query.\n\\returns the font's current weight.\n\n\\threadsafety This function should be called on the thread that created the\n              font.\n\n\\since This function is available since SDL_ttf 3.4.0.",
+          "doc": "Query a font's weight, in terms of the lightness/heaviness of the strokes.\n\n\\param font the font to query.\n\\returns the font's current weight.\n\n\\threadsafety This function should be called on the thread that created the\n              font.\n\n\\since This function is available since SDL_ttf 3.2.2.",
           "name": "TTF_GetFontWeight",
           "kind": "function",
           "type": "int",
