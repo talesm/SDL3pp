@@ -2,6 +2,7 @@
 #define SDL3PP_SCANCODE_H_
 
 #include <SDL3/SDL_scancode.h>
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -18,6 +19,9 @@ namespace SDL {
  *
  * @{
  */
+
+// Forward decl
+struct Keycode;
 
 /**
  * The SDL keyboard scancode representation.
@@ -47,6 +51,9 @@ struct Scancode
   {
   }
 
+  // Get scan code from name
+  Scancode(StringParam name);
+
   constexpr auto operator<=>(const Scancode& other) const = default;
 
   /**
@@ -65,6 +72,12 @@ struct Scancode
   {
     return m_scancode != SDL_SCANCODE_UNKNOWN;
   }
+
+  // Set name
+  Scancode& SetName(StringParam name);
+
+  // Get name
+  const char* GetName() const;
 };
 
 constexpr Scancode SCANCODE_UNKNOWN = SDL_SCANCODE_UNKNOWN;

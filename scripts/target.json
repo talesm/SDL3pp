@@ -22336,6 +22336,175 @@
       "name": "SDL3pp_keycode.h",
       "doc": "@defgroup CategoryKeycode Category Keycode\n\nDefines constants which identify keyboard keys and modifiers.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
       "entries": {
+        "Keymod": {
+          "doc": "Valid key modifiers (possibly OR'd together).\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "Keymod",
+          "kind": "alias",
+          "type": "SDL_Keymod",
+          "sourceName": "SDL_Keymod"
+        },
+        "KMOD_NONE": {
+          "doc": "no modifier is applicable.",
+          "name": "KMOD_NONE",
+          "kind": "var",
+          "value": "0x0000u",
+          "sourceName": "SDL_KMOD_NONE",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LSHIFT": {
+          "doc": "the left Shift key is down.",
+          "name": "KMOD_LSHIFT",
+          "kind": "var",
+          "value": "0x0001u",
+          "sourceName": "SDL_KMOD_LSHIFT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RSHIFT": {
+          "doc": "the right Shift key is down.",
+          "name": "KMOD_RSHIFT",
+          "kind": "var",
+          "value": "0x0002u",
+          "sourceName": "SDL_KMOD_RSHIFT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LEVEL5": {
+          "doc": "the Level 5 Shift key is down.",
+          "name": "KMOD_LEVEL5",
+          "kind": "var",
+          "value": "0x0004u",
+          "sourceName": "SDL_KMOD_LEVEL5",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LCTRL": {
+          "doc": "the left Ctrl (Control) key is down.",
+          "name": "KMOD_LCTRL",
+          "kind": "var",
+          "value": "0x0040u",
+          "sourceName": "SDL_KMOD_LCTRL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RCTRL": {
+          "doc": "the right Ctrl (Control) key is down.",
+          "name": "KMOD_RCTRL",
+          "kind": "var",
+          "value": "0x0080u",
+          "sourceName": "SDL_KMOD_RCTRL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LALT": {
+          "doc": "the left Alt key is down.",
+          "name": "KMOD_LALT",
+          "kind": "var",
+          "value": "0x0100u",
+          "sourceName": "SDL_KMOD_LALT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RALT": {
+          "doc": "the right Alt key is down.",
+          "name": "KMOD_RALT",
+          "kind": "var",
+          "value": "0x0200u",
+          "sourceName": "SDL_KMOD_RALT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_LGUI": {
+          "doc": "the left GUI key (often the Windows key) is down.",
+          "name": "KMOD_LGUI",
+          "kind": "var",
+          "value": "0x0400u",
+          "sourceName": "SDL_KMOD_LGUI",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_RGUI": {
+          "doc": "the right GUI key (often the Windows key) is down.",
+          "name": "KMOD_RGUI",
+          "kind": "var",
+          "value": "0x0800u",
+          "sourceName": "SDL_KMOD_RGUI",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_NUM": {
+          "doc": "the Num Lock key (may be located on an extended keypad) is down.",
+          "name": "KMOD_NUM",
+          "kind": "var",
+          "value": "0x1000u",
+          "sourceName": "SDL_KMOD_NUM",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_CAPS": {
+          "doc": "the Caps Lock key is down.",
+          "name": "KMOD_CAPS",
+          "kind": "var",
+          "value": "0x2000u",
+          "sourceName": "SDL_KMOD_CAPS",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_MODE": {
+          "doc": "the !AltGr key is down.",
+          "name": "KMOD_MODE",
+          "kind": "var",
+          "value": "0x4000u",
+          "sourceName": "SDL_KMOD_MODE",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_SCROLL": {
+          "doc": "the Scroll Lock key is down.",
+          "name": "KMOD_SCROLL",
+          "kind": "var",
+          "value": "0x8000u",
+          "sourceName": "SDL_KMOD_SCROLL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_CTRL": {
+          "doc": "Any Ctrl key is down.",
+          "name": "KMOD_CTRL",
+          "kind": "var",
+          "value": "(SDL_KMOD_LCTRL | SDL_KMOD_RCTRL)",
+          "sourceName": "SDL_KMOD_CTRL",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_SHIFT": {
+          "doc": "Any Shift key is down.",
+          "name": "KMOD_SHIFT",
+          "kind": "var",
+          "value": "(SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT)",
+          "sourceName": "SDL_KMOD_SHIFT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_ALT": {
+          "doc": "Any Alt key is down.",
+          "name": "KMOD_ALT",
+          "kind": "var",
+          "value": "(SDL_KMOD_LALT | SDL_KMOD_RALT)",
+          "sourceName": "SDL_KMOD_ALT",
+          "constexpr": true,
+          "type": "Keymod"
+        },
+        "KMOD_GUI": {
+          "doc": "Any GUI key is down.",
+          "name": "KMOD_GUI",
+          "kind": "var",
+          "value": "(SDL_KMOD_LGUI | SDL_KMOD_RGUI)",
+          "sourceName": "SDL_KMOD_GUI",
+          "constexpr": true,
+          "type": "Keymod"
+        },
         "Keycode": {
           "doc": "The SDL virtual key representation.\n\nValues of this type are used to represent keyboard keys using the current\nlayout of the keyboard. These values include Unicode values representing\nthe unmodified character that would be generated by pressing the key, or an\n`SDLK_*` constant for those keys that do not generate characters.\n\nA special exception is the number keys at the top of the keyboard which map\nto SDLK_0...SDLK_9 on AZERTY layouts.\n\nKeys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or\nunicode code point.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "Keycode",
@@ -22349,20 +22518,56 @@
               "type": "SDL_Keycode",
               "doc": ""
             },
-            "Keycode": {
-              "kind": "function",
-              "name": "Keycode",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "SDL_Keycode",
-                  "name": "keycode",
-                  "default": "{}"
-                }
-              ],
-              "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped"
-            },
+            "Keycode": [
+              {
+                "kind": "function",
+                "name": "Keycode",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Keycode",
+                    "name": "keycode",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "Scancode",
+                    "name": "scancode"
+                  },
+                  {
+                    "type": "Keymod",
+                    "name": "keymodstate",
+                    "default": "0"
+                  },
+                  {
+                    "type": "bool",
+                    "name": "key_event",
+                    "default": "false"
+                  }
+                ],
+                "name": "Keycode",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "StringParam",
+                    "name": "name"
+                  }
+                ],
+                "name": "Keycode",
+                "doc": ""
+              }
+            ],
             "operator<=>": {
               "kind": "function",
               "name": "operator<=>",
@@ -22396,11 +22601,42 @@
               "parameters": [],
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
             },
+            "operator Scancode": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "parameters": [],
+              "name": "operator Scancode",
+              "doc": ""
+            },
+            "GetName": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetName",
+              "doc": ""
+            },
+            "GetScancode": {
+              "kind": "function",
+              "type": "Scancode",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Keymod *",
+                  "name": "keymodstate",
+                  "default": "nullptr"
+                }
+              ],
+              "name": "GetScancode",
+              "doc": ""
+            },
             "IsExtended": {
               "kind": "function",
               "name": "IsExtended",
               "type": "bool",
               "constexpr": true,
+              "immutable": true,
               "parameters": [],
               "doc": ""
             },
@@ -22409,6 +22645,7 @@
               "name": "IsScancode",
               "type": "bool",
               "constexpr": true,
+              "immutable": true,
               "parameters": [],
               "doc": ""
             }
@@ -22431,6 +22668,21 @@
           "sourceName": "SDLK_SCANCODE_MASK",
           "constexpr": true,
           "type": "Keycode"
+        },
+        "ScancodeToKeycode": {
+          "doc": "",
+          "name": "ScancodeToKeycode",
+          "kind": "function",
+          "parameters": [
+            {
+              "type": "Scancode",
+              "name": "x"
+            }
+          ],
+          "value": "(X | SDLK_SCANCODE_MASK)",
+          "sourceName": "SDL_SCANCODE_TO_KEYCODE",
+          "type": "Keycode",
+          "constexpr": true
         },
         "KEYCODE_UNKNOWN": {
           "doc": "0",
@@ -23117,7 +23369,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CAPSLOCK": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)",
+          "doc": "ScancodeToKeycode(SCANCODE_CAPSLOCK)",
           "name": "KEYCODE_CAPSLOCK",
           "kind": "var",
           "value": "0x40000039u",
@@ -23126,7 +23378,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F1": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F1)",
+          "doc": "ScancodeToKeycode(SCANCODE_F1)",
           "name": "KEYCODE_F1",
           "kind": "var",
           "value": "0x4000003au",
@@ -23135,7 +23387,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F2": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F2)",
+          "doc": "ScancodeToKeycode(SCANCODE_F2)",
           "name": "KEYCODE_F2",
           "kind": "var",
           "value": "0x4000003bu",
@@ -23144,7 +23396,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F3": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F3)",
+          "doc": "ScancodeToKeycode(SCANCODE_F3)",
           "name": "KEYCODE_F3",
           "kind": "var",
           "value": "0x4000003cu",
@@ -23153,7 +23405,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F4": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F4)",
+          "doc": "ScancodeToKeycode(SCANCODE_F4)",
           "name": "KEYCODE_F4",
           "kind": "var",
           "value": "0x4000003du",
@@ -23162,7 +23414,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F5": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F5)",
+          "doc": "ScancodeToKeycode(SCANCODE_F5)",
           "name": "KEYCODE_F5",
           "kind": "var",
           "value": "0x4000003eu",
@@ -23171,7 +23423,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F6": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F6)",
+          "doc": "ScancodeToKeycode(SCANCODE_F6)",
           "name": "KEYCODE_F6",
           "kind": "var",
           "value": "0x4000003fu",
@@ -23180,7 +23432,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F7": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F7)",
+          "doc": "ScancodeToKeycode(SCANCODE_F7)",
           "name": "KEYCODE_F7",
           "kind": "var",
           "value": "0x40000040u",
@@ -23189,7 +23441,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F8": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F8)",
+          "doc": "ScancodeToKeycode(SCANCODE_F8)",
           "name": "KEYCODE_F8",
           "kind": "var",
           "value": "0x40000041u",
@@ -23198,7 +23450,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F9": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F9)",
+          "doc": "ScancodeToKeycode(SCANCODE_F9)",
           "name": "KEYCODE_F9",
           "kind": "var",
           "value": "0x40000042u",
@@ -23207,7 +23459,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F10": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F10)",
+          "doc": "ScancodeToKeycode(SCANCODE_F10)",
           "name": "KEYCODE_F10",
           "kind": "var",
           "value": "0x40000043u",
@@ -23216,7 +23468,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F11": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F11)",
+          "doc": "ScancodeToKeycode(SCANCODE_F11)",
           "name": "KEYCODE_F11",
           "kind": "var",
           "value": "0x40000044u",
@@ -23225,7 +23477,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F12": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F12)",
+          "doc": "ScancodeToKeycode(SCANCODE_F12)",
           "name": "KEYCODE_F12",
           "kind": "var",
           "value": "0x40000045u",
@@ -23234,7 +23486,7 @@
           "type": "Keycode"
         },
         "KEYCODE_PRINTSCREEN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRINTSCREEN)",
+          "doc": "ScancodeToKeycode(SCANCODE_PRINTSCREEN)",
           "name": "KEYCODE_PRINTSCREEN",
           "kind": "var",
           "value": "0x40000046u",
@@ -23243,7 +23495,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SCROLLLOCK": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SCROLLLOCK)",
+          "doc": "ScancodeToKeycode(SCANCODE_SCROLLLOCK)",
           "name": "KEYCODE_SCROLLLOCK",
           "kind": "var",
           "value": "0x40000047u",
@@ -23252,7 +23504,7 @@
           "type": "Keycode"
         },
         "KEYCODE_PAUSE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAUSE)",
+          "doc": "ScancodeToKeycode(SCANCODE_PAUSE)",
           "name": "KEYCODE_PAUSE",
           "kind": "var",
           "value": "0x40000048u",
@@ -23261,7 +23513,7 @@
           "type": "Keycode"
         },
         "KEYCODE_INSERT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_INSERT)",
+          "doc": "ScancodeToKeycode(SCANCODE_INSERT)",
           "name": "KEYCODE_INSERT",
           "kind": "var",
           "value": "0x40000049u",
@@ -23270,7 +23522,7 @@
           "type": "Keycode"
         },
         "KEYCODE_HOME": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_HOME)",
+          "doc": "ScancodeToKeycode(SCANCODE_HOME)",
           "name": "KEYCODE_HOME",
           "kind": "var",
           "value": "0x4000004au",
@@ -23279,7 +23531,7 @@
           "type": "Keycode"
         },
         "KEYCODE_PAGEUP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEUP)",
+          "doc": "ScancodeToKeycode(SCANCODE_PAGEUP)",
           "name": "KEYCODE_PAGEUP",
           "kind": "var",
           "value": "0x4000004bu",
@@ -23288,7 +23540,7 @@
           "type": "Keycode"
         },
         "KEYCODE_END": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_END)",
+          "doc": "ScancodeToKeycode(SCANCODE_END)",
           "name": "KEYCODE_END",
           "kind": "var",
           "value": "0x4000004du",
@@ -23297,7 +23549,7 @@
           "type": "Keycode"
         },
         "KEYCODE_PAGEDOWN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEDOWN)",
+          "doc": "ScancodeToKeycode(SCANCODE_PAGEDOWN)",
           "name": "KEYCODE_PAGEDOWN",
           "kind": "var",
           "value": "0x4000004eu",
@@ -23306,7 +23558,7 @@
           "type": "Keycode"
         },
         "KEYCODE_RIGHT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RIGHT)",
+          "doc": "ScancodeToKeycode(SCANCODE_RIGHT)",
           "name": "KEYCODE_RIGHT",
           "kind": "var",
           "value": "0x4000004fu",
@@ -23315,7 +23567,7 @@
           "type": "Keycode"
         },
         "KEYCODE_LEFT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LEFT)",
+          "doc": "ScancodeToKeycode(SCANCODE_LEFT)",
           "name": "KEYCODE_LEFT",
           "kind": "var",
           "value": "0x40000050u",
@@ -23324,7 +23576,7 @@
           "type": "Keycode"
         },
         "KEYCODE_DOWN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_DOWN)",
+          "doc": "ScancodeToKeycode(SCANCODE_DOWN)",
           "name": "KEYCODE_DOWN",
           "kind": "var",
           "value": "0x40000051u",
@@ -23333,7 +23585,7 @@
           "type": "Keycode"
         },
         "KEYCODE_UP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_UP)",
+          "doc": "ScancodeToKeycode(SCANCODE_UP)",
           "name": "KEYCODE_UP",
           "kind": "var",
           "value": "0x40000052u",
@@ -23342,7 +23594,7 @@
           "type": "Keycode"
         },
         "KEYCODE_NUMLOCKCLEAR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_NUMLOCKCLEAR)",
+          "doc": "ScancodeToKeycode(SCANCODE_NUMLOCKCLEAR)",
           "name": "KEYCODE_NUMLOCKCLEAR",
           "kind": "var",
           "value": "0x40000053u",
@@ -23351,7 +23603,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_DIVIDE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DIVIDE)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DIVIDE)",
           "name": "KEYCODE_KP_DIVIDE",
           "kind": "var",
           "value": "0x40000054u",
@@ -23360,7 +23612,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MULTIPLY": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MULTIPLY)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MULTIPLY)",
           "name": "KEYCODE_KP_MULTIPLY",
           "kind": "var",
           "value": "0x40000055u",
@@ -23369,7 +23621,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MINUS": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MINUS)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MINUS)",
           "name": "KEYCODE_KP_MINUS",
           "kind": "var",
           "value": "0x40000056u",
@@ -23378,7 +23630,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_PLUS": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUS)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PLUS)",
           "name": "KEYCODE_KP_PLUS",
           "kind": "var",
           "value": "0x40000057u",
@@ -23387,7 +23639,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_ENTER": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_ENTER)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_ENTER)",
           "name": "KEYCODE_KP_ENTER",
           "kind": "var",
           "value": "0x40000058u",
@@ -23396,7 +23648,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_1": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_1)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_1)",
           "name": "KEYCODE_KP_1",
           "kind": "var",
           "value": "0x40000059u",
@@ -23405,7 +23657,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_2": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_2)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_2)",
           "name": "KEYCODE_KP_2",
           "kind": "var",
           "value": "0x4000005au",
@@ -23414,7 +23666,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_3": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_3)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_3)",
           "name": "KEYCODE_KP_3",
           "kind": "var",
           "value": "0x4000005bu",
@@ -23423,7 +23675,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_4": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_4)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_4)",
           "name": "KEYCODE_KP_4",
           "kind": "var",
           "value": "0x4000005cu",
@@ -23432,7 +23684,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_5": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_5)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_5)",
           "name": "KEYCODE_KP_5",
           "kind": "var",
           "value": "0x4000005du",
@@ -23441,7 +23693,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_6": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_6)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_6)",
           "name": "KEYCODE_KP_6",
           "kind": "var",
           "value": "0x4000005eu",
@@ -23450,7 +23702,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_7": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_7)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_7)",
           "name": "KEYCODE_KP_7",
           "kind": "var",
           "value": "0x4000005fu",
@@ -23459,7 +23711,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_8": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_8)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_8)",
           "name": "KEYCODE_KP_8",
           "kind": "var",
           "value": "0x40000060u",
@@ -23468,7 +23720,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_9": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_9)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_9)",
           "name": "KEYCODE_KP_9",
           "kind": "var",
           "value": "0x40000061u",
@@ -23477,7 +23729,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_0": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_0)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_0)",
           "name": "KEYCODE_KP_0",
           "kind": "var",
           "value": "0x40000062u",
@@ -23486,7 +23738,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_PERIOD": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERIOD)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PERIOD)",
           "name": "KEYCODE_KP_PERIOD",
           "kind": "var",
           "value": "0x40000063u",
@@ -23495,7 +23747,7 @@
           "type": "Keycode"
         },
         "KEYCODE_APPLICATION": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_APPLICATION)",
+          "doc": "ScancodeToKeycode(SCANCODE_APPLICATION)",
           "name": "KEYCODE_APPLICATION",
           "kind": "var",
           "value": "0x40000065u",
@@ -23504,7 +23756,7 @@
           "type": "Keycode"
         },
         "KEYCODE_POWER": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_POWER)",
+          "doc": "ScancodeToKeycode(SCANCODE_POWER)",
           "name": "KEYCODE_POWER",
           "kind": "var",
           "value": "0x40000066u",
@@ -23513,7 +23765,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_EQUALS": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALS)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALS)",
           "name": "KEYCODE_KP_EQUALS",
           "kind": "var",
           "value": "0x40000067u",
@@ -23522,7 +23774,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F13": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F13)",
+          "doc": "ScancodeToKeycode(SCANCODE_F13)",
           "name": "KEYCODE_F13",
           "kind": "var",
           "value": "0x40000068u",
@@ -23531,7 +23783,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F14": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F14)",
+          "doc": "ScancodeToKeycode(SCANCODE_F14)",
           "name": "KEYCODE_F14",
           "kind": "var",
           "value": "0x40000069u",
@@ -23540,7 +23792,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F15": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F15)",
+          "doc": "ScancodeToKeycode(SCANCODE_F15)",
           "name": "KEYCODE_F15",
           "kind": "var",
           "value": "0x4000006au",
@@ -23549,7 +23801,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F16": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F16)",
+          "doc": "ScancodeToKeycode(SCANCODE_F16)",
           "name": "KEYCODE_F16",
           "kind": "var",
           "value": "0x4000006bu",
@@ -23558,7 +23810,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F17": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F17)",
+          "doc": "ScancodeToKeycode(SCANCODE_F17)",
           "name": "KEYCODE_F17",
           "kind": "var",
           "value": "0x4000006cu",
@@ -23567,7 +23819,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F18": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F18)",
+          "doc": "ScancodeToKeycode(SCANCODE_F18)",
           "name": "KEYCODE_F18",
           "kind": "var",
           "value": "0x4000006du",
@@ -23576,7 +23828,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F19": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F19)",
+          "doc": "ScancodeToKeycode(SCANCODE_F19)",
           "name": "KEYCODE_F19",
           "kind": "var",
           "value": "0x4000006eu",
@@ -23585,7 +23837,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F20": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F20)",
+          "doc": "ScancodeToKeycode(SCANCODE_F20)",
           "name": "KEYCODE_F20",
           "kind": "var",
           "value": "0x4000006fu",
@@ -23594,7 +23846,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F21": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F21)",
+          "doc": "ScancodeToKeycode(SCANCODE_F21)",
           "name": "KEYCODE_F21",
           "kind": "var",
           "value": "0x40000070u",
@@ -23603,7 +23855,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F22": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F22)",
+          "doc": "ScancodeToKeycode(SCANCODE_F22)",
           "name": "KEYCODE_F22",
           "kind": "var",
           "value": "0x40000071u",
@@ -23612,7 +23864,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F23": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F23)",
+          "doc": "ScancodeToKeycode(SCANCODE_F23)",
           "name": "KEYCODE_F23",
           "kind": "var",
           "value": "0x40000072u",
@@ -23621,7 +23873,7 @@
           "type": "Keycode"
         },
         "KEYCODE_F24": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_F24)",
+          "doc": "ScancodeToKeycode(SCANCODE_F24)",
           "name": "KEYCODE_F24",
           "kind": "var",
           "value": "0x40000073u",
@@ -23630,7 +23882,7 @@
           "type": "Keycode"
         },
         "KEYCODE_EXECUTE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXECUTE)",
+          "doc": "ScancodeToKeycode(SCANCODE_EXECUTE)",
           "name": "KEYCODE_EXECUTE",
           "kind": "var",
           "value": "0x40000074u",
@@ -23639,7 +23891,7 @@
           "type": "Keycode"
         },
         "KEYCODE_HELP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_HELP)",
+          "doc": "ScancodeToKeycode(SCANCODE_HELP)",
           "name": "KEYCODE_HELP",
           "kind": "var",
           "value": "0x40000075u",
@@ -23648,7 +23900,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MENU": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MENU)",
+          "doc": "ScancodeToKeycode(SCANCODE_MENU)",
           "name": "KEYCODE_MENU",
           "kind": "var",
           "value": "0x40000076u",
@@ -23657,7 +23909,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SELECT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SELECT)",
+          "doc": "ScancodeToKeycode(SCANCODE_SELECT)",
           "name": "KEYCODE_SELECT",
           "kind": "var",
           "value": "0x40000077u",
@@ -23666,7 +23918,7 @@
           "type": "Keycode"
         },
         "KEYCODE_STOP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_STOP)",
+          "doc": "ScancodeToKeycode(SCANCODE_STOP)",
           "name": "KEYCODE_STOP",
           "kind": "var",
           "value": "0x40000078u",
@@ -23675,7 +23927,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AGAIN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AGAIN)",
+          "doc": "ScancodeToKeycode(SCANCODE_AGAIN)",
           "name": "KEYCODE_AGAIN",
           "kind": "var",
           "value": "0x40000079u",
@@ -23684,7 +23936,7 @@
           "type": "Keycode"
         },
         "KEYCODE_UNDO": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_UNDO)",
+          "doc": "ScancodeToKeycode(SCANCODE_UNDO)",
           "name": "KEYCODE_UNDO",
           "kind": "var",
           "value": "0x4000007au",
@@ -23693,7 +23945,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CUT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CUT)",
+          "doc": "ScancodeToKeycode(SCANCODE_CUT)",
           "name": "KEYCODE_CUT",
           "kind": "var",
           "value": "0x4000007bu",
@@ -23702,7 +23954,7 @@
           "type": "Keycode"
         },
         "KEYCODE_COPY": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_COPY)",
+          "doc": "ScancodeToKeycode(SCANCODE_COPY)",
           "name": "KEYCODE_COPY",
           "kind": "var",
           "value": "0x4000007cu",
@@ -23711,7 +23963,7 @@
           "type": "Keycode"
         },
         "KEYCODE_PASTE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PASTE)",
+          "doc": "ScancodeToKeycode(SCANCODE_PASTE)",
           "name": "KEYCODE_PASTE",
           "kind": "var",
           "value": "0x4000007du",
@@ -23720,7 +23972,7 @@
           "type": "Keycode"
         },
         "KEYCODE_FIND": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_FIND)",
+          "doc": "ScancodeToKeycode(SCANCODE_FIND)",
           "name": "KEYCODE_FIND",
           "kind": "var",
           "value": "0x4000007eu",
@@ -23729,7 +23981,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MUTE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MUTE)",
+          "doc": "ScancodeToKeycode(SCANCODE_MUTE)",
           "name": "KEYCODE_MUTE",
           "kind": "var",
           "value": "0x4000007fu",
@@ -23738,7 +23990,7 @@
           "type": "Keycode"
         },
         "KEYCODE_VOLUMEUP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEUP)",
+          "doc": "ScancodeToKeycode(SCANCODE_VOLUMEUP)",
           "name": "KEYCODE_VOLUMEUP",
           "kind": "var",
           "value": "0x40000080u",
@@ -23747,7 +23999,7 @@
           "type": "Keycode"
         },
         "KEYCODE_VOLUMEDOWN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEDOWN)",
+          "doc": "ScancodeToKeycode(SCANCODE_VOLUMEDOWN)",
           "name": "KEYCODE_VOLUMEDOWN",
           "kind": "var",
           "value": "0x40000081u",
@@ -23756,7 +24008,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_COMMA": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COMMA)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_COMMA)",
           "name": "KEYCODE_KP_COMMA",
           "kind": "var",
           "value": "0x40000085u",
@@ -23765,7 +24017,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_EQUALSAS400": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALSAS400)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_EQUALSAS400)",
           "name": "KEYCODE_KP_EQUALSAS400",
           "kind": "var",
           "value": "0x40000086u",
@@ -23774,7 +24026,7 @@
           "type": "Keycode"
         },
         "KEYCODE_ALTERASE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_ALTERASE)",
+          "doc": "ScancodeToKeycode(SCANCODE_ALTERASE)",
           "name": "KEYCODE_ALTERASE",
           "kind": "var",
           "value": "0x40000099u",
@@ -23783,7 +24035,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SYSREQ": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SYSREQ)",
+          "doc": "ScancodeToKeycode(SCANCODE_SYSREQ)",
           "name": "KEYCODE_SYSREQ",
           "kind": "var",
           "value": "0x4000009au",
@@ -23792,7 +24044,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CANCEL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CANCEL)",
+          "doc": "ScancodeToKeycode(SCANCODE_CANCEL)",
           "name": "KEYCODE_CANCEL",
           "kind": "var",
           "value": "0x4000009bu",
@@ -23801,7 +24053,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CLEAR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEAR)",
+          "doc": "ScancodeToKeycode(SCANCODE_CLEAR)",
           "name": "KEYCODE_CLEAR",
           "kind": "var",
           "value": "0x4000009cu",
@@ -23810,7 +24062,7 @@
           "type": "Keycode"
         },
         "KEYCODE_PRIOR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRIOR)",
+          "doc": "ScancodeToKeycode(SCANCODE_PRIOR)",
           "name": "KEYCODE_PRIOR",
           "kind": "var",
           "value": "0x4000009du",
@@ -23819,7 +24071,7 @@
           "type": "Keycode"
         },
         "KEYCODE_RETURN2": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RETURN2)",
+          "doc": "ScancodeToKeycode(SCANCODE_RETURN2)",
           "name": "KEYCODE_RETURN2",
           "kind": "var",
           "value": "0x4000009eu",
@@ -23828,7 +24080,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SEPARATOR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SEPARATOR)",
+          "doc": "ScancodeToKeycode(SCANCODE_SEPARATOR)",
           "name": "KEYCODE_SEPARATOR",
           "kind": "var",
           "value": "0x4000009fu",
@@ -23837,7 +24089,7 @@
           "type": "Keycode"
         },
         "KEYCODE_OUT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_OUT)",
+          "doc": "ScancodeToKeycode(SCANCODE_OUT)",
           "name": "KEYCODE_OUT",
           "kind": "var",
           "value": "0x400000a0u",
@@ -23846,7 +24098,7 @@
           "type": "Keycode"
         },
         "KEYCODE_OPER": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_OPER)",
+          "doc": "ScancodeToKeycode(SCANCODE_OPER)",
           "name": "KEYCODE_OPER",
           "kind": "var",
           "value": "0x400000a1u",
@@ -23855,7 +24107,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CLEARAGAIN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEARAGAIN)",
+          "doc": "ScancodeToKeycode(SCANCODE_CLEARAGAIN)",
           "name": "KEYCODE_CLEARAGAIN",
           "kind": "var",
           "value": "0x400000a2u",
@@ -23864,7 +24116,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CRSEL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CRSEL)",
+          "doc": "ScancodeToKeycode(SCANCODE_CRSEL)",
           "name": "KEYCODE_CRSEL",
           "kind": "var",
           "value": "0x400000a3u",
@@ -23873,7 +24125,7 @@
           "type": "Keycode"
         },
         "KEYCODE_EXSEL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXSEL)",
+          "doc": "ScancodeToKeycode(SCANCODE_EXSEL)",
           "name": "KEYCODE_EXSEL",
           "kind": "var",
           "value": "0x400000a4u",
@@ -23882,7 +24134,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_00": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_00)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_00)",
           "name": "KEYCODE_KP_00",
           "kind": "var",
           "value": "0x400000b0u",
@@ -23891,7 +24143,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_000": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_000)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_000)",
           "name": "KEYCODE_KP_000",
           "kind": "var",
           "value": "0x400000b1u",
@@ -23900,7 +24152,7 @@
           "type": "Keycode"
         },
         "KEYCODE_THOUSANDSSEPARATOR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_THOUSANDSSEPARATOR)",
+          "doc": "ScancodeToKeycode(SCANCODE_THOUSANDSSEPARATOR)",
           "name": "KEYCODE_THOUSANDSSEPARATOR",
           "kind": "var",
           "value": "0x400000b2u",
@@ -23909,7 +24161,7 @@
           "type": "Keycode"
         },
         "KEYCODE_DECIMALSEPARATOR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_DECIMALSEPARATOR)",
+          "doc": "ScancodeToKeycode(SCANCODE_DECIMALSEPARATOR)",
           "name": "KEYCODE_DECIMALSEPARATOR",
           "kind": "var",
           "value": "0x400000b3u",
@@ -23918,7 +24170,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CURRENCYUNIT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYUNIT)",
+          "doc": "ScancodeToKeycode(SCANCODE_CURRENCYUNIT)",
           "name": "KEYCODE_CURRENCYUNIT",
           "kind": "var",
           "value": "0x400000b4u",
@@ -23927,7 +24179,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CURRENCYSUBUNIT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYSUBUNIT)",
+          "doc": "ScancodeToKeycode(SCANCODE_CURRENCYSUBUNIT)",
           "name": "KEYCODE_CURRENCYSUBUNIT",
           "kind": "var",
           "value": "0x400000b5u",
@@ -23936,7 +24188,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_LEFTPAREN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTPAREN)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTPAREN)",
           "name": "KEYCODE_KP_LEFTPAREN",
           "kind": "var",
           "value": "0x400000b6u",
@@ -23945,7 +24197,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_RIGHTPAREN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTPAREN)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTPAREN)",
           "name": "KEYCODE_KP_RIGHTPAREN",
           "kind": "var",
           "value": "0x400000b7u",
@@ -23954,7 +24206,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_LEFTBRACE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTBRACE)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_LEFTBRACE)",
           "name": "KEYCODE_KP_LEFTBRACE",
           "kind": "var",
           "value": "0x400000b8u",
@@ -23963,7 +24215,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_RIGHTBRACE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTBRACE)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_RIGHTBRACE)",
           "name": "KEYCODE_KP_RIGHTBRACE",
           "kind": "var",
           "value": "0x400000b9u",
@@ -23972,7 +24224,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_TAB": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_TAB)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_TAB)",
           "name": "KEYCODE_KP_TAB",
           "kind": "var",
           "value": "0x400000bau",
@@ -23981,7 +24233,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_BACKSPACE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BACKSPACE)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_BACKSPACE)",
           "name": "KEYCODE_KP_BACKSPACE",
           "kind": "var",
           "value": "0x400000bbu",
@@ -23990,7 +24242,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_A": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_A)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_A)",
           "name": "KEYCODE_KP_A",
           "kind": "var",
           "value": "0x400000bcu",
@@ -23999,7 +24251,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_B": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_B)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_B)",
           "name": "KEYCODE_KP_B",
           "kind": "var",
           "value": "0x400000bdu",
@@ -24008,7 +24260,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_C": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_C)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_C)",
           "name": "KEYCODE_KP_C",
           "kind": "var",
           "value": "0x400000beu",
@@ -24017,7 +24269,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_D": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_D)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_D)",
           "name": "KEYCODE_KP_D",
           "kind": "var",
           "value": "0x400000bfu",
@@ -24026,7 +24278,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_E": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_E)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_E)",
           "name": "KEYCODE_KP_E",
           "kind": "var",
           "value": "0x400000c0u",
@@ -24035,7 +24287,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_F": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_F)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_F)",
           "name": "KEYCODE_KP_F",
           "kind": "var",
           "value": "0x400000c1u",
@@ -24044,7 +24296,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_XOR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_XOR)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_XOR)",
           "name": "KEYCODE_KP_XOR",
           "kind": "var",
           "value": "0x400000c2u",
@@ -24053,7 +24305,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_POWER": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_POWER)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_POWER)",
           "name": "KEYCODE_KP_POWER",
           "kind": "var",
           "value": "0x400000c3u",
@@ -24062,7 +24314,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_PERCENT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERCENT)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PERCENT)",
           "name": "KEYCODE_KP_PERCENT",
           "kind": "var",
           "value": "0x400000c4u",
@@ -24071,7 +24323,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_LESS": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LESS)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_LESS)",
           "name": "KEYCODE_KP_LESS",
           "kind": "var",
           "value": "0x400000c5u",
@@ -24080,7 +24332,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_GREATER": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_GREATER)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_GREATER)",
           "name": "KEYCODE_KP_GREATER",
           "kind": "var",
           "value": "0x400000c6u",
@@ -24089,7 +24341,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_AMPERSAND": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AMPERSAND)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_AMPERSAND)",
           "name": "KEYCODE_KP_AMPERSAND",
           "kind": "var",
           "value": "0x400000c7u",
@@ -24098,7 +24350,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_DBLAMPERSAND": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLAMPERSAND)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DBLAMPERSAND)",
           "name": "KEYCODE_KP_DBLAMPERSAND",
           "kind": "var",
           "value": "0x400000c8u",
@@ -24107,7 +24359,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_VERTICALBAR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_VERTICALBAR)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_VERTICALBAR)",
           "name": "KEYCODE_KP_VERTICALBAR",
           "kind": "var",
           "value": "0x400000c9u",
@@ -24116,7 +24368,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_DBLVERTICALBAR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLVERTICALBAR)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DBLVERTICALBAR)",
           "name": "KEYCODE_KP_DBLVERTICALBAR",
           "kind": "var",
           "value": "0x400000cau",
@@ -24125,7 +24377,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_COLON": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COLON)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_COLON)",
           "name": "KEYCODE_KP_COLON",
           "kind": "var",
           "value": "0x400000cbu",
@@ -24134,7 +24386,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_HASH": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HASH)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_HASH)",
           "name": "KEYCODE_KP_HASH",
           "kind": "var",
           "value": "0x400000ccu",
@@ -24143,7 +24395,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_SPACE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_SPACE)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_SPACE)",
           "name": "KEYCODE_KP_SPACE",
           "kind": "var",
           "value": "0x400000cdu",
@@ -24152,7 +24404,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_AT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AT)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_AT)",
           "name": "KEYCODE_KP_AT",
           "kind": "var",
           "value": "0x400000ceu",
@@ -24161,7 +24413,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_EXCLAM": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EXCLAM)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_EXCLAM)",
           "name": "KEYCODE_KP_EXCLAM",
           "kind": "var",
           "value": "0x400000cfu",
@@ -24170,7 +24422,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MEMSTORE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSTORE)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSTORE)",
           "name": "KEYCODE_KP_MEMSTORE",
           "kind": "var",
           "value": "0x400000d0u",
@@ -24179,7 +24431,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MEMRECALL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMRECALL)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMRECALL)",
           "name": "KEYCODE_KP_MEMRECALL",
           "kind": "var",
           "value": "0x400000d1u",
@@ -24188,7 +24440,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MEMCLEAR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMCLEAR)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMCLEAR)",
           "name": "KEYCODE_KP_MEMCLEAR",
           "kind": "var",
           "value": "0x400000d2u",
@@ -24197,7 +24449,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MEMADD": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMADD)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMADD)",
           "name": "KEYCODE_KP_MEMADD",
           "kind": "var",
           "value": "0x400000d3u",
@@ -24206,7 +24458,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MEMSUBTRACT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSUBTRACT)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMSUBTRACT)",
           "name": "KEYCODE_KP_MEMSUBTRACT",
           "kind": "var",
           "value": "0x400000d4u",
@@ -24215,7 +24467,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MEMMULTIPLY": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMMULTIPLY)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMMULTIPLY)",
           "name": "KEYCODE_KP_MEMMULTIPLY",
           "kind": "var",
           "value": "0x400000d5u",
@@ -24224,7 +24476,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_MEMDIVIDE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMDIVIDE)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_MEMDIVIDE)",
           "name": "KEYCODE_KP_MEMDIVIDE",
           "kind": "var",
           "value": "0x400000d6u",
@@ -24233,7 +24485,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_PLUSMINUS": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUSMINUS)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_PLUSMINUS)",
           "name": "KEYCODE_KP_PLUSMINUS",
           "kind": "var",
           "value": "0x400000d7u",
@@ -24242,7 +24494,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_CLEAR": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEAR)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_CLEAR)",
           "name": "KEYCODE_KP_CLEAR",
           "kind": "var",
           "value": "0x400000d8u",
@@ -24251,7 +24503,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_CLEARENTRY": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEARENTRY)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_CLEARENTRY)",
           "name": "KEYCODE_KP_CLEARENTRY",
           "kind": "var",
           "value": "0x400000d9u",
@@ -24260,7 +24512,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_BINARY": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BINARY)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_BINARY)",
           "name": "KEYCODE_KP_BINARY",
           "kind": "var",
           "value": "0x400000dau",
@@ -24269,7 +24521,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_OCTAL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_OCTAL)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_OCTAL)",
           "name": "KEYCODE_KP_OCTAL",
           "kind": "var",
           "value": "0x400000dbu",
@@ -24278,7 +24530,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_DECIMAL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DECIMAL)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_DECIMAL)",
           "name": "KEYCODE_KP_DECIMAL",
           "kind": "var",
           "value": "0x400000dcu",
@@ -24287,7 +24539,7 @@
           "type": "Keycode"
         },
         "KEYCODE_KP_HEXADECIMAL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HEXADECIMAL)",
+          "doc": "ScancodeToKeycode(SCANCODE_KP_HEXADECIMAL)",
           "name": "KEYCODE_KP_HEXADECIMAL",
           "kind": "var",
           "value": "0x400000ddu",
@@ -24296,7 +24548,7 @@
           "type": "Keycode"
         },
         "KEYCODE_LCTRL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LCTRL)",
+          "doc": "ScancodeToKeycode(SCANCODE_LCTRL)",
           "name": "KEYCODE_LCTRL",
           "kind": "var",
           "value": "0x400000e0u",
@@ -24305,7 +24557,7 @@
           "type": "Keycode"
         },
         "KEYCODE_LSHIFT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LSHIFT)",
+          "doc": "ScancodeToKeycode(SCANCODE_LSHIFT)",
           "name": "KEYCODE_LSHIFT",
           "kind": "var",
           "value": "0x400000e1u",
@@ -24314,7 +24566,7 @@
           "type": "Keycode"
         },
         "KEYCODE_LALT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LALT)",
+          "doc": "ScancodeToKeycode(SCANCODE_LALT)",
           "name": "KEYCODE_LALT",
           "kind": "var",
           "value": "0x400000e2u",
@@ -24323,7 +24575,7 @@
           "type": "Keycode"
         },
         "KEYCODE_LGUI": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LGUI)",
+          "doc": "ScancodeToKeycode(SCANCODE_LGUI)",
           "name": "KEYCODE_LGUI",
           "kind": "var",
           "value": "0x400000e3u",
@@ -24332,7 +24584,7 @@
           "type": "Keycode"
         },
         "KEYCODE_RCTRL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RCTRL)",
+          "doc": "ScancodeToKeycode(SCANCODE_RCTRL)",
           "name": "KEYCODE_RCTRL",
           "kind": "var",
           "value": "0x400000e4u",
@@ -24341,7 +24593,7 @@
           "type": "Keycode"
         },
         "KEYCODE_RSHIFT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RSHIFT)",
+          "doc": "ScancodeToKeycode(SCANCODE_RSHIFT)",
           "name": "KEYCODE_RSHIFT",
           "kind": "var",
           "value": "0x400000e5u",
@@ -24350,7 +24602,7 @@
           "type": "Keycode"
         },
         "KEYCODE_RALT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RALT)",
+          "doc": "ScancodeToKeycode(SCANCODE_RALT)",
           "name": "KEYCODE_RALT",
           "kind": "var",
           "value": "0x400000e6u",
@@ -24359,7 +24611,7 @@
           "type": "Keycode"
         },
         "KEYCODE_RGUI": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RGUI)",
+          "doc": "ScancodeToKeycode(SCANCODE_RGUI)",
           "name": "KEYCODE_RGUI",
           "kind": "var",
           "value": "0x400000e7u",
@@ -24368,7 +24620,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MODE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MODE)",
+          "doc": "ScancodeToKeycode(SCANCODE_MODE)",
           "name": "KEYCODE_MODE",
           "kind": "var",
           "value": "0x40000101u",
@@ -24377,7 +24629,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SLEEP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SLEEP)",
+          "doc": "ScancodeToKeycode(SCANCODE_SLEEP)",
           "name": "KEYCODE_SLEEP",
           "kind": "var",
           "value": "0x40000102u",
@@ -24386,7 +24638,7 @@
           "type": "Keycode"
         },
         "KEYCODE_WAKE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_WAKE)",
+          "doc": "ScancodeToKeycode(SCANCODE_WAKE)",
           "name": "KEYCODE_WAKE",
           "kind": "var",
           "value": "0x40000103u",
@@ -24395,7 +24647,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CHANNEL_INCREMENT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_INCREMENT)",
+          "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_INCREMENT)",
           "name": "KEYCODE_CHANNEL_INCREMENT",
           "kind": "var",
           "value": "0x40000104u",
@@ -24404,7 +24656,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CHANNEL_DECREMENT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_DECREMENT)",
+          "doc": "ScancodeToKeycode(SCANCODE_CHANNEL_DECREMENT)",
           "name": "KEYCODE_CHANNEL_DECREMENT",
           "kind": "var",
           "value": "0x40000105u",
@@ -24413,7 +24665,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_PLAY": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY)",
           "name": "KEYCODE_MEDIA_PLAY",
           "kind": "var",
           "value": "0x40000106u",
@@ -24422,7 +24674,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_PAUSE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PAUSE)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PAUSE)",
           "name": "KEYCODE_MEDIA_PAUSE",
           "kind": "var",
           "value": "0x40000107u",
@@ -24431,7 +24683,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_RECORD": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_RECORD)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_RECORD)",
           "name": "KEYCODE_MEDIA_RECORD",
           "kind": "var",
           "value": "0x40000108u",
@@ -24440,7 +24692,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_FAST_FORWARD": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_FAST_FORWARD)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_FAST_FORWARD)",
           "name": "KEYCODE_MEDIA_FAST_FORWARD",
           "kind": "var",
           "value": "0x40000109u",
@@ -24449,7 +24701,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_REWIND": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_REWIND)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_REWIND)",
           "name": "KEYCODE_MEDIA_REWIND",
           "kind": "var",
           "value": "0x4000010au",
@@ -24458,7 +24710,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_NEXT_TRACK": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_NEXT_TRACK)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_NEXT_TRACK)",
           "name": "KEYCODE_MEDIA_NEXT_TRACK",
           "kind": "var",
           "value": "0x4000010bu",
@@ -24467,7 +24719,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_PREVIOUS_TRACK": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PREVIOUS_TRACK)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PREVIOUS_TRACK)",
           "name": "KEYCODE_MEDIA_PREVIOUS_TRACK",
           "kind": "var",
           "value": "0x4000010cu",
@@ -24476,7 +24728,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_STOP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_STOP)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_STOP)",
           "name": "KEYCODE_MEDIA_STOP",
           "kind": "var",
           "value": "0x4000010du",
@@ -24485,7 +24737,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_EJECT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_EJECT)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_EJECT)",
           "name": "KEYCODE_MEDIA_EJECT",
           "kind": "var",
           "value": "0x4000010eu",
@@ -24494,7 +24746,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_PLAY_PAUSE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY_PAUSE)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_PLAY_PAUSE)",
           "name": "KEYCODE_MEDIA_PLAY_PAUSE",
           "kind": "var",
           "value": "0x4000010fu",
@@ -24503,7 +24755,7 @@
           "type": "Keycode"
         },
         "KEYCODE_MEDIA_SELECT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_SELECT)",
+          "doc": "ScancodeToKeycode(SCANCODE_MEDIA_SELECT)",
           "name": "KEYCODE_MEDIA_SELECT",
           "kind": "var",
           "value": "0x40000110u",
@@ -24512,7 +24764,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_NEW": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_NEW)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_NEW)",
           "name": "KEYCODE_AC_NEW",
           "kind": "var",
           "value": "0x40000111u",
@@ -24521,7 +24773,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_OPEN": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_OPEN)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_OPEN)",
           "name": "KEYCODE_AC_OPEN",
           "kind": "var",
           "value": "0x40000112u",
@@ -24530,7 +24782,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_CLOSE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_CLOSE)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_CLOSE)",
           "name": "KEYCODE_AC_CLOSE",
           "kind": "var",
           "value": "0x40000113u",
@@ -24539,7 +24791,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_EXIT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_EXIT)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_EXIT)",
           "name": "KEYCODE_AC_EXIT",
           "kind": "var",
           "value": "0x40000114u",
@@ -24548,7 +24800,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_SAVE": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SAVE)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_SAVE)",
           "name": "KEYCODE_AC_SAVE",
           "kind": "var",
           "value": "0x40000115u",
@@ -24557,7 +24809,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_PRINT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PRINT)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_PRINT)",
           "name": "KEYCODE_AC_PRINT",
           "kind": "var",
           "value": "0x40000116u",
@@ -24566,7 +24818,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_PROPERTIES": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PROPERTIES)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_PROPERTIES)",
           "name": "KEYCODE_AC_PROPERTIES",
           "kind": "var",
           "value": "0x40000117u",
@@ -24575,7 +24827,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_SEARCH": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SEARCH)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_SEARCH)",
           "name": "KEYCODE_AC_SEARCH",
           "kind": "var",
           "value": "0x40000118u",
@@ -24584,7 +24836,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_HOME": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_HOME)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_HOME)",
           "name": "KEYCODE_AC_HOME",
           "kind": "var",
           "value": "0x40000119u",
@@ -24593,7 +24845,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_BACK": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BACK)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_BACK)",
           "name": "KEYCODE_AC_BACK",
           "kind": "var",
           "value": "0x4000011au",
@@ -24602,7 +24854,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_FORWARD": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_FORWARD)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_FORWARD)",
           "name": "KEYCODE_AC_FORWARD",
           "kind": "var",
           "value": "0x4000011bu",
@@ -24611,7 +24863,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_STOP": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_STOP)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_STOP)",
           "name": "KEYCODE_AC_STOP",
           "kind": "var",
           "value": "0x4000011cu",
@@ -24620,7 +24872,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_REFRESH": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_REFRESH)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_REFRESH)",
           "name": "KEYCODE_AC_REFRESH",
           "kind": "var",
           "value": "0x4000011du",
@@ -24629,7 +24881,7 @@
           "type": "Keycode"
         },
         "KEYCODE_AC_BOOKMARKS": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BOOKMARKS)",
+          "doc": "ScancodeToKeycode(SCANCODE_AC_BOOKMARKS)",
           "name": "KEYCODE_AC_BOOKMARKS",
           "kind": "var",
           "value": "0x4000011eu",
@@ -24638,7 +24890,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SOFTLEFT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTLEFT)",
+          "doc": "ScancodeToKeycode(SCANCODE_SOFTLEFT)",
           "name": "KEYCODE_SOFTLEFT",
           "kind": "var",
           "value": "0x4000011fu",
@@ -24647,7 +24899,7 @@
           "type": "Keycode"
         },
         "KEYCODE_SOFTRIGHT": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTRIGHT)",
+          "doc": "ScancodeToKeycode(SCANCODE_SOFTRIGHT)",
           "name": "KEYCODE_SOFTRIGHT",
           "kind": "var",
           "value": "0x40000120u",
@@ -24656,7 +24908,7 @@
           "type": "Keycode"
         },
         "KEYCODE_CALL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CALL)",
+          "doc": "ScancodeToKeycode(SCANCODE_CALL)",
           "name": "KEYCODE_CALL",
           "kind": "var",
           "value": "0x40000121u",
@@ -24665,7 +24917,7 @@
           "type": "Keycode"
         },
         "KEYCODE_ENDCALL": {
-          "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_ENDCALL)",
+          "doc": "ScancodeToKeycode(SCANCODE_ENDCALL)",
           "name": "KEYCODE_ENDCALL",
           "kind": "var",
           "value": "0x40000122u",
@@ -24735,175 +24987,6 @@
           "sourceName": "SDLK_RHYPER",
           "constexpr": true,
           "type": "Keycode"
-        },
-        "Keymod": {
-          "doc": "Valid key modifiers (possibly OR'd together).\n\n@since This datatype is available since SDL 3.2.0.",
-          "name": "Keymod",
-          "kind": "alias",
-          "type": "SDL_Keymod",
-          "sourceName": "SDL_Keymod"
-        },
-        "KMOD_NONE": {
-          "doc": "no modifier is applicable.",
-          "name": "KMOD_NONE",
-          "kind": "var",
-          "value": "0x0000u",
-          "sourceName": "SDL_KMOD_NONE",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_LSHIFT": {
-          "doc": "the left Shift key is down.",
-          "name": "KMOD_LSHIFT",
-          "kind": "var",
-          "value": "0x0001u",
-          "sourceName": "SDL_KMOD_LSHIFT",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_RSHIFT": {
-          "doc": "the right Shift key is down.",
-          "name": "KMOD_RSHIFT",
-          "kind": "var",
-          "value": "0x0002u",
-          "sourceName": "SDL_KMOD_RSHIFT",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_LEVEL5": {
-          "doc": "the Level 5 Shift key is down.",
-          "name": "KMOD_LEVEL5",
-          "kind": "var",
-          "value": "0x0004u",
-          "sourceName": "SDL_KMOD_LEVEL5",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_LCTRL": {
-          "doc": "the left Ctrl (Control) key is down.",
-          "name": "KMOD_LCTRL",
-          "kind": "var",
-          "value": "0x0040u",
-          "sourceName": "SDL_KMOD_LCTRL",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_RCTRL": {
-          "doc": "the right Ctrl (Control) key is down.",
-          "name": "KMOD_RCTRL",
-          "kind": "var",
-          "value": "0x0080u",
-          "sourceName": "SDL_KMOD_RCTRL",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_LALT": {
-          "doc": "the left Alt key is down.",
-          "name": "KMOD_LALT",
-          "kind": "var",
-          "value": "0x0100u",
-          "sourceName": "SDL_KMOD_LALT",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_RALT": {
-          "doc": "the right Alt key is down.",
-          "name": "KMOD_RALT",
-          "kind": "var",
-          "value": "0x0200u",
-          "sourceName": "SDL_KMOD_RALT",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_LGUI": {
-          "doc": "the left GUI key (often the Windows key) is down.",
-          "name": "KMOD_LGUI",
-          "kind": "var",
-          "value": "0x0400u",
-          "sourceName": "SDL_KMOD_LGUI",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_RGUI": {
-          "doc": "the right GUI key (often the Windows key) is down.",
-          "name": "KMOD_RGUI",
-          "kind": "var",
-          "value": "0x0800u",
-          "sourceName": "SDL_KMOD_RGUI",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_NUM": {
-          "doc": "the Num Lock key (may be located on an extended keypad) is down.",
-          "name": "KMOD_NUM",
-          "kind": "var",
-          "value": "0x1000u",
-          "sourceName": "SDL_KMOD_NUM",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_CAPS": {
-          "doc": "the Caps Lock key is down.",
-          "name": "KMOD_CAPS",
-          "kind": "var",
-          "value": "0x2000u",
-          "sourceName": "SDL_KMOD_CAPS",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_MODE": {
-          "doc": "the !AltGr key is down.",
-          "name": "KMOD_MODE",
-          "kind": "var",
-          "value": "0x4000u",
-          "sourceName": "SDL_KMOD_MODE",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_SCROLL": {
-          "doc": "the Scroll Lock key is down.",
-          "name": "KMOD_SCROLL",
-          "kind": "var",
-          "value": "0x8000u",
-          "sourceName": "SDL_KMOD_SCROLL",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_CTRL": {
-          "doc": "Any Ctrl key is down.",
-          "name": "KMOD_CTRL",
-          "kind": "var",
-          "value": "(SDL_KMOD_LCTRL | SDL_KMOD_RCTRL)",
-          "sourceName": "SDL_KMOD_CTRL",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_SHIFT": {
-          "doc": "Any Shift key is down.",
-          "name": "KMOD_SHIFT",
-          "kind": "var",
-          "value": "(SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT)",
-          "sourceName": "SDL_KMOD_SHIFT",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_ALT": {
-          "doc": "Any Alt key is down.",
-          "name": "KMOD_ALT",
-          "kind": "var",
-          "value": "(SDL_KMOD_LALT | SDL_KMOD_RALT)",
-          "sourceName": "SDL_KMOD_ALT",
-          "constexpr": true,
-          "type": "Keymod"
-        },
-        "KMOD_GUI": {
-          "doc": "Any GUI key is down.",
-          "name": "KMOD_GUI",
-          "kind": "var",
-          "value": "(SDL_KMOD_LGUI | SDL_KMOD_RGUI)",
-          "sourceName": "SDL_KMOD_GUI",
-          "constexpr": true,
-          "type": "Keymod"
         }
       }
     },
@@ -24911,6 +24994,11 @@
       "name": "SDL3pp_scancode.h",
       "doc": "@defgroup CategoryScancode Category Scancode\n\nDefines keyboard scancodes.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
       "entries": {
+        "Keycode-forward": {
+          "name": "Keycode",
+          "kind": "forward",
+          "doc": ""
+        },
         "Scancode": {
           "doc": "The SDL keyboard scancode representation.\n\nAn SDL scancode is the physical representation of a key on the keyboard,\nindependent of language and keyboard mapping.\n\nValues of this type are used to represent keyboard keys, among other places\nin the `scancode` field of the KeyboardEvent structure.\n\nThe values in this enumeration are based on the USB usage page standard:\nhttps://usb.org/sites/default/files/hut1_5.pdf\n\n@since This enum is available since SDL 3.2.0.",
           "name": "Scancode",
@@ -24924,20 +25012,34 @@
               "type": "SDL_Scancode",
               "doc": ""
             },
-            "Scancode": {
-              "kind": "function",
-              "name": "Scancode",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "SDL_Scancode",
-                  "name": "scancode",
-                  "default": "{}"
-                }
-              ],
-              "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped"
-            },
+            "Scancode": [
+              {
+                "kind": "function",
+                "name": "Scancode",
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Scancode",
+                    "name": "scancode",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped"
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "StringParam",
+                    "name": "name"
+                  }
+                ],
+                "name": "Scancode",
+                "doc": ""
+              }
+            ],
             "operator<=>": {
               "kind": "function",
               "name": "operator<=>",
@@ -24970,6 +25072,26 @@
               "immutable": true,
               "parameters": [],
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+            },
+            "SetName": {
+              "kind": "function",
+              "type": "Scancode &",
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                }
+              ],
+              "name": "SetName",
+              "doc": ""
+            },
+            "GetName": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "parameters": [],
+              "name": "GetName",
+              "doc": ""
             }
           }
         },

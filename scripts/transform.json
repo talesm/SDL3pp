@@ -5560,34 +5560,123 @@
       }
     },
     "SDL_scancode.h": {
+      "includeAfter": {
+        "__begin": {
+          "name": "Keycode",
+          "kind": "forward"
+        }
+      },
       "wrappers": {
         "SDL_Scancode": {
-          "ordered": true
+          "ordered": true,
+          "entries": {
+            "Scancode": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                }
+              ]
+            },
+            "SetName": {
+              "kind": "function",
+              "type": "Scancode &",
+              "parameters": [
+                {
+                  "type": "StringParam",
+                  "name": "name"
+                }
+              ]
+            },
+            "GetName": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "parameters": []
+            }
+          }
         }
       }
     },
     "SDL_keycode.h": {
-      "ignoreEntries": [
-        "SDL_SCANCODE_TO_KEYCODE"
-      ],
       "enumerations": {
         "SDL_Keycode": {
           "prefix": "SDLK_",
           "newPrefix": "KEYCODE_"
         },
         "SDL_Keymod": {
-          "prefix": "SDL_KMOD_"
+          "prefix": "SDL_KMOD_",
+          "includeAfter": "__begin"
         }
       },
       "wrappers": {
         "SDL_Keycode": {
           "ordered": true,
           "entries": {
+            "Keycode": [
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "Scancode",
+                    "name": "scancode"
+                  },
+                  {
+                    "type": "Keymod",
+                    "name": "keymodstate",
+                    "default": "0"
+                  },
+                  {
+                    "type": "bool",
+                    "name": "key_event",
+                    "default": "false"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "type": "StringParam",
+                    "name": "name"
+                  }
+                ]
+              }
+            ],
+            "operator Scancode": {
+              "kind": "function",
+              "type": "",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetName": {
+              "kind": "function",
+              "type": "const char *",
+              "immutable": true,
+              "parameters": []
+            },
+            "GetScancode": {
+              "kind": "function",
+              "type": "Scancode",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "Keymod *",
+                  "name": "keymodstate",
+                  "default": "nullptr"
+                }
+              ]
+            },
             "SDLK_EXTENDED_MASK": {
               "kind": "function",
               "name": "IsExtended",
               "type": "bool",
               "constexpr": true,
+              "immutable": true,
               "parameters": []
             },
             "SDLK_SCANCODE_MASK": {
@@ -5595,9 +5684,24 @@
               "name": "IsScancode",
               "type": "bool",
               "constexpr": true,
+              "immutable": true,
               "parameters": []
             }
           }
+        }
+      },
+      "transform": {
+        "SDL_SCANCODE_TO_KEYCODE": {
+          "name": "ScancodeToKeycode",
+          "kind": "function",
+          "type": "Keycode",
+          "constexpr": true,
+          "parameters": [
+            {
+              "type": "Scancode",
+              "name": "x"
+            }
+          ]
         }
       }
     },

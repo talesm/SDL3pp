@@ -27934,6 +27934,195 @@
       "name": "SDL3pp_keycode.h",
       "doc": "@defgroup CategoryKeycode Keyboard Keycodes\n\nDefines constants which identify keyboard keys and modifiers.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
       "entries": {
+        "Keymod": {
+          "doc": "Valid key modifiers (possibly OR'd together).\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "Keymod",
+          "kind": "alias",
+          "type": "SDL_Keymod",
+          "begin": 24,
+          "decl": 29,
+          "end": 31
+        },
+        "KMOD_NONE": {
+          "doc": "no modifier is applicable.",
+          "name": "KMOD_NONE",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 31,
+          "decl": 34,
+          "end": 36
+        },
+        "KMOD_LSHIFT": {
+          "doc": "the left Shift key is down.",
+          "name": "KMOD_LSHIFT",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 36,
+          "decl": 39,
+          "end": 41
+        },
+        "KMOD_RSHIFT": {
+          "doc": "the right Shift key is down.",
+          "name": "KMOD_RSHIFT",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 41,
+          "decl": 44,
+          "end": 46
+        },
+        "KMOD_LEVEL5": {
+          "doc": "the Level 5 Shift key is down.",
+          "name": "KMOD_LEVEL5",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 46,
+          "decl": 49,
+          "end": 51
+        },
+        "KMOD_LCTRL": {
+          "doc": "the left Ctrl (Control) key is down.",
+          "name": "KMOD_LCTRL",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 51,
+          "decl": 54,
+          "end": 56
+        },
+        "KMOD_RCTRL": {
+          "doc": "the right Ctrl (Control) key is down.",
+          "name": "KMOD_RCTRL",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 56,
+          "decl": 59,
+          "end": 61
+        },
+        "KMOD_LALT": {
+          "doc": "the left Alt key is down.",
+          "name": "KMOD_LALT",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 61,
+          "decl": 64,
+          "end": 66
+        },
+        "KMOD_RALT": {
+          "doc": "the right Alt key is down.",
+          "name": "KMOD_RALT",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 66,
+          "decl": 69,
+          "end": 71
+        },
+        "KMOD_LGUI": {
+          "doc": "the left GUI key (often the Windows key) is down.",
+          "name": "KMOD_LGUI",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 71,
+          "decl": 74,
+          "end": 76
+        },
+        "KMOD_RGUI": {
+          "doc": "the right GUI key (often the Windows key) is down.",
+          "name": "KMOD_RGUI",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 76,
+          "decl": 79,
+          "end": 81
+        },
+        "KMOD_NUM": {
+          "doc": "the Num Lock key (may be located on an extended keypad) is down.",
+          "name": "KMOD_NUM",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 81,
+          "decl": 84,
+          "end": 86
+        },
+        "KMOD_CAPS": {
+          "doc": "the Caps Lock key is down.",
+          "name": "KMOD_CAPS",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 86,
+          "decl": 89,
+          "end": 91
+        },
+        "KMOD_MODE": {
+          "doc": "the !AltGr key is down.",
+          "name": "KMOD_MODE",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 91,
+          "decl": 94,
+          "end": 96
+        },
+        "KMOD_SCROLL": {
+          "doc": "the Scroll Lock key is down.",
+          "name": "KMOD_SCROLL",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 96,
+          "decl": 99,
+          "end": 101
+        },
+        "KMOD_CTRL": {
+          "doc": "Any Ctrl key is down.",
+          "name": "KMOD_CTRL",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 101,
+          "decl": 104,
+          "end": 106
+        },
+        "KMOD_SHIFT": {
+          "doc": "Any Shift key is down.",
+          "name": "KMOD_SHIFT",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 106,
+          "decl": 109,
+          "end": 111
+        },
+        "KMOD_ALT": {
+          "doc": "Any Alt key is down.",
+          "name": "KMOD_ALT",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 111,
+          "decl": 114,
+          "end": 116
+        },
+        "KMOD_GUI": {
+          "doc": "Any GUI key is down.",
+          "name": "KMOD_GUI",
+          "kind": "var",
+          "type": "Keymod",
+          "constexpr": true,
+          "begin": 116,
+          "decl": 119,
+          "end": 121
+        },
         "Keycode": {
           "doc": "The SDL virtual key representation.\n\nValues of this type are used to represent keyboard keys using the current\nlayout of the keyboard. These values include Unicode values representing\nthe unmodified character that would be generated by pressing the key, or an\n`SDLK_*` constant for those keys that do not generate characters.\n\nA special exception is the number keys at the top of the keyboard which map\nto SDLK_0...SDLK_9 on AZERTY layouts.\n\nKeys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or\nunicode code point.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "Keycode",
@@ -27944,27 +28133,69 @@
               "name": "m_keycode",
               "kind": "var",
               "type": "SDL_Keycode",
-              "begin": 41,
-              "decl": 41,
-              "end": 43
+              "begin": 139,
+              "decl": 139,
+              "end": 141
             },
-            "Keycode": {
-              "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped",
-              "name": "Keycode",
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "name": "keycode",
-                  "type": "SDL_Keycode",
-                  "default": "{}"
-                }
-              ],
-              "constexpr": true,
-              "begin": 43,
-              "decl": 48,
-              "end": 53
-            },
+            "Keycode": [
+              {
+                "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped",
+                "name": "Keycode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "keycode",
+                    "type": "SDL_Keycode",
+                    "default": "{}"
+                  }
+                ],
+                "constexpr": true,
+                "begin": 142,
+                "decl": 147,
+                "end": 152
+              },
+              {
+                "doc": "",
+                "name": "Keycode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "scancode",
+                    "type": "Scancode"
+                  },
+                  {
+                    "name": "keymodstate",
+                    "type": "Keymod",
+                    "default": "0"
+                  },
+                  {
+                    "name": "key_event",
+                    "type": "bool",
+                    "default": "false"
+                  }
+                ],
+                "begin": 155,
+                "decl": 155,
+                "end": 157
+              },
+              {
+                "doc": "",
+                "name": "Keycode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "name",
+                    "type": "StringParam"
+                  }
+                ],
+                "begin": 158,
+                "decl": 158,
+                "end": 160
+              }
+            ],
             "operator<=>": {
               "doc": "",
               "name": "operator<=>",
@@ -27978,9 +28209,9 @@
               ],
               "constexpr": true,
               "immutable": true,
-              "begin": 53,
-              "decl": 53,
-              "end": 55
+              "begin": 152,
+              "decl": 152,
+              "end": 154
             },
             "operator SDL_Keycode": {
               "doc": "Unwraps to the underlying Keycode.\n\n@returns the underlying Keycode.",
@@ -27990,9 +28221,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 55,
-              "decl": 60,
-              "end": 62
+              "begin": 160,
+              "decl": 165,
+              "end": 167
             },
             "operator bool": {
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
@@ -28003,9 +28234,48 @@
               "constexpr": true,
               "immutable": true,
               "explicit": true,
-              "begin": 62,
-              "decl": 67,
-              "end": 69
+              "begin": 167,
+              "decl": 172,
+              "end": 174
+            },
+            "operator Scancode": {
+              "doc": "",
+              "name": "operator Scancode",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "immutable": true,
+              "begin": 174,
+              "decl": 174,
+              "end": 176
+            },
+            "GetName": {
+              "doc": "",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "immutable": true,
+              "begin": 177,
+              "decl": 177,
+              "end": 179
+            },
+            "GetScancode": {
+              "doc": "",
+              "name": "GetScancode",
+              "kind": "function",
+              "type": "Scancode",
+              "parameters": [
+                {
+                  "name": "keymodstate",
+                  "type": "Keymod *",
+                  "default": "nullptr"
+                }
+              ],
+              "immutable": true,
+              "begin": 179,
+              "decl": 179,
+              "end": 181
             },
             "IsExtended": {
               "doc": "",
@@ -28014,9 +28284,10 @@
               "type": "bool",
               "parameters": [],
               "constexpr": true,
-              "begin": 70,
-              "decl": 70,
-              "end": 72
+              "immutable": true,
+              "begin": 182,
+              "decl": 182,
+              "end": 184
             },
             "IsScancode": {
               "doc": "",
@@ -28025,14 +28296,15 @@
               "type": "bool",
               "parameters": [],
               "constexpr": true,
-              "begin": 73,
-              "decl": 73,
-              "end": 74
+              "immutable": true,
+              "begin": 185,
+              "decl": 185,
+              "end": 186
             }
           },
-          "begin": 23,
-          "decl": 39,
-          "end": 76
+          "begin": 121,
+          "decl": 137,
+          "end": 188
         },
         "KEYCODE_EXTENDED_MASK": {
           "doc": "",
@@ -28040,9 +28312,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 76,
-          "decl": 76,
-          "end": 78
+          "begin": 188,
+          "decl": 188,
+          "end": 190
         },
         "KEYCODE_SCANCODE_MASK": {
           "doc": "",
@@ -28050,9 +28322,25 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 78,
-          "decl": 78,
-          "end": 80
+          "begin": 190,
+          "decl": 190,
+          "end": 192
+        },
+        "ScancodeToKeycode": {
+          "doc": "Transform scancode to keycode\n\n@param x scancode\n@return keycode",
+          "name": "ScancodeToKeycode",
+          "kind": "function",
+          "type": "Keycode",
+          "parameters": [
+            {
+              "name": "x",
+              "type": "Scancode"
+            }
+          ],
+          "constexpr": true,
+          "begin": 192,
+          "decl": 198,
+          "end": 203
         },
         "KEYCODE_UNKNOWN": {
           "doc": "0",
@@ -28060,9 +28348,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 80,
-          "decl": 80,
-          "end": 82
+          "begin": 203,
+          "decl": 203,
+          "end": 205
         },
         "KEYCODE_RETURN": {
           "doc": "'@r'",
@@ -28070,9 +28358,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 82,
-          "decl": 82,
-          "end": 84
+          "begin": 205,
+          "decl": 205,
+          "end": 207
         },
         "KEYCODE_ESCAPE": {
           "doc": "'@x1B'",
@@ -28080,9 +28368,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 84,
-          "decl": 84,
-          "end": 86
+          "begin": 207,
+          "decl": 207,
+          "end": 209
         },
         "KEYCODE_BACKSPACE": {
           "doc": "'@b'",
@@ -28090,9 +28378,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 86,
-          "decl": 86,
-          "end": 88
+          "begin": 209,
+          "decl": 209,
+          "end": 211
         },
         "KEYCODE_TAB": {
           "doc": "'@t'",
@@ -28100,9 +28388,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 88,
-          "decl": 88,
-          "end": 90
+          "begin": 211,
+          "decl": 211,
+          "end": 213
         },
         "KEYCODE_SPACE": {
           "doc": "' '",
@@ -28110,9 +28398,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 90,
-          "decl": 90,
-          "end": 92
+          "begin": 213,
+          "decl": 213,
+          "end": 215
         },
         "KEYCODE_EXCLAIM": {
           "doc": "'!'",
@@ -28120,9 +28408,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 92,
-          "decl": 92,
-          "end": 94
+          "begin": 215,
+          "decl": 215,
+          "end": 217
         },
         "KEYCODE_DBLAPOSTROPHE": {
           "doc": "'\"'",
@@ -28130,9 +28418,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 94,
-          "decl": 94,
-          "end": 96
+          "begin": 217,
+          "decl": 217,
+          "end": 219
         },
         "KEYCODE_HASH": {
           "doc": "'#'",
@@ -28140,9 +28428,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 96,
-          "decl": 96,
-          "end": 98
+          "begin": 219,
+          "decl": 219,
+          "end": 221
         },
         "KEYCODE_DOLLAR": {
           "doc": "'$'",
@@ -28150,9 +28438,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 98,
-          "decl": 98,
-          "end": 100
+          "begin": 221,
+          "decl": 221,
+          "end": 223
         },
         "KEYCODE_PERCENT": {
           "doc": "'%'",
@@ -28160,9 +28448,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 100,
-          "decl": 100,
-          "end": 102
+          "begin": 223,
+          "decl": 223,
+          "end": 225
         },
         "KEYCODE_AMPERSAND": {
           "doc": "'&'",
@@ -28170,9 +28458,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 102,
-          "decl": 102,
-          "end": 104
+          "begin": 225,
+          "decl": 225,
+          "end": 227
         },
         "KEYCODE_APOSTROPHE": {
           "doc": "'\\''",
@@ -28180,9 +28468,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 104,
-          "decl": 104,
-          "end": 106
+          "begin": 227,
+          "decl": 227,
+          "end": 229
         },
         "KEYCODE_LEFTPAREN": {
           "doc": "'('",
@@ -28190,9 +28478,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 106,
-          "decl": 106,
-          "end": 108
+          "begin": 229,
+          "decl": 229,
+          "end": 231
         },
         "KEYCODE_RIGHTPAREN": {
           "doc": "')'",
@@ -28200,9 +28488,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 108,
-          "decl": 108,
-          "end": 110
+          "begin": 231,
+          "decl": 231,
+          "end": 233
         },
         "KEYCODE_ASTERISK": {
           "doc": "'*'",
@@ -28210,9 +28498,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 110,
-          "decl": 110,
-          "end": 112
+          "begin": 233,
+          "decl": 233,
+          "end": 235
         },
         "KEYCODE_PLUS": {
           "doc": "'+'",
@@ -28220,9 +28508,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 112,
-          "decl": 112,
-          "end": 114
+          "begin": 235,
+          "decl": 235,
+          "end": 237
         },
         "KEYCODE_COMMA": {
           "doc": "','",
@@ -28230,9 +28518,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 114,
-          "decl": 114,
-          "end": 116
+          "begin": 237,
+          "decl": 237,
+          "end": 239
         },
         "KEYCODE_MINUS": {
           "doc": "'-'",
@@ -28240,9 +28528,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 116,
-          "decl": 116,
-          "end": 118
+          "begin": 239,
+          "decl": 239,
+          "end": 241
         },
         "KEYCODE_PERIOD": {
           "doc": "'.'",
@@ -28250,9 +28538,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 118,
-          "decl": 118,
-          "end": 120
+          "begin": 241,
+          "decl": 241,
+          "end": 243
         },
         "KEYCODE_SLASH": {
           "doc": "'/'",
@@ -28260,9 +28548,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 120,
-          "decl": 120,
-          "end": 122
+          "begin": 243,
+          "decl": 243,
+          "end": 245
         },
         "KEYCODE_0": {
           "doc": "'0'",
@@ -28270,9 +28558,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 122,
-          "decl": 122,
-          "end": 124
+          "begin": 245,
+          "decl": 245,
+          "end": 247
         },
         "KEYCODE_1": {
           "doc": "'1'",
@@ -28280,9 +28568,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 124,
-          "decl": 124,
-          "end": 126
+          "begin": 247,
+          "decl": 247,
+          "end": 249
         },
         "KEYCODE_2": {
           "doc": "'2'",
@@ -28290,9 +28578,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 126,
-          "decl": 126,
-          "end": 128
+          "begin": 249,
+          "decl": 249,
+          "end": 251
         },
         "KEYCODE_3": {
           "doc": "'3'",
@@ -28300,9 +28588,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 128,
-          "decl": 128,
-          "end": 130
+          "begin": 251,
+          "decl": 251,
+          "end": 253
         },
         "KEYCODE_4": {
           "doc": "'4'",
@@ -28310,9 +28598,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 130,
-          "decl": 130,
-          "end": 132
+          "begin": 253,
+          "decl": 253,
+          "end": 255
         },
         "KEYCODE_5": {
           "doc": "'5'",
@@ -28320,9 +28608,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 132,
-          "decl": 132,
-          "end": 134
+          "begin": 255,
+          "decl": 255,
+          "end": 257
         },
         "KEYCODE_6": {
           "doc": "'6'",
@@ -28330,9 +28618,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 134,
-          "decl": 134,
-          "end": 136
+          "begin": 257,
+          "decl": 257,
+          "end": 259
         },
         "KEYCODE_7": {
           "doc": "'7'",
@@ -28340,9 +28628,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 136,
-          "decl": 136,
-          "end": 138
+          "begin": 259,
+          "decl": 259,
+          "end": 261
         },
         "KEYCODE_8": {
           "doc": "'8'",
@@ -28350,9 +28638,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 138,
-          "decl": 138,
-          "end": 140
+          "begin": 261,
+          "decl": 261,
+          "end": 263
         },
         "KEYCODE_9": {
           "doc": "'9'",
@@ -28360,9 +28648,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 140,
-          "decl": 140,
-          "end": 142
+          "begin": 263,
+          "decl": 263,
+          "end": 265
         },
         "KEYCODE_COLON": {
           "doc": "':'",
@@ -28370,9 +28658,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 142,
-          "decl": 142,
-          "end": 144
+          "begin": 265,
+          "decl": 265,
+          "end": 267
         },
         "KEYCODE_SEMICOLON": {
           "doc": "';'",
@@ -28380,9 +28668,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 144,
-          "decl": 144,
-          "end": 146
+          "begin": 267,
+          "decl": 267,
+          "end": 269
         },
         "KEYCODE_LESS": {
           "doc": "'<'",
@@ -28390,9 +28678,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 146,
-          "decl": 146,
-          "end": 148
+          "begin": 269,
+          "decl": 269,
+          "end": 271
         },
         "KEYCODE_EQUALS": {
           "doc": "'='",
@@ -28400,9 +28688,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 148,
-          "decl": 148,
-          "end": 150
+          "begin": 271,
+          "decl": 271,
+          "end": 273
         },
         "KEYCODE_GREATER": {
           "doc": "'>'",
@@ -28410,9 +28698,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 150,
-          "decl": 150,
-          "end": 152
+          "begin": 273,
+          "decl": 273,
+          "end": 275
         },
         "KEYCODE_QUESTION": {
           "doc": "'?'",
@@ -28420,9 +28708,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 152,
-          "decl": 152,
-          "end": 154
+          "begin": 275,
+          "decl": 275,
+          "end": 277
         },
         "KEYCODE_AT": {
           "doc": "'@'",
@@ -28430,9 +28718,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 154,
-          "decl": 154,
-          "end": 156
+          "begin": 277,
+          "decl": 277,
+          "end": 279
         },
         "KEYCODE_LEFTBRACKET": {
           "doc": "'['",
@@ -28440,9 +28728,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 156,
-          "decl": 156,
-          "end": 158
+          "begin": 279,
+          "decl": 279,
+          "end": 281
         },
         "KEYCODE_BACKSLASH": {
           "doc": "'\\\\'",
@@ -28450,9 +28738,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 158,
-          "decl": 158,
-          "end": 160
+          "begin": 281,
+          "decl": 281,
+          "end": 283
         },
         "KEYCODE_RIGHTBRACKET": {
           "doc": "']'",
@@ -28460,9 +28748,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 160,
-          "decl": 160,
-          "end": 162
+          "begin": 283,
+          "decl": 283,
+          "end": 285
         },
         "KEYCODE_CARET": {
           "doc": "'^'",
@@ -28470,9 +28758,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 162,
-          "decl": 162,
-          "end": 164
+          "begin": 285,
+          "decl": 285,
+          "end": 287
         },
         "KEYCODE_UNDERSCORE": {
           "doc": "'_'",
@@ -28480,9 +28768,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 164,
-          "decl": 164,
-          "end": 166
+          "begin": 287,
+          "decl": 287,
+          "end": 289
         },
         "KEYCODE_GRAVE": {
           "doc": "'`'",
@@ -28490,9 +28778,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 166,
-          "decl": 166,
-          "end": 168
+          "begin": 289,
+          "decl": 289,
+          "end": 291
         },
         "KEYCODE_A": {
           "doc": "'a'",
@@ -28500,9 +28788,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 168,
-          "decl": 168,
-          "end": 170
+          "begin": 291,
+          "decl": 291,
+          "end": 293
         },
         "KEYCODE_B": {
           "doc": "'b'",
@@ -28510,9 +28798,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 170,
-          "decl": 170,
-          "end": 172
+          "begin": 293,
+          "decl": 293,
+          "end": 295
         },
         "KEYCODE_C": {
           "doc": "'c'",
@@ -28520,9 +28808,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 172,
-          "decl": 172,
-          "end": 174
+          "begin": 295,
+          "decl": 295,
+          "end": 297
         },
         "KEYCODE_D": {
           "doc": "'d'",
@@ -28530,9 +28818,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 174,
-          "decl": 174,
-          "end": 176
+          "begin": 297,
+          "decl": 297,
+          "end": 299
         },
         "KEYCODE_E": {
           "doc": "'e'",
@@ -28540,9 +28828,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 176,
-          "decl": 176,
-          "end": 178
+          "begin": 299,
+          "decl": 299,
+          "end": 301
         },
         "KEYCODE_F": {
           "doc": "'f'",
@@ -28550,9 +28838,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 178,
-          "decl": 178,
-          "end": 180
+          "begin": 301,
+          "decl": 301,
+          "end": 303
         },
         "KEYCODE_G": {
           "doc": "'g'",
@@ -28560,9 +28848,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 180,
-          "decl": 180,
-          "end": 182
+          "begin": 303,
+          "decl": 303,
+          "end": 305
         },
         "KEYCODE_H": {
           "doc": "'h'",
@@ -28570,9 +28858,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 182,
-          "decl": 182,
-          "end": 184
+          "begin": 305,
+          "decl": 305,
+          "end": 307
         },
         "KEYCODE_I": {
           "doc": "'i'",
@@ -28580,9 +28868,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 184,
-          "decl": 184,
-          "end": 186
+          "begin": 307,
+          "decl": 307,
+          "end": 309
         },
         "KEYCODE_J": {
           "doc": "'j'",
@@ -28590,9 +28878,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 186,
-          "decl": 186,
-          "end": 188
+          "begin": 309,
+          "decl": 309,
+          "end": 311
         },
         "KEYCODE_K": {
           "doc": "'k'",
@@ -28600,9 +28888,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 188,
-          "decl": 188,
-          "end": 190
+          "begin": 311,
+          "decl": 311,
+          "end": 313
         },
         "KEYCODE_L": {
           "doc": "'l'",
@@ -28610,9 +28898,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 190,
-          "decl": 190,
-          "end": 192
+          "begin": 313,
+          "decl": 313,
+          "end": 315
         },
         "KEYCODE_M": {
           "doc": "'m'",
@@ -28620,9 +28908,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 192,
-          "decl": 192,
-          "end": 194
+          "begin": 315,
+          "decl": 315,
+          "end": 317
         },
         "KEYCODE_N": {
           "doc": "'n'",
@@ -28630,9 +28918,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 194,
-          "decl": 194,
-          "end": 196
+          "begin": 317,
+          "decl": 317,
+          "end": 319
         },
         "KEYCODE_O": {
           "doc": "'o'",
@@ -28640,9 +28928,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 196,
-          "decl": 196,
-          "end": 198
+          "begin": 319,
+          "decl": 319,
+          "end": 321
         },
         "KEYCODE_P": {
           "doc": "'p'",
@@ -28650,9 +28938,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 198,
-          "decl": 198,
-          "end": 200
+          "begin": 321,
+          "decl": 321,
+          "end": 323
         },
         "KEYCODE_Q": {
           "doc": "'q'",
@@ -28660,9 +28948,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 200,
-          "decl": 200,
-          "end": 202
+          "begin": 323,
+          "decl": 323,
+          "end": 325
         },
         "KEYCODE_R": {
           "doc": "'r'",
@@ -28670,9 +28958,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 202,
-          "decl": 202,
-          "end": 204
+          "begin": 325,
+          "decl": 325,
+          "end": 327
         },
         "KEYCODE_S": {
           "doc": "'s'",
@@ -28680,9 +28968,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 204,
-          "decl": 204,
-          "end": 206
+          "begin": 327,
+          "decl": 327,
+          "end": 329
         },
         "KEYCODE_T": {
           "doc": "'t'",
@@ -28690,9 +28978,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 206,
-          "decl": 206,
-          "end": 208
+          "begin": 329,
+          "decl": 329,
+          "end": 331
         },
         "KEYCODE_U": {
           "doc": "'u'",
@@ -28700,9 +28988,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 208,
-          "decl": 208,
-          "end": 210
+          "begin": 331,
+          "decl": 331,
+          "end": 333
         },
         "KEYCODE_V": {
           "doc": "'v'",
@@ -28710,9 +28998,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 210,
-          "decl": 210,
-          "end": 212
+          "begin": 333,
+          "decl": 333,
+          "end": 335
         },
         "KEYCODE_W": {
           "doc": "'w'",
@@ -28720,9 +29008,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 212,
-          "decl": 212,
-          "end": 214
+          "begin": 335,
+          "decl": 335,
+          "end": 337
         },
         "KEYCODE_X": {
           "doc": "'x'",
@@ -28730,9 +29018,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 214,
-          "decl": 214,
-          "end": 216
+          "begin": 337,
+          "decl": 337,
+          "end": 339
         },
         "KEYCODE_Y": {
           "doc": "'y'",
@@ -28740,9 +29028,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 216,
-          "decl": 216,
-          "end": 218
+          "begin": 339,
+          "decl": 339,
+          "end": 341
         },
         "KEYCODE_Z": {
           "doc": "'z'",
@@ -28750,9 +29038,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 218,
-          "decl": 218,
-          "end": 220
+          "begin": 341,
+          "decl": 341,
+          "end": 343
         },
         "KEYCODE_LEFTBRACE": {
           "doc": "'{'",
@@ -28760,9 +29048,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 220,
-          "decl": 220,
-          "end": 222
+          "begin": 343,
+          "decl": 343,
+          "end": 345
         },
         "KEYCODE_PIPE": {
           "doc": "'|'",
@@ -28770,9 +29058,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 222,
-          "decl": 222,
-          "end": 224
+          "begin": 345,
+          "decl": 345,
+          "end": 347
         },
         "KEYCODE_RIGHTBRACE": {
           "doc": "'}'",
@@ -28780,9 +29068,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 224,
-          "decl": 224,
-          "end": 226
+          "begin": 347,
+          "decl": 347,
+          "end": 349
         },
         "KEYCODE_TILDE": {
           "doc": "'~'",
@@ -28790,9 +29078,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 226,
-          "decl": 226,
-          "end": 228
+          "begin": 349,
+          "decl": 349,
+          "end": 351
         },
         "KEYCODE_DELETE": {
           "doc": "'@x7F'",
@@ -28800,9 +29088,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 228,
-          "decl": 228,
-          "end": 230
+          "begin": 351,
+          "decl": 351,
+          "end": 353
         },
         "KEYCODE_PLUSMINUS": {
           "doc": "'@xB1'",
@@ -28810,9 +29098,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 230,
-          "decl": 230,
-          "end": 232
+          "begin": 353,
+          "decl": 353,
+          "end": 355
         },
         "KEYCODE_CAPSLOCK": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)",
@@ -28820,9 +29108,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 232,
-          "decl": 235,
-          "end": 237
+          "begin": 355,
+          "decl": 358,
+          "end": 360
         },
         "KEYCODE_F1": {
           "doc": "ScancodeToKeycode(SCANCODE_F1)",
@@ -28830,9 +29118,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 237,
-          "decl": 237,
-          "end": 239
+          "begin": 360,
+          "decl": 360,
+          "end": 362
         },
         "KEYCODE_F2": {
           "doc": "ScancodeToKeycode(SCANCODE_F2)",
@@ -28840,9 +29128,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 239,
-          "decl": 239,
-          "end": 241
+          "begin": 362,
+          "decl": 362,
+          "end": 364
         },
         "KEYCODE_F3": {
           "doc": "ScancodeToKeycode(SCANCODE_F3)",
@@ -28850,9 +29138,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 241,
-          "decl": 241,
-          "end": 243
+          "begin": 364,
+          "decl": 364,
+          "end": 366
         },
         "KEYCODE_F4": {
           "doc": "ScancodeToKeycode(SCANCODE_F4)",
@@ -28860,9 +29148,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 243,
-          "decl": 243,
-          "end": 245
+          "begin": 366,
+          "decl": 366,
+          "end": 368
         },
         "KEYCODE_F5": {
           "doc": "ScancodeToKeycode(SCANCODE_F5)",
@@ -28870,9 +29158,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 245,
-          "decl": 245,
-          "end": 247
+          "begin": 368,
+          "decl": 368,
+          "end": 370
         },
         "KEYCODE_F6": {
           "doc": "ScancodeToKeycode(SCANCODE_F6)",
@@ -28880,9 +29168,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 247,
-          "decl": 247,
-          "end": 249
+          "begin": 370,
+          "decl": 370,
+          "end": 372
         },
         "KEYCODE_F7": {
           "doc": "ScancodeToKeycode(SCANCODE_F7)",
@@ -28890,9 +29178,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 249,
-          "decl": 249,
-          "end": 251
+          "begin": 372,
+          "decl": 372,
+          "end": 374
         },
         "KEYCODE_F8": {
           "doc": "ScancodeToKeycode(SCANCODE_F8)",
@@ -28900,9 +29188,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 251,
-          "decl": 251,
-          "end": 253
+          "begin": 374,
+          "decl": 374,
+          "end": 376
         },
         "KEYCODE_F9": {
           "doc": "ScancodeToKeycode(SCANCODE_F9)",
@@ -28910,9 +29198,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 253,
-          "decl": 253,
-          "end": 255
+          "begin": 376,
+          "decl": 376,
+          "end": 378
         },
         "KEYCODE_F10": {
           "doc": "ScancodeToKeycode(SCANCODE_F10)",
@@ -28920,9 +29208,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 255,
-          "decl": 255,
-          "end": 257
+          "begin": 378,
+          "decl": 378,
+          "end": 380
         },
         "KEYCODE_F11": {
           "doc": "ScancodeToKeycode(SCANCODE_F11)",
@@ -28930,9 +29218,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 257,
-          "decl": 257,
-          "end": 259
+          "begin": 380,
+          "decl": 380,
+          "end": 382
         },
         "KEYCODE_F12": {
           "doc": "ScancodeToKeycode(SCANCODE_F12)",
@@ -28940,9 +29228,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 259,
-          "decl": 259,
-          "end": 261
+          "begin": 382,
+          "decl": 382,
+          "end": 384
         },
         "KEYCODE_PRINTSCREEN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRINTSCREEN)",
@@ -28950,9 +29238,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 261,
-          "decl": 264,
-          "end": 266
+          "begin": 384,
+          "decl": 387,
+          "end": 389
         },
         "KEYCODE_SCROLLLOCK": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SCROLLLOCK)",
@@ -28960,9 +29248,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 266,
-          "decl": 269,
-          "end": 271
+          "begin": 389,
+          "decl": 392,
+          "end": 394
         },
         "KEYCODE_PAUSE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAUSE)",
@@ -28970,9 +29258,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 271,
-          "decl": 274,
-          "end": 276
+          "begin": 394,
+          "decl": 397,
+          "end": 399
         },
         "KEYCODE_INSERT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_INSERT)",
@@ -28980,9 +29268,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 276,
-          "decl": 279,
-          "end": 281
+          "begin": 399,
+          "decl": 402,
+          "end": 404
         },
         "KEYCODE_HOME": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_HOME)",
@@ -28990,9 +29278,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 281,
-          "decl": 284,
-          "end": 286
+          "begin": 404,
+          "decl": 407,
+          "end": 409
         },
         "KEYCODE_PAGEUP": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEUP)",
@@ -29000,9 +29288,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 286,
-          "decl": 289,
-          "end": 291
+          "begin": 409,
+          "decl": 412,
+          "end": 414
         },
         "KEYCODE_END": {
           "doc": "ScancodeToKeycode(SCANCODE_END)",
@@ -29010,9 +29298,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 291,
-          "decl": 291,
-          "end": 293
+          "begin": 414,
+          "decl": 414,
+          "end": 416
         },
         "KEYCODE_PAGEDOWN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEDOWN)",
@@ -29020,9 +29308,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 293,
-          "decl": 296,
-          "end": 298
+          "begin": 416,
+          "decl": 419,
+          "end": 421
         },
         "KEYCODE_RIGHT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RIGHT)",
@@ -29030,9 +29318,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 298,
-          "decl": 301,
-          "end": 303
+          "begin": 421,
+          "decl": 424,
+          "end": 426
         },
         "KEYCODE_LEFT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LEFT)",
@@ -29040,9 +29328,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 303,
-          "decl": 306,
-          "end": 308
+          "begin": 426,
+          "decl": 429,
+          "end": 431
         },
         "KEYCODE_DOWN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_DOWN)",
@@ -29050,9 +29338,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 308,
-          "decl": 311,
-          "end": 313
+          "begin": 431,
+          "decl": 434,
+          "end": 436
         },
         "KEYCODE_UP": {
           "doc": "ScancodeToKeycode(SCANCODE_UP)",
@@ -29060,9 +29348,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 313,
-          "decl": 313,
-          "end": 315
+          "begin": 436,
+          "decl": 436,
+          "end": 438
         },
         "KEYCODE_NUMLOCKCLEAR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_NUMLOCKCLEAR)",
@@ -29070,9 +29358,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 315,
-          "decl": 318,
-          "end": 320
+          "begin": 438,
+          "decl": 441,
+          "end": 443
         },
         "KEYCODE_KP_DIVIDE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DIVIDE)",
@@ -29080,9 +29368,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 320,
-          "decl": 323,
-          "end": 325
+          "begin": 443,
+          "decl": 446,
+          "end": 448
         },
         "KEYCODE_KP_MULTIPLY": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MULTIPLY)",
@@ -29090,9 +29378,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 325,
-          "decl": 328,
-          "end": 330
+          "begin": 448,
+          "decl": 451,
+          "end": 453
         },
         "KEYCODE_KP_MINUS": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MINUS)",
@@ -29100,9 +29388,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 330,
-          "decl": 333,
-          "end": 335
+          "begin": 453,
+          "decl": 456,
+          "end": 458
         },
         "KEYCODE_KP_PLUS": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUS)",
@@ -29110,9 +29398,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 335,
-          "decl": 338,
-          "end": 340
+          "begin": 458,
+          "decl": 461,
+          "end": 463
         },
         "KEYCODE_KP_ENTER": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_ENTER)",
@@ -29120,9 +29408,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 340,
-          "decl": 343,
-          "end": 345
+          "begin": 463,
+          "decl": 466,
+          "end": 468
         },
         "KEYCODE_KP_1": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_1)",
@@ -29130,9 +29418,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 345,
-          "decl": 348,
-          "end": 350
+          "begin": 468,
+          "decl": 471,
+          "end": 473
         },
         "KEYCODE_KP_2": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_2)",
@@ -29140,9 +29428,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 350,
-          "decl": 353,
-          "end": 355
+          "begin": 473,
+          "decl": 476,
+          "end": 478
         },
         "KEYCODE_KP_3": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_3)",
@@ -29150,9 +29438,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 355,
-          "decl": 358,
-          "end": 360
+          "begin": 478,
+          "decl": 481,
+          "end": 483
         },
         "KEYCODE_KP_4": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_4)",
@@ -29160,9 +29448,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 360,
-          "decl": 363,
-          "end": 365
+          "begin": 483,
+          "decl": 486,
+          "end": 488
         },
         "KEYCODE_KP_5": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_5)",
@@ -29170,9 +29458,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 365,
-          "decl": 368,
-          "end": 370
+          "begin": 488,
+          "decl": 491,
+          "end": 493
         },
         "KEYCODE_KP_6": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_6)",
@@ -29180,9 +29468,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 370,
-          "decl": 373,
-          "end": 375
+          "begin": 493,
+          "decl": 496,
+          "end": 498
         },
         "KEYCODE_KP_7": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_7)",
@@ -29190,9 +29478,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 375,
-          "decl": 378,
-          "end": 380
+          "begin": 498,
+          "decl": 501,
+          "end": 503
         },
         "KEYCODE_KP_8": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_8)",
@@ -29200,9 +29488,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 380,
-          "decl": 383,
-          "end": 385
+          "begin": 503,
+          "decl": 506,
+          "end": 508
         },
         "KEYCODE_KP_9": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_9)",
@@ -29210,9 +29498,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 385,
-          "decl": 388,
-          "end": 390
+          "begin": 508,
+          "decl": 511,
+          "end": 513
         },
         "KEYCODE_KP_0": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_0)",
@@ -29220,9 +29508,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 390,
-          "decl": 393,
-          "end": 395
+          "begin": 513,
+          "decl": 516,
+          "end": 518
         },
         "KEYCODE_KP_PERIOD": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERIOD)",
@@ -29230,9 +29518,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 395,
-          "decl": 398,
-          "end": 400
+          "begin": 518,
+          "decl": 521,
+          "end": 523
         },
         "KEYCODE_APPLICATION": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_APPLICATION)",
@@ -29240,9 +29528,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 400,
-          "decl": 403,
-          "end": 405
+          "begin": 523,
+          "decl": 526,
+          "end": 528
         },
         "KEYCODE_POWER": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_POWER)",
@@ -29250,9 +29538,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 405,
-          "decl": 408,
-          "end": 410
+          "begin": 528,
+          "decl": 531,
+          "end": 533
         },
         "KEYCODE_KP_EQUALS": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALS)",
@@ -29260,9 +29548,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 410,
-          "decl": 413,
-          "end": 415
+          "begin": 533,
+          "decl": 536,
+          "end": 538
         },
         "KEYCODE_F13": {
           "doc": "ScancodeToKeycode(SCANCODE_F13)",
@@ -29270,9 +29558,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 415,
-          "decl": 415,
-          "end": 417
+          "begin": 538,
+          "decl": 538,
+          "end": 540
         },
         "KEYCODE_F14": {
           "doc": "ScancodeToKeycode(SCANCODE_F14)",
@@ -29280,9 +29568,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 417,
-          "decl": 417,
-          "end": 419
+          "begin": 540,
+          "decl": 540,
+          "end": 542
         },
         "KEYCODE_F15": {
           "doc": "ScancodeToKeycode(SCANCODE_F15)",
@@ -29290,9 +29578,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 419,
-          "decl": 419,
-          "end": 421
+          "begin": 542,
+          "decl": 542,
+          "end": 544
         },
         "KEYCODE_F16": {
           "doc": "ScancodeToKeycode(SCANCODE_F16)",
@@ -29300,9 +29588,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 421,
-          "decl": 421,
-          "end": 423
+          "begin": 544,
+          "decl": 544,
+          "end": 546
         },
         "KEYCODE_F17": {
           "doc": "ScancodeToKeycode(SCANCODE_F17)",
@@ -29310,9 +29598,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 423,
-          "decl": 423,
-          "end": 425
+          "begin": 546,
+          "decl": 546,
+          "end": 548
         },
         "KEYCODE_F18": {
           "doc": "ScancodeToKeycode(SCANCODE_F18)",
@@ -29320,9 +29608,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 425,
-          "decl": 425,
-          "end": 427
+          "begin": 548,
+          "decl": 548,
+          "end": 550
         },
         "KEYCODE_F19": {
           "doc": "ScancodeToKeycode(SCANCODE_F19)",
@@ -29330,9 +29618,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 427,
-          "decl": 427,
-          "end": 429
+          "begin": 550,
+          "decl": 550,
+          "end": 552
         },
         "KEYCODE_F20": {
           "doc": "ScancodeToKeycode(SCANCODE_F20)",
@@ -29340,9 +29628,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 429,
-          "decl": 429,
-          "end": 431
+          "begin": 552,
+          "decl": 552,
+          "end": 554
         },
         "KEYCODE_F21": {
           "doc": "ScancodeToKeycode(SCANCODE_F21)",
@@ -29350,9 +29638,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 431,
-          "decl": 431,
-          "end": 433
+          "begin": 554,
+          "decl": 554,
+          "end": 556
         },
         "KEYCODE_F22": {
           "doc": "ScancodeToKeycode(SCANCODE_F22)",
@@ -29360,9 +29648,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 433,
-          "decl": 433,
-          "end": 435
+          "begin": 556,
+          "decl": 556,
+          "end": 558
         },
         "KEYCODE_F23": {
           "doc": "ScancodeToKeycode(SCANCODE_F23)",
@@ -29370,9 +29658,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 435,
-          "decl": 435,
-          "end": 437
+          "begin": 558,
+          "decl": 558,
+          "end": 560
         },
         "KEYCODE_F24": {
           "doc": "ScancodeToKeycode(SCANCODE_F24)",
@@ -29380,9 +29668,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 437,
-          "decl": 437,
-          "end": 439
+          "begin": 560,
+          "decl": 560,
+          "end": 562
         },
         "KEYCODE_EXECUTE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXECUTE)",
@@ -29390,9 +29678,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 439,
-          "decl": 442,
-          "end": 444
+          "begin": 562,
+          "decl": 565,
+          "end": 567
         },
         "KEYCODE_HELP": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_HELP)",
@@ -29400,9 +29688,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 444,
-          "decl": 447,
-          "end": 449
+          "begin": 567,
+          "decl": 570,
+          "end": 572
         },
         "KEYCODE_MENU": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MENU)",
@@ -29410,9 +29698,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 449,
-          "decl": 452,
-          "end": 454
+          "begin": 572,
+          "decl": 575,
+          "end": 577
         },
         "KEYCODE_SELECT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SELECT)",
@@ -29420,9 +29708,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 454,
-          "decl": 457,
-          "end": 459
+          "begin": 577,
+          "decl": 580,
+          "end": 582
         },
         "KEYCODE_STOP": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_STOP)",
@@ -29430,9 +29718,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 459,
-          "decl": 462,
-          "end": 464
+          "begin": 582,
+          "decl": 585,
+          "end": 587
         },
         "KEYCODE_AGAIN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AGAIN)",
@@ -29440,9 +29728,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 464,
-          "decl": 467,
-          "end": 469
+          "begin": 587,
+          "decl": 590,
+          "end": 592
         },
         "KEYCODE_UNDO": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_UNDO)",
@@ -29450,9 +29738,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 469,
-          "decl": 472,
-          "end": 474
+          "begin": 592,
+          "decl": 595,
+          "end": 597
         },
         "KEYCODE_CUT": {
           "doc": "ScancodeToKeycode(SCANCODE_CUT)",
@@ -29460,9 +29748,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 474,
-          "decl": 474,
-          "end": 476
+          "begin": 597,
+          "decl": 597,
+          "end": 599
         },
         "KEYCODE_COPY": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_COPY)",
@@ -29470,9 +29758,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 476,
-          "decl": 479,
-          "end": 481
+          "begin": 599,
+          "decl": 602,
+          "end": 604
         },
         "KEYCODE_PASTE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PASTE)",
@@ -29480,9 +29768,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 481,
-          "decl": 484,
-          "end": 486
+          "begin": 604,
+          "decl": 607,
+          "end": 609
         },
         "KEYCODE_FIND": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_FIND)",
@@ -29490,9 +29778,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 486,
-          "decl": 489,
-          "end": 491
+          "begin": 609,
+          "decl": 612,
+          "end": 614
         },
         "KEYCODE_MUTE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MUTE)",
@@ -29500,9 +29788,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 491,
-          "decl": 494,
-          "end": 496
+          "begin": 614,
+          "decl": 617,
+          "end": 619
         },
         "KEYCODE_VOLUMEUP": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEUP)",
@@ -29510,9 +29798,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 496,
-          "decl": 499,
-          "end": 501
+          "begin": 619,
+          "decl": 622,
+          "end": 624
         },
         "KEYCODE_VOLUMEDOWN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEDOWN)",
@@ -29520,9 +29808,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 501,
-          "decl": 504,
-          "end": 506
+          "begin": 624,
+          "decl": 627,
+          "end": 629
         },
         "KEYCODE_KP_COMMA": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COMMA)",
@@ -29530,9 +29818,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 506,
-          "decl": 509,
-          "end": 511
+          "begin": 629,
+          "decl": 632,
+          "end": 634
         },
         "KEYCODE_KP_EQUALSAS400": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALSAS400)",
@@ -29540,9 +29828,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 511,
-          "decl": 514,
-          "end": 516
+          "begin": 634,
+          "decl": 637,
+          "end": 639
         },
         "KEYCODE_ALTERASE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_ALTERASE)",
@@ -29550,9 +29838,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 516,
-          "decl": 519,
-          "end": 521
+          "begin": 639,
+          "decl": 642,
+          "end": 644
         },
         "KEYCODE_SYSREQ": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SYSREQ)",
@@ -29560,9 +29848,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 521,
-          "decl": 524,
-          "end": 526
+          "begin": 644,
+          "decl": 647,
+          "end": 649
         },
         "KEYCODE_CANCEL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CANCEL)",
@@ -29570,9 +29858,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 526,
-          "decl": 529,
-          "end": 531
+          "begin": 649,
+          "decl": 652,
+          "end": 654
         },
         "KEYCODE_CLEAR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEAR)",
@@ -29580,9 +29868,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 531,
-          "decl": 534,
-          "end": 536
+          "begin": 654,
+          "decl": 657,
+          "end": 659
         },
         "KEYCODE_PRIOR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRIOR)",
@@ -29590,9 +29878,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 536,
-          "decl": 539,
-          "end": 541
+          "begin": 659,
+          "decl": 662,
+          "end": 664
         },
         "KEYCODE_RETURN2": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RETURN2)",
@@ -29600,9 +29888,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 541,
-          "decl": 544,
-          "end": 546
+          "begin": 664,
+          "decl": 667,
+          "end": 669
         },
         "KEYCODE_SEPARATOR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SEPARATOR)",
@@ -29610,9 +29898,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 546,
-          "decl": 549,
-          "end": 551
+          "begin": 669,
+          "decl": 672,
+          "end": 674
         },
         "KEYCODE_OUT": {
           "doc": "ScancodeToKeycode(SCANCODE_OUT)",
@@ -29620,9 +29908,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 551,
-          "decl": 551,
-          "end": 553
+          "begin": 674,
+          "decl": 674,
+          "end": 676
         },
         "KEYCODE_OPER": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_OPER)",
@@ -29630,9 +29918,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 553,
-          "decl": 556,
-          "end": 558
+          "begin": 676,
+          "decl": 679,
+          "end": 681
         },
         "KEYCODE_CLEARAGAIN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEARAGAIN)",
@@ -29640,9 +29928,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 558,
-          "decl": 561,
-          "end": 563
+          "begin": 681,
+          "decl": 684,
+          "end": 686
         },
         "KEYCODE_CRSEL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CRSEL)",
@@ -29650,9 +29938,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 563,
-          "decl": 566,
-          "end": 568
+          "begin": 686,
+          "decl": 689,
+          "end": 691
         },
         "KEYCODE_EXSEL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXSEL)",
@@ -29660,9 +29948,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 568,
-          "decl": 571,
-          "end": 573
+          "begin": 691,
+          "decl": 694,
+          "end": 696
         },
         "KEYCODE_KP_00": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_00)",
@@ -29670,9 +29958,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 573,
-          "decl": 576,
-          "end": 578
+          "begin": 696,
+          "decl": 699,
+          "end": 701
         },
         "KEYCODE_KP_000": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_000)",
@@ -29680,9 +29968,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 578,
-          "decl": 581,
-          "end": 583
+          "begin": 701,
+          "decl": 704,
+          "end": 706
         },
         "KEYCODE_THOUSANDSSEPARATOR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_THOUSANDSSEPARATOR)",
@@ -29690,9 +29978,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 583,
-          "decl": 586,
-          "end": 588
+          "begin": 706,
+          "decl": 709,
+          "end": 711
         },
         "KEYCODE_DECIMALSEPARATOR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_DECIMALSEPARATOR)",
@@ -29700,9 +29988,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 588,
-          "decl": 591,
-          "end": 593
+          "begin": 711,
+          "decl": 714,
+          "end": 716
         },
         "KEYCODE_CURRENCYUNIT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYUNIT)",
@@ -29710,9 +29998,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 593,
-          "decl": 596,
-          "end": 598
+          "begin": 716,
+          "decl": 719,
+          "end": 721
         },
         "KEYCODE_CURRENCYSUBUNIT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYSUBUNIT)",
@@ -29720,9 +30008,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 598,
-          "decl": 601,
-          "end": 603
+          "begin": 721,
+          "decl": 724,
+          "end": 726
         },
         "KEYCODE_KP_LEFTPAREN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTPAREN)",
@@ -29730,9 +30018,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 603,
-          "decl": 606,
-          "end": 608
+          "begin": 726,
+          "decl": 729,
+          "end": 731
         },
         "KEYCODE_KP_RIGHTPAREN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTPAREN)",
@@ -29740,9 +30028,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 608,
-          "decl": 611,
-          "end": 613
+          "begin": 731,
+          "decl": 734,
+          "end": 736
         },
         "KEYCODE_KP_LEFTBRACE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTBRACE)",
@@ -29750,9 +30038,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 613,
-          "decl": 616,
-          "end": 618
+          "begin": 736,
+          "decl": 739,
+          "end": 741
         },
         "KEYCODE_KP_RIGHTBRACE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTBRACE)",
@@ -29760,9 +30048,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 618,
-          "decl": 621,
-          "end": 623
+          "begin": 741,
+          "decl": 744,
+          "end": 746
         },
         "KEYCODE_KP_TAB": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_TAB)",
@@ -29770,9 +30058,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 623,
-          "decl": 626,
-          "end": 628
+          "begin": 746,
+          "decl": 749,
+          "end": 751
         },
         "KEYCODE_KP_BACKSPACE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BACKSPACE)",
@@ -29780,9 +30068,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 628,
-          "decl": 631,
-          "end": 633
+          "begin": 751,
+          "decl": 754,
+          "end": 756
         },
         "KEYCODE_KP_A": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_A)",
@@ -29790,9 +30078,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 633,
-          "decl": 636,
-          "end": 638
+          "begin": 756,
+          "decl": 759,
+          "end": 761
         },
         "KEYCODE_KP_B": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_B)",
@@ -29800,9 +30088,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 638,
-          "decl": 641,
-          "end": 643
+          "begin": 761,
+          "decl": 764,
+          "end": 766
         },
         "KEYCODE_KP_C": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_C)",
@@ -29810,9 +30098,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 643,
-          "decl": 646,
-          "end": 648
+          "begin": 766,
+          "decl": 769,
+          "end": 771
         },
         "KEYCODE_KP_D": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_D)",
@@ -29820,9 +30108,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 648,
-          "decl": 651,
-          "end": 653
+          "begin": 771,
+          "decl": 774,
+          "end": 776
         },
         "KEYCODE_KP_E": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_E)",
@@ -29830,9 +30118,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 653,
-          "decl": 656,
-          "end": 658
+          "begin": 776,
+          "decl": 779,
+          "end": 781
         },
         "KEYCODE_KP_F": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_F)",
@@ -29840,9 +30128,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 658,
-          "decl": 661,
-          "end": 663
+          "begin": 781,
+          "decl": 784,
+          "end": 786
         },
         "KEYCODE_KP_XOR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_XOR)",
@@ -29850,9 +30138,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 663,
-          "decl": 666,
-          "end": 668
+          "begin": 786,
+          "decl": 789,
+          "end": 791
         },
         "KEYCODE_KP_POWER": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_POWER)",
@@ -29860,9 +30148,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 668,
-          "decl": 671,
-          "end": 673
+          "begin": 791,
+          "decl": 794,
+          "end": 796
         },
         "KEYCODE_KP_PERCENT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERCENT)",
@@ -29870,9 +30158,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 673,
-          "decl": 676,
-          "end": 678
+          "begin": 796,
+          "decl": 799,
+          "end": 801
         },
         "KEYCODE_KP_LESS": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LESS)",
@@ -29880,9 +30168,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 678,
-          "decl": 681,
-          "end": 683
+          "begin": 801,
+          "decl": 804,
+          "end": 806
         },
         "KEYCODE_KP_GREATER": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_GREATER)",
@@ -29890,9 +30178,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 683,
-          "decl": 686,
-          "end": 688
+          "begin": 806,
+          "decl": 809,
+          "end": 811
         },
         "KEYCODE_KP_AMPERSAND": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AMPERSAND)",
@@ -29900,9 +30188,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 688,
-          "decl": 691,
-          "end": 693
+          "begin": 811,
+          "decl": 814,
+          "end": 816
         },
         "KEYCODE_KP_DBLAMPERSAND": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLAMPERSAND)",
@@ -29910,9 +30198,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 693,
-          "decl": 696,
-          "end": 698
+          "begin": 816,
+          "decl": 819,
+          "end": 821
         },
         "KEYCODE_KP_VERTICALBAR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_VERTICALBAR)",
@@ -29920,9 +30208,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 698,
-          "decl": 701,
-          "end": 703
+          "begin": 821,
+          "decl": 824,
+          "end": 826
         },
         "KEYCODE_KP_DBLVERTICALBAR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLVERTICALBAR)",
@@ -29930,9 +30218,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 703,
-          "decl": 706,
-          "end": 708
+          "begin": 826,
+          "decl": 829,
+          "end": 831
         },
         "KEYCODE_KP_COLON": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COLON)",
@@ -29940,9 +30228,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 708,
-          "decl": 711,
-          "end": 713
+          "begin": 831,
+          "decl": 834,
+          "end": 836
         },
         "KEYCODE_KP_HASH": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HASH)",
@@ -29950,9 +30238,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 713,
-          "decl": 716,
-          "end": 718
+          "begin": 836,
+          "decl": 839,
+          "end": 841
         },
         "KEYCODE_KP_SPACE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_SPACE)",
@@ -29960,9 +30248,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 718,
-          "decl": 721,
-          "end": 723
+          "begin": 841,
+          "decl": 844,
+          "end": 846
         },
         "KEYCODE_KP_AT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AT)",
@@ -29970,9 +30258,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 723,
-          "decl": 726,
-          "end": 728
+          "begin": 846,
+          "decl": 849,
+          "end": 851
         },
         "KEYCODE_KP_EXCLAM": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EXCLAM)",
@@ -29980,9 +30268,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 728,
-          "decl": 731,
-          "end": 733
+          "begin": 851,
+          "decl": 854,
+          "end": 856
         },
         "KEYCODE_KP_MEMSTORE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSTORE)",
@@ -29990,9 +30278,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 733,
-          "decl": 736,
-          "end": 738
+          "begin": 856,
+          "decl": 859,
+          "end": 861
         },
         "KEYCODE_KP_MEMRECALL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMRECALL)",
@@ -30000,9 +30288,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 738,
-          "decl": 741,
-          "end": 743
+          "begin": 861,
+          "decl": 864,
+          "end": 866
         },
         "KEYCODE_KP_MEMCLEAR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMCLEAR)",
@@ -30010,9 +30298,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 743,
-          "decl": 746,
-          "end": 748
+          "begin": 866,
+          "decl": 869,
+          "end": 871
         },
         "KEYCODE_KP_MEMADD": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMADD)",
@@ -30020,9 +30308,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 748,
-          "decl": 751,
-          "end": 753
+          "begin": 871,
+          "decl": 874,
+          "end": 876
         },
         "KEYCODE_KP_MEMSUBTRACT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSUBTRACT)",
@@ -30030,9 +30318,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 753,
-          "decl": 756,
-          "end": 758
+          "begin": 876,
+          "decl": 879,
+          "end": 881
         },
         "KEYCODE_KP_MEMMULTIPLY": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMMULTIPLY)",
@@ -30040,9 +30328,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 758,
-          "decl": 761,
-          "end": 763
+          "begin": 881,
+          "decl": 884,
+          "end": 886
         },
         "KEYCODE_KP_MEMDIVIDE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMDIVIDE)",
@@ -30050,9 +30338,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 763,
-          "decl": 766,
-          "end": 768
+          "begin": 886,
+          "decl": 889,
+          "end": 891
         },
         "KEYCODE_KP_PLUSMINUS": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUSMINUS)",
@@ -30060,9 +30348,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 768,
-          "decl": 771,
-          "end": 773
+          "begin": 891,
+          "decl": 894,
+          "end": 896
         },
         "KEYCODE_KP_CLEAR": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEAR)",
@@ -30070,9 +30358,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 773,
-          "decl": 776,
-          "end": 778
+          "begin": 896,
+          "decl": 899,
+          "end": 901
         },
         "KEYCODE_KP_CLEARENTRY": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEARENTRY)",
@@ -30080,9 +30368,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 778,
-          "decl": 781,
-          "end": 783
+          "begin": 901,
+          "decl": 904,
+          "end": 906
         },
         "KEYCODE_KP_BINARY": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BINARY)",
@@ -30090,9 +30378,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 783,
-          "decl": 786,
-          "end": 788
+          "begin": 906,
+          "decl": 909,
+          "end": 911
         },
         "KEYCODE_KP_OCTAL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_OCTAL)",
@@ -30100,9 +30388,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 788,
-          "decl": 791,
-          "end": 793
+          "begin": 911,
+          "decl": 914,
+          "end": 916
         },
         "KEYCODE_KP_DECIMAL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DECIMAL)",
@@ -30110,9 +30398,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 793,
-          "decl": 796,
-          "end": 798
+          "begin": 916,
+          "decl": 919,
+          "end": 921
         },
         "KEYCODE_KP_HEXADECIMAL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HEXADECIMAL)",
@@ -30120,9 +30408,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 798,
-          "decl": 801,
-          "end": 803
+          "begin": 921,
+          "decl": 924,
+          "end": 926
         },
         "KEYCODE_LCTRL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LCTRL)",
@@ -30130,9 +30418,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 803,
-          "decl": 806,
-          "end": 808
+          "begin": 926,
+          "decl": 929,
+          "end": 931
         },
         "KEYCODE_LSHIFT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LSHIFT)",
@@ -30140,9 +30428,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 808,
-          "decl": 811,
-          "end": 813
+          "begin": 931,
+          "decl": 934,
+          "end": 936
         },
         "KEYCODE_LALT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LALT)",
@@ -30150,9 +30438,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 813,
-          "decl": 816,
-          "end": 818
+          "begin": 936,
+          "decl": 939,
+          "end": 941
         },
         "KEYCODE_LGUI": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_LGUI)",
@@ -30160,9 +30448,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 818,
-          "decl": 821,
-          "end": 823
+          "begin": 941,
+          "decl": 944,
+          "end": 946
         },
         "KEYCODE_RCTRL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RCTRL)",
@@ -30170,9 +30458,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 823,
-          "decl": 826,
-          "end": 828
+          "begin": 946,
+          "decl": 949,
+          "end": 951
         },
         "KEYCODE_RSHIFT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RSHIFT)",
@@ -30180,9 +30468,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 828,
-          "decl": 831,
-          "end": 833
+          "begin": 951,
+          "decl": 954,
+          "end": 956
         },
         "KEYCODE_RALT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RALT)",
@@ -30190,9 +30478,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 833,
-          "decl": 836,
-          "end": 838
+          "begin": 956,
+          "decl": 959,
+          "end": 961
         },
         "KEYCODE_RGUI": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_RGUI)",
@@ -30200,9 +30488,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 838,
-          "decl": 841,
-          "end": 843
+          "begin": 961,
+          "decl": 964,
+          "end": 966
         },
         "KEYCODE_MODE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MODE)",
@@ -30210,9 +30498,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 843,
-          "decl": 846,
-          "end": 848
+          "begin": 966,
+          "decl": 969,
+          "end": 971
         },
         "KEYCODE_SLEEP": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SLEEP)",
@@ -30220,9 +30508,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 848,
-          "decl": 851,
-          "end": 853
+          "begin": 971,
+          "decl": 974,
+          "end": 976
         },
         "KEYCODE_WAKE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_WAKE)",
@@ -30230,9 +30518,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 853,
-          "decl": 856,
-          "end": 858
+          "begin": 976,
+          "decl": 979,
+          "end": 981
         },
         "KEYCODE_CHANNEL_INCREMENT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_INCREMENT)",
@@ -30240,9 +30528,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 858,
-          "decl": 861,
-          "end": 863
+          "begin": 981,
+          "decl": 984,
+          "end": 986
         },
         "KEYCODE_CHANNEL_DECREMENT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_DECREMENT)",
@@ -30250,9 +30538,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 863,
-          "decl": 866,
-          "end": 868
+          "begin": 986,
+          "decl": 989,
+          "end": 991
         },
         "KEYCODE_MEDIA_PLAY": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY)",
@@ -30260,9 +30548,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 868,
-          "decl": 871,
-          "end": 873
+          "begin": 991,
+          "decl": 994,
+          "end": 996
         },
         "KEYCODE_MEDIA_PAUSE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PAUSE)",
@@ -30270,9 +30558,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 873,
-          "decl": 876,
-          "end": 878
+          "begin": 996,
+          "decl": 999,
+          "end": 1001
         },
         "KEYCODE_MEDIA_RECORD": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_RECORD)",
@@ -30280,9 +30568,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 878,
-          "decl": 881,
-          "end": 883
+          "begin": 1001,
+          "decl": 1004,
+          "end": 1006
         },
         "KEYCODE_MEDIA_FAST_FORWARD": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_FAST_FORWARD)",
@@ -30290,9 +30578,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 883,
-          "decl": 886,
-          "end": 888
+          "begin": 1006,
+          "decl": 1009,
+          "end": 1011
         },
         "KEYCODE_MEDIA_REWIND": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_REWIND)",
@@ -30300,9 +30588,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 888,
-          "decl": 891,
-          "end": 893
+          "begin": 1011,
+          "decl": 1014,
+          "end": 1016
         },
         "KEYCODE_MEDIA_NEXT_TRACK": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_NEXT_TRACK)",
@@ -30310,9 +30598,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 893,
-          "decl": 896,
-          "end": 898
+          "begin": 1016,
+          "decl": 1019,
+          "end": 1021
         },
         "KEYCODE_MEDIA_PREVIOUS_TRACK": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PREVIOUS_TRACK)",
@@ -30320,9 +30608,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 898,
-          "decl": 901,
-          "end": 903
+          "begin": 1021,
+          "decl": 1024,
+          "end": 1026
         },
         "KEYCODE_MEDIA_STOP": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_STOP)",
@@ -30330,9 +30618,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 903,
-          "decl": 906,
-          "end": 908
+          "begin": 1026,
+          "decl": 1029,
+          "end": 1031
         },
         "KEYCODE_MEDIA_EJECT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_EJECT)",
@@ -30340,9 +30628,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 908,
-          "decl": 911,
-          "end": 913
+          "begin": 1031,
+          "decl": 1034,
+          "end": 1036
         },
         "KEYCODE_MEDIA_PLAY_PAUSE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY_PAUSE)",
@@ -30350,9 +30638,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 913,
-          "decl": 916,
-          "end": 918
+          "begin": 1036,
+          "decl": 1039,
+          "end": 1041
         },
         "KEYCODE_MEDIA_SELECT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_SELECT)",
@@ -30360,9 +30648,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 918,
-          "decl": 921,
-          "end": 923
+          "begin": 1041,
+          "decl": 1044,
+          "end": 1046
         },
         "KEYCODE_AC_NEW": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_NEW)",
@@ -30370,9 +30658,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 923,
-          "decl": 926,
-          "end": 928
+          "begin": 1046,
+          "decl": 1049,
+          "end": 1051
         },
         "KEYCODE_AC_OPEN": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_OPEN)",
@@ -30380,9 +30668,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 928,
-          "decl": 931,
-          "end": 933
+          "begin": 1051,
+          "decl": 1054,
+          "end": 1056
         },
         "KEYCODE_AC_CLOSE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_CLOSE)",
@@ -30390,9 +30678,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 933,
-          "decl": 936,
-          "end": 938
+          "begin": 1056,
+          "decl": 1059,
+          "end": 1061
         },
         "KEYCODE_AC_EXIT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_EXIT)",
@@ -30400,9 +30688,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 938,
-          "decl": 941,
-          "end": 943
+          "begin": 1061,
+          "decl": 1064,
+          "end": 1066
         },
         "KEYCODE_AC_SAVE": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SAVE)",
@@ -30410,9 +30698,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 943,
-          "decl": 946,
-          "end": 948
+          "begin": 1066,
+          "decl": 1069,
+          "end": 1071
         },
         "KEYCODE_AC_PRINT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PRINT)",
@@ -30420,9 +30708,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 948,
-          "decl": 951,
-          "end": 953
+          "begin": 1071,
+          "decl": 1074,
+          "end": 1076
         },
         "KEYCODE_AC_PROPERTIES": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PROPERTIES)",
@@ -30430,9 +30718,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 953,
-          "decl": 956,
-          "end": 958
+          "begin": 1076,
+          "decl": 1079,
+          "end": 1081
         },
         "KEYCODE_AC_SEARCH": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SEARCH)",
@@ -30440,9 +30728,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 958,
-          "decl": 961,
-          "end": 963
+          "begin": 1081,
+          "decl": 1084,
+          "end": 1086
         },
         "KEYCODE_AC_HOME": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_HOME)",
@@ -30450,9 +30738,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 963,
-          "decl": 966,
-          "end": 968
+          "begin": 1086,
+          "decl": 1089,
+          "end": 1091
         },
         "KEYCODE_AC_BACK": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BACK)",
@@ -30460,9 +30748,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 968,
-          "decl": 971,
-          "end": 973
+          "begin": 1091,
+          "decl": 1094,
+          "end": 1096
         },
         "KEYCODE_AC_FORWARD": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_FORWARD)",
@@ -30470,9 +30758,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 973,
-          "decl": 976,
-          "end": 978
+          "begin": 1096,
+          "decl": 1099,
+          "end": 1101
         },
         "KEYCODE_AC_STOP": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_STOP)",
@@ -30480,9 +30768,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 978,
-          "decl": 981,
-          "end": 983
+          "begin": 1101,
+          "decl": 1104,
+          "end": 1106
         },
         "KEYCODE_AC_REFRESH": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_REFRESH)",
@@ -30490,9 +30778,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 983,
-          "decl": 986,
-          "end": 988
+          "begin": 1106,
+          "decl": 1109,
+          "end": 1111
         },
         "KEYCODE_AC_BOOKMARKS": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BOOKMARKS)",
@@ -30500,9 +30788,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 988,
-          "decl": 991,
-          "end": 993
+          "begin": 1111,
+          "decl": 1114,
+          "end": 1116
         },
         "KEYCODE_SOFTLEFT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTLEFT)",
@@ -30510,9 +30798,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 993,
-          "decl": 996,
-          "end": 998
+          "begin": 1116,
+          "decl": 1119,
+          "end": 1121
         },
         "KEYCODE_SOFTRIGHT": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTRIGHT)",
@@ -30520,9 +30808,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 998,
-          "decl": 1001,
-          "end": 1003
+          "begin": 1121,
+          "decl": 1124,
+          "end": 1126
         },
         "KEYCODE_CALL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_CALL)",
@@ -30530,9 +30818,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1003,
-          "decl": 1006,
-          "end": 1008
+          "begin": 1126,
+          "decl": 1129,
+          "end": 1131
         },
         "KEYCODE_ENDCALL": {
           "doc": "SDL_SCANCODE_TO_KEYCODE(SCANCODE_ENDCALL)",
@@ -30540,9 +30828,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1008,
-          "decl": 1011,
-          "end": 1013
+          "begin": 1131,
+          "decl": 1134,
+          "end": 1136
         },
         "KEYCODE_LEFT_TAB": {
           "doc": "Extended key Left Tab",
@@ -30550,9 +30838,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1013,
-          "decl": 1013,
-          "end": 1015
+          "begin": 1136,
+          "decl": 1136,
+          "end": 1138
         },
         "KEYCODE_LEVEL5_SHIFT": {
           "doc": "Extended key Level 5 Shift",
@@ -30560,9 +30848,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1015,
-          "decl": 1018,
-          "end": 1020
+          "begin": 1138,
+          "decl": 1141,
+          "end": 1143
         },
         "KEYCODE_MULTI_KEY_COMPOSE": {
           "doc": "Extended key Multi-key Compose",
@@ -30570,9 +30858,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1020,
-          "decl": 1023,
-          "end": 1025
+          "begin": 1143,
+          "decl": 1146,
+          "end": 1148
         },
         "KEYCODE_LMETA": {
           "doc": "Extended key Left Meta",
@@ -30580,9 +30868,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1025,
-          "decl": 1025,
-          "end": 1027
+          "begin": 1148,
+          "decl": 1148,
+          "end": 1150
         },
         "KEYCODE_RMETA": {
           "doc": "Extended key Right Meta",
@@ -30590,9 +30878,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1027,
-          "decl": 1027,
-          "end": 1029
+          "begin": 1150,
+          "decl": 1150,
+          "end": 1152
         },
         "KEYCODE_LHYPER": {
           "doc": "Extended key Left Hyper",
@@ -30600,9 +30888,9 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1029,
-          "decl": 1029,
-          "end": 1031
+          "begin": 1152,
+          "decl": 1152,
+          "end": 1154
         },
         "KEYCODE_RHYPER": {
           "doc": "Extended key Right Hyper",
@@ -30610,210 +30898,29 @@
           "kind": "var",
           "type": "Keycode",
           "constexpr": true,
-          "begin": 1031,
-          "decl": 1031,
-          "end": 1033
-        },
-        "Keymod": {
-          "doc": "Valid key modifiers (possibly OR'd together).\n\n@since This datatype is available since SDL 3.2.0.",
-          "name": "Keymod",
-          "kind": "alias",
-          "type": "SDL_Keymod",
-          "begin": 1033,
-          "decl": 1038,
-          "end": 1040
-        },
-        "KMOD_NONE": {
-          "doc": "no modifier is applicable.",
-          "name": "KMOD_NONE",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1040,
-          "decl": 1043,
-          "end": 1045
-        },
-        "KMOD_LSHIFT": {
-          "doc": "the left Shift key is down.",
-          "name": "KMOD_LSHIFT",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1045,
-          "decl": 1048,
-          "end": 1050
-        },
-        "KMOD_RSHIFT": {
-          "doc": "the right Shift key is down.",
-          "name": "KMOD_RSHIFT",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1050,
-          "decl": 1053,
-          "end": 1055
-        },
-        "KMOD_LEVEL5": {
-          "doc": "the Level 5 Shift key is down.",
-          "name": "KMOD_LEVEL5",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1055,
-          "decl": 1058,
-          "end": 1060
-        },
-        "KMOD_LCTRL": {
-          "doc": "the left Ctrl (Control) key is down.",
-          "name": "KMOD_LCTRL",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1060,
-          "decl": 1063,
-          "end": 1065
-        },
-        "KMOD_RCTRL": {
-          "doc": "the right Ctrl (Control) key is down.",
-          "name": "KMOD_RCTRL",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1065,
-          "decl": 1068,
-          "end": 1070
-        },
-        "KMOD_LALT": {
-          "doc": "the left Alt key is down.",
-          "name": "KMOD_LALT",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1070,
-          "decl": 1073,
-          "end": 1075
-        },
-        "KMOD_RALT": {
-          "doc": "the right Alt key is down.",
-          "name": "KMOD_RALT",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1075,
-          "decl": 1078,
-          "end": 1080
-        },
-        "KMOD_LGUI": {
-          "doc": "the left GUI key (often the Windows key) is down.",
-          "name": "KMOD_LGUI",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1080,
-          "decl": 1083,
-          "end": 1085
-        },
-        "KMOD_RGUI": {
-          "doc": "the right GUI key (often the Windows key) is down.",
-          "name": "KMOD_RGUI",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1085,
-          "decl": 1088,
-          "end": 1090
-        },
-        "KMOD_NUM": {
-          "doc": "the Num Lock key (may be located on an extended keypad) is down.",
-          "name": "KMOD_NUM",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1090,
-          "decl": 1093,
-          "end": 1095
-        },
-        "KMOD_CAPS": {
-          "doc": "the Caps Lock key is down.",
-          "name": "KMOD_CAPS",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1095,
-          "decl": 1098,
-          "end": 1100
-        },
-        "KMOD_MODE": {
-          "doc": "the !AltGr key is down.",
-          "name": "KMOD_MODE",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1100,
-          "decl": 1103,
-          "end": 1105
-        },
-        "KMOD_SCROLL": {
-          "doc": "the Scroll Lock key is down.",
-          "name": "KMOD_SCROLL",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1105,
-          "decl": 1108,
-          "end": 1110
-        },
-        "KMOD_CTRL": {
-          "doc": "Any Ctrl key is down.",
-          "name": "KMOD_CTRL",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1110,
-          "decl": 1113,
-          "end": 1115
-        },
-        "KMOD_SHIFT": {
-          "doc": "Any Shift key is down.",
-          "name": "KMOD_SHIFT",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1115,
-          "decl": 1118,
-          "end": 1120
-        },
-        "KMOD_ALT": {
-          "doc": "Any Alt key is down.",
-          "name": "KMOD_ALT",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1120,
-          "decl": 1123,
-          "end": 1125
-        },
-        "KMOD_GUI": {
-          "doc": "Any GUI key is down.",
-          "name": "KMOD_GUI",
-          "kind": "var",
-          "type": "Keymod",
-          "constexpr": true,
-          "begin": 1125,
-          "decl": 1128,
-          "end": 1130
+          "begin": 1154,
+          "decl": 1154,
+          "end": 1156
         }
       },
-      "docBegin": 9,
-      "docEnd": 23,
-      "entriesBegin": 23,
-      "entriesEnd": 1130,
+      "docBegin": 10,
+      "docEnd": 24,
+      "entriesBegin": 24,
+      "entriesEnd": 1156,
       "namespace": "SDL"
     },
     "SDL3pp_scancode.h": {
       "name": "SDL3pp_scancode.h",
       "doc": "@defgroup CategoryScancode Keyboard Scancodes\n\nDefines keyboard scancodes.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
       "entries": {
+        "Keycode-forward": {
+          "doc": "",
+          "name": "Keycode",
+          "kind": "forward",
+          "begin": 23,
+          "decl": 24,
+          "end": 26
+        },
         "Scancode": {
           "doc": "The SDL keyboard scancode representation.\n\nAn SDL scancode is the physical representation of a key on the keyboard,\nindependent of language and keyboard mapping.\n\nValues of this type are used to represent keyboard keys, among other places\nin the `scancode` field of the KeyboardEvent structure.\n\nThe values in this enumeration are based on the USB usage page standard:\nhttps://usb.org/sites/default/files/hut1_5.pdf\n\n@since This enum is available since SDL 3.2.0.",
           "name": "Scancode",
@@ -30824,27 +30931,44 @@
               "name": "m_scancode",
               "kind": "var",
               "type": "SDL_Scancode",
-              "begin": 38,
-              "decl": 38,
-              "end": 40
+              "begin": 42,
+              "decl": 42,
+              "end": 44
             },
-            "Scancode": {
-              "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped",
-              "name": "Scancode",
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "name": "scancode",
-                  "type": "SDL_Scancode",
-                  "default": "{}"
-                }
-              ],
-              "constexpr": true,
-              "begin": 40,
-              "decl": 45,
-              "end": 50
-            },
+            "Scancode": [
+              {
+                "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped",
+                "name": "Scancode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "scancode",
+                    "type": "SDL_Scancode",
+                    "default": "{}"
+                  }
+                ],
+                "constexpr": true,
+                "begin": 44,
+                "decl": 49,
+                "end": 54
+              },
+              {
+                "doc": "",
+                "name": "Scancode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "name",
+                    "type": "StringParam"
+                  }
+                ],
+                "begin": 55,
+                "decl": 55,
+                "end": 57
+              }
+            ],
             "operator<=>": {
               "doc": "",
               "name": "operator<=>",
@@ -30858,9 +30982,9 @@
               ],
               "constexpr": true,
               "immutable": true,
-              "begin": 50,
-              "decl": 50,
-              "end": 52
+              "begin": 57,
+              "decl": 57,
+              "end": 59
             },
             "operator SDL_Scancode": {
               "doc": "Unwraps to the underlying Scancode.\n\n@returns the underlying Scancode.",
@@ -30870,9 +30994,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 52,
-              "decl": 57,
-              "end": 59
+              "begin": 59,
+              "decl": 64,
+              "end": 66
             },
             "operator bool": {
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
@@ -30883,14 +31007,40 @@
               "constexpr": true,
               "immutable": true,
               "explicit": true,
-              "begin": 59,
-              "decl": 64,
-              "end": 68
+              "begin": 66,
+              "decl": 71,
+              "end": 76
+            },
+            "SetName": {
+              "doc": "",
+              "name": "SetName",
+              "kind": "function",
+              "type": "Scancode &",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                }
+              ],
+              "begin": 77,
+              "decl": 77,
+              "end": 79
+            },
+            "GetName": {
+              "doc": "",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "immutable": true,
+              "begin": 80,
+              "decl": 80,
+              "end": 81
             }
           },
-          "begin": 22,
-          "decl": 36,
-          "end": 70
+          "begin": 26,
+          "decl": 40,
+          "end": 83
         },
         "SCANCODE_UNKNOWN": {
           "doc": "",
@@ -30898,9 +31048,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 70,
-          "decl": 70,
-          "end": 72
+          "begin": 83,
+          "decl": 83,
+          "end": 85
         },
         "SCANCODE_A": {
           "doc": "",
@@ -30908,9 +31058,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 72,
-          "decl": 72,
-          "end": 74
+          "begin": 85,
+          "decl": 85,
+          "end": 87
         },
         "SCANCODE_B": {
           "doc": "",
@@ -30918,9 +31068,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 74,
-          "decl": 74,
-          "end": 76
+          "begin": 87,
+          "decl": 87,
+          "end": 89
         },
         "SCANCODE_C": {
           "doc": "",
@@ -30928,9 +31078,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 76,
-          "decl": 76,
-          "end": 78
+          "begin": 89,
+          "decl": 89,
+          "end": 91
         },
         "SCANCODE_D": {
           "doc": "",
@@ -30938,9 +31088,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 78,
-          "decl": 78,
-          "end": 80
+          "begin": 91,
+          "decl": 91,
+          "end": 93
         },
         "SCANCODE_E": {
           "doc": "",
@@ -30948,9 +31098,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 80,
-          "decl": 80,
-          "end": 82
+          "begin": 93,
+          "decl": 93,
+          "end": 95
         },
         "SCANCODE_F": {
           "doc": "",
@@ -30958,9 +31108,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 82,
-          "decl": 82,
-          "end": 84
+          "begin": 95,
+          "decl": 95,
+          "end": 97
         },
         "SCANCODE_G": {
           "doc": "",
@@ -30968,9 +31118,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 84,
-          "decl": 84,
-          "end": 86
+          "begin": 97,
+          "decl": 97,
+          "end": 99
         },
         "SCANCODE_H": {
           "doc": "",
@@ -30978,9 +31128,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 86,
-          "decl": 86,
-          "end": 88
+          "begin": 99,
+          "decl": 99,
+          "end": 101
         },
         "SCANCODE_I": {
           "doc": "",
@@ -30988,9 +31138,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 88,
-          "decl": 88,
-          "end": 90
+          "begin": 101,
+          "decl": 101,
+          "end": 103
         },
         "SCANCODE_J": {
           "doc": "",
@@ -30998,9 +31148,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 90,
-          "decl": 90,
-          "end": 92
+          "begin": 103,
+          "decl": 103,
+          "end": 105
         },
         "SCANCODE_K": {
           "doc": "",
@@ -31008,9 +31158,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 92,
-          "decl": 92,
-          "end": 94
+          "begin": 105,
+          "decl": 105,
+          "end": 107
         },
         "SCANCODE_L": {
           "doc": "",
@@ -31018,9 +31168,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 94,
-          "decl": 94,
-          "end": 96
+          "begin": 107,
+          "decl": 107,
+          "end": 109
         },
         "SCANCODE_M": {
           "doc": "",
@@ -31028,9 +31178,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 96,
-          "decl": 96,
-          "end": 98
+          "begin": 109,
+          "decl": 109,
+          "end": 111
         },
         "SCANCODE_N": {
           "doc": "",
@@ -31038,9 +31188,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 98,
-          "decl": 98,
-          "end": 100
+          "begin": 111,
+          "decl": 111,
+          "end": 113
         },
         "SCANCODE_O": {
           "doc": "",
@@ -31048,9 +31198,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 100,
-          "decl": 100,
-          "end": 102
+          "begin": 113,
+          "decl": 113,
+          "end": 115
         },
         "SCANCODE_P": {
           "doc": "",
@@ -31058,9 +31208,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 102,
-          "decl": 102,
-          "end": 104
+          "begin": 115,
+          "decl": 115,
+          "end": 117
         },
         "SCANCODE_Q": {
           "doc": "",
@@ -31068,9 +31218,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 104,
-          "decl": 104,
-          "end": 106
+          "begin": 117,
+          "decl": 117,
+          "end": 119
         },
         "SCANCODE_R": {
           "doc": "",
@@ -31078,9 +31228,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 106,
-          "decl": 106,
-          "end": 108
+          "begin": 119,
+          "decl": 119,
+          "end": 121
         },
         "SCANCODE_S": {
           "doc": "",
@@ -31088,9 +31238,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 108,
-          "decl": 108,
-          "end": 110
+          "begin": 121,
+          "decl": 121,
+          "end": 123
         },
         "SCANCODE_T": {
           "doc": "",
@@ -31098,9 +31248,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 110,
-          "decl": 110,
-          "end": 112
+          "begin": 123,
+          "decl": 123,
+          "end": 125
         },
         "SCANCODE_U": {
           "doc": "",
@@ -31108,9 +31258,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 112,
-          "decl": 112,
-          "end": 114
+          "begin": 125,
+          "decl": 125,
+          "end": 127
         },
         "SCANCODE_V": {
           "doc": "",
@@ -31118,9 +31268,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 114,
-          "decl": 114,
-          "end": 116
+          "begin": 127,
+          "decl": 127,
+          "end": 129
         },
         "SCANCODE_W": {
           "doc": "",
@@ -31128,9 +31278,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 116,
-          "decl": 116,
-          "end": 118
+          "begin": 129,
+          "decl": 129,
+          "end": 131
         },
         "SCANCODE_X": {
           "doc": "",
@@ -31138,9 +31288,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 118,
-          "decl": 118,
-          "end": 120
+          "begin": 131,
+          "decl": 131,
+          "end": 133
         },
         "SCANCODE_Y": {
           "doc": "",
@@ -31148,9 +31298,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 120,
-          "decl": 120,
-          "end": 122
+          "begin": 133,
+          "decl": 133,
+          "end": 135
         },
         "SCANCODE_Z": {
           "doc": "",
@@ -31158,9 +31308,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 122,
-          "decl": 122,
-          "end": 124
+          "begin": 135,
+          "decl": 135,
+          "end": 137
         },
         "SCANCODE_1": {
           "doc": "",
@@ -31168,9 +31318,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 124,
-          "decl": 124,
-          "end": 126
+          "begin": 137,
+          "decl": 137,
+          "end": 139
         },
         "SCANCODE_2": {
           "doc": "",
@@ -31178,9 +31328,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 126,
-          "decl": 126,
-          "end": 128
+          "begin": 139,
+          "decl": 139,
+          "end": 141
         },
         "SCANCODE_3": {
           "doc": "",
@@ -31188,9 +31338,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 128,
-          "decl": 128,
-          "end": 130
+          "begin": 141,
+          "decl": 141,
+          "end": 143
         },
         "SCANCODE_4": {
           "doc": "",
@@ -31198,9 +31348,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 130,
-          "decl": 130,
-          "end": 132
+          "begin": 143,
+          "decl": 143,
+          "end": 145
         },
         "SCANCODE_5": {
           "doc": "",
@@ -31208,9 +31358,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 132,
-          "decl": 132,
-          "end": 134
+          "begin": 145,
+          "decl": 145,
+          "end": 147
         },
         "SCANCODE_6": {
           "doc": "",
@@ -31218,9 +31368,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 134,
-          "decl": 134,
-          "end": 136
+          "begin": 147,
+          "decl": 147,
+          "end": 149
         },
         "SCANCODE_7": {
           "doc": "",
@@ -31228,9 +31378,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 136,
-          "decl": 136,
-          "end": 138
+          "begin": 149,
+          "decl": 149,
+          "end": 151
         },
         "SCANCODE_8": {
           "doc": "",
@@ -31238,9 +31388,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 138,
-          "decl": 138,
-          "end": 140
+          "begin": 151,
+          "decl": 151,
+          "end": 153
         },
         "SCANCODE_9": {
           "doc": "",
@@ -31248,9 +31398,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 140,
-          "decl": 140,
-          "end": 142
+          "begin": 153,
+          "decl": 153,
+          "end": 155
         },
         "SCANCODE_0": {
           "doc": "",
@@ -31258,9 +31408,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 142,
-          "decl": 142,
-          "end": 144
+          "begin": 155,
+          "decl": 155,
+          "end": 157
         },
         "SCANCODE_RETURN": {
           "doc": "",
@@ -31268,9 +31418,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 144,
-          "decl": 144,
-          "end": 146
+          "begin": 157,
+          "decl": 157,
+          "end": 159
         },
         "SCANCODE_ESCAPE": {
           "doc": "",
@@ -31278,9 +31428,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 146,
-          "decl": 146,
-          "end": 148
+          "begin": 159,
+          "decl": 159,
+          "end": 161
         },
         "SCANCODE_BACKSPACE": {
           "doc": "",
@@ -31288,9 +31438,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 148,
-          "decl": 148,
-          "end": 150
+          "begin": 161,
+          "decl": 161,
+          "end": 163
         },
         "SCANCODE_TAB": {
           "doc": "",
@@ -31298,9 +31448,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 150,
-          "decl": 150,
-          "end": 152
+          "begin": 163,
+          "decl": 163,
+          "end": 165
         },
         "SCANCODE_SPACE": {
           "doc": "",
@@ -31308,9 +31458,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 152,
-          "decl": 152,
-          "end": 154
+          "begin": 165,
+          "decl": 165,
+          "end": 167
         },
         "SCANCODE_MINUS": {
           "doc": "",
@@ -31318,9 +31468,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 154,
-          "decl": 154,
-          "end": 156
+          "begin": 167,
+          "decl": 167,
+          "end": 169
         },
         "SCANCODE_EQUALS": {
           "doc": "",
@@ -31328,9 +31478,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 156,
-          "decl": 156,
-          "end": 158
+          "begin": 169,
+          "decl": 169,
+          "end": 171
         },
         "SCANCODE_LEFTBRACKET": {
           "doc": "",
@@ -31338,9 +31488,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 158,
-          "decl": 158,
-          "end": 160
+          "begin": 171,
+          "decl": 171,
+          "end": 173
         },
         "SCANCODE_RIGHTBRACKET": {
           "doc": "",
@@ -31348,9 +31498,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 160,
-          "decl": 160,
-          "end": 162
+          "begin": 173,
+          "decl": 173,
+          "end": 175
         },
         "SCANCODE_BACKSLASH": {
           "doc": "Located at the lower left of the return key on ISO keyboards and at the right\nend of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS\n(backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL\nLINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR\nSIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a\nGerman layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and\nASTERISK and MICRO SIGN in a French Windows layout.",
@@ -31358,9 +31508,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 162,
-          "decl": 171,
-          "end": 173
+          "begin": 175,
+          "decl": 184,
+          "end": 186
         },
         "SCANCODE_NONUSHASH": {
           "doc": "ISO USB keyboards actually use this code instead of 49 for the same key, but\nall OSes I've seen treat the two codes identically.  So, as an implementor,\nunless your keyboard generates both of those codes and your OS treats them\ndifferently, you should generate SCANCODE_BACKSLASH instead of this code. As\na user, you should not rely on this code because SDL will never generate it\nwith most (all?) keyboards.",
@@ -31368,9 +31518,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 173,
-          "decl": 181,
-          "end": 183
+          "begin": 186,
+          "decl": 194,
+          "end": 196
         },
         "SCANCODE_SEMICOLON": {
           "doc": "",
@@ -31378,9 +31528,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 183,
-          "decl": 183,
-          "end": 185
+          "begin": 196,
+          "decl": 196,
+          "end": 198
         },
         "SCANCODE_APOSTROPHE": {
           "doc": "",
@@ -31388,9 +31538,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 185,
-          "decl": 185,
-          "end": 187
+          "begin": 198,
+          "decl": 198,
+          "end": 200
         },
         "SCANCODE_GRAVE": {
           "doc": "Located in the top left corner (on both ANSI and ISO keyboards).  Produces\nGRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on\nANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION\nSIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION\nSIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),\nCIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO\nkeyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL\nAT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN\nSIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on\nANSI keyboards.",
@@ -31398,9 +31548,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 187,
-          "decl": 199,
-          "end": 201
+          "begin": 200,
+          "decl": 212,
+          "end": 214
         },
         "SCANCODE_COMMA": {
           "doc": "",
@@ -31408,9 +31558,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 201,
-          "decl": 201,
-          "end": 203
+          "begin": 214,
+          "decl": 214,
+          "end": 216
         },
         "SCANCODE_PERIOD": {
           "doc": "",
@@ -31418,9 +31568,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 203,
-          "decl": 203,
-          "end": 205
+          "begin": 216,
+          "decl": 216,
+          "end": 218
         },
         "SCANCODE_SLASH": {
           "doc": "",
@@ -31428,9 +31578,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 205,
-          "decl": 205,
-          "end": 207
+          "begin": 218,
+          "decl": 218,
+          "end": 220
         },
         "SCANCODE_CAPSLOCK": {
           "doc": "",
@@ -31438,9 +31588,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 207,
-          "decl": 207,
-          "end": 209
+          "begin": 220,
+          "decl": 220,
+          "end": 222
         },
         "SCANCODE_F1": {
           "doc": "",
@@ -31448,9 +31598,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 209,
-          "decl": 209,
-          "end": 211
+          "begin": 222,
+          "decl": 222,
+          "end": 224
         },
         "SCANCODE_F2": {
           "doc": "",
@@ -31458,9 +31608,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 211,
-          "decl": 211,
-          "end": 213
+          "begin": 224,
+          "decl": 224,
+          "end": 226
         },
         "SCANCODE_F3": {
           "doc": "",
@@ -31468,9 +31618,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 213,
-          "decl": 213,
-          "end": 215
+          "begin": 226,
+          "decl": 226,
+          "end": 228
         },
         "SCANCODE_F4": {
           "doc": "",
@@ -31478,9 +31628,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 215,
-          "decl": 215,
-          "end": 217
+          "begin": 228,
+          "decl": 228,
+          "end": 230
         },
         "SCANCODE_F5": {
           "doc": "",
@@ -31488,9 +31638,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 217,
-          "decl": 217,
-          "end": 219
+          "begin": 230,
+          "decl": 230,
+          "end": 232
         },
         "SCANCODE_F6": {
           "doc": "",
@@ -31498,9 +31648,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 219,
-          "decl": 219,
-          "end": 221
+          "begin": 232,
+          "decl": 232,
+          "end": 234
         },
         "SCANCODE_F7": {
           "doc": "",
@@ -31508,9 +31658,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 221,
-          "decl": 221,
-          "end": 223
+          "begin": 234,
+          "decl": 234,
+          "end": 236
         },
         "SCANCODE_F8": {
           "doc": "",
@@ -31518,9 +31668,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 223,
-          "decl": 223,
-          "end": 225
+          "begin": 236,
+          "decl": 236,
+          "end": 238
         },
         "SCANCODE_F9": {
           "doc": "",
@@ -31528,9 +31678,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 225,
-          "decl": 225,
-          "end": 227
+          "begin": 238,
+          "decl": 238,
+          "end": 240
         },
         "SCANCODE_F10": {
           "doc": "",
@@ -31538,9 +31688,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 227,
-          "decl": 227,
-          "end": 229
+          "begin": 240,
+          "decl": 240,
+          "end": 242
         },
         "SCANCODE_F11": {
           "doc": "",
@@ -31548,9 +31698,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 229,
-          "decl": 229,
-          "end": 231
+          "begin": 242,
+          "decl": 242,
+          "end": 244
         },
         "SCANCODE_F12": {
           "doc": "",
@@ -31558,9 +31708,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 231,
-          "decl": 231,
-          "end": 233
+          "begin": 244,
+          "decl": 244,
+          "end": 246
         },
         "SCANCODE_PRINTSCREEN": {
           "doc": "",
@@ -31568,9 +31718,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 233,
-          "decl": 233,
-          "end": 235
+          "begin": 246,
+          "decl": 246,
+          "end": 248
         },
         "SCANCODE_SCROLLLOCK": {
           "doc": "",
@@ -31578,9 +31728,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 235,
-          "decl": 235,
-          "end": 237
+          "begin": 248,
+          "decl": 248,
+          "end": 250
         },
         "SCANCODE_PAUSE": {
           "doc": "",
@@ -31588,9 +31738,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 237,
-          "decl": 237,
-          "end": 239
+          "begin": 250,
+          "decl": 250,
+          "end": 252
         },
         "SCANCODE_INSERT": {
           "doc": "insert on PC, help on some Mac keyboards (but does send code 73, not 117)",
@@ -31598,9 +31748,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 239,
-          "decl": 242,
-          "end": 244
+          "begin": 252,
+          "decl": 255,
+          "end": 257
         },
         "SCANCODE_HOME": {
           "doc": "",
@@ -31608,9 +31758,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 244,
-          "decl": 244,
-          "end": 246
+          "begin": 257,
+          "decl": 257,
+          "end": 259
         },
         "SCANCODE_PAGEUP": {
           "doc": "",
@@ -31618,9 +31768,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 246,
-          "decl": 246,
-          "end": 248
+          "begin": 259,
+          "decl": 259,
+          "end": 261
         },
         "SCANCODE_DELETE": {
           "doc": "",
@@ -31628,9 +31778,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 248,
-          "decl": 248,
-          "end": 250
+          "begin": 261,
+          "decl": 261,
+          "end": 263
         },
         "SCANCODE_END": {
           "doc": "",
@@ -31638,9 +31788,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 250,
-          "decl": 250,
-          "end": 252
+          "begin": 263,
+          "decl": 263,
+          "end": 265
         },
         "SCANCODE_PAGEDOWN": {
           "doc": "",
@@ -31648,9 +31798,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 252,
-          "decl": 252,
-          "end": 254
+          "begin": 265,
+          "decl": 265,
+          "end": 267
         },
         "SCANCODE_RIGHT": {
           "doc": "",
@@ -31658,9 +31808,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 254,
-          "decl": 254,
-          "end": 256
+          "begin": 267,
+          "decl": 267,
+          "end": 269
         },
         "SCANCODE_LEFT": {
           "doc": "",
@@ -31668,9 +31818,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 256,
-          "decl": 256,
-          "end": 258
+          "begin": 269,
+          "decl": 269,
+          "end": 271
         },
         "SCANCODE_DOWN": {
           "doc": "",
@@ -31678,9 +31828,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 258,
-          "decl": 258,
-          "end": 260
+          "begin": 271,
+          "decl": 271,
+          "end": 273
         },
         "SCANCODE_UP": {
           "doc": "",
@@ -31688,9 +31838,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 260,
-          "decl": 260,
-          "end": 262
+          "begin": 273,
+          "decl": 273,
+          "end": 275
         },
         "SCANCODE_NUMLOCKCLEAR": {
           "doc": "num lock on PC, clear on Mac keyboards",
@@ -31698,9 +31848,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 262,
-          "decl": 265,
-          "end": 267
+          "begin": 275,
+          "decl": 278,
+          "end": 280
         },
         "SCANCODE_KP_DIVIDE": {
           "doc": "",
@@ -31708,9 +31858,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 267,
-          "decl": 267,
-          "end": 269
+          "begin": 280,
+          "decl": 280,
+          "end": 282
         },
         "SCANCODE_KP_MULTIPLY": {
           "doc": "",
@@ -31718,9 +31868,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 269,
-          "decl": 269,
-          "end": 271
+          "begin": 282,
+          "decl": 282,
+          "end": 284
         },
         "SCANCODE_KP_MINUS": {
           "doc": "",
@@ -31728,9 +31878,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 271,
-          "decl": 271,
-          "end": 273
+          "begin": 284,
+          "decl": 284,
+          "end": 286
         },
         "SCANCODE_KP_PLUS": {
           "doc": "",
@@ -31738,9 +31888,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 273,
-          "decl": 273,
-          "end": 275
+          "begin": 286,
+          "decl": 286,
+          "end": 288
         },
         "SCANCODE_KP_ENTER": {
           "doc": "",
@@ -31748,9 +31898,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 275,
-          "decl": 275,
-          "end": 277
+          "begin": 288,
+          "decl": 288,
+          "end": 290
         },
         "SCANCODE_KP_1": {
           "doc": "",
@@ -31758,9 +31908,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 277,
-          "decl": 277,
-          "end": 279
+          "begin": 290,
+          "decl": 290,
+          "end": 292
         },
         "SCANCODE_KP_2": {
           "doc": "",
@@ -31768,9 +31918,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 279,
-          "decl": 279,
-          "end": 281
+          "begin": 292,
+          "decl": 292,
+          "end": 294
         },
         "SCANCODE_KP_3": {
           "doc": "",
@@ -31778,9 +31928,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 281,
-          "decl": 281,
-          "end": 283
+          "begin": 294,
+          "decl": 294,
+          "end": 296
         },
         "SCANCODE_KP_4": {
           "doc": "",
@@ -31788,9 +31938,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 283,
-          "decl": 283,
-          "end": 285
+          "begin": 296,
+          "decl": 296,
+          "end": 298
         },
         "SCANCODE_KP_5": {
           "doc": "",
@@ -31798,9 +31948,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 285,
-          "decl": 285,
-          "end": 287
+          "begin": 298,
+          "decl": 298,
+          "end": 300
         },
         "SCANCODE_KP_6": {
           "doc": "",
@@ -31808,9 +31958,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 287,
-          "decl": 287,
-          "end": 289
+          "begin": 300,
+          "decl": 300,
+          "end": 302
         },
         "SCANCODE_KP_7": {
           "doc": "",
@@ -31818,9 +31968,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 289,
-          "decl": 289,
-          "end": 291
+          "begin": 302,
+          "decl": 302,
+          "end": 304
         },
         "SCANCODE_KP_8": {
           "doc": "",
@@ -31828,9 +31978,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 291,
-          "decl": 291,
-          "end": 293
+          "begin": 304,
+          "decl": 304,
+          "end": 306
         },
         "SCANCODE_KP_9": {
           "doc": "",
@@ -31838,9 +31988,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 293,
-          "decl": 293,
-          "end": 295
+          "begin": 306,
+          "decl": 306,
+          "end": 308
         },
         "SCANCODE_KP_0": {
           "doc": "",
@@ -31848,9 +31998,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 295,
-          "decl": 295,
-          "end": 297
+          "begin": 308,
+          "decl": 308,
+          "end": 310
         },
         "SCANCODE_KP_PERIOD": {
           "doc": "",
@@ -31858,9 +32008,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 297,
-          "decl": 297,
-          "end": 299
+          "begin": 310,
+          "decl": 310,
+          "end": 312
         },
         "SCANCODE_NONUSBACKSLASH": {
           "doc": "This is the additional key that ISO keyboards have over ANSI ones, located\nbetween left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac\nlayout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows\nlayout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,\nor French layout.",
@@ -31868,9 +32018,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 299,
-          "decl": 306,
-          "end": 308
+          "begin": 312,
+          "decl": 319,
+          "end": 321
         },
         "SCANCODE_APPLICATION": {
           "doc": "windows contextual menu, compose",
@@ -31878,9 +32028,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 308,
-          "decl": 311,
-          "end": 313
+          "begin": 321,
+          "decl": 324,
+          "end": 326
         },
         "SCANCODE_POWER": {
           "doc": "The USB document says this is a status flag, not a physical key - but some\nMac keyboards do have a power key.",
@@ -31888,9 +32038,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 313,
-          "decl": 317,
-          "end": 319
+          "begin": 326,
+          "decl": 330,
+          "end": 332
         },
         "SCANCODE_KP_EQUALS": {
           "doc": "",
@@ -31898,9 +32048,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 319,
-          "decl": 319,
-          "end": 321
+          "begin": 332,
+          "decl": 332,
+          "end": 334
         },
         "SCANCODE_F13": {
           "doc": "",
@@ -31908,9 +32058,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 321,
-          "decl": 321,
-          "end": 323
+          "begin": 334,
+          "decl": 334,
+          "end": 336
         },
         "SCANCODE_F14": {
           "doc": "",
@@ -31918,9 +32068,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 323,
-          "decl": 323,
-          "end": 325
+          "begin": 336,
+          "decl": 336,
+          "end": 338
         },
         "SCANCODE_F15": {
           "doc": "",
@@ -31928,9 +32078,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 325,
-          "decl": 325,
-          "end": 327
+          "begin": 338,
+          "decl": 338,
+          "end": 340
         },
         "SCANCODE_F16": {
           "doc": "",
@@ -31938,9 +32088,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 327,
-          "decl": 327,
-          "end": 329
+          "begin": 340,
+          "decl": 340,
+          "end": 342
         },
         "SCANCODE_F17": {
           "doc": "",
@@ -31948,9 +32098,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 329,
-          "decl": 329,
-          "end": 331
+          "begin": 342,
+          "decl": 342,
+          "end": 344
         },
         "SCANCODE_F18": {
           "doc": "",
@@ -31958,9 +32108,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 331,
-          "decl": 331,
-          "end": 333
+          "begin": 344,
+          "decl": 344,
+          "end": 346
         },
         "SCANCODE_F19": {
           "doc": "",
@@ -31968,9 +32118,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 333,
-          "decl": 333,
-          "end": 335
+          "begin": 346,
+          "decl": 346,
+          "end": 348
         },
         "SCANCODE_F20": {
           "doc": "",
@@ -31978,9 +32128,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 335,
-          "decl": 335,
-          "end": 337
+          "begin": 348,
+          "decl": 348,
+          "end": 350
         },
         "SCANCODE_F21": {
           "doc": "",
@@ -31988,9 +32138,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 337,
-          "decl": 337,
-          "end": 339
+          "begin": 350,
+          "decl": 350,
+          "end": 352
         },
         "SCANCODE_F22": {
           "doc": "",
@@ -31998,9 +32148,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 339,
-          "decl": 339,
-          "end": 341
+          "begin": 352,
+          "decl": 352,
+          "end": 354
         },
         "SCANCODE_F23": {
           "doc": "",
@@ -32008,9 +32158,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 341,
-          "decl": 341,
-          "end": 343
+          "begin": 354,
+          "decl": 354,
+          "end": 356
         },
         "SCANCODE_F24": {
           "doc": "",
@@ -32018,9 +32168,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 343,
-          "decl": 343,
-          "end": 345
+          "begin": 356,
+          "decl": 356,
+          "end": 358
         },
         "SCANCODE_EXECUTE": {
           "doc": "",
@@ -32028,9 +32178,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 345,
-          "decl": 345,
-          "end": 347
+          "begin": 358,
+          "decl": 358,
+          "end": 360
         },
         "SCANCODE_HELP": {
           "doc": "AL Integrated Help Center.",
@@ -32038,9 +32188,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 347,
-          "decl": 347,
-          "end": 350
+          "begin": 360,
+          "decl": 360,
+          "end": 363
         },
         "SCANCODE_MENU": {
           "doc": "Menu (show menu)",
@@ -32048,9 +32198,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 350,
-          "decl": 350,
-          "end": 352
+          "begin": 363,
+          "decl": 363,
+          "end": 365
         },
         "SCANCODE_SELECT": {
           "doc": "",
@@ -32058,9 +32208,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 352,
-          "decl": 352,
-          "end": 354
+          "begin": 365,
+          "decl": 365,
+          "end": 367
         },
         "SCANCODE_STOP": {
           "doc": "AC Stop.",
@@ -32068,9 +32218,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 354,
-          "decl": 354,
-          "end": 356
+          "begin": 367,
+          "decl": 367,
+          "end": 369
         },
         "SCANCODE_AGAIN": {
           "doc": "AC Redo/Repeat.",
@@ -32078,9 +32228,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 356,
-          "decl": 356,
-          "end": 358
+          "begin": 369,
+          "decl": 369,
+          "end": 371
         },
         "SCANCODE_UNDO": {
           "doc": "AC Undo.",
@@ -32088,9 +32238,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 358,
-          "decl": 358,
-          "end": 360
+          "begin": 371,
+          "decl": 371,
+          "end": 373
         },
         "SCANCODE_CUT": {
           "doc": "AC Cut.",
@@ -32098,9 +32248,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 360,
-          "decl": 360,
-          "end": 362
+          "begin": 373,
+          "decl": 373,
+          "end": 375
         },
         "SCANCODE_COPY": {
           "doc": "AC Copy.",
@@ -32108,9 +32258,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 362,
-          "decl": 362,
-          "end": 364
+          "begin": 375,
+          "decl": 375,
+          "end": 377
         },
         "SCANCODE_PASTE": {
           "doc": "AC Paste.",
@@ -32118,9 +32268,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 364,
-          "decl": 364,
-          "end": 366
+          "begin": 377,
+          "decl": 377,
+          "end": 379
         },
         "SCANCODE_FIND": {
           "doc": "AC Find.",
@@ -32128,9 +32278,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 366,
-          "decl": 366,
-          "end": 368
+          "begin": 379,
+          "decl": 379,
+          "end": 381
         },
         "SCANCODE_MUTE": {
           "doc": "",
@@ -32138,9 +32288,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 368,
-          "decl": 368,
-          "end": 370
+          "begin": 381,
+          "decl": 381,
+          "end": 383
         },
         "SCANCODE_VOLUMEUP": {
           "doc": "",
@@ -32148,9 +32298,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 370,
-          "decl": 370,
-          "end": 372
+          "begin": 383,
+          "decl": 383,
+          "end": 385
         },
         "SCANCODE_VOLUMEDOWN": {
           "doc": "",
@@ -32158,9 +32308,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 372,
-          "decl": 372,
-          "end": 374
+          "begin": 385,
+          "decl": 385,
+          "end": 387
         },
         "SCANCODE_KP_COMMA": {
           "doc": "",
@@ -32168,9 +32318,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 374,
-          "decl": 374,
-          "end": 376
+          "begin": 387,
+          "decl": 387,
+          "end": 389
         },
         "SCANCODE_KP_EQUALSAS400": {
           "doc": "",
@@ -32178,9 +32328,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 376,
-          "decl": 376,
-          "end": 378
+          "begin": 389,
+          "decl": 389,
+          "end": 391
         },
         "SCANCODE_INTERNATIONAL1": {
           "doc": "used on Asian keyboards, see footnotes in USB doc",
@@ -32188,9 +32338,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 378,
-          "decl": 381,
-          "end": 383
+          "begin": 391,
+          "decl": 394,
+          "end": 396
         },
         "SCANCODE_INTERNATIONAL2": {
           "doc": "",
@@ -32198,9 +32348,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 383,
-          "decl": 383,
-          "end": 385
+          "begin": 396,
+          "decl": 396,
+          "end": 398
         },
         "SCANCODE_INTERNATIONAL3": {
           "doc": "Yen.",
@@ -32208,9 +32358,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 385,
-          "decl": 385,
-          "end": 388
+          "begin": 398,
+          "decl": 398,
+          "end": 401
         },
         "SCANCODE_INTERNATIONAL4": {
           "doc": "",
@@ -32218,9 +32368,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 388,
-          "decl": 388,
-          "end": 390
+          "begin": 401,
+          "decl": 401,
+          "end": 403
         },
         "SCANCODE_INTERNATIONAL5": {
           "doc": "",
@@ -32228,9 +32378,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 390,
-          "decl": 390,
-          "end": 392
+          "begin": 403,
+          "decl": 403,
+          "end": 405
         },
         "SCANCODE_INTERNATIONAL6": {
           "doc": "",
@@ -32238,9 +32388,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 392,
-          "decl": 392,
-          "end": 394
+          "begin": 405,
+          "decl": 405,
+          "end": 407
         },
         "SCANCODE_INTERNATIONAL7": {
           "doc": "",
@@ -32248,9 +32398,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 394,
-          "decl": 394,
-          "end": 396
+          "begin": 407,
+          "decl": 407,
+          "end": 409
         },
         "SCANCODE_INTERNATIONAL8": {
           "doc": "",
@@ -32258,9 +32408,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 396,
-          "decl": 396,
-          "end": 398
+          "begin": 409,
+          "decl": 409,
+          "end": 411
         },
         "SCANCODE_INTERNATIONAL9": {
           "doc": "",
@@ -32268,9 +32418,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 398,
-          "decl": 398,
-          "end": 400
+          "begin": 411,
+          "decl": 411,
+          "end": 413
         },
         "SCANCODE_LANG1": {
           "doc": "Hangul/English toggle.",
@@ -32278,9 +32428,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 400,
-          "decl": 400,
-          "end": 403
+          "begin": 413,
+          "decl": 413,
+          "end": 416
         },
         "SCANCODE_LANG2": {
           "doc": "Hanja conversion.",
@@ -32288,9 +32438,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 403,
-          "decl": 403,
-          "end": 405
+          "begin": 416,
+          "decl": 416,
+          "end": 418
         },
         "SCANCODE_LANG3": {
           "doc": "Katakana.",
@@ -32298,9 +32448,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 405,
-          "decl": 405,
-          "end": 407
+          "begin": 418,
+          "decl": 418,
+          "end": 420
         },
         "SCANCODE_LANG4": {
           "doc": "Hiragana.",
@@ -32308,9 +32458,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 407,
-          "decl": 407,
-          "end": 409
+          "begin": 420,
+          "decl": 420,
+          "end": 422
         },
         "SCANCODE_LANG5": {
           "doc": "Zenkaku/Hankaku.",
@@ -32318,9 +32468,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 409,
-          "decl": 409,
-          "end": 411
+          "begin": 422,
+          "decl": 422,
+          "end": 424
         },
         "SCANCODE_LANG6": {
           "doc": "reserved",
@@ -32328,9 +32478,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 411,
-          "decl": 411,
-          "end": 413
+          "begin": 424,
+          "decl": 424,
+          "end": 426
         },
         "SCANCODE_LANG7": {
           "doc": "reserved",
@@ -32338,9 +32488,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 413,
-          "decl": 413,
-          "end": 415
+          "begin": 426,
+          "decl": 426,
+          "end": 428
         },
         "SCANCODE_LANG8": {
           "doc": "reserved",
@@ -32348,9 +32498,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 415,
-          "decl": 415,
-          "end": 417
+          "begin": 428,
+          "decl": 428,
+          "end": 430
         },
         "SCANCODE_LANG9": {
           "doc": "reserved",
@@ -32358,9 +32508,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 417,
-          "decl": 417,
-          "end": 419
+          "begin": 430,
+          "decl": 430,
+          "end": 432
         },
         "SCANCODE_ALTERASE": {
           "doc": "Erase-Eaze.",
@@ -32368,9 +32518,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 419,
-          "decl": 419,
-          "end": 421
+          "begin": 432,
+          "decl": 432,
+          "end": 434
         },
         "SCANCODE_SYSREQ": {
           "doc": "",
@@ -32378,9 +32528,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 421,
-          "decl": 421,
-          "end": 423
+          "begin": 434,
+          "decl": 434,
+          "end": 436
         },
         "SCANCODE_CANCEL": {
           "doc": "AC Cancel.",
@@ -32388,9 +32538,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 423,
-          "decl": 423,
-          "end": 425
+          "begin": 436,
+          "decl": 436,
+          "end": 438
         },
         "SCANCODE_CLEAR": {
           "doc": "",
@@ -32398,9 +32548,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 425,
-          "decl": 425,
-          "end": 427
+          "begin": 438,
+          "decl": 438,
+          "end": 440
         },
         "SCANCODE_PRIOR": {
           "doc": "",
@@ -32408,9 +32558,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 427,
-          "decl": 427,
-          "end": 429
+          "begin": 440,
+          "decl": 440,
+          "end": 442
         },
         "SCANCODE_RETURN2": {
           "doc": "",
@@ -32418,9 +32568,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 429,
-          "decl": 429,
-          "end": 431
+          "begin": 442,
+          "decl": 442,
+          "end": 444
         },
         "SCANCODE_SEPARATOR": {
           "doc": "",
@@ -32428,9 +32578,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 431,
-          "decl": 431,
-          "end": 433
+          "begin": 444,
+          "decl": 444,
+          "end": 446
         },
         "SCANCODE_OUT": {
           "doc": "",
@@ -32438,9 +32588,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 433,
-          "decl": 433,
-          "end": 435
+          "begin": 446,
+          "decl": 446,
+          "end": 448
         },
         "SCANCODE_OPER": {
           "doc": "",
@@ -32448,9 +32598,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 435,
-          "decl": 435,
-          "end": 437
+          "begin": 448,
+          "decl": 448,
+          "end": 450
         },
         "SCANCODE_CLEARAGAIN": {
           "doc": "",
@@ -32458,9 +32608,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 437,
-          "decl": 437,
-          "end": 439
+          "begin": 450,
+          "decl": 450,
+          "end": 452
         },
         "SCANCODE_CRSEL": {
           "doc": "",
@@ -32468,9 +32618,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 439,
-          "decl": 439,
-          "end": 441
+          "begin": 452,
+          "decl": 452,
+          "end": 454
         },
         "SCANCODE_EXSEL": {
           "doc": "",
@@ -32478,9 +32628,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 441,
-          "decl": 441,
-          "end": 443
+          "begin": 454,
+          "decl": 454,
+          "end": 456
         },
         "SCANCODE_KP_00": {
           "doc": "",
@@ -32488,9 +32638,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 443,
-          "decl": 443,
-          "end": 445
+          "begin": 456,
+          "decl": 456,
+          "end": 458
         },
         "SCANCODE_KP_000": {
           "doc": "",
@@ -32498,9 +32648,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 445,
-          "decl": 445,
-          "end": 447
+          "begin": 458,
+          "decl": 458,
+          "end": 460
         },
         "SCANCODE_THOUSANDSSEPARATOR": {
           "doc": "",
@@ -32508,9 +32658,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 447,
-          "decl": 447,
-          "end": 450
+          "begin": 460,
+          "decl": 460,
+          "end": 463
         },
         "SCANCODE_DECIMALSEPARATOR": {
           "doc": "",
@@ -32518,9 +32668,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 450,
-          "decl": 450,
-          "end": 452
+          "begin": 463,
+          "decl": 463,
+          "end": 465
         },
         "SCANCODE_CURRENCYUNIT": {
           "doc": "",
@@ -32528,9 +32678,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 452,
-          "decl": 452,
-          "end": 454
+          "begin": 465,
+          "decl": 465,
+          "end": 467
         },
         "SCANCODE_CURRENCYSUBUNIT": {
           "doc": "",
@@ -32538,9 +32688,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 454,
-          "decl": 454,
-          "end": 456
+          "begin": 467,
+          "decl": 467,
+          "end": 469
         },
         "SCANCODE_KP_LEFTPAREN": {
           "doc": "",
@@ -32548,9 +32698,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 456,
-          "decl": 456,
-          "end": 458
+          "begin": 469,
+          "decl": 469,
+          "end": 471
         },
         "SCANCODE_KP_RIGHTPAREN": {
           "doc": "",
@@ -32558,9 +32708,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 458,
-          "decl": 458,
-          "end": 460
+          "begin": 471,
+          "decl": 471,
+          "end": 473
         },
         "SCANCODE_KP_LEFTBRACE": {
           "doc": "",
@@ -32568,9 +32718,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 460,
-          "decl": 460,
-          "end": 462
+          "begin": 473,
+          "decl": 473,
+          "end": 475
         },
         "SCANCODE_KP_RIGHTBRACE": {
           "doc": "",
@@ -32578,9 +32728,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 462,
-          "decl": 462,
-          "end": 464
+          "begin": 475,
+          "decl": 475,
+          "end": 477
         },
         "SCANCODE_KP_TAB": {
           "doc": "",
@@ -32588,9 +32738,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 464,
-          "decl": 464,
-          "end": 466
+          "begin": 477,
+          "decl": 477,
+          "end": 479
         },
         "SCANCODE_KP_BACKSPACE": {
           "doc": "",
@@ -32598,9 +32748,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 466,
-          "decl": 466,
-          "end": 468
+          "begin": 479,
+          "decl": 479,
+          "end": 481
         },
         "SCANCODE_KP_A": {
           "doc": "",
@@ -32608,9 +32758,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 468,
-          "decl": 468,
-          "end": 470
+          "begin": 481,
+          "decl": 481,
+          "end": 483
         },
         "SCANCODE_KP_B": {
           "doc": "",
@@ -32618,9 +32768,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 470,
-          "decl": 470,
-          "end": 472
+          "begin": 483,
+          "decl": 483,
+          "end": 485
         },
         "SCANCODE_KP_C": {
           "doc": "",
@@ -32628,9 +32778,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 472,
-          "decl": 472,
-          "end": 474
+          "begin": 485,
+          "decl": 485,
+          "end": 487
         },
         "SCANCODE_KP_D": {
           "doc": "",
@@ -32638,9 +32788,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 474,
-          "decl": 474,
-          "end": 476
+          "begin": 487,
+          "decl": 487,
+          "end": 489
         },
         "SCANCODE_KP_E": {
           "doc": "",
@@ -32648,9 +32798,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 476,
-          "decl": 476,
-          "end": 478
+          "begin": 489,
+          "decl": 489,
+          "end": 491
         },
         "SCANCODE_KP_F": {
           "doc": "",
@@ -32658,9 +32808,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 478,
-          "decl": 478,
-          "end": 480
+          "begin": 491,
+          "decl": 491,
+          "end": 493
         },
         "SCANCODE_KP_XOR": {
           "doc": "",
@@ -32668,9 +32818,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 480,
-          "decl": 480,
-          "end": 482
+          "begin": 493,
+          "decl": 493,
+          "end": 495
         },
         "SCANCODE_KP_POWER": {
           "doc": "",
@@ -32678,9 +32828,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 482,
-          "decl": 482,
-          "end": 484
+          "begin": 495,
+          "decl": 495,
+          "end": 497
         },
         "SCANCODE_KP_PERCENT": {
           "doc": "",
@@ -32688,9 +32838,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 484,
-          "decl": 484,
-          "end": 486
+          "begin": 497,
+          "decl": 497,
+          "end": 499
         },
         "SCANCODE_KP_LESS": {
           "doc": "",
@@ -32698,9 +32848,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 486,
-          "decl": 486,
-          "end": 488
+          "begin": 499,
+          "decl": 499,
+          "end": 501
         },
         "SCANCODE_KP_GREATER": {
           "doc": "",
@@ -32708,9 +32858,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 488,
-          "decl": 488,
-          "end": 490
+          "begin": 501,
+          "decl": 501,
+          "end": 503
         },
         "SCANCODE_KP_AMPERSAND": {
           "doc": "",
@@ -32718,9 +32868,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 490,
-          "decl": 490,
-          "end": 492
+          "begin": 503,
+          "decl": 503,
+          "end": 505
         },
         "SCANCODE_KP_DBLAMPERSAND": {
           "doc": "",
@@ -32728,9 +32878,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 492,
-          "decl": 492,
-          "end": 494
+          "begin": 505,
+          "decl": 505,
+          "end": 507
         },
         "SCANCODE_KP_VERTICALBAR": {
           "doc": "",
@@ -32738,9 +32888,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 494,
-          "decl": 494,
-          "end": 496
+          "begin": 507,
+          "decl": 507,
+          "end": 509
         },
         "SCANCODE_KP_DBLVERTICALBAR": {
           "doc": "",
@@ -32748,9 +32898,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 496,
-          "decl": 496,
-          "end": 498
+          "begin": 509,
+          "decl": 509,
+          "end": 511
         },
         "SCANCODE_KP_COLON": {
           "doc": "",
@@ -32758,9 +32908,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 498,
-          "decl": 498,
-          "end": 500
+          "begin": 511,
+          "decl": 511,
+          "end": 513
         },
         "SCANCODE_KP_HASH": {
           "doc": "",
@@ -32768,9 +32918,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 500,
-          "decl": 500,
-          "end": 502
+          "begin": 513,
+          "decl": 513,
+          "end": 515
         },
         "SCANCODE_KP_SPACE": {
           "doc": "",
@@ -32778,9 +32928,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 502,
-          "decl": 502,
-          "end": 504
+          "begin": 515,
+          "decl": 515,
+          "end": 517
         },
         "SCANCODE_KP_AT": {
           "doc": "",
@@ -32788,9 +32938,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 504,
-          "decl": 504,
-          "end": 506
+          "begin": 517,
+          "decl": 517,
+          "end": 519
         },
         "SCANCODE_KP_EXCLAM": {
           "doc": "",
@@ -32798,9 +32948,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 506,
-          "decl": 506,
-          "end": 508
+          "begin": 519,
+          "decl": 519,
+          "end": 521
         },
         "SCANCODE_KP_MEMSTORE": {
           "doc": "",
@@ -32808,9 +32958,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 508,
-          "decl": 508,
-          "end": 510
+          "begin": 521,
+          "decl": 521,
+          "end": 523
         },
         "SCANCODE_KP_MEMRECALL": {
           "doc": "",
@@ -32818,9 +32968,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 510,
-          "decl": 510,
-          "end": 512
+          "begin": 523,
+          "decl": 523,
+          "end": 525
         },
         "SCANCODE_KP_MEMCLEAR": {
           "doc": "",
@@ -32828,9 +32978,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 512,
-          "decl": 512,
-          "end": 514
+          "begin": 525,
+          "decl": 525,
+          "end": 527
         },
         "SCANCODE_KP_MEMADD": {
           "doc": "",
@@ -32838,9 +32988,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 514,
-          "decl": 514,
-          "end": 516
+          "begin": 527,
+          "decl": 527,
+          "end": 529
         },
         "SCANCODE_KP_MEMSUBTRACT": {
           "doc": "",
@@ -32848,9 +32998,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 516,
-          "decl": 516,
-          "end": 518
+          "begin": 529,
+          "decl": 529,
+          "end": 531
         },
         "SCANCODE_KP_MEMMULTIPLY": {
           "doc": "",
@@ -32858,9 +33008,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 518,
-          "decl": 518,
-          "end": 520
+          "begin": 531,
+          "decl": 531,
+          "end": 533
         },
         "SCANCODE_KP_MEMDIVIDE": {
           "doc": "",
@@ -32868,9 +33018,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 520,
-          "decl": 520,
-          "end": 522
+          "begin": 533,
+          "decl": 533,
+          "end": 535
         },
         "SCANCODE_KP_PLUSMINUS": {
           "doc": "",
@@ -32878,9 +33028,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 522,
-          "decl": 522,
-          "end": 524
+          "begin": 535,
+          "decl": 535,
+          "end": 537
         },
         "SCANCODE_KP_CLEAR": {
           "doc": "",
@@ -32888,9 +33038,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 524,
-          "decl": 524,
-          "end": 526
+          "begin": 537,
+          "decl": 537,
+          "end": 539
         },
         "SCANCODE_KP_CLEARENTRY": {
           "doc": "",
@@ -32898,9 +33048,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 526,
-          "decl": 526,
-          "end": 528
+          "begin": 539,
+          "decl": 539,
+          "end": 541
         },
         "SCANCODE_KP_BINARY": {
           "doc": "",
@@ -32908,9 +33058,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 528,
-          "decl": 528,
-          "end": 530
+          "begin": 541,
+          "decl": 541,
+          "end": 543
         },
         "SCANCODE_KP_OCTAL": {
           "doc": "",
@@ -32918,9 +33068,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 530,
-          "decl": 530,
-          "end": 532
+          "begin": 543,
+          "decl": 543,
+          "end": 545
         },
         "SCANCODE_KP_DECIMAL": {
           "doc": "",
@@ -32928,9 +33078,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 532,
-          "decl": 532,
-          "end": 534
+          "begin": 545,
+          "decl": 545,
+          "end": 547
         },
         "SCANCODE_KP_HEXADECIMAL": {
           "doc": "",
@@ -32938,9 +33088,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 534,
-          "decl": 534,
-          "end": 536
+          "begin": 547,
+          "decl": 547,
+          "end": 549
         },
         "SCANCODE_LCTRL": {
           "doc": "",
@@ -32948,9 +33098,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 536,
-          "decl": 536,
-          "end": 538
+          "begin": 549,
+          "decl": 549,
+          "end": 551
         },
         "SCANCODE_LSHIFT": {
           "doc": "",
@@ -32958,9 +33108,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 538,
-          "decl": 538,
-          "end": 540
+          "begin": 551,
+          "decl": 551,
+          "end": 553
         },
         "SCANCODE_LALT": {
           "doc": "alt, option",
@@ -32968,9 +33118,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 540,
-          "decl": 540,
-          "end": 542
+          "begin": 553,
+          "decl": 553,
+          "end": 555
         },
         "SCANCODE_LGUI": {
           "doc": "windows, command (apple), meta",
@@ -32978,9 +33128,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 542,
-          "decl": 545,
-          "end": 547
+          "begin": 555,
+          "decl": 558,
+          "end": 560
         },
         "SCANCODE_RCTRL": {
           "doc": "",
@@ -32988,9 +33138,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 547,
-          "decl": 547,
-          "end": 549
+          "begin": 560,
+          "decl": 560,
+          "end": 562
         },
         "SCANCODE_RSHIFT": {
           "doc": "",
@@ -32998,9 +33148,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 549,
-          "decl": 549,
-          "end": 551
+          "begin": 562,
+          "decl": 562,
+          "end": 564
         },
         "SCANCODE_RALT": {
           "doc": "alt gr, option",
@@ -33008,9 +33158,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 551,
-          "decl": 551,
-          "end": 553
+          "begin": 564,
+          "decl": 564,
+          "end": 566
         },
         "SCANCODE_RGUI": {
           "doc": "windows, command (apple), meta",
@@ -33018,9 +33168,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 553,
-          "decl": 556,
-          "end": 558
+          "begin": 566,
+          "decl": 569,
+          "end": 571
         },
         "SCANCODE_MODE": {
           "doc": "I'm not sure if this is really not covered by any of the above, but since\nthere's a special KMOD_MODE for it I'm adding it here.",
@@ -33028,9 +33178,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 558,
-          "decl": 562,
-          "end": 564
+          "begin": 571,
+          "decl": 575,
+          "end": 577
         },
         "SCANCODE_SLEEP": {
           "doc": "Sleep.",
@@ -33038,9 +33188,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 564,
-          "decl": 564,
-          "end": 566
+          "begin": 577,
+          "decl": 577,
+          "end": 579
         },
         "SCANCODE_WAKE": {
           "doc": "Wake.",
@@ -33048,9 +33198,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 566,
-          "decl": 566,
-          "end": 568
+          "begin": 579,
+          "decl": 579,
+          "end": 581
         },
         "SCANCODE_CHANNEL_INCREMENT": {
           "doc": "Channel Increment.",
@@ -33058,9 +33208,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 568,
-          "decl": 571,
-          "end": 573
+          "begin": 581,
+          "decl": 584,
+          "end": 586
         },
         "SCANCODE_CHANNEL_DECREMENT": {
           "doc": "Channel Decrement.",
@@ -33068,9 +33218,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 573,
-          "decl": 576,
-          "end": 578
+          "begin": 586,
+          "decl": 589,
+          "end": 591
         },
         "SCANCODE_MEDIA_PLAY": {
           "doc": "Play.",
@@ -33078,9 +33228,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 578,
-          "decl": 578,
-          "end": 580
+          "begin": 591,
+          "decl": 591,
+          "end": 593
         },
         "SCANCODE_MEDIA_PAUSE": {
           "doc": "Pause.",
@@ -33088,9 +33238,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 580,
-          "decl": 580,
-          "end": 582
+          "begin": 593,
+          "decl": 593,
+          "end": 595
         },
         "SCANCODE_MEDIA_RECORD": {
           "doc": "Record.",
@@ -33098,9 +33248,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 582,
-          "decl": 582,
-          "end": 585
+          "begin": 595,
+          "decl": 595,
+          "end": 598
         },
         "SCANCODE_MEDIA_FAST_FORWARD": {
           "doc": "Fast Forward.",
@@ -33108,9 +33258,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 585,
-          "decl": 588,
-          "end": 591
+          "begin": 598,
+          "decl": 601,
+          "end": 604
         },
         "SCANCODE_MEDIA_REWIND": {
           "doc": "Rewind.",
@@ -33118,9 +33268,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 591,
-          "decl": 591,
-          "end": 594
+          "begin": 604,
+          "decl": 604,
+          "end": 607
         },
         "SCANCODE_MEDIA_NEXT_TRACK": {
           "doc": "Next Track.",
@@ -33128,9 +33278,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 594,
-          "decl": 597,
-          "end": 599
+          "begin": 607,
+          "decl": 610,
+          "end": 612
         },
         "SCANCODE_MEDIA_PREVIOUS_TRACK": {
           "doc": "Previous Track.",
@@ -33138,9 +33288,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 599,
-          "decl": 602,
-          "end": 605
+          "begin": 612,
+          "decl": 615,
+          "end": 618
         },
         "SCANCODE_MEDIA_STOP": {
           "doc": "Stop.",
@@ -33148,9 +33298,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 605,
-          "decl": 605,
-          "end": 607
+          "begin": 618,
+          "decl": 618,
+          "end": 620
         },
         "SCANCODE_MEDIA_EJECT": {
           "doc": "Eject.",
@@ -33158,9 +33308,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 607,
-          "decl": 607,
-          "end": 609
+          "begin": 620,
+          "decl": 620,
+          "end": 622
         },
         "SCANCODE_MEDIA_PLAY_PAUSE": {
           "doc": "Play / Pause.",
@@ -33168,9 +33318,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 609,
-          "decl": 612,
-          "end": 614
+          "begin": 622,
+          "decl": 625,
+          "end": 627
         },
         "SCANCODE_MEDIA_SELECT": {
           "doc": "",
@@ -33178,9 +33328,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 614,
-          "decl": 614,
-          "end": 616
+          "begin": 627,
+          "decl": 627,
+          "end": 629
         },
         "SCANCODE_AC_NEW": {
           "doc": "AC New.",
@@ -33188,9 +33338,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 616,
-          "decl": 616,
-          "end": 618
+          "begin": 629,
+          "decl": 629,
+          "end": 631
         },
         "SCANCODE_AC_OPEN": {
           "doc": "AC Open.",
@@ -33198,9 +33348,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 618,
-          "decl": 618,
-          "end": 620
+          "begin": 631,
+          "decl": 631,
+          "end": 633
         },
         "SCANCODE_AC_CLOSE": {
           "doc": "AC Close.",
@@ -33208,9 +33358,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 620,
-          "decl": 620,
-          "end": 622
+          "begin": 633,
+          "decl": 633,
+          "end": 635
         },
         "SCANCODE_AC_EXIT": {
           "doc": "AC Exit.",
@@ -33218,9 +33368,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 622,
-          "decl": 622,
-          "end": 624
+          "begin": 635,
+          "decl": 635,
+          "end": 637
         },
         "SCANCODE_AC_SAVE": {
           "doc": "AC Save.",
@@ -33228,9 +33378,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 624,
-          "decl": 624,
-          "end": 626
+          "begin": 637,
+          "decl": 637,
+          "end": 639
         },
         "SCANCODE_AC_PRINT": {
           "doc": "AC Print.",
@@ -33238,9 +33388,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 626,
-          "decl": 626,
-          "end": 628
+          "begin": 639,
+          "decl": 639,
+          "end": 641
         },
         "SCANCODE_AC_PROPERTIES": {
           "doc": "AC Properties.",
@@ -33248,9 +33398,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 628,
-          "decl": 631,
-          "end": 633
+          "begin": 641,
+          "decl": 644,
+          "end": 646
         },
         "SCANCODE_AC_SEARCH": {
           "doc": "AC Search.",
@@ -33258,9 +33408,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 633,
-          "decl": 633,
-          "end": 635
+          "begin": 646,
+          "decl": 646,
+          "end": 648
         },
         "SCANCODE_AC_HOME": {
           "doc": "AC Home.",
@@ -33268,9 +33418,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 635,
-          "decl": 635,
-          "end": 637
+          "begin": 648,
+          "decl": 648,
+          "end": 650
         },
         "SCANCODE_AC_BACK": {
           "doc": "AC Back.",
@@ -33278,9 +33428,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 637,
-          "decl": 637,
-          "end": 639
+          "begin": 650,
+          "decl": 650,
+          "end": 652
         },
         "SCANCODE_AC_FORWARD": {
           "doc": "AC Forward.",
@@ -33288,9 +33438,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 639,
-          "decl": 639,
-          "end": 642
+          "begin": 652,
+          "decl": 652,
+          "end": 655
         },
         "SCANCODE_AC_STOP": {
           "doc": "AC Stop.",
@@ -33298,9 +33448,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 642,
-          "decl": 642,
-          "end": 644
+          "begin": 655,
+          "decl": 655,
+          "end": 657
         },
         "SCANCODE_AC_REFRESH": {
           "doc": "AC Refresh.",
@@ -33308,9 +33458,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 644,
-          "decl": 644,
-          "end": 647
+          "begin": 657,
+          "decl": 657,
+          "end": 660
         },
         "SCANCODE_AC_BOOKMARKS": {
           "doc": "AC Bookmarks.",
@@ -33318,9 +33468,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 647,
-          "decl": 650,
-          "end": 652
+          "begin": 660,
+          "decl": 663,
+          "end": 665
         },
         "SCANCODE_SOFTLEFT": {
           "doc": "Usually situated below the display on phones and used as a multi-function\nfeature key for selecting a software defined function shown on the bottom\nleft of the display.",
@@ -33328,9 +33478,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 652,
-          "decl": 657,
-          "end": 659
+          "begin": 665,
+          "decl": 670,
+          "end": 672
         },
         "SCANCODE_SOFTRIGHT": {
           "doc": "Usually situated below the display on phones and used as a multi-function\nfeature key for selecting a software defined function shown on the bottom\nright of the display.",
@@ -33338,9 +33488,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 659,
-          "decl": 664,
-          "end": 666
+          "begin": 672,
+          "decl": 677,
+          "end": 679
         },
         "SCANCODE_CALL": {
           "doc": "Used for accepting phone calls.",
@@ -33348,9 +33498,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 666,
-          "decl": 669,
-          "end": 671
+          "begin": 679,
+          "decl": 682,
+          "end": 684
         },
         "SCANCODE_ENDCALL": {
           "doc": "Used for rejecting phone calls.",
@@ -33358,9 +33508,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 671,
-          "decl": 674,
-          "end": 676
+          "begin": 684,
+          "decl": 687,
+          "end": 689
         },
         "SCANCODE_RESERVED": {
           "doc": "400-500 reserved for dynamic keycodes",
@@ -33368,9 +33518,9 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 676,
-          "decl": 679,
-          "end": 681
+          "begin": 689,
+          "decl": 692,
+          "end": 694
         },
         "SCANCODE_COUNT": {
           "doc": "not a key, just marks the number of scancodes for array bounds",
@@ -33378,15 +33528,15 @@
           "kind": "var",
           "type": "Scancode",
           "constexpr": true,
-          "begin": 681,
-          "decl": 684,
-          "end": 686
+          "begin": 694,
+          "decl": 697,
+          "end": 699
         }
       },
-      "docBegin": 8,
-      "docEnd": 22,
-      "entriesBegin": 22,
-      "entriesEnd": 686,
+      "docBegin": 9,
+      "docEnd": 23,
+      "entriesBegin": 23,
+      "entriesEnd": 699,
       "namespace": "SDL"
     },
     "SDL3pp_platform.h": {
