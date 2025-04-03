@@ -358,9 +358,9 @@
                 "type": "",
                 "parameters": [],
                 "constexpr": true,
-                "begin": 265,
-                "decl": 265,
-                "end": 267
+                "begin": 264,
+                "decl": 264,
+                "end": 266
               },
               {
                 "doc": "",
@@ -374,10 +374,26 @@
                   }
                 ],
                 "constexpr": true,
-                "explicit": true,
                 "begin": 267,
                 "decl": 267,
                 "end": 272
+              },
+              {
+                "doc": "",
+                "name": "Time",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "time",
+                    "type": "SDL_Time"
+                  }
+                ],
+                "constexpr": true,
+                "explicit": true,
+                "begin": 273,
+                "decl": 273,
+                "end": 278
               }
             ],
             "operator bool": {
@@ -389,9 +405,9 @@
               "constexpr": true,
               "immutable": true,
               "explicit": true,
-              "begin": 273,
-              "decl": 273,
-              "end": 278
+              "begin": 279,
+              "decl": 279,
+              "end": 284
             },
             "operator std::chrono::nanoseconds": {
               "doc": "",
@@ -401,9 +417,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 279,
-              "decl": 279,
-              "end": 281
+              "begin": 285,
+              "decl": 285,
+              "end": 287
             },
             "Current": {
               "doc": "",
@@ -412,9 +428,9 @@
               "type": "Time",
               "parameters": [],
               "static": true,
-              "begin": 281,
-              "decl": 281,
-              "end": 283
+              "begin": 287,
+              "decl": 287,
+              "end": 289
             },
             "FromNS": {
               "doc": "",
@@ -429,9 +445,9 @@
               ],
               "constexpr": true,
               "static": true,
-              "begin": 284,
-              "decl": 284,
-              "end": 289
+              "begin": 290,
+              "decl": 290,
+              "end": 295
             },
             "ToNS": {
               "doc": "",
@@ -441,9 +457,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 290,
-              "decl": 290,
-              "end": 292
+              "begin": 296,
+              "decl": 296,
+              "end": 298
             },
             "FromPosix": {
               "doc": "",
@@ -458,9 +474,9 @@
               ],
               "constexpr": true,
               "static": true,
-              "begin": 292,
-              "decl": 292,
-              "end": 294
+              "begin": 298,
+              "decl": 298,
+              "end": 300
             },
             "ToPosix": {
               "doc": "",
@@ -470,9 +486,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 294,
-              "decl": 294,
-              "end": 296
+              "begin": 300,
+              "decl": 300,
+              "end": 302
             },
             "FromWindows": {
               "doc": "",
@@ -490,9 +506,9 @@
                 }
               ],
               "static": true,
-              "begin": 296,
-              "decl": 296,
-              "end": 298
+              "begin": 302,
+              "decl": 302,
+              "end": 304
             },
             "ToWindows": {
               "doc": "",
@@ -510,9 +526,9 @@
                 }
               ],
               "immutable": true,
-              "begin": 298,
-              "decl": 298,
-              "end": 300
+              "begin": 304,
+              "decl": 304,
+              "end": 306
             },
             "operator+=": {
               "doc": "",
@@ -526,9 +542,9 @@
                 }
               ],
               "constexpr": true,
-              "begin": 301,
-              "decl": 301,
-              "end": 307
+              "begin": 307,
+              "decl": 307,
+              "end": 313
             },
             "operator-=": {
               "doc": "",
@@ -542,14 +558,14 @@
                 }
               ],
               "constexpr": true,
-              "begin": 308,
-              "decl": 308,
-              "end": 313
+              "begin": 314,
+              "decl": 314,
+              "end": 319
             }
           },
           "begin": 246,
           "decl": 259,
-          "end": 315
+          "end": 321
         },
         "MAX_TIME": {
           "doc": "",
@@ -557,9 +573,9 @@
           "kind": "var",
           "type": "Time",
           "constexpr": true,
-          "begin": 315,
-          "decl": 315,
-          "end": 317
+          "begin": 321,
+          "decl": 321,
+          "end": 323
         },
         "MIN_TIME": {
           "doc": "",
@@ -567,18 +583,18 @@
           "kind": "var",
           "type": "Time",
           "constexpr": true,
-          "begin": 317,
-          "decl": 317,
-          "end": 319
+          "begin": 323,
+          "decl": 323,
+          "end": 325
         },
         "SDL_FLT_EPSILON": {
           "doc": "Epsilon constant, used for comparing floating-point numbers.\n\nEquals by default to platform-defined `FLT_EPSILON`, or\n`1.1920928955078125e-07F` if that's not available.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_FLT_EPSILON",
           "kind": "def",
           "value": "1.1920928955078125e-07F /* 0x0.000002p0 */",
-          "begin": 321,
-          "decl": 329,
-          "end": 331
+          "begin": 327,
+          "decl": 335,
+          "end": 337
         },
         "SDL_INIT_INTERFACE": {
           "doc": "A macro to initialize an SDL interface.\n\nThis macro will initialize an SDL interface structure and should be called\nbefore you fill out the fields with your implementation.\n\nYou can use it like this:\n\n```c\nSDL_IOStreamInterface iface;\n\nSDL_INIT_INTERFACE(&iface);\n\n// Fill in the interface function pointers with your implementation\niface.seek = ...\n\nstream = SDL_OpenIO(&iface, NULL);\n```\n\nIf you are using designated initializers, you can use the size of the\ninterface as the version, e.g.\n\n```c\nSDL_IOStreamInterface iface = {\n    .version = sizeof(iface),\n    .seek = ...\n};\nstream = SDL_OpenIO(&iface, NULL);\n```\n\n@threadsafety It is safe to call this macro from any thread.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_IOStreamInterface\n@sa SDL_StorageInterface\n@sa SDL_VirtualJoystickDesc",
@@ -588,9 +604,9 @@
           "parameters": [
             "iface"
           ],
-          "begin": 331,
-          "decl": 369,
-          "end": 375
+          "begin": 337,
+          "decl": 375,
+          "end": 381
         },
         "malloc": {
           "doc": "Allocate uninitialized memory.\n\nThe allocated memory returned by this function must be freed with\nSDL_free().\n\nIf `size` is 0, it will be set to 1.\n\nIf you want to allocate memory aligned to a specific alignment, consider\nusing SDL_aligned_alloc().\n\n@param size the size to allocate.\n@returns a pointer to the allocated memory, or NULL if allocation failed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_free\n@sa SDL_calloc\n@sa SDL_realloc\n@sa SDL_aligned_alloc",
@@ -603,9 +619,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 377,
-          "decl": 400,
-          "end": 402
+          "begin": 383,
+          "decl": 406,
+          "end": 408
         },
         "calloc": {
           "doc": "Allocate a zero-initialized array.\n\nThe memory returned by this function must be freed with SDL_free().\n\nIf either of `nmemb` or `size` is 0, they will both be set to 1.\n\n@param nmemb the number of elements in the array.\n@param size the size of each element of the array.\n@returns a pointer to the allocated array, or NULL if allocation failed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_free\n@sa SDL_malloc\n@sa SDL_realloc",
@@ -622,9 +638,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 402,
-          "decl": 421,
-          "end": 426
+          "begin": 408,
+          "decl": 427,
+          "end": 432
         },
         "realloc": {
           "doc": "Change the size of allocated memory.\n\nThe memory returned by this function must be freed with SDL_free().\n\nIf `size` is 0, it will be set to 1. Note that this is unlike some other C\nruntime `realloc` implementations, which may treat `realloc(mem, 0)` the\nsame way as `free(mem)`.\n\nIf `mem` is NULL, the behavior of this function is equivalent to\nSDL_malloc(). Otherwise, the function can have one of three possible\noutcomes:\n\n- If it returns the same pointer as `mem`, it means that `mem` was resized\n  in place without freeing.\n- If it returns a different non-NULL pointer, it means that `mem` was freed\n  and cannot be dereferenced anymore.\n- If it returns NULL (indicating failure), then `mem` will remain valid and\n  must still be freed with SDL_free().\n\n@param mem a pointer to allocated memory to reallocate, or NULL.\n@param size the new size of the memory.\n@returns a pointer to the newly allocated memory, or NULL if allocation\n         failed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_free\n@sa SDL_malloc\n@sa SDL_calloc",
@@ -641,9 +657,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 426,
-          "decl": 459,
-          "end": 461
+          "begin": 432,
+          "decl": 465,
+          "end": 467
         },
         "free": {
           "doc": "Free allocated memory.\n\nThe pointer is no longer valid after this call and cannot be dereferenced\nanymore.\n\nIf `mem` is NULL, this function does nothing.\n\n@param mem a pointer to allocated memory, or NULL.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_malloc\n@sa SDL_calloc\n@sa SDL_realloc",
@@ -656,45 +672,45 @@
               "type": "void *"
             }
           ],
-          "begin": 461,
-          "decl": 479,
-          "end": 481
+          "begin": 467,
+          "decl": 485,
+          "end": 487
         },
         "malloc_func": {
           "doc": "A callback used to implement SDL_malloc().\n\nSDL will always ensure that the passed `size` is greater than 0.\n\n@param size the size to allocate.\n@returns a pointer to the allocated memory, or NULL if allocation failed.\n\n@threadsafety It should be safe to call this callback from any thread.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_malloc\n@sa SDL_GetOriginalMemoryFunctions\n@sa SDL_GetMemoryFunctions\n@sa SDL_SetMemoryFunctions",
           "name": "malloc_func",
           "kind": "alias",
           "type": "SDL_malloc_func",
-          "begin": 481,
-          "decl": 498,
-          "end": 500
+          "begin": 487,
+          "decl": 504,
+          "end": 506
         },
         "calloc_func": {
           "doc": "A callback used to implement SDL_calloc().\n\nSDL will always ensure that the passed `nmemb` and `size` are both greater\nthan 0.\n\n@param nmemb the number of elements in the array.\n@param size the size of each element of the array.\n@returns a pointer to the allocated array, or NULL if allocation failed.\n\n@threadsafety It should be safe to call this callback from any thread.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_calloc\n@sa SDL_GetOriginalMemoryFunctions\n@sa SDL_GetMemoryFunctions\n@sa SDL_SetMemoryFunctions",
           "name": "calloc_func",
           "kind": "alias",
           "type": "SDL_calloc_func",
-          "begin": 500,
-          "decl": 519,
-          "end": 521
+          "begin": 506,
+          "decl": 525,
+          "end": 527
         },
         "realloc_func": {
           "doc": "A callback used to implement SDL_realloc().\n\nSDL will always ensure that the passed `size` is greater than 0.\n\n@param mem a pointer to allocated memory to reallocate, or NULL.\n@param size the new size of the memory.\n@returns a pointer to the newly allocated memory, or NULL if allocation\n         failed.\n\n@threadsafety It should be safe to call this callback from any thread.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_realloc\n@sa SDL_GetOriginalMemoryFunctions\n@sa SDL_GetMemoryFunctions\n@sa SDL_SetMemoryFunctions",
           "name": "realloc_func",
           "kind": "alias",
           "type": "SDL_realloc_func",
-          "begin": 521,
-          "decl": 540,
-          "end": 542
+          "begin": 527,
+          "decl": 546,
+          "end": 548
         },
         "free_func": {
           "doc": "A callback used to implement SDL_free().\n\nSDL will always ensure that the passed `mem` is a non-NULL pointer.\n\n@param mem a pointer to allocated memory.\n\n@threadsafety It should be safe to call this callback from any thread.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa SDL_free\n@sa SDL_GetOriginalMemoryFunctions\n@sa SDL_GetMemoryFunctions\n@sa SDL_SetMemoryFunctions",
           "name": "free_func",
           "kind": "alias",
           "type": "SDL_free_func",
-          "begin": 542,
-          "decl": 558,
-          "end": 560
+          "begin": 548,
+          "decl": 564,
+          "end": 566
         },
         "GetOriginalMemoryFunctions": {
           "doc": "Get the original set of SDL memory functions.\n\nThis is what SDL_malloc and friends will use by default, if there has been\nno call to SDL_SetMemoryFunctions. This is not necessarily using the C\nruntime's `malloc` functions behind the scenes! Different platforms and\nbuild configurations might do any number of unexpected things.\n\n@param malloc_func filled with malloc function.\n@param calloc_func filled with calloc function.\n@param realloc_func filled with realloc function.\n@param free_func filled with free function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -719,9 +735,9 @@
               "type": "free_func *"
             }
           ],
-          "begin": 560,
-          "decl": 577,
-          "end": 586
+          "begin": 566,
+          "decl": 583,
+          "end": 592
         },
         "GetMemoryFunctions": {
           "doc": "Get the current set of SDL memory functions.\n\n@param malloc_func filled with malloc function.\n@param calloc_func filled with calloc function.\n@param realloc_func filled with realloc function.\n@param free_func filled with free function.\n\n@threadsafety This does not hold a lock, so do not call this in the\n              unlikely event of a background thread calling\n              SDL_SetMemoryFunctions simultaneously.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetMemoryFunctions\n@sa SDL_GetOriginalMemoryFunctions",
@@ -746,9 +762,9 @@
               "type": "free_func *"
             }
           ],
-          "begin": 586,
-          "decl": 603,
-          "end": 611
+          "begin": 592,
+          "decl": 609,
+          "end": 617
         },
         "SetMemoryFunctions": {
           "doc": "Replace SDL's memory allocation functions with a custom set.\n\nIt is not safe to call this function once any allocations have been made,\nas future calls to SDL_free will use the new allocator, even if they came\nfrom an SDL_malloc made with the old one!\n\nIf used, usually this needs to be the first call made into the SDL library,\nif not the very first thing done at program startup time.\n\n@param malloc_func custom malloc function.\n@param calloc_func custom calloc function.\n@param realloc_func custom realloc function.\n@param free_func custom free function.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread, but one\n              should not replace the memory functions once any allocations\n              are made!\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetMemoryFunctions\n@sa SDL_GetOriginalMemoryFunctions",
@@ -773,9 +789,9 @@
               "type": "free_func"
             }
           ],
-          "begin": 611,
-          "decl": 637,
-          "end": 646
+          "begin": 617,
+          "decl": 643,
+          "end": 652
         },
         "aligned_alloc": {
           "doc": "Allocate memory aligned to a specific alignment.\n\nThe memory returned by this function must be freed with SDL_aligned_free(),\n_not_ SDL_free().\n\nIf `alignment` is less than the size of `void *`, it will be increased to\nmatch that.\n\nThe returned memory address will be a multiple of the alignment value, and\nthe size of the memory allocated will be a multiple of the alignment value.\n\n@param alignment the alignment of the memory.\n@param size the size to allocate.\n@returns a pointer to the aligned memory, or NULL if allocation failed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_aligned_free",
@@ -792,9 +808,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 646,
-          "decl": 668,
-          "end": 673
+          "begin": 652,
+          "decl": 674,
+          "end": 679
         },
         "aligned_free": {
           "doc": "Free memory allocated by SDL_aligned_alloc().\n\nThe pointer is no longer valid after this call and cannot be dereferenced\nanymore.\n\nIf `mem` is NULL, this function does nothing.\n\n@param mem a pointer previously returned by SDL_aligned_alloc(), or NULL.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_aligned_alloc",
@@ -807,9 +823,9 @@
               "type": "void *"
             }
           ],
-          "begin": 673,
-          "decl": 689,
-          "end": 691
+          "begin": 679,
+          "decl": 695,
+          "end": 697
         },
         "GetNumAllocations": {
           "doc": "Get the number of outstanding (unfreed) allocations.\n\n@returns the number of allocations or -1 if allocation counting is\n         disabled.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -817,9 +833,9 @@
           "kind": "function",
           "type": "int",
           "parameters": [],
-          "begin": 691,
-          "decl": 701,
-          "end": 703
+          "begin": 697,
+          "decl": 707,
+          "end": 709
         },
         "EnvironmentBase": {
           "doc": "A thread-safe set of environment variables\n\n@since This struct is available since SDL 3.2.0.\n\n@cat resource\n\n@sa resource\n@sa Environment\n@sa EnvironmentRef",
@@ -831,9 +847,9 @@
               "doc": "",
               "name": "T::T",
               "kind": "alias",
-              "begin": 717,
-              "decl": 717,
-              "end": 719
+              "begin": 723,
+              "decl": 723,
+              "end": 725
             },
             "EnvironmentBase": {
               "doc": "Create a set of environment variables\n\n@param populated true to initialize it from the C runtime environment,\n                 false to create an empty environment.\n@post the new environment (convertible to true) on success or convertible\nto false on failure; call GetError() for more information.\n\n@threadsafety If `populated` is false, it is safe to call this function\n              from any thread, otherwise it is safe if no other threads are\n              calling setenv() or unsetenv()\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable\n@sa SDL_DestroyEnvironment",
@@ -846,9 +862,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 719,
-              "decl": 739,
-              "end": 744
+              "begin": 725,
+              "decl": 745,
+              "end": 750
             },
             "GetVariable": {
               "doc": "Get the value of a variable in the environment.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
@@ -861,9 +877,9 @@
                   "type": "StringParam"
                 }
               ],
-              "begin": 744,
-              "decl": 761,
-              "end": 766
+              "begin": 750,
+              "decl": 767,
+              "end": 772
             },
             "GetVariables": {
               "doc": "Get all variables in the environment.\n\n@returns a NULL terminated array of pointers to environment variables in\n         the form \"variable=value\" or NULL on failure; call SDL_GetError()\n         for more information. This is wrapped to be auto-deleted, use\n         FreeWrapper.release() if you want to manage manually.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
@@ -871,9 +887,9 @@
               "kind": "function",
               "type": "OwnArray<char *>",
               "parameters": [],
-              "begin": 766,
-              "decl": 784,
-              "end": 789
+              "begin": 772,
+              "decl": 790,
+              "end": 795
             },
             "GetVariableCount": {
               "doc": "Get the Variables count.\n\n@return the number of existing environment variables\n\nThis might be slow.",
@@ -881,9 +897,9 @@
               "kind": "function",
               "type": "Uint64",
               "parameters": [],
-              "begin": 789,
-              "decl": 796,
-              "end": 803
+              "begin": 795,
+              "decl": 802,
+              "end": 809
             },
             "SetVariable": {
               "doc": "Set the value of a variable in the environment.\n\n@param name the name of the variable to set.\n@param value the value of the variable to set.\n@param overwrite true to overwrite the variable if it exists, false to\n                 return success without setting the variable if it already\n                 exists.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironment\n@sa SDL_CreateEnvironment\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_UnsetEnvironmentVariable",
@@ -904,9 +920,9 @@
                   "type": "bool"
                 }
               ],
-              "begin": 803,
-              "decl": 824,
-              "end": 829
+              "begin": 809,
+              "decl": 830,
+              "end": 835
             },
             "UnsetVariable": {
               "doc": "Clear a variable from the environment.\n\n@param name the name of the variable to unset.\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetEnvironment()\n@sa EnvironmentBase()\n@sa GetVariable()\n@sa GetVariables()\n@sa SetVariable()\n@sa UnsetVariable()",
@@ -919,9 +935,9 @@
                   "type": "StringParam"
                 }
               ],
-              "begin": 829,
-              "decl": 847,
-              "end": 852
+              "begin": 835,
+              "decl": 853,
+              "end": 858
             },
             "Destroy": {
               "doc": "Destroy a set of environment variables.\n\nThis object becomes empty after the call.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_CreateEnvironment",
@@ -929,9 +945,9 @@
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "begin": 852,
-              "decl": 864,
-              "end": 865
+              "begin": 858,
+              "decl": 870,
+              "end": 871
             }
           },
           "template": [
@@ -940,9 +956,9 @@
               "type": "ObjectBox<SDL_Environment *>"
             }
           ],
-          "begin": 703,
-          "decl": 714,
-          "end": 867
+          "begin": 709,
+          "decl": 720,
+          "end": 873
         },
         "ObjectRef<SDL_Environment>::doFree": {
           "doc": "Destroy a set of environment variables.\n\n@param resource the environment to destroy.\n\n@threadsafety It is safe to call this function from any thread, as long as\n              the environment is no longer in use.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Environment\n@sa EnvironmentBase",
@@ -956,9 +972,9 @@
             }
           ],
           "template": [],
-          "begin": 867,
-          "decl": 880,
-          "end": 886
+          "begin": 873,
+          "decl": 886,
+          "end": 892
         },
         "GetEnvironment": {
           "doc": "Get the process environment.\n\nThis is initialized at application start and is not affected by setenv()\nand unsetenv() calls after that point. Use SDL_SetEnvironmentVariable() and\nSDL_UnsetEnvironmentVariable() if you want to modify this environment, or\nSDL_setenv_unsafe() or SDL_unsetenv_unsafe() if you want changes to persist\nin the C runtime environment after SDL_Quit().\n\n@returns a pointer to the environment for the process or NULL on failure;\n         call SDL_GetError() for more information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GetEnvironmentVariable\n@sa SDL_GetEnvironmentVariables\n@sa SDL_SetEnvironmentVariable\n@sa SDL_UnsetEnvironmentVariable",
@@ -966,9 +982,9 @@
           "kind": "function",
           "type": "EnvironmentRef",
           "parameters": [],
-          "begin": 886,
-          "decl": 907,
-          "end": 909
+          "begin": 892,
+          "decl": 913,
+          "end": 915
         },
         "getenv": {
           "doc": "Get the value of a variable in the environment.\n\nThis function uses SDL's cached copy of the environment and is thread-safe.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -981,9 +997,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 909,
-          "decl": 922,
-          "end": 924
+          "begin": 915,
+          "decl": 928,
+          "end": 930
         },
         "getenv_unsafe": {
           "doc": "Get the value of a variable in the environment.\n\nThis function bypasses SDL's cached copy of the environment and is not\nthread-safe.\n\n@param name the name of the variable to get.\n@returns a pointer to the value of the variable or NULL if it can't be\n         found.\n\n@threadsafety This function is not thread safe, consider using SDL_getenv()\n              instead.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_getenv",
@@ -996,9 +1012,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 924,
-          "decl": 941,
-          "end": 946
+          "begin": 930,
+          "decl": 947,
+          "end": 952
         },
         "setenv_unsafe": {
           "doc": "Set the value of a variable in the environment.\n\n@param name the name of the variable to set.\n@param value the value of the variable to set.\n@param overwrite 1 to overwrite the variable if it exists, 0 to return\n                 success without setting the variable if it already exists.\n@returns 0 on success, -1 on error.\n\n@threadsafety This function is not thread safe, consider using\n              SDL_SetEnvironmentVariable() instead.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_SetEnvironmentVariable",
@@ -1019,9 +1035,9 @@
               "type": "int"
             }
           ],
-          "begin": 946,
-          "decl": 962,
-          "end": 967
+          "begin": 952,
+          "decl": 968,
+          "end": 973
         },
         "unsetenv_unsafe": {
           "doc": "Clear a variable from the environment.\n\n@param name the name of the variable to unset.\n@returns 0 on success, -1 on error.\n\n@threadsafety This function is not thread safe, consider using\n              SDL_UnsetEnvironmentVariable() instead.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_UnsetEnvironmentVariable",
@@ -1034,18 +1050,18 @@
               "type": "StringParam"
             }
           ],
-          "begin": 967,
-          "decl": 980,
-          "end": 985
+          "begin": 973,
+          "decl": 986,
+          "end": 991
         },
         "CompareCallback": {
           "doc": "A callback used with SDL sorting and binary search functions.\n\n@param a a pointer to the first element being compared.\n@param b a pointer to the second element being compared.\n@returns -1 if `a` should be sorted before `b`, 1 if `b` should be sorted\n         before `a`, 0 if they are equal. If two elements are equal, their\n         order in the sorted array is undefined.\n\n@since This callback is available since SDL 3.2.0.\n\n@sa SDL_bsearch\n@sa SDL_qsort",
           "name": "CompareCallback",
           "kind": "alias",
           "type": "SDL_CompareCallback",
-          "begin": 985,
-          "decl": 999,
-          "end": 1001
+          "begin": 991,
+          "decl": 1005,
+          "end": 1007
         },
         "qsort": {
           "doc": "Sort an array.\n\nFor example:\n\n```c\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *a, const void *b)\n{\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->n < B->n) {\n        return -1;\n    } else if (B->n < A->n) {\n        return 1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 3, \"third\" }, { 1, \"first\" }, { 2, \"second\" }\n};\n\nSDL_qsort(values, SDL_arraysize(values), sizeof(values[0]), compare);\n```\n\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_bsearch\n@sa SDL_qsort_r",
@@ -1070,9 +1086,9 @@
               "type": "CompareCallback"
             }
           ],
-          "begin": 1001,
-          "decl": 1045,
-          "end": 1053
+          "begin": 1007,
+          "decl": 1051,
+          "end": 1059
         },
         "bsearch": {
           "doc": "Perform a binary search on a previously sorted array.\n\nFor example:\n\n```c\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *a, const void *b)\n{\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->n < B->n) {\n        return -1;\n    } else if (B->n < A->n) {\n        return 1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 1, \"first\" }, { 2, \"second\" }, { 3, \"third\" }\n};\ndata key = { 2, NULL };\n\ndata *result = SDL_bsearch(&key, values, SDL_arraysize(values),\nsizeof(values[0]), compare);\n```\n\n@param key a pointer to a key equal to the element being searched for.\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@returns a pointer to the matching element in the array, or NULL if not\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_bsearch_r\n@sa SDL_qsort",
@@ -1101,18 +1117,18 @@
               "type": "CompareCallback"
             }
           ],
-          "begin": 1053,
-          "decl": 1102,
-          "end": 1111
+          "begin": 1059,
+          "decl": 1108,
+          "end": 1117
         },
         "CompareCallback_r": {
           "doc": "A callback used with SDL sorting and binary search functions.\n\n@param userdata the `userdata` pointer passed to the sort function.\n@param a a pointer to the first element being compared.\n@param b a pointer to the second element being compared.\n@returns -1 if `a` should be sorted before `b`, 1 if `b` should be sorted\n         before `a`, 0 if they are equal. If two elements are equal, their\n         order in the sorted array is undefined.\n\n@since This callback is available since SDL 3.2.0.\n\n@sa SDL_qsort_r\n@sa SDL_bsearch_r",
           "name": "CompareCallback_r",
           "kind": "alias",
           "type": "SDL_CompareCallback_r",
-          "begin": 1111,
-          "decl": 1126,
-          "end": 1128
+          "begin": 1117,
+          "decl": 1132,
+          "end": 1134
         },
         "qsort_r": {
           "doc": "Sort an array, passing a userdata pointer to the compare function.\n\nFor example:\n\n```c\ntypedef enum {\n    sort_increasing,\n    sort_decreasing,\n} sort_method;\n\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *userdata, const void *a, const void *b)\n{\n    sort_method method = (sort_method)(uintptr_t)userdata;\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->key < B->key) {\n        return (method == sort_increasing) ? -1 : 1;\n    } else if (B->key < A->key) {\n        return (method == sort_increasing) ? 1 : -1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 3, \"third\" }, { 1, \"first\" }, { 2, \"second\" }\n};\n\nSDL_qsort_r(values, SDL_arraysize(values), sizeof(values[0]), compare, (const\nvoid *)(uintptr_t)sort_increasing);\n```\n\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@param userdata a pointer to pass to the compare function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_bsearch_r\n@sa SDL_qsort",
@@ -1141,9 +1157,9 @@
               "type": "void *"
             }
           ],
-          "begin": 1128,
-          "decl": 1180,
-          "end": 1189
+          "begin": 1134,
+          "decl": 1186,
+          "end": 1195
         },
         "bsearch_r": {
           "doc": "Perform a binary search on a previously sorted array, passing a userdata\npointer to the compare function.\n\nFor example:\n\n```c\ntypedef enum {\n    sort_increasing,\n    sort_decreasing,\n} sort_method;\n\ntypedef struct {\n    int key;\n    const char *string;\n} data;\n\nint SDLCALL compare(const void *userdata, const void *a, const void *b)\n{\n    sort_method method = (sort_method)(uintptr_t)userdata;\n    const data *A = (const data *)a;\n    const data *B = (const data *)b;\n\n    if (A->key < B->key) {\n        return (method == sort_increasing) ? -1 : 1;\n    } else if (B->key < A->key) {\n        return (method == sort_increasing) ? 1 : -1;\n    } else {\n        return 0;\n    }\n}\n\ndata values[] = {\n    { 1, \"first\" }, { 2, \"second\" }, { 3, \"third\" }\n};\ndata key = { 2, NULL };\n\ndata *result = SDL_bsearch_r(&key, values, SDL_arraysize(values),\nsizeof(values[0]), compare, (const void *)(uintptr_t)sort_increasing);\n```\n\n@param key a pointer to a key equal to the element being searched for.\n@param base a pointer to the start of the array.\n@param nmemb the number of elements in the array.\n@param size the size of the elements in the array.\n@param compare a function used to compare elements in the array.\n@param userdata a pointer to pass to the compare function.\n@returns a pointer to the matching element in the array, or NULL if not\n         found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_bsearch\n@sa SDL_qsort_r",
@@ -1176,9 +1192,9 @@
               "type": "void *"
             }
           ],
-          "begin": 1189,
-          "decl": 1246,
-          "end": 1256
+          "begin": 1195,
+          "decl": 1252,
+          "end": 1262
         },
         "abs": {
           "doc": "Compute the absolute value of `x`.\n\n@param x an integer value.\n@returns the absolute value of x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1191,9 +1207,9 @@
               "type": "int"
             }
           ],
-          "begin": 1256,
-          "decl": 1266,
-          "end": 1268
+          "begin": 1262,
+          "decl": 1272,
+          "end": 1274
         },
         "min": {
           "doc": "Return the lesser of two values.\n\nThis is a helper macro that might be more clear than writing out the\ncomparisons directly, and works with any type that can be compared with the\n`<` operator. However, it double-evaluates both its parameters, so do not\nuse expressions with side-effects here.\n\n@param x the first value to compare.\n@param y the second value to compare.\n@returns the lesser of `x` and `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1221,9 +1237,9 @@
               "type": "class"
             }
           ],
-          "begin": 1268,
-          "decl": 1284,
-          "end": 1290
+          "begin": 1274,
+          "decl": 1290,
+          "end": 1296
         },
         "max": {
           "doc": "Return the greater of two values.\n\nThis is a helper function that might be more clear than writing out the\ncomparisons directly, and works with any type that can be compared with the\n`>` operator. However, it double-evaluates both its parameters, so do not\nuse expressions with side-effects here.\n\n@param x the first value to compare.\n@param y the second value to compare.\n@returns the lesser of `x` and `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1251,9 +1267,9 @@
               "type": "class"
             }
           ],
-          "begin": 1290,
-          "decl": 1306,
-          "end": 1312
+          "begin": 1296,
+          "decl": 1312,
+          "end": 1318
         },
         "clamp": {
           "doc": "Return a value clamped to a range.\n\nIf `x` is outside the range a values between `a` and `b`, the returned\nvalue will be `a` or `b` as appropriate. Otherwise, `x` is returned.\n\nThis function will produce incorrect results if `b` is less than `a`.\n\nThis is a helper function that might be more clear than writing out the\ncomparisons directly, and works with any type that can be compared with the\n`<` and `>` operators. However, it double-evaluates all its parameters, so\ndo not use expressions with side-effects here.\n\n@param x the value to compare.\n@param a the low end value.\n@param b the high end value.\n@returns x, clamped between a and b.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1289,9 +1305,9 @@
               "type": "class"
             }
           ],
-          "begin": 1312,
-          "decl": 1334,
-          "end": 1340
+          "begin": 1318,
+          "decl": 1340,
+          "end": 1346
         },
         "isalpha": {
           "doc": "Query if a character is alphabetic (a letter).\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\nfor English 'a-z' and 'A-Z' as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1304,9 +1320,9 @@
               "type": "int"
             }
           ],
-          "begin": 1340,
-          "decl": 1353,
-          "end": 1355
+          "begin": 1346,
+          "decl": 1359,
+          "end": 1361
         },
         "isalnum": {
           "doc": "Query if a character is alphabetic (a letter) or a number.\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\nfor English 'a-z', 'A-Z', and '0-9' as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1319,9 +1335,9 @@
               "type": "int"
             }
           ],
-          "begin": 1355,
-          "decl": 1368,
-          "end": 1370
+          "begin": 1361,
+          "decl": 1374,
+          "end": 1376
         },
         "isblank": {
           "doc": "Report if a character is blank (a space or tab).\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\n0x20 (space) or 0x9 (tab) as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1334,9 +1350,9 @@
               "type": "int"
             }
           ],
-          "begin": 1370,
-          "decl": 1383,
-          "end": 1385
+          "begin": 1376,
+          "decl": 1389,
+          "end": 1391
         },
         "iscntrl": {
           "doc": "Report if a character is a control character.\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\n0 through 0x1F, and 0x7F, as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1349,9 +1365,9 @@
               "type": "int"
             }
           ],
-          "begin": 1385,
-          "decl": 1398,
-          "end": 1400
+          "begin": 1391,
+          "decl": 1404,
+          "end": 1406
         },
         "isdigit": {
           "doc": "Report if a character is a numeric digit.\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\n'0' (0x30) through '9' (0x39), as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1364,9 +1380,9 @@
               "type": "int"
             }
           ],
-          "begin": 1400,
-          "decl": 1413,
-          "end": 1415
+          "begin": 1406,
+          "decl": 1419,
+          "end": 1421
         },
         "isxdigit": {
           "doc": "Report if a character is a hexadecimal digit.\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\n'A' through 'F', 'a' through 'f', and '0' through '9', as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1379,9 +1395,9 @@
               "type": "int"
             }
           ],
-          "begin": 1415,
-          "decl": 1428,
-          "end": 1430
+          "begin": 1421,
+          "decl": 1434,
+          "end": 1436
         },
         "ispunct": {
           "doc": "Report if a character is a punctuation mark.\n\n**WARNING**: Regardless of system locale, this is equivalent to\n`((SDL_isgraph(x)) && (!SDL_isalnum(x)))`.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_isgraph\n@sa SDL_isalnum",
@@ -1394,9 +1410,9 @@
               "type": "int"
             }
           ],
-          "begin": 1430,
-          "decl": 1446,
-          "end": 1448
+          "begin": 1436,
+          "decl": 1452,
+          "end": 1454
         },
         "isspace": {
           "doc": "Report if a character is whitespace.\n\n**WARNING**: Regardless of system locale, this will only treat the\nfollowing ASCII values as true:\n\n- space (0x20)\n- tab (0x09)\n- newline (0x0A)\n- vertical tab (0x0B)\n- form feed (0x0C)\n- return (0x0D)\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1409,9 +1425,9 @@
               "type": "int"
             }
           ],
-          "begin": 1448,
-          "decl": 1468,
-          "end": 1470
+          "begin": 1454,
+          "decl": 1474,
+          "end": 1476
         },
         "isupper": {
           "doc": "Report if a character is upper case.\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\n'A' through 'Z' as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1424,9 +1440,9 @@
               "type": "int"
             }
           ],
-          "begin": 1470,
-          "decl": 1483,
-          "end": 1485
+          "begin": 1476,
+          "decl": 1489,
+          "end": 1491
         },
         "islower": {
           "doc": "Report if a character is lower case.\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\n'a' through 'z' as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1439,9 +1455,9 @@
               "type": "int"
             }
           ],
-          "begin": 1485,
-          "decl": 1498,
-          "end": 1500
+          "begin": 1491,
+          "decl": 1504,
+          "end": 1506
         },
         "isprint": {
           "doc": "Report if a character is \"printable\".\n\nBe advised that \"printable\" has a definition that goes back to text\nterminals from the dawn of computing, making this a sort of special case\nfunction that is not suitable for Unicode (or most any) text management.\n\n**WARNING**: Regardless of system locale, this will only treat ASCII values\n' ' (0x20) through '~' (0x7E) as true.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1454,9 +1470,9 @@
               "type": "int"
             }
           ],
-          "begin": 1500,
-          "decl": 1517,
-          "end": 1519
+          "begin": 1506,
+          "decl": 1523,
+          "end": 1525
         },
         "isgraph": {
           "doc": "Report if a character is any \"printable\" except space.\n\nBe advised that \"printable\" has a definition that goes back to text\nterminals from the dawn of computing, making this a sort of special case\nfunction that is not suitable for Unicode (or most any) text management.\n\n**WARNING**: Regardless of system locale, this is equivalent to\n`(SDL_isprint(x)) && ((x) != ' ')`.\n\n@param x character value to check.\n@returns non-zero if x falls within the character class, zero otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_isprint",
@@ -1469,9 +1485,9 @@
               "type": "int"
             }
           ],
-          "begin": 1519,
-          "decl": 1538,
-          "end": 1540
+          "begin": 1525,
+          "decl": 1544,
+          "end": 1546
         },
         "toupper": {
           "doc": "Convert low-ASCII English letters to uppercase.\n\n**WARNING**: Regardless of system locale, this will only convert ASCII\nvalues 'a' through 'z' to uppercase.\n\nThis function returns the uppercase equivalent of `x`. If a character\ncannot be converted, or is already uppercase, this function returns `x`.\n\n@param x character value to check.\n@returns capitalized version of x, or x if no conversion available.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1484,9 +1500,9 @@
               "type": "int"
             }
           ],
-          "begin": 1540,
-          "decl": 1556,
-          "end": 1558
+          "begin": 1546,
+          "decl": 1562,
+          "end": 1564
         },
         "tolower": {
           "doc": "Convert low-ASCII English letters to lowercase.\n\n**WARNING**: Regardless of system locale, this will only convert ASCII\nvalues 'A' through 'Z' to lowercase.\n\nThis function returns the lowercase equivalent of `x`. If a character\ncannot be converted, or is already lowercase, this function returns `x`.\n\n@param x character value to check.\n@returns lowercase version of x, or x if no conversion available.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1499,9 +1515,9 @@
               "type": "int"
             }
           ],
-          "begin": 1558,
-          "decl": 1574,
-          "end": 1576
+          "begin": 1564,
+          "decl": 1580,
+          "end": 1582
         },
         "crc16": {
           "doc": "Calculate a CRC-16 value.\n\nhttps://en.wikipedia.org/wiki/Cyclic_redundancy_check\n\nThis function can be called multiple times, to stream data to be\nchecksummed in blocks. Each call must provide the previous CRC-16 return\nvalue to be updated with the next block. The first call to this function\nfor a set of blocks should pass in a zero CRC value.\n\n@param crc the current checksum for this data set, or 0 for a new data set.\n@param data a new block of data to add to the checksum.\n@param len the size, in bytes, of the new block of data.\n@returns a CRC-16 checksum value of all blocks in the data set.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1522,9 +1538,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1576,
-          "decl": 1595,
-          "end": 1600
+          "begin": 1582,
+          "decl": 1601,
+          "end": 1606
         },
         "crc32": {
           "doc": "Calculate a CRC-32 value.\n\nhttps://en.wikipedia.org/wiki/Cyclic_redundancy_check\n\nThis function can be called multiple times, to stream data to be\nchecksummed in blocks. Each call must provide the previous CRC-32 return\nvalue to be updated with the next block. The first call to this function\nfor a set of blocks should pass in a zero CRC value.\n\n@param crc the current checksum for this data set, or 0 for a new data set.\n@param data a new block of data to add to the checksum.\n@param len the size, in bytes, of the new block of data.\n@returns a CRC-32 checksum value of all blocks in the data set.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1545,9 +1561,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1600,
-          "decl": 1619,
-          "end": 1624
+          "begin": 1606,
+          "decl": 1625,
+          "end": 1630
         },
         "murmur3_32": {
           "doc": "Calculate a 32-bit MurmurHash3 value for a block of data.\n\nhttps://en.wikipedia.org/wiki/MurmurHash\n\nA seed may be specified, which changes the final results consistently, but\nthis does not work like SDL_crc16 and SDL_crc32: you can't feed a previous\nresult from this function back into itself as the next seed value to\ncalculate a hash in chunks; it won't produce the same hash as it would if\nthe same data was provided in a single call.\n\nIf you aren't sure what to provide for a seed, zero is fine. Murmur3 is not\ncryptographically secure, so it shouldn't be used for hashing top-secret\ndata.\n\n@param data the data to be hashed.\n@param len the size of data, in bytes.\n@param seed a value that alters the final hash value.\n@returns a Murmur3 32-bit hash value.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1568,9 +1584,9 @@
               "type": "Uint32"
             }
           ],
-          "begin": 1624,
-          "decl": 1648,
-          "end": 1653
+          "begin": 1630,
+          "decl": 1654,
+          "end": 1659
         },
         "memcpy": {
           "doc": "Copy non-overlapping memory.\n\nThe memory regions must not overlap. If they do, use SDL_memmove() instead.\n\n@param dst The destination memory region. Must not be NULL, and must not\n           overlap with `src`.\n@param src The source memory region. Must not be NULL, and must not overlap\n           with `dst`.\n@param len The length in bytes of both `dst` and `src`.\n@returns `dst`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_memmove",
@@ -1591,9 +1607,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1653,
-          "decl": 1671,
-          "end": 1676
+          "begin": 1659,
+          "decl": 1677,
+          "end": 1682
         },
         "SDL_copyp": {
           "doc": "A macro to copy memory between objects, with basic type checking.\n\nSDL_memcpy and SDL_memmove do not care where you copy memory to and from,\nwhich can lead to bugs. This macro aims to avoid most of those bugs by\nmaking sure that the source and destination are both pointers to objects\nthat are the same size. It does not check that the objects are the same\n_type_, just that the copy will not overflow either object.\n\nThe size check happens at compile time, and the compiler will throw an\nerror if the objects are different sizes.\n\nGenerally this is intended to copy a single object, not an array.\n\nThis macro looks like it double-evaluates its parameters, but the extras\nthem are in `sizeof` sections, which generate no code nor side-effects.\n\n@param dst a pointer to the destination object. Must not be NULL.\n@param src a pointer to the source object. Must not be NULL.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1604,9 +1620,9 @@
             "dst",
             "src"
           ],
-          "begin": 1678,
-          "decl": 1702,
-          "end": 1708
+          "begin": 1684,
+          "decl": 1708,
+          "end": 1714
         },
         "memmove": {
           "doc": "Copy memory ranges that might overlap.\n\nIt is okay for the memory regions to overlap. If you are confident that the\nregions never overlap, using SDL_memcpy() may improve performance.\n\n@param dst The destination memory region. Must not be NULL.\n@param src The source memory region. Must not be NULL.\n@param len The length in bytes of both `dst` and `src`.\n@returns `dst`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_memcpy",
@@ -1627,9 +1643,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1710,
-          "decl": 1727,
-          "end": 1732
+          "begin": 1716,
+          "decl": 1733,
+          "end": 1738
         },
         "memset": {
           "doc": "Initialize all bytes of buffer of memory to a specific value.\n\nThis function will set `len` bytes, pointed to by `dst`, to the value\nspecified in `c`.\n\nDespite `c` being an `int` instead of a `char`, this only operates on\nbytes; `c` must be a value between 0 and 255, inclusive.\n\n@param dst the destination memory region. Must not be NULL.\n@param c the byte value to set.\n@param len the length, in bytes, to set in `dst`.\n@returns `dst`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1650,9 +1666,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1732,
-          "decl": 1750,
-          "end": 1755
+          "begin": 1738,
+          "decl": 1756,
+          "end": 1761
         },
         "memset4": {
           "doc": "Initialize all 32-bit words of buffer of memory to a specific value.\n\nThis function will set a buffer of `dwords` Uint32 values, pointed to by\n`dst`, to the value specified in `val`.\n\nUnlike SDL_memset, this sets 32-bit values, not bytes, so it's not limited\nto a range of 0-255.\n\n@param dst the destination memory region. Must not be NULL.\n@param val the Uint32 value to set.\n@param dwords the number of Uint32 values to set in `dst`.\n@returns `dst`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1673,9 +1689,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1755,
-          "decl": 1773,
-          "end": 1778
+          "begin": 1761,
+          "decl": 1779,
+          "end": 1784
         },
         "zero": {
           "doc": "Clear an object's memory to zero.\n\nThis is wrapper over SDL_memset that handles calculating the object size,\nso there's no chance of copy/paste errors, and the code is cleaner.\n\nThis requires an object, not a pointer to an object, nor an array.\n\n@param x the object to clear.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_zerop\n@sa SDL_zeroa",
@@ -1694,9 +1710,9 @@
               "type": "class"
             }
           ],
-          "begin": 1778,
-          "decl": 1795,
-          "end": 1801
+          "begin": 1784,
+          "decl": 1801,
+          "end": 1807
         },
         "zerop": {
           "doc": "Clear an object's memory to zero, using a pointer.\n\nThis is wrapper over SDL_memset that handles calculating the object size,\nso there's no chance of copy/paste errors, and the code is cleaner.\n\nThis requires a pointer to an object, not an object itself, nor an array.\n\n@param x a pointer to the object to clear.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_zero\n@sa SDL_zeroa",
@@ -1715,9 +1731,9 @@
               "type": "class"
             }
           ],
-          "begin": 1801,
-          "decl": 1818,
-          "end": 1824
+          "begin": 1807,
+          "decl": 1824,
+          "end": 1830
         },
         "zeroa": {
           "doc": "Clear an array's memory to zero.\n\nThis is wrapper over SDL_memset that handles calculating the array size, so\nthere's no chance of copy/paste errors, and the code is cleaner.\n\nThis requires an array, not an object, nor a pointer to an object.\n\n@param x an array to clear.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_zero\n@sa SDL_zeroa",
@@ -1740,9 +1756,9 @@
               "type": "std::size_t"
             }
           ],
-          "begin": 1824,
-          "decl": 1841,
-          "end": 1847
+          "begin": 1830,
+          "decl": 1847,
+          "end": 1853
         },
         "memcmp": {
           "doc": "Compare two buffers of memory.\n\n@param s1 the first buffer to compare. NULL is not permitted!\n@param s2 the second buffer to compare. NULL is not permitted!\n@param len the number of bytes to compare between the buffers.\n@returns less than zero if s1 is \"less than\" s2, greater than zero if s1 is\n         \"greater than\" s2, and zero if the buffers match exactly for `len`\n         bytes.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1763,9 +1779,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1847,
-          "decl": 1861,
-          "end": 1866
+          "begin": 1853,
+          "decl": 1867,
+          "end": 1872
         },
         "wcslen": {
           "doc": "This works exactly like wcslen() but doesn't require access to a C runtime.\n\nCounts the number of wchar_t values in `wstr`, excluding the null\nterminator.\n\nLike SDL_strlen only counts bytes and not codepoints in a UTF-8 string,\nthis counts wchar_t values in a string, even if the string's encoding is of\nvariable width, like UTF-16.\n\nAlso be aware that wchar_t is different sizes on different platforms (4\nbytes on Linux, 2 on Windows, etc).\n\n@param wstr The null-terminated wide string to read. Must not be NULL.\n@returns the length (in wchar_t values, excluding the null terminator) of\n         `wstr`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_wcsnlen\n@sa SDL_utf8strlen\n@sa SDL_utf8strnlen",
@@ -1778,9 +1794,9 @@
               "type": "const wchar_t *"
             }
           ],
-          "begin": 1866,
-          "decl": 1891,
-          "end": 1893
+          "begin": 1872,
+          "decl": 1897,
+          "end": 1899
         },
         "wcsnlen": {
           "doc": "This works exactly like wcsnlen() but doesn't require access to a C\nruntime.\n\nCounts up to a maximum of `maxlen` wchar_t values in `wstr`, excluding the\nnull terminator.\n\nLike SDL_strnlen only counts bytes and not codepoints in a UTF-8 string,\nthis counts wchar_t values in a string, even if the string's encoding is of\nvariable width, like UTF-16.\n\nAlso be aware that wchar_t is different sizes on different platforms (4\nbytes on Linux, 2 on Windows, etc).\n\nAlso, `maxlen` is a count of wide characters, not bytes!\n\n@param wstr The null-terminated wide string to read. Must not be NULL.\n@param maxlen The maximum amount of wide characters to count.\n@returns the length (in wide characters, excluding the null terminator) of\n         `wstr` but never more than `maxlen`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_wcslen\n@sa SDL_utf8strlen\n@sa SDL_utf8strnlen",
@@ -1797,9 +1813,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1893,
-          "decl": 1922,
-          "end": 1927
+          "begin": 1899,
+          "decl": 1928,
+          "end": 1933
         },
         "wcslcpy": {
           "doc": "Copy a wide string.\n\nThis function copies `maxlen` - 1 wide characters from `src` to `dst`, then\nappends a null terminator.\n\n`src` and `dst` must not overlap.\n\nIf `maxlen` is 0, no wide characters are copied and no null terminator is\nwritten.\n\n@param dst The destination buffer. Must not be NULL, and must not overlap\n           with `src`.\n@param src The null-terminated wide string to copy. Must not be NULL, and\n           must not overlap with `dst`.\n@param maxlen The length (in wide characters) of the destination buffer.\n@returns the length (in wide characters, excluding the null terminator) of\n         `src`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_wcslcat",
@@ -1820,9 +1836,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1927,
-          "decl": 1952,
-          "end": 1957
+          "begin": 1933,
+          "decl": 1958,
+          "end": 1963
         },
         "wcslcat": {
           "doc": "Concatenate wide strings.\n\nThis function appends up to `maxlen` - SDL_wcslen(dst) - 1 wide characters\nfrom `src` to the end of the wide string in `dst`, then appends a null\nterminator.\n\n`src` and `dst` must not overlap.\n\nIf `maxlen` - SDL_wcslen(dst) - 1 is less than or equal to 0, then `dst` is\nunmodified.\n\n@param dst The destination buffer already containing the first\n           null-terminated wide string. Must not be NULL and must not\n           overlap with `src`.\n@param src The second null-terminated wide string. Must not be NULL, and\n           must not overlap with `dst`.\n@param maxlen The length (in wide characters) of the destination buffer.\n@returns the length (in wide characters, excluding the null terminator) of\n         the string in `dst` plus the length of `src`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_wcslcpy",
@@ -1843,9 +1859,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 1957,
-          "decl": 1984,
-          "end": 1989
+          "begin": 1963,
+          "decl": 1990,
+          "end": 1995
         },
         "wcsdup": {
           "doc": "Allocate a copy of a wide string.\n\nThis allocates enough space for a null-terminated copy of `wstr`, using\nSDL_malloc, and then makes a copy of the string into this space.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param wstr the string to copy.\n@returns a pointer to the newly-allocated wide string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1858,9 +1874,9 @@
               "type": "const wchar_t *"
             }
           ],
-          "begin": 1989,
-          "decl": 2005,
-          "end": 2007
+          "begin": 1995,
+          "decl": 2011,
+          "end": 2013
         },
         "wcsstr": {
           "doc": "Search a wide string for the first instance of a specific substring.\n\nThe search ends once it finds the requested substring, or a null terminator\nbyte to end the string.\n\nNote that this looks for strings of _wide characters_, not _codepoints_, so\nit's legal to search for malformed and incomplete UTF-16 sequences.\n\n@param haystack the wide string to search. Must not be NULL.\n@param needle the wide string to search for. Must not be NULL.\n@returns a pointer to the first instance of `needle` in the string, or NULL\n         if not found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1877,9 +1893,9 @@
               "type": "const wchar_t *"
             }
           ],
-          "begin": 2007,
-          "decl": 2025,
-          "end": 2030
+          "begin": 2013,
+          "decl": 2031,
+          "end": 2036
         },
         "wcsnstr": {
           "doc": "Search a wide string, up to n wide chars, for the first instance of a\nspecific substring.\n\nThe search ends once it finds the requested substring, or a null terminator\nvalue to end the string, or `maxlen` wide character have been examined. It\nis possible to use this function on a wide string without a null\nterminator.\n\nNote that this looks for strings of _wide characters_, not _codepoints_, so\nit's legal to search for malformed and incomplete UTF-16 sequences.\n\n@param haystack the wide string to search. Must not be NULL.\n@param needle the wide string to search for. Must not be NULL.\n@param maxlen the maximum number of wide characters to search in\n              `haystack`.\n@returns a pointer to the first instance of `needle` in the string, or NULL\n         if not found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1900,9 +1916,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2030,
-          "decl": 2053,
-          "end": 2060
+          "begin": 2036,
+          "decl": 2059,
+          "end": 2066
         },
         "wcscmp": {
           "doc": "Compare two null-terminated wide strings.\n\nThis only compares wchar_t values until it hits a null-terminating\ncharacter; it does not care if the string is well-formed UTF-16 (or UTF-32,\ndepending on your platform's wchar_t size), or uses valid Unicode values.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1919,9 +1935,9 @@
               "type": "const wchar_t *"
             }
           ],
-          "begin": 2060,
-          "decl": 2077,
-          "end": 2082
+          "begin": 2066,
+          "decl": 2083,
+          "end": 2088
         },
         "wcsncmp": {
           "doc": "Compare two wide strings up to a number of wchar_t values.\n\nThis only compares wchar_t values; it does not care if the string is\nwell-formed UTF-16 (or UTF-32, depending on your platform's wchar_t size),\nor uses valid Unicode values.\n\nNote that while this function is intended to be used with UTF-16 (or\nUTF-32, depending on your platform's definition of wchar_t), it is\ncomparing raw wchar_t values and not Unicode codepoints: `maxlen` specifies\na wchar_t limit! If the limit lands in the middle of a multi-wchar UTF-16\nsequence, it will only compare a portion of the final character.\n\n`maxlen` specifies a maximum number of wchar_t to compare; if the strings\nmatch to this number of wide chars (or both have matched to a\nnull-terminator character before this count), they will be considered\nequal.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@param maxlen the maximum number of wchar_t to compare.\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1942,9 +1958,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2082,
-          "decl": 2111,
-          "end": 2116
+          "begin": 2088,
+          "decl": 2117,
+          "end": 2122
         },
         "wcscasecmp": {
           "doc": "Compare two null-terminated wide strings, case-insensitively.\n\nThis will work with Unicode strings, using a technique called\n\"case-folding\" to handle the vast majority of case-sensitive human\nlanguages regardless of system locale. It can deal with expanding values: a\nGerman Eszett character can compare against two ASCII 's' chars and be\nconsidered a match, for example. A notable exception: it does not handle\nthe Turkish 'i' character; human language is complicated!\n\nDepending on your platform, \"wchar_t\" might be 2 bytes, and expected to be\nUTF-16 encoded (like Windows), or 4 bytes in UTF-32 format. Since this\nhandles Unicode, it expects the string to be well-formed and not a\nnull-terminated string of arbitrary bytes. Characters that are not valid\nUTF-16 (or UTF-32) are treated as Unicode character U+FFFD (REPLACEMENT\nCHARACTER), which is to say two strings of random bits may turn out to\nmatch if they convert to the same amount of replacement characters.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1961,9 +1977,9 @@
               "type": "const wchar_t *"
             }
           ],
-          "begin": 2116,
-          "decl": 2144,
-          "end": 2149
+          "begin": 2122,
+          "decl": 2150,
+          "end": 2155
         },
         "wcsncasecmp": {
           "doc": "Compare two wide strings, case-insensitively, up to a number of wchar_t.\n\nThis will work with Unicode strings, using a technique called\n\"case-folding\" to handle the vast majority of case-sensitive human\nlanguages regardless of system locale. It can deal with expanding values: a\nGerman Eszett character can compare against two ASCII 's' chars and be\nconsidered a match, for example. A notable exception: it does not handle\nthe Turkish 'i' character; human language is complicated!\n\nDepending on your platform, \"wchar_t\" might be 2 bytes, and expected to be\nUTF-16 encoded (like Windows), or 4 bytes in UTF-32 format. Since this\nhandles Unicode, it expects the string to be well-formed and not a\nnull-terminated string of arbitrary bytes. Characters that are not valid\nUTF-16 (or UTF-32) are treated as Unicode character U+FFFD (REPLACEMENT\nCHARACTER), which is to say two strings of random bits may turn out to\nmatch if they convert to the same amount of replacement characters.\n\nNote that while this function might deal with variable-sized characters,\n`maxlen` specifies a _wchar_ limit! If the limit lands in the middle of a\nmulti-byte UTF-16 sequence, it may convert a portion of the final character\nto one or more Unicode character U+FFFD (REPLACEMENT CHARACTER) so as not\nto overflow a buffer.\n\n`maxlen` specifies a maximum number of wchar_t values to compare; if the\nstrings match to this number of wchar_t (or both have matched to a\nnull-terminator character before this number of bytes), they will be\nconsidered equal.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@param maxlen the maximum number of wchar_t values to compare.\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -1984,9 +2000,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2149,
-          "decl": 2189,
-          "end": 2194
+          "begin": 2155,
+          "decl": 2195,
+          "end": 2200
         },
         "wcstol": {
           "doc": "Parse a `long` from a wide string.\n\nIf `str` starts with whitespace, then those whitespace characters are\nskipped before attempting to parse the number.\n\nIf the parsed number does not fit inside a `long`, the result is clamped to\nthe minimum and maximum representable `long` values.\n\n@param str The null-terminated wide string to read. Must not be NULL.\n@param endp If not NULL, the address of the first invalid wide character\n            (i.e. the next character after the parsed number) will be\n            written to this pointer.\n@param base The base of the integer to read. Supported values are 0 and 2\n            to 36 inclusive. If 0, the base will be inferred from the\n            number's prefix (0x for hexadecimal, 0 for octal, decimal\n            otherwise).\n@returns the parsed `long`, or 0 if no number could be parsed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strtol",
@@ -2007,9 +2023,9 @@
               "type": "int"
             }
           ],
-          "begin": 2194,
-          "decl": 2219,
-          "end": 2224
+          "begin": 2200,
+          "decl": 2225,
+          "end": 2230
         },
         "strlen": {
           "doc": "This works exactly like strlen() but doesn't require access to a C runtime.\n\nCounts the bytes in `str`, excluding the null terminator.\n\nIf you need the length of a UTF-8 string, consider using SDL_utf8strlen().\n\n@param str The null-terminated string to read. Must not be NULL.\n@returns the length (in bytes, excluding the null terminator) of `src`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strnlen\n@sa SDL_utf8strlen\n@sa SDL_utf8strnlen",
@@ -2022,9 +2038,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2224,
-          "decl": 2242,
-          "end": 2244
+          "begin": 2230,
+          "decl": 2248,
+          "end": 2250
         },
         "strnlen": {
           "doc": "This works exactly like strnlen() but doesn't require access to a C\nruntime.\n\nCounts up to a maximum of `maxlen` bytes in `str`, excluding the null\nterminator.\n\nIf you need the length of a UTF-8 string, consider using SDL_utf8strnlen().\n\n@param str The null-terminated string to read. Must not be NULL.\n@param maxlen The maximum amount of bytes to count.\n@returns the length (in bytes, excluding the null terminator) of `src` but\n         never more than `maxlen`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strlen\n@sa SDL_utf8strlen\n@sa SDL_utf8strnlen",
@@ -2041,9 +2057,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2244,
-          "decl": 2266,
-          "end": 2271
+          "begin": 2250,
+          "decl": 2272,
+          "end": 2277
         },
         "strlcpy": {
           "doc": "Copy a string.\n\nThis function copies up to `maxlen` - 1 characters from `src` to `dst`,\nthen appends a null terminator.\n\nIf `maxlen` is 0, no characters are copied and no null terminator is\nwritten.\n\nIf you want to copy an UTF-8 string but need to ensure that multi-byte\nsequences are not truncated, consider using SDL_utf8strlcpy().\n\n@param dst The destination buffer. Must not be NULL, and must not overlap\n           with `src`.\n@param src The null-terminated string to copy. Must not be NULL, and must\n           not overlap with `dst`.\n@param maxlen The length (in characters) of the destination buffer.\n@returns the length (in characters, excluding the null terminator) of\n         `src`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strlcat\n@sa SDL_utf8strlcpy",
@@ -2064,9 +2080,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2271,
-          "decl": 2298,
-          "end": 2303
+          "begin": 2277,
+          "decl": 2304,
+          "end": 2309
         },
         "utf8strlcpy": {
           "doc": "Copy an UTF-8 string.\n\nThis function copies up to `dst_bytes` - 1 bytes from `src` to `dst` while\nalso ensuring that the string written to `dst` does not end in a truncated\nmulti-byte sequence. Finally, it appends a null terminator.\n\n`src` and `dst` must not overlap.\n\nNote that unlike SDL_strlcpy(), this function returns the number of bytes\nwritten, not the length of `src`.\n\n@param dst The destination buffer. Must not be NULL, and must not overlap\n           with `src`.\n@param src The null-terminated UTF-8 string to copy. Must not be NULL, and\n           must not overlap with `dst`.\n@param dst_bytes The length (in bytes) of the destination buffer. Must not\n                 be 0.\n@returns the number of bytes written, excluding the null terminator.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strlcpy",
@@ -2087,9 +2103,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2303,
-          "decl": 2329,
-          "end": 2334
+          "begin": 2309,
+          "decl": 2335,
+          "end": 2340
         },
         "strlcat": {
           "doc": "Concatenate strings.\n\nThis function appends up to `maxlen` - SDL_strlen(dst) - 1 characters from\n`src` to the end of the string in `dst`, then appends a null terminator.\n\n`src` and `dst` must not overlap.\n\nIf `maxlen` - SDL_strlen(dst) - 1 is less than or equal to 0, then `dst` is\nunmodified.\n\n@param dst The destination buffer already containing the first\n           null-terminated string. Must not be NULL and must not overlap\n           with `src`.\n@param src The second null-terminated string. Must not be NULL, and must\n           not overlap with `dst`.\n@param maxlen The length (in characters) of the destination buffer.\n@returns the length (in characters, excluding the null terminator) of the\n         string in `dst` plus the length of `src`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strlcpy",
@@ -2110,9 +2126,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2334,
-          "decl": 2360,
-          "end": 2365
+          "begin": 2340,
+          "decl": 2366,
+          "end": 2371
         },
         "strdup": {
           "doc": "Allocate a copy of a string.\n\nThis allocates enough space for a null-terminated copy of `str`, using\nSDL_malloc, and then makes a copy of the string into this space.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param str the string to copy.\n@returns a pointer to the newly-allocated string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2125,9 +2141,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2365,
-          "decl": 2381,
-          "end": 2383
+          "begin": 2371,
+          "decl": 2387,
+          "end": 2389
         },
         "strndup": {
           "doc": "Allocate a copy of a string, up to n characters.\n\nThis allocates enough space for a null-terminated copy of `str`, up to\n`maxlen` bytes, using SDL_malloc, and then makes a copy of the string into\nthis space.\n\nIf the string is longer than `maxlen` bytes, the returned string will be\n`maxlen` bytes long, plus a null-terminator character that isn't included\nin the count.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param str the string to copy.\n@param maxlen the maximum length of the copied string, not counting the\n              null-terminator character.\n@returns a pointer to the newly-allocated string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2144,9 +2160,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2383,
-          "decl": 2406,
-          "end": 2411
+          "begin": 2389,
+          "decl": 2412,
+          "end": 2417
         },
         "strrev": {
           "doc": "Reverse a string's contents.\n\nThis reverses a null-terminated string in-place. Only the content of the\nstring is reversed; the null-terminator character remains at the end of the\nreversed string.\n\n**WARNING**: This function reverses the _bytes_ of the string, not the\ncodepoints. If `str` is a UTF-8 string with Unicode codepoints > 127, this\nwill ruin the string data. You should only use this function on strings\nthat are completely comprised of low ASCII characters.\n\n@param str the string to reverse.\n@returns `str`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2159,9 +2175,9 @@
               "type": "char *"
             }
           ],
-          "begin": 2411,
-          "decl": 2430,
-          "end": 2432
+          "begin": 2417,
+          "decl": 2436,
+          "end": 2438
         },
         "strupr": {
           "doc": "Convert a string to uppercase.\n\n**WARNING**: Regardless of system locale, this will only convert ASCII\nvalues 'A' through 'Z' to uppercase.\n\nThis function operates on a null-terminated string of bytes--even if it is\nmalformed UTF-8!--and converts ASCII characters 'a' through 'z' to their\nuppercase equivalents in-place, returning the original `str` pointer.\n\n@param str the string to convert in-place. Can not be NULL.\n@returns the `str` pointer passed into this function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strlwr",
@@ -2174,9 +2190,9 @@
               "type": "char *"
             }
           ],
-          "begin": 2432,
-          "decl": 2451,
-          "end": 2453
+          "begin": 2438,
+          "decl": 2457,
+          "end": 2459
         },
         "strlwr": {
           "doc": "Convert a string to lowercase.\n\n**WARNING**: Regardless of system locale, this will only convert ASCII\nvalues 'A' through 'Z' to lowercase.\n\nThis function operates on a null-terminated string of bytes--even if it is\nmalformed UTF-8!--and converts ASCII characters 'A' through 'Z' to their\nlowercase equivalents in-place, returning the original `str` pointer.\n\n@param str the string to convert in-place. Can not be NULL.\n@returns the `str` pointer passed into this function.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_strupr",
@@ -2189,9 +2205,9 @@
               "type": "char *"
             }
           ],
-          "begin": 2453,
-          "decl": 2472,
-          "end": 2474
+          "begin": 2459,
+          "decl": 2478,
+          "end": 2480
         },
         "strchr": {
           "doc": "Search a string for the first instance of a specific byte.\n\nThe search ends once it finds the requested byte value, or a null\nterminator byte to end the string.\n\nNote that this looks for _bytes_, not _characters_, so you cannot match\nagainst a Unicode codepoint > 255, regardless of character encoding.\n\n@param str the string to search. Must not be NULL.\n@param c the byte value to search for.\n@returns a pointer to the first instance of `c` in the string, or NULL if\n         not found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2208,9 +2224,9 @@
               "type": "int"
             }
           ],
-          "begin": 2474,
-          "decl": 2492,
-          "end": 2494
+          "begin": 2480,
+          "decl": 2498,
+          "end": 2500
         },
         "strrchr": {
           "doc": "Search a string for the last instance of a specific byte.\n\nThe search must go until it finds a null terminator byte to end the string.\n\nNote that this looks for _bytes_, not _characters_, so you cannot match\nagainst a Unicode codepoint > 255, regardless of character encoding.\n\n@param str the string to search. Must not be NULL.\n@param c the byte value to search for.\n@returns a pointer to the last instance of `c` in the string, or NULL if\n         not found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2227,9 +2243,9 @@
               "type": "int"
             }
           ],
-          "begin": 2494,
-          "decl": 2511,
-          "end": 2513
+          "begin": 2500,
+          "decl": 2517,
+          "end": 2519
         },
         "strstr": {
           "doc": "Search a string for the first instance of a specific substring.\n\nThe search ends once it finds the requested substring, or a null terminator\nbyte to end the string.\n\nNote that this looks for strings of _bytes_, not _characters_, so it's\nlegal to search for malformed and incomplete UTF-8 sequences.\n\n@param haystack the string to search. Must not be NULL.\n@param needle the string to search for. Must not be NULL.\n@returns a pointer to the first instance of `needle` in the string, or NULL\n         if not found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2246,9 +2262,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2513,
-          "decl": 2531,
-          "end": 2536
+          "begin": 2519,
+          "decl": 2537,
+          "end": 2542
         },
         "strnstr": {
           "doc": "Search a string, up to n bytes, for the first instance of a specific\nsubstring.\n\nThe search ends once it finds the requested substring, or a null terminator\nbyte to end the string, or `maxlen` bytes have been examined. It is\npossible to use this function on a string without a null terminator.\n\nNote that this looks for strings of _bytes_, not _characters_, so it's\nlegal to search for malformed and incomplete UTF-8 sequences.\n\n@param haystack the string to search. Must not be NULL.\n@param needle the string to search for. Must not be NULL.\n@param maxlen the maximum number of bytes to search in `haystack`.\n@returns a pointer to the first instance of `needle` in the string, or NULL\n         if not found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2269,9 +2285,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2536,
-          "decl": 2557,
-          "end": 2562
+          "begin": 2542,
+          "decl": 2563,
+          "end": 2568
         },
         "strcasestr": {
           "doc": "Search a UTF-8 string for the first instance of a specific substring,\ncase-insensitively.\n\nThis will work with Unicode strings, using a technique called\n\"case-folding\" to handle the vast majority of case-sensitive human\nlanguages regardless of system locale. It can deal with expanding values: a\nGerman Eszett character can compare against two ASCII 's' chars and be\nconsidered a match, for example. A notable exception: it does not handle\nthe Turkish 'i' character; human language is complicated!\n\nSince this handles Unicode, it expects the strings to be well-formed UTF-8\nand not a null-terminated string of arbitrary bytes. Bytes that are not\nvalid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT\nCHARACTER), which is to say two strings of random bits may turn out to\nmatch if they convert to the same amount of replacement characters.\n\n@param haystack the string to search. Must not be NULL.\n@param needle the string to search for. Must not be NULL.\n@returns a pointer to the first instance of `needle` in the string, or NULL\n         if not found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2288,9 +2304,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2562,
-          "decl": 2588,
-          "end": 2593
+          "begin": 2568,
+          "decl": 2594,
+          "end": 2599
         },
         "strtok_r": {
           "doc": "This works exactly like strtok_r() but doesn't require access to a C\nruntime.\n\nBreak a string up into a series of tokens.\n\nTo start tokenizing a new string, `str` should be the non-NULL address of\nthe string to start tokenizing. Future calls to get the next token from the\nsame string should specify a NULL.\n\nNote that this function will overwrite pieces of `str` with null chars to\nsplit it into tokens. This function cannot be used with const/read-only\nstrings!\n\n`saveptr` just needs to point to a `char *` that can be overwritten; SDL\nwill use this to save tokenizing state between calls. It is initialized if\n`str` is non-NULL, and used to resume tokenizing when `str` is NULL.\n\n@param str the string to tokenize, or NULL to continue tokenizing.\n@param delim the delimiter string that separates tokens.\n@param saveptr pointer to a char *, used for ongoing state.\n@returns A pointer to the next token, or NULL if no tokens remain.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2311,9 +2327,9 @@
               "type": "char **"
             }
           ],
-          "begin": 2593,
-          "decl": 2620,
-          "end": 2625
+          "begin": 2599,
+          "decl": 2626,
+          "end": 2631
         },
         "utf8strlen": {
           "doc": "Count the number of codepoints in a UTF-8 string.\n\nCounts the _codepoints_, not _bytes_, in `str`, excluding the null\nterminator.\n\nIf you need to count the bytes in a string instead, consider using\nSDL_strlen().\n\nSince this handles Unicode, it expects the strings to be well-formed UTF-8\nand not a null-terminated string of arbitrary bytes. Bytes that are not\nvalid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT\nCHARACTER), so a malformed or incomplete UTF-8 sequence might increase the\ncount by several replacement characters.\n\n@param str The null-terminated UTF-8 string to read. Must not be NULL.\n@returns The length (in codepoints, excluding the null terminator) of\n         `src`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_utf8strnlen\n@sa SDL_strlen",
@@ -2326,9 +2342,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2625,
-          "decl": 2651,
-          "end": 2653
+          "begin": 2631,
+          "decl": 2657,
+          "end": 2659
         },
         "utf8strnlen": {
           "doc": "Count the number of codepoints in a UTF-8 string, up to n bytes.\n\nCounts the _codepoints_, not _bytes_, in `str`, excluding the null\nterminator.\n\nIf you need to count the bytes in a string instead, consider using\nSDL_strnlen().\n\nThe counting stops at `bytes` bytes (not codepoints!). This seems\ncounterintuitive, but makes it easy to express the total size of the\nstring's buffer.\n\nSince this handles Unicode, it expects the strings to be well-formed UTF-8\nand not a null-terminated string of arbitrary bytes. Bytes that are not\nvalid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT\nCHARACTER), so a malformed or incomplete UTF-8 sequence might increase the\ncount by several replacement characters.\n\n@param str The null-terminated UTF-8 string to read. Must not be NULL.\n@param bytes The maximum amount of bytes to count.\n@returns The length (in codepoints, excluding the null terminator) of `src`\n         but never more than `maxlen`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_utf8strlen\n@sa SDL_strnlen",
@@ -2345,9 +2361,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2653,
-          "decl": 2684,
-          "end": 2689
+          "begin": 2659,
+          "decl": 2690,
+          "end": 2695
         },
         "itoa": {
           "doc": "Convert an integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexidecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget possible negative\nsigns, null terminator bytes, etc).\n\n@param value the integer to convert.\n@param str the buffer to write the string into.\n@param radix the radix to use for string generation.\n@returns `str`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_uitoa\n@sa SDL_ltoa\n@sa SDL_lltoa",
@@ -2368,9 +2384,9 @@
               "type": "int"
             }
           ],
-          "begin": 2689,
-          "decl": 2715,
-          "end": 2720
+          "begin": 2695,
+          "decl": 2721,
+          "end": 2726
         },
         "uitoa": {
           "doc": "Convert an unsigned integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexidecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget null terminator\nbytes, etc).\n\n@param value the unsigned integer to convert.\n@param str the buffer to write the string into.\n@param radix the radix to use for string generation.\n@returns `str`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_itoa\n@sa SDL_ultoa\n@sa SDL_ulltoa",
@@ -2391,9 +2407,9 @@
               "type": "int"
             }
           ],
-          "begin": 2720,
-          "decl": 2746,
-          "end": 2751
+          "begin": 2726,
+          "decl": 2752,
+          "end": 2757
         },
         "ltoa": {
           "doc": "Convert a long integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexidecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget possible negative\nsigns, null terminator bytes, etc).\n\n@param value the long integer to convert.\n@param str the buffer to write the string into.\n@param radix the radix to use for string generation.\n@returns `str`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ultoa\n@sa SDL_itoa\n@sa SDL_lltoa",
@@ -2414,9 +2430,9 @@
               "type": "int"
             }
           ],
-          "begin": 2751,
-          "decl": 2777,
-          "end": 2782
+          "begin": 2757,
+          "decl": 2783,
+          "end": 2788
         },
         "ultoa": {
           "doc": "Convert an unsigned long integer into a string.\n\nThis requires a radix to specified for string format. Specifying 10\nproduces a decimal number, 16 hexidecimal, etc. Must be in the range of 2\nto 36.\n\nNote that this function will overflow a buffer if `str` is not large enough\nto hold the output! It may be safer to use SDL_snprintf to clamp output, or\nSDL_asprintf to allocate a buffer. Otherwise, it doesn't hurt to allocate\nmuch more space than you expect to use (and don't forget null terminator\nbytes, etc).\n\n@param value the unsigned long integer to convert.\n@param str the buffer to write the string into.\n@param radix the radix to use for string generation.\n@returns `str`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ltoa\n@sa SDL_uitoa\n@sa SDL_ulltoa",
@@ -2437,9 +2453,9 @@
               "type": "int"
             }
           ],
-          "begin": 2782,
-          "decl": 2808,
-          "end": 2813
+          "begin": 2788,
+          "decl": 2814,
+          "end": 2819
         },
         "atoi": {
           "doc": "Parse an `int` from a string.\n\nThe result of calling `SDL_atoi(str)` is equivalent to\n`(int)SDL_strtol(str, NULL, 10)`.\n\n@param str The null-terminated string to read. Must not be NULL.\n@returns the parsed `int`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atof\n@sa SDL_strtol\n@sa SDL_strtoul\n@sa SDL_strtoll\n@sa SDL_strtoull\n@sa SDL_strtod\n@sa SDL_itoa",
@@ -2452,9 +2468,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2813,
-          "decl": 2834,
-          "end": 2836
+          "begin": 2819,
+          "decl": 2840,
+          "end": 2842
         },
         "atof": {
           "doc": "Parse a `double` from a string.\n\nThe result of calling `SDL_atof(str)` is equivalent to `SDL_strtod(str,\nNULL)`.\n\n@param str The null-terminated string to read. Must not be NULL.\n@returns the parsed `double`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atoi\n@sa SDL_strtol\n@sa SDL_strtoul\n@sa SDL_strtoll\n@sa SDL_strtoull\n@sa SDL_strtod",
@@ -2467,9 +2483,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2836,
-          "decl": 2856,
-          "end": 2858
+          "begin": 2842,
+          "decl": 2862,
+          "end": 2864
         },
         "strtol": {
           "doc": "Parse a `long` from a string.\n\nIf `str` starts with whitespace, then those whitespace characters are\nskipped before attempting to parse the number.\n\nIf the parsed number does not fit inside a `long`, the result is clamped to\nthe minimum and maximum representable `long` values.\n\n@param str The null-terminated string to read. Must not be NULL.\n@param endp If not NULL, the address of the first invalid character (i.e.\n            the next character after the parsed number) will be written to\n            this pointer.\n@param base The base of the integer to read. Supported values are 0 and 2\n            to 36 inclusive. If 0, the base will be inferred from the\n            number's prefix (0x for hexadecimal, 0 for octal, decimal\n            otherwise).\n@returns the parsed `long`, or 0 if no number could be parsed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atoi\n@sa SDL_atof\n@sa SDL_strtoul\n@sa SDL_strtoll\n@sa SDL_strtoull\n@sa SDL_strtod\n@sa SDL_ltoa\n@sa SDL_wcstol",
@@ -2490,9 +2506,9 @@
               "type": "int"
             }
           ],
-          "begin": 2858,
-          "decl": 2890,
-          "end": 2895
+          "begin": 2864,
+          "decl": 2896,
+          "end": 2901
         },
         "strtoul": {
           "doc": "Parse an `unsigned long` from a string.\n\nIf `str` starts with whitespace, then those whitespace characters are\nskipped before attempting to parse the number.\n\nIf the parsed number does not fit inside an `unsigned long`, the result is\nclamped to the maximum representable `unsigned long` value.\n\n@param str The null-terminated string to read. Must not be NULL.\n@param endp If not NULL, the address of the first invalid character (i.e.\n            the next character after the parsed number) will be written to\n            this pointer.\n@param base The base of the integer to read. Supported values are 0 and 2\n            to 36 inclusive. If 0, the base will be inferred from the\n            number's prefix (0x for hexadecimal, 0 for octal, decimal\n            otherwise).\n@returns the parsed `unsigned long`, or 0 if no number could be parsed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atoi\n@sa SDL_atof\n@sa SDL_strtol\n@sa SDL_strtoll\n@sa SDL_strtoull\n@sa SDL_strtod\n@sa SDL_ultoa",
@@ -2513,9 +2529,9 @@
               "type": "int"
             }
           ],
-          "begin": 2895,
-          "decl": 2926,
-          "end": 2931
+          "begin": 2901,
+          "decl": 2932,
+          "end": 2937
         },
         "strtod": {
           "doc": "Parse a `double` from a string.\n\nThis function makes fewer guarantees than the C runtime `strtod`:\n\n- Only decimal notation is guaranteed to be supported. The handling of\n  scientific and hexadecimal notation is unspecified.\n- Whether or not INF and NAN can be parsed is unspecified.\n- The precision of the result is unspecified.\n\n@param str the null-terminated string to read. Must not be NULL.\n@param endp if not NULL, the address of the first invalid character (i.e.\n            the next character after the parsed number) will be written to\n            this pointer.\n@returns the parsed `double`, or 0 if no number could be parsed.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atoi\n@sa SDL_atof\n@sa SDL_strtol\n@sa SDL_strtoll\n@sa SDL_strtoul\n@sa SDL_strtoull",
@@ -2532,9 +2548,9 @@
               "type": "char **"
             }
           ],
-          "begin": 2931,
-          "decl": 2958,
-          "end": 2963
+          "begin": 2937,
+          "decl": 2964,
+          "end": 2969
         },
         "strcmp": {
           "doc": "Compare two null-terminated UTF-8 strings.\n\nDue to the nature of UTF-8 encoding, this will work with Unicode strings,\nsince effectively this function just compares bytes until it hits a\nnull-terminating character. Also due to the nature of UTF-8, this can be\nused with SDL_qsort() to put strings in (roughly) alphabetical order.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2551,9 +2567,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 2963,
-          "decl": 2981,
-          "end": 2986
+          "begin": 2969,
+          "decl": 2987,
+          "end": 2992
         },
         "strncmp": {
           "doc": "Compare two UTF-8 strings up to a number of bytes.\n\nDue to the nature of UTF-8 encoding, this will work with Unicode strings,\nsince effectively this function just compares bytes until it hits a\nnull-terminating character. Also due to the nature of UTF-8, this can be\nused with SDL_qsort() to put strings in (roughly) alphabetical order.\n\nNote that while this function is intended to be used with UTF-8, it is\ndoing a bytewise comparison, and `maxlen` specifies a _byte_ limit! If the\nlimit lands in the middle of a multi-byte UTF-8 sequence, it will only\ncompare a portion of the final character.\n\n`maxlen` specifies a maximum number of bytes to compare; if the strings\nmatch to this number of bytes (or both have matched to a null-terminator\ncharacter before this number of bytes), they will be considered equal.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@param maxlen the maximum number of _bytes_ to compare.\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2574,9 +2590,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 2986,
-          "decl": 3014,
-          "end": 3019
+          "begin": 2992,
+          "decl": 3020,
+          "end": 3025
         },
         "strcasecmp": {
           "doc": "Compare two null-terminated UTF-8 strings, case-insensitively.\n\nThis will work with Unicode strings, using a technique called\n\"case-folding\" to handle the vast majority of case-sensitive human\nlanguages regardless of system locale. It can deal with expanding values: a\nGerman Eszett character can compare against two ASCII 's' chars and be\nconsidered a match, for example. A notable exception: it does not handle\nthe Turkish 'i' character; human language is complicated!\n\nSince this handles Unicode, it expects the string to be well-formed UTF-8\nand not a null-terminated string of arbitrary bytes. Bytes that are not\nvalid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT\nCHARACTER), which is to say two strings of random bits may turn out to\nmatch if they convert to the same amount of replacement characters.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2593,9 +2609,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3019,
-          "decl": 3045,
-          "end": 3050
+          "begin": 3025,
+          "decl": 3051,
+          "end": 3056
         },
         "strncasecmp": {
           "doc": "Compare two UTF-8 strings, case-insensitively, up to a number of bytes.\n\nThis will work with Unicode strings, using a technique called\n\"case-folding\" to handle the vast majority of case-sensitive human\nlanguages regardless of system locale. It can deal with expanding values: a\nGerman Eszett character can compare against two ASCII 's' chars and be\nconsidered a match, for example. A notable exception: it does not handle\nthe Turkish 'i' character; human language is complicated!\n\nSince this handles Unicode, it expects the string to be well-formed UTF-8\nand not a null-terminated string of arbitrary bytes. Bytes that are not\nvalid UTF-8 are treated as Unicode character U+FFFD (REPLACEMENT\nCHARACTER), which is to say two strings of random bits may turn out to\nmatch if they convert to the same amount of replacement characters.\n\nNote that while this function is intended to be used with UTF-8, `maxlen`\nspecifies a _byte_ limit! If the limit lands in the middle of a multi-byte\nUTF-8 sequence, it may convert a portion of the final character to one or\nmore Unicode character U+FFFD (REPLACEMENT CHARACTER) so as not to overflow\na buffer.\n\n`maxlen` specifies a maximum number of bytes to compare; if the strings\nmatch to this number of bytes (or both have matched to a null-terminator\ncharacter before this number of bytes), they will be considered equal.\n\n@param str1 the first string to compare. NULL is not permitted!\n@param str2 the second string to compare. NULL is not permitted!\n@param maxlen the maximum number of bytes to compare.\n@returns less than zero if str1 is \"less than\" str2, greater than zero if\n         str1 is \"greater than\" str2, and zero if the strings match\n         exactly.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2616,9 +2632,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 3050,
-          "decl": 3087,
-          "end": 3092
+          "begin": 3056,
+          "decl": 3093,
+          "end": 3098
         },
         "strpbrk": {
           "doc": "Searches a string for the first occurence of any character contained in a\nbreakset, and returns a pointer from the string to that character.\n\n@param str The null-terminated string to be searched. Must not be NULL, and\n           must not overlap with `breakset`.\n@param breakset A null-terminated string containing the list of characters\n                to look for. Must not be NULL, and must not overlap with\n                `str`.\n@returns A pointer to the location, in str, of the first occurence of a\n         character present in the breakset, or NULL if none is found.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2635,9 +2651,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3092,
-          "decl": 3108,
-          "end": 3113
+          "begin": 3098,
+          "decl": 3114,
+          "end": 3119
         },
         "INVALID_UNICODE_CODEPOINT": {
           "doc": "The Unicode REPLACEMENT CHARACTER codepoint.\n\nSDL_StepUTF8() and SDL_StepBackUTF8() report this codepoint when they\nencounter a UTF-8 string with encoding errors.\n\nThis tends to render as something like a question mark in most places.\n\n@since This constant is available since SDL 3.2.0.\n\n@sa SDL_StepBackUTF8\n@sa SDL_StepUTF8",
@@ -2645,9 +2661,9 @@
           "kind": "var",
           "type": "Uint32",
           "constexpr": true,
-          "begin": 3113,
-          "decl": 3126,
-          "end": 3128
+          "begin": 3119,
+          "decl": 3132,
+          "end": 3134
         },
         "StepUTF8": {
           "doc": "Decode a UTF-8 string, one Unicode codepoint at a time.\n\nThis will return the first Unicode codepoint in the UTF-8 encoded string in\n`*pstr`, and then advance `*pstr` past any consumed bytes before returning.\n\nIt will not access more than `*pslen` bytes from the string. `*pslen` will\nbe adjusted, as well, subtracting the number of bytes consumed.\n\n`pslen` is allowed to be NULL, in which case the string _must_ be\nNULL-terminated, as the function will blindly read until it sees the NULL\nchar.\n\nif `*pslen` is zero, it assumes the end of string is reached and returns a\nzero codepoint regardless of the contents of the string buffer.\n\nIf the resulting codepoint is zero (a NULL terminator), or `*pslen` is\nzero, it will not advance `*pstr` or `*pslen` at all.\n\nGenerally this function is called in a loop until it returns zero,\nadjusting its parameters each iteration.\n\nIf an invalid UTF-8 sequence is encountered, this function returns\nSDL_INVALID_UNICODE_CODEPOINT and advances the string/length by one byte\n(which is to say, a multibyte sequence might produce several\nSDL_INVALID_UNICODE_CODEPOINT returns before it syncs to the next valid\nUTF-8 sequence).\n\nSeveral things can generate invalid UTF-8 sequences, including overlong\nencodings, the use of UTF-16 surrogate values, and truncated data. Please\nrefer to\n[RFC3629](https://www.ietf.org/rfc/rfc3629.txt)\nfor details.\n\n@param pstr a pointer to a UTF-8 string pointer to be read and adjusted.\n@param pslen a pointer to the number of bytes in the string, to be read and\n             adjusted. NULL is allowed.\n@returns the first Unicode codepoint in the string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2664,9 +2680,9 @@
               "type": "size_t *"
             }
           ],
-          "begin": 3128,
-          "decl": 3171,
-          "end": 3176
+          "begin": 3134,
+          "decl": 3177,
+          "end": 3182
         },
         "StepBackUTF8": {
           "doc": "Decode a UTF-8 string in reverse, one Unicode codepoint at a time.\n\nThis will go to the start of the previous Unicode codepoint in the string,\nmove `*pstr` to that location and return that codepoint.\n\nIf `*pstr` is already at the start of the string), it will not advance\n`*pstr` at all.\n\nGenerally this function is called in a loop until it returns zero,\nadjusting its parameter each iteration.\n\nIf an invalid UTF-8 sequence is encountered, this function returns\nSDL_INVALID_UNICODE_CODEPOINT.\n\nSeveral things can generate invalid UTF-8 sequences, including overlong\nencodings, the use of UTF-16 surrogate values, and truncated data. Please\nrefer to\n[RFC3629](https://www.ietf.org/rfc/rfc3629.txt)\nfor details.\n\n@param start a pointer to the beginning of the UTF-8 string.\n@param pstr a pointer to a UTF-8 string pointer to be read and adjusted.\n@returns the previous Unicode codepoint in the string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2683,9 +2699,9 @@
               "type": "const char **"
             }
           ],
-          "begin": 3176,
-          "decl": 3205,
-          "end": 3210
+          "begin": 3182,
+          "decl": 3211,
+          "end": 3216
         },
         "UCS4ToUTF8": {
           "doc": "Convert a single Unicode codepoint to UTF-8.\n\nThe buffer pointed to by `dst` must be at least 4 bytes long, as this\nfunction may generate between 1 and 4 bytes of output.\n\nThis function returns the first byte _after_ the newly-written UTF-8\nsequence, which is useful for encoding multiple codepoints in a loop, or\nknowing where to write a NULL-terminator character to end the string (in\neither case, plan to have a buffer of _more_ than 4 bytes!).\n\nIf `codepoint` is an invalid value (outside the Unicode range, or a UTF-16\nsurrogate value, etc), this will use U+FFFD (REPLACEMENT CHARACTER) for the\ncodepoint instead, and not set an error.\n\nIf `dst` is NULL, this returns NULL immediately without writing to the\npointer and without setting an error.\n\n@param codepoint a Unicode codepoint to convert to UTF-8.\n@param dst the location to write the encoded UTF-8. Must point to at least\n           4 bytes!\n@returns the first byte past the newly-written UTF-8 sequence.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2702,9 +2718,9 @@
               "type": "char *"
             }
           ],
-          "begin": 3210,
-          "decl": 3237,
-          "end": 3242
+          "begin": 3216,
+          "decl": 3243,
+          "end": 3248
         },
         "sscanf": {
           "doc": "This works exactly like sscanf() but doesn't require access to a C runtime.\n\nScan a string, matching a format string, converting each '%' item and\nstoring it to pointers provided through variable arguments.\n\n@param text the string to scan. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of pointers to values to be filled in with scanned items.\n@returns the number of items that matched the format string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2722,9 +2738,9 @@
             },
             "..."
           ],
-          "begin": 3242,
-          "decl": 3257,
-          "end": 3269
+          "begin": 3248,
+          "decl": 3263,
+          "end": 3275
         },
         "vsscanf": {
           "doc": "This works exactly like vsscanf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_sscanf(), except it takes a `va_list` instead\nof using `...` variable arguments.\n\n@param text the string to scan. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ap a `va_list` of pointers to values to be filled in with scanned\n          items.\n@returns the number of items that matched the format string.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2745,9 +2761,9 @@
               "type": "va_list"
             }
           ],
-          "begin": 3269,
-          "decl": 3286,
-          "end": 3293
+          "begin": 3275,
+          "decl": 3292,
+          "end": 3299
         },
         "snprintf": {
           "doc": "This works exactly like snprintf() but doesn't require access to a C\nruntime.\n\nFormat a string of up to `maxlen`-1 bytes, converting each '%' item with\nvalues provided through variable arguments.\n\nWhile some C runtimes differ on how to deal with too-large strings, this\nfunction null-terminates the output, by treating the null-terminator as\npart of the `maxlen` count. Note that if `maxlen` is zero, however, no\nbytes will be written at all.\n\nThis function returns the number of _bytes_ (not _characters_) that should\nbe written, excluding the null-terminator character. If this returns a\nnumber >= `maxlen`, it means the output string was truncated. A negative\nreturn value means an error occurred.\n\nReferencing the output string's pointer with a format item is undefined\nbehavior.\n\n@param text the buffer to write the string into. Must not be NULL.\n@param maxlen the maximum bytes to write, including the null-terminator.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of values to be used with the format string.\n@returns the number of bytes that should be written, not counting the\n         null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2769,9 +2785,9 @@
             },
             "..."
           ],
-          "begin": 3293,
-          "decl": 3324,
-          "end": 3339
+          "begin": 3299,
+          "decl": 3330,
+          "end": 3345
         },
         "swprintf": {
           "doc": "This works exactly like swprintf() but doesn't require access to a C\nruntime.\n\nFormat a wide string of up to `maxlen`-1 wchar_t values, converting each\n'%' item with values provided through variable arguments.\n\nWhile some C runtimes differ on how to deal with too-large strings, this\nfunction null-terminates the output, by treating the null-terminator as\npart of the `maxlen` count. Note that if `maxlen` is zero, however, no wide\ncharacters will be written at all.\n\nThis function returns the number of _wide characters_ (not _codepoints_)\nthat should be written, excluding the null-terminator character. If this\nreturns a number >= `maxlen`, it means the output string was truncated. A\nnegative return value means an error occurred.\n\nReferencing the output string's pointer with a format item is undefined\nbehavior.\n\n@param text the buffer to write the wide string into. Must not be NULL.\n@param maxlen the maximum wchar_t values to write, including the\n              null-terminator.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of values to be used with the format string.\n@returns the number of wide characters that should be written, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2793,9 +2809,9 @@
             },
             "..."
           ],
-          "begin": 3339,
-          "decl": 3371,
-          "end": 3386
+          "begin": 3345,
+          "decl": 3377,
+          "end": 3392
         },
         "vsnprintf": {
           "doc": "This works exactly like vsnprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_snprintf(), except it takes a `va_list`\ninstead of using `...` variable arguments.\n\n@param text the buffer to write the string into. Must not be NULL.\n@param maxlen the maximum bytes to write, including the null-terminator.\n@param fmt a printf-style format string. Must not be NULL.\n@param ap a `va_list` values to be used with the format string.\n@returns the number of bytes that should be written, not counting the\n         null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2820,9 +2836,9 @@
               "type": "va_list"
             }
           ],
-          "begin": 3386,
-          "decl": 3404,
-          "end": 3412
+          "begin": 3392,
+          "decl": 3410,
+          "end": 3418
         },
         "vswprintf": {
           "doc": "This works exactly like vswprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_swprintf(), except it takes a `va_list`\ninstead of using `...` variable arguments.\n\n@param text the buffer to write the string into. Must not be NULL.\n@param maxlen the maximum wide characters to write, including the\n              null-terminator.\n@param fmt a printf-style format wide string. Must not be NULL.\n@param ap a `va_list` values to be used with the format string.\n@returns the number of wide characters that should be written, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2847,9 +2863,9 @@
               "type": "va_list"
             }
           ],
-          "begin": 3412,
-          "decl": 3431,
-          "end": 3439
+          "begin": 3418,
+          "decl": 3437,
+          "end": 3445
         },
         "asprintf": {
           "doc": "This works exactly like asprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_snprintf(), except it allocates a buffer large\nenough to hold the output string on behalf of the caller.\n\nOn success, this function returns the number of bytes (not characters)\ncomprising the output string, not counting the null-terminator character,\nand sets `*strp` to the newly-allocated string.\n\nOn error, this function returns a negative number, and the value of `*strp`\nis undefined.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param strp on output, is set to the new string. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ... a list of values to be used with the format string.\n@returns the number of bytes in the newly-allocated string, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2867,9 +2883,9 @@
             },
             "..."
           ],
-          "begin": 3439,
-          "decl": 3466,
-          "end": 3478
+          "begin": 3445,
+          "decl": 3472,
+          "end": 3484
         },
         "vasprintf": {
           "doc": "This works exactly like vasprintf() but doesn't require access to a C\nruntime.\n\nFunctions identically to SDL_asprintf(), except it takes a `va_list`\ninstead of using `...` variable arguments.\n\n@param strp on output, is set to the new string. Must not be NULL.\n@param fmt a printf-style format string. Must not be NULL.\n@param ap a `va_list` values to be used with the format string.\n@returns the number of bytes in the newly-allocated string, not counting\n         the null-terminator char, or a negative value on error.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -2890,9 +2906,9 @@
               "type": "va_list"
             }
           ],
-          "begin": 3478,
-          "decl": 3495,
-          "end": 3502
+          "begin": 3484,
+          "decl": 3501,
+          "end": 3508
         },
         "srand": {
           "doc": "Seeds the pseudo-random number generator.\n\nReusing the seed number will cause rand_*() to repeat the same stream\nof 'random' numbers.\n\n@param seed the value to use as a random number seed, or 0 to use\n            SDL_GetPerformanceCounter().\n\n@threadsafety This should be called on the same thread that calls\n              rand*()\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand()\n@sa rand_bits()\n@sa randf()",
@@ -2905,9 +2921,9 @@
               "type": "Uint64"
             }
           ],
-          "begin": 3502,
-          "decl": 3520,
-          "end": 3522
+          "begin": 3508,
+          "decl": 3526,
+          "end": 3528
         },
         "rand": {
           "doc": "Generate a pseudo-random number less than n for positive n\n\nThe method used is faster and of better quality than `rand() % n`. Odds are\nroughly 99.9% even for n = 1 million. Evenness is better for smaller n, and\nmuch worse as n gets bigger.\n\nExample: to simulate a d6 use `rand(6) + 1` The +1 converts 0..5 to\n1..6\n\nIf you want to generate a pseudo-random number in the full range of Sint32,\nyou should use: (Sint32)SDL_rand_bits()\n\nIf you want reproducible output, be sure to initialize with srand() first.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param n the number of possible outcomes. n must be positive.\n@returns a random value in the range of [0 .. n-1].\n\n@threadsafety All calls should be made from a single thread\n\n@since This function is available since SDL 3.2.0.\n\n@sa srand()\n@sa randf()",
@@ -2920,9 +2936,9 @@
               "type": "Sint32"
             }
           ],
-          "begin": 3522,
-          "decl": 3553,
-          "end": 3555
+          "begin": 3528,
+          "decl": 3559,
+          "end": 3561
         },
         "randf": {
           "doc": "Generate a uniform pseudo-random floating point number less than 1.0\n\nIf you want reproducible output, be sure to initialize with srand() first.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@returns a random value in the range of [0.0, 1.0).\n\n@threadsafety All calls should be made from a single thread\n\n@since This function is available since SDL 3.2.0.\n\n@sa srand()\n@sa rand()",
@@ -2930,9 +2946,9 @@
           "kind": "function",
           "type": "float",
           "parameters": [],
-          "begin": 3555,
-          "decl": 3575,
-          "end": 3577
+          "begin": 3561,
+          "decl": 3581,
+          "end": 3583
         },
         "rand_bits": {
           "doc": "Generate 32 pseudo-random bits.\n\nYou likely want to use rand() to get a pseudo-random number instead.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@returns a random value in the range of [0-SDL_MAX_UINT32].\n\n@threadsafety All calls should be made from a single thread\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand()\n@sa randf()\n@sa srand()",
@@ -2940,9 +2956,9 @@
           "kind": "function",
           "type": "Uint32",
           "parameters": [],
-          "begin": 3577,
-          "decl": 3598,
-          "end": 3600
+          "begin": 3583,
+          "decl": 3604,
+          "end": 3606
         },
         "Random": {
           "doc": "A independent pseudo random state\n\nThis can be instantiated in any thread and as long as it is not shared with\nanother thread all members are safe to call.\n\n@cat wrap-state\n\n@sa wrap-state",
@@ -2954,9 +2970,9 @@
               "name": "m_state",
               "kind": "var",
               "type": "Uint64",
-              "begin": 3612,
-              "decl": 3612,
-              "end": 3614
+              "begin": 3618,
+              "decl": 3618,
+              "end": 3620
             },
             "Random": {
               "doc": "Init state with the given value",
@@ -2970,9 +2986,9 @@
                 }
               ],
               "constexpr": true,
-              "begin": 3615,
-              "decl": 3618,
-              "end": 3623
+              "begin": 3621,
+              "decl": 3624,
+              "end": 3629
             },
             "operator Uint64": {
               "doc": "",
@@ -2981,9 +2997,9 @@
               "type": "",
               "parameters": [],
               "constexpr": true,
-              "begin": 3624,
-              "decl": 3624,
-              "end": 3626
+              "begin": 3630,
+              "decl": 3630,
+              "end": 3632
             },
             "rand": {
               "doc": "Generate a pseudo-random number less than n for positive n\n\nThe method used is faster and of better quality than `rand() % n`. Odds are\nroughly 99.9% even for n = 1 million. Evenness is better for smaller n, and\nmuch worse as n gets bigger.\n\nExample: to simulate a d6 use `state.rand(6) + 1` The +1 converts\n0..5 to 1..6\n\nIf you want to generate a pseudo-random number in the full range of Sint32,\nyou should use: (Sint32)state.rand_bits()\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@param n the number of possible outcomes. n must be positive.\n@returns a random value in the range of [0 .. n-1].\n\n@threadsafety This function is thread-safe, as long as this object\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL::rand()\n@sa rand_bits()\n@sa randf()",
@@ -2996,9 +3012,9 @@
                   "type": "Sint32"
                 }
               ],
-              "begin": 3626,
-              "decl": 3657,
-              "end": 3659
+              "begin": 3632,
+              "decl": 3663,
+              "end": 3665
             },
             "randf": {
               "doc": "Generate a uniform pseudo-random floating point number less than 1.0\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@returns a random value in the range of [0.0, 1.0).\n\n@threadsafety This function is thread-safe, as long as this object\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand_bits()\n@sa rand()\n@sa SDL::randf()",
@@ -3006,9 +3022,9 @@
               "kind": "function",
               "type": "float",
               "parameters": [],
-              "begin": 3659,
-              "decl": 3679,
-              "end": 3681
+              "begin": 3665,
+              "decl": 3685,
+              "end": 3687
             },
             "rand_bits": {
               "doc": "Generate 32 pseudo-random bits.\n\nYou likely want to use Random.rand() to get a pseudo-random number instead.\n\nThere are no guarantees as to the quality of the random sequence produced,\nand this should not be used for security (cryptography, passwords) or where\nmoney is on the line (loot-boxes, casinos). There are many random number\nlibraries available with different characteristics and you should pick one\nof those to meet any serious needs.\n\n@returns a random value in the range of [0-SDL_MAX_UINT32].\n\n@threadsafety This function is thread-safe, as long as this object\n              isn't shared between threads.\n\n@since This function is available since SDL 3.2.0.\n\n@sa rand()\n@sa randf()\n@sa SDL::rand_bits()",
@@ -3016,32 +3032,32 @@
               "kind": "function",
               "type": "Uint32",
               "parameters": [],
-              "begin": 3681,
-              "decl": 3703,
-              "end": 3704
+              "begin": 3687,
+              "decl": 3709,
+              "end": 3710
             }
           },
-          "begin": 3600,
-          "decl": 3610,
-          "end": 3706
+          "begin": 3606,
+          "decl": 3616,
+          "end": 3712
         },
         "SDL_PI_D": {
           "doc": "The value of Pi, as a double-precision floating point literal.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_PI_F",
           "name": "SDL_PI_D",
           "kind": "def",
           "value": "3.141592653589793238462643383279502884",
-          "begin": 3708,
-          "decl": 3715,
-          "end": 3717
+          "begin": 3714,
+          "decl": 3721,
+          "end": 3723
         },
         "SDL_PI_F": {
           "doc": "The value of Pi, as a single-precision floating point literal.\n\n@since This macro is available since SDL 3.2.0.\n\n@sa SDL_PI_D",
           "name": "SDL_PI_F",
           "kind": "def",
           "value": "3.141592653589793238462643383279502884F",
-          "begin": 3717,
-          "decl": 3724,
-          "end": 3726
+          "begin": 3723,
+          "decl": 3730,
+          "end": 3732
         },
         "acos": {
           "doc": "Compute the arc cosine of `x`.\n\nThe definition of `y = acos(x)` is `x = cos(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `0 <= y <= Pi`\n\nThis function operates on double-precision floating point values, use\nSDL_acosf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc cosine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_acosf\n@sa SDL_asin\n@sa SDL_cos",
@@ -3054,9 +3070,9 @@
               "type": "double"
             }
           ],
-          "begin": 3728,
-          "decl": 3756,
-          "end": 3758
+          "begin": 3734,
+          "decl": 3762,
+          "end": 3764
         },
         "acosf": {
           "doc": "Compute the arc cosine of `x`.\n\nThe definition of `y = acos(x)` is `x = cos(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `0 <= y <= Pi`\n\nThis function operates on single-precision floating point values, use\nSDL_acos for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc cosine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_acos\n@sa SDL_asinf\n@sa SDL_cosf",
@@ -3069,9 +3085,9 @@
               "type": "float"
             }
           ],
-          "begin": 3758,
-          "decl": 3786,
-          "end": 3788
+          "begin": 3764,
+          "decl": 3792,
+          "end": 3794
         },
         "asin": {
           "doc": "Compute the arc sine of `x`.\n\nThe definition of `y = asin(x)` is `x = sin(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\nSDL_asinf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc sine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_asinf\n@sa SDL_acos\n@sa SDL_sin",
@@ -3084,9 +3100,9 @@
               "type": "double"
             }
           ],
-          "begin": 3788,
-          "decl": 3816,
-          "end": 3818
+          "begin": 3794,
+          "decl": 3822,
+          "end": 3824
         },
         "asinf": {
           "doc": "Compute the arc sine of `x`.\n\nThe definition of `y = asin(x)` is `x = sin(y)`.\n\nDomain: `-1 <= x <= 1`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\nSDL_asin for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc sine of `x`, in radians.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_asin\n@sa SDL_acosf\n@sa SDL_sinf",
@@ -3099,9 +3115,9 @@
               "type": "float"
             }
           ],
-          "begin": 3818,
-          "decl": 3846,
-          "end": 3848
+          "begin": 3824,
+          "decl": 3852,
+          "end": 3854
         },
         "atan": {
           "doc": "Compute the arc tangent of `x`.\n\nThe definition of `y = atan(x)` is `x = tan(y)`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\nSDL_atanf for single-precision floats.\n\nTo calculate the arc tangent of y / x, use SDL_atan2.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc tangent of of `x` in radians, or 0 if `x = 0`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atanf\n@sa SDL_atan2\n@sa SDL_tan",
@@ -3114,9 +3130,9 @@
               "type": "double"
             }
           ],
-          "begin": 3848,
-          "decl": 3878,
-          "end": 3880
+          "begin": 3854,
+          "decl": 3884,
+          "end": 3886
         },
         "atanf": {
           "doc": "Compute the arc tangent of `x`.\n\nThe definition of `y = atan(x)` is `x = tan(y)`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\nSDL_atan for dboule-precision floats.\n\nTo calculate the arc tangent of y / x, use SDL_atan2f.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns arc tangent of of `x` in radians, or 0 if `x = 0`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atan\n@sa SDL_atan2f\n@sa SDL_tanf",
@@ -3129,9 +3145,9 @@
               "type": "float"
             }
           ],
-          "begin": 3880,
-          "decl": 3910,
-          "end": 3912
+          "begin": 3886,
+          "decl": 3916,
+          "end": 3918
         },
         "atan2": {
           "doc": "Compute the arc tangent of `y / x`, using the signs of x and y to adjust\nthe result's quadrant.\n\nThe definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant\nof z is determined based on the signs of x and y.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on double-precision floating point values, use\nSDL_atan2f for single-precision floats.\n\nTo calculate the arc tangent of a single value, use SDL_atan.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param y floating point value of the numerator (y coordinate).\n@param x floating point value of the denominator (x coordinate).\n@returns arc tangent of of `y / x` in radians, or, if `x = 0`, either\n         `-Pi/2`, `0`, or `Pi/2`, depending on the value of `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atan2f\n@sa SDL_atan\n@sa SDL_tan",
@@ -3148,9 +3164,9 @@
               "type": "double"
             }
           ],
-          "begin": 3912,
-          "decl": 3946,
-          "end": 3948
+          "begin": 3918,
+          "decl": 3952,
+          "end": 3954
         },
         "atan2f": {
           "doc": "Compute the arc tangent of `y / x`, using the signs of x and y to adjust\nthe result's quadrant.\n\nThe definition of `z = atan2(x, y)` is `y = x tan(z)`, where the quadrant\nof z is determined based on the signs of x and y.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-Pi/2 <= y <= Pi/2`\n\nThis function operates on single-precision floating point values, use\nSDL_atan2 for double-precision floats.\n\nTo calculate the arc tangent of a single value, use SDL_atanf.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param y floating point value of the numerator (y coordinate).\n@param x floating point value of the denominator (x coordinate).\n@returns arc tangent of of `y / x` in radians, or, if `x = 0`, either\n         `-Pi/2`, `0`, or `Pi/2`, depending on the value of `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_atan2f\n@sa SDL_atan\n@sa SDL_tan",
@@ -3167,9 +3183,9 @@
               "type": "float"
             }
           ],
-          "begin": 3948,
-          "decl": 3982,
-          "end": 3984
+          "begin": 3954,
+          "decl": 3988,
+          "end": 3990
         },
         "ceil": {
           "doc": "Compute the ceiling of `x`.\n\nThe ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`\nrounded up to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nSDL_ceilf for single-precision floats.\n\n@param x floating point value.\n@returns the ceiling of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ceilf\n@sa SDL_floor\n@sa SDL_trunc\n@sa SDL_round\n@sa SDL_lround",
@@ -3182,9 +3198,9 @@
               "type": "double"
             }
           ],
-          "begin": 3984,
-          "decl": 4010,
-          "end": 4012
+          "begin": 3990,
+          "decl": 4016,
+          "end": 4018
         },
         "ceilf": {
           "doc": "Compute the ceiling of `x`.\n\nThe ceiling of `x` is the smallest integer `y` such that `y > x`, i.e `x`\nrounded up to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nSDL_ceil for double-precision floats.\n\n@param x floating point value.\n@returns the ceiling of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_ceil\n@sa SDL_floorf\n@sa SDL_truncf\n@sa SDL_roundf\n@sa SDL_lroundf",
@@ -3197,9 +3213,9 @@
               "type": "float"
             }
           ],
-          "begin": 4012,
-          "decl": 4038,
-          "end": 4040
+          "begin": 4018,
+          "decl": 4044,
+          "end": 4046
         },
         "copysign": {
           "doc": "Copy the sign of one floating-point value to another.\n\nThe definition of copysign is that ``copysign(x, y) = abs(x) * sign(y)``.\n\nDomain: `-INF <= x <= INF`, ``-INF <= y <= f``\n\nRange: `-INF <= z <= INF`\n\nThis function operates on double-precision floating point values, use\nSDL_copysignf for single-precision floats.\n\n@param x floating point value to use as the magnitude.\n@param y floating point value to use as the sign.\n@returns the floating point value with the sign of y and the magnitude of\n         x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_copysignf\n@sa SDL_fabs",
@@ -3216,9 +3232,9 @@
               "type": "double"
             }
           ],
-          "begin": 4040,
-          "decl": 4064,
-          "end": 4066
+          "begin": 4046,
+          "decl": 4070,
+          "end": 4072
         },
         "copysignf": {
           "doc": "Copy the sign of one floating-point value to another.\n\nThe definition of copysign is that ``copysign(x, y) = abs(x) * sign(y)``.\n\nDomain: `-INF <= x <= INF`, ``-INF <= y <= f``\n\nRange: `-INF <= z <= INF`\n\nThis function operates on single-precision floating point values, use\nSDL_copysign for double-precision floats.\n\n@param x floating point value to use as the magnitude.\n@param y floating point value to use as the sign.\n@returns the floating point value with the sign of y and the magnitude of\n         x.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_copysignf\n@sa SDL_fabsf",
@@ -3235,9 +3251,9 @@
               "type": "float"
             }
           ],
-          "begin": 4066,
-          "decl": 4090,
-          "end": 4092
+          "begin": 4072,
+          "decl": 4096,
+          "end": 4098
         },
         "cos": {
           "doc": "Compute the cosine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on double-precision floating point values, use\nSDL_cosf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns cosine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_cosf\n@sa SDL_acos\n@sa SDL_sin",
@@ -3250,9 +3266,9 @@
               "type": "double"
             }
           ],
-          "begin": 4092,
-          "decl": 4118,
-          "end": 4120
+          "begin": 4098,
+          "decl": 4124,
+          "end": 4126
         },
         "cosf": {
           "doc": "Compute the cosine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on single-precision floating point values, use\nSDL_cos for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns cosine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_cos\n@sa SDL_acosf\n@sa SDL_sinf",
@@ -3265,9 +3281,9 @@
               "type": "float"
             }
           ],
-          "begin": 4120,
-          "decl": 4146,
-          "end": 4148
+          "begin": 4126,
+          "decl": 4152,
+          "end": 4154
         },
         "exp": {
           "doc": "Compute the exponential of `x`.\n\nThe definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the\nnatural logarithm. The inverse is the natural logarithm, SDL_log.\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThe output will overflow if `exp(x)` is too large to be represented.\n\nThis function operates on double-precision floating point values, use\nSDL_expf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns value of `e^x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_expf\n@sa SDL_log",
@@ -3280,9 +3296,9 @@
               "type": "double"
             }
           ],
-          "begin": 4148,
-          "decl": 4178,
-          "end": 4180
+          "begin": 4154,
+          "decl": 4184,
+          "end": 4186
         },
         "expf": {
           "doc": "Compute the exponential of `x`.\n\nThe definition of `y = exp(x)` is `y = e^x`, where `e` is the base of the\nnatural logarithm. The inverse is the natural logarithm, SDL_logf.\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThe output will overflow if `exp(x)` is too large to be represented.\n\nThis function operates on single-precision floating point values, use\nSDL_exp for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value.\n@returns value of `e^x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_exp\n@sa SDL_logf",
@@ -3295,9 +3311,9 @@
               "type": "float"
             }
           ],
-          "begin": 4180,
-          "decl": 4210,
-          "end": 4212
+          "begin": 4186,
+          "decl": 4216,
+          "end": 4218
         },
         "fabs": {
           "doc": "Compute the absolute value of `x`\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nSDL_copysignf for single-precision floats.\n\n@param x floating point value to use as the magnitude.\n@returns the absolute value of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_fabsf",
@@ -3310,9 +3326,9 @@
               "type": "double"
             }
           ],
-          "begin": 4212,
-          "decl": 4231,
-          "end": 4233
+          "begin": 4218,
+          "decl": 4237,
+          "end": 4239
         },
         "fabsf": {
           "doc": "Compute the absolute value of `x`\n\nDomain: `-INF <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nSDL_copysignf for double-precision floats.\n\n@param x floating point value to use as the magnitude.\n@returns the absolute value of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_fabs",
@@ -3325,9 +3341,9 @@
               "type": "float"
             }
           ],
-          "begin": 4233,
-          "decl": 4252,
-          "end": 4254
+          "begin": 4239,
+          "decl": 4258,
+          "end": 4260
         },
         "floor": {
           "doc": "Compute the floor of `x`.\n\nThe floor of `x` is the largest integer `y` such that `y > x`, i.e `x`\nrounded down to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nSDL_floorf for single-precision floats.\n\n@param x floating point value.\n@returns the floor of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_floorf\n@sa SDL_ceil\n@sa SDL_trunc\n@sa SDL_round\n@sa SDL_lround",
@@ -3340,9 +3356,9 @@
               "type": "double"
             }
           ],
-          "begin": 4254,
-          "decl": 4280,
-          "end": 4282
+          "begin": 4260,
+          "decl": 4286,
+          "end": 4288
         },
         "floorf": {
           "doc": "Compute the floor of `x`.\n\nThe floor of `x` is the largest integer `y` such that `y > x`, i.e `x`\nrounded down to the nearest integer.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nSDL_floorf for double-precision floats.\n\n@param x floating point value.\n@returns the floor of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_floor\n@sa SDL_ceilf\n@sa SDL_truncf\n@sa SDL_roundf\n@sa SDL_lroundf",
@@ -3355,9 +3371,9 @@
               "type": "float"
             }
           ],
-          "begin": 4282,
-          "decl": 4308,
-          "end": 4310
+          "begin": 4288,
+          "decl": 4314,
+          "end": 4316
         },
         "trunc": {
           "doc": "Truncate `x` to an integer.\n\nRounds `x` to the next closest integer to 0. This is equivalent to removing\nthe fractional part of `x`, leaving only the integer part.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nSDL_truncf for single-precision floats.\n\n@param x floating point value.\n@returns `x` truncated to an integer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_truncf\n@sa SDL_fmod\n@sa SDL_ceil\n@sa SDL_floor\n@sa SDL_round\n@sa SDL_lround",
@@ -3370,9 +3386,9 @@
               "type": "double"
             }
           ],
-          "begin": 4310,
-          "decl": 4337,
-          "end": 4339
+          "begin": 4316,
+          "decl": 4343,
+          "end": 4345
         },
         "truncf": {
           "doc": "Truncate `x` to an integer.\n\nRounds `x` to the next closest integer to 0. This is equivalent to removing\nthe fractional part of `x`, leaving only the integer part.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on single-precision floating point values, use\nSDL_truncf for double-precision floats.\n\n@param x floating point value.\n@returns `x` truncated to an integer.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_trunc\n@sa SDL_fmodf\n@sa SDL_ceilf\n@sa SDL_floorf\n@sa SDL_roundf\n@sa SDL_lroundf",
@@ -3385,9 +3401,9 @@
               "type": "float"
             }
           ],
-          "begin": 4339,
-          "decl": 4366,
-          "end": 4368
+          "begin": 4345,
+          "decl": 4372,
+          "end": 4374
         },
         "fmod": {
           "doc": "Return the floating-point remainder of `x / y`\n\nDivides `x` by `y`, and returns the remainder.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`, `y != 0`\n\nRange: `-y <= z <= y`\n\nThis function operates on double-precision floating point values, use\nSDL_fmodf for single-precision floats.\n\n@param x the numerator.\n@param y the denominator. Must not be 0.\n@returns the remainder of `x / y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_fmodf\n@sa SDL_modf\n@sa SDL_trunc\n@sa SDL_ceil\n@sa SDL_floor\n@sa SDL_round\n@sa SDL_lround",
@@ -3404,9 +3420,9 @@
               "type": "double"
             }
           ],
-          "begin": 4368,
-          "decl": 4396,
-          "end": 4398
+          "begin": 4374,
+          "decl": 4402,
+          "end": 4404
         },
         "fmodf": {
           "doc": "Return the floating-point remainder of `x / y`\n\nDivides `x` by `y`, and returns the remainder.\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`, `y != 0`\n\nRange: `-y <= z <= y`\n\nThis function operates on single-precision floating point values, use\nSDL_fmod for single-precision floats.\n\n@param x the numerator.\n@param y the denominator. Must not be 0.\n@returns the remainder of `x / y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_fmod\n@sa SDL_truncf\n@sa SDL_modff\n@sa SDL_ceilf\n@sa SDL_floorf\n@sa SDL_roundf\n@sa SDL_lroundf",
@@ -3423,9 +3439,9 @@
               "type": "float"
             }
           ],
-          "begin": 4398,
-          "decl": 4426,
-          "end": 4428
+          "begin": 4404,
+          "decl": 4432,
+          "end": 4434
         },
         "isinf": {
           "doc": "Return whether the value is infinity.\n\n@param x double-precision floating point value.\n@returns non-zero if the value is infinity, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_isinff",
@@ -3438,9 +3454,9 @@
               "type": "double"
             }
           ],
-          "begin": 4428,
-          "decl": 4440,
-          "end": 4442
+          "begin": 4434,
+          "decl": 4446,
+          "end": 4448
         },
         "isinff": {
           "doc": "Return whether the value is infinity.\n\n@param x floating point value.\n@returns non-zero if the value is infinity, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_isinf",
@@ -3453,9 +3469,9 @@
               "type": "float"
             }
           ],
-          "begin": 4442,
-          "decl": 4454,
-          "end": 4456
+          "begin": 4448,
+          "decl": 4460,
+          "end": 4462
         },
         "isnan": {
           "doc": "Return whether the value is NaN.\n\n@param x double-precision floating point value.\n@returns non-zero if the value is NaN, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_isnanf",
@@ -3468,9 +3484,9 @@
               "type": "double"
             }
           ],
-          "begin": 4456,
-          "decl": 4468,
-          "end": 4470
+          "begin": 4462,
+          "decl": 4474,
+          "end": 4476
         },
         "isnanf": {
           "doc": "Return whether the value is NaN.\n\n@param x floating point value.\n@returns non-zero if the value is NaN, 0 otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_isnan",
@@ -3483,9 +3499,9 @@
               "type": "float"
             }
           ],
-          "begin": 4470,
-          "decl": 4482,
-          "end": 4484
+          "begin": 4476,
+          "decl": 4488,
+          "end": 4490
         },
         "log": {
           "doc": "Compute the natural logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on double-precision floating point values, use\nSDL_logf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the natural logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_logf\n@sa SDL_log10\n@sa SDL_exp",
@@ -3498,9 +3514,9 @@
               "type": "double"
             }
           ],
-          "begin": 4484,
-          "decl": 4512,
-          "end": 4514
+          "begin": 4490,
+          "decl": 4518,
+          "end": 4520
         },
         "logf": {
           "doc": "Compute the natural logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on single-precision floating point values, use\nSDL_log for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the natural logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_log\n@sa SDL_expf",
@@ -3513,9 +3529,9 @@
               "type": "float"
             }
           ],
-          "begin": 4514,
-          "decl": 4541,
-          "end": 4543
+          "begin": 4520,
+          "decl": 4547,
+          "end": 4549
         },
         "log10": {
           "doc": "Compute the base-10 logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on double-precision floating point values, use\nSDL_log10f for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_log10f\n@sa SDL_log\n@sa SDL_pow",
@@ -3528,9 +3544,9 @@
               "type": "double"
             }
           ],
-          "begin": 4543,
-          "decl": 4571,
-          "end": 4573
+          "begin": 4549,
+          "decl": 4577,
+          "end": 4579
         },
         "log10f": {
           "doc": "Compute the base-10 logarithm of `x`.\n\nDomain: `0 < x <= INF`\n\nRange: `-INF <= y <= INF`\n\nIt is an error for `x` to be less than or equal to 0.\n\nThis function operates on single-precision floating point values, use\nSDL_log10 for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than 0.\n@returns the logarithm of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_log10\n@sa SDL_logf\n@sa SDL_powf",
@@ -3543,9 +3559,9 @@
               "type": "float"
             }
           ],
-          "begin": 4573,
-          "decl": 4601,
-          "end": 4603
+          "begin": 4579,
+          "decl": 4607,
+          "end": 4609
         },
         "modf": {
           "doc": "Split `x` into integer and fractional parts\n\nThis function operates on double-precision floating point values, use\nSDL_modff for single-precision floats.\n\n@param x floating point value.\n@param y output pointer to store the integer part of `x`.\n@returns the fractional part of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_modff\n@sa SDL_trunc\n@sa SDL_fmod",
@@ -3562,9 +3578,9 @@
               "type": "double *"
             }
           ],
-          "begin": 4603,
-          "decl": 4621,
-          "end": 4623
+          "begin": 4609,
+          "decl": 4627,
+          "end": 4629
         },
         "modff": {
           "doc": "Split `x` into integer and fractional parts\n\nThis function operates on single-precision floating point values, use\nSDL_modf for double-precision floats.\n\n@param x floating point value.\n@param y output pointer to store the integer part of `x`.\n@returns the fractional part of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_modf\n@sa SDL_truncf\n@sa SDL_fmodf",
@@ -3581,9 +3597,9 @@
               "type": "float *"
             }
           ],
-          "begin": 4623,
-          "decl": 4641,
-          "end": 4643
+          "begin": 4629,
+          "decl": 4647,
+          "end": 4649
         },
         "pow": {
           "doc": "Raise `x` to the power `y`\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-INF <= z <= INF`\n\nIf `y` is the base of the natural logarithm (e), consider using SDL_exp\ninstead.\n\nThis function operates on double-precision floating point values, use\nSDL_powf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x the base.\n@param y the exponent.\n@returns `x` raised to the power `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_powf\n@sa SDL_exp\n@sa SDL_log",
@@ -3600,9 +3616,9 @@
               "type": "double"
             }
           ],
-          "begin": 4643,
-          "decl": 4673,
-          "end": 4675
+          "begin": 4649,
+          "decl": 4679,
+          "end": 4681
         },
         "powf": {
           "doc": "Raise `x` to the power `y`\n\nDomain: `-INF <= x <= INF`, `-INF <= y <= INF`\n\nRange: `-INF <= z <= INF`\n\nIf `y` is the base of the natural logarithm (e), consider using SDL_exp\ninstead.\n\nThis function operates on single-precision floating point values, use\nSDL_powf for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x the base.\n@param y the exponent.\n@returns `x` raised to the power `y`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_pow\n@sa SDL_expf\n@sa SDL_logf",
@@ -3619,9 +3635,9 @@
               "type": "float"
             }
           ],
-          "begin": 4675,
-          "decl": 4705,
-          "end": 4707
+          "begin": 4681,
+          "decl": 4711,
+          "end": 4713
         },
         "round": {
           "doc": "Round `x` to the nearest integer.\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nSDL_roundf for single-precision floats. To get the result as an integer\ntype, use SDL_lround.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_roundf\n@sa SDL_lround\n@sa SDL_floor\n@sa SDL_ceil\n@sa SDL_trunc",
@@ -3634,9 +3650,9 @@
               "type": "double"
             }
           ],
-          "begin": 4707,
-          "decl": 4734,
-          "end": 4736
+          "begin": 4713,
+          "decl": 4740,
+          "end": 4742
         },
         "roundf": {
           "doc": "Round `x` to the nearest integer.\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`, y integer\n\nThis function operates on double-precision floating point values, use\nSDL_roundf for single-precision floats. To get the result as an integer\ntype, use SDL_lroundf.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_round\n@sa SDL_lroundf\n@sa SDL_floorf\n@sa SDL_ceilf\n@sa SDL_truncf",
@@ -3649,9 +3665,9 @@
               "type": "float"
             }
           ],
-          "begin": 4736,
-          "decl": 4763,
-          "end": 4765
+          "begin": 4742,
+          "decl": 4769,
+          "end": 4771
         },
         "lround": {
           "doc": "Round `x` to the nearest integer representable as a long\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `MIN_LONG <= y <= MAX_LONG`\n\nThis function operates on double-precision floating point values, use\nSDL_lround for single-precision floats. To get the result as a\nfloating-point type, use SDL_round.\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_lroundf\n@sa SDL_round\n@sa SDL_floor\n@sa SDL_ceil\n@sa SDL_trunc",
@@ -3664,9 +3680,9 @@
               "type": "double"
             }
           ],
-          "begin": 4765,
-          "decl": 4792,
-          "end": 4794
+          "begin": 4771,
+          "decl": 4798,
+          "end": 4800
         },
         "lroundf": {
           "doc": "Round `x` to the nearest integer representable as a long\n\nRounds `x` to the nearest integer. Values halfway between integers will be\nrounded away from zero.\n\nDomain: `-INF <= x <= INF`\n\nRange: `MIN_LONG <= y <= MAX_LONG`\n\nThis function operates on single-precision floating point values, use\nSDL_lroundf for double-precision floats. To get the result as a\nfloating-point type, use SDL_roundf,\n\n@param x floating point value.\n@returns the nearest integer to `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_lround\n@sa SDL_roundf\n@sa SDL_floorf\n@sa SDL_ceilf\n@sa SDL_truncf",
@@ -3679,9 +3695,9 @@
               "type": "float"
             }
           ],
-          "begin": 4794,
-          "decl": 4821,
-          "end": 4823
+          "begin": 4800,
+          "decl": 4827,
+          "end": 4829
         },
         "scalbn": {
           "doc": "Scale `x` by an integer power of two.\n\nMultiplies `x` by the `n`th power of the floating point radix (always 2).\n\nDomain: `-INF <= x <= INF`, `n` integer\n\nRange: `-INF <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nSDL_scalbnf for single-precision floats.\n\n@param x floating point value to be scaled.\n@param n integer exponent.\n@returns `x * 2^n`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_scalbnf\n@sa SDL_pow",
@@ -3698,9 +3714,9 @@
               "type": "int"
             }
           ],
-          "begin": 4823,
-          "decl": 4846,
-          "end": 4848
+          "begin": 4829,
+          "decl": 4852,
+          "end": 4854
         },
         "scalbnf": {
           "doc": "Scale `x` by an integer power of two.\n\nMultiplies `x` by the `n`th power of the floating point radix (always 2).\n\nDomain: `-INF <= x <= INF`, `n` integer\n\nRange: `-INF <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nSDL_scalbn for double-precision floats.\n\n@param x floating point value to be scaled.\n@param n integer exponent.\n@returns `x * 2^n`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_scalbn\n@sa SDL_powf",
@@ -3717,9 +3733,9 @@
               "type": "int"
             }
           ],
-          "begin": 4848,
-          "decl": 4871,
-          "end": 4873
+          "begin": 4854,
+          "decl": 4877,
+          "end": 4879
         },
         "sin": {
           "doc": "Compute the sine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on double-precision floating point values, use\nSDL_sinf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns sine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_sinf\n@sa SDL_asin\n@sa SDL_cos",
@@ -3732,9 +3748,9 @@
               "type": "double"
             }
           ],
-          "begin": 4873,
-          "decl": 4899,
-          "end": 4901
+          "begin": 4879,
+          "decl": 4905,
+          "end": 4907
         },
         "sinf": {
           "doc": "Compute the sine of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-1 <= y <= 1`\n\nThis function operates on single-precision floating point values, use\nSDL_sin for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns sine of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_sin\n@sa SDL_asinf\n@sa SDL_cosf",
@@ -3747,9 +3763,9 @@
               "type": "float"
             }
           ],
-          "begin": 4901,
-          "decl": 4927,
-          "end": 4929
+          "begin": 4907,
+          "decl": 4933,
+          "end": 4935
         },
         "sqrt": {
           "doc": "Compute the square root of `x`.\n\nDomain: `0 <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nSDL_sqrtf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than or equal to 0.\n@returns square root of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_sqrtf",
@@ -3762,9 +3778,9 @@
               "type": "double"
             }
           ],
-          "begin": 4929,
-          "decl": 4953,
-          "end": 4955
+          "begin": 4935,
+          "decl": 4959,
+          "end": 4961
         },
         "sqrtf": {
           "doc": "Compute the square root of `x`.\n\nDomain: `0 <= x <= INF`\n\nRange: `0 <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nSDL_sqrt for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value. Must be greater than or equal to 0.\n@returns square root of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_sqrt",
@@ -3777,9 +3793,9 @@
               "type": "float"
             }
           ],
-          "begin": 4955,
-          "decl": 4979,
-          "end": 4981
+          "begin": 4961,
+          "decl": 4985,
+          "end": 4987
         },
         "tan": {
           "doc": "Compute the tangent of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`\n\nThis function operates on double-precision floating point values, use\nSDL_tanf for single-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns tangent of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_tanf\n@sa SDL_sin\n@sa SDL_cos\n@sa SDL_atan\n@sa SDL_atan2",
@@ -3792,9 +3808,9 @@
               "type": "double"
             }
           ],
-          "begin": 4981,
-          "decl": 5009,
-          "end": 5011
+          "begin": 4987,
+          "decl": 5015,
+          "end": 5017
         },
         "tanf": {
           "doc": "Compute the tangent of `x`.\n\nDomain: `-INF <= x <= INF`\n\nRange: `-INF <= y <= INF`\n\nThis function operates on single-precision floating point values, use\nSDL_tanf for double-precision floats.\n\nThis function may use a different approximation across different versions,\nplatforms and configurations. i.e, it can return a different value given\nthe same input on different machines or operating systems, or if SDL is\nupdated.\n\n@param x floating point value, in radians.\n@returns tangent of `x`.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_tan\n@sa SDL_sinf\n@sa SDL_cosf\n@sa SDL_atanf\n@sa SDL_atan2f",
@@ -3807,9 +3823,9 @@
               "type": "float"
             }
           ],
-          "begin": 5011,
-          "decl": 5039,
-          "end": 5041
+          "begin": 5017,
+          "decl": 5045,
+          "end": 5047
         },
         "IConvBase": {
           "doc": "An opaque handle representing string encoding conversion state.\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource\n\n@sa IConv\n@sa IConvRef",
@@ -3821,9 +3837,9 @@
               "doc": "",
               "name": "T::T",
               "kind": "alias",
-              "begin": 5054,
-              "decl": 5054,
-              "end": 5056
+              "begin": 5060,
+              "decl": 5060,
+              "end": 5062
             },
             "IConvBase": {
               "doc": "This function allocates a context for the specified character set\nconversion.\n\n@param tocode The target character encoding, must not be NULL.\n@param fromcode The source character encoding, must not be NULL.\n@post this becomes a valid handle convertible to true on success, or\n         convertible to false on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa iconv()\n@sa iconv_close()\n@sa iconv_string()",
@@ -3840,9 +3856,9 @@
                   "type": "StringParam"
                 }
               ],
-              "begin": 5056,
-              "decl": 5071,
-              "end": 5076
+              "begin": 5062,
+              "decl": 5077,
+              "end": 5082
             },
             "iconv": {
               "doc": "This function converts text between encodings, reading from and writing to\na buffer.\n\nIt returns the number of successful conversions on success. On error,\nSDL_ICONV_E2BIG is returned when the output buffer is too small, or\nSDL_ICONV_EILSEQ is returned when an invalid input sequence is encountered,\nor SDL_ICONV_EINVAL is returned when an incomplete input sequence is\nencountered.\n\nOn exit:\n\n- inbuf will point to the beginning of the next multibyte sequence. On\n  error, this is the location of the problematic input sequence. On\n  success, this is the end of the input sequence.\n- inbytesleft will be set to the number of bytes left to convert, which\n  will be 0 on success.\n- outbuf will point to the location where to store the next output byte.\n- outbytesleft will be set to the number of bytes left in the output\n  buffer.\n\n@param inbuf Address of variable that points to the first character of the\n             input sequence.\n@param inbytesleft The number of bytes in the input buffer.\n@param outbuf Address of variable that points to the output buffer.\n@param outbytesleft The number of bytes in the output buffer.\n@returns the number of conversions on success, or a negative error code.\n\n@since This function is available since SDL 3.2.0.\n\n@sa iconv_string()",
@@ -3867,9 +3883,9 @@
                   "type": "size_t *"
                 }
               ],
-              "begin": 5076,
-              "decl": 5108,
-              "end": 5116
+              "begin": 5082,
+              "decl": 5114,
+              "end": 5122
             },
             "close": {
               "doc": "This function frees a context used for character set conversion.\n\nThis object becomes empty after the call.\n@returns 0 on success, or -1 on failure.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv\n@sa SDL_iconv_open\n@sa SDL_iconv_string",
@@ -3877,9 +3893,9 @@
               "kind": "function",
               "type": "int",
               "parameters": [],
-              "begin": 5116,
-              "decl": 5128,
-              "end": 5129
+              "begin": 5122,
+              "decl": 5134,
+              "end": 5135
             }
           },
           "template": [
@@ -3888,9 +3904,9 @@
               "type": "ObjectBox<SDL_iconv_data_t *>"
             }
           ],
-          "begin": 5041,
-          "decl": 5051,
-          "end": 5131
+          "begin": 5047,
+          "decl": 5057,
+          "end": 5137
         },
         "ObjectRef<SDL_iconv_data_t>::doFree": {
           "doc": "Callback for iConv resource cleanup\n\n@private",
@@ -3904,45 +3920,45 @@
             }
           ],
           "template": [],
-          "begin": 5131,
-          "decl": 5136,
-          "end": 5142
+          "begin": 5137,
+          "decl": 5142,
+          "end": 5148
         },
         "SDL_ICONV_ERROR": {
           "doc": "Generic error. Check SDL_GetError()?",
           "name": "SDL_ICONV_ERROR",
           "kind": "def",
           "value": "(size_t)-1",
-          "begin": 5144,
-          "decl": 5147,
-          "end": 5149
+          "begin": 5150,
+          "decl": 5153,
+          "end": 5155
         },
         "SDL_ICONV_E2BIG": {
           "doc": "Output buffer was too small.",
           "name": "SDL_ICONV_E2BIG",
           "kind": "def",
           "value": "(size_t)-2",
-          "begin": 5149,
-          "decl": 5152,
-          "end": 5154
+          "begin": 5155,
+          "decl": 5158,
+          "end": 5160
         },
         "SDL_ICONV_EILSEQ": {
           "doc": "Invalid input sequence was encountered.",
           "name": "SDL_ICONV_EILSEQ",
           "kind": "def",
           "value": "(size_t)-3",
-          "begin": 5154,
-          "decl": 5157,
-          "end": 5159
+          "begin": 5160,
+          "decl": 5163,
+          "end": 5165
         },
         "SDL_ICONV_EINVAL": {
           "doc": "Incomplete input sequence was encountered.",
           "name": "SDL_ICONV_EINVAL",
           "kind": "def",
           "value": "(size_t)-4",
-          "begin": 5159,
-          "decl": 5162,
-          "end": 5164
+          "begin": 5165,
+          "decl": 5168,
+          "end": 5170
         },
         "iconv_string": {
           "doc": "Helper function to convert a string's encoding in one call.\n\nThis function converts a buffer or string between encodings in one pass.\n\nThe string does not need to be NULL-terminated; this function operates on\nthe number of bytes specified in `inbytesleft` whether there is a NULL\ncharacter anywhere in the buffer.\n\nThe returned string is owned by the caller, and should be passed to\nSDL_free when no longer needed.\n\n@param tocode the character encoding of the output string. Examples are\n              \"UTF-8\", \"UCS-4\", etc.\n@param fromcode the character encoding of data in `inbuf`.\n@param inbuf the string to convert to a different encoding.\n@param inbytesleft the size of the input string _in bytes_.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_iconv_open\n@sa SDL_iconv_close\n@sa SDL_iconv",
@@ -3967,9 +3983,9 @@
               "type": "size_t"
             }
           ],
-          "begin": 5166,
-          "decl": 5191,
-          "end": 5199
+          "begin": 5172,
+          "decl": 5197,
+          "end": 5205
         },
         "SDL_iconv_utf8_locale": {
           "doc": "Convert a UTF-8 string to the current locale's character encoding.\n\nThis is a helper macro that might be more clear than calling\nSDL_iconv_string directly. However, it double-evaluates its parameter, so\ndo not use an expression with side-effects here.\n\n@param S the string to convert.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This macro is available since SDL 3.2.0.",
@@ -3979,9 +3995,9 @@
           "parameters": [
             "S"
           ],
-          "begin": 5201,
-          "decl": 5213,
-          "end": 5216
+          "begin": 5207,
+          "decl": 5219,
+          "end": 5222
         },
         "SDL_iconv_utf8_ucs2": {
           "doc": "Convert a UTF-8 string to UCS-2.\n\nThis is a helper macro that might be more clear than calling\nSDL_iconv_string directly. However, it double-evaluates its parameter, so\ndo not use an expression with side-effects here.\n\n@param S the string to convert.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This macro is available since SDL 3.2.0.",
@@ -3991,9 +4007,9 @@
           "parameters": [
             "S"
           ],
-          "begin": 5216,
-          "decl": 5228,
-          "end": 5231
+          "begin": 5222,
+          "decl": 5234,
+          "end": 5237
         },
         "SDL_iconv_utf8_ucs4": {
           "doc": "Convert a UTF-8 string to UCS-4.\n\nThis is a helper macro that might be more clear than calling\nSDL_iconv_string directly. However, it double-evaluates its parameter, so\ndo not use an expression with side-effects here.\n\n@param S the string to convert.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This macro is available since SDL 3.2.0.",
@@ -4003,9 +4019,9 @@
           "parameters": [
             "S"
           ],
-          "begin": 5231,
-          "decl": 5243,
-          "end": 5246
+          "begin": 5237,
+          "decl": 5249,
+          "end": 5252
         },
         "SDL_iconv_wchar_utf8": {
           "doc": "Convert a wchar_t string to UTF-8.\n\nThis is a helper macro that might be more clear than calling\nSDL_iconv_string directly. However, it double-evaluates its parameter, so\ndo not use an expression with side-effects here.\n\n@param S the string to convert.\n@returns a new string, converted to the new encoding, or NULL on error.\n\n@since This macro is available since SDL 3.2.0.",
@@ -4015,9 +4031,9 @@
           "parameters": [
             "S"
           ],
-          "begin": 5246,
-          "decl": 5258,
-          "end": 5262
+          "begin": 5252,
+          "decl": 5264,
+          "end": 5268
         },
         "size_mul_check_overflow": {
           "doc": "Multiply two integers, checking for overflow.\n\nIf `a * b` would overflow, return false.\n\nOtherwise store `a * b` via ret and return true.\n\n@param a the multiplicand.\n@param b the multiplier.\n@param ret on non-overflow output, stores the multiplication result, may\n           not be NULL.\n@returns false on overflow, true if result is multiplied without overflow.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -4038,9 +4054,9 @@
               "type": "size_t *"
             }
           ],
-          "begin": 5264,
-          "decl": 5281,
-          "end": 5286
+          "begin": 5270,
+          "decl": 5287,
+          "end": 5292
         },
         "size_add_check_overflow": {
           "doc": "Add two integers, checking for overflow.\n\nIf `a + b` would overflow, return false.\n\nOtherwise store `a + b` via ret and return true.\n\n@param a the first addend.\n@param b the second addend.\n@param ret on non-overflow output, stores the addition result, may not be\n           NULL.\n@returns false on overflow, true if result is added without overflow.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -4061,24 +4077,24 @@
               "type": "size_t *"
             }
           ],
-          "begin": 5286,
-          "decl": 5303,
-          "end": 5308
+          "begin": 5292,
+          "decl": 5309,
+          "end": 5314
         },
         "FunctionPointer": {
           "doc": "A generic function pointer.\n\nIn theory, generic function pointers should use this, instead of `void *`,\nsince some platforms could treat code addresses differently than data\naddresses. Although in current times no popular platforms make this\ndistinction, it is more correct and portable to use the correct type for a\ngeneric pointer.\n\nIf for some reason you need to force this typedef to be an actual `void *`,\nperhaps to work around a compiler or existing code, you can define\n`SDL_FUNCTION_POINTER_IS_VOID_POINTER` before including any SDL headers.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "FunctionPointer",
           "kind": "alias",
           "type": "SDL_FunctionPointer",
-          "begin": 5308,
-          "decl": 5323,
-          "end": 5325
+          "begin": 5314,
+          "decl": 5329,
+          "end": 5331
         }
       },
       "docBegin": 15,
       "docEnd": 41,
       "entriesBegin": 41,
-      "entriesEnd": 5325,
+      "entriesEnd": 5331,
       "namespace": "SDL"
     },
     "SDL3pp_error.h": {

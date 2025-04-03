@@ -209,11 +209,22 @@
               {
                 "kind": "function",
                 "type": "",
-                "explicit": true,
                 "constexpr": true,
                 "parameters": [
                   {
                     "type": "std::chrono::nanoseconds",
+                    "name": "time"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "type": "",
+                "explicit": true,
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "SDL_Time",
                     "name": "time"
                   }
                 ]

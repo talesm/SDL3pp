@@ -261,11 +261,17 @@ class Time
   std::chrono::nanoseconds m_value;
 
 public:
-  /// Constructs from a nanoseconds period.
   constexpr Time() = default;
 
-  constexpr explicit Time(std::chrono::nanoseconds time)
+  /// Constructs from a nanoseconds period.
+  constexpr Time(std::chrono::nanoseconds time)
     : m_value(time)
+  {
+  }
+
+  /// Constructs from SDL_Time
+  constexpr explicit Time(SDL_Time time)
+    : m_value(FromNS(time))
   {
   }
 
