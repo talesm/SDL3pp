@@ -366,7 +366,7 @@
                 "doc": "",
                 "name": "Time",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
                 "parameters": [
                   {
                     "name": "time",
@@ -374,6 +374,7 @@
                   }
                 ],
                 "constexpr": true,
+                "explicit": true,
                 "begin": 267,
                 "decl": 267,
                 "end": 272
@@ -383,10 +384,11 @@
               "doc": "",
               "name": "operator bool",
               "kind": "function",
-              "type": "explicit",
+              "type": "",
               "parameters": [],
               "constexpr": true,
               "immutable": true,
+              "explicit": true,
               "begin": 273,
               "decl": 273,
               "end": 278
@@ -4530,7 +4532,7 @@
                 "doc": "",
                 "name": "LogCategory",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
                 "parameters": [
                   {
                     "name": "category",
@@ -4538,6 +4540,7 @@
                   }
                 ],
                 "constexpr": true,
+                "explicit": true,
                 "begin": 102,
                 "decl": 102,
                 "end": 107
@@ -13432,13 +13435,14 @@
                 "doc": "@sa PropertiesBase.Lock()",
                 "name": "PropertiesLock",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
                 "parameters": [
                   {
                     "name": "properties",
                     "type": "PropertiesRef"
                   }
                 ],
+                "explicit": true,
                 "begin": 741,
                 "decl": 744,
                 "end": 749
@@ -17729,13 +17733,14 @@
                 "doc": "@sa SurfaceBase.Lock()",
                 "name": "SurfaceLock",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
                 "parameters": [
                   {
                     "name": "surface",
                     "type": "SurfaceRef"
                   }
                 ],
+                "explicit": true,
                 "begin": 1845,
                 "decl": 1848,
                 "end": 1854
@@ -23948,7 +23953,7 @@
                 "doc": "@sa TextureBase.Lock()",
                 "name": "TextureLock",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
                 "parameters": [
                   {
                     "name": "texture",
@@ -23959,6 +23964,7 @@
                     "type": "OptionalRef<const SDL_Rect>"
                   }
                 ],
+                "explicit": true,
                 "begin": 2815,
                 "decl": 2818,
                 "end": 2830
@@ -27575,7 +27581,7 @@
               "doc": "",
               "name": "EventWatchHandle",
               "kind": "function",
-              "type": "explicit",
+              "type": "",
               "parameters": [
                 {
                   "name": "id",
@@ -27584,6 +27590,7 @@
                 }
               ],
               "constexpr": true,
+              "explicit": true,
               "begin": 1571,
               "decl": 1571,
               "end": 1576

@@ -29,6 +29,7 @@ interface ApiEntryBase {
   immutable?: boolean;
   reference?: number;
   static?: boolean;
+  explicit?: boolean;
 }
 
 export interface ApiEntry extends ApiEntryBase {
@@ -163,6 +164,7 @@ export interface FileToken {
   immutable?: boolean;
   reference?: number;
   static?: boolean;
+  explicit?: boolean;
   begin: number;
   end: number;
   spaces: number;

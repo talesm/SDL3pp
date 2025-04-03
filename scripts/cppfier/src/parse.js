@@ -265,6 +265,7 @@ class ContentParser {
         if (token.immutable) entry.immutable = token.immutable;
         if (token.static) entry.static = token.static;
         if (token.reference) entry.reference = token.reference;
+        if (token.explicit) entry.explicit = token.explicit;
         break;
       case "struct":
         if (token.type) entry.type = normalizeType(token.type);

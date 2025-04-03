@@ -314,7 +314,8 @@
               },
               {
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
+                "explicit": true,
                 "constexpr": true,
                 "parameters": [
                   {
@@ -328,7 +329,8 @@
             ],
             "operator bool": {
               "kind": "function",
-              "type": "explicit",
+              "type": "",
+              "explicit": true,
               "immutable": true,
               "constexpr": true,
               "parameters": [],
@@ -3950,7 +3952,8 @@
             "LogCategory": [
               {
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
+                "explicit": true,
                 "constexpr": true,
                 "parameters": [
                   {
@@ -5306,7 +5309,8 @@
               {
                 "doc": "@sa PropertiesBase.Lock()",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
+                "explicit": true,
                 "parameters": [
                   {
                     "name": "properties",
@@ -13333,7 +13337,8 @@
               {
                 "doc": "@sa SurfaceBase.Lock()",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
+                "explicit": true,
                 "parameters": [
                   {
                     "name": "surface",
@@ -18611,7 +18616,8 @@
               {
                 "doc": "@sa TextureBase.Lock()",
                 "kind": "function",
-                "type": "explicit",
+                "type": "",
+                "explicit": true,
                 "parameters": [
                   {
                     "name": "texture",
@@ -21576,7 +21582,8 @@
             },
             "EventWatchHandle": {
               "kind": "function",
-              "type": "explicit",
+              "type": "",
+              "explicit": true,
               "constexpr": true,
               "parameters": [
                 {

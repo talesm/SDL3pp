@@ -26,7 +26,7 @@ const ignoreInSignature = new RegExp(`(${[
   'SDL_(OUT|IN|INOUT)_(Z_)?(BYTE)?CAP',
 ].join("|")})(\\(\\w*\\))?`, "g");
 
-const memberSpecifiers = new Set(["inline", "static", "constexpr"]);
+const memberSpecifiers = new Set(["inline", "static", "constexpr", "explicit"]);
 
 const spaceRegex = /^\s+/;
 const endCommentRegex = /\*\//;
@@ -209,11 +209,12 @@ class Tokenizer {
         switch (word) {
           case "constexpr": token.constexpr = true; break;
           case "static": token.static = true; break;
+          case "explicit": token.explicit = true; break;
         }
       }
-      if (type === "explicit operator") {
-        type = "explicit";
+      if (type.endsWith(" operator")) {
         name = "operator " + name;
+        type = type.slice(0, type.length - " operator".length);
       }
       while (type.endsWith(',')) {
         const ind = type.lastIndexOf(' ');
