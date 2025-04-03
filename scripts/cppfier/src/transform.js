@@ -2,7 +2,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter } from "./types"
  */
 
 /**
@@ -103,6 +103,7 @@ function transformEntries(sourceEntries, context, transform) {
 
   if (transform.resources) expandResources(transform.resources, transform, context);
   if (transform.enumerations) expandEnumerations(sourceEntries, transform, context);
+  if (transform.wrappers) expandWrappers(sourceEntries, transform, context);
   if (transform.namespacesMap) expandNamespaces(sourceEntries, transform, context);
 
   insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, transform);
@@ -210,6 +211,161 @@ function expandNamespaces(sourceEntries, transform, context) {
       }
     });
     includeAfter(ns, transform, sourceEntriesListed[0][0]);
+  }
+}
+
+
+/**
+ * 
+ * @param {ApiEntries}    sourceEntries 
+ * @param {ApiFileTransform} transform,
+ * @param {ApiContext}    context 
+ */
+function expandWrappers(sourceEntries, transform, context) {
+  for (const [type, wrapper] of Object.entries(transform.wrappers)) {
+    const sourceEntry = sourceEntries[type];
+    if (Array.isArray(sourceEntry)) continue;
+
+    wrapper.kind = "struct";
+    combineObject(wrapper, transform.transform[type] ?? {});
+    transform.transform[type] = wrapper;
+    const targetType = wrapper.name ?? transformName(type, context);
+    if (wrapper.includeAfter) {
+      includeAfter(targetType, transform, wrapper.includeAfter);
+    }
+    const isStruct = sourceEntry.kind === "struct";
+    const constexpr = wrapper.constexpr !== false;
+    const param = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
+    const attribute = "m_" + param;
+
+    /** @type {ApiEntries} */
+    const entries = {};
+
+    if (!isStruct) insertEntry(entries, {
+      kind: "var",
+      name: attribute,
+      type: type,
+    });
+
+    insertEntry(entries, {
+      kind: "function",
+      name: targetType,
+      type: "",
+      constexpr,
+      parameters: [{
+        type: isStruct ? `const ${type} &` : type,
+        name: param,
+        default: wrapper.defaultValue ?? "{}"
+      }],
+      doc: `Wraps ${type}.\n\n@param ${param} the value to be wrapped`
+    });
+    if (wrapper.ordered) {
+      insertEntry(entries, {
+        kind: "function",
+        name: "operator<=>",
+        type: "auto",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+      });
+    } else {
+      insertEntry(entries, {
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+      });
+    }
+    if (wrapper.nullable) insertEntry(entries, {
+      kind: "function",
+      name: "operator==",
+      type: "bool",
+      constexpr,
+      immutable: true,
+      parameters: ["std::nullptr_t"],
+      doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`
+    });
+    if (!isStruct) insertEntry(entries, {
+      kind: "function",
+      name: `operator ${type}`,
+      type: "",
+      constexpr,
+      immutable: true,
+      parameters: [],
+      doc: `Unwraps to the underlying ${type}.\n\n@returns the underlying ${type}.`
+    });
+    if (wrapper.invalidState !== false) insertEntry(entries, {
+      kind: "function",
+      name: "operator bool",
+      type: "",
+      constexpr,
+      explicit: true,
+      immutable: true,
+      parameters: [],
+      doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`
+    });
+
+    if (isStruct && wrapper.type == null) {
+      /** @type {ApiParameter[]} */
+      const parameters = [];
+      for (const attrib of Object.values(sourceEntry.entries)) {
+        if (Array.isArray(attrib) || attrib.kind !== "var") continue;
+        const name = attrib.name;
+        const type = attrib.type;
+        parameters.push({ type, name });
+        const capName = name[0].toUpperCase() + name.slice(1);
+        insertEntry(entries, [{
+          kind: "function",
+          name: `Get${capName}`,
+          type,
+          constexpr,
+          immutable: true,
+          parameters: [],
+          doc: `Get the ${name}.\n\n@returns current ${name} value.`
+        }, {
+          kind: "function",
+          name: `Set${capName}`,
+          type: `${targetType} &`,
+          constexpr,
+          parameters: [{
+            type,
+            name: `new${capName}`
+          }],
+          doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`
+        }]);
+      }
+      insertEntry(entries, {
+        kind: "function",
+        name: targetType,
+        type: "",
+        constexpr,
+        parameters,
+        doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n")
+      });
+    } else {
+      wrapper.type = "";
+    }
+
+    const currentCtors = wrapper.entries?.[targetType];
+    if (currentCtors) {
+      insertEntry(entries, /** @type {ApiEntry} */(currentCtors), targetType);
+      delete wrapper.entries[targetType];
+    }
+    wrapper.entries = { ...entries, ...(wrapper.entries ?? {}) };
+
+    delete wrapper.invalidState;
+    delete wrapper.attribute;
+    delete wrapper.includeAfter;
+    delete wrapper.nullable;
+    delete wrapper.ordered;
   }
 }
 
@@ -328,8 +484,7 @@ function expandResources(resources, transform, context) {
  * @param {ApiContext}            context 
  */
 function expandEnumerations(sourceEntries, transform, context) {
-  const enumerations = transform.enumerations;
-  for (const [type, enumTransform] of Object.entries(enumerations)) {
+  for (const [type, enumTransform] of Object.entries(transform.enumerations)) {
     const sourceEntry = sourceEntries[type];
     if (Array.isArray(sourceEntry)) continue;
 

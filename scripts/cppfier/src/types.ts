@@ -1,4 +1,4 @@
-export type Dict<T> = { [file: string]: T };
+export type Dict<T> = { [key: string]: T };
 
 export interface Api {
   files: Dict<ApiFile>;
@@ -72,7 +72,8 @@ export interface ApiFileTransform {
   includeAfter?: ApiEntryTransformMap;
   transform?: Dict<ApiEntryTransform>;
   resources?: Dict<ApiResource>;
-  enumerations?: Dict<ApiEnumeration>
+  enumerations?: Dict<ApiEnumeration>;
+  wrappers?: Dict<ApiWrapper>;
   namespacesMap?: StringMap;
   definitionPrefix?: string;
 }
@@ -133,6 +134,29 @@ export interface ApiResource extends ApiEntryTransform {
    * 
    */
   returnType?: "ref" | "unique" | "none";
+}
+
+export interface ApiWrapper extends ApiEntryTransform {
+  kind?: "struct";
+
+  includeAfter?: string;
+
+  /** Defaults to `value` */
+  attribute?: string;
+
+  /** Defaults to true */
+  invalidState?: boolean;
+
+  /** Defaults to {} */
+  defaultValue?: string
+
+  /** Defaults to true if alias to pointer, false otherwise */
+  nullable?: boolean
+
+  /** 
+   * Defaults to true if alias to anything but `void *`, false otherwise.
+   */
+  ordered?: boolean
 }
 
 export interface ApiEnumeration extends ApiEntryTransform {

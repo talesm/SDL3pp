@@ -2143,25 +2143,23 @@
           }
         ]
       },
-      "transform": {
+      "wrappers": {
         "SDL_Point": {
-          "kind": "struct",
+          "attribute": "p",
+          "ordered": true,
           "entries": {
-            "Point": [
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              }
-            ],
-            "GetX": "function",
-            "SetX": "function",
-            "GetY": "function",
-            "SetY": "function",
+            "Point": {
+              "kind": "function",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "parameters": [
+                {
+                  "type": "const SDL_FPoint &",
+                  "name": "p"
+                }
+              ]
+            },
             "SDL_PointInRect": {
               "kind": "function",
               "name": "IsInRect",
@@ -2178,23 +2176,9 @@
           }
         },
         "SDL_FPoint": {
-          "kind": "struct",
+          "attribute": "p",
+          "ordered": true,
           "entries": {
-            "FPoint": [
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              }
-            ],
-            "GetX": "function",
-            "SetX": "function",
-            "GetY": "function",
-            "SetY": "function",
             "SDL_PointInRectFloat": {
               "kind": "function",
               "name": "IsInRect",
@@ -2211,19 +2195,22 @@
           }
         },
         "SDL_Rect": {
-          "kind": "struct",
+          "attribute": "r",
           "entries": {
-            "Rect": [
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              }
-            ],
+            "Rect": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "corner",
+                  "type": "const SDL_Point &"
+                },
+                {
+                  "name": "size",
+                  "type": "const SDL_Point &"
+                }
+              ]
+            },
             "SDL_GetRectEnclosingPoints": {
               "type": "std::optional<Rect>",
               "parameters": [
@@ -2239,21 +2226,85 @@
               ]
             },
             "FromCenter": [
-              "function",
-              "function"
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "cx",
+                    "type": "int"
+                  },
+                  {
+                    "name": "cy",
+                    "type": "int"
+                  },
+                  {
+                    "name": "w",
+                    "type": "int"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "name": "FromCenter",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "center",
+                    "type": "const Point &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const Point &"
+                  }
+                ]
+              }
             ],
             "FromCorners": [
-              "function",
-              "function"
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "x1",
+                    "type": "int"
+                  },
+                  {
+                    "name": "y1",
+                    "type": "int"
+                  },
+                  {
+                    "name": "x2",
+                    "type": "int"
+                  },
+                  {
+                    "name": "y2",
+                    "type": "int"
+                  }
+                ]
+              },
+              {
+                "kind": "function",
+                "name": "FromCorners",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "p1",
+                    "type": "const Point &"
+                  },
+                  {
+                    "name": "p2",
+                    "type": "const Point &"
+                  }
+                ]
+              }
             ],
-            "GetX": "function",
-            "SetX": "function",
-            "GetY": "function",
-            "SetY": "function",
-            "GetW": "function",
-            "SetW": "function",
-            "GetH": "function",
-            "SetH": "function",
             "GetX2": "function",
             "SetX2": "function",
             "GetY2": "function",
@@ -2310,22 +2361,31 @@
                 }
               ]
             },
-            "operator==": {
-              "doc": "@sa Equal()",
-              "kind": "function",
-              "constexpr": true,
-              "immutable": true,
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "const Rect &"
-                }
-              ]
-            },
             "Contains": [
-              "function",
-              "function"
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "p",
+                    "type": "const Point &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Rect &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true
+              }
             ],
             "SDL_HasRectIntersection": {
               "kind": "function",
@@ -2374,19 +2434,22 @@
           }
         },
         "SDL_FRect": {
-          "kind": "struct",
+          "attribute": "r",
           "entries": {
-            "FRect": [
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              },
-              {
-                "kind": "function"
-              }
-            ],
+            "FRect": {
+              "kind": "function",
+              "type": "",
+              "parameters": [
+                {
+                  "name": "corner",
+                  "type": "const SDL_FPoint &"
+                },
+                {
+                  "name": "size",
+                  "type": "const SDL_FPoint &"
+                }
+              ]
+            },
             "SDL_GetRectEnclosingPointsFloat": {
               "type": "std::optional<FRect>",
               "parameters": [
@@ -2405,34 +2468,86 @@
               {
                 "kind": "function",
                 "name": "FromCenter",
-                "doc": ""
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "cx",
+                    "type": "float"
+                  },
+                  {
+                    "name": "cy",
+                    "type": "float"
+                  },
+                  {
+                    "name": "w",
+                    "type": "float"
+                  },
+                  {
+                    "name": "h",
+                    "type": "float"
+                  }
+                ]
               },
               {
                 "kind": "function",
                 "name": "FromCenter",
-                "doc": ""
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "center",
+                    "type": "const FPoint &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const FPoint &"
+                  }
+                ]
               }
             ],
             "FromCorners": [
               {
                 "kind": "function",
                 "name": "FromCorners",
-                "doc": ""
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "x1",
+                    "type": "float"
+                  },
+                  {
+                    "name": "y1",
+                    "type": "float"
+                  },
+                  {
+                    "name": "x2",
+                    "type": "float"
+                  },
+                  {
+                    "name": "y2",
+                    "type": "float"
+                  }
+                ]
               },
               {
                 "kind": "function",
                 "name": "FromCorners",
-                "doc": ""
+                "static": true,
+                "type": "FRect",
+                "parameters": [
+                  {
+                    "name": "p1",
+                    "type": "const FPoint &"
+                  },
+                  {
+                    "name": "p2",
+                    "type": "const FPoint &"
+                  }
+                ]
               }
             ],
-            "GetX": "function",
-            "SetX": "function",
-            "GetY": "function",
-            "SetY": "function",
-            "GetW": "function",
-            "SetW": "function",
-            "GetH": "function",
-            "SetH": "function",
             "GetX2": "function",
             "SetX2": "function",
             "GetY2": "function",
@@ -2491,22 +2606,31 @@
                 }
               ]
             },
-            "operator==": {
-              "doc": "@sa Equal()",
-              "kind": "function",
-              "constexpr": true,
-              "immutable": true,
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "const FRect &"
-                }
-              ]
-            },
             "Contains": [
-              "function",
-              "function"
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "p",
+                    "type": "const FPoint &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const FRect &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true
+              }
             ],
             "SDL_HasRectIntersectionFloat": {
               "kind": "function",
@@ -3925,54 +4049,11 @@
         "SDL_PROP_DISPLAY_": "prop::Display",
         "SDL_PROP_WINDOW_": "prop::Window"
       },
-      "transform": {
+      "wrappers": {
         "SDL_DisplayID": {
-          "kind": "struct",
           "name": "Display",
-          "type": "",
+          "attribute": "displayID",
           "entries": {
-            "displayID": {
-              "kind": "var",
-              "type": "SDL_DisplayID"
-            },
-            "Display": {
-              "kind": "function",
-              "type": "",
-              "constexpr": true,
-              "parameters": [
-                {
-                  "name": "displayID",
-                  "type": "SDL_DisplayID",
-                  "default": "0"
-                }
-              ]
-            },
-            "operator bool": {
-              "kind": "function",
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": []
-            },
-            "operator SDL_DisplayID": {
-              "kind": "function",
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": []
-            },
-            "operator==": {
-              "kind": "function",
-              "type": "bool",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Display",
-                  "name": "other"
-                }
-              ]
-            },
             "SDL_GetDisplays": {
               "kind": "function",
               "name": "GetAll",
@@ -4041,7 +4122,9 @@
             "SDL_GetDisplayForPoint": "function",
             "SDL_GetDisplayForRect": "function"
           }
-        },
+        }
+      },
+      "transform": {
         "SDL_GetWindows": {
           "kind": "function",
           "type": "OwnArray<WindowRef>",

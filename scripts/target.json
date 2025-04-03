@@ -11184,38 +11184,116 @@
               {
                 "kind": "function",
                 "name": "Point",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Point &",
+                    "name": "p",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Point.\n\n@param p the value to be wrapped"
               },
               {
                 "kind": "function",
                 "name": "Point",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "x"
+                  },
+                  {
+                    "type": "int",
+                    "name": "y"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y."
               },
               {
                 "kind": "function",
+                "type": "",
+                "constexpr": true,
+                "explicit": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FPoint &",
+                    "name": "p"
+                  }
+                ],
                 "name": "Point",
                 "doc": ""
               }
             ],
+            "operator<=>": {
+              "kind": "function",
+              "name": "operator<=>",
+              "type": "auto",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const Point &",
+                  "name": "other"
+                }
+              ],
+              "doc": ""
+            },
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+            },
             "GetX": {
               "kind": "function",
               "name": "GetX",
-              "doc": ""
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value."
             },
             "SetX": {
               "kind": "function",
               "name": "SetX",
-              "doc": ""
+              "type": "Point &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
             },
             "GetY": {
               "kind": "function",
               "name": "GetY",
-              "doc": ""
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value."
             },
             "SetY": {
               "kind": "function",
               "name": "SetY",
-              "doc": ""
+              "type": "Point &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
             },
             "IsInRect": {
               "doc": "Determine whether a point resides inside a rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand < the rectangle's x+w and y+h. So a 1x1 rectangle considers point (0,0)\nas \"inside\" and (0,1) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -11245,38 +11323,102 @@
               {
                 "kind": "function",
                 "name": "FPoint",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FPoint &",
+                    "name": "p",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps FPoint.\n\n@param p the value to be wrapped"
               },
               {
                 "kind": "function",
                 "name": "FPoint",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "name": "FPoint",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "float",
+                    "name": "x"
+                  },
+                  {
+                    "type": "float",
+                    "name": "y"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y."
               }
             ],
+            "operator<=>": {
+              "kind": "function",
+              "name": "operator<=>",
+              "type": "auto",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const FPoint &",
+                  "name": "other"
+                }
+              ],
+              "doc": ""
+            },
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
+            },
             "GetX": {
               "kind": "function",
               "name": "GetX",
-              "doc": ""
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value."
             },
             "SetX": {
               "kind": "function",
               "name": "SetX",
-              "doc": ""
+              "type": "FPoint &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
             },
             "GetY": {
               "kind": "function",
               "name": "GetY",
-              "doc": ""
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value."
             },
             "SetY": {
               "kind": "function",
               "name": "SetY",
-              "doc": ""
+              "type": "FPoint &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
             },
             "IsInRect": {
               "doc": "Determine whether a point resides inside a floating point rectangle.\n\nA point is considered part of a rectangle if both `p` and `r` are not nullptr,\nand `p`'s x and y coordinates are >= to the rectangle's top left corner,\nand <= the rectangle's x+w and y+h. So a 1x1 rectangle considers point\n(0,0) and (0,1) as \"inside\" and (0,2) as not.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param r the rectangle to test.\n@returns true if `p` is contained by `r`, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -11306,19 +11448,170 @@
               {
                 "kind": "function",
                 "name": "Rect",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_Rect &",
+                    "name": "r",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps Rect.\n\n@param r the value to be wrapped"
               },
               {
                 "kind": "function",
                 "name": "Rect",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "int",
+                    "name": "x"
+                  },
+                  {
+                    "type": "int",
+                    "name": "y"
+                  },
+                  {
+                    "type": "int",
+                    "name": "w"
+                  },
+                  {
+                    "type": "int",
+                    "name": "h"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h."
               },
               {
                 "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "corner",
+                    "type": "const SDL_Point &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const SDL_Point &"
+                  }
+                ],
                 "name": "Rect",
                 "doc": ""
               }
             ],
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const Rect &",
+                  "name": "other"
+                }
+              ],
+              "doc": ""
+            },
+            "operator bool": {
+              "doc": "@sa Empty()",
+              "kind": "function",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "type": "",
+              "name": "operator bool"
+            },
+            "GetX": {
+              "kind": "function",
+              "name": "GetX",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value."
+            },
+            "SetX": {
+              "kind": "function",
+              "name": "SetX",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
+            },
+            "GetY": {
+              "kind": "function",
+              "name": "GetY",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value."
+            },
+            "SetY": {
+              "kind": "function",
+              "name": "SetY",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
+            },
+            "GetW": {
+              "kind": "function",
+              "name": "GetW",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the w.\n\n@returns current w value."
+            },
+            "SetW": {
+              "kind": "function",
+              "name": "SetW",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newW"
+                }
+              ],
+              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self."
+            },
+            "GetH": {
+              "kind": "function",
+              "name": "GetH",
+              "type": "int",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the h.\n\n@returns current h value."
+            },
+            "SetH": {
+              "kind": "function",
+              "name": "SetH",
+              "type": "Rect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "int",
+                  "name": "newH"
+                }
+              ],
+              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self."
+            },
             "GetEnclosingPoints": {
               "doc": "Calculate a minimal rectangle enclosing a set of points.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of Point structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an Rect used for clipping or nullptr to enclose all points.\n@param result an Rect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetEnclosingPoints",
@@ -11342,11 +11635,41 @@
               {
                 "kind": "function",
                 "name": "FromCenter",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "cx",
+                    "type": "int"
+                  },
+                  {
+                    "name": "cy",
+                    "type": "int"
+                  },
+                  {
+                    "name": "w",
+                    "type": "int"
+                  },
+                  {
+                    "name": "h",
+                    "type": "int"
+                  }
+                ],
                 "doc": ""
               },
               {
                 "kind": "function",
                 "name": "FromCenter",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "center",
+                    "type": "const Point &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const Point &"
+                  }
+                ],
                 "doc": ""
               }
             ],
@@ -11354,54 +11677,44 @@
               {
                 "kind": "function",
                 "name": "FromCorners",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "x1",
+                    "type": "int"
+                  },
+                  {
+                    "name": "y1",
+                    "type": "int"
+                  },
+                  {
+                    "name": "x2",
+                    "type": "int"
+                  },
+                  {
+                    "name": "y2",
+                    "type": "int"
+                  }
+                ],
                 "doc": ""
               },
               {
                 "kind": "function",
                 "name": "FromCorners",
+                "type": "Rect",
+                "parameters": [
+                  {
+                    "name": "p1",
+                    "type": "const Point &"
+                  },
+                  {
+                    "name": "p2",
+                    "type": "const Point &"
+                  }
+                ],
                 "doc": ""
               }
             ],
-            "GetX": {
-              "kind": "function",
-              "name": "GetX",
-              "doc": ""
-            },
-            "SetX": {
-              "kind": "function",
-              "name": "SetX",
-              "doc": ""
-            },
-            "GetY": {
-              "kind": "function",
-              "name": "GetY",
-              "doc": ""
-            },
-            "SetY": {
-              "kind": "function",
-              "name": "SetY",
-              "doc": ""
-            },
-            "GetW": {
-              "kind": "function",
-              "name": "GetW",
-              "doc": ""
-            },
-            "SetW": {
-              "kind": "function",
-              "name": "SetW",
-              "doc": ""
-            },
-            "GetH": {
-              "kind": "function",
-              "name": "GetH",
-              "doc": ""
-            },
-            "SetH": {
-              "kind": "function",
-              "name": "SetH",
-              "doc": ""
-            },
             "GetX2": {
               "kind": "function",
               "name": "GetX2",
@@ -11515,15 +11828,6 @@
               "constexpr": true,
               "immutable": true
             },
-            "operator bool": {
-              "doc": "@sa Empty()",
-              "kind": "function",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "type": "",
-              "name": "operator bool"
-            },
             "Equal": {
               "doc": "Determine whether two rectangles are equal.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height match.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param b the second rectangle to test.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Equal",
@@ -11539,28 +11843,32 @@
               "immutable": true,
               "constexpr": true
             },
-            "operator==": {
-              "doc": "@sa Equal()",
-              "kind": "function",
-              "constexpr": true,
-              "immutable": true,
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "const Rect &"
-                }
-              ],
-              "name": "operator=="
-            },
             "Contains": [
               {
                 "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "p",
+                    "type": "const Point &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
                 "name": "Contains",
                 "doc": ""
               },
               {
                 "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const Rect &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
                 "name": "Contains",
                 "doc": ""
               }
@@ -11620,19 +11928,170 @@
               {
                 "kind": "function",
                 "name": "FRect",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "const SDL_FRect &",
+                    "name": "r",
+                    "default": "{}"
+                  }
+                ],
+                "doc": "Wraps FRect.\n\n@param r the value to be wrapped"
               },
               {
                 "kind": "function",
                 "name": "FRect",
-                "doc": ""
+                "type": "",
+                "constexpr": true,
+                "parameters": [
+                  {
+                    "type": "float",
+                    "name": "x"
+                  },
+                  {
+                    "type": "float",
+                    "name": "y"
+                  },
+                  {
+                    "type": "float",
+                    "name": "w"
+                  },
+                  {
+                    "type": "float",
+                    "name": "h"
+                  }
+                ],
+                "doc": "Constructs from its fields.\n\n@param x the value for x.\n@param y the value for y.\n@param w the value for w.\n@param h the value for h."
               },
               {
                 "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "corner",
+                    "type": "const SDL_FPoint &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const SDL_FPoint &"
+                  }
+                ],
                 "name": "FRect",
                 "doc": ""
               }
             ],
+            "operator==": {
+              "kind": "function",
+              "name": "operator==",
+              "type": "bool",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const FRect &",
+                  "name": "other"
+                }
+              ],
+              "doc": ""
+            },
+            "operator bool": {
+              "doc": "@sa Empty()",
+              "kind": "function",
+              "immutable": true,
+              "constexpr": true,
+              "parameters": [],
+              "type": "",
+              "name": "operator bool"
+            },
+            "GetX": {
+              "kind": "function",
+              "name": "GetX",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the x.\n\n@returns current x value."
+            },
+            "SetX": {
+              "kind": "function",
+              "name": "SetX",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newX"
+                }
+              ],
+              "doc": "Set the x.\n\n@param newX the new x value.\n@returns Reference to self."
+            },
+            "GetY": {
+              "kind": "function",
+              "name": "GetY",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the y.\n\n@returns current y value."
+            },
+            "SetY": {
+              "kind": "function",
+              "name": "SetY",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newY"
+                }
+              ],
+              "doc": "Set the y.\n\n@param newY the new y value.\n@returns Reference to self."
+            },
+            "GetW": {
+              "kind": "function",
+              "name": "GetW",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the w.\n\n@returns current w value."
+            },
+            "SetW": {
+              "kind": "function",
+              "name": "SetW",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newW"
+                }
+              ],
+              "doc": "Set the w.\n\n@param newW the new w value.\n@returns Reference to self."
+            },
+            "GetH": {
+              "kind": "function",
+              "name": "GetH",
+              "type": "float",
+              "constexpr": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Get the h.\n\n@returns current h value."
+            },
+            "SetH": {
+              "kind": "function",
+              "name": "SetH",
+              "type": "FRect &",
+              "constexpr": true,
+              "parameters": [
+                {
+                  "type": "float",
+                  "name": "newH"
+                }
+              ],
+              "doc": "Set the h.\n\n@param newH the new h value.\n@returns Reference to self."
+            },
             "GetEnclosingPoints": {
               "doc": "Calculate a minimal rectangle enclosing a set of points with float\nprecision.\n\nIf `clip` is not nullptr then only points inside of the clipping rectangle are\nconsidered.\n\n@param points an array of FPoint structures representing points to be\n              enclosed.\n@param count the number of structures in the `points` array.\n@param clip an FRect used for clipping or nullptr to enclose all points.\n@param result an FRect structure filled in with the minimal enclosing\n              rectangle.\n@returns true if any points were enclosed or false if all the points were\n         outside of the clipping rectangle.\n\n@since This function is available since SDL 3.2.0.",
               "name": "GetEnclosingPoints",
@@ -11656,11 +12115,43 @@
               {
                 "kind": "function",
                 "name": "FromCenter",
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "cx",
+                    "type": "float"
+                  },
+                  {
+                    "name": "cy",
+                    "type": "float"
+                  },
+                  {
+                    "name": "w",
+                    "type": "float"
+                  },
+                  {
+                    "name": "h",
+                    "type": "float"
+                  }
+                ],
                 "doc": ""
               },
               {
                 "kind": "function",
                 "name": "FromCenter",
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "center",
+                    "type": "const FPoint &"
+                  },
+                  {
+                    "name": "size",
+                    "type": "const FPoint &"
+                  }
+                ],
                 "doc": ""
               }
             ],
@@ -11668,54 +12159,46 @@
               {
                 "kind": "function",
                 "name": "FromCorners",
+                "type": "FRect",
+                "static": true,
+                "parameters": [
+                  {
+                    "name": "x1",
+                    "type": "float"
+                  },
+                  {
+                    "name": "y1",
+                    "type": "float"
+                  },
+                  {
+                    "name": "x2",
+                    "type": "float"
+                  },
+                  {
+                    "name": "y2",
+                    "type": "float"
+                  }
+                ],
                 "doc": ""
               },
               {
                 "kind": "function",
                 "name": "FromCorners",
+                "static": true,
+                "type": "FRect",
+                "parameters": [
+                  {
+                    "name": "p1",
+                    "type": "const FPoint &"
+                  },
+                  {
+                    "name": "p2",
+                    "type": "const FPoint &"
+                  }
+                ],
                 "doc": ""
               }
             ],
-            "GetX": {
-              "kind": "function",
-              "name": "GetX",
-              "doc": ""
-            },
-            "SetX": {
-              "kind": "function",
-              "name": "SetX",
-              "doc": ""
-            },
-            "GetY": {
-              "kind": "function",
-              "name": "GetY",
-              "doc": ""
-            },
-            "SetY": {
-              "kind": "function",
-              "name": "SetY",
-              "doc": ""
-            },
-            "GetW": {
-              "kind": "function",
-              "name": "GetW",
-              "doc": ""
-            },
-            "SetW": {
-              "kind": "function",
-              "name": "SetW",
-              "doc": ""
-            },
-            "GetH": {
-              "kind": "function",
-              "name": "GetH",
-              "doc": ""
-            },
-            "SetH": {
-              "kind": "function",
-              "name": "SetH",
-              "doc": ""
-            },
             "GetX2": {
               "kind": "function",
               "name": "GetX2",
@@ -11809,15 +12292,6 @@
               "constexpr": true,
               "immutable": true
             },
-            "operator bool": {
-              "doc": "@sa Empty()",
-              "kind": "function",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
-              "type": "",
-              "name": "operator bool"
-            },
             "EqualEpsilon": {
               "doc": "Determine whether two floating point rectangles are equal, within some\ngiven epsilon.\n\nRectangles are considered equal if both are not nullptr and each of their x,\ny, width and height are within `epsilon` of each other. If you don't know\nwhat value to use for `epsilon`, you should call the FRect.Equal\nfunction instead.\n\nNote that this is a forced-inline function in a header, and not a public\nAPI function available in the SDL library (which is to say, the code is\nembedded in the calling program and the linker and dynamic loader will not\nbe able to find this function inside SDL itself).\n\n@param b the second rectangle to test.\n@param epsilon the epsilon value for comparison.\n@returns true if the rectangles are equal, false otherwise.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa FRect.Equal",
               "name": "EqualEpsilon",
@@ -11852,28 +12326,32 @@
               "immutable": true,
               "constexpr": true
             },
-            "operator==": {
-              "doc": "@sa Equal()",
-              "kind": "function",
-              "constexpr": true,
-              "immutable": true,
-              "type": "bool",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "const FRect &"
-                }
-              ],
-              "name": "operator=="
-            },
             "Contains": [
               {
                 "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "p",
+                    "type": "const FPoint &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
                 "name": "Contains",
                 "doc": ""
               },
               {
                 "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "other",
+                    "type": "const FRect &"
+                  }
+                ],
+                "constexpr": true,
+                "immutable": true,
                 "name": "Contains",
                 "doc": ""
               }
@@ -14213,57 +14691,58 @@
           "type": "",
           "sourceName": "SDL_DisplayID",
           "entries": {
-            "displayID": {
+            "m_displayID": {
               "kind": "var",
+              "name": "m_displayID",
               "type": "SDL_DisplayID",
-              "name": "displayID",
               "doc": ""
             },
             "Display": {
               "kind": "function",
+              "name": "Display",
               "type": "",
               "constexpr": true,
               "parameters": [
                 {
-                  "name": "displayID",
                   "type": "SDL_DisplayID",
-                  "default": "0"
+                  "name": "displayID",
+                  "default": "{}"
                 }
               ],
-              "name": "Display",
-              "doc": ""
+              "doc": "Wraps Display.\n\n@param displayID the value to be wrapped"
             },
-            "operator bool": {
+            "operator==": {
               "kind": "function",
-              "type": "",
-              "immutable": true,
+              "name": "operator==",
+              "type": "bool",
               "constexpr": true,
-              "parameters": [],
-              "name": "operator bool",
+              "immutable": true,
+              "parameters": [
+                {
+                  "type": "const Display &",
+                  "name": "other"
+                }
+              ],
               "doc": ""
             },
             "operator SDL_DisplayID": {
               "kind": "function",
-              "type": "",
-              "immutable": true,
-              "constexpr": true,
-              "parameters": [],
               "name": "operator SDL_DisplayID",
-              "doc": ""
-            },
-            "operator==": {
-              "kind": "function",
-              "type": "bool",
-              "immutable": true,
+              "type": "",
               "constexpr": true,
-              "parameters": [
-                {
-                  "type": "Display",
-                  "name": "other"
-                }
-              ],
-              "name": "operator==",
-              "doc": ""
+              "immutable": true,
+              "parameters": [],
+              "doc": "Unwraps to the underlying Display.\n\n@returns the underlying Display."
+            },
+            "operator bool": {
+              "kind": "function",
+              "name": "operator bool",
+              "type": "",
+              "constexpr": true,
+              "explicit": true,
+              "immutable": true,
+              "parameters": [],
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
             },
             "GetAll": {
               "doc": "Get a list of currently connected displays.\n\n@param count a pointer filled in with the number of displays returned, may\n             be nullptr.\n@returns a 0 terminated array of display instance IDs or nullptr on failure;\n         call GetError() for more information. This should be freed\n         with free() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",

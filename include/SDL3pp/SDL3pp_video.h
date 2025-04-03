@@ -479,26 +479,35 @@ using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
  */
 class Display
 {
-  SDL_DisplayID displayID;
+  SDL_DisplayID m_displayID;
 
 public:
-  /// Constructor
-  constexpr Display(SDL_DisplayID displayID = 0)
-    : displayID(displayID)
+  /**
+   * Wraps Display.
+   *
+   * @param displayID the value to be wrapped
+   */
+  constexpr Display(SDL_DisplayID displayID = {})
+    : m_displayID(displayID)
   {
   }
 
   /// True if a valid display
-  constexpr operator bool() const { return displayID != 0; }
+  constexpr bool operator==(const Display& other) const = default;
 
-  /// Converts to SDL_DisplayID
-  constexpr operator SDL_DisplayID() const { return displayID; }
+  /**
+   * Unwraps to the underlying Display.
+   *
+   * @returns the underlying Display.
+   */
+  constexpr operator SDL_DisplayID() const { return m_displayID; }
 
-  /// Comparison
-  constexpr bool operator==(Display other) const
-  {
-    return displayID == other.displayID;
-  }
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_displayID != 0; }
 
   /**
    * Get a list of currently connected displays.
@@ -559,7 +568,7 @@ public:
    */
   PropertiesRef GetProperties() const
   {
-    return PropertiesRef{SDL_GetDisplayProperties(displayID)};
+    return PropertiesRef{SDL_GetDisplayProperties(m_displayID)};
   }
 
   /**
@@ -570,7 +579,7 @@ public:
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  const char* GetName() const { return SDL_GetDisplayName(displayID); }
+  const char* GetName() const { return SDL_GetDisplayName(m_displayID); }
 
   /**
    * @brief Get the desktop area represented by a display.
@@ -586,7 +595,7 @@ public:
   std::optional<Rect> GetBounds() const
   {
     Rect bounds;
-    if (SDL_GetDisplayBounds(displayID, &bounds)) return bounds;
+    if (SDL_GetDisplayBounds(m_displayID, &bounds)) return bounds;
     return std::nullopt;
   }
 
@@ -610,7 +619,7 @@ public:
   std::optional<Rect> GetUsableBounds() const
   {
     Rect bounds;
-    if (SDL_GetDisplayUsableBounds(displayID, &bounds)) return bounds;
+    if (SDL_GetDisplayUsableBounds(m_displayID, &bounds)) return bounds;
     return {};
   }
 
@@ -627,7 +636,7 @@ public:
    */
   DisplayOrientation GetNaturalOrientation() const
   {
-    return SDL_GetNaturalDisplayOrientation(displayID);
+    return SDL_GetNaturalDisplayOrientation(m_displayID);
   }
 
   /**
@@ -643,7 +652,7 @@ public:
    */
   DisplayOrientation GetCurrentOrientation() const
   {
-    return SDL_GetCurrentDisplayOrientation(displayID);
+    return SDL_GetCurrentDisplayOrientation(m_displayID);
   }
 
   /**
@@ -660,7 +669,7 @@ public:
    */
   float GetContentScale() const
   {
-    return SDL_GetDisplayContentScale(displayID);
+    return SDL_GetDisplayContentScale(m_displayID);
   }
 
   /**
@@ -690,7 +699,7 @@ public:
   OwnArray<DisplayMode*> GetFullscreenModes() const
   {
     int count = 0;
-    auto data = SDL_GetFullscreenDisplayModes(displayID, &count);
+    auto data = SDL_GetFullscreenDisplayModes(m_displayID, &count);
     return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
@@ -728,7 +737,7 @@ public:
     bool include_high_density_modes) const
   {
     if (SDL_DisplayMode closest;
-        SDL_GetClosestFullscreenDisplayMode(displayID,
+        SDL_GetClosestFullscreenDisplayMode(m_displayID,
                                             w,
                                             h,
                                             refresh_rate,
@@ -758,7 +767,7 @@ public:
    */
   const DisplayMode* GetDesktopMode() const
   {
-    return SDL_GetDesktopDisplayMode(displayID);
+    return SDL_GetDesktopDisplayMode(m_displayID);
   }
 
   /**
@@ -780,7 +789,7 @@ public:
    */
   const DisplayMode* GetCurrentMode() const
   {
-    return SDL_GetCurrentDisplayMode(displayID);
+    return SDL_GetCurrentDisplayMode(m_displayID);
   }
 
   /**

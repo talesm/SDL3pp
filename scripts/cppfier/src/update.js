@@ -391,7 +391,11 @@ function generateDef(entry) {
  */
 function generateBody(entry, prefix) {
   const sourceName = entry.sourceName === entry.name ? ("::" + entry.sourceName) : entry.sourceName;
-  if (!sourceName) return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
+  if (!sourceName) {
+    if (/operator(==|<=>)/.test(entry.name)) return " = default;";
+    if (entry.type === "" && !entry.name.startsWith("operator")) return "{}";
+    return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
+  };
   const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
