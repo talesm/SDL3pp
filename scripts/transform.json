@@ -5559,7 +5559,17 @@
         }
       }
     },
+    "SDL_scancode.h": {
+      "wrappers": {
+        "SDL_Scancode": {
+          "ordered": true
+        }
+      }
+    },
     "SDL_keycode.h": {
+      "ignoreEntries": [
+        "SDL_SCANCODE_TO_KEYCODE"
+      ],
       "enumerations": {
         "SDL_Keycode": {
           "prefix": "SDLK_",
@@ -5569,18 +5579,25 @@
           "prefix": "SDL_KMOD_"
         }
       },
-      "transform": {
-        "SDL_SCANCODE_TO_KEYCODE": {
-          "name": "ScancodeToKeycode",
-          "kind": "function",
-          "type": "Keycode",
-          "constexpr": true,
-          "parameters": [
-            {
-              "type": "Scancode",
-              "name": "x"
+      "wrappers": {
+        "SDL_Keycode": {
+          "ordered": true,
+          "entries": {
+            "SDLK_EXTENDED_MASK": {
+              "kind": "function",
+              "name": "IsExtended",
+              "type": "bool",
+              "constexpr": true,
+              "parameters": []
+            },
+            "SDLK_SCANCODE_MASK": {
+              "kind": "function",
+              "name": "IsScancode",
+              "type": "bool",
+              "constexpr": true,
+              "parameters": []
             }
-          ]
+          }
         }
       }
     },

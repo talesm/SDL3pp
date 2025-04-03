@@ -448,7 +448,39 @@ constexpr OptionalRef<T> fromNullable(T* ptr)
  *
  * @since This enum is available since SDL 3.2.0.
  */
-using Scancode = SDL_Scancode;
+struct Scancode
+{
+  SDL_Scancode m_scancode;
+
+  /**
+   * Wraps Scancode.
+   *
+   * @param scancode the value to be wrapped
+   */
+  constexpr Scancode(SDL_Scancode scancode = {})
+    : m_scancode(scancode)
+  {
+  }
+
+  constexpr auto operator<=>(const Scancode& other) const = default;
+
+  /**
+   * Unwraps to the underlying Scancode.
+   *
+   * @returns the underlying Scancode.
+   */
+  constexpr operator SDL_Scancode() const { return m_scancode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const
+  {
+    return m_scancode != SDL_SCANCODE_UNKNOWN;
+  }
+};
 
 constexpr Scancode SCANCODE_UNKNOWN = SDL_SCANCODE_UNKNOWN;
 
@@ -727,7 +759,8 @@ constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24;
 
 constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE;
 
-constexpr Scancode SCANCODE_HELP = SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
+constexpr Scancode SCANCODE_HELP =
+  SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
 
 constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
 
@@ -764,7 +797,8 @@ constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
 
 constexpr Scancode SCANCODE_INTERNATIONAL2 = SDL_SCANCODE_INTERNATIONAL2;
 
-constexpr Scancode SCANCODE_INTERNATIONAL3 = SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
+constexpr Scancode SCANCODE_INTERNATIONAL3 =
+  SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
 
 constexpr Scancode SCANCODE_INTERNATIONAL4 = SDL_SCANCODE_INTERNATIONAL4;
 
@@ -778,7 +812,8 @@ constexpr Scancode SCANCODE_INTERNATIONAL8 = SDL_SCANCODE_INTERNATIONAL8;
 
 constexpr Scancode SCANCODE_INTERNATIONAL9 = SDL_SCANCODE_INTERNATIONAL9;
 
-constexpr Scancode SCANCODE_LANG1 = SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
+constexpr Scancode SCANCODE_LANG1 =
+  SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
 
 constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
 
@@ -959,7 +994,8 @@ constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
 
 constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
 
-constexpr Scancode SCANCODE_MEDIA_RECORD = SDL_SCANCODE_MEDIA_RECORD; ///< Record.
+constexpr Scancode SCANCODE_MEDIA_RECORD =
+  SDL_SCANCODE_MEDIA_RECORD; ///< Record.
 
 /**
  * Fast Forward.
@@ -967,7 +1003,8 @@ constexpr Scancode SCANCODE_MEDIA_RECORD = SDL_SCANCODE_MEDIA_RECORD; ///< Recor
 constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
   SDL_SCANCODE_MEDIA_FAST_FORWARD;
 
-constexpr Scancode SCANCODE_MEDIA_REWIND = SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
+constexpr Scancode SCANCODE_MEDIA_REWIND =
+  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
 
 /**
  * Next Track.
@@ -1014,11 +1051,13 @@ constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
 
 constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
 
-constexpr Scancode SCANCODE_AC_FORWARD = SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
+constexpr Scancode SCANCODE_AC_FORWARD =
+  SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
 
 constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
 
-constexpr Scancode SCANCODE_AC_REFRESH = SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
+constexpr Scancode SCANCODE_AC_REFRESH =
+  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
 
 /**
  * AC Bookmarks.
@@ -1268,22 +1307,46 @@ using StringParam = const char*;
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using Keycode = SDL_Keycode;
+struct Keycode
+{
+  SDL_Keycode m_keycode;
+
+  /**
+   * Wraps Keycode.
+   *
+   * @param keycode the value to be wrapped
+   */
+  constexpr Keycode(SDL_Keycode keycode = {})
+    : m_keycode(keycode)
+  {
+  }
+
+  constexpr auto operator<=>(const Keycode& other) const = default;
+
+  /**
+   * Unwraps to the underlying Keycode.
+   *
+   * @returns the underlying Keycode.
+   */
+  constexpr operator SDL_Keycode() const { return m_keycode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
+
+  /// Has Extended flag
+  constexpr bool IsExtended() { return m_keycode & SDLK_EXTENDED_MASK; }
+
+  /// Has Scancode flag
+  constexpr bool IsScancode() { return m_keycode & SDLK_SCANCODE_MASK; }
+};
 
 constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;
 
 constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK;
-
-/**
- * Transform scancode to keycode
- *
- * @param x scancode
- * @return keycode
- */
-constexpr Keycode ScancodeToKeycode(Scancode x)
-{
-  return SDL_SCANCODE_TO_KEYCODE(x);
-}
 
 constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
 

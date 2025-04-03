@@ -36,22 +36,46 @@ namespace SDL {
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using Keycode = SDL_Keycode;
+struct Keycode
+{
+  SDL_Keycode m_keycode;
+
+  /**
+   * Wraps Keycode.
+   *
+   * @param keycode the value to be wrapped
+   */
+  constexpr Keycode(SDL_Keycode keycode = {})
+    : m_keycode(keycode)
+  {
+  }
+
+  constexpr auto operator<=>(const Keycode& other) const = default;
+
+  /**
+   * Unwraps to the underlying Keycode.
+   *
+   * @returns the underlying Keycode.
+   */
+  constexpr operator SDL_Keycode() const { return m_keycode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
+
+  /// Has Extended flag
+  constexpr bool IsExtended() { return m_keycode & SDLK_EXTENDED_MASK; }
+
+  /// Has Scancode flag
+  constexpr bool IsScancode() { return m_keycode & SDLK_SCANCODE_MASK; }
+};
 
 constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;
 
 constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK;
-
-/**
- * Transform scancode to keycode
- *
- * @param x scancode
- * @return keycode
- */
-constexpr Keycode ScancodeToKeycode(Scancode x)
-{
-  return SDL_SCANCODE_TO_KEYCODE(x);
-}
 
 constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
 
