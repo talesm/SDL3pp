@@ -28,7 +28,7 @@ var searchData=
   ['loadxpm_25',['LoadXPM',['../group__CategorySDLImage.html#ga1db2ac41d62a251e628ebb3556853664',1,'SDL']]],
   ['loadxv_26',['LoadXV',['../group__CategorySDLImage.html#ga6b7f7e38fcf1ba2e7f6ff41b2cb8f0fa',1,'SDL']]],
   ['lock_27',['lock',['../structSDL_1_1PropertiesBase.html#afc47d93746c03ebc6465e57ef8cc0e65',1,'SDL::PropertiesBase::Lock()'],['../structSDL_1_1TextureBase.html#ae22af7ea5864e54b16641a14ee17f6fc',1,'SDL::TextureBase::Lock()'],['../structSDL_1_1SurfaceBase.html#a8cd4fcc69b16d43b54c4abedc5d4e7d3',1,'SDL::SurfaceBase::Lock()']]],
-  ['log_28',['log',['../classSDL_1_1LogCategory.html#a67b420fcb5d7bebbeba43ffd9cd82b9c',1,'SDL::LogCategory::Log()'],['../group__CategoryStdinc.html#ga01c25ea063ceb75d5caf6ca1119a3bc1',1,'SDL::log(double x)'],['../group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a',1,'SDL::Log(std::string_view fmt, ARGS &amp;&amp;... args)']]],
+  ['log_28',['log',['../classSDL_1_1LogCategory.html#a67b420fcb5d7bebbeba43ffd9cd82b9c',1,'SDL::LogCategory::Log()'],['../group__CategoryLog.html#ga844718b13c9d5fb87fabfd339217199a',1,'SDL::Log(std::string_view fmt, ARGS &amp;&amp;... args)'],['../group__CategoryStdinc.html#ga01c25ea063ceb75d5caf6ca1119a3bc1',1,'SDL::log(double x)']]],
   ['log10_29',['log10',['../group__CategoryStdinc.html#gacdf9d94c27153da5d01b604342b49024',1,'SDL']]],
   ['log10f_30',['log10f',['../group__CategoryStdinc.html#gaa8d69e4fc64b4c002aeffdf894aaa64f',1,'SDL']]],
   ['logcritical_31',['LogCritical',['../classSDL_1_1LogCategory.html#a5bbb6bd9e1f05fc57016309fbab2466f',1,'SDL::LogCategory']]],

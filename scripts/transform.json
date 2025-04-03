@@ -5582,7 +5582,7 @@
             },
             "SetName": {
               "kind": "function",
-              "type": "Scancode &",
+              "type": "bool",
               "parameters": [
                 {
                   "type": "StringParam",
@@ -5619,6 +5619,7 @@
               {
                 "kind": "function",
                 "type": "",
+                "explicit": true,
                 "parameters": [
                   {
                     "type": "Scancode",
@@ -5639,6 +5640,7 @@
               {
                 "kind": "function",
                 "type": "",
+                "explicit": true,
                 "parameters": [
                   {
                     "type": "StringParam",
@@ -5647,12 +5649,6 @@
                 ]
               }
             ],
-            "operator Scancode": {
-              "kind": "function",
-              "type": "",
-              "immutable": true,
-              "parameters": []
-            },
             "GetName": {
               "kind": "function",
               "type": "const char *",
@@ -5702,6 +5698,66 @@
               "name": "x"
             }
           ]
+        }
+      }
+    },
+    "SDL_keyboard.h": {
+      "transform": {
+        "SDL_GetKeyFromScancode": {
+          "name": "Keycode::Keycode",
+          "type": "",
+          "parameters": [
+            {
+              "name": "scancode",
+              "type": "Scancode"
+            },
+            {
+              "name": "modstate",
+              "type": "SDL_Keymod"
+            },
+            {
+              "name": "key_event",
+              "type": "bool"
+            }
+          ]
+        },
+        "SDL_GetScancodeFromKey": {
+          "name": "Keycode::GetScancode",
+          "type": "Scancode",
+          "immutable": true,
+          "parameters": [
+            {
+              "name": "modstate",
+              "type": "Keymod *"
+            }
+          ]
+        },
+        "SDL_SetScancodeName": {
+          "name": "Scancode::SetName",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ]
+        },
+        "SDL_GetScancodeName": {
+          "name": "Scancode::GetName",
+          "immutable": true,
+          "parameters": []
+        },
+        "SDL_GetScancodeFromName": {
+          "name": "Scancode::Scancode",
+          "type": ""
+        },
+        "SDL_GetKeyName": {
+          "name": "Keycode::GetName",
+          "immutable": true,
+          "parameters": []
+        },
+        "SDL_GetKeyFromName": {
+          "name": "Keycode::Keycode",
+          "type": ""
         }
       }
     },

@@ -27930,6 +27930,2636 @@
       "entriesEnd": 1984,
       "namespace": "SDL"
     },
+    "SDL3pp_scancode.h": {
+      "name": "SDL3pp_scancode.h",
+      "doc": "@defgroup CategoryScancode Keyboard Scancodes\n\nDefines keyboard scancodes.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
+      "entries": {
+        "Keycode-forward": {
+          "doc": "",
+          "name": "Keycode",
+          "kind": "forward",
+          "begin": 23,
+          "decl": 24,
+          "end": 26
+        },
+        "Scancode": {
+          "doc": "The SDL keyboard scancode representation.\n\nAn SDL scancode is the physical representation of a key on the keyboard,\nindependent of language and keyboard mapping.\n\nValues of this type are used to represent keyboard keys, among other places\nin the `scancode` field of the KeyboardEvent structure.\n\nThe values in this enumeration are based on the USB usage page standard:\nhttps://usb.org/sites/default/files/hut1_5.pdf\n\n@since This enum is available since SDL 3.2.0.",
+          "name": "Scancode",
+          "kind": "struct",
+          "entries": {
+            "m_scancode": {
+              "doc": "",
+              "name": "m_scancode",
+              "kind": "var",
+              "type": "SDL_Scancode",
+              "begin": 42,
+              "decl": 42,
+              "end": 44
+            },
+            "Scancode": [
+              {
+                "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped",
+                "name": "Scancode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "scancode",
+                    "type": "SDL_Scancode",
+                    "default": "{}"
+                  }
+                ],
+                "constexpr": true,
+                "begin": 44,
+                "decl": 49,
+                "end": 54
+              },
+              {
+                "doc": "",
+                "name": "Scancode",
+                "kind": "function",
+                "type": "",
+                "parameters": [
+                  {
+                    "name": "name",
+                    "type": "StringParam"
+                  }
+                ],
+                "begin": 55,
+                "decl": 55,
+                "end": 57
+              }
+            ],
+            "operator<=>": {
+              "doc": "",
+              "name": "operator<=>",
+              "kind": "function",
+              "type": "auto",
+              "parameters": [
+                {
+                  "name": "other",
+                  "type": "const Scancode &"
+                }
+              ],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 57,
+              "decl": 57,
+              "end": 59
+            },
+            "operator SDL_Scancode": {
+              "doc": "Unwraps to the underlying Scancode.\n\n@returns the underlying Scancode.",
+              "name": "operator SDL_Scancode",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "begin": 59,
+              "decl": 64,
+              "end": 66
+            },
+            "operator bool": {
+              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
+              "name": "operator bool",
+              "kind": "function",
+              "type": "",
+              "parameters": [],
+              "constexpr": true,
+              "immutable": true,
+              "explicit": true,
+              "begin": 66,
+              "decl": 71,
+              "end": 76
+            },
+            "SetName": {
+              "doc": "",
+              "name": "SetName",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "name",
+                  "type": "StringParam"
+                }
+              ],
+              "begin": 77,
+              "decl": 77,
+              "end": 79
+            },
+            "GetName": {
+              "doc": "",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "immutable": true,
+              "begin": 80,
+              "decl": 80,
+              "end": 81
+            }
+          },
+          "begin": 26,
+          "decl": 40,
+          "end": 83
+        },
+        "SCANCODE_UNKNOWN": {
+          "doc": "",
+          "name": "SCANCODE_UNKNOWN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 83,
+          "decl": 83,
+          "end": 85
+        },
+        "SCANCODE_A": {
+          "doc": "",
+          "name": "SCANCODE_A",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 85,
+          "decl": 85,
+          "end": 87
+        },
+        "SCANCODE_B": {
+          "doc": "",
+          "name": "SCANCODE_B",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 87,
+          "decl": 87,
+          "end": 89
+        },
+        "SCANCODE_C": {
+          "doc": "",
+          "name": "SCANCODE_C",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 89,
+          "decl": 89,
+          "end": 91
+        },
+        "SCANCODE_D": {
+          "doc": "",
+          "name": "SCANCODE_D",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 91,
+          "decl": 91,
+          "end": 93
+        },
+        "SCANCODE_E": {
+          "doc": "",
+          "name": "SCANCODE_E",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 93,
+          "decl": 93,
+          "end": 95
+        },
+        "SCANCODE_F": {
+          "doc": "",
+          "name": "SCANCODE_F",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 95,
+          "decl": 95,
+          "end": 97
+        },
+        "SCANCODE_G": {
+          "doc": "",
+          "name": "SCANCODE_G",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 97,
+          "decl": 97,
+          "end": 99
+        },
+        "SCANCODE_H": {
+          "doc": "",
+          "name": "SCANCODE_H",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 99,
+          "decl": 99,
+          "end": 101
+        },
+        "SCANCODE_I": {
+          "doc": "",
+          "name": "SCANCODE_I",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 101,
+          "decl": 101,
+          "end": 103
+        },
+        "SCANCODE_J": {
+          "doc": "",
+          "name": "SCANCODE_J",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 103,
+          "decl": 103,
+          "end": 105
+        },
+        "SCANCODE_K": {
+          "doc": "",
+          "name": "SCANCODE_K",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 105,
+          "decl": 105,
+          "end": 107
+        },
+        "SCANCODE_L": {
+          "doc": "",
+          "name": "SCANCODE_L",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 107,
+          "decl": 107,
+          "end": 109
+        },
+        "SCANCODE_M": {
+          "doc": "",
+          "name": "SCANCODE_M",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 109,
+          "decl": 109,
+          "end": 111
+        },
+        "SCANCODE_N": {
+          "doc": "",
+          "name": "SCANCODE_N",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 111,
+          "decl": 111,
+          "end": 113
+        },
+        "SCANCODE_O": {
+          "doc": "",
+          "name": "SCANCODE_O",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 113,
+          "decl": 113,
+          "end": 115
+        },
+        "SCANCODE_P": {
+          "doc": "",
+          "name": "SCANCODE_P",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 115,
+          "decl": 115,
+          "end": 117
+        },
+        "SCANCODE_Q": {
+          "doc": "",
+          "name": "SCANCODE_Q",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 117,
+          "decl": 117,
+          "end": 119
+        },
+        "SCANCODE_R": {
+          "doc": "",
+          "name": "SCANCODE_R",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 119,
+          "decl": 119,
+          "end": 121
+        },
+        "SCANCODE_S": {
+          "doc": "",
+          "name": "SCANCODE_S",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 121,
+          "decl": 121,
+          "end": 123
+        },
+        "SCANCODE_T": {
+          "doc": "",
+          "name": "SCANCODE_T",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 123,
+          "decl": 123,
+          "end": 125
+        },
+        "SCANCODE_U": {
+          "doc": "",
+          "name": "SCANCODE_U",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 125,
+          "decl": 125,
+          "end": 127
+        },
+        "SCANCODE_V": {
+          "doc": "",
+          "name": "SCANCODE_V",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 127,
+          "decl": 127,
+          "end": 129
+        },
+        "SCANCODE_W": {
+          "doc": "",
+          "name": "SCANCODE_W",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 129,
+          "decl": 129,
+          "end": 131
+        },
+        "SCANCODE_X": {
+          "doc": "",
+          "name": "SCANCODE_X",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 131,
+          "decl": 131,
+          "end": 133
+        },
+        "SCANCODE_Y": {
+          "doc": "",
+          "name": "SCANCODE_Y",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 133,
+          "decl": 133,
+          "end": 135
+        },
+        "SCANCODE_Z": {
+          "doc": "",
+          "name": "SCANCODE_Z",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 135,
+          "decl": 135,
+          "end": 137
+        },
+        "SCANCODE_1": {
+          "doc": "",
+          "name": "SCANCODE_1",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 137,
+          "decl": 137,
+          "end": 139
+        },
+        "SCANCODE_2": {
+          "doc": "",
+          "name": "SCANCODE_2",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 139,
+          "decl": 139,
+          "end": 141
+        },
+        "SCANCODE_3": {
+          "doc": "",
+          "name": "SCANCODE_3",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 141,
+          "decl": 141,
+          "end": 143
+        },
+        "SCANCODE_4": {
+          "doc": "",
+          "name": "SCANCODE_4",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 143,
+          "decl": 143,
+          "end": 145
+        },
+        "SCANCODE_5": {
+          "doc": "",
+          "name": "SCANCODE_5",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 145,
+          "decl": 145,
+          "end": 147
+        },
+        "SCANCODE_6": {
+          "doc": "",
+          "name": "SCANCODE_6",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 147,
+          "decl": 147,
+          "end": 149
+        },
+        "SCANCODE_7": {
+          "doc": "",
+          "name": "SCANCODE_7",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 149,
+          "decl": 149,
+          "end": 151
+        },
+        "SCANCODE_8": {
+          "doc": "",
+          "name": "SCANCODE_8",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 151,
+          "decl": 151,
+          "end": 153
+        },
+        "SCANCODE_9": {
+          "doc": "",
+          "name": "SCANCODE_9",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 153,
+          "decl": 153,
+          "end": 155
+        },
+        "SCANCODE_0": {
+          "doc": "",
+          "name": "SCANCODE_0",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 155,
+          "decl": 155,
+          "end": 157
+        },
+        "SCANCODE_RETURN": {
+          "doc": "",
+          "name": "SCANCODE_RETURN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 157,
+          "decl": 157,
+          "end": 159
+        },
+        "SCANCODE_ESCAPE": {
+          "doc": "",
+          "name": "SCANCODE_ESCAPE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 159,
+          "decl": 159,
+          "end": 161
+        },
+        "SCANCODE_BACKSPACE": {
+          "doc": "",
+          "name": "SCANCODE_BACKSPACE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 161,
+          "decl": 161,
+          "end": 163
+        },
+        "SCANCODE_TAB": {
+          "doc": "",
+          "name": "SCANCODE_TAB",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 163,
+          "decl": 163,
+          "end": 165
+        },
+        "SCANCODE_SPACE": {
+          "doc": "",
+          "name": "SCANCODE_SPACE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 165,
+          "decl": 165,
+          "end": 167
+        },
+        "SCANCODE_MINUS": {
+          "doc": "",
+          "name": "SCANCODE_MINUS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 167,
+          "decl": 167,
+          "end": 169
+        },
+        "SCANCODE_EQUALS": {
+          "doc": "",
+          "name": "SCANCODE_EQUALS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 169,
+          "decl": 169,
+          "end": 171
+        },
+        "SCANCODE_LEFTBRACKET": {
+          "doc": "",
+          "name": "SCANCODE_LEFTBRACKET",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 171,
+          "decl": 171,
+          "end": 173
+        },
+        "SCANCODE_RIGHTBRACKET": {
+          "doc": "",
+          "name": "SCANCODE_RIGHTBRACKET",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 173,
+          "decl": 173,
+          "end": 175
+        },
+        "SCANCODE_BACKSLASH": {
+          "doc": "Located at the lower left of the return key on ISO keyboards and at the right\nend of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS\n(backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL\nLINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR\nSIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a\nGerman layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and\nASTERISK and MICRO SIGN in a French Windows layout.",
+          "name": "SCANCODE_BACKSLASH",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 175,
+          "decl": 184,
+          "end": 186
+        },
+        "SCANCODE_NONUSHASH": {
+          "doc": "ISO USB keyboards actually use this code instead of 49 for the same key, but\nall OSes I've seen treat the two codes identically.  So, as an implementor,\nunless your keyboard generates both of those codes and your OS treats them\ndifferently, you should generate SCANCODE_BACKSLASH instead of this code. As\na user, you should not rely on this code because SDL will never generate it\nwith most (all?) keyboards.",
+          "name": "SCANCODE_NONUSHASH",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 186,
+          "decl": 194,
+          "end": 196
+        },
+        "SCANCODE_SEMICOLON": {
+          "doc": "",
+          "name": "SCANCODE_SEMICOLON",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 196,
+          "decl": 196,
+          "end": 198
+        },
+        "SCANCODE_APOSTROPHE": {
+          "doc": "",
+          "name": "SCANCODE_APOSTROPHE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 198,
+          "decl": 198,
+          "end": 200
+        },
+        "SCANCODE_GRAVE": {
+          "doc": "Located in the top left corner (on both ANSI and ISO keyboards).  Produces\nGRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on\nANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION\nSIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION\nSIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),\nCIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO\nkeyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL\nAT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN\nSIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on\nANSI keyboards.",
+          "name": "SCANCODE_GRAVE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 200,
+          "decl": 212,
+          "end": 214
+        },
+        "SCANCODE_COMMA": {
+          "doc": "",
+          "name": "SCANCODE_COMMA",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 214,
+          "decl": 214,
+          "end": 216
+        },
+        "SCANCODE_PERIOD": {
+          "doc": "",
+          "name": "SCANCODE_PERIOD",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 216,
+          "decl": 216,
+          "end": 218
+        },
+        "SCANCODE_SLASH": {
+          "doc": "",
+          "name": "SCANCODE_SLASH",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 218,
+          "decl": 218,
+          "end": 220
+        },
+        "SCANCODE_CAPSLOCK": {
+          "doc": "",
+          "name": "SCANCODE_CAPSLOCK",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 220,
+          "decl": 220,
+          "end": 222
+        },
+        "SCANCODE_F1": {
+          "doc": "",
+          "name": "SCANCODE_F1",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 222,
+          "decl": 222,
+          "end": 224
+        },
+        "SCANCODE_F2": {
+          "doc": "",
+          "name": "SCANCODE_F2",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 224,
+          "decl": 224,
+          "end": 226
+        },
+        "SCANCODE_F3": {
+          "doc": "",
+          "name": "SCANCODE_F3",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 226,
+          "decl": 226,
+          "end": 228
+        },
+        "SCANCODE_F4": {
+          "doc": "",
+          "name": "SCANCODE_F4",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 228,
+          "decl": 228,
+          "end": 230
+        },
+        "SCANCODE_F5": {
+          "doc": "",
+          "name": "SCANCODE_F5",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 230,
+          "decl": 230,
+          "end": 232
+        },
+        "SCANCODE_F6": {
+          "doc": "",
+          "name": "SCANCODE_F6",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 232,
+          "decl": 232,
+          "end": 234
+        },
+        "SCANCODE_F7": {
+          "doc": "",
+          "name": "SCANCODE_F7",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 234,
+          "decl": 234,
+          "end": 236
+        },
+        "SCANCODE_F8": {
+          "doc": "",
+          "name": "SCANCODE_F8",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 236,
+          "decl": 236,
+          "end": 238
+        },
+        "SCANCODE_F9": {
+          "doc": "",
+          "name": "SCANCODE_F9",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 238,
+          "decl": 238,
+          "end": 240
+        },
+        "SCANCODE_F10": {
+          "doc": "",
+          "name": "SCANCODE_F10",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 240,
+          "decl": 240,
+          "end": 242
+        },
+        "SCANCODE_F11": {
+          "doc": "",
+          "name": "SCANCODE_F11",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 242,
+          "decl": 242,
+          "end": 244
+        },
+        "SCANCODE_F12": {
+          "doc": "",
+          "name": "SCANCODE_F12",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 244,
+          "decl": 244,
+          "end": 246
+        },
+        "SCANCODE_PRINTSCREEN": {
+          "doc": "",
+          "name": "SCANCODE_PRINTSCREEN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 246,
+          "decl": 246,
+          "end": 248
+        },
+        "SCANCODE_SCROLLLOCK": {
+          "doc": "",
+          "name": "SCANCODE_SCROLLLOCK",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 248,
+          "decl": 248,
+          "end": 250
+        },
+        "SCANCODE_PAUSE": {
+          "doc": "",
+          "name": "SCANCODE_PAUSE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 250,
+          "decl": 250,
+          "end": 252
+        },
+        "SCANCODE_INSERT": {
+          "doc": "insert on PC, help on some Mac keyboards (but does send code 73, not 117)",
+          "name": "SCANCODE_INSERT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 252,
+          "decl": 255,
+          "end": 257
+        },
+        "SCANCODE_HOME": {
+          "doc": "",
+          "name": "SCANCODE_HOME",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 257,
+          "decl": 257,
+          "end": 259
+        },
+        "SCANCODE_PAGEUP": {
+          "doc": "",
+          "name": "SCANCODE_PAGEUP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 259,
+          "decl": 259,
+          "end": 261
+        },
+        "SCANCODE_DELETE": {
+          "doc": "",
+          "name": "SCANCODE_DELETE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 261,
+          "decl": 261,
+          "end": 263
+        },
+        "SCANCODE_END": {
+          "doc": "",
+          "name": "SCANCODE_END",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 263,
+          "decl": 263,
+          "end": 265
+        },
+        "SCANCODE_PAGEDOWN": {
+          "doc": "",
+          "name": "SCANCODE_PAGEDOWN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 265,
+          "decl": 265,
+          "end": 267
+        },
+        "SCANCODE_RIGHT": {
+          "doc": "",
+          "name": "SCANCODE_RIGHT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 267,
+          "decl": 267,
+          "end": 269
+        },
+        "SCANCODE_LEFT": {
+          "doc": "",
+          "name": "SCANCODE_LEFT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 269,
+          "decl": 269,
+          "end": 271
+        },
+        "SCANCODE_DOWN": {
+          "doc": "",
+          "name": "SCANCODE_DOWN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 271,
+          "decl": 271,
+          "end": 273
+        },
+        "SCANCODE_UP": {
+          "doc": "",
+          "name": "SCANCODE_UP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 273,
+          "decl": 273,
+          "end": 275
+        },
+        "SCANCODE_NUMLOCKCLEAR": {
+          "doc": "num lock on PC, clear on Mac keyboards",
+          "name": "SCANCODE_NUMLOCKCLEAR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 275,
+          "decl": 278,
+          "end": 280
+        },
+        "SCANCODE_KP_DIVIDE": {
+          "doc": "",
+          "name": "SCANCODE_KP_DIVIDE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 280,
+          "decl": 280,
+          "end": 282
+        },
+        "SCANCODE_KP_MULTIPLY": {
+          "doc": "",
+          "name": "SCANCODE_KP_MULTIPLY",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 282,
+          "decl": 282,
+          "end": 284
+        },
+        "SCANCODE_KP_MINUS": {
+          "doc": "",
+          "name": "SCANCODE_KP_MINUS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 284,
+          "decl": 284,
+          "end": 286
+        },
+        "SCANCODE_KP_PLUS": {
+          "doc": "",
+          "name": "SCANCODE_KP_PLUS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 286,
+          "decl": 286,
+          "end": 288
+        },
+        "SCANCODE_KP_ENTER": {
+          "doc": "",
+          "name": "SCANCODE_KP_ENTER",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 288,
+          "decl": 288,
+          "end": 290
+        },
+        "SCANCODE_KP_1": {
+          "doc": "",
+          "name": "SCANCODE_KP_1",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 290,
+          "decl": 290,
+          "end": 292
+        },
+        "SCANCODE_KP_2": {
+          "doc": "",
+          "name": "SCANCODE_KP_2",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 292,
+          "decl": 292,
+          "end": 294
+        },
+        "SCANCODE_KP_3": {
+          "doc": "",
+          "name": "SCANCODE_KP_3",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 294,
+          "decl": 294,
+          "end": 296
+        },
+        "SCANCODE_KP_4": {
+          "doc": "",
+          "name": "SCANCODE_KP_4",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 296,
+          "decl": 296,
+          "end": 298
+        },
+        "SCANCODE_KP_5": {
+          "doc": "",
+          "name": "SCANCODE_KP_5",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 298,
+          "decl": 298,
+          "end": 300
+        },
+        "SCANCODE_KP_6": {
+          "doc": "",
+          "name": "SCANCODE_KP_6",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 300,
+          "decl": 300,
+          "end": 302
+        },
+        "SCANCODE_KP_7": {
+          "doc": "",
+          "name": "SCANCODE_KP_7",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 302,
+          "decl": 302,
+          "end": 304
+        },
+        "SCANCODE_KP_8": {
+          "doc": "",
+          "name": "SCANCODE_KP_8",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 304,
+          "decl": 304,
+          "end": 306
+        },
+        "SCANCODE_KP_9": {
+          "doc": "",
+          "name": "SCANCODE_KP_9",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 306,
+          "decl": 306,
+          "end": 308
+        },
+        "SCANCODE_KP_0": {
+          "doc": "",
+          "name": "SCANCODE_KP_0",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 308,
+          "decl": 308,
+          "end": 310
+        },
+        "SCANCODE_KP_PERIOD": {
+          "doc": "",
+          "name": "SCANCODE_KP_PERIOD",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 310,
+          "decl": 310,
+          "end": 312
+        },
+        "SCANCODE_NONUSBACKSLASH": {
+          "doc": "This is the additional key that ISO keyboards have over ANSI ones, located\nbetween left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac\nlayout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows\nlayout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,\nor French layout.",
+          "name": "SCANCODE_NONUSBACKSLASH",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 312,
+          "decl": 319,
+          "end": 321
+        },
+        "SCANCODE_APPLICATION": {
+          "doc": "windows contextual menu, compose",
+          "name": "SCANCODE_APPLICATION",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 321,
+          "decl": 324,
+          "end": 326
+        },
+        "SCANCODE_POWER": {
+          "doc": "The USB document says this is a status flag, not a physical key - but some\nMac keyboards do have a power key.",
+          "name": "SCANCODE_POWER",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 326,
+          "decl": 330,
+          "end": 332
+        },
+        "SCANCODE_KP_EQUALS": {
+          "doc": "",
+          "name": "SCANCODE_KP_EQUALS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 332,
+          "decl": 332,
+          "end": 334
+        },
+        "SCANCODE_F13": {
+          "doc": "",
+          "name": "SCANCODE_F13",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 334,
+          "decl": 334,
+          "end": 336
+        },
+        "SCANCODE_F14": {
+          "doc": "",
+          "name": "SCANCODE_F14",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 336,
+          "decl": 336,
+          "end": 338
+        },
+        "SCANCODE_F15": {
+          "doc": "",
+          "name": "SCANCODE_F15",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 338,
+          "decl": 338,
+          "end": 340
+        },
+        "SCANCODE_F16": {
+          "doc": "",
+          "name": "SCANCODE_F16",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 340,
+          "decl": 340,
+          "end": 342
+        },
+        "SCANCODE_F17": {
+          "doc": "",
+          "name": "SCANCODE_F17",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 342,
+          "decl": 342,
+          "end": 344
+        },
+        "SCANCODE_F18": {
+          "doc": "",
+          "name": "SCANCODE_F18",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 344,
+          "decl": 344,
+          "end": 346
+        },
+        "SCANCODE_F19": {
+          "doc": "",
+          "name": "SCANCODE_F19",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 346,
+          "decl": 346,
+          "end": 348
+        },
+        "SCANCODE_F20": {
+          "doc": "",
+          "name": "SCANCODE_F20",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 348,
+          "decl": 348,
+          "end": 350
+        },
+        "SCANCODE_F21": {
+          "doc": "",
+          "name": "SCANCODE_F21",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 350,
+          "decl": 350,
+          "end": 352
+        },
+        "SCANCODE_F22": {
+          "doc": "",
+          "name": "SCANCODE_F22",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 352,
+          "decl": 352,
+          "end": 354
+        },
+        "SCANCODE_F23": {
+          "doc": "",
+          "name": "SCANCODE_F23",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 354,
+          "decl": 354,
+          "end": 356
+        },
+        "SCANCODE_F24": {
+          "doc": "",
+          "name": "SCANCODE_F24",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 356,
+          "decl": 356,
+          "end": 358
+        },
+        "SCANCODE_EXECUTE": {
+          "doc": "",
+          "name": "SCANCODE_EXECUTE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 358,
+          "decl": 358,
+          "end": 360
+        },
+        "SCANCODE_HELP": {
+          "doc": "AL Integrated Help Center.",
+          "name": "SCANCODE_HELP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 360,
+          "decl": 360,
+          "end": 363
+        },
+        "SCANCODE_MENU": {
+          "doc": "Menu (show menu)",
+          "name": "SCANCODE_MENU",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 363,
+          "decl": 363,
+          "end": 365
+        },
+        "SCANCODE_SELECT": {
+          "doc": "",
+          "name": "SCANCODE_SELECT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 365,
+          "decl": 365,
+          "end": 367
+        },
+        "SCANCODE_STOP": {
+          "doc": "AC Stop.",
+          "name": "SCANCODE_STOP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 367,
+          "decl": 367,
+          "end": 369
+        },
+        "SCANCODE_AGAIN": {
+          "doc": "AC Redo/Repeat.",
+          "name": "SCANCODE_AGAIN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 369,
+          "decl": 369,
+          "end": 371
+        },
+        "SCANCODE_UNDO": {
+          "doc": "AC Undo.",
+          "name": "SCANCODE_UNDO",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 371,
+          "decl": 371,
+          "end": 373
+        },
+        "SCANCODE_CUT": {
+          "doc": "AC Cut.",
+          "name": "SCANCODE_CUT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 373,
+          "decl": 373,
+          "end": 375
+        },
+        "SCANCODE_COPY": {
+          "doc": "AC Copy.",
+          "name": "SCANCODE_COPY",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 375,
+          "decl": 375,
+          "end": 377
+        },
+        "SCANCODE_PASTE": {
+          "doc": "AC Paste.",
+          "name": "SCANCODE_PASTE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 377,
+          "decl": 377,
+          "end": 379
+        },
+        "SCANCODE_FIND": {
+          "doc": "AC Find.",
+          "name": "SCANCODE_FIND",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 379,
+          "decl": 379,
+          "end": 381
+        },
+        "SCANCODE_MUTE": {
+          "doc": "",
+          "name": "SCANCODE_MUTE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 381,
+          "decl": 381,
+          "end": 383
+        },
+        "SCANCODE_VOLUMEUP": {
+          "doc": "",
+          "name": "SCANCODE_VOLUMEUP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 383,
+          "decl": 383,
+          "end": 385
+        },
+        "SCANCODE_VOLUMEDOWN": {
+          "doc": "",
+          "name": "SCANCODE_VOLUMEDOWN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 385,
+          "decl": 385,
+          "end": 387
+        },
+        "SCANCODE_KP_COMMA": {
+          "doc": "",
+          "name": "SCANCODE_KP_COMMA",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 387,
+          "decl": 387,
+          "end": 389
+        },
+        "SCANCODE_KP_EQUALSAS400": {
+          "doc": "",
+          "name": "SCANCODE_KP_EQUALSAS400",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 389,
+          "decl": 389,
+          "end": 391
+        },
+        "SCANCODE_INTERNATIONAL1": {
+          "doc": "used on Asian keyboards, see footnotes in USB doc",
+          "name": "SCANCODE_INTERNATIONAL1",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 391,
+          "decl": 394,
+          "end": 396
+        },
+        "SCANCODE_INTERNATIONAL2": {
+          "doc": "",
+          "name": "SCANCODE_INTERNATIONAL2",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 396,
+          "decl": 396,
+          "end": 398
+        },
+        "SCANCODE_INTERNATIONAL3": {
+          "doc": "Yen.",
+          "name": "SCANCODE_INTERNATIONAL3",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 398,
+          "decl": 398,
+          "end": 401
+        },
+        "SCANCODE_INTERNATIONAL4": {
+          "doc": "",
+          "name": "SCANCODE_INTERNATIONAL4",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 401,
+          "decl": 401,
+          "end": 403
+        },
+        "SCANCODE_INTERNATIONAL5": {
+          "doc": "",
+          "name": "SCANCODE_INTERNATIONAL5",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 403,
+          "decl": 403,
+          "end": 405
+        },
+        "SCANCODE_INTERNATIONAL6": {
+          "doc": "",
+          "name": "SCANCODE_INTERNATIONAL6",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 405,
+          "decl": 405,
+          "end": 407
+        },
+        "SCANCODE_INTERNATIONAL7": {
+          "doc": "",
+          "name": "SCANCODE_INTERNATIONAL7",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 407,
+          "decl": 407,
+          "end": 409
+        },
+        "SCANCODE_INTERNATIONAL8": {
+          "doc": "",
+          "name": "SCANCODE_INTERNATIONAL8",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 409,
+          "decl": 409,
+          "end": 411
+        },
+        "SCANCODE_INTERNATIONAL9": {
+          "doc": "",
+          "name": "SCANCODE_INTERNATIONAL9",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 411,
+          "decl": 411,
+          "end": 413
+        },
+        "SCANCODE_LANG1": {
+          "doc": "Hangul/English toggle.",
+          "name": "SCANCODE_LANG1",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 413,
+          "decl": 413,
+          "end": 416
+        },
+        "SCANCODE_LANG2": {
+          "doc": "Hanja conversion.",
+          "name": "SCANCODE_LANG2",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 416,
+          "decl": 416,
+          "end": 418
+        },
+        "SCANCODE_LANG3": {
+          "doc": "Katakana.",
+          "name": "SCANCODE_LANG3",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 418,
+          "decl": 418,
+          "end": 420
+        },
+        "SCANCODE_LANG4": {
+          "doc": "Hiragana.",
+          "name": "SCANCODE_LANG4",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 420,
+          "decl": 420,
+          "end": 422
+        },
+        "SCANCODE_LANG5": {
+          "doc": "Zenkaku/Hankaku.",
+          "name": "SCANCODE_LANG5",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 422,
+          "decl": 422,
+          "end": 424
+        },
+        "SCANCODE_LANG6": {
+          "doc": "reserved",
+          "name": "SCANCODE_LANG6",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 424,
+          "decl": 424,
+          "end": 426
+        },
+        "SCANCODE_LANG7": {
+          "doc": "reserved",
+          "name": "SCANCODE_LANG7",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 426,
+          "decl": 426,
+          "end": 428
+        },
+        "SCANCODE_LANG8": {
+          "doc": "reserved",
+          "name": "SCANCODE_LANG8",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 428,
+          "decl": 428,
+          "end": 430
+        },
+        "SCANCODE_LANG9": {
+          "doc": "reserved",
+          "name": "SCANCODE_LANG9",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 430,
+          "decl": 430,
+          "end": 432
+        },
+        "SCANCODE_ALTERASE": {
+          "doc": "Erase-Eaze.",
+          "name": "SCANCODE_ALTERASE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 432,
+          "decl": 432,
+          "end": 434
+        },
+        "SCANCODE_SYSREQ": {
+          "doc": "",
+          "name": "SCANCODE_SYSREQ",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 434,
+          "decl": 434,
+          "end": 436
+        },
+        "SCANCODE_CANCEL": {
+          "doc": "AC Cancel.",
+          "name": "SCANCODE_CANCEL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 436,
+          "decl": 436,
+          "end": 438
+        },
+        "SCANCODE_CLEAR": {
+          "doc": "",
+          "name": "SCANCODE_CLEAR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 438,
+          "decl": 438,
+          "end": 440
+        },
+        "SCANCODE_PRIOR": {
+          "doc": "",
+          "name": "SCANCODE_PRIOR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 440,
+          "decl": 440,
+          "end": 442
+        },
+        "SCANCODE_RETURN2": {
+          "doc": "",
+          "name": "SCANCODE_RETURN2",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 442,
+          "decl": 442,
+          "end": 444
+        },
+        "SCANCODE_SEPARATOR": {
+          "doc": "",
+          "name": "SCANCODE_SEPARATOR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 444,
+          "decl": 444,
+          "end": 446
+        },
+        "SCANCODE_OUT": {
+          "doc": "",
+          "name": "SCANCODE_OUT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 446,
+          "decl": 446,
+          "end": 448
+        },
+        "SCANCODE_OPER": {
+          "doc": "",
+          "name": "SCANCODE_OPER",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 448,
+          "decl": 448,
+          "end": 450
+        },
+        "SCANCODE_CLEARAGAIN": {
+          "doc": "",
+          "name": "SCANCODE_CLEARAGAIN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 450,
+          "decl": 450,
+          "end": 452
+        },
+        "SCANCODE_CRSEL": {
+          "doc": "",
+          "name": "SCANCODE_CRSEL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 452,
+          "decl": 452,
+          "end": 454
+        },
+        "SCANCODE_EXSEL": {
+          "doc": "",
+          "name": "SCANCODE_EXSEL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 454,
+          "decl": 454,
+          "end": 456
+        },
+        "SCANCODE_KP_00": {
+          "doc": "",
+          "name": "SCANCODE_KP_00",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 456,
+          "decl": 456,
+          "end": 458
+        },
+        "SCANCODE_KP_000": {
+          "doc": "",
+          "name": "SCANCODE_KP_000",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 458,
+          "decl": 458,
+          "end": 460
+        },
+        "SCANCODE_THOUSANDSSEPARATOR": {
+          "doc": "",
+          "name": "SCANCODE_THOUSANDSSEPARATOR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 460,
+          "decl": 460,
+          "end": 463
+        },
+        "SCANCODE_DECIMALSEPARATOR": {
+          "doc": "",
+          "name": "SCANCODE_DECIMALSEPARATOR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 463,
+          "decl": 463,
+          "end": 465
+        },
+        "SCANCODE_CURRENCYUNIT": {
+          "doc": "",
+          "name": "SCANCODE_CURRENCYUNIT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 465,
+          "decl": 465,
+          "end": 467
+        },
+        "SCANCODE_CURRENCYSUBUNIT": {
+          "doc": "",
+          "name": "SCANCODE_CURRENCYSUBUNIT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 467,
+          "decl": 467,
+          "end": 469
+        },
+        "SCANCODE_KP_LEFTPAREN": {
+          "doc": "",
+          "name": "SCANCODE_KP_LEFTPAREN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 469,
+          "decl": 469,
+          "end": 471
+        },
+        "SCANCODE_KP_RIGHTPAREN": {
+          "doc": "",
+          "name": "SCANCODE_KP_RIGHTPAREN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 471,
+          "decl": 471,
+          "end": 473
+        },
+        "SCANCODE_KP_LEFTBRACE": {
+          "doc": "",
+          "name": "SCANCODE_KP_LEFTBRACE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 473,
+          "decl": 473,
+          "end": 475
+        },
+        "SCANCODE_KP_RIGHTBRACE": {
+          "doc": "",
+          "name": "SCANCODE_KP_RIGHTBRACE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 475,
+          "decl": 475,
+          "end": 477
+        },
+        "SCANCODE_KP_TAB": {
+          "doc": "",
+          "name": "SCANCODE_KP_TAB",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 477,
+          "decl": 477,
+          "end": 479
+        },
+        "SCANCODE_KP_BACKSPACE": {
+          "doc": "",
+          "name": "SCANCODE_KP_BACKSPACE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 479,
+          "decl": 479,
+          "end": 481
+        },
+        "SCANCODE_KP_A": {
+          "doc": "",
+          "name": "SCANCODE_KP_A",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 481,
+          "decl": 481,
+          "end": 483
+        },
+        "SCANCODE_KP_B": {
+          "doc": "",
+          "name": "SCANCODE_KP_B",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 483,
+          "decl": 483,
+          "end": 485
+        },
+        "SCANCODE_KP_C": {
+          "doc": "",
+          "name": "SCANCODE_KP_C",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 485,
+          "decl": 485,
+          "end": 487
+        },
+        "SCANCODE_KP_D": {
+          "doc": "",
+          "name": "SCANCODE_KP_D",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 487,
+          "decl": 487,
+          "end": 489
+        },
+        "SCANCODE_KP_E": {
+          "doc": "",
+          "name": "SCANCODE_KP_E",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 489,
+          "decl": 489,
+          "end": 491
+        },
+        "SCANCODE_KP_F": {
+          "doc": "",
+          "name": "SCANCODE_KP_F",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 491,
+          "decl": 491,
+          "end": 493
+        },
+        "SCANCODE_KP_XOR": {
+          "doc": "",
+          "name": "SCANCODE_KP_XOR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 493,
+          "decl": 493,
+          "end": 495
+        },
+        "SCANCODE_KP_POWER": {
+          "doc": "",
+          "name": "SCANCODE_KP_POWER",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 495,
+          "decl": 495,
+          "end": 497
+        },
+        "SCANCODE_KP_PERCENT": {
+          "doc": "",
+          "name": "SCANCODE_KP_PERCENT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 497,
+          "decl": 497,
+          "end": 499
+        },
+        "SCANCODE_KP_LESS": {
+          "doc": "",
+          "name": "SCANCODE_KP_LESS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 499,
+          "decl": 499,
+          "end": 501
+        },
+        "SCANCODE_KP_GREATER": {
+          "doc": "",
+          "name": "SCANCODE_KP_GREATER",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 501,
+          "decl": 501,
+          "end": 503
+        },
+        "SCANCODE_KP_AMPERSAND": {
+          "doc": "",
+          "name": "SCANCODE_KP_AMPERSAND",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 503,
+          "decl": 503,
+          "end": 505
+        },
+        "SCANCODE_KP_DBLAMPERSAND": {
+          "doc": "",
+          "name": "SCANCODE_KP_DBLAMPERSAND",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 505,
+          "decl": 505,
+          "end": 507
+        },
+        "SCANCODE_KP_VERTICALBAR": {
+          "doc": "",
+          "name": "SCANCODE_KP_VERTICALBAR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 507,
+          "decl": 507,
+          "end": 509
+        },
+        "SCANCODE_KP_DBLVERTICALBAR": {
+          "doc": "",
+          "name": "SCANCODE_KP_DBLVERTICALBAR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 509,
+          "decl": 509,
+          "end": 511
+        },
+        "SCANCODE_KP_COLON": {
+          "doc": "",
+          "name": "SCANCODE_KP_COLON",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 511,
+          "decl": 511,
+          "end": 513
+        },
+        "SCANCODE_KP_HASH": {
+          "doc": "",
+          "name": "SCANCODE_KP_HASH",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 513,
+          "decl": 513,
+          "end": 515
+        },
+        "SCANCODE_KP_SPACE": {
+          "doc": "",
+          "name": "SCANCODE_KP_SPACE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 515,
+          "decl": 515,
+          "end": 517
+        },
+        "SCANCODE_KP_AT": {
+          "doc": "",
+          "name": "SCANCODE_KP_AT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 517,
+          "decl": 517,
+          "end": 519
+        },
+        "SCANCODE_KP_EXCLAM": {
+          "doc": "",
+          "name": "SCANCODE_KP_EXCLAM",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 519,
+          "decl": 519,
+          "end": 521
+        },
+        "SCANCODE_KP_MEMSTORE": {
+          "doc": "",
+          "name": "SCANCODE_KP_MEMSTORE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 521,
+          "decl": 521,
+          "end": 523
+        },
+        "SCANCODE_KP_MEMRECALL": {
+          "doc": "",
+          "name": "SCANCODE_KP_MEMRECALL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 523,
+          "decl": 523,
+          "end": 525
+        },
+        "SCANCODE_KP_MEMCLEAR": {
+          "doc": "",
+          "name": "SCANCODE_KP_MEMCLEAR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 525,
+          "decl": 525,
+          "end": 527
+        },
+        "SCANCODE_KP_MEMADD": {
+          "doc": "",
+          "name": "SCANCODE_KP_MEMADD",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 527,
+          "decl": 527,
+          "end": 529
+        },
+        "SCANCODE_KP_MEMSUBTRACT": {
+          "doc": "",
+          "name": "SCANCODE_KP_MEMSUBTRACT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 529,
+          "decl": 529,
+          "end": 531
+        },
+        "SCANCODE_KP_MEMMULTIPLY": {
+          "doc": "",
+          "name": "SCANCODE_KP_MEMMULTIPLY",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 531,
+          "decl": 531,
+          "end": 533
+        },
+        "SCANCODE_KP_MEMDIVIDE": {
+          "doc": "",
+          "name": "SCANCODE_KP_MEMDIVIDE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 533,
+          "decl": 533,
+          "end": 535
+        },
+        "SCANCODE_KP_PLUSMINUS": {
+          "doc": "",
+          "name": "SCANCODE_KP_PLUSMINUS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 535,
+          "decl": 535,
+          "end": 537
+        },
+        "SCANCODE_KP_CLEAR": {
+          "doc": "",
+          "name": "SCANCODE_KP_CLEAR",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 537,
+          "decl": 537,
+          "end": 539
+        },
+        "SCANCODE_KP_CLEARENTRY": {
+          "doc": "",
+          "name": "SCANCODE_KP_CLEARENTRY",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 539,
+          "decl": 539,
+          "end": 541
+        },
+        "SCANCODE_KP_BINARY": {
+          "doc": "",
+          "name": "SCANCODE_KP_BINARY",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 541,
+          "decl": 541,
+          "end": 543
+        },
+        "SCANCODE_KP_OCTAL": {
+          "doc": "",
+          "name": "SCANCODE_KP_OCTAL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 543,
+          "decl": 543,
+          "end": 545
+        },
+        "SCANCODE_KP_DECIMAL": {
+          "doc": "",
+          "name": "SCANCODE_KP_DECIMAL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 545,
+          "decl": 545,
+          "end": 547
+        },
+        "SCANCODE_KP_HEXADECIMAL": {
+          "doc": "",
+          "name": "SCANCODE_KP_HEXADECIMAL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 547,
+          "decl": 547,
+          "end": 549
+        },
+        "SCANCODE_LCTRL": {
+          "doc": "",
+          "name": "SCANCODE_LCTRL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 549,
+          "decl": 549,
+          "end": 551
+        },
+        "SCANCODE_LSHIFT": {
+          "doc": "",
+          "name": "SCANCODE_LSHIFT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 551,
+          "decl": 551,
+          "end": 553
+        },
+        "SCANCODE_LALT": {
+          "doc": "alt, option",
+          "name": "SCANCODE_LALT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 553,
+          "decl": 553,
+          "end": 555
+        },
+        "SCANCODE_LGUI": {
+          "doc": "windows, command (apple), meta",
+          "name": "SCANCODE_LGUI",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 555,
+          "decl": 558,
+          "end": 560
+        },
+        "SCANCODE_RCTRL": {
+          "doc": "",
+          "name": "SCANCODE_RCTRL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 560,
+          "decl": 560,
+          "end": 562
+        },
+        "SCANCODE_RSHIFT": {
+          "doc": "",
+          "name": "SCANCODE_RSHIFT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 562,
+          "decl": 562,
+          "end": 564
+        },
+        "SCANCODE_RALT": {
+          "doc": "alt gr, option",
+          "name": "SCANCODE_RALT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 564,
+          "decl": 564,
+          "end": 566
+        },
+        "SCANCODE_RGUI": {
+          "doc": "windows, command (apple), meta",
+          "name": "SCANCODE_RGUI",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 566,
+          "decl": 569,
+          "end": 571
+        },
+        "SCANCODE_MODE": {
+          "doc": "I'm not sure if this is really not covered by any of the above, but since\nthere's a special KMOD_MODE for it I'm adding it here.",
+          "name": "SCANCODE_MODE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 571,
+          "decl": 575,
+          "end": 577
+        },
+        "SCANCODE_SLEEP": {
+          "doc": "Sleep.",
+          "name": "SCANCODE_SLEEP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 577,
+          "decl": 577,
+          "end": 579
+        },
+        "SCANCODE_WAKE": {
+          "doc": "Wake.",
+          "name": "SCANCODE_WAKE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 579,
+          "decl": 579,
+          "end": 581
+        },
+        "SCANCODE_CHANNEL_INCREMENT": {
+          "doc": "Channel Increment.",
+          "name": "SCANCODE_CHANNEL_INCREMENT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 581,
+          "decl": 584,
+          "end": 586
+        },
+        "SCANCODE_CHANNEL_DECREMENT": {
+          "doc": "Channel Decrement.",
+          "name": "SCANCODE_CHANNEL_DECREMENT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 586,
+          "decl": 589,
+          "end": 591
+        },
+        "SCANCODE_MEDIA_PLAY": {
+          "doc": "Play.",
+          "name": "SCANCODE_MEDIA_PLAY",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 591,
+          "decl": 591,
+          "end": 593
+        },
+        "SCANCODE_MEDIA_PAUSE": {
+          "doc": "Pause.",
+          "name": "SCANCODE_MEDIA_PAUSE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 593,
+          "decl": 593,
+          "end": 595
+        },
+        "SCANCODE_MEDIA_RECORD": {
+          "doc": "Record.",
+          "name": "SCANCODE_MEDIA_RECORD",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 595,
+          "decl": 595,
+          "end": 598
+        },
+        "SCANCODE_MEDIA_FAST_FORWARD": {
+          "doc": "Fast Forward.",
+          "name": "SCANCODE_MEDIA_FAST_FORWARD",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 598,
+          "decl": 601,
+          "end": 604
+        },
+        "SCANCODE_MEDIA_REWIND": {
+          "doc": "Rewind.",
+          "name": "SCANCODE_MEDIA_REWIND",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 604,
+          "decl": 604,
+          "end": 607
+        },
+        "SCANCODE_MEDIA_NEXT_TRACK": {
+          "doc": "Next Track.",
+          "name": "SCANCODE_MEDIA_NEXT_TRACK",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 607,
+          "decl": 610,
+          "end": 612
+        },
+        "SCANCODE_MEDIA_PREVIOUS_TRACK": {
+          "doc": "Previous Track.",
+          "name": "SCANCODE_MEDIA_PREVIOUS_TRACK",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 612,
+          "decl": 615,
+          "end": 618
+        },
+        "SCANCODE_MEDIA_STOP": {
+          "doc": "Stop.",
+          "name": "SCANCODE_MEDIA_STOP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 618,
+          "decl": 618,
+          "end": 620
+        },
+        "SCANCODE_MEDIA_EJECT": {
+          "doc": "Eject.",
+          "name": "SCANCODE_MEDIA_EJECT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 620,
+          "decl": 620,
+          "end": 622
+        },
+        "SCANCODE_MEDIA_PLAY_PAUSE": {
+          "doc": "Play / Pause.",
+          "name": "SCANCODE_MEDIA_PLAY_PAUSE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 622,
+          "decl": 625,
+          "end": 627
+        },
+        "SCANCODE_MEDIA_SELECT": {
+          "doc": "",
+          "name": "SCANCODE_MEDIA_SELECT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 627,
+          "decl": 627,
+          "end": 629
+        },
+        "SCANCODE_AC_NEW": {
+          "doc": "AC New.",
+          "name": "SCANCODE_AC_NEW",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 629,
+          "decl": 629,
+          "end": 631
+        },
+        "SCANCODE_AC_OPEN": {
+          "doc": "AC Open.",
+          "name": "SCANCODE_AC_OPEN",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 631,
+          "decl": 631,
+          "end": 633
+        },
+        "SCANCODE_AC_CLOSE": {
+          "doc": "AC Close.",
+          "name": "SCANCODE_AC_CLOSE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 633,
+          "decl": 633,
+          "end": 635
+        },
+        "SCANCODE_AC_EXIT": {
+          "doc": "AC Exit.",
+          "name": "SCANCODE_AC_EXIT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 635,
+          "decl": 635,
+          "end": 637
+        },
+        "SCANCODE_AC_SAVE": {
+          "doc": "AC Save.",
+          "name": "SCANCODE_AC_SAVE",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 637,
+          "decl": 637,
+          "end": 639
+        },
+        "SCANCODE_AC_PRINT": {
+          "doc": "AC Print.",
+          "name": "SCANCODE_AC_PRINT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 639,
+          "decl": 639,
+          "end": 641
+        },
+        "SCANCODE_AC_PROPERTIES": {
+          "doc": "AC Properties.",
+          "name": "SCANCODE_AC_PROPERTIES",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 641,
+          "decl": 644,
+          "end": 646
+        },
+        "SCANCODE_AC_SEARCH": {
+          "doc": "AC Search.",
+          "name": "SCANCODE_AC_SEARCH",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 646,
+          "decl": 646,
+          "end": 648
+        },
+        "SCANCODE_AC_HOME": {
+          "doc": "AC Home.",
+          "name": "SCANCODE_AC_HOME",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 648,
+          "decl": 648,
+          "end": 650
+        },
+        "SCANCODE_AC_BACK": {
+          "doc": "AC Back.",
+          "name": "SCANCODE_AC_BACK",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 650,
+          "decl": 650,
+          "end": 652
+        },
+        "SCANCODE_AC_FORWARD": {
+          "doc": "AC Forward.",
+          "name": "SCANCODE_AC_FORWARD",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 652,
+          "decl": 652,
+          "end": 655
+        },
+        "SCANCODE_AC_STOP": {
+          "doc": "AC Stop.",
+          "name": "SCANCODE_AC_STOP",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 655,
+          "decl": 655,
+          "end": 657
+        },
+        "SCANCODE_AC_REFRESH": {
+          "doc": "AC Refresh.",
+          "name": "SCANCODE_AC_REFRESH",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 657,
+          "decl": 657,
+          "end": 660
+        },
+        "SCANCODE_AC_BOOKMARKS": {
+          "doc": "AC Bookmarks.",
+          "name": "SCANCODE_AC_BOOKMARKS",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 660,
+          "decl": 663,
+          "end": 665
+        },
+        "SCANCODE_SOFTLEFT": {
+          "doc": "Usually situated below the display on phones and used as a multi-function\nfeature key for selecting a software defined function shown on the bottom\nleft of the display.",
+          "name": "SCANCODE_SOFTLEFT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 665,
+          "decl": 670,
+          "end": 672
+        },
+        "SCANCODE_SOFTRIGHT": {
+          "doc": "Usually situated below the display on phones and used as a multi-function\nfeature key for selecting a software defined function shown on the bottom\nright of the display.",
+          "name": "SCANCODE_SOFTRIGHT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 672,
+          "decl": 677,
+          "end": 679
+        },
+        "SCANCODE_CALL": {
+          "doc": "Used for accepting phone calls.",
+          "name": "SCANCODE_CALL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 679,
+          "decl": 682,
+          "end": 684
+        },
+        "SCANCODE_ENDCALL": {
+          "doc": "Used for rejecting phone calls.",
+          "name": "SCANCODE_ENDCALL",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 684,
+          "decl": 687,
+          "end": 689
+        },
+        "SCANCODE_RESERVED": {
+          "doc": "400-500 reserved for dynamic keycodes",
+          "name": "SCANCODE_RESERVED",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 689,
+          "decl": 692,
+          "end": 694
+        },
+        "SCANCODE_COUNT": {
+          "doc": "not a key, just marks the number of scancodes for array bounds",
+          "name": "SCANCODE_COUNT",
+          "kind": "var",
+          "type": "Scancode",
+          "constexpr": true,
+          "begin": 694,
+          "decl": 697,
+          "end": 699
+        }
+      },
+      "docBegin": 9,
+      "docEnd": 23,
+      "entriesBegin": 23,
+      "entriesEnd": 699,
+      "namespace": "SDL"
+    },
     "SDL3pp_keycode.h": {
       "name": "SDL3pp_keycode.h",
       "doc": "@defgroup CategoryKeycode Keyboard Keycodes\n\nDefines constants which identify keyboard keys and modifiers.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
@@ -28176,9 +30806,10 @@
                     "default": "false"
                   }
                 ],
+                "explicit": true,
                 "begin": 155,
                 "decl": 155,
-                "end": 157
+                "end": 159
               },
               {
                 "doc": "",
@@ -28191,9 +30822,10 @@
                     "type": "StringParam"
                   }
                 ],
-                "begin": 158,
-                "decl": 158,
-                "end": 160
+                "explicit": true,
+                "begin": 160,
+                "decl": 160,
+                "end": 162
               }
             ],
             "operator<=>": {
@@ -28221,9 +30853,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 160,
-              "decl": 165,
-              "end": 167
+              "begin": 162,
+              "decl": 167,
+              "end": 169
             },
             "operator bool": {
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
@@ -28234,18 +30866,7 @@
               "constexpr": true,
               "immutable": true,
               "explicit": true,
-              "begin": 167,
-              "decl": 172,
-              "end": 174
-            },
-            "operator Scancode": {
-              "doc": "",
-              "name": "operator Scancode",
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "immutable": true,
-              "begin": 174,
+              "begin": 169,
               "decl": 174,
               "end": 176
             },
@@ -30909,2634 +33530,576 @@
       "entriesEnd": 1156,
       "namespace": "SDL"
     },
-    "SDL3pp_scancode.h": {
-      "name": "SDL3pp_scancode.h",
-      "doc": "@defgroup CategoryScancode Keyboard Scancodes\n\nDefines keyboard scancodes.\n\nPlease refer to the Best Keyboard Practices document for details on what\nthis information means and how best to use it.\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
+    "SDL3pp_keyboard.h": {
+      "name": "SDL3pp_keyboard.h",
+      "doc": "@defgroup CategoryKeyboard Category Keyboard\n\nSDL keyboard management.\n\nPlease refer to the Best Keyboard Practices document for details on how\nbest to accept keyboard input in various types of programs:\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
       "entries": {
-        "Keycode-forward": {
-          "doc": "",
-          "name": "Keycode",
-          "kind": "forward",
-          "begin": 23,
-          "decl": 24,
-          "end": 26
-        },
-        "Scancode": {
-          "doc": "The SDL keyboard scancode representation.\n\nAn SDL scancode is the physical representation of a key on the keyboard,\nindependent of language and keyboard mapping.\n\nValues of this type are used to represent keyboard keys, among other places\nin the `scancode` field of the KeyboardEvent structure.\n\nThe values in this enumeration are based on the USB usage page standard:\nhttps://usb.org/sites/default/files/hut1_5.pdf\n\n@since This enum is available since SDL 3.2.0.",
-          "name": "Scancode",
-          "kind": "struct",
-          "entries": {
-            "m_scancode": {
-              "doc": "",
-              "name": "m_scancode",
-              "kind": "var",
-              "type": "SDL_Scancode",
-              "begin": 42,
-              "decl": 42,
-              "end": 44
-            },
-            "Scancode": [
-              {
-                "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped",
-                "name": "Scancode",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "scancode",
-                    "type": "SDL_Scancode",
-                    "default": "{}"
-                  }
-                ],
-                "constexpr": true,
-                "begin": 44,
-                "decl": 49,
-                "end": 54
-              },
-              {
-                "doc": "",
-                "name": "Scancode",
-                "kind": "function",
-                "type": "",
-                "parameters": [
-                  {
-                    "name": "name",
-                    "type": "StringParam"
-                  }
-                ],
-                "begin": 55,
-                "decl": 55,
-                "end": 57
-              }
-            ],
-            "operator<=>": {
-              "doc": "",
-              "name": "operator<=>",
-              "kind": "function",
-              "type": "auto",
-              "parameters": [
-                {
-                  "name": "other",
-                  "type": "const Scancode &"
-                }
-              ],
-              "constexpr": true,
-              "immutable": true,
-              "begin": 57,
-              "decl": 57,
-              "end": 59
-            },
-            "operator SDL_Scancode": {
-              "doc": "Unwraps to the underlying Scancode.\n\n@returns the underlying Scancode.",
-              "name": "operator SDL_Scancode",
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "constexpr": true,
-              "immutable": true,
-              "begin": 59,
-              "decl": 64,
-              "end": 66
-            },
-            "operator bool": {
-              "doc": "Check if valid.\n\n@returns True if valid state, false otherwise.",
-              "name": "operator bool",
-              "kind": "function",
-              "type": "",
-              "parameters": [],
-              "constexpr": true,
-              "immutable": true,
-              "explicit": true,
-              "begin": 66,
-              "decl": 71,
-              "end": 76
-            },
-            "SetName": {
-              "doc": "",
-              "name": "SetName",
-              "kind": "function",
-              "type": "Scancode &",
-              "parameters": [
-                {
-                  "name": "name",
-                  "type": "StringParam"
-                }
-              ],
-              "begin": 77,
-              "decl": 77,
-              "end": 79
-            },
-            "GetName": {
-              "doc": "",
-              "name": "GetName",
-              "kind": "function",
-              "type": "const char *",
-              "parameters": [],
-              "immutable": true,
-              "begin": 80,
-              "decl": 80,
-              "end": 81
-            }
-          },
+        "KeyboardID": {
+          "doc": "This is a unique ID for a keyboard for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the keyboard is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n@since This datatype is available since SDL 3.2.0.",
+          "name": "KeyboardID",
+          "kind": "alias",
+          "type": "SDL_KeyboardID",
           "begin": 26,
-          "decl": 40,
-          "end": 83
+          "decl": 36,
+          "end": 38
         },
-        "SCANCODE_UNKNOWN": {
-          "doc": "",
-          "name": "SCANCODE_UNKNOWN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 83,
-          "decl": 83,
-          "end": 85
+        "HasKeyboard": {
+          "doc": "Return whether a keyboard is currently connected.\n\n@returns true if a keyboard is connected, false otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetKeyboards",
+          "name": "HasKeyboard",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 38,
+          "decl": 49,
+          "end": 51
         },
-        "SCANCODE_A": {
-          "doc": "",
-          "name": "SCANCODE_A",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 85,
-          "decl": 85,
-          "end": 87
+        "GetKeyboards": {
+          "doc": "Get a list of currently connected keyboards.\n\nNote that this will include any device or virtual driver that includes\nkeyboard functionality, including some mice, KVM switches, motherboard\npower buttons, etc. You should wait for input from a device before you\nconsider it actively in use.\n\n@param count a pointer filled in with the number of keyboards returned, may\n             be nullptr.\n@returns a 0 terminated array of keyboards instance IDs or nullptr on\nfailure; call GetError() for more information. This should be freed with\nfree() when it is no longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetKeyboardNameForID\n@sa HasKeyboard",
+          "name": "GetKeyboards",
+          "kind": "function",
+          "type": "KeyboardID *",
+          "parameters": [
+            {
+              "name": "count",
+              "type": "int *"
+            }
+          ],
+          "begin": 51,
+          "decl": 72,
+          "end": 74
         },
-        "SCANCODE_B": {
-          "doc": "",
-          "name": "SCANCODE_B",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 87,
-          "decl": 87,
-          "end": 89
-        },
-        "SCANCODE_C": {
-          "doc": "",
-          "name": "SCANCODE_C",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 89,
+        "GetKeyboardNameForID": {
+          "doc": "Get the name of a keyboard.\n\nThis function returns \"\" if the keyboard doesn't have a name.\n\n@param instance_id the keyboard instance ID.\n@returns the name of the selected keyboard or nullptr on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetKeyboards",
+          "name": "GetKeyboardNameForID",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [
+            {
+              "name": "instance_id",
+              "type": "KeyboardID"
+            }
+          ],
+          "begin": 74,
           "decl": 89,
-          "end": 91
+          "end": 94
         },
-        "SCANCODE_D": {
-          "doc": "",
-          "name": "SCANCODE_D",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 91,
-          "decl": 91,
-          "end": 93
-        },
-        "SCANCODE_E": {
-          "doc": "",
-          "name": "SCANCODE_E",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 93,
-          "decl": 93,
-          "end": 95
-        },
-        "SCANCODE_F": {
-          "doc": "",
-          "name": "SCANCODE_F",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 95,
-          "decl": 95,
-          "end": 97
-        },
-        "SCANCODE_G": {
-          "doc": "",
-          "name": "SCANCODE_G",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 97,
-          "decl": 97,
-          "end": 99
-        },
-        "SCANCODE_H": {
-          "doc": "",
-          "name": "SCANCODE_H",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 99,
-          "decl": 99,
-          "end": 101
-        },
-        "SCANCODE_I": {
-          "doc": "",
-          "name": "SCANCODE_I",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 101,
-          "decl": 101,
-          "end": 103
-        },
-        "SCANCODE_J": {
-          "doc": "",
-          "name": "SCANCODE_J",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 103,
+        "GetKeyboardFocus": {
+          "doc": "Query the window which currently has keyboard focus.\n\n@returns the window with keyboard focus.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+          "name": "GetKeyboardFocus",
+          "kind": "function",
+          "type": "WindowRef",
+          "parameters": [],
+          "begin": 94,
           "decl": 103,
           "end": 105
         },
-        "SCANCODE_K": {
-          "doc": "",
-          "name": "SCANCODE_K",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "GetKeyboardState": {
+          "doc": "Get a snapshot of the current state of the keyboard.\n\nThe pointer returned is a pointer to an internal SDL array. It will be\nvalid for the whole lifetime of the application and should not be freed by\nthe caller.\n\nA array element with a value of true means that the key is pressed and a\nvalue of false means that it is not. Indexes into this array are obtained\nby using Scancode values.\n\nUse PumpEvents() to update the state array.\n\nThis function gives you the current state after all events have been\nprocessed, so if a key or button has been pressed and released before you\nprocess events, then the pressed state will never show up in the\nGetKeyboardState() calls.\n\nNote: This function doesn't take into account whether shift has been\npressed or not.\n\n@param numkeys if non-nullptr, receives the length of the returned array.\n@returns a pointer to an array of key states.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa PumpEvents\n@sa ResetKeyboard",
+          "name": "GetKeyboardState",
+          "kind": "function",
+          "type": "const bool *",
+          "parameters": [
+            {
+              "name": "numkeys",
+              "type": "int *",
+              "default": "nullptr"
+            }
+          ],
           "begin": 105,
-          "decl": 105,
-          "end": 107
-        },
-        "SCANCODE_L": {
-          "doc": "",
-          "name": "SCANCODE_L",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 107,
-          "decl": 107,
-          "end": 109
-        },
-        "SCANCODE_M": {
-          "doc": "",
-          "name": "SCANCODE_M",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 109,
-          "decl": 109,
-          "end": 111
-        },
-        "SCANCODE_N": {
-          "doc": "",
-          "name": "SCANCODE_N",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 111,
-          "decl": 111,
-          "end": 113
-        },
-        "SCANCODE_O": {
-          "doc": "",
-          "name": "SCANCODE_O",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 113,
-          "decl": 113,
-          "end": 115
-        },
-        "SCANCODE_P": {
-          "doc": "",
-          "name": "SCANCODE_P",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 115,
-          "decl": 115,
-          "end": 117
-        },
-        "SCANCODE_Q": {
-          "doc": "",
-          "name": "SCANCODE_Q",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 117,
-          "decl": 117,
-          "end": 119
-        },
-        "SCANCODE_R": {
-          "doc": "",
-          "name": "SCANCODE_R",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 119,
-          "decl": 119,
-          "end": 121
-        },
-        "SCANCODE_S": {
-          "doc": "",
-          "name": "SCANCODE_S",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 121,
-          "decl": 121,
-          "end": 123
-        },
-        "SCANCODE_T": {
-          "doc": "",
-          "name": "SCANCODE_T",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 123,
-          "decl": 123,
-          "end": 125
-        },
-        "SCANCODE_U": {
-          "doc": "",
-          "name": "SCANCODE_U",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 125,
-          "decl": 125,
-          "end": 127
-        },
-        "SCANCODE_V": {
-          "doc": "",
-          "name": "SCANCODE_V",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 127,
-          "decl": 127,
-          "end": 129
-        },
-        "SCANCODE_W": {
-          "doc": "",
-          "name": "SCANCODE_W",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 129,
-          "decl": 129,
-          "end": 131
-        },
-        "SCANCODE_X": {
-          "doc": "",
-          "name": "SCANCODE_X",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 131,
-          "decl": 131,
-          "end": 133
-        },
-        "SCANCODE_Y": {
-          "doc": "",
-          "name": "SCANCODE_Y",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 133,
-          "decl": 133,
-          "end": 135
-        },
-        "SCANCODE_Z": {
-          "doc": "",
-          "name": "SCANCODE_Z",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 135,
-          "decl": 135,
-          "end": 137
-        },
-        "SCANCODE_1": {
-          "doc": "",
-          "name": "SCANCODE_1",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 137,
-          "decl": 137,
-          "end": 139
-        },
-        "SCANCODE_2": {
-          "doc": "",
-          "name": "SCANCODE_2",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 139,
-          "decl": 139,
+          "decl": 136,
           "end": 141
         },
-        "SCANCODE_3": {
-          "doc": "",
-          "name": "SCANCODE_3",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "ResetKeyboard": {
+          "doc": "Clear the state of the keyboard.\n\nThis function will generate key up events for all pressed keys.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetKeyboardState",
+          "name": "ResetKeyboard",
+          "kind": "function",
+          "type": "void",
+          "parameters": [],
           "begin": 141,
-          "decl": 141,
-          "end": 143
+          "decl": 152,
+          "end": 154
         },
-        "SCANCODE_4": {
-          "doc": "",
-          "name": "SCANCODE_4",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 143,
-          "decl": 143,
-          "end": 145
-        },
-        "SCANCODE_5": {
-          "doc": "",
-          "name": "SCANCODE_5",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 145,
-          "decl": 145,
-          "end": 147
-        },
-        "SCANCODE_6": {
-          "doc": "",
-          "name": "SCANCODE_6",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 147,
-          "decl": 147,
-          "end": 149
-        },
-        "SCANCODE_7": {
-          "doc": "",
-          "name": "SCANCODE_7",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 149,
-          "decl": 149,
-          "end": 151
-        },
-        "SCANCODE_8": {
-          "doc": "",
-          "name": "SCANCODE_8",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 151,
-          "decl": 151,
-          "end": 153
-        },
-        "SCANCODE_9": {
-          "doc": "",
-          "name": "SCANCODE_9",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 153,
-          "decl": 153,
-          "end": 155
-        },
-        "SCANCODE_0": {
-          "doc": "",
-          "name": "SCANCODE_0",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 155,
-          "decl": 155,
-          "end": 157
-        },
-        "SCANCODE_RETURN": {
-          "doc": "",
-          "name": "SCANCODE_RETURN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 157,
-          "decl": 157,
-          "end": 159
-        },
-        "SCANCODE_ESCAPE": {
-          "doc": "",
-          "name": "SCANCODE_ESCAPE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 159,
-          "decl": 159,
-          "end": 161
-        },
-        "SCANCODE_BACKSPACE": {
-          "doc": "",
-          "name": "SCANCODE_BACKSPACE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 161,
-          "decl": 161,
-          "end": 163
-        },
-        "SCANCODE_TAB": {
-          "doc": "",
-          "name": "SCANCODE_TAB",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 163,
-          "decl": 163,
-          "end": 165
-        },
-        "SCANCODE_SPACE": {
-          "doc": "",
-          "name": "SCANCODE_SPACE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 165,
-          "decl": 165,
-          "end": 167
-        },
-        "SCANCODE_MINUS": {
-          "doc": "",
-          "name": "SCANCODE_MINUS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 167,
+        "GetModState": {
+          "doc": "Get the current key modifier state for the keyboard.\n\n@returns an OR'd combination of the modifier keys for the keyboard. See\n         Keymod for details.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetKeyboardState\n@sa SetModState",
+          "name": "GetModState",
+          "kind": "function",
+          "type": "Keymod",
+          "parameters": [],
+          "begin": 154,
           "decl": 167,
           "end": 169
         },
-        "SCANCODE_EQUALS": {
-          "doc": "",
-          "name": "SCANCODE_EQUALS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "SetModState": {
+          "doc": "Set the current key modifier state for the keyboard.\n\nThe inverse of GetModState(), SetModState() allows you to impose\nmodifier key states on your application. Simply pass your desired modifier\nstates into `modstate`. This value may be a bitwise, OR'd combination of\nKeymod values.\n\nThis does not change the keyboard state, only the key modifier flags that\nSDL reports.\n\n@param modstate the desired Keymod for the keyboard.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetModState",
+          "name": "SetModState",
+          "kind": "function",
+          "type": "void",
+          "parameters": [
+            {
+              "name": "modstate",
+              "type": "Keymod"
+            }
+          ],
           "begin": 169,
-          "decl": 169,
-          "end": 171
+          "decl": 188,
+          "end": 190
         },
-        "SCANCODE_LEFTBRACKET": {
-          "doc": "",
-          "name": "SCANCODE_LEFTBRACKET",
-          "kind": "var",
+        "Keycode::Keycode": [
+          {
+            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@returns the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetName\n@sa Keycode::GetScancode",
+            "name": "Keycode::Keycode",
+            "kind": "function",
+            "type": "",
+            "parameters": [
+              {
+                "name": "scancode",
+                "type": "Scancode"
+              },
+              {
+                "name": "modstate",
+                "type": "SDL_Keymod"
+              },
+              {
+                "name": "key_event",
+                "type": "bool"
+              }
+            ],
+            "begin": 190,
+            "decl": 212,
+            "end": 217
+          },
+          {
+            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@returns key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetName\n@sa Scancode::Scancode",
+            "name": "Keycode::Keycode",
+            "kind": "function",
+            "type": "",
+            "parameters": [
+              {
+                "name": "name",
+                "type": "StringParam"
+              }
+            ],
+            "begin": 217,
+            "decl": 232,
+            "end": 236
+          }
+        ],
+        "Keycode::GetScancode": {
+          "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Scancode::GetName",
+          "name": "Keycode::GetScancode",
+          "kind": "function",
           "type": "Scancode",
-          "constexpr": true,
-          "begin": 171,
-          "decl": 171,
-          "end": 173
-        },
-        "SCANCODE_RIGHTBRACKET": {
-          "doc": "",
-          "name": "SCANCODE_RIGHTBRACKET",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 173,
-          "decl": 173,
-          "end": 175
-        },
-        "SCANCODE_BACKSLASH": {
-          "doc": "Located at the lower left of the return key on ISO keyboards and at the right\nend of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS\n(backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL\nLINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR\nSIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a\nGerman layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and\nASTERISK and MICRO SIGN in a French Windows layout.",
-          "name": "SCANCODE_BACKSLASH",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 175,
-          "decl": 184,
-          "end": 186
-        },
-        "SCANCODE_NONUSHASH": {
-          "doc": "ISO USB keyboards actually use this code instead of 49 for the same key, but\nall OSes I've seen treat the two codes identically.  So, as an implementor,\nunless your keyboard generates both of those codes and your OS treats them\ndifferently, you should generate SCANCODE_BACKSLASH instead of this code. As\na user, you should not rely on this code because SDL will never generate it\nwith most (all?) keyboards.",
-          "name": "SCANCODE_NONUSHASH",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 186,
-          "decl": 194,
-          "end": 196
-        },
-        "SCANCODE_SEMICOLON": {
-          "doc": "",
-          "name": "SCANCODE_SEMICOLON",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 196,
-          "decl": 196,
-          "end": 198
-        },
-        "SCANCODE_APOSTROPHE": {
-          "doc": "",
-          "name": "SCANCODE_APOSTROPHE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 198,
-          "decl": 198,
-          "end": 200
-        },
-        "SCANCODE_GRAVE": {
-          "doc": "Located in the top left corner (on both ANSI and ISO keyboards).  Produces\nGRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on\nANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION\nSIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION\nSIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),\nCIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO\nkeyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL\nAT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN\nSIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on\nANSI keyboards.",
-          "name": "SCANCODE_GRAVE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 200,
-          "decl": 212,
-          "end": 214
-        },
-        "SCANCODE_COMMA": {
-          "doc": "",
-          "name": "SCANCODE_COMMA",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 214,
-          "decl": 214,
-          "end": 216
-        },
-        "SCANCODE_PERIOD": {
-          "doc": "",
-          "name": "SCANCODE_PERIOD",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 216,
-          "decl": 216,
-          "end": 218
-        },
-        "SCANCODE_SLASH": {
-          "doc": "",
-          "name": "SCANCODE_SLASH",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 218,
-          "decl": 218,
-          "end": 220
-        },
-        "SCANCODE_CAPSLOCK": {
-          "doc": "",
-          "name": "SCANCODE_CAPSLOCK",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 220,
-          "decl": 220,
-          "end": 222
-        },
-        "SCANCODE_F1": {
-          "doc": "",
-          "name": "SCANCODE_F1",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 222,
-          "decl": 222,
-          "end": 224
-        },
-        "SCANCODE_F2": {
-          "doc": "",
-          "name": "SCANCODE_F2",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 224,
-          "decl": 224,
-          "end": 226
-        },
-        "SCANCODE_F3": {
-          "doc": "",
-          "name": "SCANCODE_F3",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 226,
-          "decl": 226,
-          "end": 228
-        },
-        "SCANCODE_F4": {
-          "doc": "",
-          "name": "SCANCODE_F4",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 228,
-          "decl": 228,
-          "end": 230
-        },
-        "SCANCODE_F5": {
-          "doc": "",
-          "name": "SCANCODE_F5",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 230,
-          "decl": 230,
-          "end": 232
-        },
-        "SCANCODE_F6": {
-          "doc": "",
-          "name": "SCANCODE_F6",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 232,
-          "decl": 232,
-          "end": 234
-        },
-        "SCANCODE_F7": {
-          "doc": "",
-          "name": "SCANCODE_F7",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 234,
-          "decl": 234,
-          "end": 236
-        },
-        "SCANCODE_F8": {
-          "doc": "",
-          "name": "SCANCODE_F8",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+          "parameters": [
+            {
+              "name": "modstate",
+              "type": "Keymod *"
+            }
+          ],
+          "immutable": true,
           "begin": 236,
-          "decl": 236,
-          "end": 238
-        },
-        "SCANCODE_F9": {
-          "doc": "",
-          "name": "SCANCODE_F9",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 238,
-          "decl": 238,
-          "end": 240
-        },
-        "SCANCODE_F10": {
-          "doc": "",
-          "name": "SCANCODE_F10",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 240,
-          "decl": 240,
-          "end": 242
-        },
-        "SCANCODE_F11": {
-          "doc": "",
-          "name": "SCANCODE_F11",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 242,
-          "decl": 242,
-          "end": 244
-        },
-        "SCANCODE_F12": {
-          "doc": "",
-          "name": "SCANCODE_F12",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 244,
-          "decl": 244,
-          "end": 246
-        },
-        "SCANCODE_PRINTSCREEN": {
-          "doc": "",
-          "name": "SCANCODE_PRINTSCREEN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 246,
-          "decl": 246,
-          "end": 248
-        },
-        "SCANCODE_SCROLLLOCK": {
-          "doc": "",
-          "name": "SCANCODE_SCROLLLOCK",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 248,
-          "decl": 248,
-          "end": 250
-        },
-        "SCANCODE_PAUSE": {
-          "doc": "",
-          "name": "SCANCODE_PAUSE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 250,
-          "decl": 250,
-          "end": 252
-        },
-        "SCANCODE_INSERT": {
-          "doc": "insert on PC, help on some Mac keyboards (but does send code 73, not 117)",
-          "name": "SCANCODE_INSERT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 252,
-          "decl": 255,
-          "end": 257
-        },
-        "SCANCODE_HOME": {
-          "doc": "",
-          "name": "SCANCODE_HOME",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 257,
-          "decl": 257,
+          "decl": 254,
           "end": 259
         },
-        "SCANCODE_PAGEUP": {
-          "doc": "",
-          "name": "SCANCODE_PAGEUP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "Scancode::SetName": {
+          "doc": "Set a human-readable name for a scancode.\n\n@param scancode the desired Scancode.\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode::GetName",
+          "name": "Scancode::SetName",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
           "begin": 259,
-          "decl": 259,
-          "end": 261
-        },
-        "SCANCODE_DELETE": {
-          "doc": "",
-          "name": "SCANCODE_DELETE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 261,
-          "decl": 261,
-          "end": 263
-        },
-        "SCANCODE_END": {
-          "doc": "",
-          "name": "SCANCODE_END",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 263,
-          "decl": 263,
-          "end": 265
-        },
-        "SCANCODE_PAGEDOWN": {
-          "doc": "",
-          "name": "SCANCODE_PAGEDOWN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 265,
-          "decl": 265,
-          "end": 267
-        },
-        "SCANCODE_RIGHT": {
-          "doc": "",
-          "name": "SCANCODE_RIGHT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 267,
-          "decl": 267,
-          "end": 269
-        },
-        "SCANCODE_LEFT": {
-          "doc": "",
-          "name": "SCANCODE_LEFT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 269,
-          "decl": 269,
-          "end": 271
-        },
-        "SCANCODE_DOWN": {
-          "doc": "",
-          "name": "SCANCODE_DOWN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 271,
-          "decl": 271,
-          "end": 273
-        },
-        "SCANCODE_UP": {
-          "doc": "",
-          "name": "SCANCODE_UP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 273,
-          "decl": 273,
-          "end": 275
-        },
-        "SCANCODE_NUMLOCKCLEAR": {
-          "doc": "num lock on PC, clear on Mac keyboards",
-          "name": "SCANCODE_NUMLOCKCLEAR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 275,
-          "decl": 278,
+          "decl": 275,
           "end": 280
         },
-        "SCANCODE_KP_DIVIDE": {
-          "doc": "",
-          "name": "SCANCODE_KP_DIVIDE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "Scancode::GetName": {
+          "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@param scancode the desired Scancode to query.\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetScancode\n@sa GetScancodeFromName\n@sa Scancode::SetName",
+          "name": "Scancode::GetName",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "immutable": true,
           "begin": 280,
-          "decl": 280,
-          "end": 282
-        },
-        "SCANCODE_KP_MULTIPLY": {
-          "doc": "",
-          "name": "SCANCODE_KP_MULTIPLY",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 282,
-          "decl": 282,
-          "end": 284
-        },
-        "SCANCODE_KP_MINUS": {
-          "doc": "",
-          "name": "SCANCODE_KP_MINUS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 284,
-          "decl": 284,
-          "end": 286
-        },
-        "SCANCODE_KP_PLUS": {
-          "doc": "",
-          "name": "SCANCODE_KP_PLUS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 286,
-          "decl": 286,
-          "end": 288
-        },
-        "SCANCODE_KP_ENTER": {
-          "doc": "",
-          "name": "SCANCODE_KP_ENTER",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 288,
-          "decl": 288,
-          "end": 290
-        },
-        "SCANCODE_KP_1": {
-          "doc": "",
-          "name": "SCANCODE_KP_1",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 290,
-          "decl": 290,
-          "end": 292
-        },
-        "SCANCODE_KP_2": {
-          "doc": "",
-          "name": "SCANCODE_KP_2",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 292,
-          "decl": 292,
-          "end": 294
-        },
-        "SCANCODE_KP_3": {
-          "doc": "",
-          "name": "SCANCODE_KP_3",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 294,
-          "decl": 294,
-          "end": 296
-        },
-        "SCANCODE_KP_4": {
-          "doc": "",
-          "name": "SCANCODE_KP_4",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 296,
-          "decl": 296,
-          "end": 298
-        },
-        "SCANCODE_KP_5": {
-          "doc": "",
-          "name": "SCANCODE_KP_5",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 298,
-          "decl": 298,
-          "end": 300
-        },
-        "SCANCODE_KP_6": {
-          "doc": "",
-          "name": "SCANCODE_KP_6",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 300,
-          "decl": 300,
-          "end": 302
-        },
-        "SCANCODE_KP_7": {
-          "doc": "",
-          "name": "SCANCODE_KP_7",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 302,
-          "decl": 302,
-          "end": 304
-        },
-        "SCANCODE_KP_8": {
-          "doc": "",
-          "name": "SCANCODE_KP_8",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 304,
           "decl": 304,
-          "end": 306
+          "end": 309
         },
-        "SCANCODE_KP_9": {
-          "doc": "",
-          "name": "SCANCODE_KP_9",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 306,
-          "decl": 306,
-          "end": 308
-        },
-        "SCANCODE_KP_0": {
-          "doc": "",
-          "name": "SCANCODE_KP_0",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 308,
-          "decl": 308,
-          "end": 310
-        },
-        "SCANCODE_KP_PERIOD": {
-          "doc": "",
-          "name": "SCANCODE_KP_PERIOD",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 310,
-          "decl": 310,
-          "end": 312
-        },
-        "SCANCODE_NONUSBACKSLASH": {
-          "doc": "This is the additional key that ISO keyboards have over ANSI ones, located\nbetween left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac\nlayout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows\nlayout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,\nor French layout.",
-          "name": "SCANCODE_NONUSBACKSLASH",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 312,
-          "decl": 319,
-          "end": 321
-        },
-        "SCANCODE_APPLICATION": {
-          "doc": "windows contextual menu, compose",
-          "name": "SCANCODE_APPLICATION",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 321,
+        "Scancode::Scancode": {
+          "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@returns the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetScancode\n@sa Scancode::GetName",
+          "name": "Scancode::Scancode",
+          "kind": "function",
+          "type": "",
+          "parameters": [
+            {
+              "name": "name",
+              "type": "StringParam"
+            }
+          ],
+          "begin": 309,
           "decl": 324,
-          "end": 326
+          "end": 329
         },
-        "SCANCODE_POWER": {
-          "doc": "The USB document says this is a status flag, not a physical key - but some\nMac keyboards do have a power key.",
-          "name": "SCANCODE_POWER",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 326,
-          "decl": 330,
-          "end": 332
-        },
-        "SCANCODE_KP_EQUALS": {
-          "doc": "",
-          "name": "SCANCODE_KP_EQUALS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 332,
-          "decl": 332,
-          "end": 334
-        },
-        "SCANCODE_F13": {
-          "doc": "",
-          "name": "SCANCODE_F13",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 334,
-          "decl": 334,
-          "end": 336
-        },
-        "SCANCODE_F14": {
-          "doc": "",
-          "name": "SCANCODE_F14",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 336,
-          "decl": 336,
-          "end": 338
-        },
-        "SCANCODE_F15": {
-          "doc": "",
-          "name": "SCANCODE_F15",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 338,
-          "decl": 338,
-          "end": 340
-        },
-        "SCANCODE_F16": {
-          "doc": "",
-          "name": "SCANCODE_F16",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 340,
-          "decl": 340,
-          "end": 342
-        },
-        "SCANCODE_F17": {
-          "doc": "",
-          "name": "SCANCODE_F17",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 342,
-          "decl": 342,
-          "end": 344
-        },
-        "SCANCODE_F18": {
-          "doc": "",
-          "name": "SCANCODE_F18",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 344,
-          "decl": 344,
-          "end": 346
-        },
-        "SCANCODE_F19": {
-          "doc": "",
-          "name": "SCANCODE_F19",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 346,
-          "decl": 346,
-          "end": 348
-        },
-        "SCANCODE_F20": {
-          "doc": "",
-          "name": "SCANCODE_F20",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 348,
-          "decl": 348,
-          "end": 350
-        },
-        "SCANCODE_F21": {
-          "doc": "",
-          "name": "SCANCODE_F21",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 350,
-          "decl": 350,
+        "Keycode::GetName": {
+          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@param key the desired Keycode to query.\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::Keycode\n@sa Keycode::GetScancode",
+          "name": "Keycode::GetName",
+          "kind": "function",
+          "type": "const char *",
+          "parameters": [],
+          "immutable": true,
+          "begin": 329,
+          "decl": 347,
           "end": 352
         },
-        "SCANCODE_F22": {
-          "doc": "",
-          "name": "SCANCODE_F22",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "StartTextInput": {
+          "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@param window the window to enable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea\n@sa StartTextInputWithProperties\n@sa StopTextInput\n@sa TextInputActive",
+          "name": "StartTextInput",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
           "begin": 352,
-          "decl": 352,
-          "end": 354
-        },
-        "SCANCODE_F23": {
-          "doc": "",
-          "name": "SCANCODE_F23",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 354,
-          "decl": 354,
-          "end": 356
-        },
-        "SCANCODE_F24": {
-          "doc": "",
-          "name": "SCANCODE_F24",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 356,
-          "decl": 356,
-          "end": 358
-        },
-        "SCANCODE_EXECUTE": {
-          "doc": "",
-          "name": "SCANCODE_EXECUTE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 358,
-          "decl": 358,
-          "end": 360
-        },
-        "SCANCODE_HELP": {
-          "doc": "AL Integrated Help Center.",
-          "name": "SCANCODE_HELP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 360,
-          "decl": 360,
-          "end": 363
-        },
-        "SCANCODE_MENU": {
-          "doc": "Menu (show menu)",
-          "name": "SCANCODE_MENU",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 363,
-          "decl": 363,
-          "end": 365
-        },
-        "SCANCODE_SELECT": {
-          "doc": "",
-          "name": "SCANCODE_SELECT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 365,
-          "decl": 365,
-          "end": 367
-        },
-        "SCANCODE_STOP": {
-          "doc": "AC Stop.",
-          "name": "SCANCODE_STOP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 367,
-          "decl": 367,
-          "end": 369
-        },
-        "SCANCODE_AGAIN": {
-          "doc": "AC Redo/Repeat.",
-          "name": "SCANCODE_AGAIN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 369,
-          "decl": 369,
-          "end": 371
-        },
-        "SCANCODE_UNDO": {
-          "doc": "AC Undo.",
-          "name": "SCANCODE_UNDO",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 371,
-          "decl": 371,
-          "end": 373
-        },
-        "SCANCODE_CUT": {
-          "doc": "AC Cut.",
-          "name": "SCANCODE_CUT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 373,
-          "decl": 373,
-          "end": 375
-        },
-        "SCANCODE_COPY": {
-          "doc": "AC Copy.",
-          "name": "SCANCODE_COPY",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 375,
-          "decl": 375,
-          "end": 377
-        },
-        "SCANCODE_PASTE": {
-          "doc": "AC Paste.",
-          "name": "SCANCODE_PASTE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 377,
-          "decl": 377,
-          "end": 379
-        },
-        "SCANCODE_FIND": {
-          "doc": "AC Find.",
-          "name": "SCANCODE_FIND",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 379,
-          "decl": 379,
-          "end": 381
-        },
-        "SCANCODE_MUTE": {
-          "doc": "",
-          "name": "SCANCODE_MUTE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 381,
-          "decl": 381,
+          "decl": 378,
           "end": 383
         },
-        "SCANCODE_VOLUMEUP": {
-          "doc": "",
-          "name": "SCANCODE_VOLUMEUP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "TextInputType": {
+          "doc": "Text input type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa StartTextInputWithProperties",
+          "name": "TextInputType",
+          "kind": "alias",
+          "type": "SDL_TextInputType",
           "begin": 383,
-          "decl": 383,
-          "end": 385
-        },
-        "SCANCODE_VOLUMEDOWN": {
-          "doc": "",
-          "name": "SCANCODE_VOLUMEDOWN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 385,
-          "decl": 385,
-          "end": 387
-        },
-        "SCANCODE_KP_COMMA": {
-          "doc": "",
-          "name": "SCANCODE_KP_COMMA",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 387,
-          "decl": 387,
-          "end": 389
-        },
-        "SCANCODE_KP_EQUALSAS400": {
-          "doc": "",
-          "name": "SCANCODE_KP_EQUALSAS400",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 389,
-          "decl": 389,
-          "end": 391
-        },
-        "SCANCODE_INTERNATIONAL1": {
-          "doc": "used on Asian keyboards, see footnotes in USB doc",
-          "name": "SCANCODE_INTERNATIONAL1",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 391,
           "decl": 394,
           "end": 396
         },
-        "SCANCODE_INTERNATIONAL2": {
-          "doc": "",
-          "name": "SCANCODE_INTERNATIONAL2",
+        "TEXTINPUT_TYPE_TEXT": {
+          "doc": "The input is text.",
+          "name": "TEXTINPUT_TYPE_TEXT",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
           "begin": 396,
-          "decl": 396,
-          "end": 398
-        },
-        "SCANCODE_INTERNATIONAL3": {
-          "doc": "Yen.",
-          "name": "SCANCODE_INTERNATIONAL3",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 398,
-          "decl": 398,
+          "decl": 399,
           "end": 401
         },
-        "SCANCODE_INTERNATIONAL4": {
-          "doc": "",
-          "name": "SCANCODE_INTERNATIONAL4",
+        "TEXTINPUT_TYPE_TEXT_NAME": {
+          "doc": "The input is a person's name.",
+          "name": "TEXTINPUT_TYPE_TEXT_NAME",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
           "begin": 401,
-          "decl": 401,
-          "end": 403
+          "decl": 404,
+          "end": 406
         },
-        "SCANCODE_INTERNATIONAL5": {
-          "doc": "",
-          "name": "SCANCODE_INTERNATIONAL5",
+        "TEXTINPUT_TYPE_TEXT_EMAIL": {
+          "doc": "The input is an e-mail address.",
+          "name": "TEXTINPUT_TYPE_TEXT_EMAIL",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
-          "begin": 403,
-          "decl": 403,
-          "end": 405
-        },
-        "SCANCODE_INTERNATIONAL6": {
-          "doc": "",
-          "name": "SCANCODE_INTERNATIONAL6",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 405,
-          "decl": 405,
-          "end": 407
-        },
-        "SCANCODE_INTERNATIONAL7": {
-          "doc": "",
-          "name": "SCANCODE_INTERNATIONAL7",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 407,
-          "decl": 407,
-          "end": 409
-        },
-        "SCANCODE_INTERNATIONAL8": {
-          "doc": "",
-          "name": "SCANCODE_INTERNATIONAL8",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 409,
+          "begin": 406,
           "decl": 409,
-          "end": 411
+          "end": 412
         },
-        "SCANCODE_INTERNATIONAL9": {
-          "doc": "",
-          "name": "SCANCODE_INTERNATIONAL9",
+        "TEXTINPUT_TYPE_TEXT_USERNAME": {
+          "doc": "The input is a username.",
+          "name": "TEXTINPUT_TYPE_TEXT_USERNAME",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
-          "begin": 411,
-          "decl": 411,
-          "end": 413
-        },
-        "SCANCODE_LANG1": {
-          "doc": "Hangul/English toggle.",
-          "name": "SCANCODE_LANG1",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 413,
-          "decl": 413,
-          "end": 416
-        },
-        "SCANCODE_LANG2": {
-          "doc": "Hanja conversion.",
-          "name": "SCANCODE_LANG2",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 416,
-          "decl": 416,
+          "begin": 412,
+          "decl": 415,
           "end": 418
         },
-        "SCANCODE_LANG3": {
-          "doc": "Katakana.",
-          "name": "SCANCODE_LANG3",
+        "TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN": {
+          "doc": "The input is a secure password that is hidden.",
+          "name": "TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
           "begin": 418,
-          "decl": 418,
-          "end": 420
-        },
-        "SCANCODE_LANG4": {
-          "doc": "Hiragana.",
-          "name": "SCANCODE_LANG4",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 420,
-          "decl": 420,
-          "end": 422
-        },
-        "SCANCODE_LANG5": {
-          "doc": "Zenkaku/Hankaku.",
-          "name": "SCANCODE_LANG5",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 422,
-          "decl": 422,
+          "decl": 421,
           "end": 424
         },
-        "SCANCODE_LANG6": {
-          "doc": "reserved",
-          "name": "SCANCODE_LANG6",
+        "TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE": {
+          "doc": "The input is a secure password that is visible.",
+          "name": "TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
           "begin": 424,
-          "decl": 424,
-          "end": 426
-        },
-        "SCANCODE_LANG7": {
-          "doc": "reserved",
-          "name": "SCANCODE_LANG7",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 426,
-          "decl": 426,
-          "end": 428
-        },
-        "SCANCODE_LANG8": {
-          "doc": "reserved",
-          "name": "SCANCODE_LANG8",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 428,
-          "decl": 428,
+          "decl": 427,
           "end": 430
         },
-        "SCANCODE_LANG9": {
-          "doc": "reserved",
-          "name": "SCANCODE_LANG9",
+        "TEXTINPUT_TYPE_NUMBER": {
+          "doc": "The input is a number.",
+          "name": "TEXTINPUT_TYPE_NUMBER",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
           "begin": 430,
-          "decl": 430,
-          "end": 432
+          "decl": 433,
+          "end": 435
         },
-        "SCANCODE_ALTERASE": {
-          "doc": "Erase-Eaze.",
-          "name": "SCANCODE_ALTERASE",
+        "TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN": {
+          "doc": "The input is a secure PIN that is hidden.",
+          "name": "TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
-          "begin": 432,
-          "decl": 432,
-          "end": 434
-        },
-        "SCANCODE_SYSREQ": {
-          "doc": "",
-          "name": "SCANCODE_SYSREQ",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 434,
-          "decl": 434,
-          "end": 436
-        },
-        "SCANCODE_CANCEL": {
-          "doc": "AC Cancel.",
-          "name": "SCANCODE_CANCEL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 436,
-          "decl": 436,
-          "end": 438
-        },
-        "SCANCODE_CLEAR": {
-          "doc": "",
-          "name": "SCANCODE_CLEAR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 438,
+          "begin": 435,
           "decl": 438,
-          "end": 440
+          "end": 441
         },
-        "SCANCODE_PRIOR": {
-          "doc": "",
-          "name": "SCANCODE_PRIOR",
+        "TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE": {
+          "doc": "The input is a secure PIN that is visible.",
+          "name": "TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE",
           "kind": "var",
-          "type": "Scancode",
+          "type": "TextInputType",
           "constexpr": true,
-          "begin": 440,
-          "decl": 440,
-          "end": 442
-        },
-        "SCANCODE_RETURN2": {
-          "doc": "",
-          "name": "SCANCODE_RETURN2",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 442,
-          "decl": 442,
-          "end": 444
-        },
-        "SCANCODE_SEPARATOR": {
-          "doc": "",
-          "name": "SCANCODE_SEPARATOR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 444,
+          "begin": 441,
           "decl": 444,
-          "end": 446
+          "end": 447
         },
-        "SCANCODE_OUT": {
-          "doc": "",
-          "name": "SCANCODE_OUT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 446,
-          "decl": 446,
-          "end": 448
-        },
-        "SCANCODE_OPER": {
-          "doc": "",
-          "name": "SCANCODE_OPER",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 448,
-          "decl": 448,
-          "end": 450
-        },
-        "SCANCODE_CLEARAGAIN": {
-          "doc": "",
-          "name": "SCANCODE_CLEARAGAIN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 450,
-          "decl": 450,
-          "end": 452
-        },
-        "SCANCODE_CRSEL": {
-          "doc": "",
-          "name": "SCANCODE_CRSEL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 452,
-          "decl": 452,
-          "end": 454
-        },
-        "SCANCODE_EXSEL": {
-          "doc": "",
-          "name": "SCANCODE_EXSEL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 454,
-          "decl": 454,
-          "end": 456
-        },
-        "SCANCODE_KP_00": {
-          "doc": "",
-          "name": "SCANCODE_KP_00",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 456,
-          "decl": 456,
-          "end": 458
-        },
-        "SCANCODE_KP_000": {
-          "doc": "",
-          "name": "SCANCODE_KP_000",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 458,
+        "Capitalization": {
+          "doc": "Auto capitalization type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa StartTextInputWithProperties",
+          "name": "Capitalization",
+          "kind": "alias",
+          "type": "SDL_Capitalization",
+          "begin": 447,
           "decl": 458,
           "end": 460
         },
-        "SCANCODE_THOUSANDSSEPARATOR": {
-          "doc": "",
-          "name": "SCANCODE_THOUSANDSSEPARATOR",
+        "CAPITALIZE_NONE": {
+          "doc": "No auto-capitalization will be done.",
+          "name": "CAPITALIZE_NONE",
           "kind": "var",
-          "type": "Scancode",
+          "type": "Capitalization",
           "constexpr": true,
           "begin": 460,
-          "decl": 460,
-          "end": 463
-        },
-        "SCANCODE_DECIMALSEPARATOR": {
-          "doc": "",
-          "name": "SCANCODE_DECIMALSEPARATOR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 463,
           "decl": 463,
           "end": 465
         },
-        "SCANCODE_CURRENCYUNIT": {
-          "doc": "",
-          "name": "SCANCODE_CURRENCYUNIT",
+        "CAPITALIZE_SENTENCES": {
+          "doc": "The first letter of sentences will be capitalized.",
+          "name": "CAPITALIZE_SENTENCES",
           "kind": "var",
-          "type": "Scancode",
+          "type": "Capitalization",
           "constexpr": true,
           "begin": 465,
-          "decl": 465,
-          "end": 467
+          "decl": 468,
+          "end": 470
         },
-        "SCANCODE_CURRENCYSUBUNIT": {
-          "doc": "",
-          "name": "SCANCODE_CURRENCYSUBUNIT",
+        "CAPITALIZE_WORDS": {
+          "doc": "The first letter of words will be capitalized.",
+          "name": "CAPITALIZE_WORDS",
           "kind": "var",
-          "type": "Scancode",
+          "type": "Capitalization",
           "constexpr": true,
-          "begin": 467,
-          "decl": 467,
-          "end": 469
-        },
-        "SCANCODE_KP_LEFTPAREN": {
-          "doc": "",
-          "name": "SCANCODE_KP_LEFTPAREN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 469,
-          "decl": 469,
-          "end": 471
-        },
-        "SCANCODE_KP_RIGHTPAREN": {
-          "doc": "",
-          "name": "SCANCODE_KP_RIGHTPAREN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 471,
-          "decl": 471,
-          "end": 473
-        },
-        "SCANCODE_KP_LEFTBRACE": {
-          "doc": "",
-          "name": "SCANCODE_KP_LEFTBRACE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 473,
+          "begin": 470,
           "decl": 473,
           "end": 475
         },
-        "SCANCODE_KP_RIGHTBRACE": {
-          "doc": "",
-          "name": "SCANCODE_KP_RIGHTBRACE",
+        "CAPITALIZE_LETTERS": {
+          "doc": "All letters will be capitalized.",
+          "name": "CAPITALIZE_LETTERS",
           "kind": "var",
-          "type": "Scancode",
+          "type": "Capitalization",
           "constexpr": true,
           "begin": 475,
-          "decl": 475,
-          "end": 477
+          "decl": 478,
+          "end": 480
         },
-        "SCANCODE_KP_TAB": {
-          "doc": "",
-          "name": "SCANCODE_KP_TAB",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 477,
-          "decl": 477,
-          "end": 479
-        },
-        "SCANCODE_KP_BACKSPACE": {
-          "doc": "",
-          "name": "SCANCODE_KP_BACKSPACE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 479,
-          "decl": 479,
-          "end": 481
-        },
-        "SCANCODE_KP_A": {
-          "doc": "",
-          "name": "SCANCODE_KP_A",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 481,
-          "decl": 481,
-          "end": 483
-        },
-        "SCANCODE_KP_B": {
-          "doc": "",
-          "name": "SCANCODE_KP_B",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 483,
-          "decl": 483,
-          "end": 485
-        },
-        "SCANCODE_KP_C": {
-          "doc": "",
-          "name": "SCANCODE_KP_C",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 485,
-          "decl": 485,
-          "end": 487
-        },
-        "SCANCODE_KP_D": {
-          "doc": "",
-          "name": "SCANCODE_KP_D",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 487,
-          "decl": 487,
-          "end": 489
-        },
-        "SCANCODE_KP_E": {
-          "doc": "",
-          "name": "SCANCODE_KP_E",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 489,
-          "decl": 489,
-          "end": 491
-        },
-        "SCANCODE_KP_F": {
-          "doc": "",
-          "name": "SCANCODE_KP_F",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 491,
-          "decl": 491,
-          "end": 493
-        },
-        "SCANCODE_KP_XOR": {
-          "doc": "",
-          "name": "SCANCODE_KP_XOR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 493,
-          "decl": 493,
-          "end": 495
-        },
-        "SCANCODE_KP_POWER": {
-          "doc": "",
-          "name": "SCANCODE_KP_POWER",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 495,
-          "decl": 495,
-          "end": 497
-        },
-        "SCANCODE_KP_PERCENT": {
-          "doc": "",
-          "name": "SCANCODE_KP_PERCENT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 497,
-          "decl": 497,
-          "end": 499
-        },
-        "SCANCODE_KP_LESS": {
-          "doc": "",
-          "name": "SCANCODE_KP_LESS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 499,
-          "decl": 499,
-          "end": 501
-        },
-        "SCANCODE_KP_GREATER": {
-          "doc": "",
-          "name": "SCANCODE_KP_GREATER",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 501,
-          "decl": 501,
-          "end": 503
-        },
-        "SCANCODE_KP_AMPERSAND": {
-          "doc": "",
-          "name": "SCANCODE_KP_AMPERSAND",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 503,
-          "decl": 503,
-          "end": 505
-        },
-        "SCANCODE_KP_DBLAMPERSAND": {
-          "doc": "",
-          "name": "SCANCODE_KP_DBLAMPERSAND",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 505,
-          "decl": 505,
-          "end": 507
-        },
-        "SCANCODE_KP_VERTICALBAR": {
-          "doc": "",
-          "name": "SCANCODE_KP_VERTICALBAR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 507,
-          "decl": 507,
-          "end": 509
-        },
-        "SCANCODE_KP_DBLVERTICALBAR": {
-          "doc": "",
-          "name": "SCANCODE_KP_DBLVERTICALBAR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 509,
-          "decl": 509,
-          "end": 511
-        },
-        "SCANCODE_KP_COLON": {
-          "doc": "",
-          "name": "SCANCODE_KP_COLON",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 511,
-          "decl": 511,
-          "end": 513
-        },
-        "SCANCODE_KP_HASH": {
-          "doc": "",
-          "name": "SCANCODE_KP_HASH",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 513,
-          "decl": 513,
-          "end": 515
-        },
-        "SCANCODE_KP_SPACE": {
-          "doc": "",
-          "name": "SCANCODE_KP_SPACE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 515,
-          "decl": 515,
-          "end": 517
-        },
-        "SCANCODE_KP_AT": {
-          "doc": "",
-          "name": "SCANCODE_KP_AT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 517,
-          "decl": 517,
-          "end": 519
-        },
-        "SCANCODE_KP_EXCLAM": {
-          "doc": "",
-          "name": "SCANCODE_KP_EXCLAM",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 519,
-          "decl": 519,
-          "end": 521
-        },
-        "SCANCODE_KP_MEMSTORE": {
-          "doc": "",
-          "name": "SCANCODE_KP_MEMSTORE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 521,
-          "decl": 521,
-          "end": 523
-        },
-        "SCANCODE_KP_MEMRECALL": {
-          "doc": "",
-          "name": "SCANCODE_KP_MEMRECALL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 523,
-          "decl": 523,
-          "end": 525
-        },
-        "SCANCODE_KP_MEMCLEAR": {
-          "doc": "",
-          "name": "SCANCODE_KP_MEMCLEAR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 525,
-          "decl": 525,
-          "end": 527
-        },
-        "SCANCODE_KP_MEMADD": {
-          "doc": "",
-          "name": "SCANCODE_KP_MEMADD",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 527,
-          "decl": 527,
-          "end": 529
-        },
-        "SCANCODE_KP_MEMSUBTRACT": {
-          "doc": "",
-          "name": "SCANCODE_KP_MEMSUBTRACT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 529,
-          "decl": 529,
-          "end": 531
-        },
-        "SCANCODE_KP_MEMMULTIPLY": {
-          "doc": "",
-          "name": "SCANCODE_KP_MEMMULTIPLY",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 531,
-          "decl": 531,
-          "end": 533
-        },
-        "SCANCODE_KP_MEMDIVIDE": {
-          "doc": "",
-          "name": "SCANCODE_KP_MEMDIVIDE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 533,
-          "decl": 533,
+        "StartTextInputWithProperties": {
+          "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param window the window to enable text input.\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea\n@sa StartTextInput\n@sa StopTextInput\n@sa TextInputActive",
+          "name": "StartTextInputWithProperties",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "props",
+              "type": "PropertiesRef"
+            }
+          ],
+          "begin": 480,
+          "decl": 530,
           "end": 535
         },
-        "SCANCODE_KP_PLUSMINUS": {
+        "SDL_PROP_TEXTINPUT_TYPE_NUMBER": {
           "doc": "",
-          "name": "SCANCODE_KP_PLUSMINUS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+          "name": "SDL_PROP_TEXTINPUT_TYPE_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.textinput.type\"",
           "begin": 535,
           "decl": 535,
           "end": 537
         },
-        "SCANCODE_KP_CLEAR": {
+        "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER": {
           "doc": "",
-          "name": "SCANCODE_KP_CLEAR",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+          "name": "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER",
+          "kind": "def",
+          "value": "\"SDL.textinput.capitalization\"",
           "begin": 537,
           "decl": 537,
           "end": 539
         },
-        "SCANCODE_KP_CLEARENTRY": {
+        "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN": {
           "doc": "",
-          "name": "SCANCODE_KP_CLEARENTRY",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+          "name": "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN",
+          "kind": "def",
+          "value": "\"SDL.textinput.autocorrect\"",
           "begin": 539,
           "decl": 539,
           "end": 541
         },
-        "SCANCODE_KP_BINARY": {
+        "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN": {
           "doc": "",
-          "name": "SCANCODE_KP_BINARY",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+          "name": "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN",
+          "kind": "def",
+          "value": "\"SDL.textinput.multiline\"",
           "begin": 541,
           "decl": 541,
           "end": 543
         },
-        "SCANCODE_KP_OCTAL": {
+        "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER": {
           "doc": "",
-          "name": "SCANCODE_KP_OCTAL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+          "name": "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER",
+          "kind": "def",
+          "value": "\\\n  \"SDL.textinput.android.inputtype\"",
           "begin": 543,
           "decl": 543,
-          "end": 545
+          "end": 546
         },
-        "SCANCODE_KP_DECIMAL": {
-          "doc": "",
-          "name": "SCANCODE_KP_DECIMAL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 545,
-          "decl": 545,
-          "end": 547
-        },
-        "SCANCODE_KP_HEXADECIMAL": {
-          "doc": "",
-          "name": "SCANCODE_KP_HEXADECIMAL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 547,
-          "decl": 547,
-          "end": 549
-        },
-        "SCANCODE_LCTRL": {
-          "doc": "",
-          "name": "SCANCODE_LCTRL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 549,
-          "decl": 549,
-          "end": 551
-        },
-        "SCANCODE_LSHIFT": {
-          "doc": "",
-          "name": "SCANCODE_LSHIFT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 551,
-          "decl": 551,
-          "end": 553
-        },
-        "SCANCODE_LALT": {
-          "doc": "alt, option",
-          "name": "SCANCODE_LALT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 553,
-          "decl": 553,
-          "end": 555
-        },
-        "SCANCODE_LGUI": {
-          "doc": "windows, command (apple), meta",
-          "name": "SCANCODE_LGUI",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 555,
+        "TextInputActive": {
+          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@param window the window to check.\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput",
+          "name": "TextInputActive",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "begin": 546,
           "decl": 558,
-          "end": 560
+          "end": 563
         },
-        "SCANCODE_RCTRL": {
-          "doc": "",
-          "name": "SCANCODE_RCTRL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 560,
-          "decl": 560,
-          "end": 562
-        },
-        "SCANCODE_RSHIFT": {
-          "doc": "",
-          "name": "SCANCODE_RSHIFT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 562,
-          "decl": 562,
-          "end": 564
-        },
-        "SCANCODE_RALT": {
-          "doc": "alt gr, option",
-          "name": "SCANCODE_RALT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 564,
-          "decl": 564,
-          "end": 566
-        },
-        "SCANCODE_RGUI": {
-          "doc": "windows, command (apple), meta",
-          "name": "SCANCODE_RGUI",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 566,
-          "decl": 569,
-          "end": 571
-        },
-        "SCANCODE_MODE": {
-          "doc": "I'm not sure if this is really not covered by any of the above, but since\nthere's a special KMOD_MODE for it I'm adding it here.",
-          "name": "SCANCODE_MODE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 571,
-          "decl": 575,
-          "end": 577
-        },
-        "SCANCODE_SLEEP": {
-          "doc": "Sleep.",
-          "name": "SCANCODE_SLEEP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 577,
-          "decl": 577,
-          "end": 579
-        },
-        "SCANCODE_WAKE": {
-          "doc": "Wake.",
-          "name": "SCANCODE_WAKE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 579,
+        "StopTextInput": {
+          "doc": "Stop receiving any text input events in a window.\n\nIf StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@param window the window to disable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput",
+          "name": "StopTextInput",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "begin": 563,
           "decl": 579,
-          "end": 581
+          "end": 584
         },
-        "SCANCODE_CHANNEL_INCREMENT": {
-          "doc": "Channel Increment.",
-          "name": "SCANCODE_CHANNEL_INCREMENT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 581,
-          "decl": 584,
-          "end": 586
+        "ClearComposition": {
+          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@param window the window to affect.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput\n@sa StopTextInput",
+          "name": "ClearComposition",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "begin": 584,
+          "decl": 598,
+          "end": 603
         },
-        "SCANCODE_CHANNEL_DECREMENT": {
-          "doc": "Channel Decrement.",
-          "name": "SCANCODE_CHANNEL_DECREMENT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 586,
-          "decl": 589,
-          "end": 591
-        },
-        "SCANCODE_MEDIA_PLAY": {
-          "doc": "Play.",
-          "name": "SCANCODE_MEDIA_PLAY",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 591,
-          "decl": 591,
-          "end": 593
-        },
-        "SCANCODE_MEDIA_PAUSE": {
-          "doc": "Pause.",
-          "name": "SCANCODE_MEDIA_PAUSE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 593,
-          "decl": 593,
-          "end": 595
-        },
-        "SCANCODE_MEDIA_RECORD": {
-          "doc": "Record.",
-          "name": "SCANCODE_MEDIA_RECORD",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 595,
-          "decl": 595,
-          "end": 598
-        },
-        "SCANCODE_MEDIA_FAST_FORWARD": {
-          "doc": "Fast Forward.",
-          "name": "SCANCODE_MEDIA_FAST_FORWARD",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 598,
-          "decl": 601,
-          "end": 604
-        },
-        "SCANCODE_MEDIA_REWIND": {
-          "doc": "Rewind.",
-          "name": "SCANCODE_MEDIA_REWIND",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 604,
-          "decl": 604,
-          "end": 607
-        },
-        "SCANCODE_MEDIA_NEXT_TRACK": {
-          "doc": "Next Track.",
-          "name": "SCANCODE_MEDIA_NEXT_TRACK",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 607,
-          "decl": 610,
-          "end": 612
-        },
-        "SCANCODE_MEDIA_PREVIOUS_TRACK": {
-          "doc": "Previous Track.",
-          "name": "SCANCODE_MEDIA_PREVIOUS_TRACK",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 612,
-          "decl": 615,
-          "end": 618
-        },
-        "SCANCODE_MEDIA_STOP": {
-          "doc": "Stop.",
-          "name": "SCANCODE_MEDIA_STOP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 618,
-          "decl": 618,
-          "end": 620
-        },
-        "SCANCODE_MEDIA_EJECT": {
-          "doc": "Eject.",
-          "name": "SCANCODE_MEDIA_EJECT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 620,
-          "decl": 620,
-          "end": 622
-        },
-        "SCANCODE_MEDIA_PLAY_PAUSE": {
-          "doc": "Play / Pause.",
-          "name": "SCANCODE_MEDIA_PLAY_PAUSE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 622,
-          "decl": 625,
-          "end": 627
-        },
-        "SCANCODE_MEDIA_SELECT": {
-          "doc": "",
-          "name": "SCANCODE_MEDIA_SELECT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 627,
-          "decl": 627,
+        "SetTextInputArea": {
+          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param window the window for which to set the text input area.\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetTextInputArea\n@sa StartTextInput",
+          "name": "SetTextInputArea",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "rect",
+              "type": "const SDL_Rect &"
+            },
+            {
+              "name": "cursor",
+              "type": "int"
+            }
+          ],
+          "begin": 603,
+          "decl": 624,
           "end": 629
         },
-        "SCANCODE_AC_NEW": {
-          "doc": "AC New.",
-          "name": "SCANCODE_AC_NEW",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
+        "GetTextInputArea": {
+          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by SetTextInputArea().\n\n@param window the window for which to query the text input area.\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea",
+          "name": "GetTextInputArea",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            },
+            {
+              "name": "rect",
+              "type": "Rect *"
+            },
+            {
+              "name": "cursor",
+              "type": "int *"
+            }
+          ],
           "begin": 629,
-          "decl": 629,
-          "end": 631
-        },
-        "SCANCODE_AC_OPEN": {
-          "doc": "AC Open.",
-          "name": "SCANCODE_AC_OPEN",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 631,
-          "decl": 631,
-          "end": 633
-        },
-        "SCANCODE_AC_CLOSE": {
-          "doc": "AC Close.",
-          "name": "SCANCODE_AC_CLOSE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 633,
-          "decl": 633,
-          "end": 635
-        },
-        "SCANCODE_AC_EXIT": {
-          "doc": "AC Exit.",
-          "name": "SCANCODE_AC_EXIT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 635,
-          "decl": 635,
-          "end": 637
-        },
-        "SCANCODE_AC_SAVE": {
-          "doc": "AC Save.",
-          "name": "SCANCODE_AC_SAVE",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 637,
-          "decl": 637,
-          "end": 639
-        },
-        "SCANCODE_AC_PRINT": {
-          "doc": "AC Print.",
-          "name": "SCANCODE_AC_PRINT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 639,
-          "decl": 639,
-          "end": 641
-        },
-        "SCANCODE_AC_PROPERTIES": {
-          "doc": "AC Properties.",
-          "name": "SCANCODE_AC_PROPERTIES",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 641,
-          "decl": 644,
-          "end": 646
-        },
-        "SCANCODE_AC_SEARCH": {
-          "doc": "AC Search.",
-          "name": "SCANCODE_AC_SEARCH",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 646,
-          "decl": 646,
-          "end": 648
-        },
-        "SCANCODE_AC_HOME": {
-          "doc": "AC Home.",
-          "name": "SCANCODE_AC_HOME",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 648,
           "decl": 648,
-          "end": 650
+          "end": 653
         },
-        "SCANCODE_AC_BACK": {
-          "doc": "AC Back.",
-          "name": "SCANCODE_AC_BACK",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 650,
-          "decl": 650,
-          "end": 652
+        "HasScreenKeyboardSupport": {
+          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput\n@sa ScreenKeyboardShown",
+          "name": "HasScreenKeyboardSupport",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "begin": 653,
+          "decl": 666,
+          "end": 671
         },
-        "SCANCODE_AC_FORWARD": {
-          "doc": "AC Forward.",
-          "name": "SCANCODE_AC_FORWARD",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 652,
-          "decl": 652,
-          "end": 655
-        },
-        "SCANCODE_AC_STOP": {
-          "doc": "AC Stop.",
-          "name": "SCANCODE_AC_STOP",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 655,
-          "decl": 655,
-          "end": 657
-        },
-        "SCANCODE_AC_REFRESH": {
-          "doc": "AC Refresh.",
-          "name": "SCANCODE_AC_REFRESH",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 657,
-          "decl": 657,
-          "end": 660
-        },
-        "SCANCODE_AC_BOOKMARKS": {
-          "doc": "AC Bookmarks.",
-          "name": "SCANCODE_AC_BOOKMARKS",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 660,
-          "decl": 663,
-          "end": 665
-        },
-        "SCANCODE_SOFTLEFT": {
-          "doc": "Usually situated below the display on phones and used as a multi-function\nfeature key for selecting a software defined function shown on the bottom\nleft of the display.",
-          "name": "SCANCODE_SOFTLEFT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 665,
-          "decl": 670,
-          "end": 672
-        },
-        "SCANCODE_SOFTRIGHT": {
-          "doc": "Usually situated below the display on phones and used as a multi-function\nfeature key for selecting a software defined function shown on the bottom\nright of the display.",
-          "name": "SCANCODE_SOFTRIGHT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 672,
-          "decl": 677,
-          "end": 679
-        },
-        "SCANCODE_CALL": {
-          "doc": "Used for accepting phone calls.",
-          "name": "SCANCODE_CALL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 679,
-          "decl": 682,
-          "end": 684
-        },
-        "SCANCODE_ENDCALL": {
-          "doc": "Used for rejecting phone calls.",
-          "name": "SCANCODE_ENDCALL",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 684,
-          "decl": 687,
-          "end": 689
-        },
-        "SCANCODE_RESERVED": {
-          "doc": "400-500 reserved for dynamic keycodes",
-          "name": "SCANCODE_RESERVED",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 689,
-          "decl": 692,
-          "end": 694
-        },
-        "SCANCODE_COUNT": {
-          "doc": "not a key, just marks the number of scancodes for array bounds",
-          "name": "SCANCODE_COUNT",
-          "kind": "var",
-          "type": "Scancode",
-          "constexpr": true,
-          "begin": 694,
-          "decl": 697,
-          "end": 699
+        "ScreenKeyboardShown": {
+          "doc": "Check whether the screen keyboard is shown for given window.\n\n@param window the window for which screen keyboard should be queried.\n@returns true if screen keyboard is shown or false if not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasScreenKeyboardSupport",
+          "name": "ScreenKeyboardShown",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
+            {
+              "name": "window",
+              "type": "WindowRef"
+            }
+          ],
+          "begin": 671,
+          "decl": 683,
+          "end": 688
         }
       },
-      "docBegin": 9,
-      "docEnd": 23,
-      "entriesBegin": 23,
-      "entriesEnd": 699,
+      "docBegin": 12,
+      "docEnd": 26,
+      "entriesBegin": 26,
+      "entriesEnd": 688,
       "namespace": "SDL"
     },
     "SDL3pp_platform.h": {

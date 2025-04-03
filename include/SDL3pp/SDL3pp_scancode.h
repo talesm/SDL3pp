@@ -74,7 +74,7 @@ struct Scancode
   }
 
   // Set name
-  Scancode& SetName(StringParam name);
+  bool SetName(StringParam name);
 
   // Get name
   const char* GetName() const;

@@ -152,10 +152,12 @@ public:
   constexpr auto operator<=>(const Keycode& other) const = default;
 
   // Convert from scancode
-  Keycode(Scancode scancode, Keymod keymodstate = 0, bool key_event = false);
+  explicit Keycode(Scancode scancode,
+                   Keymod keymodstate = 0,
+                   bool key_event = false);
 
   // Create from key name
-  Keycode(StringParam name);
+  explicit Keycode(StringParam name);
 
   /**
    * Unwraps to the underlying Keycode.
@@ -170,8 +172,6 @@ public:
    * @returns True if valid state, false otherwise.
    */
   constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
-
-  operator Scancode() const;
 
   // Get name
   const char* GetName() const;
