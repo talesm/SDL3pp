@@ -2,7 +2,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, FileTransform, ReplacementRule, StringMap } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap } from "./types"
  */
 
 /**
@@ -85,7 +85,7 @@ class ApiContext {
  * 
  * @param {ApiEntries}    sourceEntries 
  * @param {ApiContext}    context 
- * @param {FileTransform} transform
+ * @param {ApiFileTransform} transform
  */
 function transformEntries(sourceEntries, context, transform) {
   /** @type {ApiEntries} */
@@ -181,7 +181,7 @@ function transformEntries(sourceEntries, context, transform) {
 /**
  * 
  * @param {ApiEntries}    sourceEntries 
- * @param {FileTransform} transform,
+ * @param {ApiFileTransform} transform,
  * @param {ApiContext}    context 
  */
 function expandNamespaces(sourceEntries, transform, context) {
@@ -217,7 +217,7 @@ function expandNamespaces(sourceEntries, transform, context) {
 /**
  * 
  * @param {Dict<ApiResource>} resources 
- * @param {FileTransform} transform 
+ * @param {ApiFileTransform} transform 
  * @param {ApiContext} context 
  */
 function expandResources(resources, transform, context) {
@@ -336,7 +336,7 @@ function expandResources(resources, transform, context) {
 /**
  * 
  * @param {ApiEntries}            sourceEntries 
- * @param {FileTransform}         transform,
+ * @param {ApiFileTransform}         transform,
  * @param {ApiContext}            context 
  */
 function expandEnumerations(sourceEntries, transform, context) {
@@ -432,7 +432,7 @@ function scanFreeFunction(entries) {
  * @param {ApiEntries}                    entries 
  * @param {ApiEntryTransform|ApiEntryTransform[]}  entry 
  * @param {ApiContext}                    context 
- * @param {FileTransform}                 transform
+ * @param {ApiFileTransform}                 transform
  * @param {string=}                       defaultName
  */
 function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
@@ -448,7 +448,7 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
  * 
  * @param {ApiEntryTransform} targetEntry 
  * @param {ApiContext}        context 
- * @param {FileTransform}     transform 
+ * @param {ApiFileTransform}     transform 
  * @param {ApiEntries}        targetEntries
  */
 function transformSubEntries(targetEntry, context, transform, targetEntries) {

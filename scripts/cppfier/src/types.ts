@@ -55,7 +55,7 @@ export interface ApiParameter {
 export type StringMap = Dict<string>;
 
 export interface ApiTransform {
-  files?: Dict<FileTransform>;
+  files?: Dict<ApiFileTransform>;
   prefixes?: string | string[];
   definitionPrefix?: string;
   renameRules?: ReplacementRule[];
@@ -65,7 +65,7 @@ export interface ApiTransform {
   returnTypeMap?: StringMap;
 }
 
-export interface FileTransform {
+export interface ApiFileTransform {
   name?: string;
   doc?: string;
   ignoreEntries?: string[];
