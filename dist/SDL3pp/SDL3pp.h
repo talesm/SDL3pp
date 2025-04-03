@@ -29214,25 +29214,25 @@ using GLAttr = SDL_GLAttr;
 
 /**
  * the minimum number of bits for the red channel of the color buffer; defaults
- * to 3.
+ * to 8.
  */
 constexpr GLAttr GL_RED_SIZE = SDL_GL_RED_SIZE;
 
 /**
  * the minimum number of bits for the green channel of the color buffer;
- * defaults to 3.
+ * defaults to 8.
  */
 constexpr GLAttr GL_GREEN_SIZE = SDL_GL_GREEN_SIZE;
 
 /**
  * the minimum number of bits for the blue channel of the color buffer; defaults
- * to 2.
+ * to 8.
  */
 constexpr GLAttr GL_BLUE_SIZE = SDL_GL_BLUE_SIZE;
 
 /**
  * the minimum number of bits for the alpha channel of the color buffer;
- * defaults to 0.
+ * defaults to 8.
  */
 constexpr GLAttr GL_ALPHA_SIZE = SDL_GL_ALPHA_SIZE;
 

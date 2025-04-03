@@ -15545,7 +15545,7 @@
           "type": "SDL_GLAttr"
         },
         "GL_RED_SIZE": {
-          "doc": "the minimum number of bits for the red channel of the color buffer; defaults to 3.",
+          "doc": "the minimum number of bits for the red channel of the color buffer; defaults to 8.",
           "name": "GL_RED_SIZE",
           "kind": "var",
           "type": "GLAttr",
@@ -15553,7 +15553,7 @@
           "constexpr": true
         },
         "GL_GREEN_SIZE": {
-          "doc": "the minimum number of bits for the green channel of the color buffer; defaults to 3.",
+          "doc": "the minimum number of bits for the green channel of the color buffer; defaults to 8.",
           "name": "GL_GREEN_SIZE",
           "kind": "var",
           "type": "GLAttr",
@@ -15561,7 +15561,7 @@
           "constexpr": true
         },
         "GL_BLUE_SIZE": {
-          "doc": "the minimum number of bits for the blue channel of the color buffer; defaults to 2.",
+          "doc": "the minimum number of bits for the blue channel of the color buffer; defaults to 8.",
           "name": "GL_BLUE_SIZE",
           "kind": "var",
           "type": "GLAttr",
@@ -15569,7 +15569,7 @@
           "constexpr": true
         },
         "GL_ALPHA_SIZE": {
-          "doc": "the minimum number of bits for the alpha channel of the color buffer; defaults to 0.",
+          "doc": "the minimum number of bits for the alpha channel of the color buffer; defaults to 8.",
           "name": "GL_ALPHA_SIZE",
           "kind": "var",
           "type": "GLAttr",
@@ -29733,7 +29733,7 @@
                 "sourceName": "TTF_OpenFont"
               },
               {
-                "doc": "Create a font from an IOStreamBase, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should close `src` yourself after closing the font.\n\nWhen done with the returned FontBase, use FontBase.Close() to dispose of it.\n\n@param src an IOStreamBase to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@post a valid FontBase, or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontBase.Close",
+                "doc": "Create a font from an IOStreamBase, using a specified point size.\n\nSome .fon fonts will have several sizes embedded in the file, so the point\nsize becomes the index of choosing which size. If the value is too high,\nthe last indexed size will be the default.\n\nIf `closeio` is true, `src` will be automatically closed once the font is\nclosed. Otherwise you should keep `src` open until the font is closed.\n\nWhen done with the returned FontBase, use FontBase.Close() to dispose of it.\n\n@param src an IOStreamBase to provide a font file's data.\n@param closeio true to close `src` when the font is closed, false to leave\n               it open.\n@param ptsize point size to use for the newly-opened font.\n@post a valid FontBase, or nullptr on failure; call GetError() for more\n         information.\n\n@threadsafety It is safe to call this function from any thread.\n\n@since This function is available since SDL_ttf 3.0.0.\n\n@sa FontBase.Close",
                 "name": "FontBase",
                 "kind": "function",
                 "type": "",

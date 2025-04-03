@@ -20389,7 +20389,7 @@
           "end": 3139
         },
         "GL_RED_SIZE": {
-          "doc": "the minimum number of bits for the red channel of the color buffer; defaults\nto 3.",
+          "doc": "the minimum number of bits for the red channel of the color buffer; defaults\nto 8.",
           "name": "GL_RED_SIZE",
           "kind": "var",
           "type": "GLAttr",
@@ -20399,7 +20399,7 @@
           "end": 3145
         },
         "GL_GREEN_SIZE": {
-          "doc": "the minimum number of bits for the green channel of the color buffer;\ndefaults to 3.",
+          "doc": "the minimum number of bits for the green channel of the color buffer;\ndefaults to 8.",
           "name": "GL_GREEN_SIZE",
           "kind": "var",
           "type": "GLAttr",
@@ -20409,7 +20409,7 @@
           "end": 3151
         },
         "GL_BLUE_SIZE": {
-          "doc": "the minimum number of bits for the blue channel of the color buffer; defaults\nto 2.",
+          "doc": "the minimum number of bits for the blue channel of the color buffer; defaults\nto 8.",
           "name": "GL_BLUE_SIZE",
           "kind": "var",
           "type": "GLAttr",
@@ -20419,7 +20419,7 @@
           "end": 3157
         },
         "GL_ALPHA_SIZE": {
-          "doc": "the minimum number of bits for the alpha channel of the color buffer;\ndefaults to 0.",
+          "doc": "the minimum number of bits for the alpha channel of the color buffer;\ndefaults to 8.",
           "name": "GL_ALPHA_SIZE",
           "kind": "var",
           "type": "GLAttr",
