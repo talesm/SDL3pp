@@ -20170,15 +20170,111 @@
               "decl": 2839,
               "end": 2844
             },
+            "StartTextInput": [
+              {
+                "doc": "",
+                "name": "StartTextInput",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [],
+                "begin": 2844,
+                "decl": 2844,
+                "end": 2846
+              },
+              {
+                "doc": "",
+                "name": "StartTextInput",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "props",
+                    "type": "PropertiesRef"
+                  }
+                ],
+                "begin": 2846,
+                "decl": 2846,
+                "end": 2848
+              }
+            ],
+            "IsTextInputActive": {
+              "doc": "",
+              "name": "IsTextInputActive",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "immutable": true,
+              "begin": 2848,
+              "decl": 2848,
+              "end": 2850
+            },
+            "StopTextInput": {
+              "doc": "",
+              "name": "StopTextInput",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "begin": 2850,
+              "decl": 2850,
+              "end": 2852
+            },
+            "ClearComposition": {
+              "doc": "",
+              "name": "ClearComposition",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "begin": 2852,
+              "decl": 2852,
+              "end": 2854
+            },
+            "SetTextInputArea": {
+              "doc": "",
+              "name": "SetTextInputArea",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "const SDL_Rect &"
+                },
+                {
+                  "name": "cursor",
+                  "type": "int"
+                }
+              ],
+              "begin": 2854,
+              "decl": 2854,
+              "end": 2856
+            },
+            "GetTextInputArea": {
+              "doc": "",
+              "name": "GetTextInputArea",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "SDL_Rect *"
+                },
+                {
+                  "name": "cursor",
+                  "type": "int *"
+                }
+              ],
+              "begin": 2856,
+              "decl": 2856,
+              "end": 2858
+            },
             "Destroy": {
               "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
               "name": "Destroy",
               "kind": "function",
               "type": "void",
               "parameters": [],
-              "begin": 2844,
-              "decl": 2858,
-              "end": 2859
+              "begin": 2858,
+              "decl": 2872,
+              "end": 2873
             }
           },
           "template": [
@@ -20189,7 +20285,7 @@
           ],
           "begin": 898,
           "decl": 907,
-          "end": 2861
+          "end": 2875
         },
         "ObjectRef<SDL_Window>::doFree": {
           "doc": "Callback for window resource cleanup\n\n@private",
@@ -20203,18 +20299,18 @@
             }
           ],
           "template": [],
-          "begin": 2861,
-          "decl": 2866,
-          "end": 2873
+          "begin": 2875,
+          "decl": 2880,
+          "end": 2887
         },
         "SDL_WINDOWPOS_UNDEFINED_MASK": {
           "doc": "A magic value used with SDL_WINDOWPOS_UNDEFINED.\n\nGenerally this macro isn't used directly, but rather through\nSDL_WINDOWPOS_UNDEFINED or SDL_WINDOWPOS_UNDEFINED_DISPLAY.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_UNDEFINED_MASK",
           "kind": "def",
           "value": "0x1FFF0000u",
-          "begin": 2875,
-          "decl": 2883,
-          "end": 2885
+          "begin": 2889,
+          "decl": 2897,
+          "end": 2899
         },
         "SDL_WINDOWPOS_UNDEFINED_DISPLAY": {
           "doc": "Used to indicate that you don't care what the window position is.\n\nIf you _really_ don't care, SDL_WINDOWPOS_UNDEFINED is the same, but always\nuses the primary display instead of specifying one.\n\n@param X the SDL_DisplayID of the display to use.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20224,18 +20320,18 @@
           "parameters": [
             "X"
           ],
-          "begin": 2885,
-          "decl": 2895,
-          "end": 2897
+          "begin": 2899,
+          "decl": 2909,
+          "end": 2911
         },
         "SDL_WINDOWPOS_UNDEFINED": {
           "doc": "Used to indicate that you don't care what the window position/display is.\n\nThis always uses the primary display.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_UNDEFINED",
           "kind": "def",
           "value": "SDL_WINDOWPOS_UNDEFINED_DISPLAY(0)",
-          "begin": 2897,
-          "decl": 2904,
-          "end": 2906
+          "begin": 2911,
+          "decl": 2918,
+          "end": 2920
         },
         "SDL_WINDOWPOS_ISUNDEFINED": {
           "doc": "A macro to test if the window position is marked as \"undefined.\"\n\n@param X the window position value.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20245,18 +20341,18 @@
           "parameters": [
             "X"
           ],
-          "begin": 2906,
-          "decl": 2913,
-          "end": 2916
+          "begin": 2920,
+          "decl": 2927,
+          "end": 2930
         },
         "SDL_WINDOWPOS_CENTERED_MASK": {
           "doc": "A magic value used with SDL_WINDOWPOS_CENTERED.\n\nGenerally this macro isn't used directly, but rather through\nSDL_WINDOWPOS_CENTERED or SDL_WINDOWPOS_CENTERED_DISPLAY.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_CENTERED_MASK",
           "kind": "def",
           "value": "0x2FFF0000u",
-          "begin": 2916,
-          "decl": 2924,
-          "end": 2926
+          "begin": 2930,
+          "decl": 2938,
+          "end": 2940
         },
         "SDL_WINDOWPOS_CENTERED_DISPLAY": {
           "doc": "Used to indicate that the window position should be centered.\n\nSDL_WINDOWPOS_CENTERED is the same, but always uses the primary display\ninstead of specifying one.\n\n@param X the SDL_DisplayID of the display to use.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20266,18 +20362,18 @@
           "parameters": [
             "X"
           ],
-          "begin": 2926,
-          "decl": 2936,
-          "end": 2938
+          "begin": 2940,
+          "decl": 2950,
+          "end": 2952
         },
         "SDL_WINDOWPOS_CENTERED": {
           "doc": "Used to indicate that the window position should be centered.\n\nThis always uses the primary display.\n\n@since This macro is available since SDL 3.2.0.",
           "name": "SDL_WINDOWPOS_CENTERED",
           "kind": "def",
           "value": "SDL_WINDOWPOS_CENTERED_DISPLAY(0)",
-          "begin": 2938,
-          "decl": 2945,
-          "end": 2947
+          "begin": 2952,
+          "decl": 2959,
+          "end": 2961
         },
         "SDL_WINDOWPOS_ISCENTERED": {
           "doc": "A macro to test if the window position is marked as \"centered.\"\n\n@param X the window position value.\n\n@since This macro is available since SDL 3.2.0.",
@@ -20287,9 +20383,9 @@
           "parameters": [
             "X"
           ],
-          "begin": 2947,
-          "decl": 2954,
-          "end": 2957
+          "begin": 2961,
+          "decl": 2968,
+          "end": 2971
         },
         "GLContextBase": {
           "doc": "An opaque handle to an OpenGL context.\n\n@since This datatype is available since SDL 3.2.0.\n\n@cat resource",
@@ -20301,9 +20397,9 @@
               "doc": "",
               "name": "T::T",
               "kind": "alias",
-              "begin": 2969,
-              "decl": 2969,
-              "end": 2971
+              "begin": 2983,
+              "decl": 2983,
+              "end": 2985
             },
             "GLContextBase": {
               "doc": "Create an OpenGL context for an OpenGL window, and make it current.\n\nWindows users new to OpenGL should note that, for historical reasons, GL\nfunctions added after OpenGL version 1.1 are not available by default.\nThose functions must be loaded at run-time, either with an OpenGL\nextension-handling library or with SDL_GL_GetProcAddress() and its related\nfunctions.\n\nSDL_GLContext is opaque to the application.\n\n@param window the window to associate with the context.\n@post the OpenGL context associated with `window` or NULL on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Destroy()\n@sa MakeCurrent()",
@@ -20316,9 +20412,9 @@
                   "type": "WindowRef"
                 }
               ],
-              "begin": 2971,
-              "decl": 2993,
-              "end": 2998
+              "begin": 2985,
+              "decl": 3007,
+              "end": 3012
             },
             "MakeCurrent": {
               "doc": "Set up an OpenGL context for rendering into an OpenGL window.\n\nThe context must have been created with a compatible window.\n\n@param window the window to associate with the context.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
@@ -20331,9 +20427,9 @@
                   "type": "WindowRef"
                 }
               ],
-              "begin": 2998,
-              "decl": 3013,
-              "end": 3018
+              "begin": 3012,
+              "decl": 3027,
+              "end": 3032
             },
             "Destroy": {
               "doc": "Delete an OpenGL context.\n\n@returns true on success or false on failure; call SDL_GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SDL_GL_CreateContext",
@@ -20341,9 +20437,9 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 3018,
-              "decl": 3030,
-              "end": 3031
+              "begin": 3032,
+              "decl": 3044,
+              "end": 3045
             }
           },
           "template": [
@@ -20352,81 +20448,81 @@
               "type": "ObjectBox<SDL_GLContextState *>"
             }
           ],
-          "begin": 2959,
-          "decl": 2966,
-          "end": 3033
+          "begin": 2973,
+          "decl": 2980,
+          "end": 3047
         },
         "EGLDisplay": {
           "doc": "Opaque type for an EGL display.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLDisplay",
           "kind": "alias",
           "type": "SDL_EGLDisplay",
-          "begin": 3033,
-          "decl": 3038,
-          "end": 3040
+          "begin": 3047,
+          "decl": 3052,
+          "end": 3054
         },
         "EGLConfig": {
           "doc": "Opaque type for an EGL config.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLConfig",
           "kind": "alias",
           "type": "SDL_EGLConfig",
-          "begin": 3040,
-          "decl": 3045,
-          "end": 3047
+          "begin": 3054,
+          "decl": 3059,
+          "end": 3061
         },
         "EGLSurface": {
           "doc": "Opaque type for an EGL surface.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLSurface",
           "kind": "alias",
           "type": "SDL_EGLSurface",
-          "begin": 3047,
-          "decl": 3052,
-          "end": 3054
+          "begin": 3061,
+          "decl": 3066,
+          "end": 3068
         },
         "EGLAttrib": {
           "doc": "An EGL attribute, used when creating an EGL context.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLAttrib",
           "kind": "alias",
           "type": "SDL_EGLAttrib",
-          "begin": 3054,
-          "decl": 3059,
-          "end": 3061
+          "begin": 3068,
+          "decl": 3073,
+          "end": 3075
         },
         "EGLint": {
           "doc": "An EGL integer attribute, used when creating an EGL surface.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "EGLint",
           "kind": "alias",
           "type": "SDL_EGLint",
-          "begin": 3061,
-          "decl": 3066,
-          "end": 3068
+          "begin": 3075,
+          "decl": 3080,
+          "end": 3082
         },
         "EGLAttribArrayCallback": {
           "doc": "EGL platform attribute initialization callback.\n\nThis is called when SDL is attempting to create an EGL context, to let the\napp add extra attributes to its eglGetPlatformDisplay() call.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns NULL, the SDL_CreateWindow\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with SDL_malloc() and will be\npassed to SDL_free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks()",
           "name": "EGLAttribArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLAttribArrayCallback",
-          "begin": 3068,
-          "decl": 3091,
-          "end": 3093
+          "begin": 3082,
+          "decl": 3105,
+          "end": 3107
         },
         "EGLIntArrayCallback": {
           "doc": "EGL surface/context attribute initialization callback types.\n\nThis is called when SDL is attempting to create an EGL surface, to let the\napp add extra attributes to its eglCreateWindowSurface() or\neglCreateContext calls.\n\nFor convenience, the EGLDisplay and EGLConfig to use are provided to the\ncallback.\n\nThe callback should return a pointer to an EGL attribute array terminated\nwith `EGL_NONE`. If this function returns NULL, the SDL_CreateWindow\nprocess will fail gracefully.\n\nThe returned pointer should be allocated with SDL_malloc() and will be\npassed to SDL_free().\n\nThe arrays returned by each callback will be appended to the existing\nattribute arrays defined by SDL.\n\n@param userdata an app-controlled pointer that is passed to the callback.\n@param display the EGL display to be used.\n@param config the EGL config to be used.\n@returns a newly-allocated array of attributes, terminated with `EGL_NONE`.\n\n@since This datatype is available since SDL 3.2.0.\n\n@sa EGL_SetAttributeCallbacks()",
           "name": "EGLIntArrayCallback",
           "kind": "alias",
           "type": "SDL_EGLIntArrayCallback",
-          "begin": 3093,
-          "decl": 3122,
-          "end": 3124
+          "begin": 3107,
+          "decl": 3136,
+          "end": 3138
         },
         "GLAttr": {
           "doc": "An enumeration of OpenGL configuration attributes.\n\nWhile you can set most OpenGL attributes normally, the attributes listed\nabove must be known before SDL creates the window that will be used with\nthe OpenGL context. These attributes are set and read with\nSDL_GL_SetAttribute() and SDL_GL_GetAttribute().\n\nIn some cases, these attributes are minimum requests; the GL does not\npromise to give you exactly what you asked for. It's possible to ask for a\n16-bit depth buffer and get a 24-bit one instead, for example, or to ask\nfor no stencil buffer and still have one available. Context creation should\nfail if the GL can't provide your requested attributes at a minimum, but\nyou should check to see exactly what you got.\n\n@since This enum is available since SDL 3.2.0.",
           "name": "GLAttr",
           "kind": "alias",
           "type": "SDL_GLAttr",
-          "begin": 3129,
-          "decl": 3146,
-          "end": 3148
+          "begin": 3143,
+          "decl": 3160,
+          "end": 3162
         },
         "GL_RED_SIZE": {
           "doc": "the minimum number of bits for the red channel of the color buffer; defaults\nto 8.",
@@ -20434,9 +20530,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3148,
-          "decl": 3152,
-          "end": 3154
+          "begin": 3162,
+          "decl": 3166,
+          "end": 3168
         },
         "GL_GREEN_SIZE": {
           "doc": "the minimum number of bits for the green channel of the color buffer;\ndefaults to 8.",
@@ -20444,9 +20540,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3154,
-          "decl": 3158,
-          "end": 3160
+          "begin": 3168,
+          "decl": 3172,
+          "end": 3174
         },
         "GL_BLUE_SIZE": {
           "doc": "the minimum number of bits for the blue channel of the color buffer; defaults\nto 8.",
@@ -20454,9 +20550,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3160,
-          "decl": 3164,
-          "end": 3166
+          "begin": 3174,
+          "decl": 3178,
+          "end": 3180
         },
         "GL_ALPHA_SIZE": {
           "doc": "the minimum number of bits for the alpha channel of the color buffer;\ndefaults to 8.",
@@ -20464,9 +20560,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3166,
-          "decl": 3170,
-          "end": 3172
+          "begin": 3180,
+          "decl": 3184,
+          "end": 3186
         },
         "GL_BUFFER_SIZE": {
           "doc": "the minimum number of bits for frame buffer size; defaults to 0.",
@@ -20474,9 +20570,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3172,
-          "decl": 3175,
-          "end": 3177
+          "begin": 3186,
+          "decl": 3189,
+          "end": 3191
         },
         "GL_DOUBLEBUFFER": {
           "doc": "whether the output is single or double buffered; defaults to double buffering\non.",
@@ -20484,9 +20580,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3177,
-          "decl": 3181,
-          "end": 3183
+          "begin": 3191,
+          "decl": 3195,
+          "end": 3197
         },
         "GL_DEPTH_SIZE": {
           "doc": "the minimum number of bits in the depth buffer; defaults to 16.",
@@ -20494,9 +20590,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3183,
-          "decl": 3186,
-          "end": 3188
+          "begin": 3197,
+          "decl": 3200,
+          "end": 3202
         },
         "GL_STENCIL_SIZE": {
           "doc": "the minimum number of bits in the stencil buffer; defaults to 0.",
@@ -20504,9 +20600,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3188,
-          "decl": 3191,
-          "end": 3193
+          "begin": 3202,
+          "decl": 3205,
+          "end": 3207
         },
         "GL_ACCUM_RED_SIZE": {
           "doc": "the minimum number of bits for the red channel of the accumulation buffer;\ndefaults to 0.",
@@ -20514,9 +20610,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3193,
-          "decl": 3197,
-          "end": 3199
+          "begin": 3207,
+          "decl": 3211,
+          "end": 3213
         },
         "GL_ACCUM_GREEN_SIZE": {
           "doc": "the minimum number of bits for the green channel of the accumulation buffer;\ndefaults to 0.",
@@ -20524,9 +20620,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3199,
-          "decl": 3203,
-          "end": 3205
+          "begin": 3213,
+          "decl": 3217,
+          "end": 3219
         },
         "GL_ACCUM_BLUE_SIZE": {
           "doc": "the minimum number of bits for the blue channel of the accumulation buffer;\ndefaults to 0.",
@@ -20534,9 +20630,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3205,
-          "decl": 3209,
-          "end": 3211
+          "begin": 3219,
+          "decl": 3223,
+          "end": 3225
         },
         "GL_ACCUM_ALPHA_SIZE": {
           "doc": "the minimum number of bits for the alpha channel of the accumulation buffer;\ndefaults to 0.",
@@ -20544,9 +20640,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3211,
-          "decl": 3215,
-          "end": 3217
+          "begin": 3225,
+          "decl": 3229,
+          "end": 3231
         },
         "GL_STEREO": {
           "doc": "whether the output is stereo 3D; defaults to off.",
@@ -20554,9 +20650,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3217,
-          "decl": 3220,
-          "end": 3222
+          "begin": 3231,
+          "decl": 3234,
+          "end": 3236
         },
         "GL_MULTISAMPLEBUFFERS": {
           "doc": "the number of buffers used for multisample anti-aliasing; defaults to 0.",
@@ -20564,9 +20660,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3222,
-          "decl": 3225,
-          "end": 3227
+          "begin": 3236,
+          "decl": 3239,
+          "end": 3241
         },
         "GL_MULTISAMPLESAMPLES": {
           "doc": "the number of samples used around the current pixel used for multisample\nanti-aliasing.",
@@ -20574,9 +20670,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3227,
-          "decl": 3231,
-          "end": 3233
+          "begin": 3241,
+          "decl": 3245,
+          "end": 3247
         },
         "GL_ACCELERATED_VISUAL": {
           "doc": "set to 1 to require hardware acceleration, set to 0 to force software\nrendering; defaults to allow either.",
@@ -20584,9 +20680,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3233,
-          "decl": 3237,
-          "end": 3239
+          "begin": 3247,
+          "decl": 3251,
+          "end": 3253
         },
         "GL_RETAINED_BACKING": {
           "doc": "not used (deprecated).",
@@ -20594,9 +20690,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3239,
-          "decl": 3242,
-          "end": 3244
+          "begin": 3253,
+          "decl": 3256,
+          "end": 3258
         },
         "GL_CONTEXT_MAJOR_VERSION": {
           "doc": "OpenGL context major version.",
@@ -20604,9 +20700,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3244,
-          "decl": 3247,
-          "end": 3249
+          "begin": 3258,
+          "decl": 3261,
+          "end": 3263
         },
         "GL_CONTEXT_MINOR_VERSION": {
           "doc": "OpenGL context minor version.",
@@ -20614,9 +20710,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3249,
-          "decl": 3252,
-          "end": 3254
+          "begin": 3263,
+          "decl": 3266,
+          "end": 3268
         },
         "GL_CONTEXT_FLAGS": {
           "doc": "some combination of 0 or more of elements of the SDL_GLContextFlag\nenumeration; defaults to 0.",
@@ -20624,9 +20720,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3254,
-          "decl": 3258,
-          "end": 3260
+          "begin": 3268,
+          "decl": 3272,
+          "end": 3274
         },
         "GL_CONTEXT_PROFILE_MASK": {
           "doc": "type of GL context (Core, Compatibility, ES). See SDL_GLProfile; default\nvalue depends on platform.",
@@ -20634,9 +20730,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3260,
-          "decl": 3264,
-          "end": 3266
+          "begin": 3274,
+          "decl": 3278,
+          "end": 3280
         },
         "GL_SHARE_WITH_CURRENT_CONTEXT": {
           "doc": "OpenGL context sharing; defaults to 0.",
@@ -20644,9 +20740,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3266,
-          "decl": 3269,
-          "end": 3272
+          "begin": 3280,
+          "decl": 3283,
+          "end": 3286
         },
         "GL_FRAMEBUFFER_SRGB_CAPABLE": {
           "doc": "requests sRGB capable visual; defaults to 0.",
@@ -20654,9 +20750,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3272,
-          "decl": 3275,
-          "end": 3277
+          "begin": 3286,
+          "decl": 3289,
+          "end": 3291
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR": {
           "doc": "sets context the release behavior. See SDL_GLContextReleaseFlag; defaults to\nFLUSH.",
@@ -20664,9 +20760,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3277,
-          "decl": 3281,
-          "end": 3283
+          "begin": 3291,
+          "decl": 3295,
+          "end": 3297
         },
         "GL_CONTEXT_RESET_NOTIFICATION": {
           "doc": "set context reset notification. See SDL_GLContextResetNotification; defaults\nto NO_NOTIFICATION.",
@@ -20674,9 +20770,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3283,
-          "decl": 3287,
-          "end": 3290
+          "begin": 3297,
+          "decl": 3301,
+          "end": 3304
         },
         "GL_CONTEXT_NO_ERROR": {
           "doc": "",
@@ -20684,9 +20780,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3291,
-          "decl": 3291,
-          "end": 3293
+          "begin": 3305,
+          "decl": 3305,
+          "end": 3307
         },
         "GL_FLOATBUFFERS": {
           "doc": "",
@@ -20694,9 +20790,9 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3294,
-          "decl": 3294,
-          "end": 3296
+          "begin": 3308,
+          "decl": 3308,
+          "end": 3310
         },
         "GL_EGL_PLATFORM": {
           "doc": "",
@@ -20704,18 +20800,18 @@
           "kind": "var",
           "type": "GLAttr",
           "constexpr": true,
-          "begin": 3297,
-          "decl": 3297,
-          "end": 3299
+          "begin": 3311,
+          "decl": 3311,
+          "end": 3313
         },
         "GLProfile": {
           "doc": "Possible values to be set for the SDL_GL_CONTEXT_PROFILE_MASK attribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLProfile",
           "kind": "alias",
           "type": "SDL_GLProfile",
-          "begin": 3306,
-          "decl": 3311,
-          "end": 3313
+          "begin": 3320,
+          "decl": 3325,
+          "end": 3327
         },
         "GL_CONTEXT_PROFILE_CORE": {
           "doc": "OpenGL Core Profile context",
@@ -20723,9 +20819,9 @@
           "kind": "var",
           "type": "GLProfile",
           "constexpr": true,
-          "begin": 3313,
-          "decl": 3316,
-          "end": 3318
+          "begin": 3327,
+          "decl": 3330,
+          "end": 3332
         },
         "GL_CONTEXT_PROFILE_COMPATIBILITY": {
           "doc": "OpenGL Compatibility Profile context",
@@ -20733,9 +20829,9 @@
           "kind": "var",
           "type": "GLProfile",
           "constexpr": true,
-          "begin": 3318,
-          "decl": 3321,
-          "end": 3324
+          "begin": 3332,
+          "decl": 3335,
+          "end": 3338
         },
         "GL_CONTEXT_PROFILE_ES": {
           "doc": "GLX_CONTEXT_ES2_PROFILE_BIT_EXT",
@@ -20743,18 +20839,18 @@
           "kind": "var",
           "type": "GLProfile",
           "constexpr": true,
-          "begin": 3324,
-          "decl": 3327,
-          "end": 3329
+          "begin": 3338,
+          "decl": 3341,
+          "end": 3343
         },
         "GLContextFlag": {
           "doc": "Possible flags to be set for the SDL_GL_CONTEXT_FLAGS attribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextFlag",
           "kind": "alias",
           "type": "SDL_GLContextFlag",
-          "begin": 3336,
-          "decl": 3341,
-          "end": 3343
+          "begin": 3350,
+          "decl": 3355,
+          "end": 3357
         },
         "GL_CONTEXT_DEBUG_FLAG": {
           "doc": "",
@@ -20762,9 +20858,9 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3343,
-          "decl": 3343,
-          "end": 3345
+          "begin": 3357,
+          "decl": 3357,
+          "end": 3359
         },
         "GL_CONTEXT_FORWARD_COMPATIBLE_FLAG": {
           "doc": "",
@@ -20772,9 +20868,9 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3345,
-          "decl": 3345,
-          "end": 3348
+          "begin": 3359,
+          "decl": 3359,
+          "end": 3362
         },
         "GL_CONTEXT_ROBUST_ACCESS_FLAG": {
           "doc": "",
@@ -20782,9 +20878,9 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3348,
-          "decl": 3348,
-          "end": 3351
+          "begin": 3362,
+          "decl": 3362,
+          "end": 3365
         },
         "GL_CONTEXT_RESET_ISOLATION_FLAG": {
           "doc": "",
@@ -20792,18 +20888,18 @@
           "kind": "var",
           "type": "GLContextFlag",
           "constexpr": true,
-          "begin": 3351,
-          "decl": 3351,
-          "end": 3354
+          "begin": 3365,
+          "decl": 3365,
+          "end": 3368
         },
         "GLContextReleaseFlag": {
           "doc": "Possible values to be set for the SDL_GL_CONTEXT_RELEASE_BEHAVIOR\nattribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextReleaseFlag",
           "kind": "alias",
           "type": "SDL_GLContextReleaseFlag",
-          "begin": 3361,
-          "decl": 3367,
-          "end": 3369
+          "begin": 3375,
+          "decl": 3381,
+          "end": 3383
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_NONE": {
           "doc": "",
@@ -20811,9 +20907,9 @@
           "kind": "var",
           "type": "GLContextReleaseFlag",
           "constexpr": true,
-          "begin": 3369,
-          "decl": 3369,
-          "end": 3372
+          "begin": 3383,
+          "decl": 3383,
+          "end": 3386
         },
         "GL_CONTEXT_RELEASE_BEHAVIOR_FLUSH": {
           "doc": "",
@@ -20821,18 +20917,18 @@
           "kind": "var",
           "type": "GLContextReleaseFlag",
           "constexpr": true,
-          "begin": 3372,
-          "decl": 3372,
-          "end": 3375
+          "begin": 3386,
+          "decl": 3386,
+          "end": 3389
         },
         "GLContextResetNotification": {
           "doc": "Possible values to be set SDL_GL_CONTEXT_RESET_NOTIFICATION attribute.\n\n@since This datatype is available since SDL 3.2.0.",
           "name": "GLContextResetNotification",
           "kind": "alias",
           "type": "SDL_GLContextResetNotification",
-          "begin": 3382,
-          "decl": 3387,
-          "end": 3389
+          "begin": 3396,
+          "decl": 3401,
+          "end": 3403
         },
         "GL_CONTEXT_RESET_NO_NOTIFICATION": {
           "doc": "",
@@ -20840,9 +20936,9 @@
           "kind": "var",
           "type": "GLContextResetNotification",
           "constexpr": true,
-          "begin": 3389,
-          "decl": 3389,
-          "end": 3392
+          "begin": 3403,
+          "decl": 3403,
+          "end": 3406
         },
         "GL_CONTEXT_RESET_LOSE_CONTEXT": {
           "doc": "",
@@ -20850,9 +20946,9 @@
           "kind": "var",
           "type": "GLContextResetNotification",
           "constexpr": true,
-          "begin": 3392,
-          "decl": 3392,
-          "end": 3395
+          "begin": 3406,
+          "decl": 3406,
+          "end": 3409
         },
         "GetNumVideoDrivers": {
           "doc": "Get the number of video drivers compiled into SDL.\n\n@returns the number of built in video drivers.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetVideoDriver()",
@@ -20860,9 +20956,9 @@
           "kind": "function",
           "type": "int",
           "parameters": [],
-          "begin": 3397,
-          "decl": 3408,
-          "end": 3410
+          "begin": 3411,
+          "decl": 3422,
+          "end": 3424
         },
         "GetVideoDriver": {
           "doc": "Get the name of a built in video driver.\n\nThe video drivers are presented in the order in which they are normally\nchecked during initialization.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"cocoa\",\n\"x11\" or \"windows\". These never have Unicode characters, and are not meant\nto be proper names.\n\n@param index the index of a video driver.\n@returns the name of the video driver with the given **index**.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetNumVideoDrivers()",
@@ -20875,9 +20971,9 @@
               "type": "int"
             }
           ],
-          "begin": 3410,
-          "decl": 3429,
-          "end": 3434
+          "begin": 3424,
+          "decl": 3443,
+          "end": 3448
         },
         "GetCurrentVideoDriver": {
           "doc": "Get the name of the currently initialized video driver.\n\nThe names of drivers are all simple, low-ASCII identifiers, like \"cocoa\",\n\"x11\" or \"windows\". These never have Unicode characters, and are not meant\nto be proper names.\n\n@returns the name of the current video driver or NULL if no driver has been\n         initialized.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetNumVideoDrivers()\n@sa GetVideoDriver()",
@@ -20885,9 +20981,9 @@
           "kind": "function",
           "type": "const char *",
           "parameters": [],
-          "begin": 3434,
-          "decl": 3451,
-          "end": 3456
+          "begin": 3448,
+          "decl": 3465,
+          "end": 3470
         },
         "GetSystemTheme": {
           "doc": "Get the current system theme.\n\n@returns the current system theme, light, dark, or unknown.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20895,9 +20991,9 @@
           "kind": "function",
           "type": "SystemTheme",
           "parameters": [],
-          "begin": 3456,
-          "decl": 3465,
-          "end": 3467
+          "begin": 3470,
+          "decl": 3479,
+          "end": 3481
         },
         "prop::Display": {
           "doc": "",
@@ -20910,9 +21006,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3469,
-              "decl": 3469,
-              "end": 3471
+              "begin": 3483,
+              "decl": 3483,
+              "end": 3485
             },
             "KMSDRM_PANEL_ORIENTATION_NUMBER": {
               "doc": "",
@@ -20920,14 +21016,14 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3471,
-              "decl": 3471,
-              "end": 3474
+              "begin": 3485,
+              "decl": 3485,
+              "end": 3488
             }
           },
-          "begin": 3467,
-          "decl": 3467,
-          "end": 3476
+          "begin": 3481,
+          "decl": 3481,
+          "end": 3490
         },
         "GetWindows": {
           "doc": "Get a list of valid windows.\n\n@returns a NULL terminated array of SDL_Window pointers or NULL on failure;\n         call GetError() for more information. This is a single\n         allocation that should be freed with SDL_free() when it is no\n         longer needed.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -20935,9 +21031,9 @@
           "kind": "function",
           "type": "OwnArray<WindowRef>",
           "parameters": [],
-          "begin": 3476,
-          "decl": 3488,
-          "end": 3495
+          "begin": 3490,
+          "decl": 3502,
+          "end": 3509
         },
         "prop::Window": {
           "doc": "",
@@ -20950,9 +21046,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3497,
-              "decl": 3497,
-              "end": 3500
+              "begin": 3511,
+              "decl": 3511,
+              "end": 3514
             },
             "CREATE_BORDERLESS_BOOLEAN": {
               "doc": "",
@@ -20960,9 +21056,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3500,
-              "decl": 3500,
-              "end": 3503
+              "begin": 3514,
+              "decl": 3514,
+              "end": 3517
             },
             "CREATE_FOCUSABLE_BOOLEAN": {
               "doc": "",
@@ -20970,9 +21066,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3503,
-              "decl": 3503,
-              "end": 3506
+              "begin": 3517,
+              "decl": 3517,
+              "end": 3520
             },
             "CREATE_EXTERNAL_GRAPHICS_CONTEXT_BOOLEAN": {
               "doc": "",
@@ -20980,9 +21076,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3506,
-              "decl": 3506,
-              "end": 3509
+              "begin": 3520,
+              "decl": 3520,
+              "end": 3523
             },
             "CREATE_FLAGS_NUMBER": {
               "doc": "",
@@ -20990,9 +21086,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3509,
-              "decl": 3509,
-              "end": 3511
+              "begin": 3523,
+              "decl": 3523,
+              "end": 3525
             },
             "CREATE_FULLSCREEN_BOOLEAN": {
               "doc": "",
@@ -21000,9 +21096,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3511,
-              "decl": 3511,
-              "end": 3514
+              "begin": 3525,
+              "decl": 3525,
+              "end": 3528
             },
             "CREATE_HEIGHT_NUMBER": {
               "doc": "",
@@ -21010,9 +21106,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3514,
-              "decl": 3514,
-              "end": 3516
+              "begin": 3528,
+              "decl": 3528,
+              "end": 3530
             },
             "CREATE_HIDDEN_BOOLEAN": {
               "doc": "",
@@ -21020,9 +21116,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3516,
-              "decl": 3516,
-              "end": 3518
+              "begin": 3530,
+              "decl": 3530,
+              "end": 3532
             },
             "CREATE_HIGH_PIXEL_DENSITY_BOOLEAN": {
               "doc": "",
@@ -21030,9 +21126,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3518,
-              "decl": 3518,
-              "end": 3521
+              "begin": 3532,
+              "decl": 3532,
+              "end": 3535
             },
             "CREATE_MAXIMIZED_BOOLEAN": {
               "doc": "",
@@ -21040,9 +21136,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3521,
-              "decl": 3521,
-              "end": 3524
+              "begin": 3535,
+              "decl": 3535,
+              "end": 3538
             },
             "CREATE_MENU_BOOLEAN": {
               "doc": "",
@@ -21050,9 +21146,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3524,
-              "decl": 3524,
-              "end": 3526
+              "begin": 3538,
+              "decl": 3538,
+              "end": 3540
             },
             "CREATE_METAL_BOOLEAN": {
               "doc": "",
@@ -21060,9 +21156,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3526,
-              "decl": 3526,
-              "end": 3528
+              "begin": 3540,
+              "decl": 3540,
+              "end": 3542
             },
             "CREATE_MINIMIZED_BOOLEAN": {
               "doc": "",
@@ -21070,9 +21166,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3528,
-              "decl": 3528,
-              "end": 3531
+              "begin": 3542,
+              "decl": 3542,
+              "end": 3545
             },
             "CREATE_MODAL_BOOLEAN": {
               "doc": "",
@@ -21080,9 +21176,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3531,
-              "decl": 3531,
-              "end": 3533
+              "begin": 3545,
+              "decl": 3545,
+              "end": 3547
             },
             "CREATE_MOUSE_GRABBED_BOOLEAN": {
               "doc": "",
@@ -21090,9 +21186,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3533,
-              "decl": 3533,
-              "end": 3536
+              "begin": 3547,
+              "decl": 3547,
+              "end": 3550
             },
             "CREATE_OPENGL_BOOLEAN": {
               "doc": "",
@@ -21100,9 +21196,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3536,
-              "decl": 3536,
-              "end": 3538
+              "begin": 3550,
+              "decl": 3550,
+              "end": 3552
             },
             "CREATE_PARENT_POINTER": {
               "doc": "",
@@ -21110,9 +21206,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3538,
-              "decl": 3538,
-              "end": 3540
+              "begin": 3552,
+              "decl": 3552,
+              "end": 3554
             },
             "CREATE_RESIZABLE_BOOLEAN": {
               "doc": "",
@@ -21120,9 +21216,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3540,
-              "decl": 3540,
-              "end": 3543
+              "begin": 3554,
+              "decl": 3554,
+              "end": 3557
             },
             "CREATE_TITLE_STRING": {
               "doc": "",
@@ -21130,9 +21226,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3543,
-              "decl": 3543,
-              "end": 3545
+              "begin": 3557,
+              "decl": 3557,
+              "end": 3559
             },
             "CREATE_TRANSPARENT_BOOLEAN": {
               "doc": "",
@@ -21140,9 +21236,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3545,
-              "decl": 3545,
-              "end": 3548
+              "begin": 3559,
+              "decl": 3559,
+              "end": 3562
             },
             "CREATE_TOOLTIP_BOOLEAN": {
               "doc": "",
@@ -21150,9 +21246,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3548,
-              "decl": 3548,
-              "end": 3550
+              "begin": 3562,
+              "decl": 3562,
+              "end": 3564
             },
             "CREATE_UTILITY_BOOLEAN": {
               "doc": "",
@@ -21160,9 +21256,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3550,
-              "decl": 3550,
-              "end": 3552
+              "begin": 3564,
+              "decl": 3564,
+              "end": 3566
             },
             "CREATE_VULKAN_BOOLEAN": {
               "doc": "",
@@ -21170,9 +21266,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3552,
-              "decl": 3552,
-              "end": 3554
+              "begin": 3566,
+              "decl": 3566,
+              "end": 3568
             },
             "CREATE_WIDTH_NUMBER": {
               "doc": "",
@@ -21180,9 +21276,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3554,
-              "decl": 3554,
-              "end": 3556
+              "begin": 3568,
+              "decl": 3568,
+              "end": 3570
             },
             "CREATE_X_NUMBER": {
               "doc": "",
@@ -21190,9 +21286,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3556,
-              "decl": 3556,
-              "end": 3558
+              "begin": 3570,
+              "decl": 3570,
+              "end": 3572
             },
             "CREATE_Y_NUMBER": {
               "doc": "",
@@ -21200,9 +21296,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3558,
-              "decl": 3558,
-              "end": 3560
+              "begin": 3572,
+              "decl": 3572,
+              "end": 3574
             },
             "CREATE_COCOA_WINDOW_POINTER": {
               "doc": "",
@@ -21210,9 +21306,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3560,
-              "decl": 3560,
-              "end": 3563
+              "begin": 3574,
+              "decl": 3574,
+              "end": 3577
             },
             "CREATE_COCOA_VIEW_POINTER": {
               "doc": "",
@@ -21220,9 +21316,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3563,
-              "decl": 3563,
-              "end": 3566
+              "begin": 3577,
+              "decl": 3577,
+              "end": 3580
             },
             "CREATE_WAYLAND_SURFACE_ROLE_CUSTOM_BOOLEAN": {
               "doc": "",
@@ -21230,9 +21326,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3566,
-              "decl": 3566,
-              "end": 3569
+              "begin": 3580,
+              "decl": 3580,
+              "end": 3583
             },
             "CREATE_WAYLAND_CREATE_EGL_WINDOW_BOOLEAN": {
               "doc": "",
@@ -21240,9 +21336,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3569,
-              "decl": 3569,
-              "end": 3572
+              "begin": 3583,
+              "decl": 3583,
+              "end": 3586
             },
             "CREATE_WAYLAND_WL_SURFACE_POINTER": {
               "doc": "",
@@ -21250,9 +21346,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3572,
-              "decl": 3572,
-              "end": 3575
+              "begin": 3586,
+              "decl": 3586,
+              "end": 3589
             },
             "CREATE_WIN32_HWND_POINTER": {
               "doc": "",
@@ -21260,9 +21356,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3575,
-              "decl": 3575,
-              "end": 3578
+              "begin": 3589,
+              "decl": 3589,
+              "end": 3592
             },
             "CREATE_WIN32_PIXEL_FORMAT_HWND_POINTER": {
               "doc": "",
@@ -21270,9 +21366,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3578,
-              "decl": 3578,
-              "end": 3581
+              "begin": 3592,
+              "decl": 3592,
+              "end": 3595
             },
             "CREATE_X11_WINDOW_NUMBER": {
               "doc": "",
@@ -21280,9 +21376,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3581,
-              "decl": 3581,
-              "end": 3584
+              "begin": 3595,
+              "decl": 3595,
+              "end": 3598
             },
             "SHAPE_POINTER": {
               "doc": "",
@@ -21290,9 +21386,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3584,
-              "decl": 3584,
-              "end": 3586
+              "begin": 3598,
+              "decl": 3598,
+              "end": 3600
             },
             "HDR_ENABLED_BOOLEAN": {
               "doc": "",
@@ -21300,9 +21396,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3586,
-              "decl": 3586,
-              "end": 3588
+              "begin": 3600,
+              "decl": 3600,
+              "end": 3602
             },
             "SDR_WHITE_LEVEL_FLOAT": {
               "doc": "",
@@ -21310,9 +21406,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3588,
-              "decl": 3588,
-              "end": 3590
+              "begin": 3602,
+              "decl": 3602,
+              "end": 3604
             },
             "HDR_HEADROOM_FLOAT": {
               "doc": "",
@@ -21320,9 +21416,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3590,
-              "decl": 3590,
-              "end": 3592
+              "begin": 3604,
+              "decl": 3604,
+              "end": 3606
             },
             "ANDROID_WINDOW_POINTER": {
               "doc": "",
@@ -21330,9 +21426,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3592,
-              "decl": 3592,
-              "end": 3594
+              "begin": 3606,
+              "decl": 3606,
+              "end": 3608
             },
             "ANDROID_SURFACE_POINTER": {
               "doc": "",
@@ -21340,9 +21436,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3594,
-              "decl": 3594,
-              "end": 3597
+              "begin": 3608,
+              "decl": 3608,
+              "end": 3611
             },
             "UIKIT_WINDOW_POINTER": {
               "doc": "",
@@ -21350,9 +21446,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3597,
-              "decl": 3597,
-              "end": 3599
+              "begin": 3611,
+              "decl": 3611,
+              "end": 3613
             },
             "UIKIT_METAL_VIEW_TAG_NUMBER": {
               "doc": "",
@@ -21360,9 +21456,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3599,
-              "decl": 3599,
-              "end": 3602
+              "begin": 3613,
+              "decl": 3613,
+              "end": 3616
             },
             "UIKIT_OPENGL_FRAMEBUFFER_NUMBER": {
               "doc": "",
@@ -21370,9 +21466,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3602,
-              "decl": 3602,
-              "end": 3605
+              "begin": 3616,
+              "decl": 3616,
+              "end": 3619
             },
             "UIKIT_OPENGL_RENDERBUFFER_NUMBER": {
               "doc": "",
@@ -21380,9 +21476,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3605,
-              "decl": 3605,
-              "end": 3608
+              "begin": 3619,
+              "decl": 3619,
+              "end": 3622
             },
             "UIKIT_OPENGL_RESOLVE_FRAMEBUFFER_NUMBER": {
               "doc": "",
@@ -21390,9 +21486,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3608,
-              "decl": 3608,
-              "end": 3611
+              "begin": 3622,
+              "decl": 3622,
+              "end": 3625
             },
             "KMSDRM_DEVICE_INDEX_NUMBER": {
               "doc": "",
@@ -21400,9 +21496,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3611,
-              "decl": 3611,
-              "end": 3614
+              "begin": 3625,
+              "decl": 3625,
+              "end": 3628
             },
             "KMSDRM_DRM_FD_NUMBER": {
               "doc": "",
@@ -21410,9 +21506,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3614,
-              "decl": 3614,
-              "end": 3616
+              "begin": 3628,
+              "decl": 3628,
+              "end": 3630
             },
             "KMSDRM_GBM_DEVICE_POINTER": {
               "doc": "",
@@ -21420,9 +21516,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3616,
-              "decl": 3616,
-              "end": 3619
+              "begin": 3630,
+              "decl": 3630,
+              "end": 3633
             },
             "COCOA_WINDOW_POINTER": {
               "doc": "",
@@ -21430,9 +21526,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3619,
-              "decl": 3619,
-              "end": 3621
+              "begin": 3633,
+              "decl": 3633,
+              "end": 3635
             },
             "COCOA_METAL_VIEW_TAG_NUMBER": {
               "doc": "",
@@ -21440,9 +21536,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3621,
-              "decl": 3621,
-              "end": 3624
+              "begin": 3635,
+              "decl": 3635,
+              "end": 3638
             },
             "OPENVR_OVERLAY_ID": {
               "doc": "",
@@ -21450,9 +21546,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3624,
-              "decl": 3624,
-              "end": 3626
+              "begin": 3638,
+              "decl": 3638,
+              "end": 3640
             },
             "VIVANTE_DISPLAY_POINTER": {
               "doc": "",
@@ -21460,9 +21556,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3626,
-              "decl": 3626,
-              "end": 3629
+              "begin": 3640,
+              "decl": 3640,
+              "end": 3643
             },
             "VIVANTE_WINDOW_POINTER": {
               "doc": "",
@@ -21470,9 +21566,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3629,
-              "decl": 3629,
-              "end": 3631
+              "begin": 3643,
+              "decl": 3643,
+              "end": 3645
             },
             "VIVANTE_SURFACE_POINTER": {
               "doc": "",
@@ -21480,9 +21576,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3631,
-              "decl": 3631,
-              "end": 3634
+              "begin": 3645,
+              "decl": 3645,
+              "end": 3648
             },
             "WIN32_HWND_POINTER": {
               "doc": "",
@@ -21490,9 +21586,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3634,
-              "decl": 3634,
-              "end": 3636
+              "begin": 3648,
+              "decl": 3648,
+              "end": 3650
             },
             "WIN32_HDC_POINTER": {
               "doc": "",
@@ -21500,9 +21596,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3636,
-              "decl": 3636,
-              "end": 3638
+              "begin": 3650,
+              "decl": 3650,
+              "end": 3652
             },
             "WIN32_INSTANCE_POINTER": {
               "doc": "",
@@ -21510,9 +21606,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3638,
-              "decl": 3638,
-              "end": 3640
+              "begin": 3652,
+              "decl": 3652,
+              "end": 3654
             },
             "WAYLAND_DISPLAY_POINTER": {
               "doc": "",
@@ -21520,9 +21616,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3640,
-              "decl": 3640,
-              "end": 3643
+              "begin": 3654,
+              "decl": 3654,
+              "end": 3657
             },
             "WAYLAND_SURFACE_POINTER": {
               "doc": "",
@@ -21530,9 +21626,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3643,
-              "decl": 3643,
-              "end": 3646
+              "begin": 3657,
+              "decl": 3657,
+              "end": 3660
             },
             "WAYLAND_VIEWPORT_POINTER": {
               "doc": "",
@@ -21540,9 +21636,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3646,
-              "decl": 3646,
-              "end": 3649
+              "begin": 3660,
+              "decl": 3660,
+              "end": 3663
             },
             "WAYLAND_EGL_WINDOW_POINTER": {
               "doc": "",
@@ -21550,9 +21646,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3649,
-              "decl": 3649,
-              "end": 3652
+              "begin": 3663,
+              "decl": 3663,
+              "end": 3666
             },
             "WAYLAND_XDG_SURFACE_POINTER": {
               "doc": "",
@@ -21560,9 +21656,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3652,
-              "decl": 3652,
-              "end": 3655
+              "begin": 3666,
+              "decl": 3666,
+              "end": 3669
             },
             "WAYLAND_XDG_TOPLEVEL_POINTER": {
               "doc": "",
@@ -21570,9 +21666,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3655,
-              "decl": 3655,
-              "end": 3658
+              "begin": 3669,
+              "decl": 3669,
+              "end": 3672
             },
             "WAYLAND_XDG_TOPLEVEL_EXPORT_HANDLE_STRING": {
               "doc": "",
@@ -21580,9 +21676,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3658,
-              "decl": 3658,
-              "end": 3661
+              "begin": 3672,
+              "decl": 3672,
+              "end": 3675
             },
             "WAYLAND_XDG_POPUP_POINTER": {
               "doc": "",
@@ -21590,9 +21686,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3661,
-              "decl": 3661,
-              "end": 3664
+              "begin": 3675,
+              "decl": 3675,
+              "end": 3678
             },
             "WAYLAND_XDG_POSITIONER_POINTER": {
               "doc": "",
@@ -21600,9 +21696,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3664,
-              "decl": 3664,
-              "end": 3667
+              "begin": 3678,
+              "decl": 3678,
+              "end": 3681
             },
             "X11_DISPLAY_POINTER": {
               "doc": "",
@@ -21610,9 +21706,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3667,
-              "decl": 3667,
-              "end": 3669
+              "begin": 3681,
+              "decl": 3681,
+              "end": 3683
             },
             "X11_SCREEN_NUMBER": {
               "doc": "",
@@ -21620,9 +21716,9 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3669,
-              "decl": 3669,
-              "end": 3671
+              "begin": 3683,
+              "decl": 3683,
+              "end": 3685
             },
             "X11_WINDOW_NUMBER": {
               "doc": "",
@@ -21630,14 +21726,14 @@
               "kind": "var",
               "type": "auto",
               "constexpr": true,
-              "begin": 3671,
-              "decl": 3671,
-              "end": 3673
+              "begin": 3685,
+              "decl": 3685,
+              "end": 3687
             }
           },
-          "begin": 3495,
-          "decl": 3495,
-          "end": 3675
+          "begin": 3509,
+          "decl": 3509,
+          "end": 3689
         },
         "GetWindowFromID": {
           "doc": "Get a window from a stored ID.\n\nThe numeric ID is what SDL_WindowEvent references, and is necessary to map\nthese events to specific SDL_Window objects.\n\n@param id the ID of the window.\n@returns the window associated with `id` or NULL if it doesn't exist; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetID()",
@@ -21650,27 +21746,27 @@
               "type": "WindowID"
             }
           ],
-          "begin": 3675,
-          "decl": 3691,
-          "end": 3696
+          "begin": 3689,
+          "decl": 3705,
+          "end": 3710
         },
         "SDL_WINDOW_SURFACE_VSYNC_DISABLED": {
           "doc": "",
           "name": "SDL_WINDOW_SURFACE_VSYNC_DISABLED",
           "kind": "def",
           "value": "0",
-          "begin": 3699,
-          "decl": 3699,
-          "end": 3701
+          "begin": 3713,
+          "decl": 3713,
+          "end": 3715
         },
         "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE": {
           "doc": "",
           "name": "SDL_WINDOW_SURFACE_VSYNC_ADAPTIVE",
           "kind": "def",
           "value": "(-1)",
-          "begin": 3702,
-          "decl": 3702,
-          "end": 3704
+          "begin": 3716,
+          "decl": 3716,
+          "end": 3718
         },
         "GetGrabbedWindow": {
           "doc": "Get the window that currently has an input grab enabled.\n\n@returns the window if input is grabbed or NULL otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetMouseGrab()\n@sa SetKeyboardGrab()",
@@ -21678,9 +21774,9 @@
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
-          "begin": 3706,
-          "decl": 3718,
-          "end": 3720
+          "begin": 3720,
+          "decl": 3732,
+          "end": 3734
         },
         "ScreenSaverEnabled": {
           "doc": "@brief  Check whether the screensaver is currently enabled.\n\nThe screensaver is disabled by default.\n\nThe default can also be changed using `SDL_HINT_VIDEO_ALLOW_SCREENSAVER`.\n\n@returns true if the screensaver is enabled, false if it is disabled.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa DisableScreenSaver()\n@sa EnableScreenSaver()",
@@ -21688,9 +21784,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3720,
-          "decl": 3734,
-          "end": 3736
+          "begin": 3734,
+          "decl": 3748,
+          "end": 3750
         },
         "EnableScreenSaver": {
           "doc": "@brief Allow the screen to be blanked by a screen saver.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa DisableScreenSaver()\n@sa ScreenSaverEnabled()",
@@ -21698,9 +21794,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3736,
-          "decl": 3747,
-          "end": 3749
+          "begin": 3750,
+          "decl": 3761,
+          "end": 3763
         },
         "DisableScreenSaver": {
           "doc": "@brief Prevent the screen from being blanked by a screen saver.\n\nIf you disable the screensaver, it is automatically re-enabled when SDL\nquits.\n\nThe screensaver is disabled by default, but this may by changed by\nSDL_HINT_VIDEO_ALLOW_SCREENSAVER.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@sa EnableScreenSaver()\n@sa ScreenSaverEnabled()",
@@ -21708,9 +21804,9 @@
           "kind": "function",
           "type": "bool",
           "parameters": [],
-          "begin": 3749,
-          "decl": 3766,
-          "end": 3768
+          "begin": 3763,
+          "decl": 3780,
+          "end": 3782
         },
         "GL_LoadLibrary": {
           "doc": "Dynamically load an OpenGL library.\n\nThis should be done after initializing the video driver, but before\ncreating any OpenGL windows. If no OpenGL library is loaded, the default\nlibrary will be loaded upon creation of the first OpenGL window.\n\nIf you do this, you need to retrieve all of the GL functions used in your\nprogram from the dynamic library using SDL_GL_GetProcAddress().\n\n@param path the platform dependent OpenGL library name, or NULL to open the\n            default OpenGL library.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetProcAddress()\n@sa GL_UnloadLibrary()",
@@ -21723,9 +21819,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3768,
-          "decl": 3790,
-          "end": 3795
+          "begin": 3782,
+          "decl": 3804,
+          "end": 3809
         },
         "GL_GetProcAddress": {
           "doc": "Get an OpenGL function by name.\n\nIf the GL library is loaded at runtime with SDL_GL_LoadLibrary(), then all\nGL functions must be retrieved this way. Usually this is used to retrieve\nfunction pointers to OpenGL extensions.\n\nThere are some quirks to looking up OpenGL functions that require some\nextra care from the application. If you code carefully, you can handle\nthese quirks without any platform-specific code, though:\n\n- On Windows, function pointers are specific to the current GL context;\n  this means you need to have created a GL context and made it current\n  before calling SDL_GL_GetProcAddress(). If you recreate your context or\n  create a second context, you should assume that any existing function\n  pointers aren't valid to use with it. This is (currently) a\n  Windows-specific limitation, and in practice lots of drivers don't suffer\n  this limitation, but it is still the way the wgl API is documented to\n  work and you should expect crashes if you don't respect it. Store a copy\n  of the function pointers that comes and goes with context lifespan.\n- On X11, function pointers returned by this function are valid for any\n  context, and can even be looked up before a context is created at all.\n  This means that, for at least some common OpenGL implementations, if you\n  look up a function that doesn't exist, you'll get a non-NULL result that\n  is _NOT_ safe to call. You must always make sure the function is actually\n  available for a given GL context before calling it, by checking for the\n  existence of the appropriate extension with SDL_GL_ExtensionSupported(),\n  or verifying that the version of OpenGL you're using offers the function\n  as core functionality.\n- Some OpenGL drivers, on all platforms, *will* return NULL if a function\n  isn't supported, but you can't count on this behavior. Check for\n  extensions you use, and if you get a NULL anyway, act as if that\n  extension wasn't available. This is probably a bug in the driver, but you\n  can code defensively for this scenario anyhow.\n- Just because you're on Linux/Unix, don't assume you'll be using X11.\n  Next-gen display servers are waiting to replace it, and may or may not\n  make the same promises about function pointers.\n- OpenGL function pointers must be declared `APIENTRY` as in the example\n  code. This will ensure the proper calling convention is followed on\n  platforms where this matters (Win32) thereby avoiding stack corruption.\n\n@param proc the name of an OpenGL function.\n@returns a pointer to the named OpenGL function. The returned pointer\n         should be cast to the appropriate function signature.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ExtensionSupported()\n@sa GL_LoadLibrary()\n@sa GL_UnloadLibrary()",
@@ -21738,9 +21834,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3795,
-          "decl": 3848,
-          "end": 3853
+          "begin": 3809,
+          "decl": 3862,
+          "end": 3867
         },
         "EGL_GetProcAddress": {
           "doc": "Get an EGL library function by name.\n\nIf an EGL library is loaded, this function allows applications to get entry\npoints for EGL functions. This is useful to provide to an EGL API and\nextension loader.\n\n@param proc the name of an EGL function.\n@returns a pointer to the named EGL function. The returned pointer should\n         be cast to the appropriate function signature.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa EGL_GetCurrentDisplay()",
@@ -21753,9 +21849,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3853,
-          "decl": 3870,
-          "end": 3875
+          "begin": 3867,
+          "decl": 3884,
+          "end": 3889
         },
         "GL_UnloadLibrary": {
           "doc": "Unload the OpenGL library previously loaded by SDL_GL_LoadLibrary().\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_LoadLibrary()",
@@ -21763,9 +21859,9 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "begin": 3875,
-          "decl": 3884,
-          "end": 3886
+          "begin": 3889,
+          "decl": 3898,
+          "end": 3900
         },
         "GL_ExtensionSupported": {
           "doc": "Check if an OpenGL extension is supported for the current context.\n\nThis function operates on the current GL context; you must have created a\ncontext and it must be current before calling this function. Do not assume\nthat all contexts you create will have the same set of extensions\navailable, or that recreating an existing context will offer the same\nextensions again.\n\nWhile it's probably not a massive overhead, this function is not an O(1)\noperation. Check the extensions you care about after creating the GL\ncontext and save that information somewhere instead of calling the function\nevery time you need to know.\n\n@param extension the name of the extension to check.\n@returns true if the extension is supported, false otherwise.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21778,9 +21874,9 @@
               "type": "StringParam"
             }
           ],
-          "begin": 3886,
-          "decl": 3907,
-          "end": 3912
+          "begin": 3900,
+          "decl": 3921,
+          "end": 3926
         },
         "GL_ResetAttributes": {
           "doc": "Reset all previously set OpenGL context attributes to their default values.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute()\n@sa GL_SetAttribute()",
@@ -21788,9 +21884,9 @@
           "kind": "function",
           "type": "void",
           "parameters": [],
-          "begin": 3912,
-          "decl": 3922,
-          "end": 3924
+          "begin": 3926,
+          "decl": 3936,
+          "end": 3938
         },
         "GL_SetAttribute": {
           "doc": "Set an OpenGL window attribute before window creation.\n\nThis function sets the OpenGL attribute `attr` to `value`. The requested\nattributes should be set before creating an OpenGL window. You should use\nSDL_GL_GetAttribute() to check the values after creating the OpenGL\ncontext, since the values obtained can differ from the requested ones.\n\n@param attr an SDL_GLAttr enum value specifying the OpenGL attribute to\n            set.\n@param value the desired value for the attribute.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetAttribute()\n@sa GL_ResetAttributes()",
@@ -21807,9 +21903,9 @@
               "type": "int"
             }
           ],
-          "begin": 3924,
-          "decl": 3945,
-          "end": 3950
+          "begin": 3938,
+          "decl": 3959,
+          "end": 3964
         },
         "GL_GetAttribute": {
           "doc": "Get the actual value for an attribute from the current context.\n\n@param attr an SDL_GLAttr enum value specifying the OpenGL attribute to\n            get.\n@param value a pointer filled in with the current value of `attr`.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_ResetAttributes()\n@sa GL_SetAttribute()",
@@ -21826,9 +21922,9 @@
               "type": "int *"
             }
           ],
-          "begin": 3950,
-          "decl": 3966,
-          "end": 3971
+          "begin": 3964,
+          "decl": 3980,
+          "end": 3985
         },
         "GL_GetCurrentWindow": {
           "doc": "Get the currently active OpenGL window.\n\n@returns the currently active OpenGL window on success or NULL on failure;\n         call GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21836,9 +21932,9 @@
           "kind": "function",
           "type": "WindowRef",
           "parameters": [],
-          "begin": 3971,
-          "decl": 3981,
-          "end": 3983
+          "begin": 3985,
+          "decl": 3995,
+          "end": 3997
         },
         "GL_GetCurrentContext": {
           "doc": "Get the currently active OpenGL context.\n\n@returns the currently active OpenGL context or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContextBase.MakeCurrent()",
@@ -21846,9 +21942,9 @@
           "kind": "function",
           "type": "GLContextRef",
           "parameters": [],
-          "begin": 3983,
-          "decl": 3995,
-          "end": 4000
+          "begin": 3997,
+          "decl": 4009,
+          "end": 4014
         },
         "EGL_GetCurrentDisplay": {
           "doc": "Get the currently active EGL display.\n\n@returns the currently active EGL display or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21856,9 +21952,9 @@
           "kind": "function",
           "type": "EGLDisplay",
           "parameters": [],
-          "begin": 4000,
-          "decl": 4010,
-          "end": 4015
+          "begin": 4014,
+          "decl": 4024,
+          "end": 4029
         },
         "EGL_GetCurrentConfig": {
           "doc": "Get the currently active EGL config.\n\n@returns the currently active EGL config or NULL on failure; call\n         GetError() for more information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21866,9 +21962,9 @@
           "kind": "function",
           "type": "EGLConfig",
           "parameters": [],
-          "begin": 4015,
-          "decl": 4025,
-          "end": 4027
+          "begin": 4029,
+          "decl": 4039,
+          "end": 4041
         },
         "EGL_GetWindowSurface": {
           "doc": "Get the EGL surface associated with the window.\n\n@param window the window to query.\n@returns the EGLSurface pointer associated with the window, or NULL on\n         failure.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21881,9 +21977,9 @@
               "type": "WindowRef"
             }
           ],
-          "begin": 4027,
-          "decl": 4038,
-          "end": 4043
+          "begin": 4041,
+          "decl": 4052,
+          "end": 4057
         },
         "EGL_SetAttributeCallbacks": {
           "doc": "Sets the callbacks for defining custom EGLAttrib arrays for EGL\ninitialization.\n\nCallbacks that aren't needed can be set to NULL.\n\nNOTE: These callback pointers will be reset after SDL_GL_ResetAttributes.\n\n@param platformAttribCallback callback for attributes to pass to\n                              eglGetPlatformDisplay. May be NULL.\n@param surfaceAttribCallback callback for attributes to pass to\n                             eglCreateSurface. May be NULL.\n@param contextAttribCallback callback for attributes to pass to\n                             eglCreateContext. May be NULL.\n@param userdata a pointer that is passed to the callbacks.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21908,9 +22004,9 @@
               "type": "void *"
             }
           ],
-          "begin": 4043,
-          "decl": 4063,
-          "end": 4075
+          "begin": 4057,
+          "decl": 4077,
+          "end": 4089
         },
         "GL_SetSwapInterval": {
           "doc": "Set the swap interval for the current OpenGL context.\n\nSome systems allow specifying -1 for the interval, to enable adaptive\nvsync. Adaptive vsync works the same as vsync, but if you've already missed\nthe vertical retrace for a given frame, it swaps buffers immediately, which\nmight be less jarring for the user during occasional framerate drops. If an\napplication requests adaptive vsync and the system does not support it,\nthis function will fail and return false. In such a case, you should\nprobably retry the call with 1 for the interval.\n\nAdaptive vsync is implemented for some glX drivers with\nGLX_EXT_swap_control_tear, and for some Windows drivers with\nWGL_EXT_swap_control_tear.\n\nRead more on the Khronos wiki:\nhttps://www.khronos.org/opengl/wiki/Swap_Interval#Adaptive_Vsync\n\n@param interval 0 for immediate updates, 1 for updates synchronized with\n                the vertical retrace, -1 for adaptive vsync.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_GetSwapInterval()",
@@ -21923,9 +22019,9 @@
               "type": "int"
             }
           ],
-          "begin": 4075,
-          "decl": 4104,
-          "end": 4109
+          "begin": 4089,
+          "decl": 4118,
+          "end": 4123
         },
         "GL_GetSwapInterval": {
           "doc": "Get the swap interval for the current OpenGL context.\n\nIf the system can't determine the swap interval, or there isn't a valid\ncurrent context, this function will set *interval to 0 as a safe default.\n\n@param interval output interval value. 0 if there is no vertical retrace\n                synchronization, 1 if the buffer swap is synchronized with\n                the vertical retrace, and -1 if late swaps happen\n                immediately instead of waiting for the next retrace.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GL_SetSwapInterval()",
@@ -21938,9 +22034,9 @@
               "type": "int *"
             }
           ],
-          "begin": 4109,
-          "decl": 4128,
-          "end": 4133
+          "begin": 4123,
+          "decl": 4142,
+          "end": 4147
         },
         "GL_SwapWindow": {
           "doc": "Update a window with OpenGL rendering.\n\nThis is used with double-buffered OpenGL contexts, which are the default.\n\nOn macOS, make sure you bind 0 to the draw framebuffer before swapping the\nwindow, otherwise nothing will happen. If you aren't using\nglBindFramebuffer(), this is the default and you won't have to do anything\nextra.\n\n@param window the window to change.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
@@ -21953,9 +22049,9 @@
               "type": "WindowRef"
             }
           ],
-          "begin": 4133,
-          "decl": 4151,
-          "end": 4156
+          "begin": 4147,
+          "decl": 4165,
+          "end": 4170
         },
         "ObjectRef<SDL_GLContextState>::doFree": {
           "doc": "Delete an OpenGL context.\n\n@param resource the OpenGL context to be deleted.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GLContext\n@sa GLContextBase",
@@ -21969,15 +22065,15 @@
             }
           ],
           "template": [],
-          "begin": 4156,
-          "decl": 4168,
-          "end": 4174
+          "begin": 4170,
+          "decl": 4182,
+          "end": 4188
         }
       },
       "docBegin": 18,
       "docEnd": 46,
       "entriesBegin": 46,
-      "entriesEnd": 4174,
+      "entriesEnd": 4188,
       "namespace": "SDL"
     },
     "SDL3pp_render.h": {
@@ -33646,7 +33742,7 @@
         },
         "Keycode::Keycode": [
           {
-            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@returns the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetName\n@sa Keycode::GetScancode",
+            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetName\n@sa Keycode::GetScancode",
             "name": "Keycode::Keycode",
             "kind": "function",
             "type": "",
@@ -33665,11 +33761,11 @@
               }
             ],
             "begin": 190,
-            "decl": 212,
-            "end": 217
+            "decl": 211,
+            "end": 216
           },
           {
-            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@returns key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetName\n@sa Scancode::Scancode",
+            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@post a valid key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetName\n@sa Scancode::Scancode",
             "name": "Keycode::Keycode",
             "kind": "function",
             "type": "",
@@ -33679,9 +33775,9 @@
                 "type": "StringParam"
               }
             ],
-            "begin": 217,
-            "decl": 232,
-            "end": 236
+            "begin": 216,
+            "decl": 231,
+            "end": 235
           }
         ],
         "Keycode::GetScancode": {
@@ -33696,12 +33792,12 @@
             }
           ],
           "immutable": true,
-          "begin": 236,
-          "decl": 254,
-          "end": 259
+          "begin": 235,
+          "decl": 253,
+          "end": 258
         },
         "Scancode::SetName": {
-          "doc": "Set a human-readable name for a scancode.\n\n@param scancode the desired Scancode.\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode::GetName",
+          "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode::GetName",
           "name": "Scancode::SetName",
           "kind": "function",
           "type": "bool",
@@ -33711,23 +33807,23 @@
               "type": "StringParam"
             }
           ],
-          "begin": 259,
-          "decl": 275,
-          "end": 280
+          "begin": 258,
+          "decl": 273,
+          "end": 278
         },
         "Scancode::GetName": {
-          "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@param scancode the desired Scancode to query.\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetScancode\n@sa GetScancodeFromName\n@sa Scancode::SetName",
+          "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetScancode\n@sa GetScancodeFromName\n@sa Scancode::SetName",
           "name": "Scancode::GetName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "immutable": true,
-          "begin": 280,
-          "decl": 304,
-          "end": 309
+          "begin": 278,
+          "decl": 301,
+          "end": 306
         },
         "Scancode::Scancode": {
-          "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@returns the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetScancode\n@sa Scancode::GetName",
+          "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetScancode\n@sa Scancode::GetName",
           "name": "Scancode::Scancode",
           "kind": "function",
           "type": "",
@@ -33737,44 +33833,68 @@
               "type": "StringParam"
             }
           ],
-          "begin": 309,
-          "decl": 324,
-          "end": 329
+          "begin": 306,
+          "decl": 321,
+          "end": 326
         },
         "Keycode::GetName": {
-          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@param key the desired Keycode to query.\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::Keycode\n@sa Keycode::GetScancode",
+          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::Keycode\n@sa Keycode::GetScancode",
           "name": "Keycode::GetName",
           "kind": "function",
           "type": "const char *",
           "parameters": [],
           "immutable": true,
-          "begin": 329,
-          "decl": 347,
-          "end": 352
+          "begin": 326,
+          "decl": 343,
+          "end": 348
         },
-        "StartTextInput": {
-          "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@param window the window to enable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea\n@sa StartTextInputWithProperties\n@sa StopTextInput\n@sa TextInputActive",
-          "name": "StartTextInput",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            }
-          ],
-          "begin": 352,
-          "decl": 378,
-          "end": 383
-        },
+        "WindowBase<T>::StartTextInput": [
+          {
+            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "name": "WindowBase<T>::StartTextInput",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [],
+            "template": [
+              {
+                "name": "T",
+                "type": "ObjectBox<SDL_Window *>"
+              }
+            ],
+            "begin": 348,
+            "decl": 373,
+            "end": 379
+          },
+          {
+            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "name": "WindowBase<T>::StartTextInput",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "props",
+                "type": "PropertiesRef"
+              }
+            ],
+            "template": [
+              {
+                "name": "T",
+                "type": "ObjectBox<SDL_Window *>"
+              }
+            ],
+            "begin": 379,
+            "decl": 428,
+            "end": 434
+          }
+        ],
         "TextInputType": {
           "doc": "Text input type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa StartTextInputWithProperties",
           "name": "TextInputType",
           "kind": "alias",
           "type": "SDL_TextInputType",
-          "begin": 383,
-          "decl": 394,
-          "end": 396
+          "begin": 434,
+          "decl": 445,
+          "end": 447
         },
         "TEXTINPUT_TYPE_TEXT": {
           "doc": "The input is text.",
@@ -33782,9 +33902,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 396,
-          "decl": 399,
-          "end": 401
+          "begin": 447,
+          "decl": 450,
+          "end": 452
         },
         "TEXTINPUT_TYPE_TEXT_NAME": {
           "doc": "The input is a person's name.",
@@ -33792,9 +33912,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 401,
-          "decl": 404,
-          "end": 406
+          "begin": 452,
+          "decl": 455,
+          "end": 457
         },
         "TEXTINPUT_TYPE_TEXT_EMAIL": {
           "doc": "The input is an e-mail address.",
@@ -33802,9 +33922,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 406,
-          "decl": 409,
-          "end": 412
+          "begin": 457,
+          "decl": 460,
+          "end": 463
         },
         "TEXTINPUT_TYPE_TEXT_USERNAME": {
           "doc": "The input is a username.",
@@ -33812,9 +33932,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 412,
-          "decl": 415,
-          "end": 418
+          "begin": 463,
+          "decl": 466,
+          "end": 469
         },
         "TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN": {
           "doc": "The input is a secure password that is hidden.",
@@ -33822,9 +33942,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 418,
-          "decl": 421,
-          "end": 424
+          "begin": 469,
+          "decl": 472,
+          "end": 475
         },
         "TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE": {
           "doc": "The input is a secure password that is visible.",
@@ -33832,9 +33952,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 424,
-          "decl": 427,
-          "end": 430
+          "begin": 475,
+          "decl": 478,
+          "end": 481
         },
         "TEXTINPUT_TYPE_NUMBER": {
           "doc": "The input is a number.",
@@ -33842,9 +33962,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 430,
-          "decl": 433,
-          "end": 435
+          "begin": 481,
+          "decl": 484,
+          "end": 486
         },
         "TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN": {
           "doc": "The input is a secure PIN that is hidden.",
@@ -33852,9 +33972,9 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 435,
-          "decl": 438,
-          "end": 441
+          "begin": 486,
+          "decl": 489,
+          "end": 492
         },
         "TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE": {
           "doc": "The input is a secure PIN that is visible.",
@@ -33862,18 +33982,18 @@
           "kind": "var",
           "type": "TextInputType",
           "constexpr": true,
-          "begin": 441,
-          "decl": 444,
-          "end": 447
+          "begin": 492,
+          "decl": 495,
+          "end": 498
         },
         "Capitalization": {
           "doc": "Auto capitalization type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa StartTextInputWithProperties",
           "name": "Capitalization",
           "kind": "alias",
           "type": "SDL_Capitalization",
-          "begin": 447,
-          "decl": 458,
-          "end": 460
+          "begin": 498,
+          "decl": 509,
+          "end": 511
         },
         "CAPITALIZE_NONE": {
           "doc": "No auto-capitalization will be done.",
@@ -33881,9 +34001,9 @@
           "kind": "var",
           "type": "Capitalization",
           "constexpr": true,
-          "begin": 460,
-          "decl": 463,
-          "end": 465
+          "begin": 511,
+          "decl": 514,
+          "end": 516
         },
         "CAPITALIZE_SENTENCES": {
           "doc": "The first letter of sentences will be capitalized.",
@@ -33891,9 +34011,9 @@
           "kind": "var",
           "type": "Capitalization",
           "constexpr": true,
-          "begin": 465,
-          "decl": 468,
-          "end": 470
+          "begin": 516,
+          "decl": 519,
+          "end": 521
         },
         "CAPITALIZE_WORDS": {
           "doc": "The first letter of words will be capitalized.",
@@ -33901,9 +34021,9 @@
           "kind": "var",
           "type": "Capitalization",
           "constexpr": true,
-          "begin": 470,
-          "decl": 473,
-          "end": 475
+          "begin": 521,
+          "decl": 524,
+          "end": 526
         },
         "CAPITALIZE_LETTERS": {
           "doc": "All letters will be capitalized.",
@@ -33911,129 +34031,125 @@
           "kind": "var",
           "type": "Capitalization",
           "constexpr": true,
-          "begin": 475,
-          "decl": 478,
-          "end": 480
+          "begin": 526,
+          "decl": 529,
+          "end": 531
         },
-        "StartTextInputWithProperties": {
-          "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param window the window to enable text input.\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea\n@sa StartTextInput\n@sa StopTextInput\n@sa TextInputActive",
-          "name": "StartTextInputWithProperties",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
+        "prop::TextInput": {
+          "doc": "",
+          "name": "prop::TextInput",
+          "kind": "ns",
+          "entries": {
+            "TYPE_NUMBER": {
+              "doc": "",
+              "name": "TYPE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "begin": 533,
+              "decl": 533,
+              "end": 535
             },
-            {
-              "name": "props",
-              "type": "PropertiesRef"
+            "CAPITALIZATION_NUMBER": {
+              "doc": "",
+              "name": "CAPITALIZATION_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "begin": 535,
+              "decl": 535,
+              "end": 537
+            },
+            "AUTOCORRECT_BOOLEAN": {
+              "doc": "",
+              "name": "AUTOCORRECT_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "begin": 537,
+              "decl": 537,
+              "end": 539
+            },
+            "MULTILINE_BOOLEAN": {
+              "doc": "",
+              "name": "MULTILINE_BOOLEAN",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "begin": 539,
+              "decl": 539,
+              "end": 541
+            },
+            "ANDROID_INPUTTYPE_NUMBER": {
+              "doc": "",
+              "name": "ANDROID_INPUTTYPE_NUMBER",
+              "kind": "var",
+              "type": "auto",
+              "constexpr": true,
+              "begin": 541,
+              "decl": 541,
+              "end": 544
             }
-          ],
-          "begin": 480,
-          "decl": 530,
-          "end": 535
-        },
-        "SDL_PROP_TEXTINPUT_TYPE_NUMBER": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_TYPE_NUMBER",
-          "kind": "def",
-          "value": "\"SDL.textinput.type\"",
-          "begin": 535,
-          "decl": 535,
-          "end": 537
-        },
-        "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER",
-          "kind": "def",
-          "value": "\"SDL.textinput.capitalization\"",
-          "begin": 537,
-          "decl": 537,
-          "end": 539
-        },
-        "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN",
-          "kind": "def",
-          "value": "\"SDL.textinput.autocorrect\"",
-          "begin": 539,
-          "decl": 539,
-          "end": 541
-        },
-        "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN",
-          "kind": "def",
-          "value": "\"SDL.textinput.multiline\"",
-          "begin": 541,
-          "decl": 541,
-          "end": 543
-        },
-        "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER",
-          "kind": "def",
-          "value": "\\\n  \"SDL.textinput.android.inputtype\"",
-          "begin": 543,
-          "decl": 543,
+          },
+          "begin": 531,
+          "decl": 531,
           "end": 546
         },
-        "TextInputActive": {
-          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@param window the window to check.\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput",
-          "name": "TextInputActive",
+        "WindowBase<T>::IsTextInputActive": {
+          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+          "name": "WindowBase<T>::IsTextInputActive",
           "kind": "function",
           "type": "bool",
-          "parameters": [
+          "parameters": [],
+          "immutable": true,
+          "template": [
             {
-              "name": "window",
-              "type": "WindowRef"
+              "name": "T",
+              "type": "ObjectBox<SDL_Window *>"
             }
           ],
           "begin": 546,
-          "decl": 558,
+          "decl": 557,
           "end": 563
         },
-        "StopTextInput": {
-          "doc": "Stop receiving any text input events in a window.\n\nIf StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@param window the window to disable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput",
-          "name": "StopTextInput",
+        "WindowBase<T>::StopTextInput": {
+          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase<T>::StartTextInput() showed the screen keyboard, this function\nwill hide it.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+          "name": "WindowBase<T>::StopTextInput",
           "kind": "function",
           "type": "bool",
-          "parameters": [
+          "parameters": [],
+          "template": [
             {
-              "name": "window",
-              "type": "WindowRef"
+              "name": "T",
+              "type": "ObjectBox<SDL_Window *>"
             }
           ],
           "begin": 563,
-          "decl": 579,
+          "decl": 578,
           "end": 584
         },
-        "ClearComposition": {
-          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@param window the window to affect.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput\n@sa StopTextInput",
-          "name": "ClearComposition",
+        "WindowBase<T>::ClearComposition": {
+          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput",
+          "name": "WindowBase<T>::ClearComposition",
           "kind": "function",
           "type": "bool",
-          "parameters": [
+          "parameters": [],
+          "template": [
             {
-              "name": "window",
-              "type": "WindowRef"
+              "name": "T",
+              "type": "ObjectBox<SDL_Window *>"
             }
           ],
           "begin": 584,
-          "decl": 598,
+          "decl": 597,
           "end": 603
         },
-        "SetTextInputArea": {
-          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param window the window for which to set the text input area.\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetTextInputArea\n@sa StartTextInput",
-          "name": "SetTextInputArea",
+        "WindowBase<T>::SetTextInputArea": {
+          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::GetTextInputArea\n@sa WindowBase<T>::StartTextInput",
+          "name": "WindowBase<T>::SetTextInputArea",
           "kind": "function",
           "type": "bool",
           "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            },
             {
               "name": "rect",
               "type": "const SDL_Rect &"
@@ -34043,35 +34159,43 @@
               "type": "int"
             }
           ],
+          "template": [
+            {
+              "name": "T",
+              "type": "ObjectBox<SDL_Window *>"
+            }
+          ],
           "begin": 603,
-          "decl": 624,
+          "decl": 623,
           "end": 629
         },
-        "GetTextInputArea": {
-          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by SetTextInputArea().\n\n@param window the window for which to query the text input area.\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea",
-          "name": "GetTextInputArea",
+        "WindowBase<T>::GetTextInputArea": {
+          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase<T>::SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea",
+          "name": "WindowBase<T>::GetTextInputArea",
           "kind": "function",
           "type": "bool",
           "parameters": [
             {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             },
             {
               "name": "cursor",
               "type": "int *"
             }
           ],
+          "template": [
+            {
+              "name": "T",
+              "type": "ObjectBox<SDL_Window *>"
+            }
+          ],
           "begin": 629,
-          "decl": 648,
+          "decl": 647,
           "end": 653
         },
         "HasScreenKeyboardSupport": {
-          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput\n@sa ScreenKeyboardShown",
+          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.StartTextInput\n@sa ScreenKeyboardShown",
           "name": "HasScreenKeyboardSupport",
           "kind": "function",
           "type": "bool",
@@ -34081,7 +34205,7 @@
           "end": 671
         },
         "ScreenKeyboardShown": {
-          "doc": "Check whether the screen keyboard is shown for given window.\n\n@param window the window for which screen keyboard should be queried.\n@returns true if screen keyboard is shown or false if not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasScreenKeyboardSupport",
+          "doc": "Check whether the screen keyboard is shown for given window.\n\n@returns true if screen keyboard is shown or false if not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa HasScreenKeyboardSupport",
           "name": "ScreenKeyboardShown",
           "kind": "function",
           "type": "bool",
@@ -34092,14 +34216,14 @@
             }
           ],
           "begin": 671,
-          "decl": 683,
-          "end": 688
+          "decl": 682,
+          "end": 687
         }
       },
       "docBegin": 12,
       "docEnd": 26,
       "entriesBegin": 26,
-      "entriesEnd": 688,
+      "entriesEnd": 687,
       "namespace": "SDL"
     },
     "SDL3pp_platform.h": {

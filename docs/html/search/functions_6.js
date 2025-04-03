@@ -182,7 +182,7 @@ var searchData=
   ['getsystemtheme_179',['GetSystemTheme',['../group__CategoryVideo.html#gac2c823c19389694d3d8684100da6a4a0',1,'SDL']]],
   ['gettarget_180',['GetTarget',['../structSDL_1_1RendererBase.html#a0a08906b9ff3d00e0ad75107e991f5d1',1,'SDL::RendererBase']]],
   ['gettext_181',['GetText',['../structSDL_1_1TextBase.html#a17037186f6b8d9096916db9f46886750',1,'SDL::TextBase']]],
-  ['gettextinputarea_182',['GetTextInputArea',['../group__CategoryKeyboard.html#gaf87fc873a32f85f5c3cf7aecc463f0d0',1,'SDL']]],
+  ['gettextinputarea_182',['GetTextInputArea',['../group__CategoryKeyboard.html#gad5bea43524e4b404e8eb5d8d5b912103',1,'SDL::WindowBase']]],
   ['getticks_183',['GetTicks',['../group__CategoryTimer.html#ga50284930ebbdfa513525372174348b3e',1,'SDL']]],
   ['gettitle_184',['GetTitle',['../structSDL_1_1WindowBase.html#aa89aeab4b9966165a28017025986d28a',1,'SDL::WindowBase']]],
   ['gettopleft_185',['gettopleft',['../structSDL_1_1Rect.html#a537c3df56403f1d22014367033241545',1,'SDL::Rect::GetTopLeft()'],['../structSDL_1_1FRect.html#aece09e60d7369dd9422bde56618b4893',1,'SDL::FRect::GetTopLeft()']]],
@@ -225,6 +225,6 @@ var searchData=
   ['gl_5fswapwindow_222',['GL_SwapWindow',['../group__CategoryVideo.html#gaae2523c0aac87c096f778d2b8fec8dd6',1,'SDL']]],
   ['gl_5funloadlibrary_223',['GL_UnloadLibrary',['../group__CategoryVideo.html#ga56627e0f78cccbee26396ab2a8cb25bf',1,'SDL']]],
   ['glcontextbase_224',['GLContextBase',['../structSDL_1_1GLContextBase.html#ac5f6bf0e223c0589577cfe729ad791fd',1,'SDL::GLContextBase']]],
-  ['guid_225',['guid',['../structSDL_1_1GUID.html#a710dfc7223127501691d780119376263',1,'SDL::GUID::GUID(StringParam pchGUID)'],['../structSDL_1_1GUID.html#a1387a19bbbebeeb7e23802019861ecbf',1,'SDL::GUID::GUID(SDL_GUID guid)']]],
+  ['guid_225',['guid',['../structSDL_1_1GUID.html#a1387a19bbbebeeb7e23802019861ecbf',1,'SDL::GUID::GUID(SDL_GUID guid)'],['../structSDL_1_1GUID.html#a710dfc7223127501691d780119376263',1,'SDL::GUID::GUID(StringParam pchGUID)']]],
   ['guidtostring_226',['GUIDToString',['../group__CategoryGUID.html#ga4efae6ae549cdb0f0d92ab4011e7d7e7',1,'SDL']]]
 ];

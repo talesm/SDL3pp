@@ -3996,6 +3996,67 @@
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
             "SDL_FlashWindow": "function",
+            "StartTextInput": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": []
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "PropertiesRef",
+                    "name": "props"
+                  }
+                ]
+              }
+            ],
+            "IsTextInputActive": {
+              "kind": "function",
+              "immutable": true,
+              "type": "bool",
+              "parameters": []
+            },
+            "StopTextInput": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": []
+            },
+            "ClearComposition": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": []
+            },
+            "SetTextInputArea": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "const SDL_Rect &",
+                  "name": "rect"
+                },
+                {
+                  "type": "int",
+                  "name": "cursor"
+                }
+              ]
+            },
+            "GetTextInputArea": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "SDL_Rect *",
+                  "name": "rect"
+                },
+                {
+                  "type": "int *",
+                  "name": "cursor"
+                }
+              ]
+            },
             "SDL_DestroyWindow": "function"
           }
         },
@@ -5702,6 +5763,9 @@
       }
     },
     "SDL_keyboard.h": {
+      "namespacesMap": {
+        "SDL_PROP_TEXTINPUT_": "prop::TextInput"
+      },
       "transform": {
         "SDL_GetKeyFromScancode": {
           "name": "Keycode::Keycode",
@@ -5758,6 +5822,107 @@
         "SDL_GetKeyFromName": {
           "name": "Keycode::Keycode",
           "type": ""
+        },
+        "SDL_StartTextInput": {
+          "name": "WindowBase<T>::StartTextInput",
+          "type": "bool",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ],
+          "parameters": []
+        },
+        "SDL_StartTextInputWithProperties": {
+          "name": "WindowBase<T>::StartTextInput",
+          "type": "bool",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "PropertiesRef",
+              "name": "props"
+            }
+          ]
+        },
+        "SDL_TextInputActive": {
+          "name": "WindowBase<T>::IsTextInputActive",
+          "immutable": true,
+          "type": "bool",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ],
+          "parameters": []
+        },
+        "SDL_StopTextInput": {
+          "name": "WindowBase<T>::StopTextInput",
+          "type": "bool",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ],
+          "parameters": []
+        },
+        "SDL_ClearComposition": {
+          "name": "WindowBase<T>::ClearComposition",
+          "type": "bool",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ],
+          "parameters": []
+        },
+        "SDL_SetTextInputArea": {
+          "name": "WindowBase<T>::SetTextInputArea",
+          "type": "bool",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "const SDL_Rect &",
+              "name": "rect"
+            },
+            {
+              "type": "int",
+              "name": "cursor"
+            }
+          ]
+        },
+        "SDL_GetTextInputArea": {
+          "name": "WindowBase<T>::GetTextInputArea",
+          "type": "bool",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ],
+          "parameters": [
+            {
+              "type": "SDL_Rect *",
+              "name": "rect"
+            },
+            {
+              "type": "int *",
+              "name": "cursor"
+            }
+          ]
         }
       }
     },

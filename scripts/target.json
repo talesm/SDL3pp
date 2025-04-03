@@ -9577,7 +9577,7 @@
           "sourceName": "SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT"
         },
         "SDL_HINT_ENABLE_SCREEN_KEYBOARD": {
-          "doc": "A variable that controls whether the on-screen keyboard should be shown\nwhen text input is active.\n\nThe variable can be set to the following values:\n\n- \"auto\": The on-screen keyboard will be shown if there is no physical\n  keyboard attached. (default)\n- \"0\": Do not show the on-screen keyboard.\n- \"1\": Show the on-screen keyboard, if available.\n\nThis hint must be set before StartTextInput() is called\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable that controls whether the on-screen keyboard should be shown\nwhen text input is active.\n\nThe variable can be set to the following values:\n\n- \"auto\": The on-screen keyboard will be shown if there is no physical\n  keyboard attached. (default)\n- \"0\": Do not show the on-screen keyboard.\n- \"1\": Show the on-screen keyboard, if available.\n\nThis hint must be set before WindowBase<T>::StartTextInput() is called\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_ENABLE_SCREEN_KEYBOARD",
           "kind": "def",
           "value": "\"SDL_ENABLE_SCREEN_KEYBOARD\"",
@@ -9654,35 +9654,35 @@
           "sourceName": "SDL_HINT_GAMECONTROLLER_SENSOR_FUSION"
         },
         "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT": {
-          "doc": "This variable sets the default text of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the default text of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_DEFAULT_TEXT\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT"
         },
         "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION": {
-          "doc": "This variable sets the description of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the description of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_DESCRIPTION\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION"
         },
         "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH": {
-          "doc": "This variable sets the maximum input length of the TextInput window on GDK\nplatforms.\n\nThe value must be a stringified integer, for example \"10\" to allow for up\nto 10 characters of text input.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the maximum input length of the TextInput window on GDK\nplatforms.\n\nThe value must be a stringified integer, for example \"10\" to allow for up\nto 10 characters of text input.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_MAX_LENGTH\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH"
         },
         "SDL_HINT_GDK_TEXTINPUT_SCOPE": {
-          "doc": "This variable sets the input scope of the TextInput window on GDK\nplatforms.\n\nSet this hint to change the XGameUiTextEntryInputScope value that will be\npassed to the window creation function. The value must be a stringified\ninteger, for example \"0\" for XGameUiTextEntryInputScope::Default.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the input scope of the TextInput window on GDK\nplatforms.\n\nSet this hint to change the XGameUiTextEntryInputScope value that will be\npassed to the window creation function. The value must be a stringified\ninteger, for example \"0\" for XGameUiTextEntryInputScope::Default.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_SCOPE",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_SCOPE\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_SCOPE"
         },
         "SDL_HINT_GDK_TEXTINPUT_TITLE": {
-          "doc": "This variable sets the title of the TextInput window on GDK platforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the title of the TextInput window on GDK platforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_TITLE",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_TITLE\"",
@@ -10466,7 +10466,7 @@
           "sourceName": "SDL_HINT_RENDER_VSYNC"
         },
         "SDL_HINT_RETURN_KEY_HIDES_IME": {
-          "doc": "A variable to control whether the return key on the soft keyboard should\nhide the soft keyboard on Android and iOS.\n\nThis hint sets the default value of SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN.\n\nThe variable can be set to the following values:\n\n- \"0\": The return key will be handled as a key event. (default)\n- \"1\": The return key will hide the keyboard.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable to control whether the return key on the soft keyboard should\nhide the soft keyboard on Android and iOS.\n\nThis hint sets the default value of prop::TextInput.MULTILINE_BOOLEAN.\n\nThe variable can be set to the following values:\n\n- \"0\": The return key will be handled as a key event. (default)\n- \"1\": The return key will hide the keyboard.\n\nThis hint can be set anytime.\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_RETURN_KEY_HIDES_IME",
           "kind": "def",
           "value": "\"SDL_RETURN_KEY_HIDES_IME\"",
@@ -15832,6 +15832,81 @@
                 }
               ],
               "sourceName": "SDL_FlashWindow"
+            },
+            "StartTextInput": [
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [],
+                "name": "StartTextInput",
+                "doc": ""
+              },
+              {
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "type": "PropertiesRef",
+                    "name": "props"
+                  }
+                ],
+                "name": "StartTextInput",
+                "doc": ""
+              }
+            ],
+            "IsTextInputActive": {
+              "kind": "function",
+              "immutable": true,
+              "type": "bool",
+              "parameters": [],
+              "name": "IsTextInputActive",
+              "doc": ""
+            },
+            "StopTextInput": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "name": "StopTextInput",
+              "doc": ""
+            },
+            "ClearComposition": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "name": "ClearComposition",
+              "doc": ""
+            },
+            "SetTextInputArea": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "const SDL_Rect &",
+                  "name": "rect"
+                },
+                {
+                  "type": "int",
+                  "name": "cursor"
+                }
+              ],
+              "name": "SetTextInputArea",
+              "doc": ""
+            },
+            "GetTextInputArea": {
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "type": "SDL_Rect *",
+                  "name": "rect"
+                },
+                {
+                  "type": "int *",
+                  "name": "cursor"
+                }
+              ],
+              "name": "GetTextInputArea",
+              "doc": ""
             },
             "Destroy": {
               "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindowBase is no longer valid after this call.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WindowBase\n@sa WindowBase.WindowBase\n@sa WindowBase.WindowBase",
@@ -21574,7 +21649,7 @@
           "type": "SDL_TextEditingCandidatesEvent"
         },
         "TextInputEvent": {
-          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nStartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa StartTextInput\n@sa StopTextInput",
+          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nWindowBase<T>::StartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput",
           "name": "TextInputEvent",
           "kind": "alias",
           "sourceName": "SDL_TextInputEvent",
@@ -27272,21 +27347,43 @@
           "sourceName": "SDL_GetKeyName",
           "immutable": true
         },
-        "StartTextInput": {
-          "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@param window the window to enable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea\n@sa StartTextInputWithProperties\n@sa StopTextInput\n@sa TextInputActive",
-          "name": "StartTextInput",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            }
-          ],
-          "sourceName": "SDL_StartTextInput"
-        },
+        "WindowBase<T>::StartTextInput": [
+          {
+            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@param window the window to enable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "name": "WindowBase<T>::StartTextInput",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [],
+            "sourceName": "SDL_StartTextInput",
+            "template": [
+              {
+                "type": "ObjectBox<SDL_Window *>",
+                "name": "T"
+              }
+            ]
+          },
+          {
+            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param window the window to enable text input.\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "name": "WindowBase<T>::StartTextInput",
+            "kind": "function",
+            "type": "bool",
+            "parameters": [
+              {
+                "name": "props",
+                "type": "PropertiesRef"
+              }
+            ],
+            "sourceName": "SDL_StartTextInputWithProperties",
+            "template": [
+              {
+                "type": "ObjectBox<SDL_Window *>",
+                "name": "T"
+              }
+            ]
+          }
+        ],
         "TextInputType": {
-          "doc": "Text input type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa StartTextInputWithProperties",
+          "doc": "Text input type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
           "name": "TextInputType",
           "kind": "alias",
           "sourceName": "SDL_TextInputType",
@@ -27365,7 +27462,7 @@
           "constexpr": true
         },
         "Capitalization": {
-          "doc": "Auto capitalization type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa StartTextInputWithProperties",
+          "doc": "Auto capitalization type.\n\nThese are the valid values for prop::TextInput.CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
           "name": "Capitalization",
           "kind": "alias",
           "sourceName": "SDL_Capitalization",
@@ -27403,107 +27500,107 @@
           "sourceName": "SDL_CAPITALIZE_LETTERS",
           "constexpr": true
         },
-        "StartTextInputWithProperties": {
-          "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param window the window to enable text input.\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea\n@sa StartTextInput\n@sa StopTextInput\n@sa TextInputActive",
-          "name": "StartTextInputWithProperties",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
+        "prop::TextInput": {
+          "kind": "ns",
+          "name": "prop::TextInput",
+          "entries": {
+            "TYPE_NUMBER": {
+              "doc": "",
+              "name": "TYPE_NUMBER",
+              "kind": "var",
+              "value": "\"SDL.textinput.type\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTINPUT_TYPE_NUMBER"
             },
-            {
-              "name": "props",
-              "type": "PropertiesRef"
-            }
-          ],
-          "sourceName": "SDL_StartTextInputWithProperties"
-        },
-        "SDL_PROP_TEXTINPUT_TYPE_NUMBER": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_TYPE_NUMBER",
-          "kind": "def",
-          "value": "\"SDL.textinput.type\"",
-          "sourceName": "SDL_PROP_TEXTINPUT_TYPE_NUMBER"
-        },
-        "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER",
-          "kind": "def",
-          "value": "\"SDL.textinput.capitalization\"",
-          "sourceName": "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER"
-        },
-        "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN",
-          "kind": "def",
-          "value": "\"SDL.textinput.autocorrect\"",
-          "sourceName": "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN"
-        },
-        "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN",
-          "kind": "def",
-          "value": "\"SDL.textinput.multiline\"",
-          "sourceName": "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN"
-        },
-        "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER": {
-          "doc": "",
-          "name": "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER",
-          "kind": "def",
-          "value": "\"SDL.textinput.android.inputtype\"",
-          "sourceName": "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER"
-        },
-        "TextInputActive": {
-          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@param window the window to check.\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput",
-          "name": "TextInputActive",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            }
-          ],
-          "sourceName": "SDL_TextInputActive"
-        },
-        "StopTextInput": {
-          "doc": "Stop receiving any text input events in a window.\n\nIf StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@param window the window to disable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput",
-          "name": "StopTextInput",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            }
-          ],
-          "sourceName": "SDL_StopTextInput"
-        },
-        "ClearComposition": {
-          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@param window the window to affect.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput\n@sa StopTextInput",
-          "name": "ClearComposition",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
-            }
-          ],
-          "sourceName": "SDL_ClearComposition"
-        },
-        "SetTextInputArea": {
-          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param window the window for which to set the text input area.\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa GetTextInputArea\n@sa StartTextInput",
-          "name": "SetTextInputArea",
-          "kind": "function",
-          "type": "bool",
-          "parameters": [
-            {
-              "name": "window",
-              "type": "WindowRef"
+            "CAPITALIZATION_NUMBER": {
+              "doc": "",
+              "name": "CAPITALIZATION_NUMBER",
+              "kind": "var",
+              "value": "\"SDL.textinput.capitalization\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER"
             },
+            "AUTOCORRECT_BOOLEAN": {
+              "doc": "",
+              "name": "AUTOCORRECT_BOOLEAN",
+              "kind": "var",
+              "value": "\"SDL.textinput.autocorrect\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN"
+            },
+            "MULTILINE_BOOLEAN": {
+              "doc": "",
+              "name": "MULTILINE_BOOLEAN",
+              "kind": "var",
+              "value": "\"SDL.textinput.multiline\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN"
+            },
+            "ANDROID_INPUTTYPE_NUMBER": {
+              "doc": "",
+              "name": "ANDROID_INPUTTYPE_NUMBER",
+              "kind": "var",
+              "value": "\"SDL.textinput.android.inputtype\"",
+              "type": "auto",
+              "constexpr": true,
+              "sourceName": "SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER"
+            }
+          },
+          "doc": ""
+        },
+        "WindowBase<T>::IsTextInputActive": {
+          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@param window the window to check.\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+          "name": "WindowBase<T>::IsTextInputActive",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_TextInputActive",
+          "immutable": true,
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ]
+        },
+        "WindowBase<T>::StopTextInput": {
+          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase<T>::StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@param window the window to disable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+          "name": "WindowBase<T>::StopTextInput",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_StopTextInput",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ]
+        },
+        "WindowBase<T>::ClearComposition": {
+          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@param window the window to affect.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput",
+          "name": "WindowBase<T>::ClearComposition",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [],
+          "sourceName": "SDL_ClearComposition",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ]
+        },
+        "WindowBase<T>::SetTextInputArea": {
+          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param window the window for which to set the text input area.\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::GetTextInputArea\n@sa WindowBase<T>::StartTextInput",
+          "name": "WindowBase<T>::SetTextInputArea",
+          "kind": "function",
+          "type": "bool",
+          "parameters": [
             {
               "name": "rect",
               "type": "const SDL_Rect &"
@@ -27513,31 +27610,39 @@
               "type": "int"
             }
           ],
-          "sourceName": "SDL_SetTextInputArea"
+          "sourceName": "SDL_SetTextInputArea",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ]
         },
-        "GetTextInputArea": {
-          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by SetTextInputArea().\n\n@param window the window for which to query the text input area.\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa SetTextInputArea",
-          "name": "GetTextInputArea",
+        "WindowBase<T>::GetTextInputArea": {
+          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase<T>::SetTextInputArea().\n\n@param window the window for which to query the text input area.\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea",
+          "name": "WindowBase<T>::GetTextInputArea",
           "kind": "function",
           "type": "bool",
           "parameters": [
             {
-              "name": "window",
-              "type": "WindowRef"
-            },
-            {
               "name": "rect",
-              "type": "Rect *"
+              "type": "SDL_Rect *"
             },
             {
               "name": "cursor",
               "type": "int *"
             }
           ],
-          "sourceName": "SDL_GetTextInputArea"
+          "sourceName": "SDL_GetTextInputArea",
+          "template": [
+            {
+              "type": "ObjectBox<SDL_Window *>",
+              "name": "T"
+            }
+          ]
         },
         "HasScreenKeyboardSupport": {
-          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa StartTextInput\n@sa ScreenKeyboardShown",
+          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa ScreenKeyboardShown",
           "name": "HasScreenKeyboardSupport",
           "kind": "function",
           "type": "bool",
