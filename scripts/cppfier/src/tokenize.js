@@ -265,7 +265,10 @@ class Tokenizer {
         token.type += " " + m[1];
         token.name = m[2];
       }
-      this.ignoreBody(token.spaces);
+      const lastLine = this.ignoreBody(token.spaces);
+      if (token.kind === "var" && !token.doc) {
+        token.doc = checkInlineDoc(lastLine);
+      }
     }
     this.extendToNextStart();
     token.end = this.lineCount + 1;
@@ -294,13 +297,14 @@ class Tokenizer {
       const line = this.peekLine().trim();
       if (line.startsWith("{")) {
         this.nextLine();
-        if (line.endsWith("}")) return;
+        if (line.endsWith("}")) return line;
         opened = true;
       }
     } else {
       opened = true;
     }
     const spaceRegex = /^\s+/;
+    let lastLine = this.lastLine;
     let line = this.peekLine();
     while (line !== null) {
       if (line.trim()) {
@@ -309,13 +313,14 @@ class Tokenizer {
           if (line.slice(indentation).startsWith("{")) {
             opened = true;
             if (line.endsWith("}") || line.endsWith("};")) {
-              return;
+              return line;
             }
           } else if (line.slice(indentation).startsWith("}") && opened) {
             this.nextLine();
-            return;
-          } else return;
+            return line;
+          } else return lastLine;
         }
+        lastLine = line;
       }
       this.nextLine();
       line = this.peekLine();

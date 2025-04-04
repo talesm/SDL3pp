@@ -107,39 +107,43 @@ Collaboration diagram for SDL::FRect:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8b7ce4f4f4381689eef742c636a9572f" id="r_a8b7ce4f4f4381689eef742c636a9572f"><td class="memItemLeft" align="right" valign="top"><a id="a8b7ce4f4f4381689eef742c636a9572f" name="a8b7ce4f4f4381689eef742c636a9572f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FRect</b> (const SDL_FRect &amp;rect={0})</td></tr>
-<tr class="separator:a8b7ce4f4f4381689eef742c636a9572f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3f9ac79fb459cc21895887e8f87c82f" id="r_ae3f9ac79fb459cc21895887e8f87c82f"><td class="memItemLeft" align="right" valign="top"><a id="ae3f9ac79fb459cc21895887e8f87c82f" name="ae3f9ac79fb459cc21895887e8f87c82f"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FRect</b> (float x, float y, float w, float h)</td></tr>
+<tr class="memitem:aa7493b6aab739b13777bc3b4acb812b7" id="r_aa7493b6aab739b13777bc3b4acb812b7"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#aa7493b6aab739b13777bc3b4acb812b7">FRect</a> (const SDL_FRect &amp;r={})</td></tr>
+<tr class="memdesc:aa7493b6aab739b13777bc3b4acb812b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="structSDL_1_1FRect.html" title="A rectangle, with the origin at the upper left (using floats).">FRect</a>.  <br /></td></tr>
+<tr class="separator:aa7493b6aab739b13777bc3b4acb812b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3f9ac79fb459cc21895887e8f87c82f" id="r_ae3f9ac79fb459cc21895887e8f87c82f"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#ae3f9ac79fb459cc21895887e8f87c82f">FRect</a> (float x, float y, float w, float h)</td></tr>
+<tr class="memdesc:ae3f9ac79fb459cc21895887e8f87c82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs from its fields.  <br /></td></tr>
 <tr class="separator:ae3f9ac79fb459cc21895887e8f87c82f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa84d4c9870ba6d0a32d9de4495915d3" id="r_aaa84d4c9870ba6d0a32d9de4495915d3"><td class="memItemLeft" align="right" valign="top"><a id="aaa84d4c9870ba6d0a32d9de4495915d3" name="aaa84d4c9870ba6d0a32d9de4495915d3"></a>
 constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FRect</b> (const SDL_FPoint &amp;corner, const SDL_FPoint &amp;size)</td></tr>
 <tr class="separator:aaa84d4c9870ba6d0a32d9de4495915d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a1161b785cbd018237c04f5e46213f2" id="r_a2a1161b785cbd018237c04f5e46213f2"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a2a1161b785cbd018237c04f5e46213f2">operator==</a> (const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;other) const</td></tr>
+<tr class="separator:a2a1161b785cbd018237c04f5e46213f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f8dfc485f4fa34669171a167dddbf61" id="r_a1f8dfc485f4fa34669171a167dddbf61"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a1f8dfc485f4fa34669171a167dddbf61">operator bool</a> () const</td></tr>
+<tr class="separator:a1f8dfc485f4fa34669171a167dddbf61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afccdfe0c3ddb2d37f7184f32fc791e0d" id="r_afccdfe0c3ddb2d37f7184f32fc791e0d"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#afccdfe0c3ddb2d37f7184f32fc791e0d">GetX</a> () const</td></tr>
-<tr class="memdesc:afccdfe0c3ddb2d37f7184f32fc791e0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get X coordinate of the rect corner.  <br /></td></tr>
+<tr class="memdesc:afccdfe0c3ddb2d37f7184f32fc791e0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get left x coordinate.  <br /></td></tr>
 <tr class="separator:afccdfe0c3ddb2d37f7184f32fc791e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8d2f001e85829cb44ce2e7365c74fc9" id="r_af8d2f001e85829cb44ce2e7365c74fc9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#af8d2f001e85829cb44ce2e7365c74fc9">SetX</a> (float nx)</td></tr>
-<tr class="memdesc:af8d2f001e85829cb44ce2e7365c74fc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set X coordinate of the rect corner.  <br /></td></tr>
-<tr class="separator:af8d2f001e85829cb44ce2e7365c74fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac50fa4a250316b5b3fdf43ebeb2a6cbc" id="r_ac50fa4a250316b5b3fdf43ebeb2a6cbc"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#ac50fa4a250316b5b3fdf43ebeb2a6cbc">SetX</a> (float newX)</td></tr>
+<tr class="memdesc:ac50fa4a250316b5b3fdf43ebeb2a6cbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the left x coordinate.  <br /></td></tr>
+<tr class="separator:ac50fa4a250316b5b3fdf43ebeb2a6cbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2398a271ef482d2efeba6d7205bd301c" id="r_a2398a271ef482d2efeba6d7205bd301c"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a2398a271ef482d2efeba6d7205bd301c">GetY</a> () const</td></tr>
-<tr class="memdesc:a2398a271ef482d2efeba6d7205bd301c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Y coordinate of the rect corner.  <br /></td></tr>
+<tr class="memdesc:a2398a271ef482d2efeba6d7205bd301c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get top y coordinate.  <br /></td></tr>
 <tr class="separator:a2398a271ef482d2efeba6d7205bd301c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ec90df1431264bf4ac71e84388f6d6b" id="r_a7ec90df1431264bf4ac71e84388f6d6b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a7ec90df1431264bf4ac71e84388f6d6b">SetY</a> (float ny)</td></tr>
-<tr class="memdesc:a7ec90df1431264bf4ac71e84388f6d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set Y coordinate of the rect corner.  <br /></td></tr>
-<tr class="separator:a7ec90df1431264bf4ac71e84388f6d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b5e943f499000b32779fb1e2311a28" id="r_aa3b5e943f499000b32779fb1e2311a28"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#aa3b5e943f499000b32779fb1e2311a28">SetY</a> (float newY)</td></tr>
+<tr class="memdesc:aa3b5e943f499000b32779fb1e2311a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the top y coordinate.  <br /></td></tr>
+<tr class="separator:aa3b5e943f499000b32779fb1e2311a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4034f2720456721b44bd0583e8e0591c" id="r_a4034f2720456721b44bd0583e8e0591c"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a4034f2720456721b44bd0583e8e0591c">GetW</a> () const</td></tr>
 <tr class="memdesc:a4034f2720456721b44bd0583e8e0591c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get width of the rect.  <br /></td></tr>
 <tr class="separator:a4034f2720456721b44bd0583e8e0591c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e98a16b100f9985a569e25bc4354165" id="r_a0e98a16b100f9985a569e25bc4354165"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a0e98a16b100f9985a569e25bc4354165">SetW</a> (float nw)</td></tr>
-<tr class="memdesc:a0e98a16b100f9985a569e25bc4354165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set width of the rect.  <br /></td></tr>
-<tr class="separator:a0e98a16b100f9985a569e25bc4354165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21fa1850006735187e1fede1e9cc6c2b" id="r_a21fa1850006735187e1fede1e9cc6c2b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a21fa1850006735187e1fede1e9cc6c2b">SetW</a> (float newW)</td></tr>
+<tr class="memdesc:a21fa1850006735187e1fede1e9cc6c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the width of the rect.  <br /></td></tr>
+<tr class="separator:a21fa1850006735187e1fede1e9cc6c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0557e48281117b6164fa0f92a261518d" id="r_a0557e48281117b6164fa0f92a261518d"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a0557e48281117b6164fa0f92a261518d">GetH</a> () const</td></tr>
 <tr class="memdesc:a0557e48281117b6164fa0f92a261518d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get height of the rect.  <br /></td></tr>
 <tr class="separator:a0557e48281117b6164fa0f92a261518d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb757c5bde09f58619883cecf69e3cbf" id="r_abb757c5bde09f58619883cecf69e3cbf"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#abb757c5bde09f58619883cecf69e3cbf">SetH</a> (float nh)</td></tr>
-<tr class="memdesc:abb757c5bde09f58619883cecf69e3cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set height of the rect.  <br /></td></tr>
-<tr class="separator:abb757c5bde09f58619883cecf69e3cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20b4a0a111444236f4d0aa7775ac14db" id="r_a20b4a0a111444236f4d0aa7775ac14db"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a20b4a0a111444236f4d0aa7775ac14db">SetH</a> (float newH)</td></tr>
+<tr class="memdesc:a20b4a0a111444236f4d0aa7775ac14db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the height of the rect.  <br /></td></tr>
+<tr class="separator:a20b4a0a111444236f4d0aa7775ac14db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8218855b0564283be6f7fa96b54a735c" id="r_a8218855b0564283be6f7fa96b54a735c"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a8218855b0564283be6f7fa96b54a735c">GetX2</a> () const</td></tr>
 <tr class="memdesc:a8218855b0564283be6f7fa96b54a735c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get X coordinate of the rect second corner.  <br /></td></tr>
 <tr class="separator:a8218855b0564283be6f7fa96b54a735c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -179,19 +183,15 @@ constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>FRect</b> (const
 <tr class="memitem:a815a929d9f6b4e0866f458155d07c23e" id="r_a815a929d9f6b4e0866f458155d07c23e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a815a929d9f6b4e0866f458155d07c23e">Empty</a> () const</td></tr>
 <tr class="memdesc:a815a929d9f6b4e0866f458155d07c23e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether a rectangle has no area.  <br /></td></tr>
 <tr class="separator:a815a929d9f6b4e0866f458155d07c23e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f8dfc485f4fa34669171a167dddbf61" id="r_a1f8dfc485f4fa34669171a167dddbf61"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a1f8dfc485f4fa34669171a167dddbf61">operator bool</a> () const</td></tr>
-<tr class="separator:a1f8dfc485f4fa34669171a167dddbf61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0dddedcee6c59d91fef1defa8aa0ae17" id="r_a0dddedcee6c59d91fef1defa8aa0ae17"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a0dddedcee6c59d91fef1defa8aa0ae17">EqualEpsilon</a> (const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;other, const float epsilon) const</td></tr>
 <tr class="memdesc:a0dddedcee6c59d91fef1defa8aa0ae17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two floating point rectangles are equal, within some given epsilon.  <br /></td></tr>
 <tr class="separator:a0dddedcee6c59d91fef1defa8aa0ae17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a196110eaa3957ab44f9ec977fbbae3fd" id="r_a196110eaa3957ab44f9ec977fbbae3fd"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a196110eaa3957ab44f9ec977fbbae3fd">Equal</a> (const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;other) const</td></tr>
 <tr class="memdesc:a196110eaa3957ab44f9ec977fbbae3fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determine whether two rectangles are equal.  <br /></td></tr>
 <tr class="separator:a196110eaa3957ab44f9ec977fbbae3fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a1161b785cbd018237c04f5e46213f2" id="r_a2a1161b785cbd018237c04f5e46213f2"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a2a1161b785cbd018237c04f5e46213f2">operator==</a> (const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;other) const</td></tr>
-<tr class="separator:a2a1161b785cbd018237c04f5e46213f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a916c052d6857e19fabf8e8fc00202502" id="r_a916c052d6857e19fabf8e8fc00202502"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a916c052d6857e19fabf8e8fc00202502">Contains</a> (const <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &amp;point) const</td></tr>
-<tr class="memdesc:a916c052d6857e19fabf8e8fc00202502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the rect contains given point.  <br /></td></tr>
-<tr class="separator:a916c052d6857e19fabf8e8fc00202502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23499f14b90aab4eeabce845f0cbeb98" id="r_a23499f14b90aab4eeabce845f0cbeb98"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#a23499f14b90aab4eeabce845f0cbeb98">Contains</a> (const <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &amp;p) const</td></tr>
+<tr class="memdesc:a23499f14b90aab4eeabce845f0cbeb98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the rect contains given point.  <br /></td></tr>
+<tr class="separator:a23499f14b90aab4eeabce845f0cbeb98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb2a1bbe6172ee65f209d7186318aafb" id="r_afb2a1bbe6172ee65f209d7186318aafb"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSDL_1_1FRect.html#afb2a1bbe6172ee65f209d7186318aafb">Contains</a> (const <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp;other) const</td></tr>
 <tr class="memdesc:afb2a1bbe6172ee65f209d7186318aafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the rect contains given point.  <br /></td></tr>
 <tr class="separator:afb2a1bbe6172ee65f209d7186318aafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,9 +250,99 @@ Static Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section user"><dt>Category:</dt><dd><a class="el" href="wrap-extending-struct.html">Wrap extending struct</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd>wrap-extending-struct </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a916c052d6857e19fabf8e8fc00202502" name="a916c052d6857e19fabf8e8fc00202502"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a916c052d6857e19fabf8e8fc00202502">&#9670;&#160;</a></span>Contains() <span class="overload">[1/2]</span></h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aa7493b6aab739b13777bc3b4acb812b7" name="aa7493b6aab739b13777bc3b4acb812b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7493b6aab739b13777bc3b4acb812b7">&#9670;&#160;</a></span>FRect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::FRect::FRect </td>
+          <td>(</td>
+          <td class="paramtype">const SDL_FRect &amp;&#160;</td>
+          <td class="paramname"><em>r</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>the value to be wrapped </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae3f9ac79fb459cc21895887e8f87c82f" name="ae3f9ac79fb459cc21895887e8f87c82f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3f9ac79fb459cc21895887e8f87c82f">&#9670;&#160;</a></span>FRect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::FRect::FRect </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>h</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>the left x. </td></tr>
+    <tr><td class="paramname">y</td><td>the top y. </td></tr>
+    <tr><td class="paramname">w</td><td>the width. </td></tr>
+    <tr><td class="paramname">h</td><td>the height. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a23499f14b90aab4eeabce845f0cbeb98" name="a23499f14b90aab4eeabce845f0cbeb98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23499f14b90aab4eeabce845f0cbeb98">&#9670;&#160;</a></span>Contains() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -264,7 +354,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">constexpr bool SDL::FRect::Contains </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structSDL_1_1FPoint.html">FPoint</a> &amp;&#160;</td>
-          <td class="paramname"><em>point</em></td><td>)</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -276,7 +366,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">point</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> to check</td></tr>
+    <tr><td class="paramname">p</td><td><a class="el" href="structSDL_1_1Point.html" title="The structure that defines a point (using integers)">Point</a> to check</td></tr>
   </table>
   </dd>
 </dl>
@@ -1133,7 +1223,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>X coordinate of the rect corner </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>coordinate of the left x </dd></dl>
 
 </div>
 </div>
@@ -1185,7 +1275,7 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>Y coordinate of the rect corner </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>coordinate of the top y. </dd></dl>
 
 </div>
 </div>
@@ -1541,8 +1631,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abb757c5bde09f58619883cecf69e3cbf" name="abb757c5bde09f58619883cecf69e3cbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb757c5bde09f58619883cecf69e3cbf">&#9670;&#160;</a></span>SetH()</h2>
+<a id="a20b4a0a111444236f4d0aa7775ac14db" name="a20b4a0a111444236f4d0aa7775ac14db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20b4a0a111444236f4d0aa7775ac14db">&#9670;&#160;</a></span>SetH()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1554,7 +1644,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp; SDL::FRect::SetH </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>nh</em></td><td>)</td>
+          <td class="paramname"><em>newH</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1566,16 +1656,16 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nh</td><td>New height of the rect</td></tr>
+    <tr><td class="paramname">newH</td><td>the new height. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to self </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to self. </dd></dl>
 
 </div>
 </div>
-<a id="a0e98a16b100f9985a569e25bc4354165" name="a0e98a16b100f9985a569e25bc4354165"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e98a16b100f9985a569e25bc4354165">&#9670;&#160;</a></span>SetW()</h2>
+<a id="a21fa1850006735187e1fede1e9cc6c2b" name="a21fa1850006735187e1fede1e9cc6c2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21fa1850006735187e1fede1e9cc6c2b">&#9670;&#160;</a></span>SetW()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1587,7 +1677,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp; SDL::FRect::SetW </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>nw</em></td><td>)</td>
+          <td class="paramname"><em>newW</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1599,16 +1689,16 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nw</td><td>New width of the rect</td></tr>
+    <tr><td class="paramname">newW</td><td>the new width. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to self </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to self. </dd></dl>
 
 </div>
 </div>
-<a id="af8d2f001e85829cb44ce2e7365c74fc9" name="af8d2f001e85829cb44ce2e7365c74fc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8d2f001e85829cb44ce2e7365c74fc9">&#9670;&#160;</a></span>SetX()</h2>
+<a id="ac50fa4a250316b5b3fdf43ebeb2a6cbc" name="ac50fa4a250316b5b3fdf43ebeb2a6cbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac50fa4a250316b5b3fdf43ebeb2a6cbc">&#9670;&#160;</a></span>SetX()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1620,7 +1710,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp; SDL::FRect::SetX </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>nx</em></td><td>)</td>
+          <td class="paramname"><em>newX</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1632,11 +1722,11 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">nx</td><td>New X coordinate value</td></tr>
+    <tr><td class="paramname">newX</td><td>the new left x. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to self </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to self. </dd></dl>
 
 </div>
 </div>
@@ -1674,8 +1764,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7ec90df1431264bf4ac71e84388f6d6b" name="a7ec90df1431264bf4ac71e84388f6d6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ec90df1431264bf4ac71e84388f6d6b">&#9670;&#160;</a></span>SetY()</h2>
+<a id="aa3b5e943f499000b32779fb1e2311a28" name="aa3b5e943f499000b32779fb1e2311a28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3b5e943f499000b32779fb1e2311a28">&#9670;&#160;</a></span>SetY()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1687,7 +1777,7 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">constexpr <a class="el" href="structSDL_1_1FRect.html">FRect</a> &amp; SDL::FRect::SetY </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>ny</em></td><td>)</td>
+          <td class="paramname"><em>newY</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1699,11 +1789,11 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">ny</td><td>New Y coordinate value</td></tr>
+    <tr><td class="paramname">newY</td><td>the new top y. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Reference to self </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Reference to self. </dd></dl>
 
 </div>
 </div>

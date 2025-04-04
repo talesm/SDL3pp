@@ -34,7 +34,7 @@
 #include "SDL3pp_intrin.h"
 #include "SDL3pp_iostream.h"
 // #include "SDL3pp_joystick.h"
-// #include "SDL3pp_keyboard.h"
+#include "SDL3pp_keyboard.h"
 #include "SDL3pp_keycode.h"
 #include "SDL3pp_loadso.h"
 #include "SDL3pp_locale.h"

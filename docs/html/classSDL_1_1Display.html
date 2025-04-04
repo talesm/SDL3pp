@@ -87,22 +87,19 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4a37345ff543bff5ac3553e53690cf52" id="r_a4a37345ff543bff5ac3553e53690cf52"><td class="memItemLeft" align="right" valign="top"><a id="a4a37345ff543bff5ac3553e53690cf52" name="a4a37345ff543bff5ac3553e53690cf52"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>Display</b> (SDL_DisplayID displayID=0)</td></tr>
-<tr class="memdesc:a4a37345ff543bff5ac3553e53690cf52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor. <br /></td></tr>
-<tr class="separator:a4a37345ff543bff5ac3553e53690cf52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a710fdc6c0684959b1f5e970788632c" id="r_a9a710fdc6c0684959b1f5e970788632c"><td class="memItemLeft" align="right" valign="top"><a id="a9a710fdc6c0684959b1f5e970788632c" name="a9a710fdc6c0684959b1f5e970788632c"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator bool</b> () const</td></tr>
-<tr class="memdesc:a9a710fdc6c0684959b1f5e970788632c"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if a valid display. <br /></td></tr>
-<tr class="separator:a9a710fdc6c0684959b1f5e970788632c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae638e323de9dc4e15ed51d9d8e69ac" id="r_a8ae638e323de9dc4e15ed51d9d8e69ac"><td class="memItemLeft" align="right" valign="top"><a id="a8ae638e323de9dc4e15ed51d9d8e69ac" name="a8ae638e323de9dc4e15ed51d9d8e69ac"></a>
-constexpr&#160;</td><td class="memItemRight" valign="bottom"><b>operator SDL_DisplayID</b> () const</td></tr>
-<tr class="memdesc:a8ae638e323de9dc4e15ed51d9d8e69ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts to SDL_DisplayID. <br /></td></tr>
+<tr class="memitem:af1e8f5ef744bed565850c79c0b97b67e" id="r_af1e8f5ef744bed565850c79c0b97b67e"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Display.html#af1e8f5ef744bed565850c79c0b97b67e">Display</a> (SDL_DisplayID displayID={})</td></tr>
+<tr class="memdesc:af1e8f5ef744bed565850c79c0b97b67e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="classSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a>.  <br /></td></tr>
+<tr class="separator:af1e8f5ef744bed565850c79c0b97b67e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b8d0e37acf58d4548a83f72fa12d70f" id="r_a7b8d0e37acf58d4548a83f72fa12d70f"><td class="memItemLeft" align="right" valign="top"><a id="a7b8d0e37acf58d4548a83f72fa12d70f" name="a7b8d0e37acf58d4548a83f72fa12d70f"></a>
+constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSDL_1_1Display.html">Display</a> &amp;other) const =default</td></tr>
+<tr class="memdesc:a7b8d0e37acf58d4548a83f72fa12d70f"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if a valid display. <br /></td></tr>
+<tr class="separator:a7b8d0e37acf58d4548a83f72fa12d70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ae638e323de9dc4e15ed51d9d8e69ac" id="r_a8ae638e323de9dc4e15ed51d9d8e69ac"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Display.html#a8ae638e323de9dc4e15ed51d9d8e69ac">operator SDL_DisplayID</a> () const</td></tr>
+<tr class="memdesc:a8ae638e323de9dc4e15ed51d9d8e69ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unwraps to the underlying <a class="el" href="classSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a>.  <br /></td></tr>
 <tr class="separator:a8ae638e323de9dc4e15ed51d9d8e69ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e6bda44ab5aa266238ac4330071e15d" id="r_a8e6bda44ab5aa266238ac4330071e15d"><td class="memItemLeft" align="right" valign="top"><a id="a8e6bda44ab5aa266238ac4330071e15d" name="a8e6bda44ab5aa266238ac4330071e15d"></a>
-constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (<a class="el" href="classSDL_1_1Display.html">Display</a> other) const</td></tr>
-<tr class="memdesc:a8e6bda44ab5aa266238ac4330071e15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Comparison. <br /></td></tr>
-<tr class="separator:a8e6bda44ab5aa266238ac4330071e15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a710fdc6c0684959b1f5e970788632c" id="r_a9a710fdc6c0684959b1f5e970788632c"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Display.html#a9a710fdc6c0684959b1f5e970788632c">operator bool</a> () const</td></tr>
+<tr class="memdesc:a9a710fdc6c0684959b1f5e970788632c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if valid.  <br /></td></tr>
+<tr class="separator:a9a710fdc6c0684959b1f5e970788632c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ca7e4ea5bf27c27f8a80feb8e04a2f6" id="r_a2ca7e4ea5bf27c27f8a80feb8e04a2f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__CategoryProperties.html#gaa5faab1a5ca99f759b68b5800ab0697f">PropertiesRef</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSDL_1_1Display.html#a2ca7e4ea5bf27c27f8a80feb8e04a2f6">GetProperties</a> () const</td></tr>
 <tr class="memdesc:a2ca7e4ea5bf27c27f8a80feb8e04a2f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the properties associated with a display.  <br /></td></tr>
 <tr class="separator:a2ca7e4ea5bf27c27f8a80feb8e04a2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,7 +156,40 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>If the display is disconnected and reconnected, it will get a new ID.</p>
 <p>The value 0 is an invalid ID.</p>
 <dl class="section since"><dt>Since</dt><dd>This datatype is available since <a class="el" href="classSDL_1_1SDL.html" title="Initialize the SDL library.">SDL</a> 3.2.0. </dd></dl>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="af1e8f5ef744bed565850c79c0b97b67e" name="af1e8f5ef744bed565850c79c0b97b67e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1e8f5ef744bed565850c79c0b97b67e">&#9670;&#160;</a></span>Display()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::Display::Display </td>
+          <td>(</td>
+          <td class="paramtype">SDL_DisplayID&#160;</td>
+          <td class="paramname"><em>displayID</em> = <code>{}</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">displayID</td><td>the value to be wrapped </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae196b7d3fea1b9a05e0dc2505d4ed8a7" name="ae196b7d3fea1b9a05e0dc2505d4ed8a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae196b7d3fea1b9a05e0dc2505d4ed8a7">&#9670;&#160;</a></span>GetAll()</h2>
 
@@ -704,6 +734,58 @@ GetDisplays() </dd></dl>
 <p>Setting a window to be fullscreen generally bypasses these unusable areas, so these are good guidelines for the maximum space available to a non-fullscreen window.</p>
 <dl class="section return"><dt>Returns</dt><dd>he <a class="el" href="structSDL_1_1Rect.html" title="A rectangle, with the origin at the upper left (using integers).">Rect</a> structure filled in with the display bounds on success or std::nullopt on failure; call <a class="el" href="group__CategoryError.html#ga6daa473f21fd59c14bce134abce9bd04" title="Retrieve a message about the last error that occurred on the current thread.">GetError()</a> for more information.</dd></dl>
 <dl class="section user"><dt>Thread safety:</dt><dd>This function should only be called on the main thread. </dd></dl>
+
+</div>
+</div>
+<a id="a9a710fdc6c0684959b1f5e970788632c" name="a9a710fdc6c0684959b1f5e970788632c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a710fdc6c0684959b1f5e970788632c">&#9670;&#160;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::Display::operator bool </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>True if valid state, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a id="a8ae638e323de9dc4e15ed51d9d8e69ac" name="a8ae638e323de9dc4e15ed51d9d8e69ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ae638e323de9dc4e15ed51d9d8e69ac">&#9670;&#160;</a></span>operator SDL_DisplayID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr SDL::Display::operator SDL_DisplayID </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section return"><dt>Returns</dt><dd>the underlying <a class="el" href="classSDL_1_1Display.html" title="This is a unique ID for a display for the time it is connected to the system, and is never reused for...">Display</a>. </dd></dl>
 
 </div>
 </div>

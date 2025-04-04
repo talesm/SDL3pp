@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL_keycode.h>
 #include "SDL3pp_scancode.h"
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -21,6 +22,103 @@ namespace SDL {
  */
 
 /**
+ * Valid key modifiers (possibly OR'd together).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using Keymod = SDL_Keymod;
+
+/**
+ * no modifier is applicable.
+ */
+constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
+
+/**
+ * the left Shift key is down.
+ */
+constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
+
+/**
+ * the right Shift key is down.
+ */
+constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
+
+/**
+ * the Level 5 Shift key is down.
+ */
+constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
+
+/**
+ * the left Ctrl (Control) key is down.
+ */
+constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
+
+/**
+ * the right Ctrl (Control) key is down.
+ */
+constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
+
+/**
+ * the left Alt key is down.
+ */
+constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
+
+/**
+ * the right Alt key is down.
+ */
+constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
+
+/**
+ * the left GUI key (often the Windows key) is down.
+ */
+constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
+
+/**
+ * the right GUI key (often the Windows key) is down.
+ */
+constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
+
+/**
+ * the Num Lock key (may be located on an extended keypad) is down.
+ */
+constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
+
+/**
+ * the Caps Lock key is down.
+ */
+constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
+
+/**
+ * the !AltGr key is down.
+ */
+constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
+
+/**
+ * the Scroll Lock key is down.
+ */
+constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
+
+/**
+ * Any Ctrl key is down.
+ */
+constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
+
+/**
+ * Any Shift key is down.
+ */
+constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
+
+/**
+ * Any Alt key is down.
+ */
+constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
+
+/**
+ * Any GUI key is down.
+ */
+constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
+
+/**
  * The SDL virtual key representation.
  *
  * Values of this type are used to represent keyboard keys using the current
@@ -36,7 +134,56 @@ namespace SDL {
  *
  * @since This datatype is available since SDL 3.2.0.
  */
-using Keycode = SDL_Keycode;
+class Keycode
+{
+  SDL_Keycode m_keycode;
+
+public:
+  /**
+   * Wraps Keycode.
+   *
+   * @param keycode the value to be wrapped
+   */
+  constexpr Keycode(SDL_Keycode keycode = {})
+    : m_keycode(keycode)
+  {
+  }
+
+  constexpr auto operator<=>(const Keycode& other) const = default;
+
+  // Convert from scancode
+  explicit Keycode(Scancode scancode,
+                   Keymod keymodstate = 0,
+                   bool key_event = false);
+
+  // Create from key name
+  explicit Keycode(StringParam name);
+
+  /**
+   * Unwraps to the underlying Keycode.
+   *
+   * @returns the underlying Keycode.
+   */
+  constexpr operator SDL_Keycode() const { return m_keycode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
+
+  // Get name
+  const char* GetName() const;
+
+  Scancode GetScancode(Keymod* keymodstate = nullptr) const;
+
+  /// Has Extended flag
+  constexpr bool IsExtended() const { return m_keycode & SDLK_EXTENDED_MASK; }
+
+  /// Has Scancode flag
+  constexpr bool IsScancode() const { return m_keycode & SDLK_SCANCODE_MASK; }
+};
 
 constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;
 
@@ -1005,103 +1152,6 @@ constexpr Keycode KEYCODE_RMETA = SDLK_RMETA; ///< Extended key Right Meta
 constexpr Keycode KEYCODE_LHYPER = SDLK_LHYPER; ///< Extended key Left Hyper
 
 constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
-
-/**
- * Valid key modifiers (possibly OR'd together).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using Keymod = SDL_Keymod;
-
-/**
- * no modifier is applicable.
- */
-constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
-
-/**
- * the left Shift key is down.
- */
-constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
-
-/**
- * the right Shift key is down.
- */
-constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
-
-/**
- * the Level 5 Shift key is down.
- */
-constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
-
-/**
- * the left Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
-
-/**
- * the right Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
-
-/**
- * the left Alt key is down.
- */
-constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
-
-/**
- * the right Alt key is down.
- */
-constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
-
-/**
- * the left GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
-
-/**
- * the right GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
-
-/**
- * the Num Lock key (may be located on an extended keypad) is down.
- */
-constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
-
-/**
- * the Caps Lock key is down.
- */
-constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
-
-/**
- * the !AltGr key is down.
- */
-constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
-
-/**
- * the Scroll Lock key is down.
- */
-constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
-
-/**
- * Any Ctrl key is down.
- */
-constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
-
-/**
- * Any Shift key is down.
- */
-constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
-
-/**
- * Any Alt key is down.
- */
-constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
-
-/**
- * Any GUI key is down.
- */
-constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
 
 /// @}
 } // namespace SDL

@@ -2,7 +2,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, FileTransform, ReplacementRule, StringMap } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter } from "./types"
  */
 
 /**
@@ -85,7 +85,7 @@ class ApiContext {
  * 
  * @param {ApiEntries}    sourceEntries 
  * @param {ApiContext}    context 
- * @param {FileTransform} transform
+ * @param {ApiFileTransform} transform
  */
 function transformEntries(sourceEntries, context, transform) {
   /** @type {ApiEntries} */
@@ -103,6 +103,7 @@ function transformEntries(sourceEntries, context, transform) {
 
   if (transform.resources) expandResources(transform.resources, transform, context);
   if (transform.enumerations) expandEnumerations(sourceEntries, transform, context);
+  if (transform.wrappers) expandWrappers(sourceEntries, transform, context);
   if (transform.namespacesMap) expandNamespaces(sourceEntries, transform, context);
 
   insertEntryAndCheck(targetEntries, includeAfter.__begin ?? [], context, transform);
@@ -181,13 +182,13 @@ function transformEntries(sourceEntries, context, transform) {
 /**
  * 
  * @param {ApiEntries}    sourceEntries 
- * @param {FileTransform} transform,
+ * @param {ApiFileTransform} transform,
  * @param {ApiContext}    context 
  */
 function expandNamespaces(sourceEntries, transform, context) {
   const namespacesMap = transform.namespacesMap;
   for (const [prefix, nsName] of Object.entries(namespacesMap)) {
-    /** @type {ApiEntryTransform} */
+    /** @type {ApiEntry} */
     const ns = {
       kind: "ns",
       name: nsName,
@@ -195,29 +196,183 @@ function expandNamespaces(sourceEntries, transform, context) {
     };
     const sourceEntriesListed = Object.entries(sourceEntries)
       .filter(([key]) => key.startsWith(prefix));
-    sourceEntriesListed
-      .forEach(([key, entry]) => {
-        ns.entries[key] = entry;
-        if (Array.isArray(entry)) {
-          entry.forEach(e => e.name = e.name.slice(prefix.length));
-        } else {
-          entry.name = entry.name.slice(prefix.length);
-          if (entry.kind === "def") {
-            entry.kind = "var";
-            entry.type = "auto";
-            entry.constexpr = true;
-            entry.sourceName = key;
-          }
+    sourceEntriesListed.forEach(([key, entry]) => {
+      ns.entries[key] = entry;
+      if (Array.isArray(entry)) {
+        entry.forEach(e => e.name = e.name.slice(prefix.length));
+      } else {
+        entry.name = entry.name.slice(prefix.length);
+        if (entry.kind === "def") {
+          entry.kind = "var";
+          entry.type = "auto";
+          entry.constexpr = true;
+          entry.sourceName = key;
         }
+      }
+    });
+    includeAfter(ns, transform, sourceEntriesListed[0][0]);
+  }
+}
+
+
+/**
+ * 
+ * @param {ApiEntries}    sourceEntries 
+ * @param {ApiFileTransform} transform,
+ * @param {ApiContext}    context 
+ */
+function expandWrappers(sourceEntries, transform, context) {
+  for (const [type, wrapper] of Object.entries(transform.wrappers)) {
+    const sourceEntry = sourceEntries[type];
+    if (Array.isArray(sourceEntry)) continue;
+
+    wrapper.kind = "struct";
+    combineObject(wrapper, transform.transform[type] ?? {});
+    transform.transform[type] = wrapper;
+    const targetType = wrapper.name ?? transformName(type, context);
+    if (wrapper.includeAfter) {
+      includeAfter(targetType, transform, wrapper.includeAfter);
+    }
+    const isStruct = sourceEntry.kind === "struct";
+    const constexpr = wrapper.constexpr !== false;
+    const param = wrapper.attribute ?? (targetType[0].toLowerCase() + targetType.slice(1));
+    const attribute = "m_" + param;
+
+    /** @type {ApiEntries} */
+    const entries = {};
+
+    if (!isStruct) insertEntry(entries, {
+      kind: "var",
+      name: attribute,
+      type: type,
+    });
+
+    insertEntry(entries, {
+      kind: "function",
+      name: targetType,
+      type: "",
+      constexpr,
+      parameters: [{
+        type: isStruct ? `const ${type} &` : type,
+        name: param,
+        default: wrapper.defaultValue ?? "{}"
+      }],
+      doc: `Wraps ${type}.\n\n@param ${param} the value to be wrapped`
+    });
+    if (wrapper.ordered) {
+      insertEntry(entries, {
+        kind: "function",
+        name: "operator<=>",
+        type: "auto",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
       });
-    transform.includeAfter[sourceEntriesListed[0][0]] = ns;
+    } else {
+      insertEntry(entries, {
+        kind: "function",
+        name: "operator==",
+        type: "bool",
+        constexpr,
+        immutable: true,
+        parameters: [{
+          type: `const ${targetType} &`,
+          name: "other",
+        }],
+      });
+    }
+    if (wrapper.nullable) insertEntry(entries, {
+      kind: "function",
+      name: "operator==",
+      type: "bool",
+      constexpr,
+      immutable: true,
+      parameters: ["std::nullptr_t"],
+      doc: `Compare with nullptr.\n\n@returns True if invalid state, false otherwise.`
+    });
+    if (!isStruct) insertEntry(entries, {
+      kind: "function",
+      name: `operator ${type}`,
+      type: "",
+      constexpr,
+      immutable: true,
+      parameters: [],
+      doc: `Unwraps to the underlying ${type}.\n\n@returns the underlying ${type}.`
+    });
+    if (wrapper.invalidState !== false) insertEntry(entries, {
+      kind: "function",
+      name: "operator bool",
+      type: "",
+      constexpr,
+      explicit: true,
+      immutable: true,
+      parameters: [],
+      doc: `Check if valid.\n\n@returns True if valid state, false otherwise.`
+    });
+
+    if (isStruct && wrapper.type == null) {
+      /** @type {ApiParameter[]} */
+      const parameters = [];
+      for (const attrib of Object.values(sourceEntry.entries)) {
+        if (Array.isArray(attrib) || attrib.kind !== "var") continue;
+        const name = attrib.name;
+        const type = attrib.type;
+        parameters.push({ type, name });
+        const capName = name[0].toUpperCase() + name.slice(1);
+        insertEntry(entries, [{
+          kind: "function",
+          name: `Get${capName}`,
+          type,
+          constexpr,
+          immutable: true,
+          parameters: [],
+          doc: `Get the ${name}.\n\n@returns current ${name} value.`
+        }, {
+          kind: "function",
+          name: `Set${capName}`,
+          type: `${targetType} &`,
+          constexpr,
+          parameters: [{
+            type,
+            name: `new${capName}`
+          }],
+          doc: `Set the ${name}.\n\n@param new${capName} the new ${name} value.\n@returns Reference to self.`
+        }]);
+      }
+      insertEntry(entries, {
+        kind: "function",
+        name: targetType,
+        type: "",
+        constexpr,
+        parameters,
+        doc: `Constructs from its fields.\n\n` + parameters.map(p => `@param ${p.name} the value for ${p.name}.`).join("\n")
+      });
+    } else {
+      wrapper.type = "";
+    }
+
+    const currentCtors = wrapper.entries?.[targetType];
+    if (currentCtors) {
+      insertEntry(entries, /** @type {ApiEntry} */(currentCtors), targetType);
+      delete wrapper.entries[targetType];
+    }
+    wrapper.entries = { ...entries, ...(wrapper.entries ?? {}) };
+
+    delete wrapper.invalidState;
+    delete wrapper.attribute;
+    delete wrapper.includeAfter;
+    delete wrapper.nullable;
+    delete wrapper.ordered;
   }
 }
 
 /**
  * 
  * @param {Dict<ApiResource>} resources 
- * @param {FileTransform} transform 
+ * @param {ApiFileTransform} transform 
  * @param {ApiContext} context 
  */
 function expandResources(resources, transform, context) {
@@ -260,12 +415,7 @@ function expandResources(resources, transform, context) {
         ],
         sourceName: freeFunction
       };
-
-      if (Array.isArray(transform.includeAfter[sourceName])) {
-        transform.includeAfter[sourceName].unshift(freeEntry);
-      } else if (transform.includeAfter[sourceName]) {
-        transform.includeAfter[sourceName] = [freeEntry, transform.includeAfter[sourceName]];
-      } else transform.includeAfter[sourceName] = freeEntry;
+      prependIncludeAfter(freeEntry, transform, sourceName);
     }
     if (resourceEntry.prependAliases !== false) {
       referenceAliases.push({ name, kind: "forward", template, },
@@ -324,28 +474,27 @@ function expandResources(resources, transform, context) {
     // TODO if (resourceEntry.insertAfter) {...}
     transform.transform[sourceName] = entry;
   }
-  if (!transform.includeAfter.__begin) {
-    transform.includeAfter.__begin = referenceAliases;
-  } else if (Array.isArray(transform.includeAfter.__begin)) {
-    transform.includeAfter.__begin.push(...referenceAliases);
-  } else {
-    transform.includeAfter.__begin = [transform.includeAfter.__begin, ...referenceAliases];
-  }
+  includeAfter(referenceAliases, transform, "__begin");
 }
 
 /**
  * 
  * @param {ApiEntries}            sourceEntries 
- * @param {FileTransform}         transform,
+ * @param {ApiFileTransform}         transform,
  * @param {ApiContext}            context 
  */
 function expandEnumerations(sourceEntries, transform, context) {
-  const enumerations = transform.enumerations;
-  for (const [type, enumTransform] of Object.entries(enumerations)) {
-    const includeAfter = enumTransform.includeAfter;
+  for (const [type, enumTransform] of Object.entries(transform.enumerations)) {
     const sourceEntry = sourceEntries[type];
     if (Array.isArray(sourceEntry)) continue;
-    const targetType = addTransform(type, enumTransform, includeAfter);
+
+    combineObject(enumTransform, transform.transform[type] ?? {});
+    transform.transform[type] = enumTransform;
+    const targetType = enumTransform.name ?? transformName(type, context);
+    if (enumTransform.includeAfter) {
+      includeAfter(targetType, transform, enumTransform.includeAfter);
+    }
+
     let values = enumTransform.values;
     /** @type {StringMap} */
     const newNames = {};
@@ -372,47 +521,73 @@ function expandEnumerations(sourceEntries, transform, context) {
         kind: "var",
         constexpr: true,
         type: targetType,
-      }, includeAfter, newNames[value]);
+      }, enumTransform.includeAfter, newNames[value]);
     }
+
+    delete enumTransform.values;
+    delete enumTransform.prefix;
+    delete enumTransform.includeAfter;
+    delete enumTransform.newPrefix;
   }
 
   /** 
    * @param {string}            name 
    * @param {ApiEntryTransform} entry  
-   * @param {string=}           includeAfter 
+   * @param {string=}           includeAfterKey 
    * @param {string=}           newName
    */
-  function addTransform(name, entry, includeAfter, newName) {
-    const currEntry = transform.transform[name] || {};
-    entry = { ...currEntry, ...entry };
+  function addTransform(name, entry, includeAfterKey, newName) {
+    combineObject(entry, transform.transform[name] || {});
     if (newName) entry.name = newName;
     const targetName = entry.name ?? transformName(name, context);
-
-    // @ts-ignore
-    delete entry.values;
-    // @ts-ignore
-    delete entry.prefix;
-    // @ts-ignore
-    delete entry.includeAfter;
-    // @ts-ignore
-    delete entry.newPrefix;
-
-    if (includeAfter) {
-      const placeholder = {
-        name: targetName,
-        type: entry.type,
-      };
-      const includeTarget = transform.includeAfter[includeAfter];
-      if (!includeTarget) {
-        transform.includeAfter[includeAfter] = placeholder;
-      } else if (Array.isArray(includeTarget)) {
-        includeTarget.push(placeholder);
-      } else {
-        transform.includeAfter[includeAfter] = [includeTarget, placeholder];
-      }
-    }
+    if (includeAfterKey) includeAfter(targetName, transform, includeAfterKey);
     transform.transform[name] = entry;
-    return targetName;
+  }
+}
+
+/**
+ * Add to includeAfter field
+ * @param {string|ApiEntry|ApiEntry[]}  entryOrName 
+ * @param {ApiFileTransform}            transform 
+ * @param {string}                      includeAfterKey 
+ */
+function includeAfter(entryOrName, transform, includeAfterKey) {
+  const includeTarget = getOrCreateIncludeAfter(transform, includeAfterKey);
+  if (Array.isArray(entryOrName)) {
+    includeTarget.push(...entryOrName);
+  } else {
+    includeTarget.push((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+  }
+}
+
+/**
+ * Prepend to includeAfter field
+ * @param {string|ApiEntry|ApiEntry[]}  entryOrName 
+ * @param {ApiFileTransform}            transform 
+ * @param {string}                      includeAfterKey 
+ */
+function prependIncludeAfter(entryOrName, transform, includeAfterKey) {
+  const includeTarget = getOrCreateIncludeAfter(transform, includeAfterKey);
+  if (Array.isArray(entryOrName)) {
+    includeTarget.unshift(...entryOrName);
+  } else {
+    includeTarget.unshift((typeof entryOrName === "string") ? { name: entryOrName } : entryOrName);
+  }
+}
+
+/**
+ * 
+ * @param {ApiFileTransform}  transform 
+ * @param {string}            includeAfterKey 
+ */
+function getOrCreateIncludeAfter(transform, includeAfterKey) {
+  const includeTarget = transform.includeAfter[includeAfterKey];
+  if (!includeTarget) {
+    return transform.includeAfter[includeAfterKey] = [];
+  } else if (Array.isArray(includeTarget)) {
+    return includeTarget;
+  } else {
+    return transform.includeAfter[includeAfterKey] = [includeTarget];
   }
 }
 
@@ -432,7 +607,7 @@ function scanFreeFunction(entries) {
  * @param {ApiEntries}                    entries 
  * @param {ApiEntryTransform|ApiEntryTransform[]}  entry 
  * @param {ApiContext}                    context 
- * @param {FileTransform}                 transform
+ * @param {ApiFileTransform}                 transform
  * @param {string=}                       defaultName
  */
 function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
@@ -448,7 +623,7 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
  * 
  * @param {ApiEntryTransform} targetEntry 
  * @param {ApiContext}        context 
- * @param {FileTransform}     transform 
+ * @param {ApiFileTransform}     transform 
  * @param {ApiEntries}        targetEntries
  */
 function transformSubEntries(targetEntry, context, transform, targetEntries) {

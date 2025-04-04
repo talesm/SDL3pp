@@ -2,6 +2,7 @@
 #define SDL3PP_SCANCODE_H_
 
 #include <SDL3/SDL_scancode.h>
+#include "SDL3pp_stdinc.h"
 
 namespace SDL {
 
@@ -19,6 +20,9 @@ namespace SDL {
  * @{
  */
 
+// Forward decl
+struct Keycode;
+
 /**
  * The SDL keyboard scancode representation.
  *
@@ -33,7 +37,48 @@ namespace SDL {
  *
  * @since This enum is available since SDL 3.2.0.
  */
-using Scancode = SDL_Scancode;
+struct Scancode
+{
+  SDL_Scancode m_scancode;
+
+  /**
+   * Wraps Scancode.
+   *
+   * @param scancode the value to be wrapped
+   */
+  constexpr Scancode(SDL_Scancode scancode = {})
+    : m_scancode(scancode)
+  {
+  }
+
+  // Get scan code from name
+  Scancode(StringParam name);
+
+  constexpr auto operator<=>(const Scancode& other) const = default;
+
+  /**
+   * Unwraps to the underlying Scancode.
+   *
+   * @returns the underlying Scancode.
+   */
+  constexpr operator SDL_Scancode() const { return m_scancode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const
+  {
+    return m_scancode != SDL_SCANCODE_UNKNOWN;
+  }
+
+  // Set name
+  bool SetName(StringParam name);
+
+  // Get name
+  const char* GetName() const;
+};
 
 constexpr Scancode SCANCODE_UNKNOWN = SDL_SCANCODE_UNKNOWN;
 
@@ -312,7 +357,8 @@ constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24;
 
 constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE;
 
-constexpr Scancode SCANCODE_HELP = SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
+constexpr Scancode SCANCODE_HELP =
+  SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
 
 constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
 
@@ -349,7 +395,8 @@ constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
 
 constexpr Scancode SCANCODE_INTERNATIONAL2 = SDL_SCANCODE_INTERNATIONAL2;
 
-constexpr Scancode SCANCODE_INTERNATIONAL3 = SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
+constexpr Scancode SCANCODE_INTERNATIONAL3 =
+  SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
 
 constexpr Scancode SCANCODE_INTERNATIONAL4 = SDL_SCANCODE_INTERNATIONAL4;
 
@@ -363,7 +410,8 @@ constexpr Scancode SCANCODE_INTERNATIONAL8 = SDL_SCANCODE_INTERNATIONAL8;
 
 constexpr Scancode SCANCODE_INTERNATIONAL9 = SDL_SCANCODE_INTERNATIONAL9;
 
-constexpr Scancode SCANCODE_LANG1 = SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
+constexpr Scancode SCANCODE_LANG1 =
+  SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
 
 constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
 
@@ -544,7 +592,8 @@ constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
 
 constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
 
-constexpr Scancode SCANCODE_MEDIA_RECORD = SDL_SCANCODE_MEDIA_RECORD; ///< Record.
+constexpr Scancode SCANCODE_MEDIA_RECORD =
+  SDL_SCANCODE_MEDIA_RECORD; ///< Record.
 
 /**
  * Fast Forward.
@@ -552,7 +601,8 @@ constexpr Scancode SCANCODE_MEDIA_RECORD = SDL_SCANCODE_MEDIA_RECORD; ///< Recor
 constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
   SDL_SCANCODE_MEDIA_FAST_FORWARD;
 
-constexpr Scancode SCANCODE_MEDIA_REWIND = SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
+constexpr Scancode SCANCODE_MEDIA_REWIND =
+  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
 
 /**
  * Next Track.
@@ -599,11 +649,13 @@ constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
 
 constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
 
-constexpr Scancode SCANCODE_AC_FORWARD = SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
+constexpr Scancode SCANCODE_AC_FORWARD =
+  SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
 
 constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
 
-constexpr Scancode SCANCODE_AC_REFRESH = SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
+constexpr Scancode SCANCODE_AC_REFRESH =
+  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
 
 /**
  * AC Bookmarks.

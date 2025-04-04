@@ -420,647 +420,6 @@ constexpr OptionalRef<T> fromNullable(T* ptr)
   return std::nullopt;
 }
 
-/**
- *
- * @defgroup CategoryScancode Keyboard Scancodes
- *
- * Defines keyboard scancodes.
- *
- * Please refer to the Best Keyboard Practices document for details on what
- * this information means and how best to use it.
- *
- * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
- *
- * @{
- */
-
-/**
- * The SDL keyboard scancode representation.
- *
- * An SDL scancode is the physical representation of a key on the keyboard,
- * independent of language and keyboard mapping.
- *
- * Values of this type are used to represent keyboard keys, among other places
- * in the `scancode` field of the KeyboardEvent structure.
- *
- * The values in this enumeration are based on the USB usage page standard:
- * https://usb.org/sites/default/files/hut1_5.pdf
- *
- * @since This enum is available since SDL 3.2.0.
- */
-using Scancode = SDL_Scancode;
-
-constexpr Scancode SCANCODE_UNKNOWN = SDL_SCANCODE_UNKNOWN;
-
-constexpr Scancode SCANCODE_A = SDL_SCANCODE_A;
-
-constexpr Scancode SCANCODE_B = SDL_SCANCODE_B;
-
-constexpr Scancode SCANCODE_C = SDL_SCANCODE_C;
-
-constexpr Scancode SCANCODE_D = SDL_SCANCODE_D;
-
-constexpr Scancode SCANCODE_E = SDL_SCANCODE_E;
-
-constexpr Scancode SCANCODE_F = SDL_SCANCODE_F;
-
-constexpr Scancode SCANCODE_G = SDL_SCANCODE_G;
-
-constexpr Scancode SCANCODE_H = SDL_SCANCODE_H;
-
-constexpr Scancode SCANCODE_I = SDL_SCANCODE_I;
-
-constexpr Scancode SCANCODE_J = SDL_SCANCODE_J;
-
-constexpr Scancode SCANCODE_K = SDL_SCANCODE_K;
-
-constexpr Scancode SCANCODE_L = SDL_SCANCODE_L;
-
-constexpr Scancode SCANCODE_M = SDL_SCANCODE_M;
-
-constexpr Scancode SCANCODE_N = SDL_SCANCODE_N;
-
-constexpr Scancode SCANCODE_O = SDL_SCANCODE_O;
-
-constexpr Scancode SCANCODE_P = SDL_SCANCODE_P;
-
-constexpr Scancode SCANCODE_Q = SDL_SCANCODE_Q;
-
-constexpr Scancode SCANCODE_R = SDL_SCANCODE_R;
-
-constexpr Scancode SCANCODE_S = SDL_SCANCODE_S;
-
-constexpr Scancode SCANCODE_T = SDL_SCANCODE_T;
-
-constexpr Scancode SCANCODE_U = SDL_SCANCODE_U;
-
-constexpr Scancode SCANCODE_V = SDL_SCANCODE_V;
-
-constexpr Scancode SCANCODE_W = SDL_SCANCODE_W;
-
-constexpr Scancode SCANCODE_X = SDL_SCANCODE_X;
-
-constexpr Scancode SCANCODE_Y = SDL_SCANCODE_Y;
-
-constexpr Scancode SCANCODE_Z = SDL_SCANCODE_Z;
-
-constexpr Scancode SCANCODE_1 = SDL_SCANCODE_1;
-
-constexpr Scancode SCANCODE_2 = SDL_SCANCODE_2;
-
-constexpr Scancode SCANCODE_3 = SDL_SCANCODE_3;
-
-constexpr Scancode SCANCODE_4 = SDL_SCANCODE_4;
-
-constexpr Scancode SCANCODE_5 = SDL_SCANCODE_5;
-
-constexpr Scancode SCANCODE_6 = SDL_SCANCODE_6;
-
-constexpr Scancode SCANCODE_7 = SDL_SCANCODE_7;
-
-constexpr Scancode SCANCODE_8 = SDL_SCANCODE_8;
-
-constexpr Scancode SCANCODE_9 = SDL_SCANCODE_9;
-
-constexpr Scancode SCANCODE_0 = SDL_SCANCODE_0;
-
-constexpr Scancode SCANCODE_RETURN = SDL_SCANCODE_RETURN;
-
-constexpr Scancode SCANCODE_ESCAPE = SDL_SCANCODE_ESCAPE;
-
-constexpr Scancode SCANCODE_BACKSPACE = SDL_SCANCODE_BACKSPACE;
-
-constexpr Scancode SCANCODE_TAB = SDL_SCANCODE_TAB;
-
-constexpr Scancode SCANCODE_SPACE = SDL_SCANCODE_SPACE;
-
-constexpr Scancode SCANCODE_MINUS = SDL_SCANCODE_MINUS;
-
-constexpr Scancode SCANCODE_EQUALS = SDL_SCANCODE_EQUALS;
-
-constexpr Scancode SCANCODE_LEFTBRACKET = SDL_SCANCODE_LEFTBRACKET;
-
-constexpr Scancode SCANCODE_RIGHTBRACKET = SDL_SCANCODE_RIGHTBRACKET;
-
-/**
- * Located at the lower left of the return key on ISO keyboards and at the right
- * end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS
- * (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL
- * LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR
- * SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a
- * German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and
- * ASTERISK and MICRO SIGN in a French Windows layout.
- */
-constexpr Scancode SCANCODE_BACKSLASH = SDL_SCANCODE_BACKSLASH;
-
-/**
- * ISO USB keyboards actually use this code instead of 49 for the same key, but
- * all OSes I've seen treat the two codes identically.  So, as an implementor,
- * unless your keyboard generates both of those codes and your OS treats them
- * differently, you should generate SCANCODE_BACKSLASH instead of this code. As
- * a user, you should not rely on this code because SDL will never generate it
- * with most (all?) keyboards.
- */
-constexpr Scancode SCANCODE_NONUSHASH = SDL_SCANCODE_NONUSHASH;
-
-constexpr Scancode SCANCODE_SEMICOLON = SDL_SCANCODE_SEMICOLON;
-
-constexpr Scancode SCANCODE_APOSTROPHE = SDL_SCANCODE_APOSTROPHE;
-
-/**
- * Located in the top left corner (on both ANSI and ISO keyboards).  Produces
- * GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on
- * ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION
- * SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION
- * SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),
- * CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO
- * keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL
- * AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN
- * SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on
- * ANSI keyboards.
- */
-constexpr Scancode SCANCODE_GRAVE = SDL_SCANCODE_GRAVE;
-
-constexpr Scancode SCANCODE_COMMA = SDL_SCANCODE_COMMA;
-
-constexpr Scancode SCANCODE_PERIOD = SDL_SCANCODE_PERIOD;
-
-constexpr Scancode SCANCODE_SLASH = SDL_SCANCODE_SLASH;
-
-constexpr Scancode SCANCODE_CAPSLOCK = SDL_SCANCODE_CAPSLOCK;
-
-constexpr Scancode SCANCODE_F1 = SDL_SCANCODE_F1;
-
-constexpr Scancode SCANCODE_F2 = SDL_SCANCODE_F2;
-
-constexpr Scancode SCANCODE_F3 = SDL_SCANCODE_F3;
-
-constexpr Scancode SCANCODE_F4 = SDL_SCANCODE_F4;
-
-constexpr Scancode SCANCODE_F5 = SDL_SCANCODE_F5;
-
-constexpr Scancode SCANCODE_F6 = SDL_SCANCODE_F6;
-
-constexpr Scancode SCANCODE_F7 = SDL_SCANCODE_F7;
-
-constexpr Scancode SCANCODE_F8 = SDL_SCANCODE_F8;
-
-constexpr Scancode SCANCODE_F9 = SDL_SCANCODE_F9;
-
-constexpr Scancode SCANCODE_F10 = SDL_SCANCODE_F10;
-
-constexpr Scancode SCANCODE_F11 = SDL_SCANCODE_F11;
-
-constexpr Scancode SCANCODE_F12 = SDL_SCANCODE_F12;
-
-constexpr Scancode SCANCODE_PRINTSCREEN = SDL_SCANCODE_PRINTSCREEN;
-
-constexpr Scancode SCANCODE_SCROLLLOCK = SDL_SCANCODE_SCROLLLOCK;
-
-constexpr Scancode SCANCODE_PAUSE = SDL_SCANCODE_PAUSE;
-
-/**
- * insert on PC, help on some Mac keyboards (but does send code 73, not 117)
- */
-constexpr Scancode SCANCODE_INSERT = SDL_SCANCODE_INSERT;
-
-constexpr Scancode SCANCODE_HOME = SDL_SCANCODE_HOME;
-
-constexpr Scancode SCANCODE_PAGEUP = SDL_SCANCODE_PAGEUP;
-
-constexpr Scancode SCANCODE_DELETE = SDL_SCANCODE_DELETE;
-
-constexpr Scancode SCANCODE_END = SDL_SCANCODE_END;
-
-constexpr Scancode SCANCODE_PAGEDOWN = SDL_SCANCODE_PAGEDOWN;
-
-constexpr Scancode SCANCODE_RIGHT = SDL_SCANCODE_RIGHT;
-
-constexpr Scancode SCANCODE_LEFT = SDL_SCANCODE_LEFT;
-
-constexpr Scancode SCANCODE_DOWN = SDL_SCANCODE_DOWN;
-
-constexpr Scancode SCANCODE_UP = SDL_SCANCODE_UP;
-
-/**
- * num lock on PC, clear on Mac keyboards
- */
-constexpr Scancode SCANCODE_NUMLOCKCLEAR = SDL_SCANCODE_NUMLOCKCLEAR;
-
-constexpr Scancode SCANCODE_KP_DIVIDE = SDL_SCANCODE_KP_DIVIDE;
-
-constexpr Scancode SCANCODE_KP_MULTIPLY = SDL_SCANCODE_KP_MULTIPLY;
-
-constexpr Scancode SCANCODE_KP_MINUS = SDL_SCANCODE_KP_MINUS;
-
-constexpr Scancode SCANCODE_KP_PLUS = SDL_SCANCODE_KP_PLUS;
-
-constexpr Scancode SCANCODE_KP_ENTER = SDL_SCANCODE_KP_ENTER;
-
-constexpr Scancode SCANCODE_KP_1 = SDL_SCANCODE_KP_1;
-
-constexpr Scancode SCANCODE_KP_2 = SDL_SCANCODE_KP_2;
-
-constexpr Scancode SCANCODE_KP_3 = SDL_SCANCODE_KP_3;
-
-constexpr Scancode SCANCODE_KP_4 = SDL_SCANCODE_KP_4;
-
-constexpr Scancode SCANCODE_KP_5 = SDL_SCANCODE_KP_5;
-
-constexpr Scancode SCANCODE_KP_6 = SDL_SCANCODE_KP_6;
-
-constexpr Scancode SCANCODE_KP_7 = SDL_SCANCODE_KP_7;
-
-constexpr Scancode SCANCODE_KP_8 = SDL_SCANCODE_KP_8;
-
-constexpr Scancode SCANCODE_KP_9 = SDL_SCANCODE_KP_9;
-
-constexpr Scancode SCANCODE_KP_0 = SDL_SCANCODE_KP_0;
-
-constexpr Scancode SCANCODE_KP_PERIOD = SDL_SCANCODE_KP_PERIOD;
-
-/**
- * This is the additional key that ISO keyboards have over ANSI ones, located
- * between left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac
- * layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows
- * layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,
- * or French layout.
- */
-constexpr Scancode SCANCODE_NONUSBACKSLASH = SDL_SCANCODE_NONUSBACKSLASH;
-
-/**
- * windows contextual menu, compose
- */
-constexpr Scancode SCANCODE_APPLICATION = SDL_SCANCODE_APPLICATION;
-
-/**
- * The USB document says this is a status flag, not a physical key - but some
- * Mac keyboards do have a power key.
- */
-constexpr Scancode SCANCODE_POWER = SDL_SCANCODE_POWER;
-
-constexpr Scancode SCANCODE_KP_EQUALS = SDL_SCANCODE_KP_EQUALS;
-
-constexpr Scancode SCANCODE_F13 = SDL_SCANCODE_F13;
-
-constexpr Scancode SCANCODE_F14 = SDL_SCANCODE_F14;
-
-constexpr Scancode SCANCODE_F15 = SDL_SCANCODE_F15;
-
-constexpr Scancode SCANCODE_F16 = SDL_SCANCODE_F16;
-
-constexpr Scancode SCANCODE_F17 = SDL_SCANCODE_F17;
-
-constexpr Scancode SCANCODE_F18 = SDL_SCANCODE_F18;
-
-constexpr Scancode SCANCODE_F19 = SDL_SCANCODE_F19;
-
-constexpr Scancode SCANCODE_F20 = SDL_SCANCODE_F20;
-
-constexpr Scancode SCANCODE_F21 = SDL_SCANCODE_F21;
-
-constexpr Scancode SCANCODE_F22 = SDL_SCANCODE_F22;
-
-constexpr Scancode SCANCODE_F23 = SDL_SCANCODE_F23;
-
-constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24;
-
-constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE;
-
-constexpr Scancode SCANCODE_HELP = SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
-
-constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
-
-constexpr Scancode SCANCODE_SELECT = SDL_SCANCODE_SELECT;
-
-constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop.
-
-constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat.
-
-constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo.
-
-constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut.
-
-constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy.
-
-constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste.
-
-constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find.
-
-constexpr Scancode SCANCODE_MUTE = SDL_SCANCODE_MUTE;
-
-constexpr Scancode SCANCODE_VOLUMEUP = SDL_SCANCODE_VOLUMEUP;
-
-constexpr Scancode SCANCODE_VOLUMEDOWN = SDL_SCANCODE_VOLUMEDOWN;
-
-constexpr Scancode SCANCODE_KP_COMMA = SDL_SCANCODE_KP_COMMA;
-
-constexpr Scancode SCANCODE_KP_EQUALSAS400 = SDL_SCANCODE_KP_EQUALSAS400;
-
-/**
- * used on Asian keyboards, see footnotes in USB doc
- */
-constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
-
-constexpr Scancode SCANCODE_INTERNATIONAL2 = SDL_SCANCODE_INTERNATIONAL2;
-
-constexpr Scancode SCANCODE_INTERNATIONAL3 = SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
-
-constexpr Scancode SCANCODE_INTERNATIONAL4 = SDL_SCANCODE_INTERNATIONAL4;
-
-constexpr Scancode SCANCODE_INTERNATIONAL5 = SDL_SCANCODE_INTERNATIONAL5;
-
-constexpr Scancode SCANCODE_INTERNATIONAL6 = SDL_SCANCODE_INTERNATIONAL6;
-
-constexpr Scancode SCANCODE_INTERNATIONAL7 = SDL_SCANCODE_INTERNATIONAL7;
-
-constexpr Scancode SCANCODE_INTERNATIONAL8 = SDL_SCANCODE_INTERNATIONAL8;
-
-constexpr Scancode SCANCODE_INTERNATIONAL9 = SDL_SCANCODE_INTERNATIONAL9;
-
-constexpr Scancode SCANCODE_LANG1 = SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
-
-constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
-
-constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana.
-
-constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana.
-
-constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku.
-
-constexpr Scancode SCANCODE_LANG6 = SDL_SCANCODE_LANG6; ///< reserved
-
-constexpr Scancode SCANCODE_LANG7 = SDL_SCANCODE_LANG7; ///< reserved
-
-constexpr Scancode SCANCODE_LANG8 = SDL_SCANCODE_LANG8; ///< reserved
-
-constexpr Scancode SCANCODE_LANG9 = SDL_SCANCODE_LANG9; ///< reserved
-
-constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze.
-
-constexpr Scancode SCANCODE_SYSREQ = SDL_SCANCODE_SYSREQ;
-
-constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel.
-
-constexpr Scancode SCANCODE_CLEAR = SDL_SCANCODE_CLEAR;
-
-constexpr Scancode SCANCODE_PRIOR = SDL_SCANCODE_PRIOR;
-
-constexpr Scancode SCANCODE_RETURN2 = SDL_SCANCODE_RETURN2;
-
-constexpr Scancode SCANCODE_SEPARATOR = SDL_SCANCODE_SEPARATOR;
-
-constexpr Scancode SCANCODE_OUT = SDL_SCANCODE_OUT;
-
-constexpr Scancode SCANCODE_OPER = SDL_SCANCODE_OPER;
-
-constexpr Scancode SCANCODE_CLEARAGAIN = SDL_SCANCODE_CLEARAGAIN;
-
-constexpr Scancode SCANCODE_CRSEL = SDL_SCANCODE_CRSEL;
-
-constexpr Scancode SCANCODE_EXSEL = SDL_SCANCODE_EXSEL;
-
-constexpr Scancode SCANCODE_KP_00 = SDL_SCANCODE_KP_00;
-
-constexpr Scancode SCANCODE_KP_000 = SDL_SCANCODE_KP_000;
-
-constexpr Scancode SCANCODE_THOUSANDSSEPARATOR =
-  SDL_SCANCODE_THOUSANDSSEPARATOR;
-
-constexpr Scancode SCANCODE_DECIMALSEPARATOR = SDL_SCANCODE_DECIMALSEPARATOR;
-
-constexpr Scancode SCANCODE_CURRENCYUNIT = SDL_SCANCODE_CURRENCYUNIT;
-
-constexpr Scancode SCANCODE_CURRENCYSUBUNIT = SDL_SCANCODE_CURRENCYSUBUNIT;
-
-constexpr Scancode SCANCODE_KP_LEFTPAREN = SDL_SCANCODE_KP_LEFTPAREN;
-
-constexpr Scancode SCANCODE_KP_RIGHTPAREN = SDL_SCANCODE_KP_RIGHTPAREN;
-
-constexpr Scancode SCANCODE_KP_LEFTBRACE = SDL_SCANCODE_KP_LEFTBRACE;
-
-constexpr Scancode SCANCODE_KP_RIGHTBRACE = SDL_SCANCODE_KP_RIGHTBRACE;
-
-constexpr Scancode SCANCODE_KP_TAB = SDL_SCANCODE_KP_TAB;
-
-constexpr Scancode SCANCODE_KP_BACKSPACE = SDL_SCANCODE_KP_BACKSPACE;
-
-constexpr Scancode SCANCODE_KP_A = SDL_SCANCODE_KP_A;
-
-constexpr Scancode SCANCODE_KP_B = SDL_SCANCODE_KP_B;
-
-constexpr Scancode SCANCODE_KP_C = SDL_SCANCODE_KP_C;
-
-constexpr Scancode SCANCODE_KP_D = SDL_SCANCODE_KP_D;
-
-constexpr Scancode SCANCODE_KP_E = SDL_SCANCODE_KP_E;
-
-constexpr Scancode SCANCODE_KP_F = SDL_SCANCODE_KP_F;
-
-constexpr Scancode SCANCODE_KP_XOR = SDL_SCANCODE_KP_XOR;
-
-constexpr Scancode SCANCODE_KP_POWER = SDL_SCANCODE_KP_POWER;
-
-constexpr Scancode SCANCODE_KP_PERCENT = SDL_SCANCODE_KP_PERCENT;
-
-constexpr Scancode SCANCODE_KP_LESS = SDL_SCANCODE_KP_LESS;
-
-constexpr Scancode SCANCODE_KP_GREATER = SDL_SCANCODE_KP_GREATER;
-
-constexpr Scancode SCANCODE_KP_AMPERSAND = SDL_SCANCODE_KP_AMPERSAND;
-
-constexpr Scancode SCANCODE_KP_DBLAMPERSAND = SDL_SCANCODE_KP_DBLAMPERSAND;
-
-constexpr Scancode SCANCODE_KP_VERTICALBAR = SDL_SCANCODE_KP_VERTICALBAR;
-
-constexpr Scancode SCANCODE_KP_DBLVERTICALBAR = SDL_SCANCODE_KP_DBLVERTICALBAR;
-
-constexpr Scancode SCANCODE_KP_COLON = SDL_SCANCODE_KP_COLON;
-
-constexpr Scancode SCANCODE_KP_HASH = SDL_SCANCODE_KP_HASH;
-
-constexpr Scancode SCANCODE_KP_SPACE = SDL_SCANCODE_KP_SPACE;
-
-constexpr Scancode SCANCODE_KP_AT = SDL_SCANCODE_KP_AT;
-
-constexpr Scancode SCANCODE_KP_EXCLAM = SDL_SCANCODE_KP_EXCLAM;
-
-constexpr Scancode SCANCODE_KP_MEMSTORE = SDL_SCANCODE_KP_MEMSTORE;
-
-constexpr Scancode SCANCODE_KP_MEMRECALL = SDL_SCANCODE_KP_MEMRECALL;
-
-constexpr Scancode SCANCODE_KP_MEMCLEAR = SDL_SCANCODE_KP_MEMCLEAR;
-
-constexpr Scancode SCANCODE_KP_MEMADD = SDL_SCANCODE_KP_MEMADD;
-
-constexpr Scancode SCANCODE_KP_MEMSUBTRACT = SDL_SCANCODE_KP_MEMSUBTRACT;
-
-constexpr Scancode SCANCODE_KP_MEMMULTIPLY = SDL_SCANCODE_KP_MEMMULTIPLY;
-
-constexpr Scancode SCANCODE_KP_MEMDIVIDE = SDL_SCANCODE_KP_MEMDIVIDE;
-
-constexpr Scancode SCANCODE_KP_PLUSMINUS = SDL_SCANCODE_KP_PLUSMINUS;
-
-constexpr Scancode SCANCODE_KP_CLEAR = SDL_SCANCODE_KP_CLEAR;
-
-constexpr Scancode SCANCODE_KP_CLEARENTRY = SDL_SCANCODE_KP_CLEARENTRY;
-
-constexpr Scancode SCANCODE_KP_BINARY = SDL_SCANCODE_KP_BINARY;
-
-constexpr Scancode SCANCODE_KP_OCTAL = SDL_SCANCODE_KP_OCTAL;
-
-constexpr Scancode SCANCODE_KP_DECIMAL = SDL_SCANCODE_KP_DECIMAL;
-
-constexpr Scancode SCANCODE_KP_HEXADECIMAL = SDL_SCANCODE_KP_HEXADECIMAL;
-
-constexpr Scancode SCANCODE_LCTRL = SDL_SCANCODE_LCTRL;
-
-constexpr Scancode SCANCODE_LSHIFT = SDL_SCANCODE_LSHIFT;
-
-constexpr Scancode SCANCODE_LALT = SDL_SCANCODE_LALT; ///< alt, option
-
-/**
- * windows, command (apple), meta
- */
-constexpr Scancode SCANCODE_LGUI = SDL_SCANCODE_LGUI;
-
-constexpr Scancode SCANCODE_RCTRL = SDL_SCANCODE_RCTRL;
-
-constexpr Scancode SCANCODE_RSHIFT = SDL_SCANCODE_RSHIFT;
-
-constexpr Scancode SCANCODE_RALT = SDL_SCANCODE_RALT; ///< alt gr, option
-
-/**
- * windows, command (apple), meta
- */
-constexpr Scancode SCANCODE_RGUI = SDL_SCANCODE_RGUI;
-
-/**
- * I'm not sure if this is really not covered by any of the above, but since
- * there's a special KMOD_MODE for it I'm adding it here.
- */
-constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
-
-constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep.
-
-constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake.
-
-/**
- * Channel Increment.
- */
-constexpr Scancode SCANCODE_CHANNEL_INCREMENT = SDL_SCANCODE_CHANNEL_INCREMENT;
-
-/**
- * Channel Decrement.
- */
-constexpr Scancode SCANCODE_CHANNEL_DECREMENT = SDL_SCANCODE_CHANNEL_DECREMENT;
-
-constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
-
-constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
-
-constexpr Scancode SCANCODE_MEDIA_RECORD = SDL_SCANCODE_MEDIA_RECORD; ///< Record.
-
-/**
- * Fast Forward.
- */
-constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
-  SDL_SCANCODE_MEDIA_FAST_FORWARD;
-
-constexpr Scancode SCANCODE_MEDIA_REWIND = SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
-
-/**
- * Next Track.
- */
-constexpr Scancode SCANCODE_MEDIA_NEXT_TRACK = SDL_SCANCODE_MEDIA_NEXT_TRACK;
-
-/**
- * Previous Track.
- */
-constexpr Scancode SCANCODE_MEDIA_PREVIOUS_TRACK =
-  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK;
-
-constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop.
-
-constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject.
-
-/**
- * Play / Pause.
- */
-constexpr Scancode SCANCODE_MEDIA_PLAY_PAUSE = SDL_SCANCODE_MEDIA_PLAY_PAUSE;
-
-constexpr Scancode SCANCODE_MEDIA_SELECT = SDL_SCANCODE_MEDIA_SELECT;
-
-constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New.
-
-constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open.
-
-constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close.
-
-constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit.
-
-constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save.
-
-constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print.
-
-/**
- * AC Properties.
- */
-constexpr Scancode SCANCODE_AC_PROPERTIES = SDL_SCANCODE_AC_PROPERTIES;
-
-constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search.
-
-constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
-
-constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
-
-constexpr Scancode SCANCODE_AC_FORWARD = SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
-
-constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
-
-constexpr Scancode SCANCODE_AC_REFRESH = SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
-
-/**
- * AC Bookmarks.
- */
-constexpr Scancode SCANCODE_AC_BOOKMARKS = SDL_SCANCODE_AC_BOOKMARKS;
-
-/**
- * Usually situated below the display on phones and used as a multi-function
- * feature key for selecting a software defined function shown on the bottom
- * left of the display.
- */
-constexpr Scancode SCANCODE_SOFTLEFT = SDL_SCANCODE_SOFTLEFT;
-
-/**
- * Usually situated below the display on phones and used as a multi-function
- * feature key for selecting a software defined function shown on the bottom
- * right of the display.
- */
-constexpr Scancode SCANCODE_SOFTRIGHT = SDL_SCANCODE_SOFTRIGHT;
-
-/**
- * Used for accepting phone calls.
- */
-constexpr Scancode SCANCODE_CALL = SDL_SCANCODE_CALL;
-
-/**
- * Used for rejecting phone calls.
- */
-constexpr Scancode SCANCODE_ENDCALL = SDL_SCANCODE_ENDCALL;
-
-/**
- * 400-500 reserved for dynamic keycodes
- */
-constexpr Scancode SCANCODE_RESERVED = SDL_SCANCODE_RESERVED;
-
-/**
- * not a key, just marks the number of scancodes for array bounds
- */
-constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
-
-/// @}
-
 template<class T, class BASE>
 concept DerivedWrapper =
   std::derived_from<T, BASE> && sizeof(T) == sizeof(BASE);
@@ -1237,1105 +596,6 @@ public:
 using StringParam = const char*;
 
 #endif // SDL3PP_ENABLE_STRING_PARAM
-
-/**
- *
- * @defgroup CategoryKeycode Keyboard Keycodes
- *
- * Defines constants which identify keyboard keys and modifiers.
- *
- * Please refer to the Best Keyboard Practices document for details on what
- * this information means and how best to use it.
- *
- * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
- *
- * @{
- */
-
-/**
- * The SDL virtual key representation.
- *
- * Values of this type are used to represent keyboard keys using the current
- * layout of the keyboard. These values include Unicode values representing
- * the unmodified character that would be generated by pressing the key, or an
- * `SDLK_*` constant for those keys that do not generate characters.
- *
- * A special exception is the number keys at the top of the keyboard which map
- * to SDLK_0...SDLK_9 on AZERTY layouts.
- *
- * Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
- * unicode code point.
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using Keycode = SDL_Keycode;
-
-constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;
-
-constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK;
-
-/**
- * Transform scancode to keycode
- *
- * @param x scancode
- * @return keycode
- */
-constexpr Keycode ScancodeToKeycode(Scancode x)
-{
-  return SDL_SCANCODE_TO_KEYCODE(x);
-}
-
-constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
-
-constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '@r'
-
-constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '@x1B'
-
-constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '@b'
-
-constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '@t'
-
-constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
-
-constexpr Keycode KEYCODE_EXCLAIM = SDLK_EXCLAIM; ///< '!'
-
-constexpr Keycode KEYCODE_DBLAPOSTROPHE = SDLK_DBLAPOSTROPHE; ///< '"'
-
-constexpr Keycode KEYCODE_HASH = SDLK_HASH; ///< '#'
-
-constexpr Keycode KEYCODE_DOLLAR = SDLK_DOLLAR; ///< '$'
-
-constexpr Keycode KEYCODE_PERCENT = SDLK_PERCENT; ///< '%'
-
-constexpr Keycode KEYCODE_AMPERSAND = SDLK_AMPERSAND; ///< '&'
-
-constexpr Keycode KEYCODE_APOSTROPHE = SDLK_APOSTROPHE; ///< '\''
-
-constexpr Keycode KEYCODE_LEFTPAREN = SDLK_LEFTPAREN; ///< '('
-
-constexpr Keycode KEYCODE_RIGHTPAREN = SDLK_RIGHTPAREN; ///< ')'
-
-constexpr Keycode KEYCODE_ASTERISK = SDLK_ASTERISK; ///< '*'
-
-constexpr Keycode KEYCODE_PLUS = SDLK_PLUS; ///< '+'
-
-constexpr Keycode KEYCODE_COMMA = SDLK_COMMA; ///< ','
-
-constexpr Keycode KEYCODE_MINUS = SDLK_MINUS; ///< '-'
-
-constexpr Keycode KEYCODE_PERIOD = SDLK_PERIOD; ///< '.'
-
-constexpr Keycode KEYCODE_SLASH = SDLK_SLASH; ///< '/'
-
-constexpr Keycode KEYCODE_0 = SDLK_0; ///< '0'
-
-constexpr Keycode KEYCODE_1 = SDLK_1; ///< '1'
-
-constexpr Keycode KEYCODE_2 = SDLK_2; ///< '2'
-
-constexpr Keycode KEYCODE_3 = SDLK_3; ///< '3'
-
-constexpr Keycode KEYCODE_4 = SDLK_4; ///< '4'
-
-constexpr Keycode KEYCODE_5 = SDLK_5; ///< '5'
-
-constexpr Keycode KEYCODE_6 = SDLK_6; ///< '6'
-
-constexpr Keycode KEYCODE_7 = SDLK_7; ///< '7'
-
-constexpr Keycode KEYCODE_8 = SDLK_8; ///< '8'
-
-constexpr Keycode KEYCODE_9 = SDLK_9; ///< '9'
-
-constexpr Keycode KEYCODE_COLON = SDLK_COLON; ///< ':'
-
-constexpr Keycode KEYCODE_SEMICOLON = SDLK_SEMICOLON; ///< ';'
-
-constexpr Keycode KEYCODE_LESS = SDLK_LESS; ///< '<'
-
-constexpr Keycode KEYCODE_EQUALS = SDLK_EQUALS; ///< '='
-
-constexpr Keycode KEYCODE_GREATER = SDLK_GREATER; ///< '>'
-
-constexpr Keycode KEYCODE_QUESTION = SDLK_QUESTION; ///< '?'
-
-constexpr Keycode KEYCODE_AT = SDLK_AT; ///< '@'
-
-constexpr Keycode KEYCODE_LEFTBRACKET = SDLK_LEFTBRACKET; ///< '['
-
-constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
-
-constexpr Keycode KEYCODE_RIGHTBRACKET = SDLK_RIGHTBRACKET; ///< ']'
-
-constexpr Keycode KEYCODE_CARET = SDLK_CARET; ///< '^'
-
-constexpr Keycode KEYCODE_UNDERSCORE = SDLK_UNDERSCORE; ///< '_'
-
-constexpr Keycode KEYCODE_GRAVE = SDLK_GRAVE; ///< '`'
-
-constexpr Keycode KEYCODE_A = SDLK_A; ///< 'a'
-
-constexpr Keycode KEYCODE_B = SDLK_B; ///< 'b'
-
-constexpr Keycode KEYCODE_C = SDLK_C; ///< 'c'
-
-constexpr Keycode KEYCODE_D = SDLK_D; ///< 'd'
-
-constexpr Keycode KEYCODE_E = SDLK_E; ///< 'e'
-
-constexpr Keycode KEYCODE_F = SDLK_F; ///< 'f'
-
-constexpr Keycode KEYCODE_G = SDLK_G; ///< 'g'
-
-constexpr Keycode KEYCODE_H = SDLK_H; ///< 'h'
-
-constexpr Keycode KEYCODE_I = SDLK_I; ///< 'i'
-
-constexpr Keycode KEYCODE_J = SDLK_J; ///< 'j'
-
-constexpr Keycode KEYCODE_K = SDLK_K; ///< 'k'
-
-constexpr Keycode KEYCODE_L = SDLK_L; ///< 'l'
-
-constexpr Keycode KEYCODE_M = SDLK_M; ///< 'm'
-
-constexpr Keycode KEYCODE_N = SDLK_N; ///< 'n'
-
-constexpr Keycode KEYCODE_O = SDLK_O; ///< 'o'
-
-constexpr Keycode KEYCODE_P = SDLK_P; ///< 'p'
-
-constexpr Keycode KEYCODE_Q = SDLK_Q; ///< 'q'
-
-constexpr Keycode KEYCODE_R = SDLK_R; ///< 'r'
-
-constexpr Keycode KEYCODE_S = SDLK_S; ///< 's'
-
-constexpr Keycode KEYCODE_T = SDLK_T; ///< 't'
-
-constexpr Keycode KEYCODE_U = SDLK_U; ///< 'u'
-
-constexpr Keycode KEYCODE_V = SDLK_V; ///< 'v'
-
-constexpr Keycode KEYCODE_W = SDLK_W; ///< 'w'
-
-constexpr Keycode KEYCODE_X = SDLK_X; ///< 'x'
-
-constexpr Keycode KEYCODE_Y = SDLK_Y; ///< 'y'
-
-constexpr Keycode KEYCODE_Z = SDLK_Z; ///< 'z'
-
-constexpr Keycode KEYCODE_LEFTBRACE = SDLK_LEFTBRACE; ///< '{'
-
-constexpr Keycode KEYCODE_PIPE = SDLK_PIPE; ///< '|'
-
-constexpr Keycode KEYCODE_RIGHTBRACE = SDLK_RIGHTBRACE; ///< '}'
-
-constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
-
-constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '@x7F'
-
-constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '@xB1'
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)
- */
-constexpr Keycode KEYCODE_CAPSLOCK = SDLK_CAPSLOCK;
-
-constexpr Keycode KEYCODE_F1 = SDLK_F1; ///< ScancodeToKeycode(SCANCODE_F1)
-
-constexpr Keycode KEYCODE_F2 = SDLK_F2; ///< ScancodeToKeycode(SCANCODE_F2)
-
-constexpr Keycode KEYCODE_F3 = SDLK_F3; ///< ScancodeToKeycode(SCANCODE_F3)
-
-constexpr Keycode KEYCODE_F4 = SDLK_F4; ///< ScancodeToKeycode(SCANCODE_F4)
-
-constexpr Keycode KEYCODE_F5 = SDLK_F5; ///< ScancodeToKeycode(SCANCODE_F5)
-
-constexpr Keycode KEYCODE_F6 = SDLK_F6; ///< ScancodeToKeycode(SCANCODE_F6)
-
-constexpr Keycode KEYCODE_F7 = SDLK_F7; ///< ScancodeToKeycode(SCANCODE_F7)
-
-constexpr Keycode KEYCODE_F8 = SDLK_F8; ///< ScancodeToKeycode(SCANCODE_F8)
-
-constexpr Keycode KEYCODE_F9 = SDLK_F9; ///< ScancodeToKeycode(SCANCODE_F9)
-
-constexpr Keycode KEYCODE_F10 = SDLK_F10; ///< ScancodeToKeycode(SCANCODE_F10)
-
-constexpr Keycode KEYCODE_F11 = SDLK_F11; ///< ScancodeToKeycode(SCANCODE_F11)
-
-constexpr Keycode KEYCODE_F12 = SDLK_F12; ///< ScancodeToKeycode(SCANCODE_F12)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRINTSCREEN)
- */
-constexpr Keycode KEYCODE_PRINTSCREEN = SDLK_PRINTSCREEN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SCROLLLOCK)
- */
-constexpr Keycode KEYCODE_SCROLLLOCK = SDLK_SCROLLLOCK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAUSE)
- */
-constexpr Keycode KEYCODE_PAUSE = SDLK_PAUSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_INSERT)
- */
-constexpr Keycode KEYCODE_INSERT = SDLK_INSERT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HOME)
- */
-constexpr Keycode KEYCODE_HOME = SDLK_HOME;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEUP)
- */
-constexpr Keycode KEYCODE_PAGEUP = SDLK_PAGEUP;
-
-constexpr Keycode KEYCODE_END = SDLK_END; ///< ScancodeToKeycode(SCANCODE_END)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEDOWN)
- */
-constexpr Keycode KEYCODE_PAGEDOWN = SDLK_PAGEDOWN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RIGHT)
- */
-constexpr Keycode KEYCODE_RIGHT = SDLK_RIGHT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LEFT)
- */
-constexpr Keycode KEYCODE_LEFT = SDLK_LEFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DOWN)
- */
-constexpr Keycode KEYCODE_DOWN = SDLK_DOWN;
-
-constexpr Keycode KEYCODE_UP = SDLK_UP; ///< ScancodeToKeycode(SCANCODE_UP)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_NUMLOCKCLEAR)
- */
-constexpr Keycode KEYCODE_NUMLOCKCLEAR = SDLK_NUMLOCKCLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DIVIDE)
- */
-constexpr Keycode KEYCODE_KP_DIVIDE = SDLK_KP_DIVIDE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MULTIPLY)
- */
-constexpr Keycode KEYCODE_KP_MULTIPLY = SDLK_KP_MULTIPLY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MINUS)
- */
-constexpr Keycode KEYCODE_KP_MINUS = SDLK_KP_MINUS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUS)
- */
-constexpr Keycode KEYCODE_KP_PLUS = SDLK_KP_PLUS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_ENTER)
- */
-constexpr Keycode KEYCODE_KP_ENTER = SDLK_KP_ENTER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_1)
- */
-constexpr Keycode KEYCODE_KP_1 = SDLK_KP_1;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_2)
- */
-constexpr Keycode KEYCODE_KP_2 = SDLK_KP_2;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_3)
- */
-constexpr Keycode KEYCODE_KP_3 = SDLK_KP_3;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_4)
- */
-constexpr Keycode KEYCODE_KP_4 = SDLK_KP_4;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_5)
- */
-constexpr Keycode KEYCODE_KP_5 = SDLK_KP_5;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_6)
- */
-constexpr Keycode KEYCODE_KP_6 = SDLK_KP_6;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_7)
- */
-constexpr Keycode KEYCODE_KP_7 = SDLK_KP_7;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_8)
- */
-constexpr Keycode KEYCODE_KP_8 = SDLK_KP_8;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_9)
- */
-constexpr Keycode KEYCODE_KP_9 = SDLK_KP_9;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_0)
- */
-constexpr Keycode KEYCODE_KP_0 = SDLK_KP_0;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERIOD)
- */
-constexpr Keycode KEYCODE_KP_PERIOD = SDLK_KP_PERIOD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_APPLICATION)
- */
-constexpr Keycode KEYCODE_APPLICATION = SDLK_APPLICATION;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_POWER)
- */
-constexpr Keycode KEYCODE_POWER = SDLK_POWER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALS)
- */
-constexpr Keycode KEYCODE_KP_EQUALS = SDLK_KP_EQUALS;
-
-constexpr Keycode KEYCODE_F13 = SDLK_F13; ///< ScancodeToKeycode(SCANCODE_F13)
-
-constexpr Keycode KEYCODE_F14 = SDLK_F14; ///< ScancodeToKeycode(SCANCODE_F14)
-
-constexpr Keycode KEYCODE_F15 = SDLK_F15; ///< ScancodeToKeycode(SCANCODE_F15)
-
-constexpr Keycode KEYCODE_F16 = SDLK_F16; ///< ScancodeToKeycode(SCANCODE_F16)
-
-constexpr Keycode KEYCODE_F17 = SDLK_F17; ///< ScancodeToKeycode(SCANCODE_F17)
-
-constexpr Keycode KEYCODE_F18 = SDLK_F18; ///< ScancodeToKeycode(SCANCODE_F18)
-
-constexpr Keycode KEYCODE_F19 = SDLK_F19; ///< ScancodeToKeycode(SCANCODE_F19)
-
-constexpr Keycode KEYCODE_F20 = SDLK_F20; ///< ScancodeToKeycode(SCANCODE_F20)
-
-constexpr Keycode KEYCODE_F21 = SDLK_F21; ///< ScancodeToKeycode(SCANCODE_F21)
-
-constexpr Keycode KEYCODE_F22 = SDLK_F22; ///< ScancodeToKeycode(SCANCODE_F22)
-
-constexpr Keycode KEYCODE_F23 = SDLK_F23; ///< ScancodeToKeycode(SCANCODE_F23)
-
-constexpr Keycode KEYCODE_F24 = SDLK_F24; ///< ScancodeToKeycode(SCANCODE_F24)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXECUTE)
- */
-constexpr Keycode KEYCODE_EXECUTE = SDLK_EXECUTE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HELP)
- */
-constexpr Keycode KEYCODE_HELP = SDLK_HELP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MENU)
- */
-constexpr Keycode KEYCODE_MENU = SDLK_MENU;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SELECT)
- */
-constexpr Keycode KEYCODE_SELECT = SDLK_SELECT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_STOP)
- */
-constexpr Keycode KEYCODE_STOP = SDLK_STOP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AGAIN)
- */
-constexpr Keycode KEYCODE_AGAIN = SDLK_AGAIN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_UNDO)
- */
-constexpr Keycode KEYCODE_UNDO = SDLK_UNDO;
-
-constexpr Keycode KEYCODE_CUT = SDLK_CUT; ///< ScancodeToKeycode(SCANCODE_CUT)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_COPY)
- */
-constexpr Keycode KEYCODE_COPY = SDLK_COPY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PASTE)
- */
-constexpr Keycode KEYCODE_PASTE = SDLK_PASTE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_FIND)
- */
-constexpr Keycode KEYCODE_FIND = SDLK_FIND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MUTE)
- */
-constexpr Keycode KEYCODE_MUTE = SDLK_MUTE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEUP)
- */
-constexpr Keycode KEYCODE_VOLUMEUP = SDLK_VOLUMEUP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEDOWN)
- */
-constexpr Keycode KEYCODE_VOLUMEDOWN = SDLK_VOLUMEDOWN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COMMA)
- */
-constexpr Keycode KEYCODE_KP_COMMA = SDLK_KP_COMMA;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALSAS400)
- */
-constexpr Keycode KEYCODE_KP_EQUALSAS400 = SDLK_KP_EQUALSAS400;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ALTERASE)
- */
-constexpr Keycode KEYCODE_ALTERASE = SDLK_ALTERASE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SYSREQ)
- */
-constexpr Keycode KEYCODE_SYSREQ = SDLK_SYSREQ;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CANCEL)
- */
-constexpr Keycode KEYCODE_CANCEL = SDLK_CANCEL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEAR)
- */
-constexpr Keycode KEYCODE_CLEAR = SDLK_CLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRIOR)
- */
-constexpr Keycode KEYCODE_PRIOR = SDLK_PRIOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RETURN2)
- */
-constexpr Keycode KEYCODE_RETURN2 = SDLK_RETURN2;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SEPARATOR)
- */
-constexpr Keycode KEYCODE_SEPARATOR = SDLK_SEPARATOR;
-
-constexpr Keycode KEYCODE_OUT = SDLK_OUT; ///< ScancodeToKeycode(SCANCODE_OUT)
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_OPER)
- */
-constexpr Keycode KEYCODE_OPER = SDLK_OPER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEARAGAIN)
- */
-constexpr Keycode KEYCODE_CLEARAGAIN = SDLK_CLEARAGAIN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CRSEL)
- */
-constexpr Keycode KEYCODE_CRSEL = SDLK_CRSEL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXSEL)
- */
-constexpr Keycode KEYCODE_EXSEL = SDLK_EXSEL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_00)
- */
-constexpr Keycode KEYCODE_KP_00 = SDLK_KP_00;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_000)
- */
-constexpr Keycode KEYCODE_KP_000 = SDLK_KP_000;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_THOUSANDSSEPARATOR)
- */
-constexpr Keycode KEYCODE_THOUSANDSSEPARATOR = SDLK_THOUSANDSSEPARATOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DECIMALSEPARATOR)
- */
-constexpr Keycode KEYCODE_DECIMALSEPARATOR = SDLK_DECIMALSEPARATOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYUNIT)
- */
-constexpr Keycode KEYCODE_CURRENCYUNIT = SDLK_CURRENCYUNIT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYSUBUNIT)
- */
-constexpr Keycode KEYCODE_CURRENCYSUBUNIT = SDLK_CURRENCYSUBUNIT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTPAREN)
- */
-constexpr Keycode KEYCODE_KP_LEFTPAREN = SDLK_KP_LEFTPAREN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTPAREN)
- */
-constexpr Keycode KEYCODE_KP_RIGHTPAREN = SDLK_KP_RIGHTPAREN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTBRACE)
- */
-constexpr Keycode KEYCODE_KP_LEFTBRACE = SDLK_KP_LEFTBRACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTBRACE)
- */
-constexpr Keycode KEYCODE_KP_RIGHTBRACE = SDLK_KP_RIGHTBRACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_TAB)
- */
-constexpr Keycode KEYCODE_KP_TAB = SDLK_KP_TAB;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BACKSPACE)
- */
-constexpr Keycode KEYCODE_KP_BACKSPACE = SDLK_KP_BACKSPACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_A)
- */
-constexpr Keycode KEYCODE_KP_A = SDLK_KP_A;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_B)
- */
-constexpr Keycode KEYCODE_KP_B = SDLK_KP_B;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_C)
- */
-constexpr Keycode KEYCODE_KP_C = SDLK_KP_C;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_D)
- */
-constexpr Keycode KEYCODE_KP_D = SDLK_KP_D;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_E)
- */
-constexpr Keycode KEYCODE_KP_E = SDLK_KP_E;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_F)
- */
-constexpr Keycode KEYCODE_KP_F = SDLK_KP_F;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_XOR)
- */
-constexpr Keycode KEYCODE_KP_XOR = SDLK_KP_XOR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_POWER)
- */
-constexpr Keycode KEYCODE_KP_POWER = SDLK_KP_POWER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERCENT)
- */
-constexpr Keycode KEYCODE_KP_PERCENT = SDLK_KP_PERCENT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LESS)
- */
-constexpr Keycode KEYCODE_KP_LESS = SDLK_KP_LESS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_GREATER)
- */
-constexpr Keycode KEYCODE_KP_GREATER = SDLK_KP_GREATER;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AMPERSAND)
- */
-constexpr Keycode KEYCODE_KP_AMPERSAND = SDLK_KP_AMPERSAND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLAMPERSAND)
- */
-constexpr Keycode KEYCODE_KP_DBLAMPERSAND = SDLK_KP_DBLAMPERSAND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_VERTICALBAR)
- */
-constexpr Keycode KEYCODE_KP_VERTICALBAR = SDLK_KP_VERTICALBAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLVERTICALBAR)
- */
-constexpr Keycode KEYCODE_KP_DBLVERTICALBAR = SDLK_KP_DBLVERTICALBAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COLON)
- */
-constexpr Keycode KEYCODE_KP_COLON = SDLK_KP_COLON;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HASH)
- */
-constexpr Keycode KEYCODE_KP_HASH = SDLK_KP_HASH;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_SPACE)
- */
-constexpr Keycode KEYCODE_KP_SPACE = SDLK_KP_SPACE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AT)
- */
-constexpr Keycode KEYCODE_KP_AT = SDLK_KP_AT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EXCLAM)
- */
-constexpr Keycode KEYCODE_KP_EXCLAM = SDLK_KP_EXCLAM;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSTORE)
- */
-constexpr Keycode KEYCODE_KP_MEMSTORE = SDLK_KP_MEMSTORE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMRECALL)
- */
-constexpr Keycode KEYCODE_KP_MEMRECALL = SDLK_KP_MEMRECALL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMCLEAR)
- */
-constexpr Keycode KEYCODE_KP_MEMCLEAR = SDLK_KP_MEMCLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMADD)
- */
-constexpr Keycode KEYCODE_KP_MEMADD = SDLK_KP_MEMADD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSUBTRACT)
- */
-constexpr Keycode KEYCODE_KP_MEMSUBTRACT = SDLK_KP_MEMSUBTRACT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMMULTIPLY)
- */
-constexpr Keycode KEYCODE_KP_MEMMULTIPLY = SDLK_KP_MEMMULTIPLY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMDIVIDE)
- */
-constexpr Keycode KEYCODE_KP_MEMDIVIDE = SDLK_KP_MEMDIVIDE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUSMINUS)
- */
-constexpr Keycode KEYCODE_KP_PLUSMINUS = SDLK_KP_PLUSMINUS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEAR)
- */
-constexpr Keycode KEYCODE_KP_CLEAR = SDLK_KP_CLEAR;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEARENTRY)
- */
-constexpr Keycode KEYCODE_KP_CLEARENTRY = SDLK_KP_CLEARENTRY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BINARY)
- */
-constexpr Keycode KEYCODE_KP_BINARY = SDLK_KP_BINARY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_OCTAL)
- */
-constexpr Keycode KEYCODE_KP_OCTAL = SDLK_KP_OCTAL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DECIMAL)
- */
-constexpr Keycode KEYCODE_KP_DECIMAL = SDLK_KP_DECIMAL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HEXADECIMAL)
- */
-constexpr Keycode KEYCODE_KP_HEXADECIMAL = SDLK_KP_HEXADECIMAL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LCTRL)
- */
-constexpr Keycode KEYCODE_LCTRL = SDLK_LCTRL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LSHIFT)
- */
-constexpr Keycode KEYCODE_LSHIFT = SDLK_LSHIFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LALT)
- */
-constexpr Keycode KEYCODE_LALT = SDLK_LALT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LGUI)
- */
-constexpr Keycode KEYCODE_LGUI = SDLK_LGUI;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RCTRL)
- */
-constexpr Keycode KEYCODE_RCTRL = SDLK_RCTRL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RSHIFT)
- */
-constexpr Keycode KEYCODE_RSHIFT = SDLK_RSHIFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RALT)
- */
-constexpr Keycode KEYCODE_RALT = SDLK_RALT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RGUI)
- */
-constexpr Keycode KEYCODE_RGUI = SDLK_RGUI;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MODE)
- */
-constexpr Keycode KEYCODE_MODE = SDLK_MODE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SLEEP)
- */
-constexpr Keycode KEYCODE_SLEEP = SDLK_SLEEP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_WAKE)
- */
-constexpr Keycode KEYCODE_WAKE = SDLK_WAKE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_INCREMENT)
- */
-constexpr Keycode KEYCODE_CHANNEL_INCREMENT = SDLK_CHANNEL_INCREMENT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_DECREMENT)
- */
-constexpr Keycode KEYCODE_CHANNEL_DECREMENT = SDLK_CHANNEL_DECREMENT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY)
- */
-constexpr Keycode KEYCODE_MEDIA_PLAY = SDLK_MEDIA_PLAY;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PAUSE)
- */
-constexpr Keycode KEYCODE_MEDIA_PAUSE = SDLK_MEDIA_PAUSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_RECORD)
- */
-constexpr Keycode KEYCODE_MEDIA_RECORD = SDLK_MEDIA_RECORD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_FAST_FORWARD)
- */
-constexpr Keycode KEYCODE_MEDIA_FAST_FORWARD = SDLK_MEDIA_FAST_FORWARD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_REWIND)
- */
-constexpr Keycode KEYCODE_MEDIA_REWIND = SDLK_MEDIA_REWIND;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_NEXT_TRACK)
- */
-constexpr Keycode KEYCODE_MEDIA_NEXT_TRACK = SDLK_MEDIA_NEXT_TRACK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PREVIOUS_TRACK)
- */
-constexpr Keycode KEYCODE_MEDIA_PREVIOUS_TRACK = SDLK_MEDIA_PREVIOUS_TRACK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_STOP)
- */
-constexpr Keycode KEYCODE_MEDIA_STOP = SDLK_MEDIA_STOP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_EJECT)
- */
-constexpr Keycode KEYCODE_MEDIA_EJECT = SDLK_MEDIA_EJECT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY_PAUSE)
- */
-constexpr Keycode KEYCODE_MEDIA_PLAY_PAUSE = SDLK_MEDIA_PLAY_PAUSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_SELECT)
- */
-constexpr Keycode KEYCODE_MEDIA_SELECT = SDLK_MEDIA_SELECT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_NEW)
- */
-constexpr Keycode KEYCODE_AC_NEW = SDLK_AC_NEW;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_OPEN)
- */
-constexpr Keycode KEYCODE_AC_OPEN = SDLK_AC_OPEN;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_CLOSE)
- */
-constexpr Keycode KEYCODE_AC_CLOSE = SDLK_AC_CLOSE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_EXIT)
- */
-constexpr Keycode KEYCODE_AC_EXIT = SDLK_AC_EXIT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SAVE)
- */
-constexpr Keycode KEYCODE_AC_SAVE = SDLK_AC_SAVE;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PRINT)
- */
-constexpr Keycode KEYCODE_AC_PRINT = SDLK_AC_PRINT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PROPERTIES)
- */
-constexpr Keycode KEYCODE_AC_PROPERTIES = SDLK_AC_PROPERTIES;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SEARCH)
- */
-constexpr Keycode KEYCODE_AC_SEARCH = SDLK_AC_SEARCH;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_HOME)
- */
-constexpr Keycode KEYCODE_AC_HOME = SDLK_AC_HOME;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BACK)
- */
-constexpr Keycode KEYCODE_AC_BACK = SDLK_AC_BACK;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_FORWARD)
- */
-constexpr Keycode KEYCODE_AC_FORWARD = SDLK_AC_FORWARD;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_STOP)
- */
-constexpr Keycode KEYCODE_AC_STOP = SDLK_AC_STOP;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_REFRESH)
- */
-constexpr Keycode KEYCODE_AC_REFRESH = SDLK_AC_REFRESH;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BOOKMARKS)
- */
-constexpr Keycode KEYCODE_AC_BOOKMARKS = SDLK_AC_BOOKMARKS;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTLEFT)
- */
-constexpr Keycode KEYCODE_SOFTLEFT = SDLK_SOFTLEFT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTRIGHT)
- */
-constexpr Keycode KEYCODE_SOFTRIGHT = SDLK_SOFTRIGHT;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CALL)
- */
-constexpr Keycode KEYCODE_CALL = SDLK_CALL;
-
-/**
- * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ENDCALL)
- */
-constexpr Keycode KEYCODE_ENDCALL = SDLK_ENDCALL;
-
-constexpr Keycode KEYCODE_LEFT_TAB = SDLK_LEFT_TAB; ///< Extended key Left Tab
-
-/**
- * Extended key Level 5 Shift
- */
-constexpr Keycode KEYCODE_LEVEL5_SHIFT = SDLK_LEVEL5_SHIFT;
-
-/**
- * Extended key Multi-key Compose
- */
-constexpr Keycode KEYCODE_MULTI_KEY_COMPOSE = SDLK_MULTI_KEY_COMPOSE;
-
-constexpr Keycode KEYCODE_LMETA = SDLK_LMETA; ///< Extended key Left Meta
-
-constexpr Keycode KEYCODE_RMETA = SDLK_RMETA; ///< Extended key Right Meta
-
-constexpr Keycode KEYCODE_LHYPER = SDLK_LHYPER; ///< Extended key Left Hyper
-
-constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
-
-/**
- * Valid key modifiers (possibly OR'd together).
- *
- * @since This datatype is available since SDL 3.2.0.
- */
-using Keymod = SDL_Keymod;
-
-/**
- * no modifier is applicable.
- */
-constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
-
-/**
- * the left Shift key is down.
- */
-constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
-
-/**
- * the right Shift key is down.
- */
-constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
-
-/**
- * the Level 5 Shift key is down.
- */
-constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
-
-/**
- * the left Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
-
-/**
- * the right Ctrl (Control) key is down.
- */
-constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
-
-/**
- * the left Alt key is down.
- */
-constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
-
-/**
- * the right Alt key is down.
- */
-constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
-
-/**
- * the left GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
-
-/**
- * the right GUI key (often the Windows key) is down.
- */
-constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
-
-/**
- * the Num Lock key (may be located on an extended keypad) is down.
- */
-constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
-
-/**
- * the Caps Lock key is down.
- */
-constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
-
-/**
- * the !AltGr key is down.
- */
-constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
-
-/**
- * the Scroll Lock key is down.
- */
-constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
-
-/**
- * Any Ctrl key is down.
- */
-constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
-
-/**
- * Any Shift key is down.
- */
-constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
-
-/**
- * Any Alt key is down.
- */
-constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
-
-/**
- * Any GUI key is down.
- */
-constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
-
-/// @}
 
 /**
  * @defgroup CategoryOwnPtr Pointer wrapper to SDL::free()
@@ -17958,6 +16218,698 @@ inline PowerState GetPowerInfo(int* seconds, int* percent)
 /// @}
 
 /**
+ *
+ * @defgroup CategoryScancode Keyboard Scancodes
+ *
+ * Defines keyboard scancodes.
+ *
+ * Please refer to the Best Keyboard Practices document for details on what
+ * this information means and how best to use it.
+ *
+ * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
+ *
+ * @{
+ */
+
+// Forward decl
+struct Keycode;
+
+/**
+ * The SDL keyboard scancode representation.
+ *
+ * An SDL scancode is the physical representation of a key on the keyboard,
+ * independent of language and keyboard mapping.
+ *
+ * Values of this type are used to represent keyboard keys, among other places
+ * in the `scancode` field of the KeyboardEvent structure.
+ *
+ * The values in this enumeration are based on the USB usage page standard:
+ * https://usb.org/sites/default/files/hut1_5.pdf
+ *
+ * @since This enum is available since SDL 3.2.0.
+ */
+struct Scancode
+{
+  SDL_Scancode m_scancode;
+
+  /**
+   * Wraps Scancode.
+   *
+   * @param scancode the value to be wrapped
+   */
+  constexpr Scancode(SDL_Scancode scancode = {})
+    : m_scancode(scancode)
+  {
+  }
+
+  // Get scan code from name
+  Scancode(StringParam name);
+
+  constexpr auto operator<=>(const Scancode& other) const = default;
+
+  /**
+   * Unwraps to the underlying Scancode.
+   *
+   * @returns the underlying Scancode.
+   */
+  constexpr operator SDL_Scancode() const { return m_scancode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const
+  {
+    return m_scancode != SDL_SCANCODE_UNKNOWN;
+  }
+
+  // Set name
+  bool SetName(StringParam name);
+
+  // Get name
+  const char* GetName() const;
+};
+
+constexpr Scancode SCANCODE_UNKNOWN = SDL_SCANCODE_UNKNOWN;
+
+constexpr Scancode SCANCODE_A = SDL_SCANCODE_A;
+
+constexpr Scancode SCANCODE_B = SDL_SCANCODE_B;
+
+constexpr Scancode SCANCODE_C = SDL_SCANCODE_C;
+
+constexpr Scancode SCANCODE_D = SDL_SCANCODE_D;
+
+constexpr Scancode SCANCODE_E = SDL_SCANCODE_E;
+
+constexpr Scancode SCANCODE_F = SDL_SCANCODE_F;
+
+constexpr Scancode SCANCODE_G = SDL_SCANCODE_G;
+
+constexpr Scancode SCANCODE_H = SDL_SCANCODE_H;
+
+constexpr Scancode SCANCODE_I = SDL_SCANCODE_I;
+
+constexpr Scancode SCANCODE_J = SDL_SCANCODE_J;
+
+constexpr Scancode SCANCODE_K = SDL_SCANCODE_K;
+
+constexpr Scancode SCANCODE_L = SDL_SCANCODE_L;
+
+constexpr Scancode SCANCODE_M = SDL_SCANCODE_M;
+
+constexpr Scancode SCANCODE_N = SDL_SCANCODE_N;
+
+constexpr Scancode SCANCODE_O = SDL_SCANCODE_O;
+
+constexpr Scancode SCANCODE_P = SDL_SCANCODE_P;
+
+constexpr Scancode SCANCODE_Q = SDL_SCANCODE_Q;
+
+constexpr Scancode SCANCODE_R = SDL_SCANCODE_R;
+
+constexpr Scancode SCANCODE_S = SDL_SCANCODE_S;
+
+constexpr Scancode SCANCODE_T = SDL_SCANCODE_T;
+
+constexpr Scancode SCANCODE_U = SDL_SCANCODE_U;
+
+constexpr Scancode SCANCODE_V = SDL_SCANCODE_V;
+
+constexpr Scancode SCANCODE_W = SDL_SCANCODE_W;
+
+constexpr Scancode SCANCODE_X = SDL_SCANCODE_X;
+
+constexpr Scancode SCANCODE_Y = SDL_SCANCODE_Y;
+
+constexpr Scancode SCANCODE_Z = SDL_SCANCODE_Z;
+
+constexpr Scancode SCANCODE_1 = SDL_SCANCODE_1;
+
+constexpr Scancode SCANCODE_2 = SDL_SCANCODE_2;
+
+constexpr Scancode SCANCODE_3 = SDL_SCANCODE_3;
+
+constexpr Scancode SCANCODE_4 = SDL_SCANCODE_4;
+
+constexpr Scancode SCANCODE_5 = SDL_SCANCODE_5;
+
+constexpr Scancode SCANCODE_6 = SDL_SCANCODE_6;
+
+constexpr Scancode SCANCODE_7 = SDL_SCANCODE_7;
+
+constexpr Scancode SCANCODE_8 = SDL_SCANCODE_8;
+
+constexpr Scancode SCANCODE_9 = SDL_SCANCODE_9;
+
+constexpr Scancode SCANCODE_0 = SDL_SCANCODE_0;
+
+constexpr Scancode SCANCODE_RETURN = SDL_SCANCODE_RETURN;
+
+constexpr Scancode SCANCODE_ESCAPE = SDL_SCANCODE_ESCAPE;
+
+constexpr Scancode SCANCODE_BACKSPACE = SDL_SCANCODE_BACKSPACE;
+
+constexpr Scancode SCANCODE_TAB = SDL_SCANCODE_TAB;
+
+constexpr Scancode SCANCODE_SPACE = SDL_SCANCODE_SPACE;
+
+constexpr Scancode SCANCODE_MINUS = SDL_SCANCODE_MINUS;
+
+constexpr Scancode SCANCODE_EQUALS = SDL_SCANCODE_EQUALS;
+
+constexpr Scancode SCANCODE_LEFTBRACKET = SDL_SCANCODE_LEFTBRACKET;
+
+constexpr Scancode SCANCODE_RIGHTBRACKET = SDL_SCANCODE_RIGHTBRACKET;
+
+/**
+ * Located at the lower left of the return key on ISO keyboards and at the right
+ * end of the QWERTY row on ANSI keyboards.  Produces REVERSE SOLIDUS
+ * (backslash) and VERTICAL LINE in a US layout, REVERSE SOLIDUS and VERTICAL
+ * LINE in a UK Mac layout, NUMBER SIGN and TILDE in a UK Windows layout, DOLLAR
+ * SIGN and POUND SIGN in a Swiss German layout, NUMBER SIGN and APOSTROPHE in a
+ * German layout, GRAVE ACCENT and POUND SIGN in a French Mac layout, and
+ * ASTERISK and MICRO SIGN in a French Windows layout.
+ */
+constexpr Scancode SCANCODE_BACKSLASH = SDL_SCANCODE_BACKSLASH;
+
+/**
+ * ISO USB keyboards actually use this code instead of 49 for the same key, but
+ * all OSes I've seen treat the two codes identically.  So, as an implementor,
+ * unless your keyboard generates both of those codes and your OS treats them
+ * differently, you should generate SCANCODE_BACKSLASH instead of this code. As
+ * a user, you should not rely on this code because SDL will never generate it
+ * with most (all?) keyboards.
+ */
+constexpr Scancode SCANCODE_NONUSHASH = SDL_SCANCODE_NONUSHASH;
+
+constexpr Scancode SCANCODE_SEMICOLON = SDL_SCANCODE_SEMICOLON;
+
+constexpr Scancode SCANCODE_APOSTROPHE = SDL_SCANCODE_APOSTROPHE;
+
+/**
+ * Located in the top left corner (on both ANSI and ISO keyboards).  Produces
+ * GRAVE ACCENT and TILDE in a US Windows layout and in US and UK Mac layouts on
+ * ANSI keyboards, GRAVE ACCENT and NOT SIGN in a UK Windows layout, SECTION
+ * SIGN and PLUS-MINUS SIGN in US and UK Mac layouts on ISO keyboards, SECTION
+ * SIGN and DEGREE SIGN in a Swiss German layout (Mac: only on ISO keyboards),
+ * CIRCUMFLEX ACCENT and DEGREE SIGN in a German layout (Mac: only on ISO
+ * keyboards), SUPERSCRIPT TWO and TILDE in a French Windows layout, COMMERCIAL
+ * AT and NUMBER SIGN in a French Mac layout on ISO keyboards, and LESS-THAN
+ * SIGN and GREATER-THAN SIGN in a Swiss German, German, or French Mac layout on
+ * ANSI keyboards.
+ */
+constexpr Scancode SCANCODE_GRAVE = SDL_SCANCODE_GRAVE;
+
+constexpr Scancode SCANCODE_COMMA = SDL_SCANCODE_COMMA;
+
+constexpr Scancode SCANCODE_PERIOD = SDL_SCANCODE_PERIOD;
+
+constexpr Scancode SCANCODE_SLASH = SDL_SCANCODE_SLASH;
+
+constexpr Scancode SCANCODE_CAPSLOCK = SDL_SCANCODE_CAPSLOCK;
+
+constexpr Scancode SCANCODE_F1 = SDL_SCANCODE_F1;
+
+constexpr Scancode SCANCODE_F2 = SDL_SCANCODE_F2;
+
+constexpr Scancode SCANCODE_F3 = SDL_SCANCODE_F3;
+
+constexpr Scancode SCANCODE_F4 = SDL_SCANCODE_F4;
+
+constexpr Scancode SCANCODE_F5 = SDL_SCANCODE_F5;
+
+constexpr Scancode SCANCODE_F6 = SDL_SCANCODE_F6;
+
+constexpr Scancode SCANCODE_F7 = SDL_SCANCODE_F7;
+
+constexpr Scancode SCANCODE_F8 = SDL_SCANCODE_F8;
+
+constexpr Scancode SCANCODE_F9 = SDL_SCANCODE_F9;
+
+constexpr Scancode SCANCODE_F10 = SDL_SCANCODE_F10;
+
+constexpr Scancode SCANCODE_F11 = SDL_SCANCODE_F11;
+
+constexpr Scancode SCANCODE_F12 = SDL_SCANCODE_F12;
+
+constexpr Scancode SCANCODE_PRINTSCREEN = SDL_SCANCODE_PRINTSCREEN;
+
+constexpr Scancode SCANCODE_SCROLLLOCK = SDL_SCANCODE_SCROLLLOCK;
+
+constexpr Scancode SCANCODE_PAUSE = SDL_SCANCODE_PAUSE;
+
+/**
+ * insert on PC, help on some Mac keyboards (but does send code 73, not 117)
+ */
+constexpr Scancode SCANCODE_INSERT = SDL_SCANCODE_INSERT;
+
+constexpr Scancode SCANCODE_HOME = SDL_SCANCODE_HOME;
+
+constexpr Scancode SCANCODE_PAGEUP = SDL_SCANCODE_PAGEUP;
+
+constexpr Scancode SCANCODE_DELETE = SDL_SCANCODE_DELETE;
+
+constexpr Scancode SCANCODE_END = SDL_SCANCODE_END;
+
+constexpr Scancode SCANCODE_PAGEDOWN = SDL_SCANCODE_PAGEDOWN;
+
+constexpr Scancode SCANCODE_RIGHT = SDL_SCANCODE_RIGHT;
+
+constexpr Scancode SCANCODE_LEFT = SDL_SCANCODE_LEFT;
+
+constexpr Scancode SCANCODE_DOWN = SDL_SCANCODE_DOWN;
+
+constexpr Scancode SCANCODE_UP = SDL_SCANCODE_UP;
+
+/**
+ * num lock on PC, clear on Mac keyboards
+ */
+constexpr Scancode SCANCODE_NUMLOCKCLEAR = SDL_SCANCODE_NUMLOCKCLEAR;
+
+constexpr Scancode SCANCODE_KP_DIVIDE = SDL_SCANCODE_KP_DIVIDE;
+
+constexpr Scancode SCANCODE_KP_MULTIPLY = SDL_SCANCODE_KP_MULTIPLY;
+
+constexpr Scancode SCANCODE_KP_MINUS = SDL_SCANCODE_KP_MINUS;
+
+constexpr Scancode SCANCODE_KP_PLUS = SDL_SCANCODE_KP_PLUS;
+
+constexpr Scancode SCANCODE_KP_ENTER = SDL_SCANCODE_KP_ENTER;
+
+constexpr Scancode SCANCODE_KP_1 = SDL_SCANCODE_KP_1;
+
+constexpr Scancode SCANCODE_KP_2 = SDL_SCANCODE_KP_2;
+
+constexpr Scancode SCANCODE_KP_3 = SDL_SCANCODE_KP_3;
+
+constexpr Scancode SCANCODE_KP_4 = SDL_SCANCODE_KP_4;
+
+constexpr Scancode SCANCODE_KP_5 = SDL_SCANCODE_KP_5;
+
+constexpr Scancode SCANCODE_KP_6 = SDL_SCANCODE_KP_6;
+
+constexpr Scancode SCANCODE_KP_7 = SDL_SCANCODE_KP_7;
+
+constexpr Scancode SCANCODE_KP_8 = SDL_SCANCODE_KP_8;
+
+constexpr Scancode SCANCODE_KP_9 = SDL_SCANCODE_KP_9;
+
+constexpr Scancode SCANCODE_KP_0 = SDL_SCANCODE_KP_0;
+
+constexpr Scancode SCANCODE_KP_PERIOD = SDL_SCANCODE_KP_PERIOD;
+
+/**
+ * This is the additional key that ISO keyboards have over ANSI ones, located
+ * between left shift and Y.  Produces GRAVE ACCENT and TILDE in a US or UK Mac
+ * layout, REVERSE SOLIDUS (backslash) and VERTICAL LINE in a US or UK Windows
+ * layout, and LESS-THAN SIGN and GREATER-THAN SIGN in a Swiss German, German,
+ * or French layout.
+ */
+constexpr Scancode SCANCODE_NONUSBACKSLASH = SDL_SCANCODE_NONUSBACKSLASH;
+
+/**
+ * windows contextual menu, compose
+ */
+constexpr Scancode SCANCODE_APPLICATION = SDL_SCANCODE_APPLICATION;
+
+/**
+ * The USB document says this is a status flag, not a physical key - but some
+ * Mac keyboards do have a power key.
+ */
+constexpr Scancode SCANCODE_POWER = SDL_SCANCODE_POWER;
+
+constexpr Scancode SCANCODE_KP_EQUALS = SDL_SCANCODE_KP_EQUALS;
+
+constexpr Scancode SCANCODE_F13 = SDL_SCANCODE_F13;
+
+constexpr Scancode SCANCODE_F14 = SDL_SCANCODE_F14;
+
+constexpr Scancode SCANCODE_F15 = SDL_SCANCODE_F15;
+
+constexpr Scancode SCANCODE_F16 = SDL_SCANCODE_F16;
+
+constexpr Scancode SCANCODE_F17 = SDL_SCANCODE_F17;
+
+constexpr Scancode SCANCODE_F18 = SDL_SCANCODE_F18;
+
+constexpr Scancode SCANCODE_F19 = SDL_SCANCODE_F19;
+
+constexpr Scancode SCANCODE_F20 = SDL_SCANCODE_F20;
+
+constexpr Scancode SCANCODE_F21 = SDL_SCANCODE_F21;
+
+constexpr Scancode SCANCODE_F22 = SDL_SCANCODE_F22;
+
+constexpr Scancode SCANCODE_F23 = SDL_SCANCODE_F23;
+
+constexpr Scancode SCANCODE_F24 = SDL_SCANCODE_F24;
+
+constexpr Scancode SCANCODE_EXECUTE = SDL_SCANCODE_EXECUTE;
+
+constexpr Scancode SCANCODE_HELP =
+  SDL_SCANCODE_HELP; ///< AL Integrated Help Center.
+
+constexpr Scancode SCANCODE_MENU = SDL_SCANCODE_MENU; ///< Menu (show menu)
+
+constexpr Scancode SCANCODE_SELECT = SDL_SCANCODE_SELECT;
+
+constexpr Scancode SCANCODE_STOP = SDL_SCANCODE_STOP; ///< AC Stop.
+
+constexpr Scancode SCANCODE_AGAIN = SDL_SCANCODE_AGAIN; ///< AC Redo/Repeat.
+
+constexpr Scancode SCANCODE_UNDO = SDL_SCANCODE_UNDO; ///< AC Undo.
+
+constexpr Scancode SCANCODE_CUT = SDL_SCANCODE_CUT; ///< AC Cut.
+
+constexpr Scancode SCANCODE_COPY = SDL_SCANCODE_COPY; ///< AC Copy.
+
+constexpr Scancode SCANCODE_PASTE = SDL_SCANCODE_PASTE; ///< AC Paste.
+
+constexpr Scancode SCANCODE_FIND = SDL_SCANCODE_FIND; ///< AC Find.
+
+constexpr Scancode SCANCODE_MUTE = SDL_SCANCODE_MUTE;
+
+constexpr Scancode SCANCODE_VOLUMEUP = SDL_SCANCODE_VOLUMEUP;
+
+constexpr Scancode SCANCODE_VOLUMEDOWN = SDL_SCANCODE_VOLUMEDOWN;
+
+constexpr Scancode SCANCODE_KP_COMMA = SDL_SCANCODE_KP_COMMA;
+
+constexpr Scancode SCANCODE_KP_EQUALSAS400 = SDL_SCANCODE_KP_EQUALSAS400;
+
+/**
+ * used on Asian keyboards, see footnotes in USB doc
+ */
+constexpr Scancode SCANCODE_INTERNATIONAL1 = SDL_SCANCODE_INTERNATIONAL1;
+
+constexpr Scancode SCANCODE_INTERNATIONAL2 = SDL_SCANCODE_INTERNATIONAL2;
+
+constexpr Scancode SCANCODE_INTERNATIONAL3 =
+  SDL_SCANCODE_INTERNATIONAL3; ///< Yen.
+
+constexpr Scancode SCANCODE_INTERNATIONAL4 = SDL_SCANCODE_INTERNATIONAL4;
+
+constexpr Scancode SCANCODE_INTERNATIONAL5 = SDL_SCANCODE_INTERNATIONAL5;
+
+constexpr Scancode SCANCODE_INTERNATIONAL6 = SDL_SCANCODE_INTERNATIONAL6;
+
+constexpr Scancode SCANCODE_INTERNATIONAL7 = SDL_SCANCODE_INTERNATIONAL7;
+
+constexpr Scancode SCANCODE_INTERNATIONAL8 = SDL_SCANCODE_INTERNATIONAL8;
+
+constexpr Scancode SCANCODE_INTERNATIONAL9 = SDL_SCANCODE_INTERNATIONAL9;
+
+constexpr Scancode SCANCODE_LANG1 =
+  SDL_SCANCODE_LANG1; ///< Hangul/English toggle.
+
+constexpr Scancode SCANCODE_LANG2 = SDL_SCANCODE_LANG2; ///< Hanja conversion.
+
+constexpr Scancode SCANCODE_LANG3 = SDL_SCANCODE_LANG3; ///< Katakana.
+
+constexpr Scancode SCANCODE_LANG4 = SDL_SCANCODE_LANG4; ///< Hiragana.
+
+constexpr Scancode SCANCODE_LANG5 = SDL_SCANCODE_LANG5; ///< Zenkaku/Hankaku.
+
+constexpr Scancode SCANCODE_LANG6 = SDL_SCANCODE_LANG6; ///< reserved
+
+constexpr Scancode SCANCODE_LANG7 = SDL_SCANCODE_LANG7; ///< reserved
+
+constexpr Scancode SCANCODE_LANG8 = SDL_SCANCODE_LANG8; ///< reserved
+
+constexpr Scancode SCANCODE_LANG9 = SDL_SCANCODE_LANG9; ///< reserved
+
+constexpr Scancode SCANCODE_ALTERASE = SDL_SCANCODE_ALTERASE; ///< Erase-Eaze.
+
+constexpr Scancode SCANCODE_SYSREQ = SDL_SCANCODE_SYSREQ;
+
+constexpr Scancode SCANCODE_CANCEL = SDL_SCANCODE_CANCEL; ///< AC Cancel.
+
+constexpr Scancode SCANCODE_CLEAR = SDL_SCANCODE_CLEAR;
+
+constexpr Scancode SCANCODE_PRIOR = SDL_SCANCODE_PRIOR;
+
+constexpr Scancode SCANCODE_RETURN2 = SDL_SCANCODE_RETURN2;
+
+constexpr Scancode SCANCODE_SEPARATOR = SDL_SCANCODE_SEPARATOR;
+
+constexpr Scancode SCANCODE_OUT = SDL_SCANCODE_OUT;
+
+constexpr Scancode SCANCODE_OPER = SDL_SCANCODE_OPER;
+
+constexpr Scancode SCANCODE_CLEARAGAIN = SDL_SCANCODE_CLEARAGAIN;
+
+constexpr Scancode SCANCODE_CRSEL = SDL_SCANCODE_CRSEL;
+
+constexpr Scancode SCANCODE_EXSEL = SDL_SCANCODE_EXSEL;
+
+constexpr Scancode SCANCODE_KP_00 = SDL_SCANCODE_KP_00;
+
+constexpr Scancode SCANCODE_KP_000 = SDL_SCANCODE_KP_000;
+
+constexpr Scancode SCANCODE_THOUSANDSSEPARATOR =
+  SDL_SCANCODE_THOUSANDSSEPARATOR;
+
+constexpr Scancode SCANCODE_DECIMALSEPARATOR = SDL_SCANCODE_DECIMALSEPARATOR;
+
+constexpr Scancode SCANCODE_CURRENCYUNIT = SDL_SCANCODE_CURRENCYUNIT;
+
+constexpr Scancode SCANCODE_CURRENCYSUBUNIT = SDL_SCANCODE_CURRENCYSUBUNIT;
+
+constexpr Scancode SCANCODE_KP_LEFTPAREN = SDL_SCANCODE_KP_LEFTPAREN;
+
+constexpr Scancode SCANCODE_KP_RIGHTPAREN = SDL_SCANCODE_KP_RIGHTPAREN;
+
+constexpr Scancode SCANCODE_KP_LEFTBRACE = SDL_SCANCODE_KP_LEFTBRACE;
+
+constexpr Scancode SCANCODE_KP_RIGHTBRACE = SDL_SCANCODE_KP_RIGHTBRACE;
+
+constexpr Scancode SCANCODE_KP_TAB = SDL_SCANCODE_KP_TAB;
+
+constexpr Scancode SCANCODE_KP_BACKSPACE = SDL_SCANCODE_KP_BACKSPACE;
+
+constexpr Scancode SCANCODE_KP_A = SDL_SCANCODE_KP_A;
+
+constexpr Scancode SCANCODE_KP_B = SDL_SCANCODE_KP_B;
+
+constexpr Scancode SCANCODE_KP_C = SDL_SCANCODE_KP_C;
+
+constexpr Scancode SCANCODE_KP_D = SDL_SCANCODE_KP_D;
+
+constexpr Scancode SCANCODE_KP_E = SDL_SCANCODE_KP_E;
+
+constexpr Scancode SCANCODE_KP_F = SDL_SCANCODE_KP_F;
+
+constexpr Scancode SCANCODE_KP_XOR = SDL_SCANCODE_KP_XOR;
+
+constexpr Scancode SCANCODE_KP_POWER = SDL_SCANCODE_KP_POWER;
+
+constexpr Scancode SCANCODE_KP_PERCENT = SDL_SCANCODE_KP_PERCENT;
+
+constexpr Scancode SCANCODE_KP_LESS = SDL_SCANCODE_KP_LESS;
+
+constexpr Scancode SCANCODE_KP_GREATER = SDL_SCANCODE_KP_GREATER;
+
+constexpr Scancode SCANCODE_KP_AMPERSAND = SDL_SCANCODE_KP_AMPERSAND;
+
+constexpr Scancode SCANCODE_KP_DBLAMPERSAND = SDL_SCANCODE_KP_DBLAMPERSAND;
+
+constexpr Scancode SCANCODE_KP_VERTICALBAR = SDL_SCANCODE_KP_VERTICALBAR;
+
+constexpr Scancode SCANCODE_KP_DBLVERTICALBAR = SDL_SCANCODE_KP_DBLVERTICALBAR;
+
+constexpr Scancode SCANCODE_KP_COLON = SDL_SCANCODE_KP_COLON;
+
+constexpr Scancode SCANCODE_KP_HASH = SDL_SCANCODE_KP_HASH;
+
+constexpr Scancode SCANCODE_KP_SPACE = SDL_SCANCODE_KP_SPACE;
+
+constexpr Scancode SCANCODE_KP_AT = SDL_SCANCODE_KP_AT;
+
+constexpr Scancode SCANCODE_KP_EXCLAM = SDL_SCANCODE_KP_EXCLAM;
+
+constexpr Scancode SCANCODE_KP_MEMSTORE = SDL_SCANCODE_KP_MEMSTORE;
+
+constexpr Scancode SCANCODE_KP_MEMRECALL = SDL_SCANCODE_KP_MEMRECALL;
+
+constexpr Scancode SCANCODE_KP_MEMCLEAR = SDL_SCANCODE_KP_MEMCLEAR;
+
+constexpr Scancode SCANCODE_KP_MEMADD = SDL_SCANCODE_KP_MEMADD;
+
+constexpr Scancode SCANCODE_KP_MEMSUBTRACT = SDL_SCANCODE_KP_MEMSUBTRACT;
+
+constexpr Scancode SCANCODE_KP_MEMMULTIPLY = SDL_SCANCODE_KP_MEMMULTIPLY;
+
+constexpr Scancode SCANCODE_KP_MEMDIVIDE = SDL_SCANCODE_KP_MEMDIVIDE;
+
+constexpr Scancode SCANCODE_KP_PLUSMINUS = SDL_SCANCODE_KP_PLUSMINUS;
+
+constexpr Scancode SCANCODE_KP_CLEAR = SDL_SCANCODE_KP_CLEAR;
+
+constexpr Scancode SCANCODE_KP_CLEARENTRY = SDL_SCANCODE_KP_CLEARENTRY;
+
+constexpr Scancode SCANCODE_KP_BINARY = SDL_SCANCODE_KP_BINARY;
+
+constexpr Scancode SCANCODE_KP_OCTAL = SDL_SCANCODE_KP_OCTAL;
+
+constexpr Scancode SCANCODE_KP_DECIMAL = SDL_SCANCODE_KP_DECIMAL;
+
+constexpr Scancode SCANCODE_KP_HEXADECIMAL = SDL_SCANCODE_KP_HEXADECIMAL;
+
+constexpr Scancode SCANCODE_LCTRL = SDL_SCANCODE_LCTRL;
+
+constexpr Scancode SCANCODE_LSHIFT = SDL_SCANCODE_LSHIFT;
+
+constexpr Scancode SCANCODE_LALT = SDL_SCANCODE_LALT; ///< alt, option
+
+/**
+ * windows, command (apple), meta
+ */
+constexpr Scancode SCANCODE_LGUI = SDL_SCANCODE_LGUI;
+
+constexpr Scancode SCANCODE_RCTRL = SDL_SCANCODE_RCTRL;
+
+constexpr Scancode SCANCODE_RSHIFT = SDL_SCANCODE_RSHIFT;
+
+constexpr Scancode SCANCODE_RALT = SDL_SCANCODE_RALT; ///< alt gr, option
+
+/**
+ * windows, command (apple), meta
+ */
+constexpr Scancode SCANCODE_RGUI = SDL_SCANCODE_RGUI;
+
+/**
+ * I'm not sure if this is really not covered by any of the above, but since
+ * there's a special KMOD_MODE for it I'm adding it here.
+ */
+constexpr Scancode SCANCODE_MODE = SDL_SCANCODE_MODE;
+
+constexpr Scancode SCANCODE_SLEEP = SDL_SCANCODE_SLEEP; ///< Sleep.
+
+constexpr Scancode SCANCODE_WAKE = SDL_SCANCODE_WAKE; ///< Wake.
+
+/**
+ * Channel Increment.
+ */
+constexpr Scancode SCANCODE_CHANNEL_INCREMENT = SDL_SCANCODE_CHANNEL_INCREMENT;
+
+/**
+ * Channel Decrement.
+ */
+constexpr Scancode SCANCODE_CHANNEL_DECREMENT = SDL_SCANCODE_CHANNEL_DECREMENT;
+
+constexpr Scancode SCANCODE_MEDIA_PLAY = SDL_SCANCODE_MEDIA_PLAY; ///< Play.
+
+constexpr Scancode SCANCODE_MEDIA_PAUSE = SDL_SCANCODE_MEDIA_PAUSE; ///< Pause.
+
+constexpr Scancode SCANCODE_MEDIA_RECORD =
+  SDL_SCANCODE_MEDIA_RECORD; ///< Record.
+
+/**
+ * Fast Forward.
+ */
+constexpr Scancode SCANCODE_MEDIA_FAST_FORWARD =
+  SDL_SCANCODE_MEDIA_FAST_FORWARD;
+
+constexpr Scancode SCANCODE_MEDIA_REWIND =
+  SDL_SCANCODE_MEDIA_REWIND; ///< Rewind.
+
+/**
+ * Next Track.
+ */
+constexpr Scancode SCANCODE_MEDIA_NEXT_TRACK = SDL_SCANCODE_MEDIA_NEXT_TRACK;
+
+/**
+ * Previous Track.
+ */
+constexpr Scancode SCANCODE_MEDIA_PREVIOUS_TRACK =
+  SDL_SCANCODE_MEDIA_PREVIOUS_TRACK;
+
+constexpr Scancode SCANCODE_MEDIA_STOP = SDL_SCANCODE_MEDIA_STOP; ///< Stop.
+
+constexpr Scancode SCANCODE_MEDIA_EJECT = SDL_SCANCODE_MEDIA_EJECT; ///< Eject.
+
+/**
+ * Play / Pause.
+ */
+constexpr Scancode SCANCODE_MEDIA_PLAY_PAUSE = SDL_SCANCODE_MEDIA_PLAY_PAUSE;
+
+constexpr Scancode SCANCODE_MEDIA_SELECT = SDL_SCANCODE_MEDIA_SELECT;
+
+constexpr Scancode SCANCODE_AC_NEW = SDL_SCANCODE_AC_NEW; ///< AC New.
+
+constexpr Scancode SCANCODE_AC_OPEN = SDL_SCANCODE_AC_OPEN; ///< AC Open.
+
+constexpr Scancode SCANCODE_AC_CLOSE = SDL_SCANCODE_AC_CLOSE; ///< AC Close.
+
+constexpr Scancode SCANCODE_AC_EXIT = SDL_SCANCODE_AC_EXIT; ///< AC Exit.
+
+constexpr Scancode SCANCODE_AC_SAVE = SDL_SCANCODE_AC_SAVE; ///< AC Save.
+
+constexpr Scancode SCANCODE_AC_PRINT = SDL_SCANCODE_AC_PRINT; ///< AC Print.
+
+/**
+ * AC Properties.
+ */
+constexpr Scancode SCANCODE_AC_PROPERTIES = SDL_SCANCODE_AC_PROPERTIES;
+
+constexpr Scancode SCANCODE_AC_SEARCH = SDL_SCANCODE_AC_SEARCH; ///< AC Search.
+
+constexpr Scancode SCANCODE_AC_HOME = SDL_SCANCODE_AC_HOME; ///< AC Home.
+
+constexpr Scancode SCANCODE_AC_BACK = SDL_SCANCODE_AC_BACK; ///< AC Back.
+
+constexpr Scancode SCANCODE_AC_FORWARD =
+  SDL_SCANCODE_AC_FORWARD; ///< AC Forward.
+
+constexpr Scancode SCANCODE_AC_STOP = SDL_SCANCODE_AC_STOP; ///< AC Stop.
+
+constexpr Scancode SCANCODE_AC_REFRESH =
+  SDL_SCANCODE_AC_REFRESH; ///< AC Refresh.
+
+/**
+ * AC Bookmarks.
+ */
+constexpr Scancode SCANCODE_AC_BOOKMARKS = SDL_SCANCODE_AC_BOOKMARKS;
+
+/**
+ * Usually situated below the display on phones and used as a multi-function
+ * feature key for selecting a software defined function shown on the bottom
+ * left of the display.
+ */
+constexpr Scancode SCANCODE_SOFTLEFT = SDL_SCANCODE_SOFTLEFT;
+
+/**
+ * Usually situated below the display on phones and used as a multi-function
+ * feature key for selecting a software defined function shown on the bottom
+ * right of the display.
+ */
+constexpr Scancode SCANCODE_SOFTRIGHT = SDL_SCANCODE_SOFTRIGHT;
+
+/**
+ * Used for accepting phone calls.
+ */
+constexpr Scancode SCANCODE_CALL = SDL_SCANCODE_CALL;
+
+/**
+ * Used for rejecting phone calls.
+ */
+constexpr Scancode SCANCODE_ENDCALL = SDL_SCANCODE_ENDCALL;
+
+/**
+ * 400-500 reserved for dynamic keycodes
+ */
+constexpr Scancode SCANCODE_RESERVED = SDL_SCANCODE_RESERVED;
+
+/**
+ * not a key, just marks the number of scancodes for array bounds
+ */
+constexpr Scancode SCANCODE_COUNT = SDL_SCANCODE_COUNT;
+
+/// @}
+
+/**
  * @defgroup CategoryTime Date and Time
  *
  * SDL realtime clock and date/time routines.
@@ -19124,6 +18076,1154 @@ inline bool SDL::updateActive(bool active)
 #pragma endregion
 
 /**
+ *
+ * @defgroup CategoryKeycode Keyboard Keycodes
+ *
+ * Defines constants which identify keyboard keys and modifiers.
+ *
+ * Please refer to the Best Keyboard Practices document for details on what
+ * this information means and how best to use it.
+ *
+ * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
+ *
+ * @{
+ */
+
+/**
+ * Valid key modifiers (possibly OR'd together).
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using Keymod = SDL_Keymod;
+
+/**
+ * no modifier is applicable.
+ */
+constexpr Keymod KMOD_NONE = SDL_KMOD_NONE;
+
+/**
+ * the left Shift key is down.
+ */
+constexpr Keymod KMOD_LSHIFT = SDL_KMOD_LSHIFT;
+
+/**
+ * the right Shift key is down.
+ */
+constexpr Keymod KMOD_RSHIFT = SDL_KMOD_RSHIFT;
+
+/**
+ * the Level 5 Shift key is down.
+ */
+constexpr Keymod KMOD_LEVEL5 = SDL_KMOD_LEVEL5;
+
+/**
+ * the left Ctrl (Control) key is down.
+ */
+constexpr Keymod KMOD_LCTRL = SDL_KMOD_LCTRL;
+
+/**
+ * the right Ctrl (Control) key is down.
+ */
+constexpr Keymod KMOD_RCTRL = SDL_KMOD_RCTRL;
+
+/**
+ * the left Alt key is down.
+ */
+constexpr Keymod KMOD_LALT = SDL_KMOD_LALT;
+
+/**
+ * the right Alt key is down.
+ */
+constexpr Keymod KMOD_RALT = SDL_KMOD_RALT;
+
+/**
+ * the left GUI key (often the Windows key) is down.
+ */
+constexpr Keymod KMOD_LGUI = SDL_KMOD_LGUI;
+
+/**
+ * the right GUI key (often the Windows key) is down.
+ */
+constexpr Keymod KMOD_RGUI = SDL_KMOD_RGUI;
+
+/**
+ * the Num Lock key (may be located on an extended keypad) is down.
+ */
+constexpr Keymod KMOD_NUM = SDL_KMOD_NUM;
+
+/**
+ * the Caps Lock key is down.
+ */
+constexpr Keymod KMOD_CAPS = SDL_KMOD_CAPS;
+
+/**
+ * the !AltGr key is down.
+ */
+constexpr Keymod KMOD_MODE = SDL_KMOD_MODE;
+
+/**
+ * the Scroll Lock key is down.
+ */
+constexpr Keymod KMOD_SCROLL = SDL_KMOD_SCROLL;
+
+/**
+ * Any Ctrl key is down.
+ */
+constexpr Keymod KMOD_CTRL = SDL_KMOD_CTRL;
+
+/**
+ * Any Shift key is down.
+ */
+constexpr Keymod KMOD_SHIFT = SDL_KMOD_SHIFT;
+
+/**
+ * Any Alt key is down.
+ */
+constexpr Keymod KMOD_ALT = SDL_KMOD_ALT;
+
+/**
+ * Any GUI key is down.
+ */
+constexpr Keymod KMOD_GUI = SDL_KMOD_GUI;
+
+/**
+ * The SDL virtual key representation.
+ *
+ * Values of this type are used to represent keyboard keys using the current
+ * layout of the keyboard. These values include Unicode values representing
+ * the unmodified character that would be generated by pressing the key, or an
+ * `SDLK_*` constant for those keys that do not generate characters.
+ *
+ * A special exception is the number keys at the top of the keyboard which map
+ * to SDLK_0...SDLK_9 on AZERTY layouts.
+ *
+ * Keys with the `SDLK_EXTENDED_MASK` bit set do not map to a scancode or
+ * unicode code point.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+class Keycode
+{
+  SDL_Keycode m_keycode;
+
+public:
+  /**
+   * Wraps Keycode.
+   *
+   * @param keycode the value to be wrapped
+   */
+  constexpr Keycode(SDL_Keycode keycode = {})
+    : m_keycode(keycode)
+  {
+  }
+
+  constexpr auto operator<=>(const Keycode& other) const = default;
+
+  // Convert from scancode
+  explicit Keycode(Scancode scancode,
+                   Keymod keymodstate = 0,
+                   bool key_event = false);
+
+  // Create from key name
+  explicit Keycode(StringParam name);
+
+  /**
+   * Unwraps to the underlying Keycode.
+   *
+   * @returns the underlying Keycode.
+   */
+  constexpr operator SDL_Keycode() const { return m_keycode; }
+
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
+
+  // Get name
+  const char* GetName() const;
+
+  Scancode GetScancode(Keymod* keymodstate = nullptr) const;
+
+  /// Has Extended flag
+  constexpr bool IsExtended() const { return m_keycode & SDLK_EXTENDED_MASK; }
+
+  /// Has Scancode flag
+  constexpr bool IsScancode() const { return m_keycode & SDLK_SCANCODE_MASK; }
+};
+
+constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;
+
+constexpr Keycode KEYCODE_SCANCODE_MASK = SDLK_SCANCODE_MASK;
+
+/**
+ * Transform scancode to keycode
+ *
+ * @param x scancode
+ * @return keycode
+ */
+constexpr Keycode ScancodeToKeycode(Scancode x)
+{
+  return SDL_SCANCODE_TO_KEYCODE(x);
+}
+
+constexpr Keycode KEYCODE_UNKNOWN = SDLK_UNKNOWN; ///< 0
+
+constexpr Keycode KEYCODE_RETURN = SDLK_RETURN; ///< '@r'
+
+constexpr Keycode KEYCODE_ESCAPE = SDLK_ESCAPE; ///< '@x1B'
+
+constexpr Keycode KEYCODE_BACKSPACE = SDLK_BACKSPACE; ///< '@b'
+
+constexpr Keycode KEYCODE_TAB = SDLK_TAB; ///< '@t'
+
+constexpr Keycode KEYCODE_SPACE = SDLK_SPACE; ///< ' '
+
+constexpr Keycode KEYCODE_EXCLAIM = SDLK_EXCLAIM; ///< '!'
+
+constexpr Keycode KEYCODE_DBLAPOSTROPHE = SDLK_DBLAPOSTROPHE; ///< '"'
+
+constexpr Keycode KEYCODE_HASH = SDLK_HASH; ///< '#'
+
+constexpr Keycode KEYCODE_DOLLAR = SDLK_DOLLAR; ///< '$'
+
+constexpr Keycode KEYCODE_PERCENT = SDLK_PERCENT; ///< '%'
+
+constexpr Keycode KEYCODE_AMPERSAND = SDLK_AMPERSAND; ///< '&'
+
+constexpr Keycode KEYCODE_APOSTROPHE = SDLK_APOSTROPHE; ///< '\''
+
+constexpr Keycode KEYCODE_LEFTPAREN = SDLK_LEFTPAREN; ///< '('
+
+constexpr Keycode KEYCODE_RIGHTPAREN = SDLK_RIGHTPAREN; ///< ')'
+
+constexpr Keycode KEYCODE_ASTERISK = SDLK_ASTERISK; ///< '*'
+
+constexpr Keycode KEYCODE_PLUS = SDLK_PLUS; ///< '+'
+
+constexpr Keycode KEYCODE_COMMA = SDLK_COMMA; ///< ','
+
+constexpr Keycode KEYCODE_MINUS = SDLK_MINUS; ///< '-'
+
+constexpr Keycode KEYCODE_PERIOD = SDLK_PERIOD; ///< '.'
+
+constexpr Keycode KEYCODE_SLASH = SDLK_SLASH; ///< '/'
+
+constexpr Keycode KEYCODE_0 = SDLK_0; ///< '0'
+
+constexpr Keycode KEYCODE_1 = SDLK_1; ///< '1'
+
+constexpr Keycode KEYCODE_2 = SDLK_2; ///< '2'
+
+constexpr Keycode KEYCODE_3 = SDLK_3; ///< '3'
+
+constexpr Keycode KEYCODE_4 = SDLK_4; ///< '4'
+
+constexpr Keycode KEYCODE_5 = SDLK_5; ///< '5'
+
+constexpr Keycode KEYCODE_6 = SDLK_6; ///< '6'
+
+constexpr Keycode KEYCODE_7 = SDLK_7; ///< '7'
+
+constexpr Keycode KEYCODE_8 = SDLK_8; ///< '8'
+
+constexpr Keycode KEYCODE_9 = SDLK_9; ///< '9'
+
+constexpr Keycode KEYCODE_COLON = SDLK_COLON; ///< ':'
+
+constexpr Keycode KEYCODE_SEMICOLON = SDLK_SEMICOLON; ///< ';'
+
+constexpr Keycode KEYCODE_LESS = SDLK_LESS; ///< '<'
+
+constexpr Keycode KEYCODE_EQUALS = SDLK_EQUALS; ///< '='
+
+constexpr Keycode KEYCODE_GREATER = SDLK_GREATER; ///< '>'
+
+constexpr Keycode KEYCODE_QUESTION = SDLK_QUESTION; ///< '?'
+
+constexpr Keycode KEYCODE_AT = SDLK_AT; ///< '@'
+
+constexpr Keycode KEYCODE_LEFTBRACKET = SDLK_LEFTBRACKET; ///< '['
+
+constexpr Keycode KEYCODE_BACKSLASH = SDLK_BACKSLASH; ///< '\\'
+
+constexpr Keycode KEYCODE_RIGHTBRACKET = SDLK_RIGHTBRACKET; ///< ']'
+
+constexpr Keycode KEYCODE_CARET = SDLK_CARET; ///< '^'
+
+constexpr Keycode KEYCODE_UNDERSCORE = SDLK_UNDERSCORE; ///< '_'
+
+constexpr Keycode KEYCODE_GRAVE = SDLK_GRAVE; ///< '`'
+
+constexpr Keycode KEYCODE_A = SDLK_A; ///< 'a'
+
+constexpr Keycode KEYCODE_B = SDLK_B; ///< 'b'
+
+constexpr Keycode KEYCODE_C = SDLK_C; ///< 'c'
+
+constexpr Keycode KEYCODE_D = SDLK_D; ///< 'd'
+
+constexpr Keycode KEYCODE_E = SDLK_E; ///< 'e'
+
+constexpr Keycode KEYCODE_F = SDLK_F; ///< 'f'
+
+constexpr Keycode KEYCODE_G = SDLK_G; ///< 'g'
+
+constexpr Keycode KEYCODE_H = SDLK_H; ///< 'h'
+
+constexpr Keycode KEYCODE_I = SDLK_I; ///< 'i'
+
+constexpr Keycode KEYCODE_J = SDLK_J; ///< 'j'
+
+constexpr Keycode KEYCODE_K = SDLK_K; ///< 'k'
+
+constexpr Keycode KEYCODE_L = SDLK_L; ///< 'l'
+
+constexpr Keycode KEYCODE_M = SDLK_M; ///< 'm'
+
+constexpr Keycode KEYCODE_N = SDLK_N; ///< 'n'
+
+constexpr Keycode KEYCODE_O = SDLK_O; ///< 'o'
+
+constexpr Keycode KEYCODE_P = SDLK_P; ///< 'p'
+
+constexpr Keycode KEYCODE_Q = SDLK_Q; ///< 'q'
+
+constexpr Keycode KEYCODE_R = SDLK_R; ///< 'r'
+
+constexpr Keycode KEYCODE_S = SDLK_S; ///< 's'
+
+constexpr Keycode KEYCODE_T = SDLK_T; ///< 't'
+
+constexpr Keycode KEYCODE_U = SDLK_U; ///< 'u'
+
+constexpr Keycode KEYCODE_V = SDLK_V; ///< 'v'
+
+constexpr Keycode KEYCODE_W = SDLK_W; ///< 'w'
+
+constexpr Keycode KEYCODE_X = SDLK_X; ///< 'x'
+
+constexpr Keycode KEYCODE_Y = SDLK_Y; ///< 'y'
+
+constexpr Keycode KEYCODE_Z = SDLK_Z; ///< 'z'
+
+constexpr Keycode KEYCODE_LEFTBRACE = SDLK_LEFTBRACE; ///< '{'
+
+constexpr Keycode KEYCODE_PIPE = SDLK_PIPE; ///< '|'
+
+constexpr Keycode KEYCODE_RIGHTBRACE = SDLK_RIGHTBRACE; ///< '}'
+
+constexpr Keycode KEYCODE_TILDE = SDLK_TILDE; ///< '~'
+
+constexpr Keycode KEYCODE_DELETE = SDLK_DELETE; ///< '@x7F'
+
+constexpr Keycode KEYCODE_PLUSMINUS = SDLK_PLUSMINUS; ///< '@xB1'
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CAPSLOCK)
+ */
+constexpr Keycode KEYCODE_CAPSLOCK = SDLK_CAPSLOCK;
+
+constexpr Keycode KEYCODE_F1 = SDLK_F1; ///< ScancodeToKeycode(SCANCODE_F1)
+
+constexpr Keycode KEYCODE_F2 = SDLK_F2; ///< ScancodeToKeycode(SCANCODE_F2)
+
+constexpr Keycode KEYCODE_F3 = SDLK_F3; ///< ScancodeToKeycode(SCANCODE_F3)
+
+constexpr Keycode KEYCODE_F4 = SDLK_F4; ///< ScancodeToKeycode(SCANCODE_F4)
+
+constexpr Keycode KEYCODE_F5 = SDLK_F5; ///< ScancodeToKeycode(SCANCODE_F5)
+
+constexpr Keycode KEYCODE_F6 = SDLK_F6; ///< ScancodeToKeycode(SCANCODE_F6)
+
+constexpr Keycode KEYCODE_F7 = SDLK_F7; ///< ScancodeToKeycode(SCANCODE_F7)
+
+constexpr Keycode KEYCODE_F8 = SDLK_F8; ///< ScancodeToKeycode(SCANCODE_F8)
+
+constexpr Keycode KEYCODE_F9 = SDLK_F9; ///< ScancodeToKeycode(SCANCODE_F9)
+
+constexpr Keycode KEYCODE_F10 = SDLK_F10; ///< ScancodeToKeycode(SCANCODE_F10)
+
+constexpr Keycode KEYCODE_F11 = SDLK_F11; ///< ScancodeToKeycode(SCANCODE_F11)
+
+constexpr Keycode KEYCODE_F12 = SDLK_F12; ///< ScancodeToKeycode(SCANCODE_F12)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRINTSCREEN)
+ */
+constexpr Keycode KEYCODE_PRINTSCREEN = SDLK_PRINTSCREEN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SCROLLLOCK)
+ */
+constexpr Keycode KEYCODE_SCROLLLOCK = SDLK_SCROLLLOCK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAUSE)
+ */
+constexpr Keycode KEYCODE_PAUSE = SDLK_PAUSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_INSERT)
+ */
+constexpr Keycode KEYCODE_INSERT = SDLK_INSERT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HOME)
+ */
+constexpr Keycode KEYCODE_HOME = SDLK_HOME;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEUP)
+ */
+constexpr Keycode KEYCODE_PAGEUP = SDLK_PAGEUP;
+
+constexpr Keycode KEYCODE_END = SDLK_END; ///< ScancodeToKeycode(SCANCODE_END)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PAGEDOWN)
+ */
+constexpr Keycode KEYCODE_PAGEDOWN = SDLK_PAGEDOWN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RIGHT)
+ */
+constexpr Keycode KEYCODE_RIGHT = SDLK_RIGHT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LEFT)
+ */
+constexpr Keycode KEYCODE_LEFT = SDLK_LEFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DOWN)
+ */
+constexpr Keycode KEYCODE_DOWN = SDLK_DOWN;
+
+constexpr Keycode KEYCODE_UP = SDLK_UP; ///< ScancodeToKeycode(SCANCODE_UP)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_NUMLOCKCLEAR)
+ */
+constexpr Keycode KEYCODE_NUMLOCKCLEAR = SDLK_NUMLOCKCLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DIVIDE)
+ */
+constexpr Keycode KEYCODE_KP_DIVIDE = SDLK_KP_DIVIDE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MULTIPLY)
+ */
+constexpr Keycode KEYCODE_KP_MULTIPLY = SDLK_KP_MULTIPLY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MINUS)
+ */
+constexpr Keycode KEYCODE_KP_MINUS = SDLK_KP_MINUS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUS)
+ */
+constexpr Keycode KEYCODE_KP_PLUS = SDLK_KP_PLUS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_ENTER)
+ */
+constexpr Keycode KEYCODE_KP_ENTER = SDLK_KP_ENTER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_1)
+ */
+constexpr Keycode KEYCODE_KP_1 = SDLK_KP_1;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_2)
+ */
+constexpr Keycode KEYCODE_KP_2 = SDLK_KP_2;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_3)
+ */
+constexpr Keycode KEYCODE_KP_3 = SDLK_KP_3;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_4)
+ */
+constexpr Keycode KEYCODE_KP_4 = SDLK_KP_4;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_5)
+ */
+constexpr Keycode KEYCODE_KP_5 = SDLK_KP_5;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_6)
+ */
+constexpr Keycode KEYCODE_KP_6 = SDLK_KP_6;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_7)
+ */
+constexpr Keycode KEYCODE_KP_7 = SDLK_KP_7;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_8)
+ */
+constexpr Keycode KEYCODE_KP_8 = SDLK_KP_8;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_9)
+ */
+constexpr Keycode KEYCODE_KP_9 = SDLK_KP_9;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_0)
+ */
+constexpr Keycode KEYCODE_KP_0 = SDLK_KP_0;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERIOD)
+ */
+constexpr Keycode KEYCODE_KP_PERIOD = SDLK_KP_PERIOD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_APPLICATION)
+ */
+constexpr Keycode KEYCODE_APPLICATION = SDLK_APPLICATION;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_POWER)
+ */
+constexpr Keycode KEYCODE_POWER = SDLK_POWER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALS)
+ */
+constexpr Keycode KEYCODE_KP_EQUALS = SDLK_KP_EQUALS;
+
+constexpr Keycode KEYCODE_F13 = SDLK_F13; ///< ScancodeToKeycode(SCANCODE_F13)
+
+constexpr Keycode KEYCODE_F14 = SDLK_F14; ///< ScancodeToKeycode(SCANCODE_F14)
+
+constexpr Keycode KEYCODE_F15 = SDLK_F15; ///< ScancodeToKeycode(SCANCODE_F15)
+
+constexpr Keycode KEYCODE_F16 = SDLK_F16; ///< ScancodeToKeycode(SCANCODE_F16)
+
+constexpr Keycode KEYCODE_F17 = SDLK_F17; ///< ScancodeToKeycode(SCANCODE_F17)
+
+constexpr Keycode KEYCODE_F18 = SDLK_F18; ///< ScancodeToKeycode(SCANCODE_F18)
+
+constexpr Keycode KEYCODE_F19 = SDLK_F19; ///< ScancodeToKeycode(SCANCODE_F19)
+
+constexpr Keycode KEYCODE_F20 = SDLK_F20; ///< ScancodeToKeycode(SCANCODE_F20)
+
+constexpr Keycode KEYCODE_F21 = SDLK_F21; ///< ScancodeToKeycode(SCANCODE_F21)
+
+constexpr Keycode KEYCODE_F22 = SDLK_F22; ///< ScancodeToKeycode(SCANCODE_F22)
+
+constexpr Keycode KEYCODE_F23 = SDLK_F23; ///< ScancodeToKeycode(SCANCODE_F23)
+
+constexpr Keycode KEYCODE_F24 = SDLK_F24; ///< ScancodeToKeycode(SCANCODE_F24)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXECUTE)
+ */
+constexpr Keycode KEYCODE_EXECUTE = SDLK_EXECUTE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_HELP)
+ */
+constexpr Keycode KEYCODE_HELP = SDLK_HELP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MENU)
+ */
+constexpr Keycode KEYCODE_MENU = SDLK_MENU;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SELECT)
+ */
+constexpr Keycode KEYCODE_SELECT = SDLK_SELECT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_STOP)
+ */
+constexpr Keycode KEYCODE_STOP = SDLK_STOP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AGAIN)
+ */
+constexpr Keycode KEYCODE_AGAIN = SDLK_AGAIN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_UNDO)
+ */
+constexpr Keycode KEYCODE_UNDO = SDLK_UNDO;
+
+constexpr Keycode KEYCODE_CUT = SDLK_CUT; ///< ScancodeToKeycode(SCANCODE_CUT)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_COPY)
+ */
+constexpr Keycode KEYCODE_COPY = SDLK_COPY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PASTE)
+ */
+constexpr Keycode KEYCODE_PASTE = SDLK_PASTE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_FIND)
+ */
+constexpr Keycode KEYCODE_FIND = SDLK_FIND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MUTE)
+ */
+constexpr Keycode KEYCODE_MUTE = SDLK_MUTE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEUP)
+ */
+constexpr Keycode KEYCODE_VOLUMEUP = SDLK_VOLUMEUP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_VOLUMEDOWN)
+ */
+constexpr Keycode KEYCODE_VOLUMEDOWN = SDLK_VOLUMEDOWN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COMMA)
+ */
+constexpr Keycode KEYCODE_KP_COMMA = SDLK_KP_COMMA;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EQUALSAS400)
+ */
+constexpr Keycode KEYCODE_KP_EQUALSAS400 = SDLK_KP_EQUALSAS400;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ALTERASE)
+ */
+constexpr Keycode KEYCODE_ALTERASE = SDLK_ALTERASE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SYSREQ)
+ */
+constexpr Keycode KEYCODE_SYSREQ = SDLK_SYSREQ;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CANCEL)
+ */
+constexpr Keycode KEYCODE_CANCEL = SDLK_CANCEL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEAR)
+ */
+constexpr Keycode KEYCODE_CLEAR = SDLK_CLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_PRIOR)
+ */
+constexpr Keycode KEYCODE_PRIOR = SDLK_PRIOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RETURN2)
+ */
+constexpr Keycode KEYCODE_RETURN2 = SDLK_RETURN2;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SEPARATOR)
+ */
+constexpr Keycode KEYCODE_SEPARATOR = SDLK_SEPARATOR;
+
+constexpr Keycode KEYCODE_OUT = SDLK_OUT; ///< ScancodeToKeycode(SCANCODE_OUT)
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_OPER)
+ */
+constexpr Keycode KEYCODE_OPER = SDLK_OPER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CLEARAGAIN)
+ */
+constexpr Keycode KEYCODE_CLEARAGAIN = SDLK_CLEARAGAIN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CRSEL)
+ */
+constexpr Keycode KEYCODE_CRSEL = SDLK_CRSEL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_EXSEL)
+ */
+constexpr Keycode KEYCODE_EXSEL = SDLK_EXSEL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_00)
+ */
+constexpr Keycode KEYCODE_KP_00 = SDLK_KP_00;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_000)
+ */
+constexpr Keycode KEYCODE_KP_000 = SDLK_KP_000;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_THOUSANDSSEPARATOR)
+ */
+constexpr Keycode KEYCODE_THOUSANDSSEPARATOR = SDLK_THOUSANDSSEPARATOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_DECIMALSEPARATOR)
+ */
+constexpr Keycode KEYCODE_DECIMALSEPARATOR = SDLK_DECIMALSEPARATOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYUNIT)
+ */
+constexpr Keycode KEYCODE_CURRENCYUNIT = SDLK_CURRENCYUNIT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CURRENCYSUBUNIT)
+ */
+constexpr Keycode KEYCODE_CURRENCYSUBUNIT = SDLK_CURRENCYSUBUNIT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTPAREN)
+ */
+constexpr Keycode KEYCODE_KP_LEFTPAREN = SDLK_KP_LEFTPAREN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTPAREN)
+ */
+constexpr Keycode KEYCODE_KP_RIGHTPAREN = SDLK_KP_RIGHTPAREN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LEFTBRACE)
+ */
+constexpr Keycode KEYCODE_KP_LEFTBRACE = SDLK_KP_LEFTBRACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_RIGHTBRACE)
+ */
+constexpr Keycode KEYCODE_KP_RIGHTBRACE = SDLK_KP_RIGHTBRACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_TAB)
+ */
+constexpr Keycode KEYCODE_KP_TAB = SDLK_KP_TAB;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BACKSPACE)
+ */
+constexpr Keycode KEYCODE_KP_BACKSPACE = SDLK_KP_BACKSPACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_A)
+ */
+constexpr Keycode KEYCODE_KP_A = SDLK_KP_A;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_B)
+ */
+constexpr Keycode KEYCODE_KP_B = SDLK_KP_B;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_C)
+ */
+constexpr Keycode KEYCODE_KP_C = SDLK_KP_C;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_D)
+ */
+constexpr Keycode KEYCODE_KP_D = SDLK_KP_D;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_E)
+ */
+constexpr Keycode KEYCODE_KP_E = SDLK_KP_E;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_F)
+ */
+constexpr Keycode KEYCODE_KP_F = SDLK_KP_F;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_XOR)
+ */
+constexpr Keycode KEYCODE_KP_XOR = SDLK_KP_XOR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_POWER)
+ */
+constexpr Keycode KEYCODE_KP_POWER = SDLK_KP_POWER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PERCENT)
+ */
+constexpr Keycode KEYCODE_KP_PERCENT = SDLK_KP_PERCENT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_LESS)
+ */
+constexpr Keycode KEYCODE_KP_LESS = SDLK_KP_LESS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_GREATER)
+ */
+constexpr Keycode KEYCODE_KP_GREATER = SDLK_KP_GREATER;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AMPERSAND)
+ */
+constexpr Keycode KEYCODE_KP_AMPERSAND = SDLK_KP_AMPERSAND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLAMPERSAND)
+ */
+constexpr Keycode KEYCODE_KP_DBLAMPERSAND = SDLK_KP_DBLAMPERSAND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_VERTICALBAR)
+ */
+constexpr Keycode KEYCODE_KP_VERTICALBAR = SDLK_KP_VERTICALBAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DBLVERTICALBAR)
+ */
+constexpr Keycode KEYCODE_KP_DBLVERTICALBAR = SDLK_KP_DBLVERTICALBAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_COLON)
+ */
+constexpr Keycode KEYCODE_KP_COLON = SDLK_KP_COLON;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HASH)
+ */
+constexpr Keycode KEYCODE_KP_HASH = SDLK_KP_HASH;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_SPACE)
+ */
+constexpr Keycode KEYCODE_KP_SPACE = SDLK_KP_SPACE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_AT)
+ */
+constexpr Keycode KEYCODE_KP_AT = SDLK_KP_AT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_EXCLAM)
+ */
+constexpr Keycode KEYCODE_KP_EXCLAM = SDLK_KP_EXCLAM;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSTORE)
+ */
+constexpr Keycode KEYCODE_KP_MEMSTORE = SDLK_KP_MEMSTORE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMRECALL)
+ */
+constexpr Keycode KEYCODE_KP_MEMRECALL = SDLK_KP_MEMRECALL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMCLEAR)
+ */
+constexpr Keycode KEYCODE_KP_MEMCLEAR = SDLK_KP_MEMCLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMADD)
+ */
+constexpr Keycode KEYCODE_KP_MEMADD = SDLK_KP_MEMADD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMSUBTRACT)
+ */
+constexpr Keycode KEYCODE_KP_MEMSUBTRACT = SDLK_KP_MEMSUBTRACT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMMULTIPLY)
+ */
+constexpr Keycode KEYCODE_KP_MEMMULTIPLY = SDLK_KP_MEMMULTIPLY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_MEMDIVIDE)
+ */
+constexpr Keycode KEYCODE_KP_MEMDIVIDE = SDLK_KP_MEMDIVIDE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_PLUSMINUS)
+ */
+constexpr Keycode KEYCODE_KP_PLUSMINUS = SDLK_KP_PLUSMINUS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEAR)
+ */
+constexpr Keycode KEYCODE_KP_CLEAR = SDLK_KP_CLEAR;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_CLEARENTRY)
+ */
+constexpr Keycode KEYCODE_KP_CLEARENTRY = SDLK_KP_CLEARENTRY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_BINARY)
+ */
+constexpr Keycode KEYCODE_KP_BINARY = SDLK_KP_BINARY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_OCTAL)
+ */
+constexpr Keycode KEYCODE_KP_OCTAL = SDLK_KP_OCTAL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_DECIMAL)
+ */
+constexpr Keycode KEYCODE_KP_DECIMAL = SDLK_KP_DECIMAL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_KP_HEXADECIMAL)
+ */
+constexpr Keycode KEYCODE_KP_HEXADECIMAL = SDLK_KP_HEXADECIMAL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LCTRL)
+ */
+constexpr Keycode KEYCODE_LCTRL = SDLK_LCTRL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LSHIFT)
+ */
+constexpr Keycode KEYCODE_LSHIFT = SDLK_LSHIFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LALT)
+ */
+constexpr Keycode KEYCODE_LALT = SDLK_LALT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_LGUI)
+ */
+constexpr Keycode KEYCODE_LGUI = SDLK_LGUI;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RCTRL)
+ */
+constexpr Keycode KEYCODE_RCTRL = SDLK_RCTRL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RSHIFT)
+ */
+constexpr Keycode KEYCODE_RSHIFT = SDLK_RSHIFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RALT)
+ */
+constexpr Keycode KEYCODE_RALT = SDLK_RALT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_RGUI)
+ */
+constexpr Keycode KEYCODE_RGUI = SDLK_RGUI;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MODE)
+ */
+constexpr Keycode KEYCODE_MODE = SDLK_MODE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SLEEP)
+ */
+constexpr Keycode KEYCODE_SLEEP = SDLK_SLEEP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_WAKE)
+ */
+constexpr Keycode KEYCODE_WAKE = SDLK_WAKE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_INCREMENT)
+ */
+constexpr Keycode KEYCODE_CHANNEL_INCREMENT = SDLK_CHANNEL_INCREMENT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CHANNEL_DECREMENT)
+ */
+constexpr Keycode KEYCODE_CHANNEL_DECREMENT = SDLK_CHANNEL_DECREMENT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY)
+ */
+constexpr Keycode KEYCODE_MEDIA_PLAY = SDLK_MEDIA_PLAY;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PAUSE)
+ */
+constexpr Keycode KEYCODE_MEDIA_PAUSE = SDLK_MEDIA_PAUSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_RECORD)
+ */
+constexpr Keycode KEYCODE_MEDIA_RECORD = SDLK_MEDIA_RECORD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_FAST_FORWARD)
+ */
+constexpr Keycode KEYCODE_MEDIA_FAST_FORWARD = SDLK_MEDIA_FAST_FORWARD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_REWIND)
+ */
+constexpr Keycode KEYCODE_MEDIA_REWIND = SDLK_MEDIA_REWIND;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_NEXT_TRACK)
+ */
+constexpr Keycode KEYCODE_MEDIA_NEXT_TRACK = SDLK_MEDIA_NEXT_TRACK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PREVIOUS_TRACK)
+ */
+constexpr Keycode KEYCODE_MEDIA_PREVIOUS_TRACK = SDLK_MEDIA_PREVIOUS_TRACK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_STOP)
+ */
+constexpr Keycode KEYCODE_MEDIA_STOP = SDLK_MEDIA_STOP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_EJECT)
+ */
+constexpr Keycode KEYCODE_MEDIA_EJECT = SDLK_MEDIA_EJECT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_PLAY_PAUSE)
+ */
+constexpr Keycode KEYCODE_MEDIA_PLAY_PAUSE = SDLK_MEDIA_PLAY_PAUSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_MEDIA_SELECT)
+ */
+constexpr Keycode KEYCODE_MEDIA_SELECT = SDLK_MEDIA_SELECT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_NEW)
+ */
+constexpr Keycode KEYCODE_AC_NEW = SDLK_AC_NEW;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_OPEN)
+ */
+constexpr Keycode KEYCODE_AC_OPEN = SDLK_AC_OPEN;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_CLOSE)
+ */
+constexpr Keycode KEYCODE_AC_CLOSE = SDLK_AC_CLOSE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_EXIT)
+ */
+constexpr Keycode KEYCODE_AC_EXIT = SDLK_AC_EXIT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SAVE)
+ */
+constexpr Keycode KEYCODE_AC_SAVE = SDLK_AC_SAVE;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PRINT)
+ */
+constexpr Keycode KEYCODE_AC_PRINT = SDLK_AC_PRINT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_PROPERTIES)
+ */
+constexpr Keycode KEYCODE_AC_PROPERTIES = SDLK_AC_PROPERTIES;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_SEARCH)
+ */
+constexpr Keycode KEYCODE_AC_SEARCH = SDLK_AC_SEARCH;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_HOME)
+ */
+constexpr Keycode KEYCODE_AC_HOME = SDLK_AC_HOME;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BACK)
+ */
+constexpr Keycode KEYCODE_AC_BACK = SDLK_AC_BACK;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_FORWARD)
+ */
+constexpr Keycode KEYCODE_AC_FORWARD = SDLK_AC_FORWARD;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_STOP)
+ */
+constexpr Keycode KEYCODE_AC_STOP = SDLK_AC_STOP;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_REFRESH)
+ */
+constexpr Keycode KEYCODE_AC_REFRESH = SDLK_AC_REFRESH;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_AC_BOOKMARKS)
+ */
+constexpr Keycode KEYCODE_AC_BOOKMARKS = SDLK_AC_BOOKMARKS;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTLEFT)
+ */
+constexpr Keycode KEYCODE_SOFTLEFT = SDLK_SOFTLEFT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_SOFTRIGHT)
+ */
+constexpr Keycode KEYCODE_SOFTRIGHT = SDLK_SOFTRIGHT;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_CALL)
+ */
+constexpr Keycode KEYCODE_CALL = SDLK_CALL;
+
+/**
+ * SDL_SCANCODE_TO_KEYCODE(SCANCODE_ENDCALL)
+ */
+constexpr Keycode KEYCODE_ENDCALL = SDLK_ENDCALL;
+
+constexpr Keycode KEYCODE_LEFT_TAB = SDLK_LEFT_TAB; ///< Extended key Left Tab
+
+/**
+ * Extended key Level 5 Shift
+ */
+constexpr Keycode KEYCODE_LEVEL5_SHIFT = SDLK_LEVEL5_SHIFT;
+
+/**
+ * Extended key Multi-key Compose
+ */
+constexpr Keycode KEYCODE_MULTI_KEY_COMPOSE = SDLK_MULTI_KEY_COMPOSE;
+
+constexpr Keycode KEYCODE_LMETA = SDLK_LMETA; ///< Extended key Left Meta
+
+constexpr Keycode KEYCODE_RMETA = SDLK_RMETA; ///< Extended key Right Meta
+
+constexpr Keycode KEYCODE_LHYPER = SDLK_LHYPER; ///< Extended key Left Hyper
+
+constexpr Keycode KEYCODE_RHYPER = SDLK_RHYPER; ///< Extended key Right Hyper
+
+/// @}
+
+/**
  * @defgroup CategoryMisc Miscellaneous
  *
  * SDL API functions that don't fit elsewhere.
@@ -20031,61 +20131,82 @@ struct FRect;
  */
 struct Point : SDL_Point
 {
-  constexpr Point(const SDL_Point& point)
-    : SDL_Point(point)
-  {
-  }
-  constexpr Point()
-    : Point({0})
+  /**
+   * Wraps Point.
+   *
+   * @param p the value to be wrapped
+   */
+  constexpr Point(const SDL_Point& p = {})
+    : SDL_Point(p)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the value for x.
+   * @param y the value for y.
+   */
   constexpr Point(int x, int y)
     : SDL_Point{x, y}
   {
   }
 
   /**
-   * @brief Get X coordinate of the point
+   * Explicit conversion from FPoint
+   */
+  constexpr explicit Point(const SDL_FPoint& p)
+    : SDL_Point{int(p.x), int(p.y)}
+  {
+  }
+
+  // Auto comparison operator
+  constexpr auto operator<=>(const Point& other) const = default;
+
+  /**
+   * Check if valid.
    *
-   * @returns X coordinate of the point
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+
+  /**
+   * @brief Get x coordinate
+   *
+   * @returns x coordinate
    *
    */
   constexpr int GetX() const { return x; }
 
   /**
-   * @brief Set X coordinate of the point
+   * Set the x coordinate.
    *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @param newX the new x coordinate.
+   * @returns Reference to self.
    */
-  constexpr Point& SetX(int nx)
+  constexpr Point& SetX(int newX)
   {
-    x = nx;
+    x = newX;
     return *this;
   }
 
   /**
-   * @brief Get Y coordinate of the point
+   * @brief Get y coordinate
    *
-   * @returns Y coordinate of the point
+   * @returns y coordinate
    *
    */
   constexpr int GetY() const { return y; }
 
   /**
-   * @brief Set Y coordinate of the point
+   * Set the y.
    *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @param newY the new y value.
+   * @returns Reference to self.
    */
-  constexpr Point& SetY(int ny)
+  constexpr Point& SetY(int newY)
   {
-    y = ny;
+    y = newY;
     return *this;
   }
 
@@ -20396,9 +20517,6 @@ struct Point : SDL_Point
    */
   constexpr Point& Wrap(const Rect& rect);
 
-  // Auto comparison operator
-  constexpr auto operator<=>(const Point&) const = default;
-
   /**
    * @brief Converts to FPoint
    *
@@ -20416,61 +20534,71 @@ struct Point : SDL_Point
  */
 struct FPoint : SDL_FPoint
 {
-  constexpr FPoint(const SDL_FPoint& point)
-    : SDL_FPoint(point)
-  {
-  }
-  constexpr FPoint()
-    : FPoint({0})
+  /**
+   * Wraps FPoint.
+   *
+   * @param p the value to be wrapped
+   */
+  constexpr FPoint(const SDL_FPoint& p = {})
+    : SDL_FPoint(p)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the value for x.
+   * @param y the value for y.
+   */
   constexpr FPoint(float x, float y)
     : SDL_FPoint{x, y}
   {
   }
 
-  /**
-   * @brief Get X coordinate of the point
-   *
-   * @returns X coordinate of the point
-   *
-   */
-  constexpr int GetX() const { return x; }
+  constexpr auto operator<=>(const FPoint& other) const = default;
 
   /**
-   * @brief Set X coordinate of the point
+   * Check if valid.
    *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @returns True if valid state, false otherwise.
    */
-  constexpr FPoint& SetX(int nx)
+  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+
+  /**
+   * Get the x coordinate.
+   *
+   * @returns current x value.
+   */
+  constexpr float GetX() const { return x; }
+
+  /**
+   * Set the x coordinate.
+   *
+   * @param newX the new x coordinate.
+   * @returns Reference to self.
+   */
+  constexpr FPoint& SetX(float newX)
   {
-    x = nx;
+    x = newX;
     return *this;
   }
 
   /**
-   * @brief Get Y coordinate of the point
+   * Get the y coordinate.
    *
-   * @returns Y coordinate of the point
-   *
+   * @returns current y coordinate.
    */
-  constexpr int GetY() const { return y; }
+  constexpr float GetY() const { return y; }
 
   /**
-   * @brief Set Y coordinate of the point
+   * Set the y coordinate.
    *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @param newY the new y coordinate.
+   * @returns Reference to self.
    */
-  constexpr FPoint& SetY(int ny)
+  constexpr FPoint& SetY(float newY)
   {
-    y = ny;
+    y = newY;
     return *this;
   }
 
@@ -20719,9 +20847,6 @@ struct FPoint : SDL_FPoint
    *
    */
   constexpr FPoint& Wrap(const FRect& rect);
-
-  // Auto comparison operator
-  constexpr auto operator<=>(const FPoint&) const = default;
 };
 
 /**
@@ -20733,19 +20858,128 @@ struct FPoint : SDL_FPoint
  */
 struct Rect : SDL_Rect
 {
-  constexpr Rect(const SDL_Rect& rect = {0})
-    : SDL_Rect(rect)
+  /**
+   * Wraps Rect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr Rect(const SDL_Rect& r = {})
+    : SDL_Rect(r)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the left x.
+   * @param y the top y.
+   * @param w the width.
+   * @param h the height.
+   */
   constexpr Rect(int x, int y, int w, int h)
     : SDL_Rect({x, y, w, h})
   {
   }
 
+  /**
+   * Construct from offset and size
+   *
+   * @param corner the top-left corner
+   * @param size the size
+   */
   constexpr Rect(const SDL_Point& corner, const SDL_Point& size)
     : Rect{corner.x, corner.y, size.x, size.y}
   {
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const Rect& other) const { return Equal(other); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * @brief Get left x coordinate.
+   *
+   * @returns coordinate of the left x
+   *
+   */
+  constexpr int GetX() const { return x; }
+
+  /**
+   * Set the left x coordinate.
+   *
+   * @param newX the new left x.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetX(int newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * @brief Get top y coordinate.
+   *
+   * @returns coordinate of the top y.
+   *
+   */
+  constexpr int GetY() const { return y; }
+
+  /**
+   * Set the top y coordinate.
+   *
+   * @param newY the new top y.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetY(int newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr int GetW() const { return w; }
+
+  /**
+   * Set the width of the rect.
+   *
+   * @param newW the new width.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetW(int newW)
+  {
+    w = newW;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr int GetH() const { return h; }
+
+  /**
+   * Set the height of the rect.
+   *
+   * @param newH the new height.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetH(int newH)
+  {
+    h = newH;
+    return *this;
   }
 
   /**
@@ -20826,94 +21060,6 @@ struct Rect : SDL_Rect
   static constexpr Rect FromCorners(const Point& p1, const Point& p2)
   {
     return Rect(p1, p2 - p1 + Point(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect corner
-   *
-   * @returns X coordinate of the rect corner
-   *
-   */
-  constexpr int GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the rect corner
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetX(int nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect corner
-   *
-   * @returns Y coordinate of the rect corner
-   *
-   */
-  constexpr int GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the rect corner
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetY(int ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr int GetW() const { return w; }
-
-  /**
-   * @brief Set width of the rect
-   *
-   * @param[in] nw New width of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetW(int nw)
-  {
-    w = nw;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr int GetH() const { return h; }
-
-  /**
-   * @brief Set height of the rect
-   *
-   * @param[in] nh New height of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetH(int nh)
-  {
-    h = nh;
-    return *this;
   }
 
   /**
@@ -21095,11 +21241,6 @@ struct Rect : SDL_Rect
   constexpr bool Empty() const { return SDL_RectEmpty(this); }
 
   /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
    * Determine whether two rectangles are equal.
    *
    * Rectangles are considered equal if both are not NULL and each of their x,
@@ -21123,21 +21264,16 @@ struct Rect : SDL_Rect
   }
 
   /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const Rect& other) const { return Equal(other); }
-
-  /**
    * @brief Check whether the rect contains given point
    *
-   * @param point Point to check
+   * @param p Point to check
    *
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const Point& point) const
+  constexpr bool Contains(const Point& p) const
   {
-    return SDL_PointInRect(&point, this);
+    return SDL_PointInRect(&p, this);
   }
 
   /**
@@ -21334,19 +21470,122 @@ struct Rect : SDL_Rect
  */
 struct FRect : SDL_FRect
 {
-  constexpr FRect(const SDL_FRect& rect = {0})
-    : SDL_FRect(rect)
+  /**
+   * Wraps FRect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr FRect(const SDL_FRect& r = {})
+    : SDL_FRect{r}
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the left x.
+   * @param y the top y.
+   * @param w the width.
+   * @param h the height.
+   */
   constexpr FRect(float x, float y, float w, float h)
-    : SDL_FRect({x, y, w, h})
+    : SDL_FRect{x, y, w, h}
   {
   }
 
   constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const FRect& other) const { return Equal(other); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * @brief Get left x coordinate.
+   *
+   * @returns coordinate of the left x
+   *
+   */
+  constexpr float GetX() const { return x; }
+
+  /**
+   * Set the left x coordinate.
+   *
+   * @param newX the new left x.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetX(float newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * @brief Get top y coordinate.
+   *
+   * @returns coordinate of the top y.
+   *
+   */
+  constexpr float GetY() const { return y; }
+
+  /**
+   * Set the top y coordinate.
+   *
+   * @param newY the new top y.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetY(float newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr float GetW() const { return w; }
+
+  /**
+   * Set the width of the rect.
+   *
+   * @param newW the new width.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetW(float newW)
+  {
+    w = newW;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr float GetH() const { return h; }
+
+  /**
+   * Set the height of the rect.
+   *
+   * @param newH the new height.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetH(float newH)
+  {
+    h = newH;
+    return *this;
   }
 
   /**
@@ -21427,94 +21666,6 @@ struct FRect : SDL_FRect
   static constexpr FRect FromCorners(const FPoint& p1, const FPoint& p2)
   {
     return FRect(p1, p2 - p1 + FPoint(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect corner
-   *
-   * @returns X coordinate of the rect corner
-   *
-   */
-  constexpr float GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the rect corner
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetX(float nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect corner
-   *
-   * @returns Y coordinate of the rect corner
-   *
-   */
-  constexpr float GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the rect corner
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetY(float ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr float GetW() const { return w; }
-
-  /**
-   * @brief Set width of the rect
-   *
-   * @param[in] nw New width of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetW(float nw)
-  {
-    w = nw;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr float GetH() const { return h; }
-
-  /**
-   * @brief Set height of the rect
-   *
-   * @param[in] nh New height of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetH(float nh)
-  {
-    h = nh;
-    return *this;
   }
 
   /**
@@ -21680,11 +21831,6 @@ struct FRect : SDL_FRect
   constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
 
   /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
    * Determine whether two floating point rectangles are equal, within some
    * given epsilon.
    *
@@ -21737,21 +21883,16 @@ struct FRect : SDL_FRect
   }
 
   /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const FRect& other) const { return Equal(other); }
-
-  /**
    * @brief Check whether the rect contains given point
    *
-   * @param point Point to check
+   * @param p Point to check
    *
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FPoint& point) const
+  constexpr bool Contains(const FPoint& p) const
   {
-    return SDL_PointInRectFloat(&point, this);
+    return SDL_PointInRectFloat(&p, this);
   }
 
   /**
@@ -26561,26 +26702,35 @@ using GLContext = GLContextBase<ObjectUnique<SDL_GLContextState>>;
  */
 class Display
 {
-  SDL_DisplayID displayID;
+  SDL_DisplayID m_displayID;
 
 public:
-  /// Constructor
-  constexpr Display(SDL_DisplayID displayID = 0)
-    : displayID(displayID)
+  /**
+   * Wraps Display.
+   *
+   * @param displayID the value to be wrapped
+   */
+  constexpr Display(SDL_DisplayID displayID = {})
+    : m_displayID(displayID)
   {
   }
 
   /// True if a valid display
-  constexpr operator bool() const { return displayID != 0; }
+  constexpr bool operator==(const Display& other) const = default;
 
-  /// Converts to SDL_DisplayID
-  constexpr operator SDL_DisplayID() const { return displayID; }
+  /**
+   * Unwraps to the underlying Display.
+   *
+   * @returns the underlying Display.
+   */
+  constexpr operator SDL_DisplayID() const { return m_displayID; }
 
-  /// Comparison
-  constexpr bool operator==(Display other) const
-  {
-    return displayID == other.displayID;
-  }
+  /**
+   * Check if valid.
+   *
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return m_displayID != 0; }
 
   /**
    * Get a list of currently connected displays.
@@ -26641,7 +26791,7 @@ public:
    */
   PropertiesRef GetProperties() const
   {
-    return PropertiesRef{SDL_GetDisplayProperties(displayID)};
+    return PropertiesRef{SDL_GetDisplayProperties(m_displayID)};
   }
 
   /**
@@ -26652,7 +26802,7 @@ public:
    *
    * @threadsafety This function should only be called on the main thread.
    */
-  const char* GetName() const { return SDL_GetDisplayName(displayID); }
+  const char* GetName() const { return SDL_GetDisplayName(m_displayID); }
 
   /**
    * @brief Get the desktop area represented by a display.
@@ -26668,7 +26818,7 @@ public:
   std::optional<Rect> GetBounds() const
   {
     Rect bounds;
-    if (SDL_GetDisplayBounds(displayID, &bounds)) return bounds;
+    if (SDL_GetDisplayBounds(m_displayID, &bounds)) return bounds;
     return std::nullopt;
   }
 
@@ -26692,7 +26842,7 @@ public:
   std::optional<Rect> GetUsableBounds() const
   {
     Rect bounds;
-    if (SDL_GetDisplayUsableBounds(displayID, &bounds)) return bounds;
+    if (SDL_GetDisplayUsableBounds(m_displayID, &bounds)) return bounds;
     return {};
   }
 
@@ -26709,7 +26859,7 @@ public:
    */
   DisplayOrientation GetNaturalOrientation() const
   {
-    return SDL_GetNaturalDisplayOrientation(displayID);
+    return SDL_GetNaturalDisplayOrientation(m_displayID);
   }
 
   /**
@@ -26725,7 +26875,7 @@ public:
    */
   DisplayOrientation GetCurrentOrientation() const
   {
-    return SDL_GetCurrentDisplayOrientation(displayID);
+    return SDL_GetCurrentDisplayOrientation(m_displayID);
   }
 
   /**
@@ -26742,7 +26892,7 @@ public:
    */
   float GetContentScale() const
   {
-    return SDL_GetDisplayContentScale(displayID);
+    return SDL_GetDisplayContentScale(m_displayID);
   }
 
   /**
@@ -26772,7 +26922,7 @@ public:
   OwnArray<DisplayMode*> GetFullscreenModes() const
   {
     int count = 0;
-    auto data = SDL_GetFullscreenDisplayModes(displayID, &count);
+    auto data = SDL_GetFullscreenDisplayModes(m_displayID, &count);
     return OwnArray<DisplayMode*>{data, size_t(count)};
   }
 
@@ -26810,7 +26960,7 @@ public:
     bool include_high_density_modes) const
   {
     if (SDL_DisplayMode closest;
-        SDL_GetClosestFullscreenDisplayMode(displayID,
+        SDL_GetClosestFullscreenDisplayMode(m_displayID,
                                             w,
                                             h,
                                             refresh_rate,
@@ -26840,7 +26990,7 @@ public:
    */
   const DisplayMode* GetDesktopMode() const
   {
-    return SDL_GetDesktopDisplayMode(displayID);
+    return SDL_GetDesktopDisplayMode(m_displayID);
   }
 
   /**
@@ -26862,7 +27012,7 @@ public:
    */
   const DisplayMode* GetCurrentMode() const
   {
-    return SDL_GetCurrentDisplayMode(displayID);
+    return SDL_GetCurrentDisplayMode(m_displayID);
   }
 
   /**
@@ -28913,6 +29063,20 @@ struct WindowBase : T
   {
     return SDL_FlashWindow(T::get(), operation);
   }
+
+  bool StartTextInput();
+
+  bool StartTextInput(PropertiesRef props);
+
+  bool IsTextInputActive() const;
+
+  bool StopTextInput();
+
+  bool ClearComposition();
+
+  bool SetTextInputArea(const SDL_Rect& rect, int cursor);
+
+  bool GetTextInputArea(SDL_Rect* rect, int* cursor);
 
   /**
    * Destroy a window.
@@ -32842,6 +33006,683 @@ inline Uint32 RegisterEvents(int numevents)
 inline WindowRef GetWindowFromEvent(const Event* event)
 {
   return SDL_GetWindowFromEvent(event);
+}
+
+/// @}
+
+/**
+ *
+ * @defgroup CategoryKeyboard Keyboard Support
+ *
+ * SDL keyboard management.
+ *
+ * Please refer to the Best Keyboard Practices document for details on how
+ * best to accept keyboard input in various types of programs:
+ *
+ * https://wiki.libsdl.org/SDL3/BestKeyboardPractices
+ *
+ * @{
+ */
+
+/**
+ * This is a unique ID for a keyboard for the time it is connected to the
+ * system, and is never reused for the lifetime of the application.
+ *
+ * If the keyboard is disconnected and reconnected, it will get a new ID.
+ *
+ * The value 0 is an invalid ID.
+ *
+ * @since This datatype is available since SDL 3.2.0.
+ */
+using KeyboardID = SDL_KeyboardID;
+
+/**
+ * Return whether a keyboard is currently connected.
+ *
+ * @returns true if a keyboard is connected, false otherwise.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyboards
+ */
+inline bool HasKeyboard() { return SDL_HasKeyboard(); }
+
+/**
+ * Get a list of currently connected keyboards.
+ *
+ * Note that this will include any device or virtual driver that includes
+ * keyboard functionality, including some mice, KVM switches, motherboard
+ * power buttons, etc. You should wait for input from a device before you
+ * consider it actively in use.
+ *
+ * @param count a pointer filled in with the number of keyboards returned, may
+ *              be nullptr.
+ * @returns a 0 terminated array of keyboards instance IDs or nullptr on
+ * failure; call GetError() for more information. This should be freed with
+ * free() when it is no longer needed.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyboardNameForID
+ * @sa HasKeyboard
+ */
+inline KeyboardID* GetKeyboards(int* count) { return SDL_GetKeyboards(count); }
+
+/**
+ * Get the name of a keyboard.
+ *
+ * This function returns "" if the keyboard doesn't have a name.
+ *
+ * @param instance_id the keyboard instance ID.
+ * @returns the name of the selected keyboard or nullptr on failure; call
+ *          GetError() for more information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyboards
+ */
+inline const char* GetKeyboardNameForID(KeyboardID instance_id)
+{
+  return SDL_GetKeyboardNameForID(instance_id);
+}
+
+/**
+ * Query the window which currently has keyboard focus.
+ *
+ * @returns the window with keyboard focus.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ */
+inline WindowRef GetKeyboardFocus() { return SDL_GetKeyboardFocus(); }
+
+/**
+ * Get a snapshot of the current state of the keyboard.
+ *
+ * The pointer returned is a pointer to an internal SDL array. It will be
+ * valid for the whole lifetime of the application and should not be freed by
+ * the caller.
+ *
+ * A array element with a value of true means that the key is pressed and a
+ * value of false means that it is not. Indexes into this array are obtained
+ * by using Scancode values.
+ *
+ * Use PumpEvents() to update the state array.
+ *
+ * This function gives you the current state after all events have been
+ * processed, so if a key or button has been pressed and released before you
+ * process events, then the pressed state will never show up in the
+ * GetKeyboardState() calls.
+ *
+ * Note: This function doesn't take into account whether shift has been
+ * pressed or not.
+ *
+ * @param numkeys if non-nullptr, receives the length of the returned array.
+ * @returns a pointer to an array of key states.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa PumpEvents
+ * @sa ResetKeyboard
+ */
+inline const bool* GetKeyboardState(int* numkeys = nullptr)
+{
+  return SDL_GetKeyboardState(numkeys);
+}
+
+/**
+ * Clear the state of the keyboard.
+ *
+ * This function will generate key up events for all pressed keys.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyboardState
+ */
+inline void ResetKeyboard() { SDL_ResetKeyboard(); }
+
+/**
+ * Get the current key modifier state for the keyboard.
+ *
+ * @returns an OR'd combination of the modifier keys for the keyboard. See
+ *          Keymod for details.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetKeyboardState
+ * @sa SetModState
+ */
+inline Keymod GetModState() { return SDL_GetModState(); }
+
+/**
+ * Set the current key modifier state for the keyboard.
+ *
+ * The inverse of GetModState(), SetModState() allows you to impose
+ * modifier key states on your application. Simply pass your desired modifier
+ * states into `modstate`. This value may be a bitwise, OR'd combination of
+ * Keymod values.
+ *
+ * This does not change the keyboard state, only the key modifier flags that
+ * SDL reports.
+ *
+ * @param modstate the desired Keymod for the keyboard.
+ *
+ * @threadsafety It is safe to call this function from any thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa GetModState
+ */
+inline void SetModState(Keymod modstate) { SDL_SetModState(modstate); }
+
+/**
+ * Get the key code corresponding to the given scancode according to the
+ * current keyboard layout.
+ *
+ * If you want to get the keycode as it would be delivered in key events,
+ * including options specified in SDL_HINT_KEYCODE_OPTIONS, then you should
+ * pass `key_event` as true. Otherwise this function simply translates the
+ * scancode based on the given modifier state.
+ *
+ * @param scancode the desired Scancode to query.
+ * @param modstate the modifier state to use when translating the scancode to
+ *                 a keycode.
+ * @param key_event true if the keycode will be used in key events.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Keycode::GetName
+ * @sa Keycode::GetScancode
+ */
+inline Keycode::Keycode(Scancode scancode, SDL_Keymod modstate, bool key_event)
+  : Keycode(SDL_GetKeyFromScancode(scancode, modstate, key_event))
+{
+}
+
+/**
+ * Get a key code from a human-readable name.
+ *
+ * @param name the human-readable key name.
+ * @post a valid key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call
+ *          GetError() for more information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Keycode::Keycode
+ * @sa Keycode::GetName
+ * @sa Scancode::Scancode
+ */
+inline Keycode::Keycode(StringParam name)
+  : Keycode(SDL_GetKeyFromName(name))
+{
+}
+/**
+ * Get the scancode corresponding to the given key code according to the
+ * current keyboard layout.
+ *
+ * Note that there may be multiple scancode+modifier states that can generate
+ * this keycode, this will just return the first one found.
+ *
+ * @param modstate a pointer to the modifier state that would be used when the
+ *                 scancode generates this key, may be nullptr.
+ * @returns the Scancode that corresponds to the given Keycode.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Keycode::Keycode
+ * @sa Scancode::GetName
+ */
+inline Scancode Keycode::GetScancode(Keymod* modstate) const
+{
+  return SDL_GetScancodeFromKey(m_keycode, modstate);
+}
+
+/**
+ * Set a human-readable name for a scancode.
+ *
+ * @param name the name to use for the scancode, encoded as UTF-8. The string
+ *             is not copied, so the pointer given to this function must stay
+ *             valid while SDL is being used.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Scancode::GetName
+ */
+inline bool Scancode::SetName(StringParam name)
+{
+  return SDL_SetScancodeName(m_scancode, name);
+}
+
+/**
+ * Get a human-readable name for a scancode.
+ *
+ * **Warning**: The returned name is by design not stable across platforms,
+ * e.g. the name for `SCANCODE_LGUI` is "Left GUI" under Linux but "Left
+ * Windows" under Microsoft Windows, and some scancodes like
+ * `SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even
+ * scancodes that share names, e.g. `SCANCODE_RETURN` and
+ * `SCANCODE_RETURN2` (both called "Return"). This function is therefore
+ * unsuitable for creating a stable cross-platform two-way mapping between
+ * strings and scancodes.
+ *
+ * @returns a pointer to the name for the scancode. If the scancode doesn't
+ *          have a name this function returns an empty string ("").
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Keycode::GetScancode
+ * @sa GetScancodeFromName
+ * @sa Scancode::SetName
+ */
+inline const char* Scancode::GetName() const
+{
+  return SDL_GetScancodeName(m_scancode);
+}
+
+/**
+ * Get a scancode from a human-readable name.
+ *
+ * @param name the human-readable scancode name.
+ * @post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't
+ *          recognized; call GetError() for more information.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Keycode::Keycode
+ * @sa Keycode::GetScancode
+ * @sa Scancode::GetName
+ */
+inline Scancode::Scancode(StringParam name)
+  : Scancode(SDL_GetScancodeFromName(name))
+{
+}
+
+/**
+ * Get a human-readable name for a key.
+ *
+ * If the key doesn't have a name, this function returns an empty string ("").
+ *
+ * Letters will be presented in their uppercase form, if applicable.
+ *
+ * @returns a UTF-8 encoded string of the key name.
+ *
+ * @threadsafety This function is not thread safe.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa Keycode::Keycode
+ * @sa Keycode::Keycode
+ * @sa Keycode::GetScancode
+ */
+inline const char* Keycode::GetName() const
+{
+  return SDL_GetKeyName(m_keycode);
+}
+
+/**
+ * Start accepting Unicode text input events in a window.
+ *
+ * This function will enable text input (EVENT_TEXT_INPUT and
+ * EVENT_TEXT_EDITING events) in the specified window. Please use this
+ * function paired with WindowBase<T>::StopTextInput().
+ *
+ * Text input events are not received by default.
+ *
+ * On some platforms using this function shows the screen keyboard and/or
+ * activates an IME, which can prevent some key press events from being passed
+ * through.
+ *
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase<T>::SetTextInputArea
+ * @sa WindowBase<T>::StartTextInput
+ * @sa WindowBase<T>::StopTextInput
+ * @sa WindowBase<T>::IsTextInputActive
+ */
+template<ObjectBox<SDL_Window*> T>
+inline bool WindowBase<T>::StartTextInput()
+{
+  return SDL_StartTextInput(T::get());
+}
+
+/**
+ * Start accepting Unicode text input events in a window, with properties
+ * describing the input.
+ *
+ * This function will enable text input (EVENT_TEXT_INPUT and
+ * EVENT_TEXT_EDITING events) in the specified window. Please use this
+ * function paired with WindowBase<T>::StopTextInput().
+ *
+ * Text input events are not received by default.
+ *
+ * On some platforms using this function shows the screen keyboard and/or
+ * activates an IME, which can prevent some key press events from being passed
+ * through.
+ *
+ * These are the supported properties:
+ *
+ * - `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that
+ *   describes text being input, defaults to TEXTINPUT_TYPE_TEXT.
+ * - `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value
+ *   that describes how text should be capitalized, defaults to
+ *   CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for
+ *   TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail
+ *   addresses, usernames, and passwords.
+ * - `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion
+ *   and auto correction, defaults to true.
+ * - `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text
+ *   are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is
+ *   "0" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME
+ *   is "1".
+ *
+ * On Android you can directly specify the input type:
+ *
+ * - `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to
+ *   use, overriding other properties. This is documented at
+ *   https://developer.android.com/reference/android/text/InputType
+ *
+ * @param props the properties to use.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase<T>::SetTextInputArea
+ * @sa WindowBase<T>::StartTextInput
+ * @sa WindowBase<T>::StopTextInput
+ * @sa WindowBase<T>::IsTextInputActive
+ */
+template<ObjectBox<SDL_Window*> T>
+inline bool WindowBase<T>::StartTextInput(PropertiesRef props)
+{
+  return SDL_StartTextInputWithProperties(T::get(), props);
+}
+
+/**
+ * Text input type.
+ *
+ * These are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every
+ * value is valid on every platform, but where a value isn't supported, a
+ * reasonable fallback will be used.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa StartTextInputWithProperties
+ */
+using TextInputType = SDL_TextInputType;
+
+/**
+ * The input is text.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_TEXT = SDL_TEXTINPUT_TYPE_TEXT;
+
+/**
+ * The input is a person's name.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_TEXT_NAME = SDL_TEXTINPUT_TYPE_TEXT_NAME;
+
+/**
+ * The input is an e-mail address.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_TEXT_EMAIL =
+  SDL_TEXTINPUT_TYPE_TEXT_EMAIL;
+
+/**
+ * The input is a username.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_TEXT_USERNAME =
+  SDL_TEXTINPUT_TYPE_TEXT_USERNAME;
+
+/**
+ * The input is a secure password that is hidden.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN =
+  SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_HIDDEN;
+
+/**
+ * The input is a secure password that is visible.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE =
+  SDL_TEXTINPUT_TYPE_TEXT_PASSWORD_VISIBLE;
+
+/**
+ * The input is a number.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_NUMBER = SDL_TEXTINPUT_TYPE_NUMBER;
+
+/**
+ * The input is a secure PIN that is hidden.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN =
+  SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_HIDDEN;
+
+/**
+ * The input is a secure PIN that is visible.
+ */
+constexpr TextInputType TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE =
+  SDL_TEXTINPUT_TYPE_NUMBER_PASSWORD_VISIBLE;
+
+/**
+ * Auto capitalization type.
+ *
+ * These are the valid values for SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER.
+ * Not every value is valid on every platform, but where a value isn't
+ * supported, a reasonable fallback will be used.
+ *
+ * @since This enum is available since SDL 3.2.0.
+ *
+ * @sa StartTextInputWithProperties
+ */
+using Capitalization = SDL_Capitalization;
+
+/**
+ * No auto-capitalization will be done.
+ */
+constexpr Capitalization CAPITALIZE_NONE = SDL_CAPITALIZE_NONE;
+
+/**
+ * The first letter of sentences will be capitalized.
+ */
+constexpr Capitalization CAPITALIZE_SENTENCES = SDL_CAPITALIZE_SENTENCES;
+
+/**
+ * The first letter of words will be capitalized.
+ */
+constexpr Capitalization CAPITALIZE_WORDS = SDL_CAPITALIZE_WORDS;
+
+/**
+ * All letters will be capitalized.
+ */
+constexpr Capitalization CAPITALIZE_LETTERS = SDL_CAPITALIZE_LETTERS;
+
+namespace prop::TextInput {
+
+constexpr auto TYPE_NUMBER = SDL_PROP_TEXTINPUT_TYPE_NUMBER;
+
+constexpr auto CAPITALIZATION_NUMBER = SDL_PROP_TEXTINPUT_CAPITALIZATION_NUMBER;
+
+constexpr auto AUTOCORRECT_BOOLEAN = SDL_PROP_TEXTINPUT_AUTOCORRECT_BOOLEAN;
+
+constexpr auto MULTILINE_BOOLEAN = SDL_PROP_TEXTINPUT_MULTILINE_BOOLEAN;
+
+constexpr auto ANDROID_INPUTTYPE_NUMBER =
+  SDL_PROP_TEXTINPUT_ANDROID_INPUTTYPE_NUMBER;
+
+} // namespace prop::TextInput
+
+/**
+ * Check whether or not Unicode text input events are enabled for a window.
+ *
+ * @returns true if text input events are enabled else false.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase<T>::StartTextInput
+ */
+template<ObjectBox<SDL_Window*> T>
+inline bool WindowBase<T>::IsTextInputActive() const
+{
+  return SDL_TextInputActive(T::get());
+}
+
+/**
+ * Stop receiving any text input events in a window.
+ *
+ * If WindowBase<T>::StartTextInput() showed the screen keyboard, this function
+ * will hide it.
+ *
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase<T>::StartTextInput
+ */
+template<ObjectBox<SDL_Window*> T>
+inline bool WindowBase<T>::StopTextInput()
+{
+  return SDL_StopTextInput(T::get());
+}
+
+/**
+ * Dismiss the composition window/IME without disabling the subsystem.
+ *
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase<T>::StartTextInput
+ * @sa WindowBase<T>::StopTextInput
+ */
+template<ObjectBox<SDL_Window*> T>
+inline bool WindowBase<T>::ClearComposition()
+{
+  return SDL_ClearComposition(T::get());
+}
+
+/**
+ * Set the area used to type Unicode text input.
+ *
+ * Native input methods may place a window with word suggestions near the
+ * cursor, without covering the text being entered.
+ *
+ * @param rect the Rect representing the text input area, in window
+ *             coordinates, or nullptr to clear it.
+ * @param cursor the offset of the current cursor location relative to
+ *               `rect->x`, in window coordinates.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase<T>::GetTextInputArea
+ * @sa WindowBase<T>::StartTextInput
+ */
+template<ObjectBox<SDL_Window*> T>
+inline bool WindowBase<T>::SetTextInputArea(const SDL_Rect& rect, int cursor)
+{
+  return SDL_SetTextInputArea(T::get(), rect, cursor);
+}
+
+/**
+ * Get the area used to type Unicode text input.
+ *
+ * This returns the values previously set by WindowBase<T>::SetTextInputArea().
+ *
+ * @param rect a pointer to an Rect filled in with the text input area,
+ *             may be nullptr.
+ * @param cursor a pointer to the offset of the current cursor location
+ *               relative to `rect->x`, may be nullptr.
+ * @returns true on success or false on failure; call GetError() for more
+ *          information.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase<T>::SetTextInputArea
+ */
+template<ObjectBox<SDL_Window*> T>
+inline bool WindowBase<T>::GetTextInputArea(SDL_Rect* rect, int* cursor)
+{
+  return SDL_GetTextInputArea(T::get(), rect, cursor);
+}
+
+/**
+ * Check whether the platform has screen keyboard support.
+ *
+ * @returns true if the platform has some screen keyboard support or false if
+ *          not.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa WindowBase.StartTextInput
+ * @sa ScreenKeyboardShown
+ */
+inline bool HasScreenKeyboardSupport()
+{
+  return SDL_HasScreenKeyboardSupport();
+}
+
+/**
+ * Check whether the screen keyboard is shown for given window.
+ *
+ * @returns true if screen keyboard is shown or false if not.
+ *
+ * @threadsafety This function should only be called on the main thread.
+ *
+ * @since This function is available since SDL 3.2.0.
+ *
+ * @sa HasScreenKeyboardSupport
+ */
+inline bool ScreenKeyboardShown(WindowRef window)
+{
+  return SDL_ScreenKeyboardShown(window.get());
 }
 
 /// @}

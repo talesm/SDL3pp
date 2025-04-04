@@ -25,7 +25,7 @@ var searchData=
   ['direction_5frtl_22',['DIRECTION_RTL',['../group__CategorySDLTTF.html#ga9758cea0c24e00ad27203ddbb2f4844e',1,'SDL']]],
   ['direction_5fttb_23',['DIRECTION_TTB',['../group__CategorySDLTTF.html#gad9a6e10ca6f71139f38438eb72aa8e63',1,'SDL']]],
   ['disablescreensaver_24',['DisableScreenSaver',['../group__CategoryVideo.html#ga13f5c7a04ece8b15a167476f84cd8975',1,'SDL']]],
-  ['display_25',['display',['../classSDL_1_1Display.html',1,'SDL::Display'],['../classSDL_1_1Display.html#a4a37345ff543bff5ac3553e53690cf52',1,'SDL::Display::Display()']]],
+  ['display_25',['display',['../classSDL_1_1Display.html',1,'SDL::Display'],['../classSDL_1_1Display.html#af1e8f5ef744bed565850c79c0b97b67e',1,'SDL::Display::Display()']]],
   ['display_20and_20window_20management_26',['Display and Window Management',['../group__CategoryVideo.html',1,'']]],
   ['displayevent_27',['DisplayEvent',['../group__CategoryEvents.html#ga83757bf73d2a487d0bdf2f08a784d581',1,'SDL']]],
   ['displaymode_28',['DisplayMode',['../group__CategoryVideo.html#ga65322ad2ac8ca3b685a8696dc5dc713a',1,'SDL']]],

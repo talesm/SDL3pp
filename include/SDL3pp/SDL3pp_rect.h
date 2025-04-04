@@ -39,61 +39,82 @@ struct FRect;
  */
 struct Point : SDL_Point
 {
-  constexpr Point(const SDL_Point& point)
-    : SDL_Point(point)
-  {
-  }
-  constexpr Point()
-    : Point({0})
+  /**
+   * Wraps Point.
+   *
+   * @param p the value to be wrapped
+   */
+  constexpr Point(const SDL_Point& p = {})
+    : SDL_Point(p)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the value for x.
+   * @param y the value for y.
+   */
   constexpr Point(int x, int y)
     : SDL_Point{x, y}
   {
   }
 
   /**
-   * @brief Get X coordinate of the point
+   * Explicit conversion from FPoint
+   */
+  constexpr explicit Point(const SDL_FPoint& p)
+    : SDL_Point{int(p.x), int(p.y)}
+  {
+  }
+
+  // Auto comparison operator
+  constexpr auto operator<=>(const Point& other) const = default;
+
+  /**
+   * Check if valid.
    *
-   * @returns X coordinate of the point
+   * @returns True if valid state, false otherwise.
+   */
+  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+
+  /**
+   * @brief Get x coordinate
+   *
+   * @returns x coordinate
    *
    */
   constexpr int GetX() const { return x; }
 
   /**
-   * @brief Set X coordinate of the point
+   * Set the x coordinate.
    *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @param newX the new x coordinate.
+   * @returns Reference to self.
    */
-  constexpr Point& SetX(int nx)
+  constexpr Point& SetX(int newX)
   {
-    x = nx;
+    x = newX;
     return *this;
   }
 
   /**
-   * @brief Get Y coordinate of the point
+   * @brief Get y coordinate
    *
-   * @returns Y coordinate of the point
+   * @returns y coordinate
    *
    */
   constexpr int GetY() const { return y; }
 
   /**
-   * @brief Set Y coordinate of the point
+   * Set the y.
    *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @param newY the new y value.
+   * @returns Reference to self.
    */
-  constexpr Point& SetY(int ny)
+  constexpr Point& SetY(int newY)
   {
-    y = ny;
+    y = newY;
     return *this;
   }
 
@@ -404,9 +425,6 @@ struct Point : SDL_Point
    */
   constexpr Point& Wrap(const Rect& rect);
 
-  // Auto comparison operator
-  constexpr auto operator<=>(const Point&) const = default;
-
   /**
    * @brief Converts to FPoint
    *
@@ -424,61 +442,71 @@ struct Point : SDL_Point
  */
 struct FPoint : SDL_FPoint
 {
-  constexpr FPoint(const SDL_FPoint& point)
-    : SDL_FPoint(point)
-  {
-  }
-  constexpr FPoint()
-    : FPoint({0})
+  /**
+   * Wraps FPoint.
+   *
+   * @param p the value to be wrapped
+   */
+  constexpr FPoint(const SDL_FPoint& p = {})
+    : SDL_FPoint(p)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the value for x.
+   * @param y the value for y.
+   */
   constexpr FPoint(float x, float y)
     : SDL_FPoint{x, y}
   {
   }
 
-  /**
-   * @brief Get X coordinate of the point
-   *
-   * @returns X coordinate of the point
-   *
-   */
-  constexpr int GetX() const { return x; }
+  constexpr auto operator<=>(const FPoint& other) const = default;
 
   /**
-   * @brief Set X coordinate of the point
+   * Check if valid.
    *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @returns True if valid state, false otherwise.
    */
-  constexpr FPoint& SetX(int nx)
+  constexpr explicit operator bool() const { return x != 0 && y != 0; }
+
+  /**
+   * Get the x coordinate.
+   *
+   * @returns current x value.
+   */
+  constexpr float GetX() const { return x; }
+
+  /**
+   * Set the x coordinate.
+   *
+   * @param newX the new x coordinate.
+   * @returns Reference to self.
+   */
+  constexpr FPoint& SetX(float newX)
   {
-    x = nx;
+    x = newX;
     return *this;
   }
 
   /**
-   * @brief Get Y coordinate of the point
+   * Get the y coordinate.
    *
-   * @returns Y coordinate of the point
-   *
+   * @returns current y coordinate.
    */
-  constexpr int GetY() const { return y; }
+  constexpr float GetY() const { return y; }
 
   /**
-   * @brief Set Y coordinate of the point
+   * Set the y coordinate.
    *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
+   * @param newY the new y coordinate.
+   * @returns Reference to self.
    */
-  constexpr FPoint& SetY(int ny)
+  constexpr FPoint& SetY(float newY)
   {
-    y = ny;
+    y = newY;
     return *this;
   }
 
@@ -727,9 +755,6 @@ struct FPoint : SDL_FPoint
    *
    */
   constexpr FPoint& Wrap(const FRect& rect);
-
-  // Auto comparison operator
-  constexpr auto operator<=>(const FPoint&) const = default;
 };
 
 /**
@@ -741,19 +766,128 @@ struct FPoint : SDL_FPoint
  */
 struct Rect : SDL_Rect
 {
-  constexpr Rect(const SDL_Rect& rect = {0})
-    : SDL_Rect(rect)
+  /**
+   * Wraps Rect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr Rect(const SDL_Rect& r = {})
+    : SDL_Rect(r)
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the left x.
+   * @param y the top y.
+   * @param w the width.
+   * @param h the height.
+   */
   constexpr Rect(int x, int y, int w, int h)
     : SDL_Rect({x, y, w, h})
   {
   }
 
+  /**
+   * Construct from offset and size
+   *
+   * @param corner the top-left corner
+   * @param size the size
+   */
   constexpr Rect(const SDL_Point& corner, const SDL_Point& size)
     : Rect{corner.x, corner.y, size.x, size.y}
   {
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const Rect& other) const { return Equal(other); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * @brief Get left x coordinate.
+   *
+   * @returns coordinate of the left x
+   *
+   */
+  constexpr int GetX() const { return x; }
+
+  /**
+   * Set the left x coordinate.
+   *
+   * @param newX the new left x.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetX(int newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * @brief Get top y coordinate.
+   *
+   * @returns coordinate of the top y.
+   *
+   */
+  constexpr int GetY() const { return y; }
+
+  /**
+   * Set the top y coordinate.
+   *
+   * @param newY the new top y.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetY(int newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr int GetW() const { return w; }
+
+  /**
+   * Set the width of the rect.
+   *
+   * @param newW the new width.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetW(int newW)
+  {
+    w = newW;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr int GetH() const { return h; }
+
+  /**
+   * Set the height of the rect.
+   *
+   * @param newH the new height.
+   * @returns Reference to self.
+   */
+  constexpr Rect& SetH(int newH)
+  {
+    h = newH;
+    return *this;
   }
 
   /**
@@ -834,94 +968,6 @@ struct Rect : SDL_Rect
   static constexpr Rect FromCorners(const Point& p1, const Point& p2)
   {
     return Rect(p1, p2 - p1 + Point(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect corner
-   *
-   * @returns X coordinate of the rect corner
-   *
-   */
-  constexpr int GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the rect corner
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetX(int nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect corner
-   *
-   * @returns Y coordinate of the rect corner
-   *
-   */
-  constexpr int GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the rect corner
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetY(int ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr int GetW() const { return w; }
-
-  /**
-   * @brief Set width of the rect
-   *
-   * @param[in] nw New width of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetW(int nw)
-  {
-    w = nw;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr int GetH() const { return h; }
-
-  /**
-   * @brief Set height of the rect
-   *
-   * @param[in] nh New height of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr Rect& SetH(int nh)
-  {
-    h = nh;
-    return *this;
   }
 
   /**
@@ -1103,11 +1149,6 @@ struct Rect : SDL_Rect
   constexpr bool Empty() const { return SDL_RectEmpty(this); }
 
   /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
    * Determine whether two rectangles are equal.
    *
    * Rectangles are considered equal if both are not NULL and each of their x,
@@ -1131,21 +1172,16 @@ struct Rect : SDL_Rect
   }
 
   /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const Rect& other) const { return Equal(other); }
-
-  /**
    * @brief Check whether the rect contains given point
    *
-   * @param point Point to check
+   * @param p Point to check
    *
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const Point& point) const
+  constexpr bool Contains(const Point& p) const
   {
-    return SDL_PointInRect(&point, this);
+    return SDL_PointInRect(&p, this);
   }
 
   /**
@@ -1342,19 +1378,122 @@ struct Rect : SDL_Rect
  */
 struct FRect : SDL_FRect
 {
-  constexpr FRect(const SDL_FRect& rect = {0})
-    : SDL_FRect(rect)
+  /**
+   * Wraps FRect.
+   *
+   * @param r the value to be wrapped
+   */
+  constexpr FRect(const SDL_FRect& r = {})
+    : SDL_FRect{r}
   {
   }
 
+  /**
+   * Constructs from its fields.
+   *
+   * @param x the left x.
+   * @param y the top y.
+   * @param w the width.
+   * @param h the height.
+   */
   constexpr FRect(float x, float y, float w, float h)
-    : SDL_FRect({x, y, w, h})
+    : SDL_FRect{x, y, w, h}
   {
   }
 
   constexpr FRect(const SDL_FPoint& corner, const SDL_FPoint& size)
     : FRect{corner.x, corner.y, size.x, size.y}
   {
+  }
+
+  /**
+   * @sa Equal()
+   */
+  constexpr bool operator==(const FRect& other) const { return Equal(other); }
+
+  /**
+   * @sa Empty()
+   */
+  constexpr operator bool() const { return !Empty(); }
+
+  /**
+   * @brief Get left x coordinate.
+   *
+   * @returns coordinate of the left x
+   *
+   */
+  constexpr float GetX() const { return x; }
+
+  /**
+   * Set the left x coordinate.
+   *
+   * @param newX the new left x.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetX(float newX)
+  {
+    x = newX;
+    return *this;
+  }
+
+  /**
+   * @brief Get top y coordinate.
+   *
+   * @returns coordinate of the top y.
+   *
+   */
+  constexpr float GetY() const { return y; }
+
+  /**
+   * Set the top y coordinate.
+   *
+   * @param newY the new top y.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetY(float newY)
+  {
+    y = newY;
+    return *this;
+  }
+
+  /**
+   * @brief Get width of the rect
+   *
+   * @returns Width of the rect
+   *
+   */
+  constexpr float GetW() const { return w; }
+
+  /**
+   * Set the width of the rect.
+   *
+   * @param newW the new width.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetW(float newW)
+  {
+    w = newW;
+    return *this;
+  }
+
+  /**
+   * @brief Get height of the rect
+   *
+   * @returns Height of the rect
+   *
+   */
+  constexpr float GetH() const { return h; }
+
+  /**
+   * Set the height of the rect.
+   *
+   * @param newH the new height.
+   * @returns Reference to self.
+   */
+  constexpr FRect& SetH(float newH)
+  {
+    h = newH;
+    return *this;
   }
 
   /**
@@ -1435,94 +1574,6 @@ struct FRect : SDL_FRect
   static constexpr FRect FromCorners(const FPoint& p1, const FPoint& p2)
   {
     return FRect(p1, p2 - p1 + FPoint(1, 1));
-  }
-
-  /**
-   * @brief Get X coordinate of the rect corner
-   *
-   * @returns X coordinate of the rect corner
-   *
-   */
-  constexpr float GetX() const { return x; }
-
-  /**
-   * @brief Set X coordinate of the rect corner
-   *
-   * @param[in] nx New X coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetX(float nx)
-  {
-    x = nx;
-    return *this;
-  }
-
-  /**
-   * @brief Get Y coordinate of the rect corner
-   *
-   * @returns Y coordinate of the rect corner
-   *
-   */
-  constexpr float GetY() const { return y; }
-
-  /**
-   * @brief Set Y coordinate of the rect corner
-   *
-   * @param[in] ny New Y coordinate value
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetY(float ny)
-  {
-    y = ny;
-    return *this;
-  }
-
-  /**
-   * @brief Get width of the rect
-   *
-   * @returns Width of the rect
-   *
-   */
-  constexpr float GetW() const { return w; }
-
-  /**
-   * @brief Set width of the rect
-   *
-   * @param[in] nw New width of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetW(float nw)
-  {
-    w = nw;
-    return *this;
-  }
-
-  /**
-   * @brief Get height of the rect
-   *
-   * @returns Height of the rect
-   *
-   */
-  constexpr float GetH() const { return h; }
-
-  /**
-   * @brief Set height of the rect
-   *
-   * @param[in] nh New height of the rect
-   *
-   * @returns Reference to self
-   *
-   */
-  constexpr FRect& SetH(float nh)
-  {
-    h = nh;
-    return *this;
   }
 
   /**
@@ -1688,11 +1739,6 @@ struct FRect : SDL_FRect
   constexpr bool Empty() const { return SDL_RectEmptyFloat(this); }
 
   /**
-   * @sa Empty()
-   */
-  constexpr operator bool() const { return !Empty(); }
-
-  /**
    * Determine whether two floating point rectangles are equal, within some
    * given epsilon.
    *
@@ -1745,21 +1791,16 @@ struct FRect : SDL_FRect
   }
 
   /**
-   * @sa Equal()
-   */
-  constexpr bool operator==(const FRect& other) const { return Equal(other); }
-
-  /**
    * @brief Check whether the rect contains given point
    *
-   * @param point Point to check
+   * @param p Point to check
    *
    * @returns True if the point is contained in the rect
    *
    */
-  constexpr bool Contains(const FPoint& point) const
+  constexpr bool Contains(const FPoint& p) const
   {
-    return SDL_PointInRectFloat(&point, this);
+    return SDL_PointInRectFloat(&p, this);
   }
 
   /**
