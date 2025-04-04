@@ -6,7 +6,7 @@ var searchData=
   ['keyboarddeviceevent_3',['KeyboardDeviceEvent',['../group__CategoryEvents.html#ga6596fc002a05eecf8430d99ca2587774',1,'SDL']]],
   ['keyboardevent_4',['KeyboardEvent',['../group__CategoryEvents.html#gab0a2a04d7f402ebf2caf4431d6821f0e',1,'SDL']]],
   ['keyboardid_5',['KeyboardID',['../group__CategoryKeyboard.html#ga1567adc0e79b5fcc4cd6c2f8edf8b751',1,'SDL']]],
-  ['keycode_6',['keycode',['../group__CategoryKeyboard.html#ga4435ab0e101c9ed4bbe9ab791a81f546',1,'SDL::Keycode::Keycode()'],['../classSDL_1_1Keycode.html',1,'SDL::Keycode'],['../classSDL_1_1Keycode.html#a4570e66d30e3c7fe6e8ac432866ab16a',1,'SDL::Keycode::Keycode(SDL_Keycode keycode={})'],['../group__CategoryKeyboard.html#ga6c176e3a9929e6fc4b6fbe5a85f2a08b',1,'SDL::Keycode::Keycode(Scancode scancode, Keymod keymodstate=0, bool key_event=false)']]],
+  ['keycode_6',['keycode',['../group__CategoryKeyboard.html#ga4435ab0e101c9ed4bbe9ab791a81f546',1,'SDL::Keycode::Keycode()'],['../classSDL_1_1Keycode.html',1,'SDL::Keycode'],['../classSDL_1_1Keycode.html#a4570e66d30e3c7fe6e8ac432866ab16a',1,'SDL::Keycode::Keycode(SDL_Keycode keycode={})'],['../group__CategoryKeyboard.html#gaacfec5794b9e40b989c6a874856a8ef3',1,'SDL::Keycode::Keycode(Scancode scancode, Keymod modstate=0, bool key_event=false)']]],
   ['keycode_5f0_7',['KEYCODE_0',['../group__CategoryKeycode.html#ga44866dff42225f64892403dfe37ae59b',1,'SDL']]],
   ['keycode_5f1_8',['KEYCODE_1',['../group__CategoryKeycode.html#ga47de4bb19ce76ca80bd05ab56c264a9f',1,'SDL']]],
   ['keycode_5f2_9',['KEYCODE_2',['../group__CategoryKeycode.html#ga06f9a0f2b37f4bc37438f0fca047df2f',1,'SDL']]],

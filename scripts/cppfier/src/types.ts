@@ -28,6 +28,7 @@ interface ApiEntryBase {
   constexpr?: boolean;
   immutable?: boolean;
   reference?: number;
+  proto?: boolean
   static?: boolean;
   explicit?: boolean;
 }
@@ -40,6 +41,10 @@ export interface ApiEntry extends ApiEntryBase {
   decl?: number;
   end?: number;
   entries?: ApiEntries;
+}
+
+export interface ApiType extends ApiEntry {
+  kind: "struct" | "alias" | "ns"
 }
 
 export type ApiEntries = Dict<ApiEntry | ApiEntry[]>;
@@ -187,6 +192,7 @@ export interface FileToken {
   constexpr?: boolean;
   immutable?: boolean;
   reference?: number;
+  proto?: boolean
   static?: boolean;
   explicit?: boolean;
   begin: number;

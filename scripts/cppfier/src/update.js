@@ -393,29 +393,31 @@ function generateBody(entry, prefix) {
   const sourceName = entry.sourceName === entry.name ? ("::" + entry.sourceName) : entry.sourceName;
   if (!sourceName) {
     if (/operator(==|<=>)/.test(entry.name)) return " = default;";
+    if (entry.proto) return ";";
     if (entry.type === "" && !entry.name.startsWith("operator")) return "{}";
-    return `{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
-  };
+    return `\n${prefix}{\n${prefix}  static_assert(false, "Not implemented");\n${prefix}}`;
+  }
+  if (entry.proto) return ";";
   const paramStr = entry.parameters
     .map(p => typeof p == "string" ? p : p.name)
     .join(", ");
-  const return_ = entry.type === "void" ? "" : "return ";
+  const returnStr = entry.type === "void" ? "" : "return ";
   if (!entry.type) {
-    return `  : T(${sourceName}(${paramStr}))\n${prefix}{}`;
+    return `\n${prefix}  : T(${sourceName}(${paramStr}))\n${prefix}{}`;
   }
   if (!prefix || entry.static) {
-    return `{\n${prefix}  ${return_}${sourceName}(${paramStr});\n${prefix}}`;
+    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(${paramStr});\n${prefix}}`;
   }
   if (paramStr) {
-    return `{\n${prefix}  ${return_}${sourceName}(T::get(), ${paramStr});\n${prefix}}`;
+    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(T::get(), ${paramStr});\n${prefix}}`;
   }
   if (looksLikeFreeFunction(sourceName)) {
-    if (!return_) {
-      return `{\n${prefix}  T::free();\n${prefix}}`;
+    if (!returnStr) {
+      return `\n${prefix}{\n${prefix}  T::free();\n${prefix}}`;
     }
-    return `{\n${prefix}  ${return_}${sourceName}(T::release());\n${prefix}}`;
+    return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(T::release());\n${prefix}}`;
   }
-  return `{\n${prefix}  ${return_}${sourceName}(T::get());\n${prefix}}`;
+  return `\n${prefix}{\n${prefix}  ${returnStr}${sourceName}(T::get());\n${prefix}}`;
 }
 
 /**
@@ -427,7 +429,7 @@ function generateFunction(entry, prefix) {
   const specifier = entry.immutable ? ` const${reference}` : (reference ? " " + reference : "");
   const parameters = generateParameters(entry.parameters);
   const body = generateBody(entry, prefix);
-  return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}\n${prefix}${body}`;
+  return `${generateDeclPrefix(entry, prefix)}(${parameters})${specifier}${body}`;
 }
 
 /**

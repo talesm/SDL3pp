@@ -360,12 +360,13 @@
               "doc": ""
             },
             "Current": {
+              "doc": "",
+              "name": "Current",
               "kind": "function",
               "type": "Time",
-              "static": true,
               "parameters": [],
-              "name": "Current",
-              "doc": ""
+              "sourceName": "SDL_GetCurrentTime",
+              "proto": true
             },
             "FromNS": {
               "kind": "function",
@@ -391,61 +392,71 @@
               "doc": ""
             },
             "FromPosix": {
+              "doc": "",
+              "name": "FromPosix",
               "kind": "function",
-              "type": "Time",
-              "constexpr": true,
-              "static": true,
               "parameters": [
                 {
                   "type": "Sint64",
                   "name": "time"
                 }
               ],
-              "name": "FromPosix",
-              "doc": ""
+              "value": "(((Uint64)(S)) * SDL_NS_PER_SECOND)",
+              "sourceName": "SDL_SECONDS_TO_NS",
+              "type": "Time",
+              "constexpr": true,
+              "static": true,
+              "proto": true
             },
             "ToPosix": {
+              "doc": "",
+              "name": "ToPosix",
               "kind": "function",
+              "parameters": [],
+              "value": "((NS) / SDL_NS_PER_SECOND)",
+              "sourceName": "SDL_NS_TO_SECONDS",
               "type": "Sint64",
               "constexpr": true,
               "immutable": true,
-              "parameters": [],
-              "name": "ToPosix",
-              "doc": ""
+              "proto": true
             },
             "FromWindows": {
+              "doc": "",
+              "name": "FromWindows",
               "kind": "function",
               "type": "Time",
-              "static": true,
               "parameters": [
                 {
-                  "type": "Uint32",
-                  "name": "dwLowDateTime"
+                  "name": "dwLowDateTime",
+                  "type": "Uint32"
                 },
                 {
-                  "type": "Uint32",
-                  "name": "dwHighDateTime"
+                  "name": "dwHighDateTime",
+                  "type": "Uint32"
                 }
               ],
-              "name": "FromWindows",
-              "doc": ""
+              "sourceName": "SDL_TimeFromWindows",
+              "static": true,
+              "proto": true
             },
             "ToWindows": {
+              "doc": "",
+              "name": "ToWindows",
               "kind": "function",
               "type": "void",
-              "immutable": true,
               "parameters": [
                 {
-                  "type": "Uint32 *",
-                  "name": "dwLowDateTime"
+                  "name": "dwLowDateTime",
+                  "type": "Uint32 *"
                 },
                 {
-                  "type": "Uint32 *",
-                  "name": "dwHighDateTime"
+                  "name": "dwHighDateTime",
+                  "type": "Uint32 *"
                 }
               ],
-              "name": "ToWindows",
-              "doc": ""
+              "sourceName": "SDL_TimeToWindows",
+              "immutable": true,
+              "proto": true
             },
             "operator+=": {
               "kind": "function",
@@ -9577,7 +9588,7 @@
           "sourceName": "SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT"
         },
         "SDL_HINT_ENABLE_SCREEN_KEYBOARD": {
-          "doc": "A variable that controls whether the on-screen keyboard should be shown\nwhen text input is active.\n\nThe variable can be set to the following values:\n\n- \"auto\": The on-screen keyboard will be shown if there is no physical\n  keyboard attached. (default)\n- \"0\": Do not show the on-screen keyboard.\n- \"1\": Show the on-screen keyboard, if available.\n\nThis hint must be set before WindowBase<T>::StartTextInput() is called\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "A variable that controls whether the on-screen keyboard should be shown\nwhen text input is active.\n\nThe variable can be set to the following values:\n\n- \"auto\": The on-screen keyboard will be shown if there is no physical\n  keyboard attached. (default)\n- \"0\": Do not show the on-screen keyboard.\n- \"1\": Show the on-screen keyboard, if available.\n\nThis hint must be set before WindowBase::StartTextInput() is called\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_ENABLE_SCREEN_KEYBOARD",
           "kind": "def",
           "value": "\"SDL_ENABLE_SCREEN_KEYBOARD\"",
@@ -9654,35 +9665,35 @@
           "sourceName": "SDL_HINT_GAMECONTROLLER_SENSOR_FUSION"
         },
         "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT": {
-          "doc": "This variable sets the default text of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the default text of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_DEFAULT_TEXT\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_DEFAULT_TEXT"
         },
         "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION": {
-          "doc": "This variable sets the description of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the description of the TextInput window on GDK\nplatforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_DESCRIPTION\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_DESCRIPTION"
         },
         "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH": {
-          "doc": "This variable sets the maximum input length of the TextInput window on GDK\nplatforms.\n\nThe value must be a stringified integer, for example \"10\" to allow for up\nto 10 characters of text input.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the maximum input length of the TextInput window on GDK\nplatforms.\n\nThe value must be a stringified integer, for example \"10\" to allow for up\nto 10 characters of text input.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_MAX_LENGTH\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_MAX_LENGTH"
         },
         "SDL_HINT_GDK_TEXTINPUT_SCOPE": {
-          "doc": "This variable sets the input scope of the TextInput window on GDK\nplatforms.\n\nSet this hint to change the XGameUiTextEntryInputScope value that will be\npassed to the window creation function. The value must be a stringified\ninteger, for example \"0\" for XGameUiTextEntryInputScope::Default.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the input scope of the TextInput window on GDK\nplatforms.\n\nSet this hint to change the XGameUiTextEntryInputScope value that will be\npassed to the window creation function. The value must be a stringified\ninteger, for example \"0\" for XGameUiTextEntryInputScope::Default.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_SCOPE",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_SCOPE\"",
           "sourceName": "SDL_HINT_GDK_TEXTINPUT_SCOPE"
         },
         "SDL_HINT_GDK_TEXTINPUT_TITLE": {
-          "doc": "This variable sets the title of the TextInput window on GDK platforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase<T>::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
+          "doc": "This variable sets the title of the TextInput window on GDK platforms.\n\nThis hint is available only if SDL_GDK_TEXTINPUT defined.\n\nThis hint should be set before calling WindowBase::StartTextInput()\n\n@since This hint is available since SDL 3.2.0.",
           "name": "SDL_HINT_GDK_TEXTINPUT_TITLE",
           "kind": "def",
           "value": "\"SDL_GDK_TEXTINPUT_TITLE\"",
@@ -15833,81 +15844,6 @@
               ],
               "sourceName": "SDL_FlashWindow"
             },
-            "StartTextInput": [
-              {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [],
-                "name": "StartTextInput",
-                "doc": ""
-              },
-              {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "type": "PropertiesRef",
-                    "name": "props"
-                  }
-                ],
-                "name": "StartTextInput",
-                "doc": ""
-              }
-            ],
-            "IsTextInputActive": {
-              "kind": "function",
-              "immutable": true,
-              "type": "bool",
-              "parameters": [],
-              "name": "IsTextInputActive",
-              "doc": ""
-            },
-            "StopTextInput": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "name": "StopTextInput",
-              "doc": ""
-            },
-            "ClearComposition": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": [],
-              "name": "ClearComposition",
-              "doc": ""
-            },
-            "SetTextInputArea": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "type": "const SDL_Rect &",
-                  "name": "rect"
-                },
-                {
-                  "type": "int",
-                  "name": "cursor"
-                }
-              ],
-              "name": "SetTextInputArea",
-              "doc": ""
-            },
-            "GetTextInputArea": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "type": "SDL_Rect *",
-                  "name": "rect"
-                },
-                {
-                  "type": "int *",
-                  "name": "cursor"
-                }
-              ],
-              "name": "GetTextInputArea",
-              "doc": ""
-            },
             "Destroy": {
               "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nWindowBase is no longer valid after this call.\n\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase.WindowBase\n@sa WindowBase.WindowBase\n@sa WindowBase.WindowBase",
               "name": "Destroy",
@@ -15915,6 +15851,95 @@
               "type": "void",
               "parameters": [],
               "sourceName": "SDL_DestroyWindow"
+            },
+            "StartTextInput": [
+              {
+                "doc": "",
+                "name": "StartTextInput",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [],
+                "sourceName": "SDL_StartTextInput",
+                "proto": true
+              },
+              {
+                "doc": "",
+                "name": "StartTextInput",
+                "kind": "function",
+                "type": "bool",
+                "parameters": [
+                  {
+                    "name": "props",
+                    "type": "PropertiesRef"
+                  }
+                ],
+                "sourceName": "SDL_StartTextInputWithProperties",
+                "proto": true
+              }
+            ],
+            "IsTextInputActive": {
+              "doc": "",
+              "name": "IsTextInputActive",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_TextInputActive",
+              "immutable": true,
+              "proto": true
+            },
+            "StopTextInput": {
+              "doc": "",
+              "name": "StopTextInput",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_StopTextInput",
+              "proto": true
+            },
+            "ClearComposition": {
+              "doc": "",
+              "name": "ClearComposition",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [],
+              "sourceName": "SDL_ClearComposition",
+              "proto": true
+            },
+            "SetTextInputArea": {
+              "doc": "",
+              "name": "SetTextInputArea",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "const SDL_Rect &"
+                },
+                {
+                  "name": "cursor",
+                  "type": "int"
+                }
+              ],
+              "sourceName": "SDL_SetTextInputArea",
+              "proto": true
+            },
+            "GetTextInputArea": {
+              "doc": "",
+              "name": "GetTextInputArea",
+              "kind": "function",
+              "type": "bool",
+              "parameters": [
+                {
+                  "name": "rect",
+                  "type": "Rect *"
+                },
+                {
+                  "name": "cursor",
+                  "type": "int *"
+                }
+              ],
+              "sourceName": "SDL_GetTextInputArea",
+              "proto": true
             }
           }
         },
@@ -20541,7 +20566,7 @@
           "sourceName": "SDL_GetDateTimeLocalePreferences"
         },
         "Time::Current": {
-          "doc": "Gets the current value of the system realtime clock in nanoseconds since\nJan 1, 1970 in Universal Coordinated Time (UTC).\n\n@param ticks the Time to hold the returned tick count.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Gets the current value of the system realtime clock in nanoseconds since\nJan 1, 1970 in Universal Coordinated Time (UTC).\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@since This function is available since SDL 3.2.0.",
           "name": "Time::Current",
           "kind": "function",
           "type": "Time",
@@ -20549,7 +20574,7 @@
           "sourceName": "SDL_GetCurrentTime"
         },
         "Time::ToWindows": {
-          "doc": "Converts an SDL time into a Windows FILETIME (100-nanosecond intervals\nsince January 1, 1601).\n\nThis function fills in the two 32-bit values of the FILETIME structure.\n\n@param ticks the time to convert.\n@param dwLowDateTime a pointer filled in with the low portion of the\n                     Windows FILETIME value.\n@param dwHighDateTime a pointer filled in with the high portion of the\n                      Windows FILETIME value.\n\n@since This function is available since SDL 3.2.0.",
+          "doc": "Converts an SDL time into a Windows FILETIME (100-nanosecond intervals\nsince January 1, 1601).\n\nThis function fills in the two 32-bit values of the FILETIME structure.\n\n@param dwLowDateTime a pointer filled in with the low portion of the\n                     Windows FILETIME value.\n@param dwHighDateTime a pointer filled in with the high portion of the\n                      Windows FILETIME value.\n\n@since This function is available since SDL 3.2.0.",
           "name": "Time::ToWindows",
           "kind": "function",
           "type": "void",
@@ -21649,7 +21674,7 @@
           "type": "SDL_TextEditingCandidatesEvent"
         },
         "TextInputEvent": {
-          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nWindowBase<T>::StartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput",
+          "doc": "Keyboard text input event structure (event.text.*)\n\nThis event will never be delivered unless text input is enabled by calling\nWindowBase::StartTextInput(). Text input is disabled by default!\n\n@since This struct is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput",
           "name": "TextInputEvent",
           "kind": "alias",
           "sourceName": "SDL_TextInputEvent",
@@ -22445,16 +22470,18 @@
                 "doc": "Wraps Scancode.\n\n@param scancode the value to be wrapped"
               },
               {
+                "doc": "",
+                "name": "Scancode",
                 "kind": "function",
                 "type": "",
                 "parameters": [
                   {
-                    "type": "StringParam",
-                    "name": "name"
+                    "name": "name",
+                    "type": "StringParam"
                   }
                 ],
-                "name": "Scancode",
-                "doc": ""
+                "sourceName": "SDL_GetScancodeFromName",
+                "proto": true
               }
             ],
             "operator<=>": {
@@ -22491,24 +22518,28 @@
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
             },
             "SetName": {
+              "doc": "",
+              "name": "SetName",
               "kind": "function",
               "type": "bool",
               "parameters": [
                 {
-                  "type": "StringParam",
-                  "name": "name"
+                  "name": "name",
+                  "type": "StringParam"
                 }
               ],
-              "name": "SetName",
-              "doc": ""
+              "sourceName": "SDL_SetScancodeName",
+              "proto": true
             },
             "GetName": {
+              "doc": "",
+              "name": "GetName",
               "kind": "function",
               "type": "const char *",
-              "immutable": true,
               "parameters": [],
-              "name": "GetName",
-              "doc": ""
+              "sourceName": "SDL_GetScancodeName",
+              "immutable": true,
+              "proto": true
             }
           }
         },
@@ -24708,40 +24739,40 @@
                 "doc": "Wraps Keycode.\n\n@param keycode the value to be wrapped"
               },
               {
+                "doc": "",
+                "name": "Keycode",
                 "kind": "function",
                 "type": "",
-                "explicit": true,
                 "parameters": [
                   {
-                    "type": "Scancode",
-                    "name": "scancode"
+                    "name": "scancode",
+                    "type": "Scancode"
                   },
                   {
-                    "type": "Keymod",
-                    "name": "keymodstate",
-                    "default": "0"
+                    "name": "modstate",
+                    "type": "Keymod"
                   },
                   {
-                    "type": "bool",
                     "name": "key_event",
-                    "default": "false"
+                    "type": "bool"
                   }
                 ],
-                "name": "Keycode",
-                "doc": ""
+                "sourceName": "SDL_GetKeyFromScancode",
+                "proto": true
               },
               {
+                "doc": "",
+                "name": "Keycode",
                 "kind": "function",
                 "type": "",
-                "explicit": true,
                 "parameters": [
                   {
-                    "type": "StringParam",
-                    "name": "name"
+                    "name": "name",
+                    "type": "StringParam"
                   }
                 ],
-                "name": "Keycode",
-                "doc": ""
+                "sourceName": "SDL_GetKeyFromName",
+                "proto": true
               }
             ],
             "operator<=>": {
@@ -24777,28 +24808,6 @@
               "parameters": [],
               "doc": "Check if valid.\n\n@returns True if valid state, false otherwise."
             },
-            "GetName": {
-              "kind": "function",
-              "type": "const char *",
-              "immutable": true,
-              "parameters": [],
-              "name": "GetName",
-              "doc": ""
-            },
-            "GetScancode": {
-              "kind": "function",
-              "type": "Scancode",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "Keymod *",
-                  "name": "keymodstate",
-                  "default": "nullptr"
-                }
-              ],
-              "name": "GetScancode",
-              "doc": ""
-            },
             "IsExtended": {
               "kind": "function",
               "name": "IsExtended",
@@ -24816,6 +24825,31 @@
               "immutable": true,
               "parameters": [],
               "doc": ""
+            },
+            "GetScancode": {
+              "doc": "",
+              "name": "GetScancode",
+              "kind": "function",
+              "type": "Scancode",
+              "parameters": [
+                {
+                  "name": "modstate",
+                  "type": "Keymod *"
+                }
+              ],
+              "sourceName": "SDL_GetScancodeFromKey",
+              "immutable": true,
+              "proto": true
+            },
+            "GetName": {
+              "doc": "",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "sourceName": "SDL_GetKeyName",
+              "immutable": true,
+              "proto": true
             }
           }
         },
@@ -27255,7 +27289,7 @@
         },
         "Keycode::Keycode": [
           {
-            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@returns the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetName\n@sa Keycode::GetScancode",
+            "doc": "Get the key code corresponding to the given scancode according to the\ncurrent keyboard layout.\n\nIf you want to get the keycode as it would be delivered in key events,\nincluding options specified in SDL_HINT_KEYCODE_OPTIONS, then you should\npass `key_event` as true. Otherwise this function simply translates the\nscancode based on the given modifier state.\n\n@param scancode the desired Scancode to query.\n@param modstate the modifier state to use when translating the scancode to\n                a keycode.\n@param key_event true if the keycode will be used in key events.\n@post the Keycode that corresponds to the given Scancode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetName\n@sa Keycode::GetScancode",
             "name": "Keycode::Keycode",
             "kind": "function",
             "type": "",
@@ -27266,7 +27300,7 @@
               },
               {
                 "name": "modstate",
-                "type": "SDL_Keymod"
+                "type": "Keymod"
               },
               {
                 "name": "key_event",
@@ -27276,7 +27310,7 @@
             "sourceName": "SDL_GetKeyFromScancode"
           },
           {
-            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@returns key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetName\n@sa Scancode::Scancode",
+            "doc": "Get a key code from a human-readable name.\n\n@param name the human-readable key name.\n@post key code, or `SDLK_UNKNOWN` if the name wasn't recognized; call\n         GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetName\n@sa Scancode::Scancode",
             "name": "Keycode::Keycode",
             "kind": "function",
             "type": "",
@@ -27290,7 +27324,7 @@
           }
         ],
         "Keycode::GetScancode": {
-          "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param key the desired Keycode to query.\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Scancode::GetName",
+          "doc": "Get the scancode corresponding to the given key code according to the\ncurrent keyboard layout.\n\nNote that there may be multiple scancode+modifier states that can generate\nthis keycode, this will just return the first one found.\n\n@param modstate a pointer to the modifier state that would be used when the\n                scancode generates this key, may be nullptr.\n@returns the Scancode that corresponds to the given Keycode.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Scancode::GetName",
           "name": "Keycode::GetScancode",
           "kind": "function",
           "type": "Scancode",
@@ -27304,7 +27338,7 @@
           "immutable": true
         },
         "Scancode::SetName": {
-          "doc": "Set a human-readable name for a scancode.\n\n@param scancode the desired Scancode.\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode::GetName",
+          "doc": "Set a human-readable name for a scancode.\n\n@param name the name to use for the scancode, encoded as UTF-8. The string\n            is not copied, so the pointer given to this function must stay\n            valid while SDL is being used.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Scancode::GetName",
           "name": "Scancode::SetName",
           "kind": "function",
           "type": "bool",
@@ -27317,7 +27351,7 @@
           "sourceName": "SDL_SetScancodeName"
         },
         "Scancode::GetName": {
-          "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@param scancode the desired Scancode to query.\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetScancode\n@sa Scancode::Scancode\n@sa Scancode::SetName",
+          "doc": "Get a human-readable name for a scancode.\n\n**Warning**: The returned name is by design not stable across platforms,\ne.g. the name for `SCANCODE_LGUI` is \"Left GUI\" under Linux but \"Left\nWindows\" under Microsoft Windows, and some scancodes like\n`SCANCODE_NONUSBACKSLASH` don't have any name at all. There are even\nscancodes that share names, e.g. `SCANCODE_RETURN` and\n`SCANCODE_RETURN2` (both called \"Return\"). This function is therefore\nunsuitable for creating a stable cross-platform two-way mapping between\nstrings and scancodes.\n\n@returns a pointer to the name for the scancode. If the scancode doesn't\n         have a name this function returns an empty string (\"\").\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::GetScancode\n@sa Scancode::Scancode\n@sa Scancode::SetName",
           "name": "Scancode::GetName",
           "kind": "function",
           "type": "const char *",
@@ -27326,7 +27360,7 @@
           "immutable": true
         },
         "Scancode::Scancode": {
-          "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@returns the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetScancode\n@sa Scancode::GetName",
+          "doc": "Get a scancode from a human-readable name.\n\n@param name the human-readable scancode name.\n@post the Scancode, or `SCANCODE_UNKNOWN` if the name wasn't\n         recognized; call GetError() for more information.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::GetScancode\n@sa Scancode::GetName",
           "name": "Scancode::Scancode",
           "kind": "function",
           "type": "",
@@ -27339,7 +27373,7 @@
           "sourceName": "SDL_GetScancodeFromName"
         },
         "Keycode::GetName": {
-          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@param key the desired Keycode to query.\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::Keycode\n@sa Keycode::GetScancode",
+          "doc": "Get a human-readable name for a key.\n\nIf the key doesn't have a name, this function returns an empty string (\"\").\n\nLetters will be presented in their uppercase form, if applicable.\n\n@returns a UTF-8 encoded string of the key name.\n\n@threadsafety This function is not thread safe.\n\n@since This function is available since SDL 3.2.0.\n\n@sa Keycode::Keycode\n@sa Keycode::Keycode\n@sa Keycode::GetScancode",
           "name": "Keycode::GetName",
           "kind": "function",
           "type": "const char *",
@@ -27347,9 +27381,9 @@
           "sourceName": "SDL_GetKeyName",
           "immutable": true
         },
-        "WindowBase<T>::StartTextInput": [
+        "WindowBase::StartTextInput": [
           {
-            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@param window the window to enable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput\n@sa WindowBase::IsTextInputActive",
             "name": "WindowBase<T>::StartTextInput",
             "kind": "function",
             "type": "bool",
@@ -27363,7 +27397,7 @@
             ]
           },
           {
-            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param window the window to enable text input.\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput\n@sa WindowBase::IsTextInputActive",
             "name": "WindowBase<T>::StartTextInput",
             "kind": "function",
             "type": "bool",
@@ -27383,7 +27417,7 @@
           }
         ],
         "TextInputType": {
-          "doc": "Text input type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+          "doc": "Text input type.\n\nThese are the valid values for SDL_PROP_TEXTINPUT_TYPE_NUMBER. Not every\nvalue is valid on every platform, but where a value isn't supported, a\nreasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
           "name": "TextInputType",
           "kind": "alias",
           "sourceName": "SDL_TextInputType",
@@ -27462,7 +27496,7 @@
           "constexpr": true
         },
         "Capitalization": {
-          "doc": "Auto capitalization type.\n\nThese are the valid values for prop::TextInput.CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+          "doc": "Auto capitalization type.\n\nThese are the valid values for prop::TextInput.CAPITALIZATION_NUMBER.\nNot every value is valid on every platform, but where a value isn't\nsupported, a reasonable fallback will be used.\n\n@since This enum is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
           "name": "Capitalization",
           "kind": "alias",
           "sourceName": "SDL_Capitalization",
@@ -27552,8 +27586,8 @@
           },
           "doc": ""
         },
-        "WindowBase<T>::IsTextInputActive": {
-          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@param window the window to check.\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+        "WindowBase::IsTextInputActive": {
+          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
           "name": "WindowBase<T>::IsTextInputActive",
           "kind": "function",
           "type": "bool",
@@ -27567,8 +27601,8 @@
             }
           ]
         },
-        "WindowBase<T>::StopTextInput": {
-          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase<T>::StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@param window the window to disable text input.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+        "WindowBase::StopTextInput": {
+          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase::StartTextInput() showed the screen keyboard, this function will hide\nit.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
           "name": "WindowBase<T>::StopTextInput",
           "kind": "function",
           "type": "bool",
@@ -27581,8 +27615,8 @@
             }
           ]
         },
-        "WindowBase<T>::ClearComposition": {
-          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@param window the window to affect.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput",
+        "WindowBase::ClearComposition": {
+          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput",
           "name": "WindowBase<T>::ClearComposition",
           "kind": "function",
           "type": "bool",
@@ -27595,8 +27629,8 @@
             }
           ]
         },
-        "WindowBase<T>::SetTextInputArea": {
-          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param window the window for which to set the text input area.\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::GetTextInputArea\n@sa WindowBase<T>::StartTextInput",
+        "WindowBase::SetTextInputArea": {
+          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::GetTextInputArea\n@sa WindowBase::StartTextInput",
           "name": "WindowBase<T>::SetTextInputArea",
           "kind": "function",
           "type": "bool",
@@ -27618,15 +27652,15 @@
             }
           ]
         },
-        "WindowBase<T>::GetTextInputArea": {
-          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase<T>::SetTextInputArea().\n\n@param window the window for which to query the text input area.\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea",
+        "WindowBase::GetTextInputArea": {
+          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase::SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea",
           "name": "WindowBase<T>::GetTextInputArea",
           "kind": "function",
           "type": "bool",
           "parameters": [
             {
               "name": "rect",
-              "type": "SDL_Rect *"
+              "type": "Rect *"
             },
             {
               "name": "cursor",
@@ -27642,7 +27676,7 @@
           ]
         },
         "HasScreenKeyboardSupport": {
-          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa ScreenKeyboardShown",
+          "doc": "Check whether the platform has screen keyboard support.\n\n@returns true if the platform has some screen keyboard support or false if\n         not.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput\n@sa ScreenKeyboardShown",
           "name": "HasScreenKeyboardSupport",
           "kind": "function",
           "type": "bool",

@@ -245,12 +245,7 @@
               "constexpr": true,
               "parameters": []
             },
-            "Current": {
-              "kind": "function",
-              "type": "Time",
-              "static": true,
-              "parameters": []
-            },
+            "Current": {},
             "FromNS": {
               "kind": "function",
               "type": "Time",
@@ -270,55 +265,10 @@
               "immutable": true,
               "parameters": []
             },
-            "FromPosix": {
-              "kind": "function",
-              "type": "Time",
-              "constexpr": true,
-              "static": true,
-              "parameters": [
-                {
-                  "type": "Sint64",
-                  "name": "time"
-                }
-              ]
-            },
-            "ToPosix": {
-              "kind": "function",
-              "type": "Sint64",
-              "constexpr": true,
-              "immutable": true,
-              "parameters": []
-            },
-            "FromWindows": {
-              "kind": "function",
-              "type": "Time",
-              "static": true,
-              "parameters": [
-                {
-                  "type": "Uint32",
-                  "name": "dwLowDateTime"
-                },
-                {
-                  "type": "Uint32",
-                  "name": "dwHighDateTime"
-                }
-              ]
-            },
-            "ToWindows": {
-              "kind": "function",
-              "type": "void",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "Uint32 *",
-                  "name": "dwLowDateTime"
-                },
-                {
-                  "type": "Uint32 *",
-                  "name": "dwHighDateTime"
-                }
-              ]
-            },
+            "FromPosix": {},
+            "ToPosix": {},
+            "FromWindows": {},
+            "ToWindows": {},
             "operator+=": {
               "kind": "function",
               "type": "Time &",
@@ -3996,67 +3946,6 @@
             "SDL_SetWindowHitTest": "function",
             "SDL_SetWindowShape": "function",
             "SDL_FlashWindow": "function",
-            "StartTextInput": [
-              {
-                "kind": "function",
-                "type": "bool",
-                "parameters": []
-              },
-              {
-                "kind": "function",
-                "type": "bool",
-                "parameters": [
-                  {
-                    "type": "PropertiesRef",
-                    "name": "props"
-                  }
-                ]
-              }
-            ],
-            "IsTextInputActive": {
-              "kind": "function",
-              "immutable": true,
-              "type": "bool",
-              "parameters": []
-            },
-            "StopTextInput": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": []
-            },
-            "ClearComposition": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": []
-            },
-            "SetTextInputArea": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "type": "const SDL_Rect &",
-                  "name": "rect"
-                },
-                {
-                  "type": "int",
-                  "name": "cursor"
-                }
-              ]
-            },
-            "GetTextInputArea": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "type": "SDL_Rect *",
-                  "name": "rect"
-                },
-                {
-                  "type": "int *",
-                  "name": "cursor"
-                }
-              ]
-            },
             "SDL_DestroyWindow": "function"
           }
         },
@@ -5256,6 +5145,7 @@
           "kind": "function",
           "type": "Time",
           "constexpr": true,
+          "static": true,
           "parameters": [
             {
               "type": "Sint64",
@@ -5419,25 +5309,14 @@
         },
         "SDL_GetCurrentTime": {
           "name": "Time::Current",
-          "type": "Time",
-          "parameters": []
+          "type": "Time"
         },
         "SDL_TimeFromWindows": {
           "name": "Time::FromWindows"
         },
         "SDL_TimeToWindows": {
           "name": "Time::ToWindows",
-          "immutable": true,
-          "parameters": [
-            {
-              "type": "Uint32 *",
-              "name": "dwLowDateTime"
-            },
-            {
-              "type": "Uint32 *",
-              "name": "dwHighDateTime"
-            }
-          ]
+          "immutable": true
         }
       }
     },
@@ -5629,35 +5508,7 @@
       },
       "wrappers": {
         "SDL_Scancode": {
-          "ordered": true,
-          "entries": {
-            "Scancode": {
-              "kind": "function",
-              "type": "",
-              "parameters": [
-                {
-                  "type": "StringParam",
-                  "name": "name"
-                }
-              ]
-            },
-            "SetName": {
-              "kind": "function",
-              "type": "bool",
-              "parameters": [
-                {
-                  "type": "StringParam",
-                  "name": "name"
-                }
-              ]
-            },
-            "GetName": {
-              "kind": "function",
-              "type": "const char *",
-              "immutable": true,
-              "parameters": []
-            }
-          }
+          "ordered": true
         }
       }
     },
@@ -5676,58 +5527,6 @@
         "SDL_Keycode": {
           "ordered": true,
           "entries": {
-            "Keycode": [
-              {
-                "kind": "function",
-                "type": "",
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "Scancode",
-                    "name": "scancode"
-                  },
-                  {
-                    "type": "Keymod",
-                    "name": "keymodstate",
-                    "default": "0"
-                  },
-                  {
-                    "type": "bool",
-                    "name": "key_event",
-                    "default": "false"
-                  }
-                ]
-              },
-              {
-                "kind": "function",
-                "type": "",
-                "explicit": true,
-                "parameters": [
-                  {
-                    "type": "StringParam",
-                    "name": "name"
-                  }
-                ]
-              }
-            ],
-            "GetName": {
-              "kind": "function",
-              "type": "const char *",
-              "immutable": true,
-              "parameters": []
-            },
-            "GetScancode": {
-              "kind": "function",
-              "type": "Scancode",
-              "immutable": true,
-              "parameters": [
-                {
-                  "type": "Keymod *",
-                  "name": "keymodstate",
-                  "default": "nullptr"
-                }
-              ]
-            },
             "SDLK_EXTENDED_MASK": {
               "kind": "function",
               "name": "IsExtended",
@@ -5768,161 +5567,58 @@
       },
       "transform": {
         "SDL_GetKeyFromScancode": {
-          "name": "Keycode::Keycode",
-          "type": "",
-          "parameters": [
-            {
-              "name": "scancode",
-              "type": "Scancode"
-            },
-            {
-              "name": "modstate",
-              "type": "SDL_Keymod"
-            },
-            {
-              "name": "key_event",
-              "type": "bool"
-            }
-          ]
+          "name": "Keycode::Keycode"
         },
         "SDL_GetScancodeFromKey": {
           "name": "Keycode::GetScancode",
           "type": "Scancode",
-          "immutable": true,
-          "parameters": [
-            {
-              "name": "modstate",
-              "type": "Keymod *"
-            }
-          ]
+          "immutable": true
         },
         "SDL_SetScancodeName": {
-          "name": "Scancode::SetName",
-          "parameters": [
-            {
-              "name": "name",
-              "type": "StringParam"
-            }
-          ]
+          "name": "Scancode::SetName"
         },
         "SDL_GetScancodeName": {
           "name": "Scancode::GetName",
-          "immutable": true,
-          "parameters": []
+          "immutable": true
         },
         "SDL_GetScancodeFromName": {
-          "name": "Scancode::Scancode",
-          "type": ""
+          "name": "Scancode::Scancode"
         },
         "SDL_GetKeyName": {
           "name": "Keycode::GetName",
-          "immutable": true,
-          "parameters": []
+          "immutable": true
         },
         "SDL_GetKeyFromName": {
-          "name": "Keycode::Keycode",
-          "type": ""
+          "name": "Keycode::Keycode"
         },
         "SDL_StartTextInput": {
-          "name": "WindowBase<T>::StartTextInput",
-          "type": "bool",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": []
+          "name": "WindowBase::StartTextInput",
+          "type": "bool"
         },
         "SDL_StartTextInputWithProperties": {
-          "name": "WindowBase<T>::StartTextInput",
-          "type": "bool",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "PropertiesRef",
-              "name": "props"
-            }
-          ]
+          "name": "WindowBase::StartTextInput",
+          "type": "bool"
         },
         "SDL_TextInputActive": {
-          "name": "WindowBase<T>::IsTextInputActive",
+          "name": "WindowBase::IsTextInputActive",
           "immutable": true,
-          "type": "bool",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": []
+          "type": "bool"
         },
         "SDL_StopTextInput": {
-          "name": "WindowBase<T>::StopTextInput",
-          "type": "bool",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": []
+          "name": "WindowBase::StopTextInput",
+          "type": "bool"
         },
         "SDL_ClearComposition": {
-          "name": "WindowBase<T>::ClearComposition",
-          "type": "bool",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": []
+          "name": "WindowBase::ClearComposition",
+          "type": "bool"
         },
         "SDL_SetTextInputArea": {
-          "name": "WindowBase<T>::SetTextInputArea",
-          "type": "bool",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "const SDL_Rect &",
-              "name": "rect"
-            },
-            {
-              "type": "int",
-              "name": "cursor"
-            }
-          ]
+          "name": "WindowBase::SetTextInputArea",
+          "type": "bool"
         },
         "SDL_GetTextInputArea": {
-          "name": "WindowBase<T>::GetTextInputArea",
-          "type": "bool",
-          "template": [
-            {
-              "type": "ObjectBox<SDL_Window *>",
-              "name": "T"
-            }
-          ],
-          "parameters": [
-            {
-              "type": "SDL_Rect *",
-              "name": "rect"
-            },
-            {
-              "type": "int *",
-              "name": "cursor"
-            }
-          ]
+          "name": "WindowBase::GetTextInputArea",
+          "type": "bool"
         }
       }
     },

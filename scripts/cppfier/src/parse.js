@@ -101,8 +101,9 @@ function insertEntry(entries, entry, defaultName = "") {
   else if (!entry.name) entry.name = defaultName;
   fixEntry(entry);
   const name = entry.kind == "forward" ? entry.name + "-forward" : entry.name;
-  if (entries[name]) {
-    const currEntry = entries[name];
+  const key = name.startsWith("ObjectRef") ? name : name.replace(/<[^>]*>::/, "::");
+  if (entries[key]) {
+    const currEntry = entries[key];
     if (Array.isArray(currEntry)) {
       currEntry.push(entry);
     } else if (currEntry.kind != 'function') {
@@ -110,14 +111,14 @@ function insertEntry(entries, entry, defaultName = "") {
         if (entry.kind === "def") {
           currEntry.doc = entry.doc;
         } else {
-          entries[name] = entry;
+          entries[key] = entry;
         }
       }
     } else if (entry.kind == 'function') {
-      entries[name] = [currEntry, entry];
+      entries[key] = [currEntry, entry];
     }
   } else {
-    entries[name] = entry;
+    entries[key] = entry;
   }
   return entries;
 }
@@ -266,6 +267,7 @@ class ContentParser {
         if (token.static) entry.static = token.static;
         if (token.reference) entry.reference = token.reference;
         if (token.explicit) entry.explicit = token.explicit;
+        if (token.proto) entry.proto = token.proto;
         break;
       case "struct":
         if (token.type) entry.type = normalizeType(token.type);

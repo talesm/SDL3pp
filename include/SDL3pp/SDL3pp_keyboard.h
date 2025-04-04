@@ -208,7 +208,7 @@ inline void SetModState(Keymod modstate) { SDL_SetModState(modstate); }
  * @sa Keycode::GetName
  * @sa Keycode::GetScancode
  */
-inline Keycode::Keycode(Scancode scancode, SDL_Keymod modstate, bool key_event)
+inline Keycode::Keycode(Scancode scancode, Keymod modstate, bool key_event)
   : Keycode(SDL_GetKeyFromScancode(scancode, modstate, key_event))
 {
 }
@@ -350,7 +350,7 @@ inline const char* Keycode::GetName() const
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase<T>::StopTextInput().
+ * function paired with WindowBase::StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -365,10 +365,10 @@ inline const char* Keycode::GetName() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase<T>::SetTextInputArea
- * @sa WindowBase<T>::StartTextInput
- * @sa WindowBase<T>::StopTextInput
- * @sa WindowBase<T>::IsTextInputActive
+ * @sa WindowBase::SetTextInputArea
+ * @sa WindowBase::StartTextInput
+ * @sa WindowBase::StopTextInput
+ * @sa WindowBase::IsTextInputActive
  */
 template<ObjectBox<SDL_Window*> T>
 inline bool WindowBase<T>::StartTextInput()
@@ -382,7 +382,7 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * This function will enable text input (EVENT_TEXT_INPUT and
  * EVENT_TEXT_EDITING events) in the specified window. Please use this
- * function paired with WindowBase<T>::StopTextInput().
+ * function paired with WindowBase::StopTextInput().
  *
  * Text input events are not received by default.
  *
@@ -420,10 +420,10 @@ inline bool WindowBase<T>::StartTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase<T>::SetTextInputArea
- * @sa WindowBase<T>::StartTextInput
- * @sa WindowBase<T>::StopTextInput
- * @sa WindowBase<T>::IsTextInputActive
+ * @sa WindowBase::SetTextInputArea
+ * @sa WindowBase::StartTextInput
+ * @sa WindowBase::StopTextInput
+ * @sa WindowBase::IsTextInputActive
  */
 template<ObjectBox<SDL_Window*> T>
 inline bool WindowBase<T>::StartTextInput(PropertiesRef props)
@@ -552,7 +552,7 @@ constexpr auto ANDROID_INPUTTYPE_NUMBER =
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase<T>::StartTextInput
+ * @sa WindowBase::StartTextInput
  */
 template<ObjectBox<SDL_Window*> T>
 inline bool WindowBase<T>::IsTextInputActive() const
@@ -563,7 +563,7 @@ inline bool WindowBase<T>::IsTextInputActive() const
 /**
  * Stop receiving any text input events in a window.
  *
- * If WindowBase<T>::StartTextInput() showed the screen keyboard, this function
+ * If WindowBase::StartTextInput() showed the screen keyboard, this function
  * will hide it.
  *
  * @returns true on success or false on failure; call GetError() for more
@@ -573,7 +573,7 @@ inline bool WindowBase<T>::IsTextInputActive() const
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase<T>::StartTextInput
+ * @sa WindowBase::StartTextInput
  */
 template<ObjectBox<SDL_Window*> T>
 inline bool WindowBase<T>::StopTextInput()
@@ -591,8 +591,8 @@ inline bool WindowBase<T>::StopTextInput()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase<T>::StartTextInput
- * @sa WindowBase<T>::StopTextInput
+ * @sa WindowBase::StartTextInput
+ * @sa WindowBase::StopTextInput
  */
 template<ObjectBox<SDL_Window*> T>
 inline bool WindowBase<T>::ClearComposition()
@@ -617,8 +617,8 @@ inline bool WindowBase<T>::ClearComposition()
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase<T>::GetTextInputArea
- * @sa WindowBase<T>::StartTextInput
+ * @sa WindowBase::GetTextInputArea
+ * @sa WindowBase::StartTextInput
  */
 template<ObjectBox<SDL_Window*> T>
 inline bool WindowBase<T>::SetTextInputArea(const SDL_Rect& rect, int cursor)
@@ -629,7 +629,7 @@ inline bool WindowBase<T>::SetTextInputArea(const SDL_Rect& rect, int cursor)
 /**
  * Get the area used to type Unicode text input.
  *
- * This returns the values previously set by WindowBase<T>::SetTextInputArea().
+ * This returns the values previously set by WindowBase::SetTextInputArea().
  *
  * @param rect a pointer to an Rect filled in with the text input area,
  *             may be nullptr.
@@ -642,10 +642,10 @@ inline bool WindowBase<T>::SetTextInputArea(const SDL_Rect& rect, int cursor)
  *
  * @since This function is available since SDL 3.2.0.
  *
- * @sa WindowBase<T>::SetTextInputArea
+ * @sa WindowBase::SetTextInputArea
  */
 template<ObjectBox<SDL_Window*> T>
-inline bool WindowBase<T>::GetTextInputArea(SDL_Rect* rect, int* cursor)
+inline bool WindowBase<T>::GetTextInputArea(Rect* rect, int* cursor)
 {
   return SDL_GetTextInputArea(T::get(), rect, cursor);
 }

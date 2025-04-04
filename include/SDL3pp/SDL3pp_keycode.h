@@ -153,7 +153,7 @@ public:
 
   // Convert from scancode
   explicit Keycode(Scancode scancode,
-                   Keymod keymodstate = 0,
+                   Keymod modstate = 0,
                    bool key_event = false);
 
   // Create from key name
@@ -174,15 +174,15 @@ public:
   constexpr explicit operator bool() const { return m_keycode != SDLK_UNKNOWN; }
 
   // Get name
-  const char* GetName() const;
 
-  Scancode GetScancode(Keymod* keymodstate = nullptr) const;
-
-  /// Has Extended flag
   constexpr bool IsExtended() const { return m_keycode & SDLK_EXTENDED_MASK; }
 
   /// Has Scancode flag
   constexpr bool IsScancode() const { return m_keycode & SDLK_SCANCODE_MASK; }
+
+  Scancode GetScancode(Keymod* modstate) const;
+
+  const char* GetName() const;
 };
 
 constexpr Keycode KEYCODE_EXTENDED_MASK = SDLK_EXTENDED_MASK;

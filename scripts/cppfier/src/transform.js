@@ -2,7 +2,7 @@ const { insertEntry } = require("./parse");
 const { system, combineObject, looksLikeFreeFunction } = require("./utils");
 
 /**
- * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter } from "./types"
+ * @import { Api, ApiEntries, ApiEntry, ApiEntryKind, ApiEntryTransform, ApiEnumeration, ApiFile, ApiParameters, ApiResource, ApiSubEntryTransformMap, ApiTransform, Dict, ApiFileTransform, ReplacementRule, StringMap, ApiParameter, ApiType } from "./types"
  */
 
 /**
@@ -78,6 +78,9 @@ class ApiContext {
     this.docRules.forEach(rule => rule.pattern = RegExp(rule.pattern, 'g'));
 
     this.definitionPrefix = transform.definitionPrefix;
+
+    /** @type {Dict<ApiType>} */
+    this.types = {};
   }
 }
 
@@ -129,7 +132,7 @@ function transformEntries(sourceEntries, context, transform) {
         else targetDelta.name = targetName;
         combineObject(targetEntry, targetDelta);
       } else targetEntry.name = targetName;
-      if (targetEntry.kind == 'alias' || targetEntry.kind == 'struct') {
+      if (targetEntry.kind === 'alias' || targetEntry.kind === 'struct') {
         if (targetName == targetEntry.type) {
           continue;
         }
@@ -173,7 +176,7 @@ function transformEntries(sourceEntries, context, transform) {
       context.nameMap[entry.sourceName] = key;
     }
   }
-  transformHierarchy(targetEntries);
+  transformHierarchy(targetEntries, context);
   validateEntries(targetEntries);
 
   return targetEntries;
@@ -607,7 +610,7 @@ function scanFreeFunction(entries) {
  * @param {ApiEntries}                    entries 
  * @param {ApiEntryTransform|ApiEntryTransform[]}  entry 
  * @param {ApiContext}                    context 
- * @param {ApiFileTransform}                 transform
+ * @param {ApiFileTransform}              transform
  * @param {string=}                       defaultName
  */
 function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
@@ -617,6 +620,14 @@ function insertEntryAndCheck(entries, entry, context, transform, defaultName) {
   }
   if (entry.entries) entry.entries = transformSubEntries(entry, context, transform, entries);
   insertEntry(entries, /** @type {ApiEntry}*/(entry), defaultName);
+  if (entry.kind === 'ns' || entry.kind === "struct") {
+    const currType = context.types[entry.name];
+    if (currType) {
+      if (currType.kind !== "ns" && entry.kind !== "ns") system.warn(`Duplicate type definition ${entry.name}`);
+    } else {
+      context.types[entry.name] = /**@type {ApiType}*/(entry);
+    }
+  }
 }
 
 /**
@@ -662,31 +673,87 @@ function transformSubEntries(targetEntry, context, transform, targetEntries) {
 /**
  * Fix hierarchy, executing any pending movements
  * @param {ApiEntries} targetEntries the entries to fix hierarchy
+ * @param {ApiContext} context the context
  */
-function transformHierarchy(targetEntries) {
+function transformHierarchy(targetEntries, context) {
   for (const key of Object.keys(targetEntries)) {
-    if (!key.includes(".")) continue;
-    const path = key.split(".");
-    let obj = targetEntries[path[0]];
-    if (!obj || Array.isArray(obj) || !obj.entries) continue;
-    let name = path[path.length - 1];
-    let i = 1;
-    for (; i < path.length - 1; i++) {
-      const el = obj.entries[path[i]];
-      if (!el || Array.isArray(el) || !el.entries) {
-        name = path.slice(i).join('.');
-        break;
-      }
-      obj = /**@type {ApiEntry} */(el);
-    }
+    if (!key.includes(".") && !key.includes("::")) continue;
+    const isMove = key.includes(".");
+    const path = key.split(/\.|::/);
+    const obj = getTypeFromPath(path, context) ?? (isMove ? getTypeFromPath(key.split('.'), context) : null);
+    if (!obj) continue;
     const entry = targetEntries[key];
     const typeName = obj.name;
+    const targetName = path[path.length - 1];
     if (Array.isArray(entry)) {
-      entry.forEach(e => prepareForTypeInsert(e, name, typeName));
-    } else prepareForTypeInsert(entry, name, typeName);
-    delete targetEntries[key];
-    insertEntry(obj.entries, entry);
+      entry.forEach(e => prepareForTypeInsert(e, targetName, typeName));
+    } else prepareForTypeInsert(entry, targetName, typeName);
+    if (isMove) {
+      delete targetEntries[key];
+      insertEntry(obj.entries, entry);
+    } else if (Array.isArray(entry)) {
+      entry.forEach(e => {
+        insertEntry(obj.entries, {
+          ...e,
+          doc: "",
+          proto: true,
+        });
+        e.name = makeMemberName(key, obj.template);;
+        e.template = obj.template;
+        delete e.static;
+      });
+    } else {
+      insertEntry(obj.entries, {
+        ...entry,
+        doc: "",
+        proto: true,
+      });
+      entry.name = makeMemberName(key, obj.template);
+      entry.template = obj.template;
+      delete entry.static;
+    }
   }
+
+  /**
+   * 
+   * @param {string}        key 
+   * @param {ApiParameters} template 
+   */
+  function makeMemberName(key, template) {
+    if (!template) return key;
+    const lastSeparator = key.lastIndexOf('::');
+    const args = template.map(n => (typeof n === "string" ? n : n.name)).join(", ");
+    return `${key.slice(0, lastSeparator)}<${args}>${key.slice(lastSeparator)}`;
+  }
+}
+
+/**
+ * Get element from path
+ * @param {string[]}    path 
+ * @param {ApiContext}  context 
+ */
+function getTypeFromPath(path, context) {
+  let obj = context.types[path[0]];
+  if (!obj || Array.isArray(obj) || !obj.entries) return null;
+  let i = 1;
+  for (; i < path.length - 1; i++) {
+    const el = obj.entries[path[i]];
+    if (!el || Array.isArray(el) || !el.entries) {
+      return null;
+    }
+    obj = /**@type {ApiType} */(el);
+  }
+  return obj;
+}
+
+/**
+ * Get element type from path
+ * @param {string[]}    path 
+ * @param {ApiContext}  context 
+ */
+function getFromPath(path, context) {
+  const obj = getTypeFromPath(path, context);
+  return obj.entries[path[path.length - 1]];
 }
 
 /**
@@ -742,6 +809,7 @@ function prepareForTypeInsert(entry, name, typeName) {
   entry.name = name;
   if (name === typeName) {
     if (entry.doc) entry.doc = entry.doc.replace(/@returns?/, "@post");
+    entry.type = "";
     return;
   }
   typeName = normalizeTypeName(typeName);

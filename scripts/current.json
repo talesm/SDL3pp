@@ -358,6 +358,7 @@
                 "type": "",
                 "parameters": [],
                 "constexpr": true,
+                "proto": true,
                 "begin": 264,
                 "decl": 264,
                 "end": 266
@@ -428,6 +429,7 @@
               "type": "Time",
               "parameters": [],
               "static": true,
+              "proto": true,
               "begin": 287,
               "decl": 287,
               "end": 289
@@ -474,6 +476,7 @@
               ],
               "constexpr": true,
               "static": true,
+              "proto": true,
               "begin": 298,
               "decl": 298,
               "end": 300
@@ -486,6 +489,7 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 300,
               "decl": 300,
               "end": 302
@@ -506,6 +510,7 @@
                 }
               ],
               "static": true,
+              "proto": true,
               "begin": 302,
               "decl": 302,
               "end": 304
@@ -526,6 +531,7 @@
                 }
               ],
               "immutable": true,
+              "proto": true,
               "begin": 304,
               "decl": 304,
               "end": 306
@@ -4614,6 +4620,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 116,
               "decl": 116,
               "end": 118
@@ -7791,6 +7798,7 @@
                 }
               ],
               "immutable": true,
+              "proto": true,
               "begin": 651,
               "decl": 683,
               "end": 685
@@ -7811,6 +7819,7 @@
                 }
               ],
               "immutable": true,
+              "proto": true,
               "begin": 685,
               "decl": 709,
               "end": 710
@@ -9610,6 +9619,7 @@
                 }
               ],
               "immutable": true,
+              "proto": true,
               "begin": 1600,
               "decl": 1600,
               "end": 1602
@@ -9742,6 +9752,7 @@
                 }
               ],
               "immutable": true,
+              "proto": true,
               "begin": 1690,
               "decl": 1716,
               "end": 1718
@@ -9766,6 +9777,7 @@
                 }
               ],
               "static": true,
+              "proto": true,
               "begin": 1718,
               "decl": 1744,
               "end": 1747
@@ -9841,6 +9853,7 @@
                 }
               ],
               "immutable": true,
+              "proto": true,
               "begin": 1772,
               "decl": 1772,
               "end": 1774
@@ -13026,6 +13039,7 @@
               "type": "PropertiesLock",
               "parameters": [],
               "reference": 1,
+              "proto": true,
               "begin": 223,
               "decl": 244,
               "end": 246
@@ -13484,6 +13498,7 @@
                     "type": "const PropertiesLock &"
                   }
                 ],
+                "proto": true,
                 "begin": 756,
                 "decl": 756,
                 "end": 758
@@ -13761,6 +13776,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 72,
               "decl": 72,
               "end": 74
@@ -13847,6 +13863,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 121,
               "decl": 141,
               "end": 143
@@ -14080,6 +14097,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 386,
               "decl": 395,
               "end": 397
@@ -14096,6 +14114,7 @@
                 }
               ],
               "constexpr": true,
+              "proto": true,
               "begin": 397,
               "decl": 406,
               "end": 408
@@ -14113,6 +14132,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 408,
               "decl": 416,
               "end": 418
@@ -14129,6 +14149,7 @@
                 }
               ],
               "constexpr": true,
+              "proto": true,
               "begin": 418,
               "decl": 426,
               "end": 428
@@ -14141,6 +14162,7 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 428,
               "decl": 433,
               "end": 434
@@ -14208,6 +14230,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 466,
               "decl": 466,
               "end": 468
@@ -14294,6 +14317,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 513,
               "decl": 533,
               "end": 535
@@ -14457,6 +14481,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 717,
               "decl": 726,
               "end": 728
@@ -14473,6 +14498,7 @@
                 }
               ],
               "constexpr": true,
+              "proto": true,
               "begin": 728,
               "decl": 737,
               "end": 739
@@ -14490,6 +14516,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 739,
               "decl": 747,
               "end": 749
@@ -14506,6 +14533,7 @@
                 }
               ],
               "constexpr": true,
+              "proto": true,
               "begin": 749,
               "decl": 757,
               "end": 758
@@ -15040,6 +15068,7 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 1115,
               "decl": 1125,
               "end": 1127
@@ -16325,6 +16354,7 @@
                     "type": "StringParam"
                   }
                 ],
+                "proto": true,
                 "begin": 174,
                 "decl": 187,
                 "end": 189
@@ -16523,6 +16553,7 @@
               "type": "SurfaceLock",
               "parameters": [],
               "reference": 1,
+              "proto": true,
               "begin": 451,
               "decl": 472,
               "end": 474
@@ -17805,6 +17836,7 @@
                     "type": "const SurfaceLock &"
                   }
                 ],
+                "proto": true,
                 "begin": 1862,
                 "decl": 1862,
                 "end": 1864
@@ -18850,6 +18882,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 496,
               "decl": 496,
               "end": 498
@@ -19083,6 +19116,7 @@
                 }
               ],
               "static": true,
+              "proto": true,
               "begin": 828,
               "decl": 837,
               "end": 838
@@ -19854,6 +19888,7 @@
               "type": "RendererRef",
               "parameters": [],
               "immutable": true,
+              "proto": true,
               "begin": 2284,
               "decl": 2294,
               "end": 2296
@@ -20170,6 +20205,16 @@
               "decl": 2851,
               "end": 2856
             },
+            "Destroy": {
+              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
+              "name": "Destroy",
+              "kind": "function",
+              "type": "void",
+              "parameters": [],
+              "begin": 2856,
+              "decl": 2870,
+              "end": 2872
+            },
             "StartTextInput": [
               {
                 "doc": "",
@@ -20177,9 +20222,10 @@
                 "kind": "function",
                 "type": "bool",
                 "parameters": [],
-                "begin": 2856,
-                "decl": 2856,
-                "end": 2858
+                "proto": true,
+                "begin": 2872,
+                "decl": 2872,
+                "end": 2874
               },
               {
                 "doc": "",
@@ -20192,9 +20238,10 @@
                     "type": "PropertiesRef"
                   }
                 ],
-                "begin": 2858,
-                "decl": 2858,
-                "end": 2860
+                "proto": true,
+                "begin": 2874,
+                "decl": 2874,
+                "end": 2876
               }
             ],
             "IsTextInputActive": {
@@ -20204,9 +20251,10 @@
               "type": "bool",
               "parameters": [],
               "immutable": true,
-              "begin": 2860,
-              "decl": 2860,
-              "end": 2862
+              "proto": true,
+              "begin": 2876,
+              "decl": 2876,
+              "end": 2878
             },
             "StopTextInput": {
               "doc": "",
@@ -20214,9 +20262,10 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2862,
-              "decl": 2862,
-              "end": 2864
+              "proto": true,
+              "begin": 2878,
+              "decl": 2878,
+              "end": 2880
             },
             "ClearComposition": {
               "doc": "",
@@ -20224,9 +20273,10 @@
               "kind": "function",
               "type": "bool",
               "parameters": [],
-              "begin": 2864,
-              "decl": 2864,
-              "end": 2866
+              "proto": true,
+              "begin": 2880,
+              "decl": 2880,
+              "end": 2882
             },
             "SetTextInputArea": {
               "doc": "",
@@ -20243,9 +20293,10 @@
                   "type": "int"
                 }
               ],
-              "begin": 2866,
-              "decl": 2866,
-              "end": 2868
+              "proto": true,
+              "begin": 2882,
+              "decl": 2882,
+              "end": 2884
             },
             "GetTextInputArea": {
               "doc": "",
@@ -20255,24 +20306,15 @@
               "parameters": [
                 {
                   "name": "rect",
-                  "type": "SDL_Rect *"
+                  "type": "Rect *"
                 },
                 {
                   "name": "cursor",
                   "type": "int *"
                 }
               ],
-              "begin": 2868,
-              "decl": 2868,
-              "end": 2870
-            },
-            "Destroy": {
-              "doc": "Destroy a window.\n\nAny child windows owned by the window will be recursively destroyed as\nwell.\n\nNote that on some platforms, the visible window may not actually be removed\nfrom the screen until the SDL event loop is pumped again, even though the\nSDL_Window is no longer valid after this call.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.",
-              "name": "Destroy",
-              "kind": "function",
-              "type": "void",
-              "parameters": [],
-              "begin": 2870,
+              "proto": true,
+              "begin": 2884,
               "decl": 2884,
               "end": 2885
             }
@@ -22444,6 +22486,7 @@
                   "type": "TextureRef"
                 }
               ],
+              "proto": true,
               "begin": 522,
               "decl": 541,
               "end": 543
@@ -22455,6 +22498,7 @@
               "type": "TextureRef",
               "parameters": [],
               "immutable": true,
+              "proto": true,
               "begin": 543,
               "decl": 557,
               "end": 559
@@ -23073,6 +23117,7 @@
                   "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
+              "proto": true,
               "begin": 1436,
               "decl": 1455,
               "end": 1459
@@ -23110,6 +23155,7 @@
                   "default": "SDL_FLIP_NONE"
                 }
               ],
+              "proto": true,
               "begin": 1459,
               "decl": 1484,
               "end": 1491
@@ -23141,6 +23187,7 @@
                   "type": "OptionalRef<const SDL_FPoint>"
                 }
               ],
+              "proto": true,
               "begin": 1491,
               "decl": 1516,
               "end": 1522
@@ -23168,6 +23215,7 @@
                   "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
+              "proto": true,
               "begin": 1522,
               "decl": 1546,
               "end": 1551
@@ -23211,6 +23259,7 @@
                   "type": "OptionalRef<const SDL_FRect>"
                 }
               ],
+              "proto": true,
               "begin": 1551,
               "decl": 1582,
               "end": 1591
@@ -23235,6 +23284,7 @@
                   "default": "{}"
                 }
               ],
+              "proto": true,
               "begin": 1591,
               "decl": 1610,
               "end": 1614
@@ -23290,6 +23340,7 @@
                   "type": "int"
                 }
               ],
+              "proto": true,
               "begin": 1614,
               "decl": 1640,
               "end": 1652
@@ -23471,6 +23522,7 @@
                     "type": "StringParam"
                   }
                 ],
+                "proto": true,
                 "begin": 1925,
                 "decl": 1939,
                 "end": 1941
@@ -23976,6 +24028,7 @@
                 }
               ],
               "reference": 1,
+              "proto": true,
               "begin": 2736,
               "decl": 2759,
               "end": 2761
@@ -24126,6 +24179,7 @@
                     "type": "const TextureLock &"
                   }
                 ],
+                "proto": true,
                 "begin": 2839,
                 "decl": 2839,
                 "end": 2841
@@ -28081,6 +28135,7 @@
                     "type": "StringParam"
                   }
                 ],
+                "proto": true,
                 "begin": 55,
                 "decl": 55,
                 "end": 57
@@ -28099,6 +28154,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 57,
               "decl": 57,
               "end": 59
@@ -28139,6 +28195,7 @@
                   "type": "StringParam"
                 }
               ],
+              "proto": true,
               "begin": 77,
               "decl": 77,
               "end": 79
@@ -28150,6 +28207,7 @@
               "type": "const char *",
               "parameters": [],
               "immutable": true,
+              "proto": true,
               "begin": 80,
               "decl": 80,
               "end": 81
@@ -30892,7 +30950,7 @@
                     "type": "Scancode"
                   },
                   {
-                    "name": "keymodstate",
+                    "name": "modstate",
                     "type": "Keymod",
                     "default": "0"
                   },
@@ -30903,6 +30961,7 @@
                   }
                 ],
                 "explicit": true,
+                "proto": true,
                 "begin": 155,
                 "decl": 155,
                 "end": 159
@@ -30919,6 +30978,7 @@
                   }
                 ],
                 "explicit": true,
+                "proto": true,
                 "begin": 160,
                 "decl": 160,
                 "end": 162
@@ -30937,6 +30997,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 152,
               "decl": 152,
               "end": 154
@@ -30966,34 +31027,6 @@
               "decl": 174,
               "end": 176
             },
-            "GetName": {
-              "doc": "",
-              "name": "GetName",
-              "kind": "function",
-              "type": "const char *",
-              "parameters": [],
-              "immutable": true,
-              "begin": 177,
-              "decl": 177,
-              "end": 179
-            },
-            "GetScancode": {
-              "doc": "",
-              "name": "GetScancode",
-              "kind": "function",
-              "type": "Scancode",
-              "parameters": [
-                {
-                  "name": "keymodstate",
-                  "type": "Keymod *",
-                  "default": "nullptr"
-                }
-              ],
-              "immutable": true,
-              "begin": 179,
-              "decl": 179,
-              "end": 181
-            },
             "IsExtended": {
               "doc": "",
               "name": "IsExtended",
@@ -31002,9 +31035,9 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
-              "begin": 182,
-              "decl": 182,
-              "end": 184
+              "begin": 178,
+              "decl": 178,
+              "end": 180
             },
             "IsScancode": {
               "doc": "",
@@ -31014,6 +31047,35 @@
               "parameters": [],
               "constexpr": true,
               "immutable": true,
+              "begin": 181,
+              "decl": 181,
+              "end": 183
+            },
+            "GetScancode": {
+              "doc": "",
+              "name": "GetScancode",
+              "kind": "function",
+              "type": "Scancode",
+              "parameters": [
+                {
+                  "name": "modstate",
+                  "type": "Keymod *"
+                }
+              ],
+              "immutable": true,
+              "proto": true,
+              "begin": 183,
+              "decl": 183,
+              "end": 185
+            },
+            "GetName": {
+              "doc": "",
+              "name": "GetName",
+              "kind": "function",
+              "type": "const char *",
+              "parameters": [],
+              "immutable": true,
+              "proto": true,
               "begin": 185,
               "decl": 185,
               "end": 186
@@ -33753,7 +33815,7 @@
               },
               {
                 "name": "modstate",
-                "type": "SDL_Keymod"
+                "type": "Keymod"
               },
               {
                 "name": "key_event",
@@ -33848,9 +33910,9 @@
           "decl": 343,
           "end": 348
         },
-        "WindowBase<T>::StartTextInput": [
+        "WindowBase::StartTextInput": [
           {
-            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput\n@sa WindowBase::IsTextInputActive",
             "name": "WindowBase<T>::StartTextInput",
             "kind": "function",
             "type": "bool",
@@ -33866,7 +33928,7 @@
             "end": 379
           },
           {
-            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase<T>::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput\n@sa WindowBase<T>::IsTextInputActive",
+            "doc": "Start accepting Unicode text input events in a window, with properties\ndescribing the input.\n\nThis function will enable text input (EVENT_TEXT_INPUT and\nEVENT_TEXT_EDITING events) in the specified window. Please use this\nfunction paired with WindowBase::StopTextInput().\n\nText input events are not received by default.\n\nOn some platforms using this function shows the screen keyboard and/or\nactivates an IME, which can prevent some key press events from being passed\nthrough.\n\nThese are the supported properties:\n\n- `SDL_PROP_TEXTINPUT_TYPE_NUMBER` - an TextInputType value that\n  describes text being input, defaults to TEXTINPUT_TYPE_TEXT.\n- `prop::TextInput.CAPITALIZATION_NUMBER` - an Capitalization value\n  that describes how text should be capitalized, defaults to\n  CAPITALIZE_SENTENCES for normal text entry, CAPITALIZE_WORDS for\n  TEXTINPUT_TYPE_TEXT_NAME, and CAPITALIZE_NONE for e-mail\n  addresses, usernames, and passwords.\n- `prop::TextInput.AUTOCORRECT_BOOLEAN` - true to enable auto completion\n  and auto correction, defaults to true.\n- `prop::TextInput.MULTILINE_BOOLEAN` - true if multiple lines of text\n  are allowed. This defaults to true if SDL_HINT_RETURN_KEY_HIDES_IME is\n  \"0\" or is not set, and defaults to false if SDL_HINT_RETURN_KEY_HIDES_IME\n  is \"1\".\n\nOn Android you can directly specify the input type:\n\n- `prop::TextInput.ANDROID_INPUTTYPE_NUMBER` - the text input type to\n  use, overriding other properties. This is documented at\n  https://developer.android.com/reference/android/text/InputType\n\n@param props the properties to use.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput\n@sa WindowBase::IsTextInputActive",
             "name": "WindowBase<T>::StartTextInput",
             "kind": "function",
             "type": "bool",
@@ -34095,8 +34157,8 @@
           "decl": 531,
           "end": 546
         },
-        "WindowBase<T>::IsTextInputActive": {
-          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+        "WindowBase::IsTextInputActive": {
+          "doc": "Check whether or not Unicode text input events are enabled for a window.\n\n@returns true if text input events are enabled else false.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
           "name": "WindowBase<T>::IsTextInputActive",
           "kind": "function",
           "type": "bool",
@@ -34112,8 +34174,8 @@
           "decl": 557,
           "end": 563
         },
-        "WindowBase<T>::StopTextInput": {
-          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase<T>::StartTextInput() showed the screen keyboard, this function\nwill hide it.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput",
+        "WindowBase::StopTextInput": {
+          "doc": "Stop receiving any text input events in a window.\n\nIf WindowBase::StartTextInput() showed the screen keyboard, this function\nwill hide it.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput",
           "name": "WindowBase<T>::StopTextInput",
           "kind": "function",
           "type": "bool",
@@ -34128,8 +34190,8 @@
           "decl": 578,
           "end": 584
         },
-        "WindowBase<T>::ClearComposition": {
-          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::StartTextInput\n@sa WindowBase<T>::StopTextInput",
+        "WindowBase::ClearComposition": {
+          "doc": "Dismiss the composition window/IME without disabling the subsystem.\n\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::StartTextInput\n@sa WindowBase::StopTextInput",
           "name": "WindowBase<T>::ClearComposition",
           "kind": "function",
           "type": "bool",
@@ -34144,8 +34206,8 @@
           "decl": 597,
           "end": 603
         },
-        "WindowBase<T>::SetTextInputArea": {
-          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::GetTextInputArea\n@sa WindowBase<T>::StartTextInput",
+        "WindowBase::SetTextInputArea": {
+          "doc": "Set the area used to type Unicode text input.\n\nNative input methods may place a window with word suggestions near the\ncursor, without covering the text being entered.\n\n@param rect the Rect representing the text input area, in window\n            coordinates, or nullptr to clear it.\n@param cursor the offset of the current cursor location relative to\n              `rect->x`, in window coordinates.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::GetTextInputArea\n@sa WindowBase::StartTextInput",
           "name": "WindowBase<T>::SetTextInputArea",
           "kind": "function",
           "type": "bool",
@@ -34169,15 +34231,15 @@
           "decl": 623,
           "end": 629
         },
-        "WindowBase<T>::GetTextInputArea": {
-          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase<T>::SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase<T>::SetTextInputArea",
+        "WindowBase::GetTextInputArea": {
+          "doc": "Get the area used to type Unicode text input.\n\nThis returns the values previously set by WindowBase::SetTextInputArea().\n\n@param rect a pointer to an Rect filled in with the text input area,\n            may be nullptr.\n@param cursor a pointer to the offset of the current cursor location\n              relative to `rect->x`, may be nullptr.\n@returns true on success or false on failure; call GetError() for more\n         information.\n\n@threadsafety This function should only be called on the main thread.\n\n@since This function is available since SDL 3.2.0.\n\n@sa WindowBase::SetTextInputArea",
           "name": "WindowBase<T>::GetTextInputArea",
           "kind": "function",
           "type": "bool",
           "parameters": [
             {
               "name": "rect",
-              "type": "SDL_Rect *"
+              "type": "Rect *"
             },
             {
               "name": "cursor",
@@ -36277,6 +36339,7 @@
                   "type": "bool"
                 }
               ],
+              "proto": true,
               "begin": 563,
               "decl": 563,
               "end": 565
@@ -36310,6 +36373,7 @@
                 "type": "",
                 "parameters": [],
                 "constexpr": true,
+                "proto": true,
                 "begin": 584,
                 "decl": 589,
                 "end": 591
@@ -36325,6 +36389,7 @@
                     "type": "const SDL &"
                   }
                 ],
+                "proto": true,
                 "begin": 592,
                 "decl": 592,
                 "end": 594
@@ -38140,6 +38205,7 @@
               "parameters": [
                 "*m_destroy"
               ],
+              "proto": true,
               "begin": 51,
               "decl": 51,
               "end": 53
@@ -38192,6 +38258,7 @@
               ],
               "constexpr": true,
               "immutable": true,
+              "proto": true,
               "begin": 67,
               "decl": 67,
               "end": 69
@@ -40904,6 +40971,7 @@
               "type": "SubStringIterator",
               "parameters": [],
               "immutable": true,
+              "proto": true,
               "begin": 3064,
               "decl": 3067,
               "end": 3069
@@ -40915,6 +40983,7 @@
               "type": "SubStringIterator",
               "parameters": [],
               "immutable": true,
+              "proto": true,
               "begin": 3069,
               "decl": 3072,
               "end": 3074
@@ -40932,6 +41001,7 @@
                   }
                 ],
                 "immutable": true,
+                "proto": true,
                 "begin": 3074,
                 "decl": 3089,
                 "end": 3091
@@ -41002,6 +41072,7 @@
                   }
                 ],
                 "immutable": true,
+                "proto": true,
                 "begin": 3152,
                 "decl": 3167,
                 "end": 3169

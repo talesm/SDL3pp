@@ -2853,20 +2853,6 @@ struct WindowBase : T
     return SDL_FlashWindow(T::get(), operation);
   }
 
-  bool StartTextInput();
-
-  bool StartTextInput(PropertiesRef props);
-
-  bool IsTextInputActive() const;
-
-  bool StopTextInput();
-
-  bool ClearComposition();
-
-  bool SetTextInputArea(const SDL_Rect& rect, int cursor);
-
-  bool GetTextInputArea(SDL_Rect* rect, int* cursor);
-
   /**
    * Destroy a window.
    *
@@ -2882,6 +2868,20 @@ struct WindowBase : T
    * @since This function is available since SDL 3.2.0.
    */
   void Destroy() { return T::free(); }
+
+  bool StartTextInput();
+
+  bool StartTextInput(PropertiesRef props);
+
+  bool IsTextInputActive() const;
+
+  bool StopTextInput();
+
+  bool ClearComposition();
+
+  bool SetTextInputArea(const SDL_Rect& rect, int cursor);
+
+  bool GetTextInputArea(Rect* rect, int* cursor);
 };
 
 /**

@@ -266,8 +266,11 @@ class Tokenizer {
         token.name = m[2];
       }
       const lastLine = this.ignoreBody(token.spaces);
-      if (token.kind === "var" && !token.doc) {
-        token.doc = checkInlineDoc(lastLine);
+      if (token.kind === "var") {
+        if (!token.doc)
+          token.doc = checkInlineDoc(lastLine);
+      } else {
+        if (lastLine.endsWith(";")) token.proto = true;
       }
     }
     this.extendToNextStart();
