@@ -11,7 +11,7 @@ namespace SDL {
 
 /**
  *
- * @defgroup CategoryKeyboard Category Keyboard
+ * @defgroup CategoryKeyboard Keyboard Support
  *
  * SDL keyboard management.
  *

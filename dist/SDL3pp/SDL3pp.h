@@ -33012,7 +33012,7 @@ inline WindowRef GetWindowFromEvent(const Event* event)
 
 /**
  *
- * @defgroup CategoryKeyboard Category Keyboard
+ * @defgroup CategoryKeyboard Keyboard Support
  *
  * SDL keyboard management.
  *

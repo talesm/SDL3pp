@@ -33628,7 +33628,7 @@
     },
     "SDL3pp_keyboard.h": {
       "name": "SDL3pp_keyboard.h",
-      "doc": "@defgroup CategoryKeyboard Category Keyboard\n\nSDL keyboard management.\n\nPlease refer to the Best Keyboard Practices document for details on how\nbest to accept keyboard input in various types of programs:\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
+      "doc": "@defgroup CategoryKeyboard Keyboard Support\n\nSDL keyboard management.\n\nPlease refer to the Best Keyboard Practices document for details on how\nbest to accept keyboard input in various types of programs:\n\nhttps://wiki.libsdl.org/SDL3/BestKeyboardPractices",
       "entries": {
         "KeyboardID": {
           "doc": "This is a unique ID for a keyboard for the time it is connected to the\nsystem, and is never reused for the lifetime of the application.\n\nIf the keyboard is disconnected and reconnected, it will get a new ID.\n\nThe value 0 is an invalid ID.\n\n@since This datatype is available since SDL 3.2.0.",

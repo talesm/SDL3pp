@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['keyboard_0',['Category Keyboard',['../group__CategoryKeyboard.html',1,'']]],
-  ['keyboard_20keycodes_1',['Keyboard Keycodes',['../group__CategoryKeycode.html',1,'']]],
-  ['keyboard_20scancodes_2',['Keyboard Scancodes',['../group__CategoryScancode.html',1,'']]],
+  ['keyboard_20keycodes_0',['Keyboard Keycodes',['../group__CategoryKeycode.html',1,'']]],
+  ['keyboard_20scancodes_1',['Keyboard Scancodes',['../group__CategoryScancode.html',1,'']]],
+  ['keyboard_20support_2',['Keyboard Support',['../group__CategoryKeyboard.html',1,'']]],
   ['keyboarddeviceevent_3',['KeyboardDeviceEvent',['../group__CategoryEvents.html#ga6596fc002a05eecf8430d99ca2587774',1,'SDL']]],
   ['keyboardevent_4',['KeyboardEvent',['../group__CategoryEvents.html#gab0a2a04d7f402ebf2caf4431d6821f0e',1,'SDL']]],
   ['keyboardid_5',['KeyboardID',['../group__CategoryKeyboard.html#ga1567adc0e79b5fcc4cd6c2f8edf8b751',1,'SDL']]],

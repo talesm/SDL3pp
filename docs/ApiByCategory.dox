@@ -44,7 +44,7 @@ Camera Support           | SDL3pp_camera.h
 Category                 | Header
 ------------------------ | --------------------
 @ref CategoryEvents      | SDL3pp_events.h
-Keyboard Support         | SDL3pp_keyboard.h
+@ref CategoryKeyboard    | SDL3pp_keyboard.h
 @ref CategoryKeycode     | SDL3pp_keycode.h
 @ref CategoryScancode    | SDL3pp_scancode.h
 Mouse Support            | SDL3pp_mouse.h
@@ -154,6 +154,7 @@ You probably want to see @ref ApiByCategory
 @defgroup CategoriesEvents Input Events
 @{
 @addtogroup CategoryEvents
+@addtogroup CategoryKeyboard
 @addtogroup CategoryKeycode
 @addtogroup CategoryScancode
 @}
